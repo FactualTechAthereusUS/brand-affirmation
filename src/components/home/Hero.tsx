@@ -10,19 +10,6 @@ const trustPoints = [
   "Medical guidance",
 ];
 
-function TrustpilotStar({ half = false }: { half?: boolean }) {
-  return (
-    <span className="relative grid h-[26px] w-[26px] place-items-center overflow-hidden bg-[#00b67a]">
-      {half && (
-        <span className="absolute inset-y-0 right-0 w-1/2 bg-white/85" />
-      )}
-      <svg viewBox="0 0 24 24" className="relative h-[15px] w-[15px] fill-white">
-        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.8 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z" />
-      </svg>
-    </span>
-  );
-}
-
 export function Hero() {
   return (
     <section className="relative isolate -mt-[124px] overflow-hidden bg-[#1e3a5f] pt-[124px]">
