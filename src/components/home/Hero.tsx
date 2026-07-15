@@ -7,7 +7,7 @@ import face2 from "@/assets/face-2.png.asset.json";
 import face3 from "@/assets/face-3.png.asset.json";
 import face4 from "@/assets/face-4.png.asset.json";
 import face5 from "@/assets/face-5.png.asset.json";
-import trustpilot from "@/assets/trustpilot.png.asset.json";
+import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
 
 const trustPoints = [
   "Board-certified doctors",
