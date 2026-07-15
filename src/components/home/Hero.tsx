@@ -92,7 +92,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-white/70 md:text-white/60"
+            className="max-w-[480px] text-[11px] leading-[1.5] text-white/70 md:mt-6 md:text-white/60"
           >
             *The $39 promotional rate applies to your first month only for new
             customers. After that, the standard rate is $79 per month. Prepaid
