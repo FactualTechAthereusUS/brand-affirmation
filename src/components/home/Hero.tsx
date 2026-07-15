@@ -10,9 +10,22 @@ const trustPoints = [
   "Medical guidance",
 ];
 
+function TrustpilotStar({ half = false }: { half?: boolean }) {
+  return (
+    <span className="relative grid h-[26px] w-[26px] place-items-center overflow-hidden bg-[#00b67a]">
+      {half && (
+        <span className="absolute inset-y-0 right-0 w-1/2 bg-white/85" />
+      )}
+      <svg viewBox="0 0 24 24" className="relative h-[15px] w-[15px] fill-white">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.8 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z" />
+      </svg>
+    </span>
+  );
+}
+
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#8FB8D9]">
+    <section className="relative isolate -mt-[124px] overflow-hidden bg-[#1e3a5f] pt-[124px]">
       {/* Desktop: full-bleed background portrait */}
       <img
         src={heroImg.url}
@@ -25,17 +38,17 @@ export function Hero() {
         aria-hidden
         style={{
           background:
-            "linear-gradient(90deg, rgba(143,184,217,0.55) 0%, rgba(143,184,217,0.15) 55%, rgba(143,184,217,0) 75%)",
+            "linear-gradient(90deg, rgba(15,30,50,0.75) 0%, rgba(15,30,50,0.35) 50%, rgba(15,30,50,0) 75%)",
         }}
       />
 
-      <div className="relative mx-auto flex max-w-[1400px] flex-col px-6 pb-0 pt-[110px] md:min-h-[820px] md:justify-center md:px-8 md:pb-24 md:pt-[180px] lg:min-h-[860px]">
+      <div className="relative mx-auto flex max-w-[1400px] flex-col px-6 pb-0 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
         <div className="max-w-[640px]">
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-[44px] leading-[1.02] tracking-[-0.02em] text-ink md:text-[68px] lg:text-[80px]"
+            className="font-sans text-[44px] font-bold leading-[1.02] tracking-[-0.03em] text-white md:text-[68px] lg:text-[80px]"
           >
             Personalized care.
             <br />
@@ -48,7 +61,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-6 max-w-[480px] text-[16px] leading-[1.55] text-ink/80 md:text-[17px]"
+            className="mt-6 max-w-[480px] text-[16px] leading-[1.55] text-white/90 md:text-[17px]"
           >
             GLP-1, dermatology, hair, mental health, intimacy. Doctor-prescribed
             treatments shipped to your door starting at $39 for first month of
@@ -61,7 +74,7 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_10px_30px_-10px_rgba(23,23,23,0.25)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="grid h-[44px] w-[44px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6]">
                 <img src={vialImg.url} alt="" className="h-full w-full object-cover" />
               </span>
@@ -71,7 +84,7 @@ export function Hero() {
               </span>
             </button>
 
-            <button className="h-[60px] rounded-full border border-ink/25 bg-white/10 px-7 text-[15px] font-medium text-ink backdrop-blur-md transition-colors hover:bg-white/25">
+            <button className="h-[60px] rounded-full border border-white/20 bg-white/[0.06] px-7 text-[15px] font-medium text-white backdrop-blur-xl transition-colors hover:bg-white/15">
               Explore Treatments
             </button>
           </motion.div>
@@ -80,7 +93,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-ink/60"
+            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-white/60"
           >
             *The $39 promotional rate applies to your first month only for new
             customers. After that, the standard rate is $79 per month. Prepaid
@@ -88,37 +101,41 @@ export function Hero() {
           </motion.p>
         </div>
 
-        {/* Trust points */}
-        <motion.ul
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-10 flex flex-col gap-4 md:mt-12 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-start"
-        >
-          {trustPoints.map((t) => (
-            <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white md:text-[17px]">
-              <span className="grid h-6 w-6 place-items-center rounded-full border border-white/70">
-                <Check className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-              </span>
-              {t}
-            </li>
-          ))}
+        {/* Trust points — compact, bottom-right on desktop */}
+        <div className="mt-10 flex flex-col items-start gap-5 md:mt-12 lg:absolute lg:bottom-16 lg:right-8 lg:mt-0 lg:items-end">
+          <ul className="flex flex-col gap-3">
+            {trustPoints.map((t) => (
+              <li key={t} className="flex items-center gap-2.5 text-[13px] font-medium text-white md:text-[14px]">
+                <span className="grid h-[18px] w-[18px] place-items-center rounded-full border border-white/70">
+                  <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
 
           {/* Trustpilot liquid glass card */}
-          <li className="mt-2 w-[240px] rounded-2xl border border-white/25 bg-white/10 p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
+          <div className="w-[220px] rounded-2xl border border-white/15 bg-white/[0.08] p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-2xl">
             <img
               src={trustpilotLogo.url}
               alt="Trustpilot"
-              className="h-8 w-auto object-contain object-left"
+              className="h-[18px] w-auto object-contain object-left"
             />
-            <p className="mt-3 text-[13px] font-medium text-white">
-              TrustScore <span className="font-semibold">4.96</span>
+            <div className="mt-2.5 flex gap-[3px]">
+              <TrustpilotStar />
+              <TrustpilotStar />
+              <TrustpilotStar />
+              <TrustpilotStar />
+              <TrustpilotStar half />
+            </div>
+            <p className="mt-2.5 text-[12px] font-normal text-white">
+              TrustScore <span className="font-bold">4.96</span>
             </p>
-            <p className="text-[13px] text-white underline underline-offset-2">
+            <a href="#" className="text-[12px] text-white underline underline-offset-2">
               3,826 reviews
-            </p>
-          </li>
-        </motion.ul>
+            </a>
+          </div>
+        </div>
 
         {/* Mobile portrait — stacked below content */}
         <div className="relative mt-10 h-[440px] w-[calc(100%+3rem)] -mx-6 overflow-hidden md:hidden">
@@ -128,7 +145,6 @@ export function Hero() {
             className="absolute inset-0 h-full w-full object-cover object-[65%_center]"
           />
         </div>
-
       </div>
     </section>
   );

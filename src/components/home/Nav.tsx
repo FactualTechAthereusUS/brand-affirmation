@@ -33,20 +33,20 @@ export function Nav() {
 
   return (
     <>
-      <header className="absolute inset-x-0 top-0 z-40">
+      <header className="sticky top-[36px] z-40">
         <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-5 md:h-[88px] md:px-8">
           {/* Logo */}
           <a href="/" className="flex items-center">
-            <img src={logo.url} alt="Blissley" className="h-6 w-auto md:h-7" />
+            <img src={logo.url} alt="Blissley" className="h-6 w-auto brightness-0 invert md:h-7" />
           </a>
 
-          {/* Center liquid pill */}
-          <nav className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-white/25 bg-white/15 px-2 py-1.5 backdrop-blur-xl backdrop-saturate-150 shadow-[0_1px_1px_rgba(255,255,255,0.35)_inset,0_8px_28px_-12px_rgba(23,23,23,0.18)] lg:flex">
+          {/* Center liquid pill — wider, softer border */}
+          <nav className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-white/15 bg-white/[0.08] px-3 py-2 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_1px_0_rgba(255,255,255,0.15)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] lg:flex">
             {links.map((l) => (
               <a
                 key={l.label}
                 href="#"
-                className="group inline-flex items-center gap-1 rounded-full px-4 py-2 text-[13.5px] font-medium text-ink/85 transition-colors hover:bg-white/40 hover:text-ink"
+                className="group inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white"
               >
                 {l.label}
                 {l.hasMenu && (
@@ -63,11 +63,11 @@ export function Nav() {
           <div className="hidden items-center gap-2 lg:flex">
             <a
               href="#"
-              className="rounded-full px-4 py-2 text-[13.5px] font-medium text-ink/85 transition-colors hover:text-ink"
+              className="rounded-full px-4 py-2 text-[14px] font-medium text-white/90 transition-colors hover:text-white"
             >
               Login
             </a>
-            <button className="rounded-full bg-ink px-5 py-2.5 text-[13.5px] font-medium text-canvas transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <button className="rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-ink transition-transform hover:scale-[1.02] active:scale-[0.98]">
               Get started
             </button>
           </div>
@@ -76,7 +76,7 @@ export function Nav() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/30 bg-white/20 text-ink backdrop-blur-xl lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-xl lg:hidden"
           >
             <Menu className="h-5 w-5" strokeWidth={1.75} />
           </button>
