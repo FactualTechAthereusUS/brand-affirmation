@@ -1,8 +1,10 @@
 import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
+import heroImgMobile from "@/assets/hero-portrait-mobile.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
 import trustpilotLogo from "@/assets/trustpilot-full.png.asset.json";
+
 
 const trustPoints = [
   "Board-certified doctors",
@@ -13,13 +15,21 @@ const trustPoints = [
 export function Hero() {
   return (
     <section id="hero" className="relative isolate -mt-[124px] min-h-[100svh] overflow-hidden bg-[#1e3a5f] pt-[124px] md:min-h-0">
-      {/* Full-bleed background portrait — mobile & desktop */}
+      {/* Mobile background */}
+      <img
+        src={heroImgMobile.url}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover object-[center_top] md:hidden"
+      />
+      {/* Desktop background */}
       <img
         src={heroImg.url}
         alt=""
         aria-hidden
-        className="absolute inset-0 h-full w-full object-cover object-[65%_center] md:object-[right_center]"
+        className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
       />
+
 
       <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-10 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
         <div className="max-w-[640px]">
@@ -79,6 +89,21 @@ export function Hero() {
             multi-month plans available. Terms vary by state.
           </motion.p>
         </div>
+
+        {/* Mobile checklist — glass card at bottom */}
+        <div className="mt-8 md:hidden">
+          <ul className="flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.06] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150">
+            {trustPoints.map((t) => (
+              <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white">
+                <span className="grid h-[20px] w-[20px] place-items-center rounded-full border border-white/70">
+                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+
 
         {/* Trust points + Trustpilot — desktop only */}
         <div className="mt-10 hidden flex-col items-start gap-5 md:flex md:mt-12 lg:absolute lg:bottom-16 lg:right-8 lg:mt-0 lg:items-end">
