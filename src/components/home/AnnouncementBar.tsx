@@ -1,6 +1,7 @@
 export function AnnouncementBar() {
   return (
     <div
+      id="announcement-bar"
       className="sticky top-0 z-50 w-full text-white"
       style={{
         background:
