@@ -2,7 +2,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
-import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
+import trustpilotLogo from "@/assets/trustpilot-full.png.asset.json";
 
 const trustPoints = [
   "Board-certified doctors",
