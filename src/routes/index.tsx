@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/home/Nav";
+import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { Hero } from "@/components/home/Hero";
 import { PressLogos } from "@/components/home/PressLogos";
 import { CategoryGrid } from "@/components/home/CategoryGrid";
@@ -42,6 +43,7 @@ function Index() {
   return (
     <div className="min-h-screen bg-canvas">
       <SmoothScroll />
+      <AnnouncementBar />
       <Nav />
       <main>
         <Hero />
