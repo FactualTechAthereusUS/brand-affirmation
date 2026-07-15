@@ -20,14 +20,6 @@ export function Hero() {
         aria-hidden
         className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
       />
-      <div
-        className="absolute inset-0 hidden md:block"
-        aria-hidden
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(15,30,50,0.75) 0%, rgba(15,30,50,0.35) 50%, rgba(15,30,50,0) 75%)",
-        }}
-      />
 
       <div className="relative mx-auto flex max-w-[1400px] flex-col px-6 pb-0 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
         <div className="max-w-[640px]">
