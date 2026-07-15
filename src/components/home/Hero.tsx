@@ -2,12 +2,20 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
+import face1 from "@/assets/face-1.png.asset.json";
+import face2 from "@/assets/face-2.png.asset.json";
+import face3 from "@/assets/face-3.png.asset.json";
+import face4 from "@/assets/face-4.png.asset.json";
+import face5 from "@/assets/face-5.png.asset.json";
+import trustpilot from "@/assets/trustpilot.png.asset.json";
 
 const trustPoints = [
   "Board-certified doctors",
   "Clinically backed treatments",
   "Medical guidance",
 ];
+
+const faces = [face1, face2, face3, face4, face5];
 
 export function Hero() {
   return (
@@ -92,16 +100,38 @@ export function Hero() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-8 flex flex-col gap-3 md:mt-10 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-end"
+          className="mt-10 flex flex-col gap-4 md:mt-12 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-start"
         >
           {trustPoints.map((t) => (
-            <li key={t} className="flex items-center gap-2.5 text-[14px] font-medium text-ink">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-ink text-canvas">
-                <Check className="h-3 w-3" strokeWidth={3} />
+            <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.35)] md:text-[17px]">
+              <span className="grid h-6 w-6 place-items-center rounded-full border border-white/70">
+                <Check className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
               </span>
               {t}
             </li>
           ))}
+
+          {/* Trust card */}
+          <li className="mt-2 w-full max-w-[340px] rounded-2xl border border-white/30 bg-white/15 p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {faces.map((f, i) => (
+                  <img
+                    key={i}
+                    src={f.url}
+                    alt=""
+                    className="h-9 w-9 rounded-full border-2 border-white object-cover"
+                  />
+                ))}
+              </div>
+              <p className="text-[13px] font-medium leading-tight text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.3)]">
+                Trusted by over<br />30,000+ patients
+              </p>
+            </div>
+            <div className="mt-3 border-t border-white/25 pt-3">
+              <img src={trustpilot.url} alt="Excellent — Trustpilot" className="h-6 w-auto object-contain object-left" />
+            </div>
+          </li>
         </motion.ul>
 
         {/* Mobile portrait — stacked below content */}
@@ -112,6 +142,7 @@ export function Hero() {
             className="absolute inset-0 h-full w-full object-cover object-[65%_center]"
           />
         </div>
+
       </div>
     </section>
   );
