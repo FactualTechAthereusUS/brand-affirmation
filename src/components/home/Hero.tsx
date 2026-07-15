@@ -27,7 +27,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans text-[44px] font-bold leading-[1.02] tracking-[-0.03em] text-white md:text-[68px] lg:text-[80px]"
+            className="font-sans text-[40px] font-bold leading-[1.05] tracking-[-0.03em] text-white md:text-[60px] lg:text-[72px]"
           >
             Personalized care.
             <br />
