@@ -16,17 +16,26 @@ export function Hero() {
       <img
         src={heroImg.url}
         alt="Woman in warm sunlight"
-        className="absolute inset-0 h-full w-full object-cover object-[75%_center] md:object-[right_center]"
+        className="absolute inset-0 h-full w-full object-cover object-[88%_center] md:object-[right_center]"
       />
       {/* Left-side gradient for text contrast */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 md:hidden"
+        aria-hidden
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(143,184,217,0.85) 0%, rgba(143,184,217,0.55) 45%, rgba(143,184,217,0.15) 75%, rgba(143,184,217,0) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 hidden md:block"
         aria-hidden
         style={{
           background:
             "linear-gradient(90deg, rgba(143,184,217,0.55) 0%, rgba(143,184,217,0.15) 55%, rgba(143,184,217,0) 75%)",
         }}
       />
+
 
       <div className="relative mx-auto flex min-h-[760px] max-w-[1400px] flex-col justify-end px-6 pb-14 pt-[140px] md:min-h-[820px] md:px-8 md:pt-[180px] lg:min-h-[860px] lg:justify-center lg:pb-24">
         <div className="max-w-[640px]">
