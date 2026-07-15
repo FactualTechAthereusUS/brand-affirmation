@@ -12,16 +12,16 @@ const trustPoints = [
 
 export function Hero() {
   return (
-    <section id="hero" className="relative isolate -mt-[124px] overflow-hidden bg-[#1e3a5f] pt-[124px]">
-      {/* Desktop: full-bleed background portrait */}
+    <section id="hero" className="relative isolate -mt-[124px] min-h-[100svh] overflow-hidden bg-[#1e3a5f] pt-[124px] md:min-h-0">
+      {/* Full-bleed background portrait — mobile & desktop */}
       <img
         src={heroImg.url}
         alt=""
         aria-hidden
-        className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
+        className="absolute inset-0 h-full w-full object-cover object-[65%_center] md:object-[right_center]"
       />
 
-      <div className="relative mx-auto flex max-w-[1400px] flex-col px-6 pb-0 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
+      <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-10 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
         <div className="max-w-[640px]">
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
@@ -63,7 +63,7 @@ export function Hero() {
               </span>
             </button>
 
-            <button className="h-[60px] rounded-full border border-white/25 bg-white/[0.08] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14]">
+            <button className="hidden h-[60px] rounded-full border border-white/25 bg-white/[0.08] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14] md:block">
               Explore Treatments
             </button>
           </motion.div>
@@ -72,7 +72,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-white/60"
+            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-white/70 md:text-white/60"
           >
             *The $39 promotional rate applies to your first month only for new
             customers. After that, the standard rate is $79 per month. Prepaid
@@ -80,8 +80,8 @@ export function Hero() {
           </motion.p>
         </div>
 
-        {/* Trust points — compact, bottom-right on desktop */}
-        <div className="mt-10 flex flex-col items-start gap-5 md:mt-12 lg:absolute lg:bottom-16 lg:right-8 lg:mt-0 lg:items-end">
+        {/* Trust points + Trustpilot — desktop only */}
+        <div className="mt-10 hidden flex-col items-start gap-5 md:flex md:mt-12 lg:absolute lg:bottom-16 lg:right-8 lg:mt-0 lg:items-end">
           <ul className="flex flex-col gap-3">
             {trustPoints.map((t) => (
               <li key={t} className="flex items-center gap-2.5 text-[13px] font-medium text-white md:text-[14px]">
@@ -93,7 +93,6 @@ export function Hero() {
             ))}
           </ul>
 
-          {/* Trustpilot — true liquid glass, no blur */}
           <div className="w-[200px] rounded-xl border border-white/15 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
             <img
               src={trustpilotLogo.url}
@@ -107,16 +106,6 @@ export function Hero() {
               </div>
             </div>
           </div>
-
-        </div>
-
-        {/* Mobile portrait — stacked below content */}
-        <div className="relative mt-10 h-[440px] w-[calc(100%+3rem)] -mx-6 overflow-hidden md:hidden">
-          <img
-            src={heroImg.url}
-            alt="Woman in warm sunlight"
-            className="absolute inset-0 h-full w-full object-cover object-[65%_center]"
-          />
         </div>
       </div>
     </section>
