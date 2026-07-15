@@ -59,7 +59,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-5 max-w-[480px] text-[15px] leading-[1.5] text-white/95 md:mt-6 md:text-[17px]"
+            className="max-w-[480px] text-[15px] leading-[1.5] text-white/95 md:mt-6 md:text-[17px]"
           >
             GLP-1, dermatology, hair, mental health, intimacy. Doctor-prescribed
             treatments shipped to your door starting at $39 for first month of
