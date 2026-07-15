@@ -70,7 +70,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-6 flex flex-wrap items-center gap-3 md:mt-8"
+            className="flex flex-wrap items-center gap-3 md:mt-8"
           >
             <button className="group relative flex h-[56px] items-center gap-3 rounded-full bg-white pl-2 pr-5 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] transition-transform hover:scale-[1.02] active:scale-[0.98] md:h-[60px] md:pr-6">
               <span className="grid h-[40px] w-[40px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6] md:h-[44px] md:w-[44px]">
