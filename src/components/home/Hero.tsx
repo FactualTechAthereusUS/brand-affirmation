@@ -2,20 +2,13 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
-import face1 from "@/assets/face-1.png.asset.json";
-import face2 from "@/assets/face-2.png.asset.json";
-import face3 from "@/assets/face-3.png.asset.json";
-import face4 from "@/assets/face-4.png.asset.json";
-import face5 from "@/assets/face-5.png.asset.json";
-import trustpilot from "@/assets/trustpilot.png.asset.json";
+import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
 
 const trustPoints = [
   "Board-certified doctors",
   "Clinically backed treatments",
   "Medical guidance",
 ];
-
-const faces = [face1, face2, face3, face4, face5];
 
 export function Hero() {
   return (
@@ -111,26 +104,28 @@ export function Hero() {
             </li>
           ))}
 
-          {/* Trust card */}
-          <li className="mt-2 w-full max-w-[340px] rounded-2xl border border-white/30 bg-white/15 p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {faces.map((f, i) => (
-                  <img
-                    key={i}
-                    src={f.url}
-                    alt=""
-                    className="h-9 w-9 rounded-full border-2 border-white object-cover"
-                  />
-                ))}
-              </div>
-              <p className="text-[13px] font-medium leading-tight text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.3)]">
-                Trusted by over<br />30,000+ patients
-              </p>
+          {/* Trustpilot liquid glass card */}
+          <li className="mt-2 w-[240px] rounded-2xl border border-white/25 bg-white/10 p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
+            <img
+              src={trustpilotLogo.url}
+              alt="Trustpilot"
+              className="h-5 w-auto object-contain object-left"
+            />
+            <div className="mt-2.5 flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="grid h-7 w-7 place-items-center bg-[#00b67a]">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-white">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+              ))}
             </div>
-            <div className="mt-3 border-t border-white/25 pt-3">
-              <img src={trustpilot.url} alt="Excellent — Trustpilot" className="h-6 w-auto object-contain object-left" />
-            </div>
+            <p className="mt-2.5 text-[13px] font-medium text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.4)]">
+              TrustScore <span className="font-semibold">4.96</span>
+            </p>
+            <p className="text-[13px] text-white underline underline-offset-2 [text-shadow:0_1px_6px_rgba(0,0,0,0.4)]">
+              3,826 reviews
+            </p>
           </li>
         </motion.ul>
 
