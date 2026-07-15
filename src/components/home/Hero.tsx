@@ -100,8 +100,8 @@ export function Hero() {
           </motion.p>
         </div>
 
-        {/* Mobile checklist — glass card at bottom */}
-        <div className="mt-8 md:hidden">
+        {/* Mobile checklist — glass card pinned to bottom */}
+        <div className="mt-auto md:hidden">
           <ul className="flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.06] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150">
             {trustPoints.map((t) => (
               <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white">
