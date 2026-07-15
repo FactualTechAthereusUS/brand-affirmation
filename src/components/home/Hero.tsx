@@ -96,7 +96,7 @@ export function Hero() {
           className="mt-10 flex flex-col gap-4 md:mt-12 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-start"
         >
           {trustPoints.map((t) => (
-            <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.35)] md:text-[17px]">
+            <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white md:text-[17px]">
               <span className="grid h-6 w-6 place-items-center rounded-full border border-white/70">
                 <Check className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
               </span>
@@ -109,21 +109,12 @@ export function Hero() {
             <img
               src={trustpilotLogo.url}
               alt="Trustpilot"
-              className="h-5 w-auto object-contain object-left"
+              className="h-8 w-auto object-contain object-left"
             />
-            <div className="mt-2.5 flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="grid h-7 w-7 place-items-center bg-[#00b67a]">
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-white">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                </div>
-              ))}
-            </div>
-            <p className="mt-2.5 text-[13px] font-medium text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.4)]">
+            <p className="mt-3 text-[13px] font-medium text-white">
               TrustScore <span className="font-semibold">4.96</span>
             </p>
-            <p className="text-[13px] text-white underline underline-offset-2 [text-shadow:0_1px_6px_rgba(0,0,0,0.4)]">
+            <p className="text-[13px] text-white underline underline-offset-2">
               3,826 reviews
             </p>
           </li>
