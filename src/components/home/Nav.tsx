@@ -37,7 +37,7 @@ export function Nav() {
         <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-5 md:h-[88px] md:px-8">
           {/* Logo */}
           <a href="/" className="flex items-center">
-            <img src={logo.url} alt="Blissley" className="h-6 w-auto brightness-0 invert md:h-7" />
+            <img src={logo.url} alt="Blissley" className="h-8 w-auto brightness-0 invert md:h-10" />
           </a>
 
           {/* Center liquid pill — wider, softer border */}
@@ -93,7 +93,7 @@ export function Nav() {
             className="fixed inset-0 z-[100] flex flex-col bg-ink px-6 pb-8 pt-5"
           >
             <div className="flex items-center justify-between">
-              <img src={logo.url} alt="Blissley" className="h-6 w-auto invert" />
+              <img src={logo.url} alt="Blissley" className="h-8 w-auto invert" />
               <button
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
