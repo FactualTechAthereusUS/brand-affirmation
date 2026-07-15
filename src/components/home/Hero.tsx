@@ -15,13 +15,21 @@ const trustPoints = [
 export function Hero() {
   return (
     <section id="hero" className="relative isolate -mt-[124px] min-h-[100svh] overflow-hidden bg-[#1e3a5f] pt-[124px] md:min-h-0">
-      {/* Full-bleed background portrait — mobile & desktop */}
+      {/* Mobile background */}
+      <img
+        src={heroImgMobile.url}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover object-[center_top] md:hidden"
+      />
+      {/* Desktop background */}
       <img
         src={heroImg.url}
         alt=""
         aria-hidden
-        className="absolute inset-0 h-full w-full object-cover object-[65%_center] md:object-[right_center]"
+        className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
       />
+
 
       <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-10 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
         <div className="max-w-[640px]">
