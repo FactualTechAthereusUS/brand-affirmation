@@ -76,7 +76,7 @@ export function Nav() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-xl lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/25 text-white lg:hidden"
           >
             <Menu className="h-5 w-5" strokeWidth={1.75} />
           </button>
