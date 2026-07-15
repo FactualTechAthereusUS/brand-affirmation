@@ -140,7 +140,7 @@ export function Nav() {
             className="fixed inset-0 z-[100] flex flex-col bg-ink px-6 pb-8 pt-5"
           >
             <div className="flex items-center justify-between">
-              <img src={logo.url} alt="Blissley" className="h-8 w-auto invert" />
+              <img src={logo.url} alt="Blissley" className="h-10 w-auto invert" />
               <button
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
