@@ -23,6 +23,7 @@ const mobileLinks = [
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -31,22 +32,45 @@ export function Nav() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <header className="sticky top-[36px] z-40">
         <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-5 md:h-[88px] md:px-8">
           {/* Logo */}
           <a href="/" className="flex items-center">
-            <img src={logo.url} alt="Blissley" className="h-8 w-auto brightness-0 invert md:h-10" />
+            <img
+              src={logo.url}
+              alt="Blissley"
+              className={`h-8 w-auto transition-[filter] duration-300 md:h-10 ${
+                scrolled ? "" : "brightness-0 invert"
+              }`}
+            />
           </a>
 
           {/* Center liquid pill — wider, softer border */}
-          <nav className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-white/25 bg-white/[0.08] px-3 py-2 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 lg:flex">
+          <nav
+            className={`pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full px-3 py-2 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 lg:flex ${
+              scrolled
+                ? "border border-black/10 bg-white/60 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset]"
+                : "border border-white/25 bg-white/[0.08] shadow-[0_1px_0_rgba(255,255,255,0.32)_inset]"
+            }`}
+          >
             {links.map((l) => (
               <a
                 key={l.label}
                 href="#"
-                className="group inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium text-white/90 transition-colors hover:bg-white/12 hover:text-white"
+                className={`group inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium transition-colors ${
+                  scrolled
+                    ? "text-ink/80 hover:bg-black/5 hover:text-ink"
+                    : "text-white/90 hover:bg-white/12 hover:text-white"
+                }`}
               >
                 {l.label}
                 {l.hasMenu && (
@@ -63,11 +87,15 @@ export function Nav() {
           <div className="hidden items-center gap-2 lg:flex">
             <a
               href="#"
-              className="rounded-full border border-white/25 bg-white/[0.08] px-5 py-2.5 text-[14px] font-medium text-white/95 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14]"
+              className={`rounded-full px-5 py-2.5 text-[14px] font-medium backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 ${
+                scrolled
+                  ? "border border-black/10 bg-white/60 text-ink shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] hover:bg-white/80"
+                  : "border border-white/25 bg-white/[0.08] text-white/95 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] hover:bg-white/[0.14]"
+              }`}
             >
               Login
             </a>
-            <button className="rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-ink transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <button className="rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-canvas transition-transform hover:scale-[1.02] active:scale-[0.98]">
               Get started
             </button>
           </div>
@@ -76,12 +104,15 @@ export function Nav() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/25 text-white lg:hidden"
+            className={`grid h-10 w-10 place-items-center rounded-full transition-colors lg:hidden ${
+              scrolled ? "border border-black/10 text-ink" : "border border-white/25 text-white"
+            }`}
           >
             <Menu className="h-5 w-5" strokeWidth={1.75} />
           </button>
         </div>
       </header>
+
 
       <AnimatePresence>
         {open && (
