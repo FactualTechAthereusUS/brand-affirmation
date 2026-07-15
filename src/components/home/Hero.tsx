@@ -101,27 +101,21 @@ export function Hero() {
             ))}
           </ul>
 
-          {/* Trustpilot liquid glass card */}
-          <div className="w-[220px] rounded-2xl border border-white/15 bg-white/[0.08] p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-2xl">
+          {/* Trustpilot — transparent, logo has stars built in */}
+          <div className="w-[240px] rounded-2xl border border-white/15 p-4">
             <img
               src={trustpilotLogo.url}
-              alt="Trustpilot"
-              className="h-[18px] w-auto object-contain object-left"
+              alt="Trustpilot — TrustScore 4.96, 3,826 reviews"
+              className="h-16 w-auto object-contain object-left"
             />
-            <div className="mt-2.5 flex gap-[3px]">
-              <TrustpilotStar />
-              <TrustpilotStar />
-              <TrustpilotStar />
-              <TrustpilotStar />
-              <TrustpilotStar half />
-            </div>
-            <p className="mt-2.5 text-[12px] font-normal text-white">
+            <p className="mt-3 text-[12px] font-normal text-white">
               TrustScore <span className="font-bold">4.96</span>
             </p>
             <a href="#" className="text-[12px] text-white underline underline-offset-2">
               3,826 reviews
             </a>
           </div>
+
         </div>
 
         {/* Mobile portrait — stacked below content */}
