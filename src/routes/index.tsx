@@ -44,11 +44,10 @@ function Index() {
     <div className="min-h-screen bg-canvas">
       <SmoothScroll />
       <AnnouncementBar />
+      <Nav />
       <main>
-        <div className="relative">
-          <Nav />
-          <Hero />
-        </div>
+        <Hero />
+
         <PressLogos />
         <CategoryGrid />
         <WhyBlissley />
