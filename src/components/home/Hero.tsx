@@ -143,14 +143,6 @@ export function Hero() {
           />
         </div>
 
-        {/* Mobile portrait — stacked below content */}
-        <div className="relative mt-10 h-[440px] w-[calc(100%+3rem)] -mx-6 overflow-hidden md:hidden">
-          <img
-            src={heroImg.url}
-            alt="Woman in warm sunlight"
-            className="absolute inset-0 h-full w-full object-cover object-[65%_center]"
-          />
-        </div>
       </div>
     </section>
   );
