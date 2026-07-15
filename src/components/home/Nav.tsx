@@ -63,7 +63,7 @@ export function Nav() {
           <div className="hidden items-center gap-2 lg:flex">
             <a
               href="#"
-              className="rounded-full px-4 py-2 text-[14px] font-medium text-white/90 transition-colors hover:text-white"
+              className="rounded-full border border-white/20 bg-white/[0.06] px-5 py-2.5 text-[14px] font-medium text-white/95 shadow-[0_1px_0_rgba(255,255,255,0.25)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.12]"
             >
               Login
             </a>
