@@ -29,15 +29,24 @@ export function Hero() {
         aria-hidden
         className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
       />
+      {/* Mobile readability overlay — subtle dark gradient behind copy */}
+      <div
+        aria-hidden
+        className="absolute inset-0 md:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(10,20,40,0.55) 0%, rgba(10,20,40,0.30) 32%, rgba(10,20,40,0.10) 55%, rgba(10,20,40,0.00) 75%)",
+        }}
+      />
 
 
-      <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-10 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
+      <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-10 pt-2 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
         <div className="max-w-[640px]">
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans text-[40px] font-bold leading-[1.05] tracking-[-0.03em] text-white md:text-[60px] lg:text-[72px]"
+            className="font-sans text-[34px] font-bold leading-[1.05] tracking-[-0.03em] text-white md:text-[60px] lg:text-[72px]"
           >
             Personalized care.
             <br />
@@ -50,7 +59,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-6 max-w-[480px] text-[16px] leading-[1.55] text-white/90 md:text-[17px]"
+            className="mt-5 max-w-[480px] text-[15px] leading-[1.5] text-white/95 md:mt-6 md:text-[17px]"
           >
             GLP-1, dermatology, hair, mental health, intimacy. Doctor-prescribed
             treatments shipped to your door starting at $39 for first month of
@@ -61,10 +70,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-6 flex flex-wrap items-center gap-3 md:mt-8"
           >
-            <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] transition-transform hover:scale-[1.02] active:scale-[0.98]">
-              <span className="grid h-[44px] w-[44px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6]">
+            <button className="group relative flex h-[56px] items-center gap-3 rounded-full bg-white pl-2 pr-5 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] transition-transform hover:scale-[1.02] active:scale-[0.98] md:h-[60px] md:pr-6">
+              <span className="grid h-[40px] w-[40px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6] md:h-[44px] md:w-[44px]">
                 <img src={vialImg.url} alt="" className="h-full w-full object-cover" />
               </span>
               Get started
@@ -73,10 +82,11 @@ export function Hero() {
               </span>
             </button>
 
-            <button className="hidden h-[60px] rounded-full border border-white/25 bg-white/[0.08] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14] md:block">
+            <button className="h-[56px] rounded-full border border-white/25 bg-white/[0.08] px-6 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14] md:h-[60px] md:px-7">
               Explore Treatments
             </button>
           </motion.div>
+
 
           <motion.p
             initial={{ opacity: 0 }}
