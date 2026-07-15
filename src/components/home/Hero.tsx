@@ -53,7 +53,7 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="grid h-[44px] w-[44px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6]">
                 <img src={vialImg.url} alt="" className="h-full w-full object-cover" />
               </span>
@@ -63,7 +63,7 @@ export function Hero() {
               </span>
             </button>
 
-            <button className="h-[60px] rounded-full border border-white/20 bg-white/[0.06] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.25)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.12]">
+            <button className="h-[60px] rounded-full border border-white/25 bg-white/[0.08] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14]">
               Explore Treatments
             </button>
           </motion.div>
@@ -94,7 +94,7 @@ export function Hero() {
           </ul>
 
           {/* Trustpilot — transparent, logo has stars built in */}
-          <div className="w-[240px] rounded-2xl border border-white/20 bg-white/[0.06] p-4 shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_10px_40px_-15px_rgba(0,0,0,0.5)] backdrop-blur-xl backdrop-saturate-150">
+          <div className="w-[240px] rounded-2xl border border-white/25 bg-white/[0.08] p-4 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150">
             <img
               src={trustpilotLogo.url}
               alt="Trustpilot — TrustScore 4.96, 3,826 reviews"

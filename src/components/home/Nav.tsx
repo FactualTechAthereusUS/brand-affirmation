@@ -41,12 +41,12 @@ export function Nav() {
           </a>
 
           {/* Center liquid pill — wider, softer border */}
-          <nav className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-white/20 bg-white/[0.06] px-3 py-2 shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_8px_30px_-10px_rgba(0,0,0,0.4)] backdrop-blur-xl backdrop-saturate-150 lg:flex">
+          <nav className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-white/25 bg-white/[0.08] px-3 py-2 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 lg:flex">
             {links.map((l) => (
               <a
                 key={l.label}
                 href="#"
-                className="group inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white"
+                className="group inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium text-white/90 transition-colors hover:bg-white/12 hover:text-white"
               >
                 {l.label}
                 {l.hasMenu && (
@@ -63,7 +63,7 @@ export function Nav() {
           <div className="hidden items-center gap-2 lg:flex">
             <a
               href="#"
-              className="rounded-full border border-white/20 bg-white/[0.06] px-5 py-2.5 text-[14px] font-medium text-white/95 shadow-[0_1px_0_rgba(255,255,255,0.25)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.12]"
+              className="rounded-full border border-white/25 bg-white/[0.08] px-5 py-2.5 text-[14px] font-medium text-white/95 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14]"
             >
               Login
             </a>
