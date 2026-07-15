@@ -1,7 +1,7 @@
 export function AnnouncementBar() {
   return (
     <div
-      className="w-full text-white"
+      className="sticky top-0 z-50 w-full text-white"
       style={{
         background:
           "linear-gradient(90deg, #ee6a6a 0%, #f28a72 50%, #f6a97e 100%)",
