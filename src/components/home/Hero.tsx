@@ -71,7 +71,7 @@ export function Hero() {
               </span>
             </button>
 
-            <button className="h-[60px] rounded-full border border-white/25 px-7 text-[15px] font-medium text-white transition-colors hover:bg-white/10">
+            <button className="h-[60px] rounded-full border border-white/20 bg-white/[0.06] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.25)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.12]">
               Explore Treatments
             </button>
           </motion.div>
