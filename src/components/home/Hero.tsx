@@ -94,16 +94,16 @@ export function Hero() {
           </ul>
 
           {/* Trustpilot — transparent, logo has stars built in */}
-          <div className="w-[240px] rounded-2xl border border-white/25 bg-white/[0.08] p-4 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150">
+          <div className="w-[260px] rounded-2xl border border-white/20 bg-white/[0.10] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl backdrop-saturate-150">
             <img
               src={trustpilotLogo.url}
               alt="Trustpilot — TrustScore 4.96, 3,826 reviews"
-              className="h-16 w-auto object-contain object-left"
+              className="h-20 w-auto object-contain object-left"
             />
-            <p className="mt-3 text-[12px] font-normal text-white">
-              TrustScore <span className="font-bold">4.96</span>
+            <p className="mt-4 text-[15px] font-normal text-white">
+              TrustScore <span className="font-semibold">4.96</span>
             </p>
-            <a href="#" className="text-[12px] text-white underline underline-offset-2">
+            <a href="#" className="text-[15px] text-white underline underline-offset-2">
               3,826 reviews
             </a>
           </div>
