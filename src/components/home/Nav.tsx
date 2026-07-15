@@ -116,16 +116,31 @@ export function Nav() {
             </button>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className={`grid h-10 w-10 place-items-center rounded-full transition-colors lg:hidden ${
-              scrolled ? "border border-black/10 text-ink" : "border border-white/25 text-white"
-            }`}
-          >
-            <Menu className="h-5 w-5" strokeWidth={1.75} />
-          </button>
+          {/* Mobile actions — liquid glass Get started + hamburger */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <a
+              href="#"
+              className={`rounded-full px-5 py-2.5 text-[15px] font-normal backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 ${
+                scrolled
+                  ? "border border-black/10 bg-white/60 text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.7),inset_0_-1px_0_rgba(0,0,0,0.04)]"
+                  : "border border-white/25 bg-white/[0.10] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.08)]"
+              }`}
+            >
+              Get started
+            </a>
+            <button
+              aria-label="Open menu"
+              onClick={() => setOpen(true)}
+              className={`grid h-11 w-11 place-items-center rounded-full backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 ${
+                scrolled
+                  ? "border border-black/10 bg-white/60 text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.7),inset_0_-1px_0_rgba(0,0,0,0.04)]"
+                  : "border border-white/25 bg-white/[0.10] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.08)]"
+              }`}
+            >
+              <Menu className="h-5 w-5" strokeWidth={1.75} />
+            </button>
+          </div>
+
         </div>
       </header>
 
