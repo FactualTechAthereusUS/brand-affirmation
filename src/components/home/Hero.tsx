@@ -2,11 +2,6 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
-import face1 from "@/assets/face-1.png.asset.json";
-import face2 from "@/assets/face-2.png.asset.json";
-import face3 from "@/assets/face-3.png.asset.json";
-import face4 from "@/assets/face-4.png.asset.json";
-import face5 from "@/assets/face-5.png.asset.json";
 import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
 
 const trustPoints = [
@@ -14,8 +9,6 @@ const trustPoints = [
   "Clinically backed treatments",
   "Medical guidance",
 ];
-
-const faces = [face1, face2, face3, face4, face5];
 
 export function Hero() {
   return (
