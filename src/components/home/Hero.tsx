@@ -2,7 +2,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
-import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
+import trustpilotLogo from "@/assets/trustpilot-full.png.asset.json";
 
 const trustPoints = [
   "Board-certified doctors",
@@ -94,16 +94,17 @@ export function Hero() {
           </ul>
 
           {/* Trustpilot — true liquid glass, no blur */}
-          <div className="w-[180px] rounded-xl border border-white/15 bg-white/[0.04] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
+          <div className="w-[200px] rounded-xl border border-white/15 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
             <img
               src={trustpilotLogo.url}
-              alt="Trustpilot — TrustScore 4.96, 3,826 reviews"
-              className="h-10 w-auto object-contain object-left"
+              alt="Trustpilot — TrustScore 4.4"
+              className="w-full object-contain object-left"
             />
-            <div className="mt-2 flex items-baseline gap-1.5 text-[12px] text-white/90">
-              <span>TrustScore <span className="font-semibold text-white">4.96</span></span>
-              <span className="text-white/40">·</span>
-              <a href="#" className="underline underline-offset-2 hover:text-white">3,826 reviews</a>
+            <div className="mt-3 text-[14px] font-semibold leading-tight text-white">
+              TrustScore 4.4
+              <div className="font-semibold">
+                <a href="#" className="underline underline-offset-2">16,252 reviews</a>
+              </div>
             </div>
           </div>
 
