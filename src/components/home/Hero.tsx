@@ -12,20 +12,12 @@ const trustPoints = [
 export function Hero() {
   return (
     <section className="relative isolate overflow-hidden bg-[#8FB8D9]">
-      {/* Background portrait */}
+      {/* Desktop: full-bleed background portrait */}
       <img
         src={heroImg.url}
-        alt="Woman in warm sunlight"
-        className="absolute inset-0 h-full w-full object-cover object-[88%_center] md:object-[right_center]"
-      />
-      {/* Left-side gradient for text contrast */}
-      <div
-        className="absolute inset-0 md:hidden"
+        alt=""
         aria-hidden
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(143,184,217,0.85) 0%, rgba(143,184,217,0.55) 45%, rgba(143,184,217,0.15) 75%, rgba(143,184,217,0) 100%)",
-        }}
+        className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
       />
       <div
         className="absolute inset-0 hidden md:block"
@@ -36,8 +28,7 @@ export function Hero() {
         }}
       />
 
-
-      <div className="relative mx-auto flex min-h-[760px] max-w-[1400px] flex-col justify-end px-6 pb-14 pt-[140px] md:min-h-[820px] md:px-8 md:pt-[180px] lg:min-h-[860px] lg:justify-center lg:pb-24">
+      <div className="relative mx-auto flex max-w-[1400px] flex-col px-6 pb-0 pt-[110px] md:min-h-[820px] md:justify-center md:px-8 md:pb-24 md:pt-[180px] lg:min-h-[860px]">
         <div className="max-w-[640px]">
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
@@ -69,14 +60,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            {/* Get started with vial */}
             <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_10px_30px_-10px_rgba(23,23,23,0.25)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="grid h-[44px] w-[44px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6]">
-                <img
-                  src={vialImg.url}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
+                <img src={vialImg.url} alt="" className="h-full w-full object-cover" />
               </span>
               Get started
               <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-canvas transition-transform group-hover:rotate-45">
@@ -101,18 +87,15 @@ export function Hero() {
           </motion.p>
         </div>
 
-        {/* Trust points — right side on desktop */}
+        {/* Trust points */}
         <motion.ul
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-10 flex flex-col gap-3 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-end"
+          className="mt-8 flex flex-col gap-3 md:mt-10 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-end"
         >
           {trustPoints.map((t) => (
-            <li
-              key={t}
-              className="flex items-center gap-2.5 text-[14px] font-medium text-ink"
-            >
+            <li key={t} className="flex items-center gap-2.5 text-[14px] font-medium text-ink">
               <span className="grid h-5 w-5 place-items-center rounded-full bg-ink text-canvas">
                 <Check className="h-3 w-3" strokeWidth={3} />
               </span>
@@ -120,6 +103,15 @@ export function Hero() {
             </li>
           ))}
         </motion.ul>
+
+        {/* Mobile portrait — stacked below content */}
+        <div className="relative mt-10 h-[440px] w-[calc(100%+3rem)] -mx-6 overflow-hidden md:hidden">
+          <img
+            src={heroImg.url}
+            alt="Woman in warm sunlight"
+            className="absolute inset-0 h-full w-full object-cover object-[65%_center]"
+          />
+        </div>
       </div>
     </section>
   );
