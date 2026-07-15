@@ -63,7 +63,7 @@ export function Hero() {
               </span>
             </button>
 
-            <button className="h-[60px] rounded-full border border-white/20 bg-white/[0.06] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.25)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.12]">
+            <button className="h-[60px] rounded-full border border-white/25 bg-white/[0.08] px-7 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14]">
               Explore Treatments
             </button>
           </motion.div>
@@ -94,7 +94,7 @@ export function Hero() {
           </ul>
 
           {/* Trustpilot — transparent, logo has stars built in */}
-          <div className="w-[240px] rounded-2xl border border-white/20 bg-white/[0.06] p-4 shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_10px_40px_-15px_rgba(0,0,0,0.5)] backdrop-blur-xl backdrop-saturate-150">
+          <div className="w-[240px] rounded-2xl border border-white/25 bg-white/[0.08] p-4 shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150">
             <img
               src={trustpilotLogo.url}
               alt="Trustpilot — TrustScore 4.96, 3,826 reviews"
