@@ -90,6 +90,21 @@ export function Hero() {
           </motion.p>
         </div>
 
+        {/* Mobile checklist — glass card at bottom */}
+        <div className="mt-8 md:hidden">
+          <ul className="flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.06] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150">
+            {trustPoints.map((t) => (
+              <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white">
+                <span className="grid h-[20px] w-[20px] place-items-center rounded-full border border-white/70">
+                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+
         {/* Trust points + Trustpilot — desktop only */}
         <div className="mt-10 hidden flex-col items-start gap-5 md:flex md:mt-12 lg:absolute lg:bottom-16 lg:right-8 lg:mt-0 lg:items-end">
           <ul className="flex flex-col gap-3">
