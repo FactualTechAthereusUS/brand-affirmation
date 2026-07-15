@@ -12,7 +12,7 @@ const trustPoints = [
 
 export function Hero() {
   return (
-    <section className="relative isolate -mt-[124px] overflow-hidden bg-[#1e3a5f] pt-[124px]">
+    <section id="hero" className="relative isolate -mt-[124px] overflow-hidden bg-[#1e3a5f] pt-[124px]">
       {/* Desktop: full-bleed background portrait */}
       <img
         src={heroImg.url}

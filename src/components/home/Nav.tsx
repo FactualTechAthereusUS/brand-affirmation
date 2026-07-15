@@ -33,10 +33,26 @@ export function Nav() {
   }, [open]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const hero = document.getElementById("hero");
+    const header = document.querySelector("header");
+    const announcement = document.getElementById("announcement-bar");
+
+    const compute = () => {
+      if (!hero) return 80;
+      const headerHeight = header?.getBoundingClientRect().height ?? 76;
+      const announcementHeight = announcement?.getBoundingClientRect().height ?? 36;
+      // transition triggers near the end of the hero section
+      return hero.offsetTop + hero.offsetHeight - (headerHeight + announcementHeight + 40);
+    };
+
+    const onScroll = () => setScrolled(window.scrollY > compute());
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
