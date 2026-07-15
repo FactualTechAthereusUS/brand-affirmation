@@ -1,7 +1,7 @@
 import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/hero-portrait.png.asset.json";
-import heroImgMobile from "@/assets/hero-portrait-mobile.png.asset.json";
+import heroImgMobile from "@/assets/mobile-hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
 import trustpilotLogo from "@/assets/trustpilot-full.png.asset.json";
 
@@ -41,7 +41,7 @@ export function Hero() {
 
 
       <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-6 pt-2 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
-        <div className="mt-32 max-w-[640px] md:mt-0">
+        <div className="mt-32 flex max-w-[640px] flex-col gap-5 md:mt-0 md:gap-0">
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-5 max-w-[480px] text-[15px] leading-[1.5] text-white/95 md:mt-6 md:text-[17px]"
+            className="max-w-[480px] text-[15px] leading-[1.5] text-white/95 md:mt-6 md:text-[17px]"
           >
             GLP-1, dermatology, hair, mental health, intimacy. Doctor-prescribed
             treatments shipped to your door starting at $39 for first month of
@@ -70,7 +70,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-6 flex flex-wrap items-center gap-3 md:mt-8"
+            className="flex flex-wrap items-center gap-3 md:mt-8"
           >
             <button className="group relative flex h-[56px] items-center gap-3 rounded-full bg-white pl-2 pr-5 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] transition-transform hover:scale-[1.02] active:scale-[0.98] md:h-[60px] md:pr-6">
               <span className="grid h-[40px] w-[40px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6] md:h-[44px] md:w-[44px]">
@@ -92,7 +92,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-white/70 md:text-white/60"
+            className="max-w-[480px] text-[11px] leading-[1.5] text-white/70 md:mt-6 md:text-white/60"
           >
             *The $39 promotional rate applies to your first month only for new
             customers. After that, the standard rate is $79 per month. Prepaid
@@ -101,7 +101,7 @@ export function Hero() {
         </div>
 
         {/* Mobile checklist — glass card pinned to bottom */}
-        <div className="mt-auto md:hidden">
+        <div className="mt-auto pt-6 md:hidden">
           <ul className="flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.06] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150">
             {trustPoints.map((t) => (
               <li key={t} className="flex items-center gap-3 text-[15px] font-medium text-white">
