@@ -97,13 +97,13 @@ export function Hero() {
           <div className="w-[200px] rounded-xl border border-white/15 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
             <img
               src={trustpilotLogo.url}
-              alt="Trustpilot — TrustScore 4.4"
-              className="w-full object-contain object-left"
+              alt="Trustpilot — TrustScore 4.9"
+              className="w-[92%] object-contain object-left"
             />
             <div className="mt-3 text-[14px] font-semibold leading-tight text-white">
-              TrustScore 4.4
+              TrustScore 4.9
               <div className="font-semibold">
-                <a href="#" className="underline underline-offset-2">16,252 reviews</a>
+                <a href="#" className="underline underline-offset-2">3,526 reviews</a>
               </div>
             </div>
           </div>
