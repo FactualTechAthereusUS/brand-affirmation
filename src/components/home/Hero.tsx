@@ -1,96 +1,116 @@
-import { ArrowRight } from "lucide-react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
-import { Placeholder } from "./Placeholder";
+import { ArrowUpRight, Check } from "lucide-react";
+import { motion } from "motion/react";
+import heroImg from "@/assets/hero-portrait.png.asset.json";
+import vialImg from "@/assets/blissley-vial.png.asset.json";
+
+const trustPoints = [
+  "Board-certified doctors",
+  "Clinically backed treatments",
+  "Medical guidance",
+];
 
 export function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-
   return (
-    <section className="bg-canvas pb-0 pt-12 md:pt-16">
-      <div className="mx-auto max-w-3xl px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-block rounded-full bg-mist px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.08em] text-ink"
-        >
-          Now available in all 50 states
-        </motion.div>
+    <section className="relative isolate overflow-hidden bg-[#8FB8D9]">
+      {/* Background portrait */}
+      <img
+        src={heroImg.url}
+        alt="Woman in warm sunlight"
+        className="absolute inset-0 h-full w-full object-cover object-[75%_center] md:object-[right_center]"
+      />
+      {/* Left-side gradient for text contrast */}
+      <div
+        className="absolute inset-0"
+        aria-hidden
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(143,184,217,0.55) 0%, rgba(143,184,217,0.15) 55%, rgba(143,184,217,0) 75%)",
+        }}
+      />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 text-[42px] leading-[1.05] text-ink md:text-[64px] md:leading-[1.02]"
-        >
-          Personalized medicine.
-          <br />
-          <span className="italic text-ever">Designed around you.</span>
-        </motion.h1>
+      <div className="relative mx-auto flex min-h-[760px] max-w-[1400px] flex-col justify-end px-6 pb-14 pt-[140px] md:min-h-[820px] md:px-8 md:pt-[180px] lg:min-h-[860px] lg:justify-center lg:pb-24">
+        <div className="max-w-[640px]">
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-[44px] leading-[1.02] tracking-[-0.02em] text-ink md:text-[68px] lg:text-[80px]"
+          >
+            Personalized care.
+            <br />
+            Ongoing support.
+            <br />
+            Real progress.
+          </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mx-auto mt-5 max-w-lg text-[17px] leading-[1.5] text-[#5A5A5A] md:text-[19px]"
-        >
-          Weight loss. Skin. Sexual wellness. Longevity. All in one modern care
-          platform.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="mt-6 max-w-[480px] text-[16px] leading-[1.55] text-ink/80 md:text-[17px]"
+          >
+            GLP-1, dermatology, hair, mental health, intimacy. Doctor-prescribed
+            treatments shipped to your door starting at $39 for first month of
+            membership.
+          </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35 }}
-          className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
-        >
-          <button className="group flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink px-7 text-[15px] font-medium text-canvas transition-transform hover:scale-[1.02] active:scale-[0.98] sm:w-auto md:h-14">
-            Start Assessment
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
-          </button>
-          <button className="h-[52px] w-full rounded-full border-[1.5px] border-ink bg-transparent px-7 text-[15px] font-medium text-ink transition-colors hover:bg-ink hover:text-canvas sm:w-auto md:h-14">
-            Explore Treatments
-          </button>
-        </motion.div>
-      </div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-8 flex flex-wrap items-center gap-3"
+          >
+            {/* Get started with vial */}
+            <button className="group relative flex h-[60px] items-center gap-3 rounded-full bg-white pl-2 pr-6 text-[15px] font-medium text-ink shadow-[0_10px_30px_-10px_rgba(23,23,23,0.25)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              <span className="grid h-[44px] w-[44px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6]">
+                <img
+                  src={vialImg.url}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              </span>
+              Get started
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-canvas transition-transform group-hover:rotate-45">
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+              </span>
+            </button>
 
-      <div ref={ref} className="relative mt-12 overflow-hidden md:mt-16">
-        <motion.div style={{ y }} className="h-[380px] md:h-[600px]">
-          <Placeholder
-            label="Hero — woman laughing, warm afternoon light"
-            tone="warm"
-            className="h-full w-full"
-          />
-        </motion.div>
+            <button className="h-[60px] rounded-full border border-ink/25 bg-white/10 px-7 text-[15px] font-medium text-ink backdrop-blur-md transition-colors hover:bg-white/25">
+              Explore Treatments
+            </button>
+          </motion.div>
 
-        {/* Rating overlay card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="absolute bottom-5 left-5 rounded-2xl bg-white p-4 shadow-[0_2px_24px_rgba(0,0,0,0.08)] md:bottom-8 md:left-8"
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="mt-6 max-w-[480px] text-[11px] leading-[1.5] text-ink/60"
+          >
+            *The $39 promotional rate applies to your first month only for new
+            customers. After that, the standard rate is $79 per month. Prepaid
+            multi-month plans available. Terms vary by state.
+          </motion.p>
+        </div>
+
+        {/* Trust points — right side on desktop */}
+        <motion.ul
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-10 flex flex-col gap-3 lg:absolute lg:right-8 lg:top-1/2 lg:mt-0 lg:-translate-y-1/2 lg:items-end"
         >
-          <div className="flex items-center gap-2 text-[13px] text-ink">
-            <span className="text-honey">★★★★★</span>
-            <span className="font-medium">4.8 from 3,000+ patients</span>
-          </div>
-          <div className="mt-2 flex -space-x-2">
-            {["#c4998a", "#818263", "#8b9bb4"].map((c) => (
-              <div
-                key={c}
-                className="h-7 w-7 rounded-full border-2 border-white"
-                style={{ background: c }}
-              />
-            ))}
-          </div>
-        </motion.div>
+          {trustPoints.map((t) => (
+            <li
+              key={t}
+              className="flex items-center gap-2.5 text-[14px] font-medium text-ink"
+            >
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-ink text-canvas">
+                <Check className="h-3 w-3" strokeWidth={3} />
+              </span>
+              {t}
+            </li>
+          ))}
+        </motion.ul>
       </div>
     </section>
   );
