@@ -64,7 +64,7 @@ export function Nav() {
             <img
               src={logo.url}
               alt="Blissley"
-              className={`h-8 w-auto transition-[filter] duration-300 md:h-10 ${
+              className={`h-10 w-auto transition-[filter] duration-300 md:h-12 ${
                 scrolled ? "" : "brightness-0 invert"
               }`}
             />
