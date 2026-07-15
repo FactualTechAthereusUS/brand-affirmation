@@ -44,9 +44,11 @@ function Index() {
     <div className="min-h-screen bg-canvas">
       <SmoothScroll />
       <AnnouncementBar />
-      <Nav />
       <main>
-        <Hero />
+        <div className="relative">
+          <Nav />
+          <Hero />
+        </div>
         <PressLogos />
         <CategoryGrid />
         <WhyBlissley />
