@@ -42,15 +42,23 @@ const items: Item[] = [
 function Card({ item, index }: { item: Item; index: number }) {
   return (
     <Reveal delay={index * 0.06} blur={10}>
-      <div className="rounded-3xl bg-white border border-ink/[0.06] px-5 py-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+      <motion.div
+        whileHover={{ y: -4, boxShadow: "0 12px 32px -12px rgba(23,23,23,0.15)" }}
+        transition={{ type: "spring", stiffness: 260, damping: 22 }}
+        className="rounded-3xl bg-white border border-ink/[0.06] px-5 py-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+      >
         <div className="flex items-start gap-4">
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <motion.div
+            whileHover={{ scale: 1.08, rotate: -4 }}
+            transition={{ type: "spring", stiffness: 320, damping: 18 }}
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+          >
             <img
               src={item.image}
               alt=""
               className={`object-contain ${index < 3 ? "h-8 w-8" : "h-7 w-7"}`}
              loading="lazy" decoding="async" />
-          </div>
+          </motion.div>
           <div className="min-w-0 flex-1 pt-1">
             <h3 className="text-[19px] font-semibold leading-[1.2] tracking-[-0.01em] text-ink">
               {item.titleTop}
@@ -63,7 +71,7 @@ function Card({ item, index }: { item: Item; index: number }) {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Reveal>
   );
 }
