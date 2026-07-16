@@ -51,7 +51,11 @@
   --font-hero: "Google Sans Flex", "Google Sans Flex Placeholder", "Manrope", ui-sans-serif, system-ui, sans-serif;
 }
 
-.font-hero {
+.font-hero,
+.font-hero h1,
+.font-hero h2,
+.font-hero h3,
+.font-hero h4 {
   font-family: var(--font-hero);
 }
 
