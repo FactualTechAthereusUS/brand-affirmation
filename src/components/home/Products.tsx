@@ -80,7 +80,7 @@ export function Products() {
                       src={p.img}
                       alt={p.title}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
+                    / loading="lazy" decoding="async">
                   </div>
 
                   {/* Text */}

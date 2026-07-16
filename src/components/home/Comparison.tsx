@@ -82,17 +82,17 @@ export function Comparison() {
                     src={logo.url}
                     alt="Blissley"
                     className="h-12 w-auto invert brightness-0 [filter:invert(1)_brightness(2)]"
-                  />
+                  / loading="lazy" decoding="async">
                 </div>
               </div>
               <div className="flex flex-col items-center justify-end pb-3">
-                <img src={hims.url} alt="Hims" className="h-16 w-auto object-contain" />
+                <img src={hims.url} alt="Hims" className="h-16 w-auto object-contain" / loading="lazy" decoding="async">
                 <div className="mt-2 text-center text-[13px] font-medium text-[#4a4a4a]">
                   Hims
                 </div>
               </div>
               <div className="flex flex-col items-center justify-end pb-3">
-                <img src={mayo.url} alt="Mayo Clinic" className="h-16 w-auto object-contain" />
+                <img src={mayo.url} alt="Mayo Clinic" className="h-16 w-auto object-contain" / loading="lazy" decoding="async">
                 <div className="mt-2 text-center text-[13px] font-medium text-[#4a4a4a]">
                   Mayo Clinic
                 </div>
@@ -148,16 +148,16 @@ export function Comparison() {
                   src={logo.url}
                   alt="Blissley"
                   className="h-8 w-auto [filter:invert(1)_brightness(2)]"
-                />
+                / loading="lazy" decoding="async">
               </div>
               <div className="flex flex-col items-center pb-2">
-                <img src={hims.url} alt="Hims" className="h-10 w-auto object-contain" />
+                <img src={hims.url} alt="Hims" className="h-10 w-auto object-contain" / loading="lazy" decoding="async">
                 <div className="mt-1 px-1 text-center text-[10px] font-medium leading-tight text-[#4a4a4a]">
                   Hims
                 </div>
               </div>
               <div className="flex flex-col items-center pb-2">
-                <img src={mayo.url} alt="Mayo Clinic" className="h-10 w-auto object-contain" />
+                <img src={mayo.url} alt="Mayo Clinic" className="h-10 w-auto object-contain" / loading="lazy" decoding="async">
                 <div className="mt-1 px-1 text-center text-[10px] font-medium leading-tight text-[#4a4a4a]">
                   Mayo Clinic
                 </div>
