@@ -66,7 +66,7 @@ export function HowItWorks() {
         <div className="md:col-span-7">
           <div className="border-t border-ink/10">
             {steps.map((s, i) => (
-              <Reveal key={s.n} delay={i * 0.08} blur>
+              <Reveal key={s.n} delay={i * 0.08} blur={12}>
                 <div className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-12">
                   <div className="font-sans text-[44px] font-semibold leading-none text-ink/15 md:text-[64px]">
                     {s.n}
