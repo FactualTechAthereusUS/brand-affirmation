@@ -85,17 +85,29 @@ export function FinalCTA() {
               className="mt-6 flex flex-wrap items-center gap-2 md:mt-8 md:gap-3"
             >
               {/* Liquid glass primary */}
-              <button className="group relative flex h-[52px] items-center justify-center gap-2 overflow-hidden rounded-full border border-white/25 bg-white/[0.12] px-7 text-[15px] font-medium text-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-300 hover:bg-white hover:text-[#0a1932] hover:scale-[1.02] active:scale-[0.98] md:h-14 md:px-8">
+              <motion.button
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 26 }}
+                className="group relative flex h-[52px] items-center justify-center gap-2 overflow-hidden rounded-full border border-white/25 bg-white/[0.12] px-7 text-[15px] font-medium text-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-300 hover:bg-white hover:text-[#0a1932] md:h-14 md:px-8"
+              >
                 <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full bg-gradient-to-b from-white/25 to-transparent" />
+                {/* animated sheen */}
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                 <span className="relative">Take your assessment</span>
-                <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
+                <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </motion.button>
 
               {/* Liquid glass secondary */}
-              <button className="group relative flex h-[52px] items-center gap-2 rounded-full px-5 text-[15px] font-medium text-white transition-all duration-300 hover:bg-white/10 md:h-14 md:px-6">
+              <motion.button
+                whileHover={{ scale: 1.03, x: 2 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 26 }}
+                className="group relative flex h-[52px] items-center gap-2 rounded-full px-5 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-white/10 md:h-14 md:px-6"
+              >
                 Browse treatments
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </motion.button>
             </motion.div>
 
             <motion.p
