@@ -1,35 +1,62 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Reveal } from "../Reveal";
-import { Placeholder } from "./Placeholder";
+import weightImg from "@/assets/cat-weight.png.asset.json";
+import skinImg from "@/assets/cat-skin.png.asset.json";
+import hairImg from "@/assets/cat-hair.png.asset.json";
+import sexualImg from "@/assets/cat-sexual.png.asset.json";
+import mensImg from "@/assets/cat-mens.png.asset.json";
+import longevityImg from "@/assets/cat-longevity.png.asset.json";
+import menopauseImg from "@/assets/cat-menopause.png.asset.json";
 
 const cards = [
   {
     tag: "GLP-1 · Semaglutide · Tirzepatide",
     title: "Weight Loss",
     sub: "From $249/mo",
-    label: "Weight Loss — hiker, warm light",
-    tone: "sage" as const,
+    image: weightImg.url,
+    position: "object-center",
   },
   {
     tag: "Prescription Skincare",
-    title: "Skin & Hair",
+    title: "Skin Care",
     sub: "From $89/mo",
-    label: "Skin — glowing skin, natural light",
-    tone: "clay" as const,
+    image: skinImg.url,
+    position: "object-center",
   },
   {
-    tag: "ED · Libido · Wellness",
+    tag: "Regrowth · Finasteride · Minoxidil",
+    title: "Hair Care",
+    sub: "From $29/mo",
+    image: hairImg.url,
+    position: "object-top",
+  },
+  {
+    tag: "ED · Libido · Performance",
     title: "Sexual Health",
     sub: "From $79/mo",
-    label: "Sexual Health — couple laughing",
-    tone: "warm" as const,
+    image: sexualImg.url,
+    position: "object-center",
   },
   {
-    tag: "NAD+ · HRT · TRT",
+    tag: "Testosterone · Vitality · Focus",
+    title: "Men's Health",
+    sub: "From $99/mo",
+    image: mensImg.url,
+    position: "object-top",
+  },
+  {
+    tag: "NAD+ · Peptides · HRT",
     title: "Longevity",
     sub: "From $149/mo",
-    label: "Longevity — energy, morning light",
-    tone: "morning" as const,
+    image: longevityImg.url,
+    position: "object-center",
+  },
+  {
+    tag: "HRT · Hormone Balance · Relief",
+    title: "Menopause",
+    sub: "From $119/mo",
+    image: menopauseImg.url,
+    position: "object-top",
   },
 ];
 
@@ -45,32 +72,44 @@ export function CategoryGrid() {
           </h2>
         </Reveal>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:gap-6">
-          {cards.map((c, i) => (
-            <Reveal key={c.title} delay={i * 0.06}>
-              <a
-                href="#"
-                className="group relative block aspect-square overflow-hidden rounded-3xl md:aspect-[4/5]"
-              >
-                <Placeholder label={c.label} tone={c.tone} className="h-full w-full" />
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_40%,rgba(23,23,23,0.78)_100%)]" />
+        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:gap-5">
+          {cards.map((c, i) => {
+            // Desktop layout: first card spans 2 cols x 2 rows (large hero), rest fill
+            const featured = i === 0;
+            return (
+              <Reveal key={c.title} delay={i * 0.05}>
+                <a
+                  href="#"
+                  className={`group relative block overflow-hidden rounded-3xl ${
+                    featured
+                      ? "aspect-square md:col-span-2 md:row-span-2 md:aspect-auto md:h-full"
+                      : "aspect-square md:aspect-[4/5]"
+                  }`}
+                >
+                  <img
+                    src={c.image}
+                    alt={c.title}
+                    className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${c.position}`}
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(23,23,23,0.55)_75%,rgba(23,23,23,0.85)_100%)]" />
 
-                <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">
-                  <span className="mb-3 w-fit rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md">
-                    {c.tag}
-                  </span>
-                  <h3 className="font-display text-[19px] leading-tight text-white md:text-[26px]">
-                    {c.title}
-                  </h3>
-                  <p className="mt-1 text-[13px] text-white/75 md:text-[14px]">{c.sub}</p>
-                </div>
+                  <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">
+                    <span className="mb-3 w-fit rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md">
+                      {c.tag}
+                    </span>
+                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[26px] md:text-[38px]" : "text-[19px] md:text-[24px]"}`}>
+                      {c.title}
+                    </h3>
+                    <p className="mt-1 text-[13px] text-white/80 md:text-[14px]">{c.sub}</p>
+                  </div>
 
-                <div className="absolute bottom-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
-                  <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
-                </div>
-              </a>
-            </Reveal>
-          ))}
+                  <div className="absolute bottom-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
+                    <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+                  </div>
+                </a>
+              </Reveal>
+            );
+          })}
         </div>
 
         <Reveal delay={0.2}>
