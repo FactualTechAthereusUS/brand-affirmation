@@ -41,8 +41,11 @@ export function Nav() {
       if (!hero) return 80;
       const headerHeight = header?.getBoundingClientRect().height ?? 76;
       const announcementHeight = announcement?.getBoundingClientRect().height ?? 36;
-      // transition triggers near the end of the hero section
-      return hero.offsetTop + hero.offsetHeight - (headerHeight + announcementHeight + 40);
+      const isMobile = window.innerWidth < 1024;
+      // Mobile: blur kicks in shortly after scrolling into the hero.
+      // Desktop: transition triggers near the end of the hero section.
+      const offset = isMobile ? headerHeight + announcementHeight + 20 : hero.offsetHeight - (headerHeight + announcementHeight + 40);
+      return hero.offsetTop + offset;
     };
 
     const onScroll = () => setScrolled(window.scrollY > compute());
