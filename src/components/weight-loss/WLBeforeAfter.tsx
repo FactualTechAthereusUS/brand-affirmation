@@ -24,7 +24,7 @@ const items: BA[] = [
 ];
 
 function Badge({ label, tone }: { label: string; tone: "before" | "after" }) {
-  const bg = tone === "before" ? "#0E3B36" : "#2F6BFF";
+  const bg = tone === "before" ? "#0E3B36" : "#ee7273";
   return (
     <span
       className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]"
