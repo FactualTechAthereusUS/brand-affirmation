@@ -55,7 +55,7 @@ export function FeaturedPrograms() {
                   <span className="mb-3 w-fit rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md">
                     {p.tag}
                   </span>
-                  <h3 className="font-display text-[26px] leading-[1.1] text-white md:text-[32px]">
+                  <h3 className="font-sans text-[26px] leading-[1.1] text-white md:text-[32px]">
                     {p.title[0]}
                     <br />
                     <span className="italic">{p.title[1]}</span>

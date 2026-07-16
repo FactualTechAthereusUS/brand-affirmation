@@ -173,7 +173,7 @@ export function Nav() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.04, duration: 0.5 }}
-                  className="font-display text-[26px] text-canvas"
+                  className="font-sans text-[26px] text-canvas"
                   onClick={() => setOpen(false)}
                 >
                   {l}

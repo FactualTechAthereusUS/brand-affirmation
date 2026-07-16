@@ -40,7 +40,7 @@ export function HowItWorks() {
           {steps.map((s, i) => (
             <Reveal key={s.n} delay={i * 0.08}>
               <div>
-                <div className="font-display text-[48px] leading-none text-ever md:text-[64px]">
+                <div className="font-sans text-[48px] leading-none text-ever md:text-[64px]">
                   {s.n}
                 </div>
                 <h3 className="mt-4 font-sans text-[20px] font-semibold text-canvas">{s.title}</h3>

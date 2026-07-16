@@ -21,7 +21,7 @@ export function Numbers() {
                   i >= 2 ? "pt-10 md:pt-0" : ""
                 } md:${i > 0 ? "border-l" : ""}`}
               >
-                <div className="font-display text-[44px] leading-none text-ever md:text-[64px]">
+                <div className="font-sans text-[44px] leading-none text-ever md:text-[64px]">
                   {s.n}
                   {s.sub && (
                     <span className="ml-1 font-sans text-[16px] font-normal text-ever/70">
