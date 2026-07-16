@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "../Reveal";
 import weightImg from "@/assets/program-weight.png.asset.json";
 import skinImg from "@/assets/program-skin.png.asset.json";
