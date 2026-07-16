@@ -81,7 +81,7 @@ export function Comparison() {
                   <img
                     src={logo.url}
                     alt="Blissley"
-                    className="h-6 w-auto invert brightness-0 [filter:invert(1)_brightness(2)]"
+                    className="h-12 w-auto invert brightness-0 [filter:invert(1)_brightness(2)]"
                   />
                 </div>
               </div>
@@ -147,7 +147,7 @@ export function Comparison() {
                 <img
                   src={logo.url}
                   alt="Blissley"
-                  className="h-4 w-auto [filter:invert(1)_brightness(2)]"
+                  className="h-8 w-auto [filter:invert(1)_brightness(2)]"
                 />
               </div>
               <div className="flex flex-col items-center pb-2">
