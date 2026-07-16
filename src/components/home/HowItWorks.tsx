@@ -52,7 +52,7 @@ function StepRow({ step, index }: { step: (typeof steps)[number]; index: number 
       style={{ opacity, filter, scale }}
       className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
     >
-      <div className="font-sans text-[44px] font-semibold leading-none text-ink/15 md:text-[64px]">
+      <div className="font-serif text-[44px] font-normal italic leading-none text-ever/70 md:text-[64px]">
         {step.n}
       </div>
       <div className="min-w-0">
