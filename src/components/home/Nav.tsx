@@ -11,14 +11,14 @@ const links = [
   { label: "About", hasMenu: false },
 ];
 
-const mobileLinks = [
-  "Treatments",
-  "Weight Loss",
-  "Skin",
-  "Sexual Health",
-  "Longevity",
-  "About",
-  "Insights",
+const mobileLinks: { label: string; href: string }[] = [
+  { label: "Treatments", href: "#" },
+  { label: "Weight Loss", href: "/weight-loss" },
+  { label: "Skin", href: "#" },
+  { label: "Sexual Health", href: "#" },
+  { label: "Longevity", href: "#" },
+  { label: "About", href: "#" },
+  { label: "Insights", href: "#" },
 ];
 
 export function Nav() {
