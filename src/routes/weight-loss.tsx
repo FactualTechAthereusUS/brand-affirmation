@@ -26,6 +26,9 @@ const WLSocialProof = lazy(() =>
 const WLFinalCTA = lazy(() =>
   import("@/components/weight-loss/WLFinalCTA").then((m) => ({ default: m.WLFinalCTA })),
 );
+const WLBeforeAfter = lazy(() =>
+  import("@/components/weight-loss/WLBeforeAfter").then((m) => ({ default: m.WLBeforeAfter })),
+);
 const DeferredEffects = lazy(() =>
   import("@/components/DeferredEffects").then((m) => ({ default: m.DeferredEffects })),
 );
