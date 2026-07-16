@@ -11,21 +11,21 @@ const programs = [
     title: ["Lose weight.", "Keep it off."],
     sub: "Physician-prescribed semaglutide and tirzepatide.",
     img: weightImg.url,
-    pos: "object-[50%_20%]",
+    pos: "object-[50%_40%]",
   },
   {
     tag: "Prescription Skincare",
     title: ["Your skin,", "transformed."],
     sub: "Physician-formulated for your skin type.",
     img: skinImg.url,
-    pos: "object-[50%_25%]",
+    pos: "object-[50%_55%]",
   },
   {
     tag: "Sexual Wellness",
     title: ["Confidence,", "restored."],
     sub: "Discreet. Effective. Physician-supervised.",
     img: sexualImg.url,
-    pos: "object-[50%_30%]",
+    pos: "object-[50%_45%]",
   },
 ];
 
@@ -35,8 +35,8 @@ function ProgramCard({ p, index }: { p: (typeof programs)[number]; index: number
     target: ref,
     offset: ["start 90%", "end 10%"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["8%", "-8%"]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
+  const y = useTransform(scrollYProgress, [0, 1], ["4%", "-4%"]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.03, 1, 1.03]);
 
   return (
     <Reveal delay={index * 0.08}>
