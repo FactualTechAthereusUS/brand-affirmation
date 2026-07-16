@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { Reveal } from "../Reveal";
 import iconDoctors from "@/assets/icon-doctors.png.asset.json";
 import iconDelivery from "@/assets/icon-delivery.png.asset.json";
