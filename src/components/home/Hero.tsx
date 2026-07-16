@@ -97,7 +97,7 @@ export function Hero() {
           >
             The $299 promotional rate applies to your first month only for new
             customers. After that, the standard rate is $399 per month. Prepaid
-            multi-month plans available. Terms vary by state.
+            multi-month plans available. Terms vary by state
           </motion.p>
         </div>
 
