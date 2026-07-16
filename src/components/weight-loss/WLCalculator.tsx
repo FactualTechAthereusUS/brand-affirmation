@@ -98,17 +98,17 @@ export function WLCalculator() {
         },
         scales: {
           x: {
-            grid: { color: "rgba(255,255,255,0.08)" },
-            ticks: { color: "rgba(255,255,255,0.85)", font: { size: 11, weight: 600 } },
+            grid: { color: "rgba(255,255,255,0.18)" },
+            ticks: { color: "#ffffff", font: { size: 11, weight: 600 } },
             border: { display: false },
           },
           y: {
             min: weight * 0.74,
             max: weight * 1.02,
-            grid: { color: "rgba(255,255,255,0.08)" },
+            grid: { color: "rgba(255,255,255,0.18)" },
             ticks: {
-              color: "rgba(255,255,255,0.7)",
-              font: { size: 10 },
+              color: "rgba(255,255,255,0.95)",
+              font: { size: 10, weight: 600 },
               callback: (v) => `${v} lbs`,
               maxTicksLimit: 5,
             },
