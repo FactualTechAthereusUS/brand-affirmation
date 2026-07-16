@@ -82,7 +82,7 @@ function Card({ r }: { r: Review }) {
       </div>
       {/* Meta row */}
       <div className="mt-5 flex items-center gap-3">
-        <Avatar name={r.name} tone={r.tone} />
+        <Avatar name={r.name} />
         <div className="min-w-0">
           <div className="truncate text-[15px] font-medium text-ink">{r.name}</div>
         </div>
