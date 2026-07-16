@@ -125,7 +125,7 @@ export function Nav() {
               transition={{ type: "spring", stiffness: 420, damping: 26 }}
               className="rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-canvas"
             >
-              Get started
+              Get Started
             </motion.button>
           </div>
 
