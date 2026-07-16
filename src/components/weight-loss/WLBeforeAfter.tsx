@@ -52,27 +52,21 @@ function Card({ r, active }: { r: BA; active: boolean }) {
       <div className="rounded-[22px] bg-white p-2.5 ring-1 ring-black/5 shadow-[0_6px_30px_-12px_rgba(0,0,0,0.15)] md:p-3">
         <div className="grid grid-cols-2 gap-2.5 md:gap-3">
           <div className="relative overflow-hidden rounded-[16px] bg-[#F3F2EE]">
-            <div className="aspect-[4/5] w-full">
-              <img src={r.before} alt={`${r.name} before`} className="h-full w-full object-cover" loading="lazy" />
+            <div className="aspect-[3/4] w-full sm:aspect-[4/5]">
+              <img src={r.before} alt={`${r.name} before`} className="h-full w-full object-contain" loading="lazy" />
             </div>
             <Badge label="Before" tone="before" />
           </div>
           <div className="relative overflow-hidden rounded-[16px] bg-[#F3F2EE]">
-            <div className="aspect-[4/5] w-full">
-              <img src={r.after} alt={`${r.name} after`} className="h-full w-full object-cover" loading="lazy" />
+            <div className="aspect-[3/4] w-full sm:aspect-[4/5]">
+              <img src={r.after} alt={`${r.name} after`} className="h-full w-full object-contain" loading="lazy" />
             </div>
             <Badge label="After" tone="after" />
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between px-1 pb-1">
           <div className="flex items-center gap-2">
-            <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-[#0E3B36]" aria-hidden>
-              <path
-                fill="currentColor"
-                d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.6-1 2.9 1 2.9-2.5 1.6-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9L3.2 15.9l1-2.9-1-2.9 2.5-1.6.9-2.9 3 .2L12 2z"
-              />
-              <path fill="#fff" d="M10.6 14.6l-2.3-2.3 1.1-1.1 1.2 1.2 3.5-3.5 1.1 1.1-4.6 4.6z" />
-            </svg>
+            <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
             <span className="text-[15px] font-medium text-ink">{r.name}</span>
           </div>
           <span className="text-[14px] text-[#6B6B6B]">{r.caption}</span>
