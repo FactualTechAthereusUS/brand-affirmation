@@ -2,9 +2,9 @@ import { ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { Reveal } from "../Reveal";
-import iconAssessment from "@/assets/how-assessment.png.asset.json";
-import iconReview from "@/assets/how-review.png.asset.json";
-import iconDelivered from "@/assets/how-delivered.png.asset.json";
+import iconAssessment from "@/assets/how-assessment-v2.png.asset.json";
+import iconReview from "@/assets/how-review-v2.jpg.asset.json";
+import iconDelivered from "@/assets/how-delivered-v2.png.asset.json";
 
 const steps = [
   {
