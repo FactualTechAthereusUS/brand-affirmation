@@ -18,16 +18,17 @@ type Props = {
 
 export function ProgressiveBlur({
   side = "bottom",
-  height = 160,
+  height = 140,
   layers = 5,
-  maxBlur = 16,
-  activateAfter = 200,
+  maxBlur = 12,
+  activateAfter = 0,
   className = "",
 }: Props) {
-  const [active, setActive] = useState(false);
+  const [visible, setVisible] = useState(activateAfter === 0);
 
   useEffect(() => {
-    const onScroll = () => setActive(window.scrollY > activateAfter);
+    if (activateAfter === 0) return;
+    const onScroll = () => setVisible(window.scrollY > activateAfter);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -44,7 +45,7 @@ export function ProgressiveBlur({
       aria-hidden
       className={`pointer-events-none fixed inset-x-0 z-40 transition-opacity duration-500 ${
         isBottom ? "bottom-0" : "top-0"
-      } ${active ? "opacity-100" : "opacity-0"} ${className}`}
+      } ${visible ? "opacity-100" : "opacity-0"} ${className}`}
       style={{ height }}
     >
       {Array.from({ length: layers }).map((_, i) => {
