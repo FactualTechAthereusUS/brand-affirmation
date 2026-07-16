@@ -61,8 +61,8 @@ export const Route = createFileRoute("/weight-loss")({
     ],
     links: [
       { rel: "canonical", href: "/weight-loss" },
-      { rel: "preload", as: "image", href: heroMobile.url, media: "(max-width: 767px)", fetchpriority: "high" },
-      { rel: "preload", as: "image", href: heroDesktop.url, media: "(min-width: 768px)", fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroMobile.url, media: "(max-width: 767px)", fetchPriority: "high" },
+      { rel: "preload", as: "image", href: heroDesktop.url, media: "(min-width: 768px)", fetchPriority: "high" },
     ],
   }),
   component: WeightLoss,
