@@ -160,18 +160,25 @@ export function Nav() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[100] flex flex-col bg-ink px-6 pb-8 pt-5"
           >
-            <div className="flex items-center justify-between">
-              <img src={logo.url} alt="Blissley" className="h-10 w-auto invert" />
+            {/* Ambient glow blobs behind the glass */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-[#ee7273]/25 blur-3xl" />
+              <div className="absolute bottom-0 right-[-20%] h-80 w-80 rounded-full bg-[#ee7273]/15 blur-3xl" />
+              <div className="absolute top-1/3 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
+            </div>
+
+            <div className="relative flex items-center justify-between">
+              <img src={logo.url} alt="Blissley" className="h-9 w-auto invert" />
               <button
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
-                className="grid h-10 w-10 place-items-center rounded-full text-canvas"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/[0.08] text-canvas backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:bg-white/[0.14]"
               >
                 <X className="h-5 w-5" strokeWidth={1.75} />
               </button>
             </div>
 
-            <nav className="mt-14 flex flex-1 flex-col gap-6">
+            <nav className="relative mt-12 flex flex-1 flex-col gap-1">
               {mobileLinks.map((l, i) => (
                 <motion.a
                   key={l}
@@ -179,7 +186,7 @@ export function Nav() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.04, duration: 0.5 }}
-                  className="font-sans text-[26px] text-canvas"
+                  className="font-sans text-[28px] tracking-[-0.01em] text-canvas/95 py-2 border-b border-white/[0.06]"
                   onClick={() => setOpen(false)}
                 >
                   {l}
@@ -187,9 +194,14 @@ export function Nav() {
               ))}
             </nav>
 
-            <button className="h-14 w-full rounded-full bg-canvas text-[15px] font-medium text-ink">
-              Get started
-            </button>
+            <div className="relative flex items-center gap-3">
+              <button className="h-14 flex-1 rounded-full bg-canvas text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-[1.01] active:scale-[0.99]">
+                Get started
+              </button>
+              <button className="h-14 rounded-full border border-white/20 bg-white/[0.08] px-7 text-[15px] font-medium text-canvas backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:bg-white/[0.14]">
+                Login
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
