@@ -148,7 +148,7 @@ export function Footer() {
           alt="Blissley"
           className="mx-auto w-full max-w-[1400px] select-none object-contain opacity-95 invert"
           draggable={false}
-        / loading="lazy" decoding="async">
+         loading="lazy" decoding="async" />
       </div>
     </footer>
   );

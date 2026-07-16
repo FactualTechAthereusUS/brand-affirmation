@@ -18,12 +18,12 @@ export function FinalCTA() {
           src={ctaBgMobile.url}
           alt=""
           className="block h-[620px] w-full object-cover md:hidden"
-        / loading="lazy" decoding="async">
+         loading="lazy" decoding="async" />
         <img
           src={ctaBgDesktop.url}
           alt=""
           className="hidden h-[560px] w-full object-cover md:block lg:h-[620px]"
-        / loading="lazy" decoding="async">
+         loading="lazy" decoding="async" />
 
         {/* Bottom-left blur gradient for text legibility */}
         <div

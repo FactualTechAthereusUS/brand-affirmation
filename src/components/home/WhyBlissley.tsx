@@ -48,7 +48,7 @@ function Card({ item, index }: { item: Item; index: number }) {
               src={item.image}
               alt=""
               className={`object-contain ${index < 3 ? "h-8 w-8" : "h-7 w-7"}`}
-            / loading="lazy" decoding="async">
+             loading="lazy" decoding="async" />
           </div>
           <div className="min-w-0 flex-1 pt-1">
             <h3 className="text-[19px] font-semibold leading-[1.2] tracking-[-0.01em] text-ink">
