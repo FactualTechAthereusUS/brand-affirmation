@@ -8,6 +8,10 @@ import { Footer } from "@/components/home/Footer";
 import { WLHero } from "@/components/weight-loss/WLHero";
 
 
+const WLCalculator = lazy(() =>
+  import("@/components/weight-loss/WLCalculator").then((m) => ({ default: m.WLCalculator })),
+);
+
 const PressLogos = lazy(() =>
   import("@/components/home/PressLogos").then((m) => ({ default: m.PressLogos })),
 );
