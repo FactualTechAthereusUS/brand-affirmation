@@ -41,12 +41,12 @@ export function Hero() {
 
 
       <div className="relative mx-auto flex min-h-[calc(100svh-124px)] max-w-[1400px] flex-col px-6 pb-6 pt-2 md:min-h-[780px] md:justify-center md:px-8 md:pb-24 md:pt-[60px] lg:min-h-[820px]">
-        <div className="mt-32 flex max-w-[640px] flex-col gap-5 md:mt-0 md:gap-0">
+        <div className="font-hero mt-32 flex max-w-[640px] flex-col gap-5 md:mt-0 md:gap-0">
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans text-[34px] font-bold leading-[1.05] tracking-[-0.03em] text-white md:text-[60px] lg:text-[72px]"
+            className="text-[34px] font-bold leading-[1.05] tracking-[-0.03em] text-white md:text-[60px] lg:text-[72px]"
           >
             Personalized care.
             <br />
