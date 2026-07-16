@@ -1,6 +1,6 @@
 import { ArrowUpRight, Check } from "lucide-react";
 import { motion } from "motion/react";
-import heroImg from "@/assets/hero-portrait.png.asset.json";
+import heroImg from "@/assets/hero-portrait-new.png.asset.json";
 import heroImgMobile from "@/assets/mobile-hero-portrait.png.asset.json";
 import vialImg from "@/assets/blissley-vial.png.asset.json";
 import trustpilotLogo from "@/assets/trustpilot-full.png.asset.json";
@@ -27,7 +27,7 @@ export function Hero() {
         src={heroImg.url}
         alt=""
         aria-hidden
-        className="absolute inset-0 hidden h-full w-full object-cover object-[right_center] md:block"
+        className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
       />
       {/* Mobile readability overlay — subtle dark gradient behind copy */}
       <div
