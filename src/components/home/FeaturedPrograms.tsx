@@ -34,7 +34,7 @@ export function FeaturedPrograms() {
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
             Your program,
             <br />
-            <span className="italic text-ever">your terms.</span>
+            <span className="font-display italic font-normal text-ever">your terms.</span>
           </h2>
           <p className="mt-3 text-[16px] text-[#6B6B6B] md:text-[18px]">
             Physician-supervised. Discreet. Delivered.
@@ -58,7 +58,7 @@ export function FeaturedPrograms() {
                   <h3 className="font-display text-[26px] leading-[1.1] text-white md:text-[32px]">
                     {p.title[0]}
                     <br />
-                    <span className="italic">{p.title[1]}</span>
+                    <span className="font-display italic font-normal">{p.title[1]}</span>
                   </h3>
                   <p className="mt-2 max-w-[22ch] text-[14px] text-white/70 md:text-[15px]">
                     {p.sub}

@@ -26,7 +26,7 @@ export function Comparison() {
       <div className="mx-auto max-w-4xl">
         <Reveal>
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
-            Why <span className="italic text-ever">Blissley.</span>
+            Why <span className="font-display italic font-normal text-ever">Blissley.</span>
           </h2>
           <p className="mt-3 text-[16px] text-[#6B6B6B] md:text-[18px]">
             The difference is in the details.

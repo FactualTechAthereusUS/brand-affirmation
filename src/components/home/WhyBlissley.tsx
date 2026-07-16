@@ -32,7 +32,7 @@ export function WhyBlissley() {
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
             Healthcare built
             <br />
-            <span className="italic text-ever">differently.</span>
+            <span className="font-display italic font-normal text-ever">differently.</span>
           </h2>
         </Reveal>
 
