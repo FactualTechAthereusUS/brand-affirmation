@@ -108,7 +108,7 @@ export function CategoryGrid() {
               <Reveal key={c.title} delay={i * 0.04} blur={14} y={30} className="snap-start shrink-0">
                 <a
                   data-card
-                  href="#"
+                  href={c.href}
                   className="group relative block h-[520px] w-[380px] overflow-hidden rounded-3xl lg:h-[560px] lg:w-[420px]"
                 >
                   <img
