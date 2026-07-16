@@ -166,15 +166,15 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="rounded-3xl bg-white/25 p-5 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl sm:p-7 md:p-9"
+            className="overflow-hidden rounded-3xl bg-white/25 p-4 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl sm:p-7 md:p-9"
           >
-            <div className="flex items-center justify-between gap-3">
-              <label htmlFor="weight-slider" className="text-sm font-medium text-white md:text-base">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <label htmlFor="weight-slider" className="min-w-0 text-sm font-medium text-white md:text-base">
                 Current weight
               </label>
               <div className="flex items-baseline gap-1 text-white">
-                <span className="text-[28px] font-bold tracking-tight sm:text-3xl md:text-4xl">{weight}</span>
-                <span className="text-lg font-semibold sm:text-xl md:text-2xl">lbs</span>
+                <span className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">{weight}</span>
+                <span className="text-base font-semibold sm:text-xl md:text-2xl">lbs</span>
               </div>
             </div>
 
@@ -194,24 +194,25 @@ export function WLCalculator() {
                 className="absolute inset-0 w-full cursor-pointer appearance-none bg-transparent [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-lg [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white"
                 style={{ height: 24, marginTop: -10 }}
               />
-              <div className="mt-3 flex justify-between text-[11px] font-medium uppercase tracking-wide text-white/60">
+              <div className="mt-3 flex justify-between text-[10px] font-medium uppercase tracking-wide text-white/60 sm:text-[11px]">
                 <span>{MIN} lbs</span>
                 <span>{MAX} lbs</span>
               </div>
             </div>
 
-            <div className="mt-8 flex items-center justify-between gap-3 sm:mt-10 md:mt-14">
-              <span className="text-[13px] font-medium text-white sm:text-sm md:text-base">You could lose up to</span>
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 sm:mt-10 md:mt-14">
+              <span className="min-w-0 text-[13px] font-medium text-white sm:text-sm md:text-base">You could lose up to</span>
               <motion.span
                 key={lossTirz}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
-                className="text-[32px] font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
+                className="text-[28px] font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
               >
                 {lossTirz} lbs
               </motion.span>
             </div>
+
 
             <motion.a
               href="#assessment"
@@ -235,7 +236,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl bg-white/25 p-4 ring-1 ring-white/40 backdrop-blur-xl sm:p-5 md:p-7"
+            className="overflow-hidden rounded-3xl bg-white/25 p-4 ring-1 ring-white/40 backdrop-blur-xl sm:p-5 md:p-7"
           >
             <div className="flex flex-col gap-3 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
