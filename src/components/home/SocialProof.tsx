@@ -62,13 +62,10 @@ function Stars() {
   );
 }
 
-function Avatar({ name, tone }: { name: string; tone: string }) {
+function Avatar({ name }: { name: string }) {
   const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[12px] font-medium text-ink/70 ring-1 ring-black/[0.04]"
-      style={{ backgroundColor: tone }}
-    >
+    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[12px] font-medium text-ink/70 ring-1 ring-black/[0.06]">
       {initials}
     </div>
   );

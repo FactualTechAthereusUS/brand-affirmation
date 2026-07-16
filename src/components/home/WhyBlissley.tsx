@@ -41,7 +41,7 @@ const items: Item[] = [
 function Card({ item, index }: { item: Item; index: number }) {
   return (
     <Reveal delay={index * 0.06} blur={10}>
-      <div className="rounded-3xl bg-[#F3F2EE] px-5 py-6">
+      <div className="rounded-3xl bg-white border border-ink/[0.06] px-5 py-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="flex items-start gap-4">
           <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
             <img

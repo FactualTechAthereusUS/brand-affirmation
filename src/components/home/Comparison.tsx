@@ -54,7 +54,7 @@ export function Comparison() {
                 <div className="px-4 py-4 text-[14px] font-medium text-ink md:px-6 md:text-[15px]">
                   {r.feat}
                 </div>
-                <div className="bg-[#FAFAF7] px-2 py-4 text-center">
+                <div className="bg-white px-2 py-4 text-center">
                   <Cell v={r.b} />
                 </div>
                 <div className="px-2 py-4 text-center">
