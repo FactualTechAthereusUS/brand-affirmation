@@ -95,7 +95,7 @@ export function HowItWorks() {
               <h2 className="mt-5 font-sans text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
                 Getting started
                 <br />
-                <span className="italic text-ink">should feel simple.</span>
+                <span className="italic text-ever">should feel simple.</span>
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
