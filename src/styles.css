@@ -46,8 +46,17 @@
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
 
-  --font-display: "Google Sans Flex", "Google Sans Flex Placeholder", "Playfair Display", ui-serif, Georgia, serif;
-  --font-sans: "Google Sans Flex", "Google Sans Flex Placeholder", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-hero: "Google Sans Flex", "Google Sans Flex Placeholder", "Manrope", ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-hero,
+.font-hero h1,
+.font-hero h2,
+.font-hero h3,
+.font-hero h4 {
+  font-family: var(--font-hero);
 }
 
 :root {
