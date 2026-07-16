@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import { Reveal } from "@/components/Reveal";
 import semaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import tirzepatide from "@/assets/vial-tirzepatide.png.asset.json";
@@ -22,6 +23,24 @@ const products = [
 ];
 
 export function Products() {
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const onScroll = () => {
+      const scrollLeft = slider.scrollLeft;
+      const width = slider.offsetWidth;
+      const newIndex = Math.round(scrollLeft / (width * 0.78));
+      setActiveIndex(Math.min(Math.max(newIndex, 0), products.length - 1));
+    };
+
+    slider.addEventListener("scroll", onScroll, { passive: true });
+    return () => slider.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section className="bg-canvas py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
@@ -48,12 +67,13 @@ export function Products() {
         {/* Mobile: snap slider with peek. Desktop: 2-up compact grid */}
         <div className="-mx-5 md:mx-0">
           <div
-            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:mx-auto md:grid md:max-w-3xl md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0"
+            ref={sliderRef}
+            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-auto md:grid md:max-w-3xl md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
             {products.map((p, i) => (
               <Reveal key={p.title} delay={i * 0.08}>
-                <article className="group flex w-[70vw] max-w-[300px] shrink-0 snap-start flex-col md:w-auto md:max-w-none">
+                <article className="group flex w-[78vw] max-w-[320px] shrink-0 snap-start flex-col md:w-auto md:max-w-none">
                   {/* Image */}
                   <div className="relative aspect-square overflow-hidden rounded-[18px] bg-[#f5f2ec]">
                     <img
@@ -88,8 +108,19 @@ export function Products() {
               </Reveal>
             ))}
           </div>
-        </div>
 
+          {/* Mobile pagination */}
+          <div className="mt-4 flex justify-center gap-2 md:hidden">
+            {products.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === activeIndex ? "w-4 bg-ink" : "w-1.5 bg-ink/20"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
 
         <div className="mt-10 text-center md:hidden">
           <a href="#" className="text-sm text-ink/70 underline underline-offset-4">
