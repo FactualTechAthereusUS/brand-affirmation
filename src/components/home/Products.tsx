@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import semaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import tirzepatide from "@/assets/vial-tirzepatide.png.asset.json";
@@ -19,22 +18,6 @@ const products = [
     desc: "Once-weekly injection. Dual-action GLP-1 and GIP receptor agonist.",
     price: "From $299/mo",
     link: "What is tirzepatide?",
-  },
-  {
-    img: semaglutide.url,
-    badge: "Coming soon",
-    title: "Skin & Anti-aging",
-    desc: "Prescription-grade tretinoin and personalized skincare formulas.",
-    price: "From $29/mo",
-    link: "Explore skin care",
-  },
-  {
-    img: tirzepatide.url,
-    badge: "Coming soon",
-    title: "Sexual Wellness",
-    desc: "Discreet ED treatment, physician-reviewed. Generic and brand options.",
-    price: "From $19/mo",
-    link: "Explore ED treatment",
   },
 ];
 
@@ -57,58 +40,59 @@ export function Products() {
               href="#"
               className="hidden md:inline-flex items-center gap-1.5 text-sm text-ink/70 underline underline-offset-4 hover:text-ink"
             >
-              View shop
+              View all treatments
             </a>
           </div>
         </Reveal>
 
-        {/* Horizontal snap slider on mobile, 4-up on desktop */}
+        {/* Mobile: snap slider with peek. Desktop: 2-up grid */}
         <div className="-mx-5 md:mx-0">
           <div
-            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:grid md:snap-none md:grid-cols-4 md:gap-5 md:overflow-visible md:px-0"
+            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:grid md:snap-none md:grid-cols-2 md:gap-8 md:overflow-visible md:px-0"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
             {products.map((p, i) => (
-              <Reveal key={p.title + i} delay={i * 0.06}>
-                <a
-                  href="#"
-                  className="group flex w-[78vw] max-w-[320px] shrink-0 snap-start flex-col md:w-auto md:max-w-none"
-                >
-                  {/* Image area — no bg tint, full vial visible, subtle canvas card */}
-                  <div className="relative aspect-square overflow-hidden rounded-[20px] bg-[#f5f2ec]">
+              <Reveal key={p.title} delay={i * 0.08}>
+                <article className="group flex w-[85vw] max-w-[420px] shrink-0 snap-start flex-col md:w-auto md:max-w-none">
+                  {/* Image fills the card top */}
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] bg-[#f5f2ec]">
                     <img
                       src={p.img}
                       alt={p.title}
-                      className="absolute inset-0 h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
-                    <button
-                      aria-label="Favorite"
-                      className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm backdrop-blur transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    >
-                      <ArrowUpRight className="h-4 w-4" />
-                    </button>
                   </div>
 
                   {/* Text */}
-                  <div className="mt-4 flex flex-col gap-1.5">
+                  <div className="mt-5 flex flex-col gap-2 px-1">
                     <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
                       {p.badge}
                     </span>
-                    <h3 className="text-[18px] md:text-[20px] font-medium tracking-tight text-ink">
+                    <h3 className="text-[22px] md:text-[26px] font-medium tracking-tight text-ink">
                       {p.title}
                     </h3>
-                    <p className="text-[13.5px] leading-relaxed text-ink/55">{p.desc}</p>
-                    <div className="mt-1 text-[15px] font-semibold text-ink">{p.price}</div>
+                    <p className="text-[14px] leading-relaxed text-ink/55">{p.desc}</p>
+                    <div className="mt-1 text-[16px] font-semibold text-ink">{p.price}</div>
+
+                    <button className="mt-4 h-12 w-full rounded-full bg-ink text-sm font-medium text-white transition-transform hover:scale-[1.01] active:scale-[0.99]">
+                      Get Started
+                    </button>
+                    <a
+                      href="#"
+                      className="mt-2 text-center text-[13px] text-ink/50 underline underline-offset-4 hover:text-ink"
+                    >
+                      {p.link}
+                    </a>
                   </div>
-                </a>
+                </article>
               </Reveal>
             ))}
           </div>
         </div>
 
-        <div className="mt-8 text-center md:hidden">
+        <div className="mt-10 text-center md:hidden">
           <a href="#" className="text-sm text-ink/70 underline underline-offset-4">
-            View shop
+            View all treatments
           </a>
         </div>
       </div>
