@@ -35,7 +35,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Weight loss, skin, sexual wellness, and longevity — physician-guided care delivered to your door.",
+          "Weight loss, skin, sexual wellness, and longevity — physician-guided care delivered to your door. Same price at every dose. Now in all 50 states.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
