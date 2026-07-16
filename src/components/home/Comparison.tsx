@@ -86,15 +86,15 @@ export function Comparison() {
                 </div>
               </div>
               <div className="flex flex-col items-center justify-end pb-3">
-                <img src={mayo.url} alt="Traditional Clinic" className="h-16 w-auto object-contain" />
+                <img src={hims.url} alt="Hims" className="h-16 w-auto object-contain" />
                 <div className="mt-2 text-center text-[13px] font-medium text-[#4a4a4a]">
-                  Traditional Clinic
+                  Hims
                 </div>
               </div>
               <div className="flex flex-col items-center justify-end pb-3">
-                <img src={hims.url} alt="Other Telehealth" className="h-16 w-auto object-contain" />
+                <img src={mayo.url} alt="Mayo Clinic" className="h-16 w-auto object-contain" />
                 <div className="mt-2 text-center text-[13px] font-medium text-[#4a4a4a]">
-                  Other Telehealth
+                  Mayo Clinic
                 </div>
               </div>
 
@@ -114,25 +114,25 @@ export function Comparison() {
               <div className="col-start-2 row-start-2 mx-1 -mt-px rounded-b-2xl bg-gradient-to-b from-[#ee7273] to-[#f2a08f]">
                 {rows.map((r) => (
                   <div key={`b-${r.feat}`} className="flex h-14 items-center justify-center">
-                    <BlissleyCell v={r.b} />
+                    <BlissleyCell v={r.blissley} />
                   </div>
                 ))}
               </div>
 
-              {/* Traditional column */}
+              {/* Hims column */}
               <div className="col-start-3 row-start-2">
                 {rows.map((r) => (
-                  <div key={`t-${r.feat}`} className="flex h-14 items-center justify-center">
-                    <OtherCell v={r.t} />
+                  <div key={`hims-${r.feat}`} className="flex h-14 items-center justify-center">
+                    <OtherCell v={r.hims} />
                   </div>
                 ))}
               </div>
 
-              {/* Other telehealth column */}
+              {/* Mayo Clinic column */}
               <div className="col-start-4 row-start-2">
                 {rows.map((r) => (
-                  <div key={`o-${r.feat}`} className="flex h-14 items-center justify-center">
-                    <OtherCell v={r.o} />
+                  <div key={`mayo-${r.feat}`} className="flex h-14 items-center justify-center">
+                    <OtherCell v={r.mayo} />
                   </div>
                 ))}
               </div>
