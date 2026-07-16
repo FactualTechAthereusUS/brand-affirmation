@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { motion } from "motion/react";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Reveal } from "../Reveal";
 import weightImg from "@/assets/cat-weight.png.asset.json";
