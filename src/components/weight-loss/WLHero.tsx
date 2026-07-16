@@ -90,9 +90,16 @@ export function WLHero() {
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 420, damping: 26 }}
-              className="group inline-flex h-[56px] items-center gap-3 rounded-full bg-white pl-6 pr-2 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] md:h-[60px]"
+              className="group inline-flex h-[56px] items-center gap-2 rounded-full bg-white pl-2 pr-2 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] md:h-[60px] md:gap-3"
             >
-              Start My Free Assessment
+              <img
+                src={vialImg.url}
+                alt=""
+                aria-hidden
+                className="h-10 w-10 rounded-full object-cover md:h-11 md:w-11"
+                loading="eager"
+              />
+              <span className="pl-1">Start My Free Assessment</span>
               <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-canvas transition-transform duration-300 group-hover:rotate-45 md:h-11 md:w-11">
                 <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
               </span>
