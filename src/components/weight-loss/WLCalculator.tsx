@@ -166,7 +166,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="rounded-3xl bg-white/15 p-7 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.35)] ring-1 ring-white/25 backdrop-blur-md md:p-9"
+            className="rounded-3xl bg-white/25 p-7 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl md:p-9"
           >
             <div className="flex items-center justify-between gap-4">
               <label htmlFor="weight-slider" className="text-sm font-medium text-white md:text-base">
@@ -217,7 +217,7 @@ export function WLCalculator() {
               href="#assessment"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              className="mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white text-base font-semibold text-[#ee7273] shadow-lg transition-shadow hover:shadow-xl"
+              className="mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white text-base font-semibold text-black shadow-lg transition-shadow hover:shadow-xl"
             >
               Start My Free Assessment
               <ArrowRight className="h-5 w-5" strokeWidth={2} />
@@ -235,7 +235,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl bg-white/10 p-5 ring-1 ring-white/20 backdrop-blur-md md:p-7"
+            className="rounded-3xl bg-white/25 p-5 ring-1 ring-white/40 backdrop-blur-xl md:p-7"
           >
             <div className="flex items-center justify-between text-white">
               <div>
