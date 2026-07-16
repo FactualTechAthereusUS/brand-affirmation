@@ -6,7 +6,7 @@ import { Nav } from "@/components/home/Nav";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { Footer } from "@/components/home/Footer";
 import { WLHero } from "@/components/weight-loss/WLHero";
-import { WLCalculator } from "@/components/weight-loss/WLCalculator";
+
 
 const PressLogos = lazy(() =>
   import("@/components/home/PressLogos").then((m) => ({ default: m.PressLogos })),
