@@ -1,17 +1,19 @@
 import { Reveal } from "../Reveal";
+import { CountUp } from "../CountUp";
 
 type Stat = {
-  n: string;
+  value: number;
+  display?: (n: number) => string;
   suffix?: string;
   star?: boolean;
   label: string;
 };
 
 const stats: Stat[] = [
-  { n: "30,000", suffix: "+", label: "Patients treated" },
-  { n: "4.9", star: true, label: "Average rating" },
-  { n: "24", suffix: "hrs", label: "Physician review" },
-  { n: "50", suffix: "states", label: "Nationwide coverage" },
+  { value: 30000, display: (n) => Math.round(n).toLocaleString("en-US"), suffix: "+", label: "Patients treated" },
+  { value: 4.9, display: (n) => n.toFixed(1), star: true, label: "Average rating" },
+  { value: 24, suffix: "hrs", label: "Physician review" },
+  { value: 50, suffix: "states", label: "Nationwide coverage" },
 ];
 
 export function Numbers() {
@@ -27,9 +29,11 @@ export function Numbers() {
                 }`}
               >
                 <div className="flex items-baseline text-ink">
-                  <span className="font-sans text-[56px] font-extrabold leading-none tracking-[-0.03em] md:text-[68px]">
-                    {s.n}
-                  </span>
+                  <CountUp
+                    to={s.value}
+                    format={s.display}
+                    className="font-sans text-[56px] font-extrabold leading-none tracking-[-0.03em] md:text-[68px] tabular-nums"
+                  />
                   {s.suffix && (
                     <span className="ml-1 font-sans text-[28px] font-extrabold leading-none tracking-[-0.02em] md:text-[34px]">
                       {s.suffix}

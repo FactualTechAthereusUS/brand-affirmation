@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { motion } from "motion/react";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Reveal } from "../Reveal";
 import weightImg from "@/assets/cat-weight.png.asset.json";
@@ -39,27 +40,36 @@ export function CategoryGrid() {
               What can we help you <span className="italic">with?</span>
             </h2>
             <div className="hidden items-center gap-3 md:flex">
-              <a
+              <motion.a
                 href="#"
-                className="inline-flex items-center rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 24 }}
+                className="inline-flex items-center rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-white"
               >
                 All our Treatments
-              </a>
+              </motion.a>
               <div className="ml-2 flex gap-2">
-                <button
+                <motion.button
                   aria-label="Previous"
                   onClick={() => scrollBy(-1)}
-                  className="grid h-11 w-11 place-items-center rounded-full bg-black/[0.04] text-ink transition-colors hover:bg-black/[0.08]"
+                  whileHover={{ scale: 1.08, x: -2 }}
+                  whileTap={{ scale: 0.92 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="grid h-11 w-11 place-items-center rounded-full bg-black/[0.04] text-ink hover:bg-black/[0.08]"
                 >
                   <ChevronLeft className="h-5 w-5" strokeWidth={1.75} />
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   aria-label="Next"
                   onClick={() => scrollBy(1)}
-                  className="grid h-11 w-11 place-items-center rounded-full bg-black/[0.04] text-ink transition-colors hover:bg-black/[0.08]"
+                  whileHover={{ scale: 1.08, x: 2 }}
+                  whileTap={{ scale: 0.92 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="grid h-11 w-11 place-items-center rounded-full bg-black/[0.04] text-ink hover:bg-black/[0.08]"
                 >
                   <ChevronRight className="h-5 w-5" strokeWidth={1.75} />
-                </button>
+                </motion.button>
               </div>
             </div>
           </div>

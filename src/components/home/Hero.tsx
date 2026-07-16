@@ -77,19 +77,29 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="flex flex-wrap items-center gap-3 md:mt-8"
           >
-            <button className="group relative flex h-[56px] items-center gap-3 rounded-full bg-white pl-2 pr-5 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] transition-transform hover:scale-[1.02] active:scale-[0.98] md:h-[60px] md:pr-6">
+            <motion.button
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 420, damping: 26 }}
+              className="group relative flex h-[56px] items-center gap-3 rounded-full bg-white pl-2 pr-5 text-[15px] font-medium text-ink shadow-[0_1px_0_rgba(255,255,255,0.35)_inset] md:h-[60px] md:pr-6"
+            >
               <span className="grid h-[40px] w-[40px] place-items-center overflow-hidden rounded-full bg-[#4a3fd6] md:h-[44px] md:w-[44px]">
                 <img src={vialImg.url} alt="" className="h-full w-full object-cover" />
               </span>
               Get started
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-canvas transition-transform group-hover:rotate-45">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-canvas transition-transform duration-300 group-hover:rotate-45">
                 <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
               </span>
-            </button>
+            </motion.button>
 
-            <button className="h-[56px] rounded-full border border-white/25 bg-white/[0.08] px-6 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:bg-white/[0.14] md:h-[60px] md:px-7">
+            <motion.button
+              whileHover={{ scale: 1.03, y: -1, backgroundColor: "rgba(255,255,255,0.16)" }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 420, damping: 26 }}
+              className="h-[56px] rounded-full border border-white/25 bg-white/[0.08] px-6 text-[15px] font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.32)_inset] backdrop-blur-xl backdrop-saturate-150 md:h-[60px] md:px-7"
+            >
               Explore Treatments
-            </button>
+            </motion.button>
           </motion.div>
 
 

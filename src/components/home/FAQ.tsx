@@ -55,19 +55,21 @@ export function FAQ() {
             const isOpen = open === i;
             return (
               <div key={f.q} className="border-b border-hairline">
-                <button
+                <motion.button
                   onClick={() => setOpen(isOpen ? null : i)}
+                  whileHover={{ x: 4 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 24 }}
                   className="flex min-h-[64px] w-full items-center justify-between gap-4 py-5 text-left"
                 >
                   <span className="text-[16px] font-medium text-ink md:text-[17px]">{f.q}</span>
                   <motion.span
-                    animate={{ rotate: isOpen ? 45 : 0 }}
-                    transition={{ duration: 0.25 }}
+                    animate={{ rotate: isOpen ? 45 : 0, scale: isOpen ? 1.1 : 1 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     className="shrink-0 text-ever"
                   >
                     <Plus className="h-6 w-6" strokeWidth={1.5} />
                   </motion.span>
-                </button>
+                </motion.button>
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div

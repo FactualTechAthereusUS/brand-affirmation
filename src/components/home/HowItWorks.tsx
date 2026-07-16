@@ -104,10 +104,15 @@ export function HowItWorks() {
               </p>
             </Reveal>
             <Reveal delay={0.15}>
-              <button className="group mt-8 inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-ink px-7 text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_30px_-12px_rgba(23,23,23,0.45)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              <motion.button
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 420, damping: 26 }}
+                className="group mt-8 inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-ink px-7 text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_30px_-12px_rgba(23,23,23,0.45)]"
+              >
                 Start Your Free Assessment
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </button>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </motion.button>
             </Reveal>
           </div>
         </div>
