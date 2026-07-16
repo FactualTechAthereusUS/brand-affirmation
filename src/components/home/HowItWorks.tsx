@@ -69,7 +69,7 @@ function StepRow({ step, index }: { step: (typeof steps)[number]; index: number 
         <img src={step.icon} alt="" className="h-full w-full object-cover" />
       </div>
       <div
-        className={`col-span-3 -mt-2 h-[96px] overflow-hidden rounded-2xl ${step.tint} md:hidden`}
+        className={`col-span-3 -mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl ${step.tint} md:hidden`}
         aria-hidden={index < 0}
       >
         <img src={step.icon} alt="" className="h-full w-full object-cover" />
