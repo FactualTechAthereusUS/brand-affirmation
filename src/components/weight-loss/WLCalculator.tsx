@@ -166,7 +166,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="overflow-hidden rounded-3xl bg-white/25 p-4 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl sm:p-7 md:p-9"
+            className="overflow-hidden rounded-3xl bg-white/40 p-5 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.5)] ring-1 ring-white/60 backdrop-blur-2xl sm:p-7 md:p-9"
           >
             <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
               <label htmlFor="weight-slider" className="min-w-0 text-sm font-medium text-white md:text-base">
