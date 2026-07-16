@@ -10,7 +10,7 @@ export function Footer() {
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           <div>
             <img src={logo.url} alt="Blissley" className="h-6 w-auto invert md:h-7" />
-            <p className="mt-3 max-w-xs font-display text-[14px] italic text-white/50 md:text-[15px]">
+            <p className="mt-3 max-w-xs font-sans text-[14px] italic text-white/50 md:text-[15px]">
               Become who you were always supposed to be.
             </p>
           </div>

@@ -37,7 +37,7 @@ export function Comparison() {
           <div className="mt-10 overflow-hidden rounded-2xl md:mt-14">
             <div className="grid grid-cols-[1.4fr_1fr_1fr] bg-ink text-canvas">
               <div className="px-4 py-4 text-[12px] font-medium uppercase tracking-[0.06em] md:px-6" />
-              <div className="px-2 py-4 text-center font-display text-[16px] md:text-[20px]">
+              <div className="px-2 py-4 text-center font-sans text-[16px] md:text-[20px]">
                 Blissley
               </div>
               <div className="px-2 py-4 text-center text-[13px] font-medium uppercase tracking-[0.06em] text-canvas/60 md:text-[14px]">

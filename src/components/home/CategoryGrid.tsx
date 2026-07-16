@@ -77,7 +77,7 @@ export function CategoryGrid() {
                 />
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(23,23,23,0.55)_78%,rgba(23,23,23,0.9)_100%)]" />
                 <div className="absolute inset-0 flex flex-col justify-end p-5">
-                  <h3 className="font-display italic text-[30px] leading-tight text-white">{c.title}</h3>
+                  <h3 className="font-sans text-[30px] leading-tight text-white">{c.title}</h3>
                   <p className="mt-1 font-sans text-[13px] text-white/80">{c.sub}</p>
                 </div>
                 <div className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white text-ink">
@@ -108,7 +108,7 @@ export function CategoryGrid() {
                   />
                   <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(23,23,23,0.55)_80%,rgba(23,23,23,0.9)_100%)]" />
                   <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
-                    <h3 className="font-display italic text-[34px] leading-tight text-white">{c.title}</h3>
+                    <h3 className="font-sans text-[34px] leading-tight text-white">{c.title}</h3>
                     <p className="mt-1 font-sans text-[14px] text-white/80">{c.sub}</p>
                   </div>
                   <div className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
