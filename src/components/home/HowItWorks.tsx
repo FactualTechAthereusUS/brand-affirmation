@@ -1,4 +1,6 @@
 import { ArrowRight } from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 import { Reveal } from "../Reveal";
 import iconAssessment from "@/assets/how-assessment.png.asset.json";
 import iconReview from "@/assets/how-review.png.asset.json";
@@ -27,6 +29,54 @@ const steps = [
     tint: "bg-[#F6F1E7]",
   },
 ];
+
+function StepRow({ step, index }: { step: (typeof steps)[number]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  // Track this row's position relative to the viewport.
+  // When the row's center is at viewport center → progress ≈ 0.5 (active).
+  // Above/below → fades and blurs out.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 85%", "end 15%"],
+  });
+
+  // Bell curve: peak focus around center of the scroll window.
+  const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.25, 1, 1, 0.25]);
+  const blur = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [8, 0, 0, 8]);
+  const filter = useTransform(blur, (b) => `blur(${b}px)`);
+  const scale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.985, 1, 1, 0.985]);
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, filter, scale }}
+      className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
+    >
+      <div className="font-sans text-[44px] font-semibold leading-none text-ink/15 md:text-[64px]">
+        {step.n}
+      </div>
+      <div className="min-w-0">
+        <h3 className="font-sans text-[20px] font-semibold tracking-[-0.01em] text-ink md:text-[26px]">
+          {step.title}
+        </h3>
+        <p className="mt-2 text-[14px] leading-[1.6] text-ink/60 md:text-[15px]">
+          {step.body}
+        </p>
+      </div>
+      <div
+        className={`hidden h-[104px] w-[128px] shrink-0 items-center justify-center rounded-2xl ${step.tint} md:flex`}
+      >
+        <img src={step.icon} alt="" className="h-16 w-16 object-contain" />
+      </div>
+      <div
+        className={`col-span-3 -mt-2 flex h-[96px] items-center justify-center rounded-2xl ${step.tint} md:hidden`}
+        aria-hidden={index < 0}
+      >
+        <img src={step.icon} alt="" className="h-14 w-14 object-contain" />
+      </div>
+    </motion.div>
+  );
+}
 
 export function HowItWorks() {
   return (
@@ -66,31 +116,7 @@ export function HowItWorks() {
         <div className="md:col-span-7">
           <div className="border-t border-ink/10">
             {steps.map((s, i) => (
-              <Reveal key={s.n} delay={i * 0.08} blur={12}>
-                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-12">
-                  <div className="font-sans text-[44px] font-semibold leading-none text-ink/15 md:text-[64px]">
-                    {s.n}
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-sans text-[20px] font-semibold tracking-[-0.01em] text-ink md:text-[26px]">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2 text-[14px] leading-[1.6] text-ink/60 md:text-[15px]">
-                      {s.body}
-                    </p>
-                  </div>
-                  <div
-                    className={`hidden h-[104px] w-[128px] shrink-0 items-center justify-center rounded-2xl ${s.tint} md:flex`}
-                  >
-                    <img src={s.icon} alt="" className="h-16 w-16 object-contain" />
-                  </div>
-                  <div
-                    className={`col-span-3 -mt-2 flex h-[96px] items-center justify-center rounded-2xl ${s.tint} md:hidden`}
-                  >
-                    <img src={s.icon} alt="" className="h-14 w-14 object-contain" />
-                  </div>
-                </div>
-              </Reveal>
+              <StepRow key={s.n} step={s} index={i} />
             ))}
           </div>
         </div>
