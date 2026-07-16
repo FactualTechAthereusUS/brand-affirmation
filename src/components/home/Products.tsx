@@ -68,8 +68,8 @@ export function Products() {
         <div className="-mx-5 md:mx-0">
           <div
             ref={sliderRef}
-            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pr-8 pb-4 md:mx-auto md:grid md:max-w-3xl md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0"
-            style={{ WebkitOverflowScrolling: "touch" }}
+            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 scroll-px-6 md:mx-auto md:grid md:max-w-3xl md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0"
+            style={{ WebkitOverflowScrolling: "touch", scrollPaddingLeft: "24px", scrollPaddingRight: "24px" }}
           >
             {products.map((p, i) => (
               <Reveal key={p.title} delay={i * 0.08}>
