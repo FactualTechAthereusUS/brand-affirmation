@@ -10,6 +10,7 @@ import { FeaturedPrograms } from "@/components/home/FeaturedPrograms";
 import { SocialProof } from "@/components/home/SocialProof";
 import { Numbers } from "@/components/home/Numbers";
 import { Comparison } from "@/components/home/Comparison";
+import { Products } from "@/components/home/Products";
 import { FAQ } from "@/components/home/FAQ";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/home/Footer";
@@ -55,6 +56,7 @@ function Index() {
         <FeaturedPrograms />
         <SocialProof />
         <Numbers />
+        <Products />
         <Comparison />
         <FAQ />
         <FinalCTA />
