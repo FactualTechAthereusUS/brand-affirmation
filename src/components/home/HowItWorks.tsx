@@ -53,7 +53,7 @@ export function HowItWorks() {
         </div>
 
         <Reveal delay={0.3}>
-          <button className="group mx-auto mt-12 flex h-[52px] w-full max-w-md items-center justify-center gap-2 rounded-full bg-canvas px-7 text-[15px] font-medium text-ink transition-transform hover:scale-[1.01] active:scale-[0.98] md:h-14">
+          <button className="group mx-auto mt-12 flex h-[52px] w-full max-w-md items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.08] px-7 text-[15px] font-medium text-canvas shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] backdrop-blur-2xl transition-transform hover:scale-[1.01] hover:bg-white/[0.12] active:scale-[0.98] md:h-14">
             Start Your Free Assessment
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </button>
