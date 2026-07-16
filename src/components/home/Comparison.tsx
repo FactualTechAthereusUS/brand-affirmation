@@ -81,7 +81,7 @@ export function Comparison() {
                   <img
                     src={logo.url}
                     alt="Blissley"
-                    className="h-6 w-auto invert brightness-0 [filter:invert(1)_brightness(2)]"
+                    className="h-12 w-auto invert brightness-0 [filter:invert(1)_brightness(2)]"
                   />
                 </div>
               </div>
