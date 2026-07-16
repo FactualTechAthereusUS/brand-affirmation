@@ -106,14 +106,50 @@ export function Nav() {
                     : "text-white/90 hover:bg-white/12 hover:text-white"
                 }`}
               >
-                {l.label}
-                {l.hasMenu && (
-                  <ChevronDown
-                    className="h-3.5 w-3.5 opacity-70 transition-transform group-hover:translate-y-0.5"
-                    strokeWidth={2}
-                  />
+            {links.map((l) => (
+              <div key={l.label} className="group/item relative">
+                <a
+                  href={l.href}
+                  className={`inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium transition-colors ${
+                    scrolled
+                      ? "text-ink/80 hover:bg-black/5 hover:text-ink"
+                      : "text-white/90 hover:bg-white/12 hover:text-white"
+                  }`}
+                >
+                  {l.label}
+                  {l.hasMenu && (
+                    <ChevronDown
+                      className="h-3.5 w-3.5 opacity-70 transition-transform group-hover/item:rotate-180"
+                      strokeWidth={2}
+                    />
+                  )}
+                </a>
+                {l.hasMenu && l.menu && (
+                  <div className="pointer-events-none absolute left-0 top-full pt-3 opacity-0 transition-all duration-200 group-hover/item:pointer-events-auto group-hover/item:opacity-100">
+                    <div
+                      className={`min-w-[240px] rounded-3xl border p-2 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_20px_60px_rgba(0,0,0,0.2)] ${
+                        scrolled
+                          ? "border-black/10 bg-white/85"
+                          : "border-white/20 bg-white/[0.12]"
+                      }`}
+                    >
+                      {l.menu.map((m) => (
+                        <a
+                          key={m.label}
+                          href={m.href}
+                          className={`block rounded-2xl px-4 py-3 text-[15px] font-medium transition-colors ${
+                            scrolled
+                              ? "text-ink/85 hover:bg-black/5 hover:text-ink"
+                              : "text-white/90 hover:bg-white/15 hover:text-white"
+                          }`}
+                        >
+                          {m.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 )}
-              </a>
+              </div>
             ))}
           </nav>
 
