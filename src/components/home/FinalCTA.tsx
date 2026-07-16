@@ -9,7 +9,7 @@ export function FinalCTA() {
           <h2 className="text-[40px] leading-[1.05] text-canvas md:text-[64px]">
             Ready to start
             <br />
-            <span className="font-display italic font-normal">becoming?</span>
+            <span className="italic">becoming?</span>
           </h2>
         </Reveal>
         <Reveal delay={0.1}>

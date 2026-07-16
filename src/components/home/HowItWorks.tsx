@@ -27,7 +27,7 @@ export function HowItWorks() {
           <h2 className="text-[34px] leading-[1.1] text-canvas md:text-[52px]">
             Getting started
             <br />
-            <span className="font-display italic font-normal text-mist">should feel simple.</span>
+            <span className="italic text-mist">should feel simple.</span>
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
