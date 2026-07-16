@@ -63,7 +63,7 @@ export function Hero() {
             className="max-w-[480px] text-[15px] leading-[1.5] text-white/95 md:mt-6 md:text-[17px]"
           >
             GLP-1, dermatology, hair, mental health, intimacy. Doctor-prescribed
-            treatments shipped to your door starting at $39 for first month of
+            treatments shipped to your door starting at $299 for first month of
             membership.
           </motion.p>
 
@@ -95,9 +95,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="max-w-[480px] text-[11px] leading-[1.5] text-white/70 md:mt-6 md:text-white/60"
           >
-            *The $39 promotional rate applies to your first month only for new
-            customers. After that, the standard rate is $79 per month. Prepaid
-            multi-month plans available. Terms vary by state.
+            The $299 promotional rate applies to your first month only for new
+            customers. After that, the standard rate is $399 per month. Prepaid
+            multi-month plans available. Terms vary by state
           </motion.p>
         </div>
 
