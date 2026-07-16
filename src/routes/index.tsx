@@ -69,6 +69,7 @@ function Index() {
         <FinalCTA />
       </main>
       <Footer />
+      <ProgressiveBlur side="bottom" height={160} layers={5} maxBlur={16} activateAfter={200} />
     </div>
   );
 }
