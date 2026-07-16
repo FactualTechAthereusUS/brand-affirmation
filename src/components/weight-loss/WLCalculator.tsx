@@ -236,7 +236,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl bg-white/25 p-4 ring-1 ring-white/40 backdrop-blur-xl sm:p-5 md:p-7"
+            className="overflow-hidden rounded-3xl bg-white/25 p-4 ring-1 ring-white/40 backdrop-blur-xl sm:p-5 md:p-7"
           >
             <div className="flex flex-col gap-3 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
