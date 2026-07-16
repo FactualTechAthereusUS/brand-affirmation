@@ -38,8 +38,7 @@ const items: Item[] = [
   },
 ];
 
-/* ---------------- Mobile Card (image 1 style) ---------------- */
-function MobileCard({ item, index }: { item: Item; index: number }) {
+function Card({ item, index }: { item: Item; index: number }) {
   return (
     <Reveal delay={index * 0.06} blur={10}>
       <div className="rounded-3xl bg-[#F3F2EE] px-5 py-6">
@@ -48,7 +47,7 @@ function MobileCard({ item, index }: { item: Item; index: number }) {
             <img
               src={item.image}
               alt=""
-              className={`object-contain ${index < 3 ? "h-7 w-7" : "h-6 w-6"}`}
+              className={`object-contain ${index < 3 ? "h-8 w-8" : "h-7 w-7"}`}
             />
           </div>
           <div className="min-w-0 flex-1 pt-1">
@@ -68,33 +67,17 @@ function MobileCard({ item, index }: { item: Item; index: number }) {
   );
 }
 
-/* ---------------- Desktop Card (kept, icons swapped) ---------------- */
-function DesktopCard({ item, index }: { item: Item; index: number }) {
+function Headline() {
   return (
-    <Reveal delay={index * 0.06} blur={12}>
-      <div className="group relative h-full overflow-hidden rounded-[28px] border border-black/5 bg-gradient-to-b from-white to-[#F5F3EE] p-8 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_20px_50px_-30px_rgba(23,23,23,0.25)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_30px_60px_-25px_rgba(23,23,23,0.35)]">
-        <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(120%_60%_at_0%_0%,rgba(255,255,255,0.9),transparent_50%)]" />
-        <div className="relative flex items-start gap-6">
-          <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-white/70 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_10px_30px_-10px_rgba(23,23,23,0.15)] ring-1 ring-black/5 backdrop-blur-xl">
-            <img
-              src={item.image}
-              alt=""
-              className={`object-contain ${index < 3 ? "h-11 w-11" : "h-10 w-10"}`}
-            />
-          </div>
-          <div className="min-w-0 flex-1 pt-1">
-            <h3 className="text-[26px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink">
-              {item.titleTop}
-            </h3>
-            <p className="mt-1 text-[26px] font-semibold leading-[1.15] tracking-[-0.01em] text-ever">
-              {item.titleBottom}
-            </p>
-            <p className="mt-4 text-[16px] leading-[1.55] text-[#5F5F58]">
-              {item.body}
-            </p>
-          </div>
-        </div>
-      </div>
+    <Reveal>
+      <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
+        Healthcare built
+        <br />
+        <span className="text-ever">differently.</span>
+      </h2>
+      <p className="mt-4 max-w-md text-[15px] leading-[1.6] text-[#5F5F58] md:mt-6 md:text-[17px]">
+        Most online health platforms settled for a workaround. We rebuilt the standard of care — here's what that means for you.
+      </p>
     </Reveal>
   );
 }
@@ -103,46 +86,25 @@ export function WhyBlissley() {
   return (
     <section className="bg-white px-5 py-16 md:px-8 md:py-28">
       <div className="mx-auto max-w-6xl">
-        {/* ---------- MOBILE ---------- */}
+        {/* Mobile */}
         <div className="md:hidden">
-          <Reveal>
-            <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink">
-              Healthcare built
-              <br />
-              <span className="text-ever">differently.</span>
-            </h2>
-            <p className="mt-4 text-[15px] leading-[1.6] text-[#5F5F58]">
-              Most online health platforms settled for a workaround. We rebuilt the standard of care — here's what that means for you.
-            </p>
-          </Reveal>
-
+          <Headline />
           <div className="mt-8 flex flex-col gap-3">
             {items.map((it, i) => (
-              <MobileCard key={it.titleTop} item={it} index={i} />
+              <Card key={it.titleTop} item={it} index={i} />
             ))}
           </div>
         </div>
 
-        {/* ---------- DESKTOP ---------- */}
+        {/* Desktop — same card style, same content, sticky structure kept */}
         <div className="hidden md:grid gap-16 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-          <Reveal>
-            <div className="md:sticky md:top-32">
-              <h2 className="text-[56px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink">
-                We didn't just build
-                <br />
-                a better platform.
-                <br />
-                <span className="text-ever">We rebuilt the standard of care.</span>
-              </h2>
-              <p className="mt-6 max-w-md text-[17px] leading-[1.6] text-[#5F5F58]">
-                Most online health platforms settled for a workaround inside a broken system. We were tired of it — so we built something better. Here's what that means for you.
-              </p>
-            </div>
-          </Reveal>
+          <div className="md:sticky md:top-32 md:self-start">
+            <Headline />
+          </div>
 
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3">
             {items.map((it, i) => (
-              <DesktopCard key={it.titleTop} item={it} index={i} />
+              <Card key={it.titleTop} item={it} index={i} />
             ))}
           </div>
         </div>
