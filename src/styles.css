@@ -73,13 +73,13 @@
   --secondary-foreground: #171717;
   --muted: #f0ebe3;
   --muted-foreground: #6b6b6b;
-  --accent: #818263;
+  --accent: #B8543F;
   --accent-foreground: #f8f5ef;
   --destructive: #c4998a;
   --destructive-foreground: #ffffff;
   --border: #e8e4dc;
   --input: #e8e4dc;
-  --ring: #818263;
+  --ring: #B8543F;
 }
 
 @layer base {
