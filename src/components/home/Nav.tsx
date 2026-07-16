@@ -11,14 +11,14 @@ const links = [
   { label: "About", hasMenu: false },
 ];
 
-const mobileLinks = [
-  "Treatments",
-  "Weight Loss",
-  "Skin",
-  "Sexual Health",
-  "Longevity",
-  "About",
-  "Insights",
+const mobileLinks: { label: string; href: string }[] = [
+  { label: "Treatments", href: "#" },
+  { label: "Weight Loss", href: "/weight-loss" },
+  { label: "Skin", href: "#" },
+  { label: "Sexual Health", href: "#" },
+  { label: "Longevity", href: "#" },
+  { label: "About", href: "#" },
+  { label: "Insights", href: "#" },
 ];
 
 export function Nav() {
@@ -187,15 +187,15 @@ export function Nav() {
             <nav className="relative mt-12 flex flex-1 flex-col gap-1">
               {mobileLinks.map((l, i) => (
                 <motion.a
-                  key={l}
-                  href="#"
+                  key={l.label}
+                  href={l.href}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.04, duration: 0.5 }}
                   className="font-sans text-[28px] tracking-[-0.01em] text-canvas/95 py-2 border-b border-white/[0.06]"
                   onClick={() => setOpen(false)}
                 >
-                  {l}
+                  {l.label}
                 </motion.a>
               ))}
             </nav>

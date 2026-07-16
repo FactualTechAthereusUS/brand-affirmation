@@ -11,13 +11,13 @@ import longevityImg from "@/assets/cat-longevity.png.asset.json";
 import menopauseImg from "@/assets/cat-menopause.png.asset.json";
 
 const cards = [
-  { title: "Weight Loss", sub: "From $249/mo", image: weightImg.url, position: "object-center" },
-  { title: "Menopause", sub: "From $119/mo", image: menopauseImg.url, position: "object-top" },
-  { title: "Longevity", sub: "From $149/mo", image: longevityImg.url, position: "object-center" },
-  { title: "Skin Care", sub: "From $89/mo", image: skinImg.url, position: "object-center" },
-  { title: "Hair Care", sub: "From $29/mo", image: hairImg.url, position: "object-top" },
-  { title: "Sexual Health", sub: "From $79/mo", image: sexualImg.url, position: "object-center" },
-  { title: "Men's Health", sub: "From $99/mo", image: mensImg.url, position: "object-top" },
+  { title: "Weight Loss", sub: "From $249/mo", image: weightImg.url, position: "object-center", href: "/weight-loss" },
+  { title: "Menopause", sub: "From $119/mo", image: menopauseImg.url, position: "object-top", href: "#" },
+  { title: "Longevity", sub: "From $149/mo", image: longevityImg.url, position: "object-center", href: "#" },
+  { title: "Skin Care", sub: "From $89/mo", image: skinImg.url, position: "object-center", href: "#" },
+  { title: "Hair Care", sub: "From $29/mo", image: hairImg.url, position: "object-top", href: "#" },
+  { title: "Sexual Health", sub: "From $79/mo", image: sexualImg.url, position: "object-center", href: "#" },
+  { title: "Men's Health", sub: "From $99/mo", image: mensImg.url, position: "object-top", href: "#" },
 ];
 
 export function CategoryGrid() {
@@ -79,7 +79,7 @@ export function CategoryGrid() {
         <div className="mt-8 flex flex-col gap-4 md:hidden">
           {cards.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.05} blur={14} y={30}>
-              <a href="#" className="group relative block aspect-[4/3] overflow-hidden rounded-3xl">
+              <a href={c.href} className="group relative block aspect-[4/3] overflow-hidden rounded-3xl">
                 <img
                   src={c.image}
                   alt={c.title}
@@ -108,7 +108,7 @@ export function CategoryGrid() {
               <Reveal key={c.title} delay={i * 0.04} blur={14} y={30} className="snap-start shrink-0">
                 <a
                   data-card
-                  href="#"
+                  href={c.href}
                   className="group relative block h-[520px] w-[380px] overflow-hidden rounded-3xl lg:h-[560px] lg:w-[420px]"
                 >
                   <img
