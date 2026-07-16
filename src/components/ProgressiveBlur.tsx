@@ -1,32 +1,26 @@
 /**
  * ProgressiveBlur
- * A fixed overlay pinned to the bottom (or top) of the viewport that applies
- * a stacked, progressively stronger backdrop-blur — content appears to
- * "un-blur" as it scrolls past. Same technique as Framer's Progressive Blur.
- *
- * Renders nothing until the user has scrolled a bit, so the hero stays crisp.
+ * A fixed overlay pinned to the bottom (or top) of the viewport with stacked
+ * backdrop-blur layers whose opacity ramps up toward the edge — content
+ * "un-blurs" as it scrolls away from the edge. Same idea as Framer's
+ * Progressive Blur component.
  */
 import { useEffect, useState } from "react";
 
 type Props = {
-  /** Which edge to pin to. */
   side?: "bottom" | "top";
-  /** Total height of the blur band. */
   height?: number;
-  /** Number of stacked layers — more = smoother gradient, heavier GPU. */
   layers?: number;
-  /** Max blur radius (px) applied to the strongest edge layer. */
   maxBlur?: number;
-  /** Scroll offset (px) after which the effect fades in. */
   activateAfter?: number;
   className?: string;
 };
 
 export function ProgressiveBlur({
   side = "bottom",
-  height = 140,
-  layers = 6,
-  maxBlur = 14,
+  height = 160,
+  layers = 5,
+  maxBlur = 16,
   activateAfter = 200,
   className = "",
 }: Props) {
@@ -40,6 +34,10 @@ export function ProgressiveBlur({
   }, [activateAfter]);
 
   const isBottom = side === "bottom";
+  // Gradient direction: 0% end is the EDGE (fully opaque), 100% end is the
+  // content side (fully transparent). Each layer's opaque region shrinks
+  // toward the edge as the blur radius grows.
+  const gradientDir = isBottom ? "to top" : "to bottom";
 
   return (
     <div
@@ -50,20 +48,12 @@ export function ProgressiveBlur({
       style={{ height }}
     >
       {Array.from({ length: layers }).map((_, i) => {
-        // i=0 is the softest (near content edge), i=layers-1 the strongest (at the edge)
         const t = (i + 1) / layers; // 0..1
-        const blur = Math.round(maxBlur * t * 10) / 10;
-
-        // Each layer is masked so it only shows in its slice of the band,
-        // producing a smooth ramp from clear -> strongest blur at the edge.
-        const start = Math.round(((i) / layers) * 100);
-        const mid = Math.round(((i + 0.5) / layers) * 100);
-        const end = Math.round(((i + 1.5) / layers) * 100);
-        const gradientDir = isBottom ? "to top" : "to bottom";
-        const mask = `linear-gradient(${gradientDir},
-          rgba(0,0,0,1) ${start}%,
-          rgba(0,0,0,1) ${mid}%,
-          rgba(0,0,0,0) ${Math.min(end, 100)}%)`;
+        const blur = +(maxBlur * t).toFixed(1);
+        // Stronger layers occupy a smaller band near the edge.
+        const opaqueTo = Math.round((1 - t) * 100); // fully visible from edge to this %
+        const fadeTo = Math.min(opaqueTo + Math.round(100 / layers), 100);
+        const mask = `linear-gradient(${gradientDir}, #000 ${opaqueTo}%, transparent ${fadeTo}%)`;
 
         return (
           <div
