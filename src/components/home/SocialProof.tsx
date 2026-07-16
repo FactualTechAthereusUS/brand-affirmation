@@ -77,17 +77,27 @@ function Card({ r, active }: { r: Review; active: boolean }) {
           />
         </div>
       </div>
-      <div className="mt-5">
-        <div className="text-[15px] font-medium text-ink">{r.name}</div>
-        <div className="mt-0.5 text-[13px] text-[#6B6B6B]">{r.meta}</div>
+      <div className="mt-5 flex items-center gap-3">
+        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[#F3F2EE] ring-1 ring-black/5">
+          <img
+            src={r.image}
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover"
+            style={{ objectPosition: "50% 25%" }}
+            loading="lazy"
+          />
+        </div>
+        <div className="min-w-0">
+          <div className="truncate text-[15px] font-medium text-ink">{r.name}</div>
+          <div className="mt-0.5 truncate text-[13px] text-[#6B6B6B]">{r.meta}</div>
+        </div>
       </div>
       <div className="mt-3">
         <Stars />
       </div>
-      <p className="mt-4 text-[15px] leading-[1.55] text-ink">
-        <span className="font-semibold">{r.lead}</span>{" "}
-        <span className="text-[#5A5A57]">{r.body}</span>
-      </p>
+      <p className="mt-3 text-[15px] font-semibold leading-[1.35] text-ink">{r.lead}</p>
+      <p className="mt-2 text-[15px] leading-[1.55] text-[#5A5A57]">{r.body}</p>
     </article>
   );
 }
