@@ -142,43 +142,43 @@ export function WLCalculator() {
 
   return (
     <section
-      className="relative overflow-hidden py-16 md:py-24"
+      className="relative overflow-hidden py-12 sm:py-16 md:py-24"
       style={{
         backgroundImage: `url(${bgImg.url})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <div className="mb-10 text-center md:mb-14">
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8">
+        <div className="mb-8 text-center sm:mb-10 md:mb-14">
+          <h2 className="text-[26px] font-semibold leading-[1.15] tracking-tight text-white sm:text-3xl md:text-5xl">
             See how much you could lose.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm text-white/85 md:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-[13px] text-white/85 sm:mt-4 sm:text-sm md:text-base">
             Adjust your starting weight to estimate your results with GLP-1 treatment.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+        <div className="grid gap-5 sm:gap-6 lg:grid-cols-2 lg:gap-8">
           {/* LEFT — Slider card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="rounded-3xl bg-white/25 p-7 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl md:p-9"
+            className="rounded-3xl bg-white/25 p-5 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl sm:p-7 md:p-9"
           >
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-3">
               <label htmlFor="weight-slider" className="text-sm font-medium text-white md:text-base">
                 Current weight
               </label>
               <div className="flex items-baseline gap-1 text-white">
-                <span className="text-3xl font-bold tracking-tight md:text-4xl">{weight}</span>
-                <span className="text-xl font-semibold md:text-2xl">lbs</span>
+                <span className="text-[28px] font-bold tracking-tight sm:text-3xl md:text-4xl">{weight}</span>
+                <span className="text-lg font-semibold sm:text-xl md:text-2xl">lbs</span>
               </div>
             </div>
 
-            <div className="relative mt-6">
+            <div className="relative mt-5 sm:mt-6">
               <div className="h-[3px] w-full rounded-full bg-white/25" />
               <div
                 className="pointer-events-none absolute left-0 top-0 h-[3px] rounded-full bg-white"
@@ -200,14 +200,14 @@ export function WLCalculator() {
               </div>
             </div>
 
-            <div className="mt-10 flex items-center justify-between gap-4 md:mt-14">
-              <span className="text-sm font-medium text-white md:text-base">You could lose up to</span>
+            <div className="mt-8 flex items-center justify-between gap-3 sm:mt-10 md:mt-14">
+              <span className="text-[13px] font-medium text-white sm:text-sm md:text-base">You could lose up to</span>
               <motion.span
                 key={lossTirz}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
-                className="text-4xl font-bold tracking-tight text-white md:text-5xl"
+                className="text-[32px] font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
               >
                 {lossTirz} lbs
               </motion.span>
@@ -217,13 +217,13 @@ export function WLCalculator() {
               href="#assessment"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              className="mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white text-base font-semibold text-black shadow-lg transition-shadow hover:shadow-xl"
+              className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-[15px] font-semibold text-black shadow-lg transition-shadow hover:shadow-xl sm:mt-8 sm:h-14 sm:text-base"
             >
               Start My Free Assessment
               <ArrowRight className="h-5 w-5" strokeWidth={2} />
             </motion.a>
 
-            <p className="mt-4 text-center text-[12px] leading-relaxed text-white/70">
+            <p className="mt-4 text-center text-[11px] leading-relaxed text-white/70 sm:text-[12px]">
               *Based on published clinical trial averages showing 15-22% body weight reduction.
               Individual results vary and are not guaranteed.
             </p>
@@ -235,12 +235,12 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl bg-white/25 p-5 ring-1 ring-white/40 backdrop-blur-xl md:p-7"
+            className="rounded-3xl bg-white/25 p-4 ring-1 ring-white/40 backdrop-blur-xl sm:p-5 md:p-7"
           >
-            <div className="flex items-center justify-between text-white">
+            <div className="flex flex-col gap-3 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="text-xs uppercase tracking-wide text-white/60">Projected in 5 months</div>
-                <div className="text-2xl font-semibold tracking-tight md:text-3xl">{endTirz} lbs</div>
+                <div className="text-[10px] uppercase tracking-wide text-white/60 sm:text-xs">Projected in 5 months</div>
+                <div className="text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">{endTirz} lbs</div>
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-white/80">
                 <span className="inline-flex items-center gap-2">
@@ -253,7 +253,7 @@ export function WLCalculator() {
               </div>
             </div>
 
-            <div className="relative mt-4 h-[280px] w-full md:h-[340px]">
+            <div className="relative mt-4 h-[240px] w-full sm:h-[280px] md:h-[340px]">
               <canvas ref={canvasRef} />
             </div>
           </motion.div>
@@ -262,3 +262,4 @@ export function WLCalculator() {
     </section>
   );
 }
+
