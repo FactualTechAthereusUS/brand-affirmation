@@ -36,7 +36,7 @@ export function Numbers() {
                     </span>
                   )}
                   {s.star && (
-                    <span className="ml-1.5 text-[36px] leading-none text-[#E85A6B] md:text-[44px]">
+                    <span className="ml-1.5 text-[36px] leading-none text-[#ee7273] md:text-[44px]">
                       ★
                     </span>
                   )}

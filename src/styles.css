@@ -16,7 +16,7 @@
   /* Brand palette */
   --color-canvas: #ffffff;
   --color-ink: #171717;
-  --color-ever: #B8543F;
+  --color-ever: #ee7273;
   --color-mist: #d8d2c7;
   --color-bluebell: #8b9bb4;
   --color-honey: #c4a265;
@@ -73,13 +73,13 @@
   --secondary-foreground: #171717;
   --muted: #f0ebe3;
   --muted-foreground: #6b6b6b;
-  --accent: #B8543F;
+  --accent: #ee7273;
   --accent-foreground: #f8f5ef;
   --destructive: #c4998a;
   --destructive-foreground: #ffffff;
   --border: #e8e4dc;
   --input: #e8e4dc;
-  --ring: #B8543F;
+  --ring: #ee7273;
 }
 
 @layer base {
