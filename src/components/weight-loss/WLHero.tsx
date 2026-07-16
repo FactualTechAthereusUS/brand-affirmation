@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import heroImg from "@/assets/wl-hero-desktop.png.asset.json";
 import heroImgMobile from "@/assets/wl-hero-mobile.png.asset.json";
+import vialImg from "@/assets/blissley-vial.png.asset.json";
 
 export function WLHero() {
   return (
