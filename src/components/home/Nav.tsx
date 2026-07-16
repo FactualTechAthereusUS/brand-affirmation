@@ -118,9 +118,14 @@ export function Nav() {
             >
               Login
             </a>
-            <button className="rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-canvas transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <motion.button
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 420, damping: 26 }}
+              className="rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-canvas"
+            >
               Get started
-            </button>
+            </motion.button>
           </div>
 
           {/* Mobile actions — liquid glass Get started + hamburger */}
