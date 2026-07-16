@@ -49,7 +49,7 @@ const items: Item[] = [
 
 function Card({ item, index }: { item: Item; index: number }) {
   return (
-    <Reveal delay={index * 0.06} blur>
+    <Reveal delay={index * 0.06} blur={12}>
       <div
         className="group relative h-full overflow-hidden rounded-[28px] border border-black/5 bg-gradient-to-b from-white to-[#F5F3EE] p-6 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_20px_50px_-30px_rgba(23,23,23,0.25)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_30px_60px_-25px_rgba(23,23,23,0.35)] md:p-8"
       >
