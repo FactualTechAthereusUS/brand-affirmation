@@ -256,14 +256,45 @@ function WeightChart({
         />
 
         {/* semaglutide (dashed) */}
-        <path d={semaD} fill="none" stroke="white" strokeOpacity={0.7} strokeWidth={2} strokeDasharray="5 4" />
+        <motion.path
+          d={semaD}
+          animate={{ d: semaD }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          fill="none"
+          stroke="white"
+          strokeOpacity={0.7}
+          strokeWidth={2}
+          strokeDasharray="5 4"
+        />
         {/* tirzepatide (solid) */}
-        <path d={tirzD} fill="none" stroke="white" strokeWidth={2.75} strokeLinecap="round" />
+        <motion.path
+          d={tirzD}
+          animate={{ d: tirzD }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          fill="none"
+          stroke="white"
+          strokeWidth={2.75}
+          strokeLinecap="round"
+        />
 
         {/* start point */}
-        <circle cx={startX} cy={startY} r={5} fill="white" />
+        <motion.circle
+          cx={startX}
+          cy={startY}
+          animate={{ cx: startX, cy: startY }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          r={5}
+          fill="white"
+        />
         {/* end point */}
-        <circle cx={endX} cy={endY} r={5} fill="white" />
+        <motion.circle
+          cx={endX}
+          cy={endY}
+          animate={{ cx: endX, cy: endY }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          r={5}
+          fill="white"
+        />
 
         {/* start label */}
         <g>
