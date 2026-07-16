@@ -35,8 +35,8 @@ function ProgramCard({ p, index }: { p: (typeof programs)[number]; index: number
     target: ref,
     offset: ["start 90%", "end 10%"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["8%", "-8%"]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
+  const y = useTransform(scrollYProgress, [0, 1], ["4%", "-4%"]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.03, 1, 1.03]);
 
   return (
     <Reveal delay={index * 0.08}>
