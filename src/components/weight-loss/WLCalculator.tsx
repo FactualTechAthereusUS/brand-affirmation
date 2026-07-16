@@ -196,8 +196,9 @@ function WeightChart({
   const innerW = W - padL - padR;
   const innerH = H - padT - padB;
 
-  const yMax = startWeight * 1.02;
-  const yMin = startWeight * 0.72;
+  // Fixed y-domain so the curve visibly shifts as the weight changes
+  const yMax = MAX * 1.02; // ~408
+  const yMin = MIN * 0.72; // ~108
 
   const xAt = (i: number, total: number) => padL + (i / (total - 1)) * innerW;
   const yAt = (v: number) => padT + (1 - (v - yMin) / (yMax - yMin)) * innerH;
