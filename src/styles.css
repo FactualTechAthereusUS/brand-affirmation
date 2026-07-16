@@ -49,7 +49,7 @@
   --font-display: "Google Sans Flex", "Google Sans Flex Placeholder", "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Google Sans Flex", "Google Sans Flex Placeholder", "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-hero: "Google Sans Flex", "Google Sans Flex Placeholder", "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-serif: "Manrope", "Google Sans Flex", ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-hero,
