@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeightLossRouteImport } from './routes/weight-loss'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as RefundRouteImport } from './routes/refund'
@@ -17,6 +18,11 @@ import { Route as MedicationSafetyRouteImport } from './routes/medication-safety
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WeightLossRoute = WeightLossRouteImport.update({
+  id: '/weight-loss',
+  path: '/weight-loss',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
+  '/weight-loss': typeof WeightLossRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
+  '/weight-loss': typeof WeightLossRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
+  '/weight-loss': typeof WeightLossRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/refund'
     | '/shipping'
     | '/terms'
+    | '/weight-loss'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/refund'
     | '/shipping'
     | '/terms'
+    | '/weight-loss'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/refund'
     | '/shipping'
     | '/terms'
+    | '/weight-loss'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,10 +131,18 @@ export interface RootRouteChildren {
   RefundRoute: typeof RefundRoute
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
+  WeightLossRoute: typeof WeightLossRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weight-loss': {
+      id: '/weight-loss'
+      path: '/weight-loss'
+      fullPath: '/weight-loss'
+      preLoaderRoute: typeof WeightLossRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   RefundRoute: RefundRoute,
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
+  WeightLossRoute: WeightLossRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
