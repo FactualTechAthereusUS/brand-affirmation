@@ -15,6 +15,7 @@ const cards = [
     sub: "From $249/mo",
     image: weightImg.url,
     position: "object-center",
+    span: "md:col-span-2 md:row-span-2",
   },
   {
     tag: "Prescription Skincare",
@@ -22,6 +23,7 @@ const cards = [
     sub: "From $89/mo",
     image: skinImg.url,
     position: "object-center",
+    span: "md:col-span-1 md:row-span-1",
   },
   {
     tag: "Regrowth · Finasteride · Minoxidil",
@@ -29,6 +31,7 @@ const cards = [
     sub: "From $29/mo",
     image: hairImg.url,
     position: "object-top",
+    span: "md:col-span-1 md:row-span-2",
   },
   {
     tag: "ED · Libido · Performance",
@@ -36,6 +39,7 @@ const cards = [
     sub: "From $79/mo",
     image: sexualImg.url,
     position: "object-center",
+    span: "md:col-span-1 md:row-span-1",
   },
   {
     tag: "Testosterone · Vitality · Focus",
@@ -43,6 +47,7 @@ const cards = [
     sub: "From $99/mo",
     image: mensImg.url,
     position: "object-top",
+    span: "md:col-span-1 md:row-span-1",
   },
   {
     tag: "NAD+ · Peptides · HRT",
@@ -50,6 +55,7 @@ const cards = [
     sub: "From $149/mo",
     image: longevityImg.url,
     position: "object-center",
+    span: "md:col-span-2 md:row-span-1",
   },
   {
     tag: "HRT · Hormone Balance · Relief",
@@ -57,8 +63,10 @@ const cards = [
     sub: "From $119/mo",
     image: menopauseImg.url,
     position: "object-top",
+    span: "md:col-span-1 md:row-span-1",
   },
 ];
+
 
 export function CategoryGrid() {
   return (
