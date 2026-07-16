@@ -78,6 +78,7 @@ function WeightLoss() {
         <Suspense fallback={<Fallback />}><WLPrograms /></Suspense>
         <Suspense fallback={<Fallback />}><WhyBlissley /></Suspense>
         <Suspense fallback={<Fallback />}><WLSocialProof /></Suspense>
+        <Suspense fallback={<Fallback />}><WLBeforeAfter /></Suspense>
         <Suspense fallback={<Fallback />}><WLFinalCTA /></Suspense>
       </main>
       <Footer />
