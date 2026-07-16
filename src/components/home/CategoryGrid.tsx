@@ -15,6 +15,7 @@ const cards = [
     sub: "From $249/mo",
     image: weightImg.url,
     position: "object-center",
+    span: "md:col-span-2 md:row-span-2",
   },
   {
     tag: "Prescription Skincare",
@@ -22,6 +23,7 @@ const cards = [
     sub: "From $89/mo",
     image: skinImg.url,
     position: "object-center",
+    span: "md:col-span-1 md:row-span-1",
   },
   {
     tag: "Regrowth · Finasteride · Minoxidil",
@@ -29,6 +31,7 @@ const cards = [
     sub: "From $29/mo",
     image: hairImg.url,
     position: "object-top",
+    span: "md:col-span-1 md:row-span-2",
   },
   {
     tag: "ED · Libido · Performance",
@@ -36,6 +39,7 @@ const cards = [
     sub: "From $79/mo",
     image: sexualImg.url,
     position: "object-center",
+    span: "md:col-span-1 md:row-span-1",
   },
   {
     tag: "Testosterone · Vitality · Focus",
@@ -43,6 +47,7 @@ const cards = [
     sub: "From $99/mo",
     image: mensImg.url,
     position: "object-top",
+    span: "md:col-span-1 md:row-span-1",
   },
   {
     tag: "NAD+ · Peptides · HRT",
@@ -50,6 +55,7 @@ const cards = [
     sub: "From $149/mo",
     image: longevityImg.url,
     position: "object-center",
+    span: "md:col-span-2 md:row-span-1",
   },
   {
     tag: "HRT · Hormone Balance · Relief",
@@ -57,8 +63,10 @@ const cards = [
     sub: "From $119/mo",
     image: menopauseImg.url,
     position: "object-top",
+    span: "md:col-span-1 md:row-span-1",
   },
 ];
+
 
 export function CategoryGrid() {
   return (
@@ -72,19 +80,14 @@ export function CategoryGrid() {
           </h2>
         </Reveal>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:gap-5">
+        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:auto-rows-[minmax(0,260px)] md:gap-5">
           {cards.map((c, i) => {
-            // Desktop layout: first card spans 2 cols x 2 rows (large hero), rest fill
             const featured = i === 0;
             return (
               <Reveal key={c.title} delay={i * 0.05}>
                 <a
                   href="#"
-                  className={`group relative block overflow-hidden rounded-3xl ${
-                    featured
-                      ? "aspect-square md:col-span-2 md:row-span-2 md:aspect-auto md:h-full"
-                      : "aspect-square md:aspect-[4/5]"
-                  }`}
+                  className={`group relative block h-full overflow-hidden rounded-3xl aspect-square md:aspect-auto ${c.span}`}
                 >
                   <img
                     src={c.image}
@@ -97,7 +100,7 @@ export function CategoryGrid() {
                     <span className="mb-3 w-fit rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md">
                       {c.tag}
                     </span>
-                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[26px] md:text-[38px]" : "text-[19px] md:text-[24px]"}`}>
+                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[26px] md:text-[44px]" : "text-[19px] md:text-[24px]"}`}>
                       {c.title}
                     </h3>
                     <p className="mt-1 text-[13px] text-white/80 md:text-[14px]">{c.sub}</p>
