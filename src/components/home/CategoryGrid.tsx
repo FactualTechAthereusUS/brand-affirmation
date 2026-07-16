@@ -80,19 +80,14 @@ export function CategoryGrid() {
           </h2>
         </Reveal>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:gap-5">
+        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:auto-rows-[minmax(0,260px)] md:gap-5">
           {cards.map((c, i) => {
-            // Desktop layout: first card spans 2 cols x 2 rows (large hero), rest fill
             const featured = i === 0;
             return (
               <Reveal key={c.title} delay={i * 0.05}>
                 <a
                   href="#"
-                  className={`group relative block overflow-hidden rounded-3xl ${
-                    featured
-                      ? "aspect-square md:col-span-2 md:row-span-2 md:aspect-auto md:h-full"
-                      : "aspect-square md:aspect-[4/5]"
-                  }`}
+                  className={`group relative block h-full overflow-hidden rounded-3xl aspect-square md:aspect-auto ${c.span}`}
                 >
                   <img
                     src={c.image}
@@ -105,7 +100,7 @@ export function CategoryGrid() {
                     <span className="mb-3 w-fit rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md">
                       {c.tag}
                     </span>
-                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[26px] md:text-[38px]" : "text-[19px] md:text-[24px]"}`}>
+                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[26px] md:text-[44px]" : "text-[19px] md:text-[24px]"}`}>
                       {c.title}
                     </h3>
                     <p className="mt-1 text-[13px] text-white/80 md:text-[14px]">{c.sub}</p>
@@ -119,6 +114,18 @@ export function CategoryGrid() {
             );
           })}
         </div>
+
+        <Reveal delay={0.2}>
+          <div className="mt-8 text-center">
+            <a
+              href="#"
+              className="inline-flex items-center gap-1.5 text-[14px] font-medium text-ever underline-offset-4 hover:underline"
+            >
+              View all treatments
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
+
 
         <Reveal delay={0.2}>
           <div className="mt-8 text-center">
