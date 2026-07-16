@@ -109,7 +109,7 @@ export function Nav() {
           {/* Right actions */}
           <div className="hidden items-center gap-2 lg:flex">
             <a
-              href="#"
+              href="/login"
               className={`rounded-full px-5 py-2.5 text-[14px] font-medium backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 ${
                 scrolled
                   ? "border border-black/10 bg-white/60 text-ink shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] hover:bg-white/80"
@@ -199,9 +199,9 @@ export function Nav() {
               <button className="h-14 flex-1 rounded-full bg-canvas text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-[1.01] active:scale-[0.99]">
                 Get started
               </button>
-              <button className="h-14 rounded-full border border-white/20 bg-white/[0.08] px-7 text-[15px] font-medium text-canvas backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:bg-white/[0.14]">
+              <a href="/login" className="grid h-14 place-items-center rounded-full border border-white/20 bg-white/[0.08] px-7 text-[15px] font-medium text-canvas backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:bg-white/[0.14]">
                 Login
-              </button>
+              </a>
             </div>
           </motion.div>
         )}
