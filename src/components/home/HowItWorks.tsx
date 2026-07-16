@@ -64,15 +64,15 @@ function StepRow({ step, index }: { step: (typeof steps)[number]; index: number 
         </p>
       </div>
       <div
-        className={`hidden h-[104px] w-[128px] shrink-0 items-center justify-center rounded-2xl ${step.tint} md:flex`}
+        className={`hidden h-[104px] w-[128px] shrink-0 overflow-hidden rounded-2xl ${step.tint} md:block`}
       >
-        <img src={step.icon} alt="" className="h-16 w-16 object-contain" />
+        <img src={step.icon} alt="" className="h-full w-full object-cover" />
       </div>
       <div
-        className={`col-span-3 -mt-2 flex h-[96px] items-center justify-center rounded-2xl ${step.tint} md:hidden`}
+        className={`col-span-3 -mt-2 h-[96px] overflow-hidden rounded-2xl ${step.tint} md:hidden`}
         aria-hidden={index < 0}
       >
-        <img src={step.icon} alt="" className="h-14 w-14 object-contain" />
+        <img src={step.icon} alt="" className="h-full w-full object-cover" />
       </div>
     </motion.div>
   );
