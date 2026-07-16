@@ -17,6 +17,7 @@ import { FAQ } from "@/components/home/FAQ";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/home/Footer";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { ProgressiveBlur } from "@/components/ProgressiveBlur";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,6 +69,7 @@ function Index() {
         <FinalCTA />
       </main>
       <Footer />
+      <ProgressiveBlur side="bottom" height={160} layers={5} maxBlur={16} activateAfter={200} />
     </div>
   );
 }
