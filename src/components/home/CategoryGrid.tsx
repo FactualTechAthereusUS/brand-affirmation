@@ -79,7 +79,7 @@ export function CategoryGrid() {
         <div className="mt-8 flex flex-col gap-4 md:hidden">
           {cards.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.05} blur={14} y={30}>
-              <a href="#" className="group relative block aspect-[4/3] overflow-hidden rounded-3xl">
+              <a href={c.href} className="group relative block aspect-[4/3] overflow-hidden rounded-3xl">
                 <img
                   src={c.image}
                   alt={c.title}
