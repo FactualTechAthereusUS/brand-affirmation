@@ -29,6 +29,9 @@ const WLFinalCTA = lazy(() =>
 const WLBeforeAfter = lazy(() =>
   import("@/components/weight-loss/WLBeforeAfter").then((m) => ({ default: m.WLBeforeAfter })),
 );
+const WLFAQ = lazy(() =>
+  import("@/components/weight-loss/WLFAQ").then((m) => ({ default: m.WLFAQ })),
+);
 const DeferredEffects = lazy(() =>
   import("@/components/DeferredEffects").then((m) => ({ default: m.DeferredEffects })),
 );
@@ -79,6 +82,7 @@ function WeightLoss() {
         <Suspense fallback={<Fallback />}><WhyBlissley /></Suspense>
         <Suspense fallback={<Fallback />}><WLSocialProof /></Suspense>
         <Suspense fallback={<Fallback />}><WLBeforeAfter /></Suspense>
+        <Suspense fallback={<Fallback />}><WLFAQ /></Suspense>
         <Suspense fallback={<Fallback />}><WLFinalCTA /></Suspense>
       </main>
       <Footer />
