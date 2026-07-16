@@ -45,7 +45,11 @@ function MobileCard({ item, index }: { item: Item; index: number }) {
       <div className="rounded-3xl bg-[#F3F2EE] px-5 py-6">
         <div className="flex items-start gap-4">
           <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <img src={item.image} alt="" className="h-6 w-6 object-contain" />
+            <img
+              src={item.image}
+              alt=""
+              className={`object-contain ${index < 3 ? "h-7 w-7" : "h-6 w-6"}`}
+            />
           </div>
           <div className="min-w-0 flex-1 pt-1">
             <h3 className="text-[19px] font-semibold leading-[1.2] tracking-[-0.01em] text-ink">
@@ -72,7 +76,11 @@ function DesktopCard({ item, index }: { item: Item; index: number }) {
         <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(120%_60%_at_0%_0%,rgba(255,255,255,0.9),transparent_50%)]" />
         <div className="relative flex items-start gap-6">
           <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-white/70 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_10px_30px_-10px_rgba(23,23,23,0.15)] ring-1 ring-black/5 backdrop-blur-xl">
-            <img src={item.image} alt="" className="h-10 w-10 object-contain" />
+            <img
+              src={item.image}
+              alt=""
+              className={`object-contain ${index < 3 ? "h-11 w-11" : "h-10 w-10"}`}
+            />
           </div>
           <div className="min-w-0 flex-1 pt-1">
             <h3 className="text-[26px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink">
