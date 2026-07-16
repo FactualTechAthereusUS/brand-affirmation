@@ -77,17 +77,27 @@ function Card({ r, active }: { r: Review; active: boolean }) {
           />
         </div>
       </div>
-      <div className="mt-5">
-        <div className="text-[15px] font-medium text-ink">{r.name}</div>
-        <div className="mt-0.5 text-[13px] text-[#6B6B6B]">{r.meta}</div>
+      <div className="mt-5 flex items-center gap-3">
+        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[#F3F2EE] ring-1 ring-black/5">
+          <img
+            src={r.image}
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover"
+            style={{ objectPosition: "50% 25%" }}
+            loading="lazy"
+          />
+        </div>
+        <div className="min-w-0">
+          <div className="truncate text-[15px] font-medium text-ink">{r.name}</div>
+          <div className="mt-0.5 truncate text-[13px] text-[#6B6B6B]">{r.meta}</div>
+        </div>
       </div>
       <div className="mt-3">
         <Stars />
       </div>
-      <p className="mt-4 text-[15px] leading-[1.55] text-ink">
-        <span className="font-semibold">{r.lead}</span>{" "}
-        <span className="text-[#5A5A57]">{r.body}</span>
-      </p>
+      <p className="mt-3 text-[15px] font-semibold leading-[1.35] text-ink">{r.lead}</p>
+      <p className="mt-2 text-[15px] leading-[1.55] text-[#5A5A57]">{r.body}</p>
     </article>
   );
 }
@@ -196,34 +206,36 @@ export function SocialProof() {
           <div className="w-6 shrink-0" />
         </div>
 
-        {/* iPhone-style dot pagination */}
-        <div className="mt-6 flex items-center justify-center gap-1.5">
-          {reviews.map((_, i) => {
-            const dist = Math.abs(i - active);
-            const isActive = i === active;
-            const size = isActive ? 8 : dist === 1 ? 6 : dist === 2 ? 5 : 4;
-            const opacity = isActive ? 1 : dist === 1 ? 0.55 : dist === 2 ? 0.35 : 0.2;
-            return (
-              <button
-                key={i}
-                aria-label={`Go to review ${i + 1}`}
-                onClick={() => {
-                  pause();
-                  goTo(i);
-                }}
-                className="flex h-6 w-6 items-center justify-center"
-              >
-                <span
-                  className="rounded-full bg-ink transition-all duration-500 ease-out"
-                  style={{
-                    width: isActive ? 22 : size,
-                    height: size,
-                    opacity,
-                  }}
-                />
-              </button>
-            );
-          })}
+        {/* iPhone-style pill dot pagination */}
+        <div className="mt-8 flex justify-center">
+          <div className="flex items-center gap-2 rounded-full bg-[#F1EFEA] px-3 py-2">
+            {(() => {
+              const total = reviews.length;
+              const windowSize = Math.min(6, total);
+              let start = Math.max(0, active - Math.floor(windowSize / 2));
+              start = Math.min(start, total - windowSize);
+              const dots = Array.from({ length: windowSize }, (_, k) => start + k);
+              return dots.map((i) => {
+                const isActive = i === active;
+                return (
+                  <button
+                    key={i}
+                    aria-label={`Go to review ${i + 1}`}
+                    onClick={() => {
+                      pause();
+                      goTo(i);
+                    }}
+                    className="rounded-full transition-all duration-500 ease-out"
+                    style={{
+                      width: 8,
+                      height: 8,
+                      backgroundColor: isActive ? "#171717" : "#C9C6BF",
+                    }}
+                  />
+                );
+              });
+            })()}
+          </div>
         </div>
       </div>
     </section>
