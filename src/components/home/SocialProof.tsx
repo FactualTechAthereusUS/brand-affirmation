@@ -40,7 +40,7 @@ export function SocialProof() {
       <div className="mx-auto max-w-6xl px-6 text-center">
         <Reveal>
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
-            What people are <span className="font-display italic font-normal text-ever">saying.</span>
+            What people are <span className="italic text-ever">saying.</span>
           </h2>
           <p className="mt-3 text-[14px] text-[#6B6B6B] md:text-[16px]">
             <span className="text-honey">★★★★★</span> &nbsp; 4.8 out of 5 · 3,000+ reviews

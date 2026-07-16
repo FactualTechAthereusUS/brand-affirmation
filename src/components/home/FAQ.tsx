@@ -46,7 +46,7 @@ export function FAQ() {
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
-            Common <span className="font-display italic font-normal text-ever">questions.</span>
+            Common <span className="italic text-ever">questions.</span>
           </h2>
         </Reveal>
 
