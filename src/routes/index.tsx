@@ -1,23 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import heroDesktop from "@/assets/hero-portrait-new.png.asset.json";
 import heroMobile from "@/assets/mobile-hero-portrait.png.asset.json";
 import { Nav } from "@/components/home/Nav";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { Hero } from "@/components/home/Hero";
-import { PressLogos } from "@/components/home/PressLogos";
-import { CategoryGrid } from "@/components/home/CategoryGrid";
-import { WhyBlissley } from "@/components/home/WhyBlissley";
-import { HowItWorks } from "@/components/home/HowItWorks";
-import { FeaturedPrograms } from "@/components/home/FeaturedPrograms";
-import { SocialProof } from "@/components/home/SocialProof";
-import { Numbers } from "@/components/home/Numbers";
-import { Comparison } from "@/components/home/Comparison";
-import { Products } from "@/components/home/Products";
-import { FAQ } from "@/components/home/FAQ";
-import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/home/Footer";
-import { SmoothScroll } from "@/components/SmoothScroll";
-import { ProgressiveBlur } from "@/components/ProgressiveBlur";
+
+// Above-the-fold stays eager. Everything below is lazy-loaded so the initial
+// bundle is smaller and TTI/LCP improve.
+const PressLogos = lazy(() => import("@/components/home/PressLogos").then(m => ({ default: m.PressLogos })));
+const CategoryGrid = lazy(() => import("@/components/home/CategoryGrid").then(m => ({ default: m.CategoryGrid })));
+const WhyBlissley = lazy(() => import("@/components/home/WhyBlissley").then(m => ({ default: m.WhyBlissley })));
+const HowItWorks = lazy(() => import("@/components/home/HowItWorks").then(m => ({ default: m.HowItWorks })));
+const FeaturedPrograms = lazy(() => import("@/components/home/FeaturedPrograms").then(m => ({ default: m.FeaturedPrograms })));
+const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
+const Numbers = lazy(() => import("@/components/home/Numbers").then(m => ({ default: m.Numbers })));
+const Products = lazy(() => import("@/components/home/Products").then(m => ({ default: m.Products })));
+const Comparison = lazy(() => import("@/components/home/Comparison").then(m => ({ default: m.Comparison })));
+const FAQ = lazy(() => import("@/components/home/FAQ").then(m => ({ default: m.FAQ })));
+const FinalCTA = lazy(() => import("@/components/home/FinalCTA").then(m => ({ default: m.FinalCTA })));
+const DeferredEffects = lazy(() => import("@/components/DeferredEffects").then(m => ({ default: m.DeferredEffects })));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,29 +50,31 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+function Fallback({ h = 400 }: { h?: number }) {
+  return <div style={{ minHeight: h }} aria-hidden />;
+}
+
 function Index() {
   return (
     <div className="min-h-screen bg-canvas">
-      <SmoothScroll />
       <AnnouncementBar />
       <Nav />
       <main>
         <Hero />
-
-        <PressLogos />
-        <CategoryGrid />
-        <WhyBlissley />
-        <HowItWorks />
-        <FeaturedPrograms />
-        <SocialProof />
-        <Numbers />
-        <Products />
-        <Comparison />
-        <FAQ />
-        <FinalCTA />
+        <Suspense fallback={<Fallback h={120} />}><PressLogos /></Suspense>
+        <Suspense fallback={<Fallback />}><CategoryGrid /></Suspense>
+        <Suspense fallback={<Fallback />}><WhyBlissley /></Suspense>
+        <Suspense fallback={<Fallback />}><HowItWorks /></Suspense>
+        <Suspense fallback={<Fallback />}><FeaturedPrograms /></Suspense>
+        <Suspense fallback={<Fallback />}><SocialProof /></Suspense>
+        <Suspense fallback={<Fallback h={200} />}><Numbers /></Suspense>
+        <Suspense fallback={<Fallback />}><Products /></Suspense>
+        <Suspense fallback={<Fallback />}><Comparison /></Suspense>
+        <Suspense fallback={<Fallback />}><FAQ /></Suspense>
+        <Suspense fallback={<Fallback />}><FinalCTA /></Suspense>
       </main>
       <Footer />
-      <ProgressiveBlur side="bottom" height={140} layers={5} maxBlur={12} activateAfter={0} />
+      <Suspense fallback={null}><DeferredEffects /></Suspense>
     </div>
   );
 }
