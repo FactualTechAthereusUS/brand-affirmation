@@ -1,33 +1,142 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Filler,
+} from "chart.js";
 import bgImg from "@/assets/calc-bg.png.asset.json";
 
-const MIN = 120;
-const MAX = 500;
-const DEFAULT = 220;
-const MONTHS = ["JUL", "AUG", "SEP", "OCT", "NOV"];
+Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Filler);
 
-// ease-in-out cubic for a natural S-curve weight-loss trajectory
-function weightAt(monthIdx: number, total: number, start: number, end: number) {
-  const t = monthIdx / total;
-  const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  return start - (start - end) * eased;
+const MIN = 150;
+const MAX = 400;
+const DEFAULT = 220;
+const LABELS = ["Now", "Month 1", "Month 2", "Month 3", "Month 4", "Month 5"];
+
+function getPoint(month: number, start: number, end: number) {
+  const t = month / 5;
+  const eased = 1 - Math.pow(1 - t, 3);
+  return Math.round(start - (start - end) * eased);
 }
+
+const buildSeries = (weight: number, endMultiplier: number) =>
+  LABELS.map((_, i) => getPoint(i, weight, weight * endMultiplier));
 
 export function WLCalculator() {
   const [weight, setWeight] = useState<number>(DEFAULT);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const chartRef = useRef<Chart | null>(null);
 
-  const { lossTirz, goalTirz, tirzPoints } = useMemo(() => {
-    const endTirz = weight * 0.78;
-    const total = MONTHS.length - 1;
-    const tirz = MONTHS.map((_, i) => weightAt(i, total, weight, endTirz));
+  const { tirz, sema, lossTirz, endTirz } = useMemo(() => {
+    const t = buildSeries(weight, 0.78);
+    const s = buildSeries(weight, 0.85);
     return {
-      lossTirz: Math.round(weight - endTirz),
-      goalTirz: Math.round(endTirz),
-      tirzPoints: tirz,
+      tirz: t,
+      sema: s,
+      lossTirz: Math.round(weight * 0.22),
+      endTirz: Math.round(weight * 0.78),
     };
   }, [weight]);
+
+  // Create chart once
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    const ctx = canvasRef.current.getContext("2d");
+    if (!ctx) return;
+
+    chartRef.current = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: LABELS,
+        datasets: [
+          {
+            label: "Tirzepatide",
+            data: tirz,
+            borderColor: "#ffffff",
+            backgroundColor: "#ffffff",
+            borderWidth: 2.5,
+            tension: 0.4,
+            pointRadius: (c) => (c.dataIndex === 0 || c.dataIndex === LABELS.length - 1 ? 5 : 0),
+            pointBackgroundColor: "#ffffff",
+            pointBorderColor: "#ffffff",
+            pointHoverRadius: 6,
+          },
+          {
+            label: "Semaglutide",
+            data: sema,
+            borderColor: "rgba(255,255,255,0.75)",
+            backgroundColor: "rgba(255,255,255,0.75)",
+            borderWidth: 2,
+            borderDash: [6, 5],
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 400, easing: "easeOutCubic" },
+        interaction: { intersect: false, mode: "index" },
+        plugins: {
+          tooltip: {
+            backgroundColor: "#0f2e44",
+            titleColor: "#fff",
+            bodyColor: "#fff",
+            padding: 10,
+            displayColors: false,
+            callbacks: { label: (i) => `${i.dataset.label}: ${i.formattedValue} lbs` },
+          },
+        },
+        scales: {
+          x: {
+            grid: { color: "rgba(255,255,255,0.08)" },
+            ticks: { color: "rgba(255,255,255,0.85)", font: { size: 11, weight: 600 } },
+            border: { display: false },
+          },
+          y: {
+            min: weight * 0.74,
+            max: weight * 1.02,
+            grid: { color: "rgba(255,255,255,0.08)" },
+            ticks: {
+              color: "rgba(255,255,255,0.7)",
+              font: { size: 10 },
+              callback: (v) => `${v} lbs`,
+              maxTicksLimit: 5,
+            },
+            border: { display: false },
+          },
+        },
+      },
+    });
+
+    return () => {
+      chartRef.current?.destroy();
+      chartRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update chart data on slider change
+  useEffect(() => {
+    const c = chartRef.current;
+    if (!c) return;
+    c.data.datasets[0].data = tirz;
+    c.data.datasets[1].data = sema;
+    if (c.options.scales?.y) {
+      (c.options.scales.y as any).min = weight * 0.74;
+      (c.options.scales.y as any).max = weight * 1.02;
+    }
+    c.update();
+  }, [weight, tirz, sema]);
 
   const pct = ((weight - MIN) / (MAX - MIN)) * 100;
 
@@ -40,8 +149,8 @@ export function WLCalculator() {
         backgroundPosition: "center",
       }}
     >
-      <div className="mx-auto max-w-3xl px-5 md:px-8">
-        <div className="mb-8 text-center md:mb-12">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
+        <div className="mb-10 text-center md:mb-14">
           <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
             See how much you could lose.
           </h2>
@@ -50,226 +159,106 @@ export function WLCalculator() {
           </p>
         </div>
 
-        {/* Slider card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="rounded-3xl bg-[#254c6b] p-7 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)] md:p-10"
-        >
-          <div className="flex items-center justify-between gap-4">
-            <label htmlFor="weight-slider" className="text-base font-semibold text-white md:text-lg">
-              How much do you weigh?
-            </label>
-            <div className="flex items-baseline gap-1.5 text-white">
-              <span className="text-3xl font-semibold tracking-tight md:text-5xl">{weight}</span>
-              <span className="text-xl font-medium md:text-2xl">lbs</span>
+        <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+          {/* LEFT — Slider card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl bg-[#1e4560]/85 p-7 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)] ring-1 ring-white/10 backdrop-blur-md md:p-9"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <label htmlFor="weight-slider" className="text-sm font-medium text-white md:text-base">
+                Current weight
+              </label>
+              <div className="flex items-baseline gap-1 text-white">
+                <span className="text-3xl font-bold tracking-tight md:text-4xl">{weight}</span>
+                <span className="text-xl font-semibold md:text-2xl">lbs</span>
+              </div>
             </div>
-          </div>
 
-          <div className="relative mt-5 md:mt-7">
-            <div className="h-[3px] w-full rounded-full bg-white/25" />
-            <div
-              className="pointer-events-none absolute left-0 top-0 h-[3px] rounded-full bg-white"
-              style={{ width: `${pct}%` }}
-            />
-            <input
-              id="weight-slider"
-              type="range"
-              min={MIN}
-              max={MAX}
-              value={weight}
-              onChange={(e) => setWeight(Number(e.target.value))}
-              className="absolute inset-0 w-full cursor-pointer appearance-none bg-transparent [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-lg [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white"
-              style={{ height: 24, marginTop: -10 }}
-            />
-          </div>
+            <div className="relative mt-6">
+              <div className="h-[3px] w-full rounded-full bg-white/25" />
+              <div
+                className="pointer-events-none absolute left-0 top-0 h-[3px] rounded-full bg-white"
+                style={{ width: `${pct}%` }}
+              />
+              <input
+                id="weight-slider"
+                type="range"
+                min={MIN}
+                max={MAX}
+                value={weight}
+                onChange={(e) => setWeight(Number(e.target.value))}
+                className="absolute inset-0 w-full cursor-pointer appearance-none bg-transparent [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-lg [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white"
+                style={{ height: 24, marginTop: -10 }}
+              />
+              <div className="mt-3 flex justify-between text-[11px] font-medium uppercase tracking-wide text-white/60">
+                <span>{MIN} lbs</span>
+                <span>{MAX} lbs</span>
+              </div>
+            </div>
 
-          <div className="mt-10 flex items-center justify-between gap-4 md:mt-14">
-            <span className="text-base font-semibold text-white md:text-2xl">You can lose up to</span>
-            <motion.span
-              key={lossTirz}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className="text-4xl font-semibold tracking-tight text-white md:text-6xl"
+            <div className="mt-10 flex items-center justify-between gap-4 md:mt-14">
+              <span className="text-sm font-medium text-white md:text-base">You could lose up to</span>
+              <motion.span
+                key={lossTirz}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className="text-4xl font-bold tracking-tight text-white md:text-5xl"
+              >
+                {lossTirz} lbs
+              </motion.span>
+            </div>
+
+            <motion.a
+              href="#assessment"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              className="mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white text-base font-semibold text-[#1e4560] shadow-lg transition-shadow hover:shadow-xl"
             >
-              {lossTirz} lbs
-            </motion.span>
-          </div>
-        </motion.div>
+              Start My Free Assessment
+              <ArrowRight className="h-5 w-5" strokeWidth={2} />
+            </motion.a>
 
-        {/* Chart card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-8 rounded-3xl bg-white/12 p-5 ring-1 ring-white/15 backdrop-blur-md md:mt-10 md:p-8"
-        >
-          <WeightChart
-            startWeight={weight}
-            goalTirz={goalTirz}
-            tirzPoints={tirzPoints}
-          />
-        </motion.div>
+            <p className="mt-4 text-center text-[12px] leading-relaxed text-white/70">
+              *Based on published clinical trial averages showing 15-22% body weight reduction.
+              Individual results vary and are not guaranteed.
+            </p>
+          </motion.div>
 
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[12px] font-medium leading-relaxed text-white/85 md:mt-8">
-          Illustrative weight-loss trajectory informed by published Tirzepatide clinical trial data
-          showing average 16–22% body-weight reductions in adults with obesity.
-        </p>
+          {/* RIGHT — Live chart card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="rounded-3xl bg-white/10 p-5 ring-1 ring-white/20 backdrop-blur-md md:p-7"
+          >
+            <div className="flex items-center justify-between text-white">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-white/60">Projected in 5 months</div>
+                <div className="text-2xl font-semibold tracking-tight md:text-3xl">{endTirz} lbs</div>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-white/80">
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-[2px] w-6 rounded bg-white" /> Tirzepatide
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-[2px] w-6 rounded border-t-2 border-dashed border-white/70" />
+                  Semaglutide
+                </span>
+              </div>
+            </div>
+
+            <div className="relative mt-4 h-[280px] w-full md:h-[340px]">
+              <canvas ref={canvasRef} />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
-  );
-}
-
-function WeightChart({
-  startWeight,
-  goalTirz,
-  tirzPoints,
-}: {
-  startWeight: number;
-  goalTirz: number;
-  tirzPoints: number[];
-}) {
-  const W = 640;
-  const H = 320;
-  const padL = 24;
-  const padR = 24;
-  const padT = 36;
-  const padB = 40;
-  const innerW = W - padL - padR;
-  const innerH = H - padT - padB;
-
-  // Relative y-domain — curve shape stays consistent, only the labels scale
-  const yMax = startWeight;
-  const yMin = startWeight * 0.75;
-
-  const xAt = (i: number, total: number) => padL + (i / (total - 1)) * innerW;
-  const yAt = (v: number) => padT + (1 - (v - yMin) / (yMax - yMin)) * innerH;
-
-  // Smooth Catmull-Rom → cubic bezier
-  const toPath = (pts: number[]) => {
-    const coords = pts.map((v, i) => [xAt(i, pts.length), yAt(v)] as const);
-    let d = `M ${coords[0][0]} ${coords[0][1]}`;
-    for (let i = 0; i < coords.length - 1; i++) {
-      const p0 = coords[i - 1] ?? coords[i];
-      const p1 = coords[i];
-      const p2 = coords[i + 1];
-      const p3 = coords[i + 2] ?? p2;
-      const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
-      const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
-      const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
-      const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
-      d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`;
-    }
-    return d;
-  };
-
-  const tirzD = toPath(tirzPoints);
-  const startX = xAt(0, tirzPoints.length);
-  const startY = yAt(tirzPoints[0]);
-  const endX = xAt(tirzPoints.length - 1, tirzPoints.length);
-  const endY = yAt(tirzPoints[tirzPoints.length - 1]);
-
-  const spring = { type: "spring" as const, stiffness: 140, damping: 22 };
-
-  return (
-    <div className="w-full">
-      <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full">
-        {/* vertical grid */}
-        {MONTHS.map((_, i) => (
-          <line
-            key={i}
-            x1={xAt(i, MONTHS.length)}
-            x2={xAt(i, MONTHS.length)}
-            y1={padT}
-            y2={H - padB}
-            stroke="white"
-            strokeOpacity={i === MONTHS.length - 1 ? 0.35 : 0.12}
-            strokeWidth={1}
-            strokeDasharray={i === MONTHS.length - 1 ? "3 4" : undefined}
-          />
-        ))}
-        {/* horizontal grid */}
-        {[0, 0.33, 0.66, 1].map((t) => (
-          <line
-            key={t}
-            x1={padL}
-            x2={W - padR}
-            y1={padT + t * innerH}
-            y2={padT + t * innerH}
-            stroke="white"
-            strokeOpacity={0.1}
-            strokeWidth={1}
-          />
-        ))}
-
-        {/* trajectory line */}
-        <motion.path
-          d={tirzD}
-          animate={{ d: tirzD }}
-          transition={spring}
-          fill="none"
-          stroke="white"
-          strokeWidth={3}
-          strokeLinecap="round"
-        />
-
-        {/* endpoints */}
-        <motion.circle animate={{ cx: startX, cy: startY }} transition={spring} r={5} fill="white" />
-        <motion.circle animate={{ cx: endX, cy: endY }} transition={spring} r={5} fill="white" />
-
-        {/* start pill */}
-        <motion.g animate={{ x: startX, y: startY }} transition={spring}>
-          <rect x={-2} y={-30} rx={10} ry={10} width={62} height={22} fill="white" />
-          <text x={29} y={-15} textAnchor="middle" fontSize={12} fontWeight={700} fill="#0f2e44">
-            {Math.round(startWeight)} lbs
-          </text>
-        </motion.g>
-
-        {/* end pill */}
-        <motion.g animate={{ x: endX, y: endY }} transition={spring}>
-          <rect x={-64} y={10} rx={10} ry={10} width={62} height={22} fill="white" />
-          <text x={-33} y={25} textAnchor="middle" fontSize={12} fontWeight={700} fill="#0f2e44">
-            {goalTirz} lbs
-          </text>
-        </motion.g>
-
-        {/* center callout */}
-        <text x={padL + innerW * 0.22} y={padT + innerH * 0.5} fontSize={18} fontWeight={600} fill="white">
-          Lose up to <tspan fontStyle="italic">22%</tspan> of
-        </text>
-        <text x={padL + innerW * 0.22} y={padT + innerH * 0.5 + 22} fontSize={18} fontWeight={600} fill="white">
-          your body weight*
-        </text>
-
-        {/* month axis */}
-        {MONTHS.map((m, i) => (
-          <text
-            key={m}
-            x={xAt(i, MONTHS.length)}
-            y={H - 10}
-            textAnchor="middle"
-            fontSize={11}
-            fontWeight={700}
-            fill="white"
-            opacity={0.85}
-          >
-            {m}
-          </text>
-        ))}
-      </svg>
-
-      {/* arrow CTA — matches the reference "→" chip */}
-      <a
-        href="#assessment"
-        className="mt-2 ml-2 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#0f2e44] text-white shadow-lg transition-transform hover:scale-105 md:-mt-16 md:ml-8"
-        aria-label="Start assessment"
-      >
-        <ArrowRight className="h-5 w-5" strokeWidth={2.25} />
-      </a>
-    </div>
   );
 }
