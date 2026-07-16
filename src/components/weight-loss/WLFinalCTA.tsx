@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import ctaBgDesktop from "@/assets/cta-bg-desktop.png.asset.json";
-import ctaBgMobile from "@/assets/cta-bg-mobile.png.asset.json";
+import ctaBgDesktop from "@/assets/wl-hero-desktop-v2.png.asset.json";
+import ctaBgMobile from "@/assets/wl-hero-mobile-v2.png.asset.json";
 
 export function WLFinalCTA() {
   return (
