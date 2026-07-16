@@ -169,7 +169,7 @@ export function WLBeforeAfter() {
             <div
               key={i}
               data-ba
-              className="w-[86vw] max-w-[420px] shrink-0 snap-center sm:w-[70vw] md:w-[520px] lg:w-[560px]"
+              className="w-[92vw] max-w-[560px] shrink-0 snap-center sm:w-[78vw] md:w-[640px] lg:w-[720px] xl:w-[780px]"
             >
               <Card r={r} active={i === active} />
             </div>
