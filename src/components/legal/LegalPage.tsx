@@ -90,6 +90,6 @@ export function LegalPage({ eyebrow, title, content }: LegalPageProps) {
 
         <Footer />
       </div>
-    </SmoothScroll>
+    </>
   );
 }
