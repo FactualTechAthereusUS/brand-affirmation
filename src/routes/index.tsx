@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import heroDesktop from "@/assets/hero-portrait-new.png.asset.json";
+import heroMobile from "@/assets/mobile-hero-portrait.png.asset.json";
 import { Nav } from "@/components/home/Nav";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { Hero } from "@/components/home/Hero";
@@ -35,7 +37,11 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      { rel: "preload", as: "image", href: heroMobile.url, media: "(max-width: 767px)", fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroDesktop.url, media: "(min-width: 768px)", fetchpriority: "high" },
+    ],
   }),
   component: Index,
 });

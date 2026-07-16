@@ -74,7 +74,7 @@ export function CategoryGrid() {
                   src={c.image}
                   alt={c.title}
                   className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${c.position}`}
-                />
+                 loading="lazy" decoding="async" />
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(23,23,23,0.55)_78%,rgba(23,23,23,0.9)_100%)]" />
                 <div className="absolute inset-0 flex flex-col justify-end p-5">
                   <h3 className="font-sans text-[30px] leading-tight text-white">{c.title}</h3>
@@ -105,7 +105,7 @@ export function CategoryGrid() {
                     src={c.image}
                     alt={c.title}
                     className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${c.position}`}
-                  />
+                   loading="lazy" decoding="async" />
                   <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(23,23,23,0.55)_80%,rgba(23,23,23,0.9)_100%)]" />
                   <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
                     <h3 className="font-sans text-[34px] leading-tight text-white">{c.title}</h3>

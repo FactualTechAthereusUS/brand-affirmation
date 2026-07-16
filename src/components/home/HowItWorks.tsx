@@ -66,13 +66,13 @@ function StepRow({ step, index }: { step: (typeof steps)[number]; index: number 
       <div
         className={`hidden h-[104px] w-[128px] shrink-0 overflow-hidden rounded-2xl ${step.tint} md:block`}
       >
-        <img src={step.icon} alt="" className="h-full w-full object-cover" />
+        <img src={step.icon} alt="" className="h-full w-full object-cover"  loading="lazy" decoding="async" />
       </div>
       <div
         className={`col-span-3 -mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl ${step.tint} md:hidden`}
         aria-hidden={index < 0}
       >
-        <img src={step.icon} alt="" className="h-full w-full object-cover" />
+        <img src={step.icon} alt="" className="h-full w-full object-cover"  loading="lazy" decoding="async" />
       </div>
     </motion.div>
   );
