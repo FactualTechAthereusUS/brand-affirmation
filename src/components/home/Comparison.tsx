@@ -6,17 +6,17 @@ import mayo from "@/assets/compare-mayo.png.asset.json";
 
 type Val = boolean | "varies";
 
-const rows: { feat: string; b: Val; t: Val; o: Val }[] = [
-  { feat: "Same price at every dose level", b: true, t: false, o: false },
-  { feat: "5-day notice before every charge", b: true, t: false, o: false },
-  { feat: "One-click cancel anytime", b: true, t: false, o: false },
-  { feat: "Board-certified US physicians", b: true, t: true, o: "varies" },
-  { feat: "Physician review in 24 hours", b: true, t: false, o: false },
-  { feat: "No insurance required", b: true, t: false, o: true },
-  { feat: "No waitlist", b: true, t: false, o: true },
-  { feat: "Ships in 48 hours", b: true, t: false, o: false },
-  { feat: "Discreet packaging", b: true, t: false, o: true },
-  { feat: "Real human support", b: true, t: true, o: false },
+const rows: { feat: string; blissley: Val; hims: Val; mayo: Val }[] = [
+  { feat: "Same price at every dose level", blissley: true, hims: false, mayo: false },
+  { feat: "5-day notice before every charge", blissley: true, hims: false, mayo: false },
+  { feat: "One-click cancel anytime", blissley: true, hims: false, mayo: false },
+  { feat: "Board-certified US physicians", blissley: true, hims: true, mayo: true },
+  { feat: "Physician review in 24 hours", blissley: true, hims: true, mayo: false },
+  { feat: "No insurance required", blissley: true, hims: true, mayo: false },
+  { feat: "No waitlist", blissley: true, hims: true, mayo: false },
+  { feat: "Ships in 48 hours", blissley: true, hims: true, mayo: false },
+  { feat: "Discreet packaging", blissley: true, hims: true, mayo: false },
+  { feat: "Real human support", blissley: true, hims: false, mayo: true },
 ];
 
 // Blissley column: white check on translucent white circle over coral gradient
