@@ -45,16 +45,16 @@ function Card({ r, active }: { r: BA; active: boolean }) {
         transform: active ? "scale(1)" : "scale(0.95)",
       }}
     >
-      <div className="rounded-[22px] bg-white p-3 ring-1 ring-black/5 shadow-[0_6px_30px_-12px_rgba(0,0,0,0.15)]">
-        <div className="grid grid-cols-2 gap-3">
+      <div className="rounded-[22px] bg-white p-2.5 ring-1 ring-black/5 shadow-[0_6px_30px_-12px_rgba(0,0,0,0.15)] md:p-3">
+        <div className="grid grid-cols-2 gap-2.5 md:gap-3">
           <div className="relative overflow-hidden rounded-[16px] bg-[#F3F2EE]">
-            <div className="aspect-[3/4] w-full">
+            <div className="aspect-[4/5] w-full">
               <img src={r.before} alt={`${r.name} before`} className="h-full w-full object-cover" loading="lazy" />
             </div>
             <Badge label="Before" tone="before" />
           </div>
           <div className="relative overflow-hidden rounded-[16px] bg-[#F3F2EE]">
-            <div className="aspect-[3/4] w-full">
+            <div className="aspect-[4/5] w-full">
               <img src={r.after} alt={`${r.name} after`} className="h-full w-full object-cover" loading="lazy" />
             </div>
             <Badge label="After" tone="after" />
@@ -169,7 +169,7 @@ export function WLBeforeAfter() {
             <div
               key={i}
               data-ba
-              className="w-[86vw] max-w-[420px] shrink-0 snap-center sm:w-[70vw] md:w-[520px] lg:w-[560px]"
+              className="w-[92vw] max-w-[560px] shrink-0 snap-center sm:w-[78vw] md:w-[640px] lg:w-[720px] xl:w-[780px]"
             >
               <Card r={r} active={i === active} />
             </div>
