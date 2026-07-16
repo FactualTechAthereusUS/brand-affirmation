@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "../Reveal";
 import r20 from "@/assets/review-20.png.asset.json";
 import r21 from "@/assets/review-21.png.asset.json";
