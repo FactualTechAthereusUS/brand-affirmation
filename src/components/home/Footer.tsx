@@ -67,9 +67,9 @@ export function Footer() {
         {/* Top: heading left, nav columns right */}
         <div className="flex flex-col gap-12 md:flex-row md:justify-between md:gap-16">
           <div className="max-w-md">
-            <h2 className="font-hero text-[36px] leading-[1.05] tracking-[-0.02em] md:text-[52px]">
+            <h2 className="font-sans text-[40px] font-medium leading-[1.05] tracking-[-0.02em] text-white md:text-[64px]">
               Become who you were <br />
-              <span className="italic text-white/80">always supposed</span> to be.
+              <span className="font-hero italic font-normal">always</span> supposed to be.
             </h2>
             <p className="mt-5 max-w-sm font-sans text-[14px] text-white/50 md:text-[15px]">
               Evidence-based medicine and a human experience. Care that meets you where you are.
