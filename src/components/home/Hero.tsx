@@ -20,6 +20,8 @@ export function Hero() {
         src={heroImgMobile.url}
         alt=""
         aria-hidden
+        fetchPriority="high"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover object-[center_top] md:hidden"
       />
       {/* Desktop background */}
@@ -27,6 +29,8 @@ export function Hero() {
         src={heroImg.url}
         alt=""
         aria-hidden
+        fetchPriority="high"
+        decoding="async"
         className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
       />
       {/* Mobile readability overlay — subtle dark gradient behind copy */}
