@@ -92,7 +92,7 @@ export function FeaturedPrograms() {
     <section className="bg-canvas px-6 py-16 md:py-24">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h-h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
+          <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
             Your program,
             <br />
             <span className="italic text-ever">your terms.</span>
