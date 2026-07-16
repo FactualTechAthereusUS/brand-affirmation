@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "../Reveal";
 import weightImg from "@/assets/program-weight.png.asset.json";
 import skinImg from "@/assets/program-skin.png.asset.json";
@@ -78,9 +79,14 @@ function ProgramCard({ p, index }: { p: (typeof programs)[number]; index: number
             <br />
             {p.title[1]}
           </h3>
-          <p className="mt-2 max-w-[26ch] text-[14px] leading-snug text-white/80 md:text-[15px]">
+          <p className="mt-2 max-w-[20ch] text-[14px] leading-snug text-white/80 md:max-w-[22ch] md:text-[15px]">
             {p.sub}
           </p>
+
+          {/* arrow CTA */}
+          <span className="absolute bottom-6 right-6 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/15 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] backdrop-blur-xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/25 md:bottom-7 md:right-7 md:h-12 md:w-12">
+            <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-5 md:w-5" strokeWidth={2} />
+          </span>
         </div>
       </a>
     </Reveal>
