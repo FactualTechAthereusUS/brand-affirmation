@@ -151,15 +151,15 @@ export function Comparison() {
                 />
               </div>
               <div className="flex flex-col items-center pb-2">
-                <img src={mayo.url} alt="Traditional" className="h-10 w-auto object-contain" />
+                <img src={hims.url} alt="Hims" className="h-10 w-auto object-contain" />
                 <div className="mt-1 px-1 text-center text-[10px] font-medium leading-tight text-[#4a4a4a]">
-                  Traditional
+                  Hims
                 </div>
               </div>
               <div className="flex flex-col items-center pb-2">
-                <img src={hims.url} alt="Other Telehealth" className="h-10 w-auto object-contain" />
+                <img src={mayo.url} alt="Mayo Clinic" className="h-10 w-auto object-contain" />
                 <div className="mt-1 px-1 text-center text-[10px] font-medium leading-tight text-[#4a4a4a]">
-                  Other Telehealth
+                  Mayo Clinic
                 </div>
               </div>
             </div>
@@ -178,21 +178,21 @@ export function Comparison() {
               <div className="rounded-b-2xl bg-gradient-to-b from-[#ee7273] to-[#f2a08f]">
                 {rows.map((r) => (
                   <div key={`m-b-${r.feat}`} className="flex h-16 items-center justify-center">
-                    <BlissleyCell v={r.b} />
+                    <BlissleyCell v={r.blissley} />
                   </div>
                 ))}
               </div>
               <div>
                 {rows.map((r) => (
-                  <div key={`m-t-${r.feat}`} className="flex h-16 items-center justify-center">
-                    <OtherCell v={r.t} />
+                  <div key={`m-hims-${r.feat}`} className="flex h-16 items-center justify-center">
+                    <OtherCell v={r.hims} />
                   </div>
                 ))}
               </div>
               <div>
                 {rows.map((r) => (
-                  <div key={`m-o-${r.feat}`} className="flex h-16 items-center justify-center">
-                    <OtherCell v={r.o} />
+                  <div key={`m-mayo-${r.feat}`} className="flex h-16 items-center justify-center">
+                    <OtherCell v={r.mayo} />
                   </div>
                 ))}
               </div>
