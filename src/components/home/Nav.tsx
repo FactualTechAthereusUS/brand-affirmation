@@ -89,7 +89,7 @@ export function Nav() {
             {links.map((l) => (
               <a
                 key={l.label}
-                href="#"
+                href={l.href}
                 className={`group inline-flex items-center gap-1 rounded-full px-5 py-2 text-[14px] font-medium transition-colors ${
                   scrolled
                     ? "text-ink/80 hover:bg-black/5 hover:text-ink"
