@@ -88,7 +88,7 @@ export function WLCalculator() {
         interaction: { intersect: false, mode: "index" },
         plugins: {
           tooltip: {
-            backgroundColor: "#0f2e44",
+            backgroundColor: "#7a1f2b",
             titleColor: "#fff",
             bodyColor: "#fff",
             padding: 10,
@@ -166,7 +166,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="rounded-3xl bg-[#1e4560]/85 p-7 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)] ring-1 ring-white/10 backdrop-blur-md md:p-9"
+            className="rounded-3xl bg-white/15 p-7 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.35)] ring-1 ring-white/25 backdrop-blur-md md:p-9"
           >
             <div className="flex items-center justify-between gap-4">
               <label htmlFor="weight-slider" className="text-sm font-medium text-white md:text-base">
@@ -217,7 +217,7 @@ export function WLCalculator() {
               href="#assessment"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              className="mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white text-base font-semibold text-[#1e4560] shadow-lg transition-shadow hover:shadow-xl"
+              className="mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white text-base font-semibold text-[#ee7273] shadow-lg transition-shadow hover:shadow-xl"
             >
               Start My Free Assessment
               <ArrowRight className="h-5 w-5" strokeWidth={2} />
