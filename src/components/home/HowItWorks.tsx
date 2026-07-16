@@ -52,7 +52,7 @@ function StepRow({ step, index }: { step: (typeof steps)[number]; index: number 
       style={{ opacity, filter, scale }}
       className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
     >
-      <div className="font-sans text-[44px] font-semibold leading-none text-ink/15 md:text-[64px]">
+      <div className="font-serif text-[44px] font-normal italic leading-none text-ever/70 md:text-[64px]">
         {step.n}
       </div>
       <div className="min-w-0">
@@ -104,7 +104,7 @@ export function HowItWorks() {
               </p>
             </Reveal>
             <Reveal delay={0.15}>
-              <button className="group mt-8 inline-flex h-[52px] items-center justify-center gap-2 rounded-full border border-white/10 bg-ink px-7 text-[15px] font-medium text-canvas shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_10px_30px_-12px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              <button className="group mt-8 inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-ever px-7 text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_-12px_rgba(238,114,115,0.55)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
                 Start Your Free Assessment
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </button>
