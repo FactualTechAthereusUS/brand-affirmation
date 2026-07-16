@@ -17,6 +17,7 @@ import { FAQ } from "@/components/home/FAQ";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/home/Footer";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { ProgressiveBlur } from "@/components/ProgressiveBlur";
 
 export const Route = createFileRoute("/")({
   head: () => ({
