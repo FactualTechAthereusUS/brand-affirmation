@@ -56,10 +56,16 @@ function Stars() {
   );
 }
 
-function Card({ r }: { r: Review }) {
+function Card({ r, active }: { r: Review; active: boolean }) {
   return (
-    <article className="flex h-full flex-col">
-      {/* Portrait image — unified aspect ratio for all reviews */}
+    <article
+      className="flex h-full flex-col transition-all duration-700 ease-out will-change-transform"
+      style={{
+        filter: active ? "blur(0px)" : "blur(6px)",
+        opacity: active ? 1 : 0.35,
+        transform: active ? "scale(1)" : "scale(0.94)",
+      }}
+    >
       <div className="overflow-hidden rounded-[20px] bg-[#F3F2EE]">
         <div className="relative aspect-[4/5] w-full">
           <img
@@ -71,16 +77,13 @@ function Card({ r }: { r: Review }) {
           />
         </div>
       </div>
-      {/* Name + meta */}
       <div className="mt-5">
         <div className="text-[15px] font-medium text-ink">{r.name}</div>
         <div className="mt-0.5 text-[13px] text-[#6B6B6B]">{r.meta}</div>
       </div>
-      {/* Stars */}
       <div className="mt-3">
         <Stars />
       </div>
-      {/* Text */}
       <p className="mt-4 text-[15px] leading-[1.55] text-ink">
         <span className="font-semibold">{r.lead}</span>{" "}
         <span className="text-[#5A5A57]">{r.body}</span>
@@ -91,14 +94,74 @@ function Card({ r }: { r: Review }) {
 
 export function SocialProof() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const pausedRef = useRef(false);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const scrollBy = (dir: 1 | -1) => {
+  const goTo = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
     const el = trackRef.current;
     if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-card]");
-    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
-    el.scrollBy({ left: step * dir, behavior: "smooth" });
-  };
+    const cards = el.querySelectorAll<HTMLElement>("[data-card]");
+    const target = cards[index];
+    if (!target) return;
+    const left = target.offsetLeft - (el.clientWidth - target.offsetWidth) / 2;
+    el.scrollTo({ left, behavior });
+  }, []);
+
+  // Track active card via scroll position (center of viewport)
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const center = el.scrollLeft + el.clientWidth / 2;
+        const cards = Array.from(el.querySelectorAll<HTMLElement>("[data-card]"));
+        let best = 0;
+        let bestDist = Infinity;
+        cards.forEach((c, i) => {
+          const mid = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(mid - center);
+          if (d < bestDist) {
+            bestDist = d;
+            best = i;
+          }
+        });
+        setActive(best);
+      });
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // Pause autoplay briefly on user interaction
+  const pause = useCallback(() => {
+    pausedRef.current = true;
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, 6000);
+  }, []);
+
+  // Autoplay
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (pausedRef.current) return;
+      const el = trackRef.current;
+      if (!el) return;
+      if (document.hidden) return;
+      const cards = el.querySelectorAll<HTMLElement>("[data-card]");
+      if (!cards.length) return;
+      const next = (active + 1) % cards.length;
+      goTo(next);
+    }, 3800);
+    return () => clearInterval(id);
+  }, [active, goTo]);
 
   return (
     <section className="bg-white py-20 md:py-28">
@@ -113,46 +176,57 @@ export function SocialProof() {
         </Reveal>
       </div>
 
-      {/* Reviews slider */}
       <div className="mt-10 md:mt-14">
         <div
           ref={trackRef}
+          onPointerDown={pause}
+          onWheel={pause}
+          onTouchStart={pause}
           className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-6 md:gap-5 md:px-[max(1.5rem,calc((100vw-1280px)/2))]"
         >
           {reviews.map((r, i) => (
             <div
               key={i}
               data-card
-              className="w-[78vw] max-w-[340px] shrink-0 snap-start sm:w-[60vw] md:w-[340px] lg:w-[360px]"
+              className="w-[78vw] max-w-[340px] shrink-0 snap-center sm:w-[60vw] md:w-[340px] lg:w-[360px]"
             >
-              <Card r={r} />
+              <Card r={r} active={i === active} />
             </div>
           ))}
           <div className="w-6 shrink-0" />
         </div>
 
-        {/* Nav arrows */}
-        <div className="mx-auto mt-4 flex max-w-6xl items-center justify-end gap-3 px-6">
-          <button
-            onClick={() => scrollBy(-1)}
-            aria-label="Previous"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-ink transition hover:bg-ink hover:text-white"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <button
-            onClick={() => scrollBy(1)}
-            aria-label="Next"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-ink transition hover:bg-ink hover:text-white"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+        {/* iPhone-style dot pagination */}
+        <div className="mt-6 flex items-center justify-center gap-1.5">
+          {reviews.map((_, i) => {
+            const dist = Math.abs(i - active);
+            const isActive = i === active;
+            const size = isActive ? 8 : dist === 1 ? 6 : dist === 2 ? 5 : 4;
+            const opacity = isActive ? 1 : dist === 1 ? 0.55 : dist === 2 ? 0.35 : 0.2;
+            return (
+              <button
+                key={i}
+                aria-label={`Go to review ${i + 1}`}
+                onClick={() => {
+                  pause();
+                  goTo(i);
+                }}
+                className="flex h-6 w-6 items-center justify-center"
+              >
+                <span
+                  className="rounded-full bg-ink transition-all duration-500 ease-out"
+                  style={{
+                    width: isActive ? 22 : size,
+                    height: size,
+                    opacity,
+                  }}
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
+
