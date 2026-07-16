@@ -125,18 +125,6 @@ export function CategoryGrid() {
               <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
-
-
-        <Reveal delay={0.2}>
-          <div className="mt-8 text-center">
-            <a
-              href="#"
-              className="inline-flex items-center gap-1.5 text-[14px] font-medium text-ever underline-offset-4 hover:underline"
-            >
-              View all treatments
-              <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-          </div>
         </Reveal>
       </div>
     </section>
