@@ -67,7 +67,7 @@ export function Footer() {
         {/* Top: heading left, nav columns right */}
         <div className="flex flex-col gap-12 md:flex-row md:justify-between md:gap-16">
           <div className="max-w-md">
-            <h2 className="font-hero text-[40px] font-normal italic leading-[1.05] tracking-[-0.02em] text-white md:text-[64px]">
+            <h2 className="font-serif text-[40px] font-normal italic leading-[1.05] tracking-[-0.02em] text-white md:text-[64px]">
               Become who you were <br />
               always supposed to be.
             </h2>
