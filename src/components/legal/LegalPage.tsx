@@ -15,7 +15,8 @@ interface LegalPageProps {
 
 export function LegalPage({ eyebrow, title, content }: LegalPageProps) {
   return (
-    <SmoothScroll>
+    <>
+      <SmoothScroll />
       <div className="bg-canvas text-ink">
         <AnnouncementBar />
         <Nav />
