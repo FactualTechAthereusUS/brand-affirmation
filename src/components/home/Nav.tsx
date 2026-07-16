@@ -57,7 +57,13 @@ export function Nav() {
 
   return (
     <>
-      <header className="sticky top-[36px] z-40">
+      <header
+        className={`sticky top-[36px] z-40 transition-all duration-300 lg:bg-transparent ${
+          scrolled
+            ? "bg-white/80 backdrop-blur-xl backdrop-saturate-150 lg:bg-transparent"
+            : "bg-white/[0.03] backdrop-blur-md lg:bg-transparent"
+        }`}
+      >
         <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-5 md:h-[88px] md:px-8">
           {/* Logo */}
           <a href="/" className="flex items-center">
