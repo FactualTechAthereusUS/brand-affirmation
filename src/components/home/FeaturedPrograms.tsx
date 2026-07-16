@@ -92,19 +92,14 @@ export function FeaturedPrograms() {
     <section className="bg-canvas px-6 py-16 md:py-24">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <div className="mb-3 flex items-center gap-2 text-[13px] text-[#6B6B6B]">
-            <span className="h-1.5 w-1.5 rounded-full bg-ink" />
-            Our Programs
-          </div>
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <h2 className="max-w-[18ch] text-[34px] font-semibold leading-[1.05] tracking-tight text-ink md:text-[56px]">
-              Personalized care for every part of you.
-            </h2>
-            <p className="max-w-[38ch] text-[15px] leading-relaxed text-[#6B6B6B] md:text-[17px]">
-              Physician-supervised programs across weight, skin, and sexual
-              wellness. Discreet. Evidence-based. Delivered.
-            </p>
-          </div>
+          <h-h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
+            Your program,
+            <br />
+            <span className="italic text-ever">your terms.</span>
+          </h2>
+          <p className="mt-3 text-[16px] text-[#6B6B6B] md:text-[18px]">
+            Physician-supervised. Discreet. Delivered.
+          </p>
         </Reveal>
 
         <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-3 md:gap-6">
