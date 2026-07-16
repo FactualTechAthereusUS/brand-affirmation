@@ -65,13 +65,14 @@ function Card({ r, active }: { r: BA; active: boolean }) {
           </div>
         </div>
 
-        <div className="mt-3 flex items-center justify-between px-1 pb-1">
+        <div className="flex items-center justify-between px-4 py-3 md:px-5 md:py-4">
           <div className="flex items-center gap-2">
             <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
             <span className="text-[15px] font-medium text-ink">{r.name}</span>
           </div>
           <span className="text-[14px] text-[#6B6B6B]">{r.caption}</span>
         </div>
+
       </div>
     </article>
   );
