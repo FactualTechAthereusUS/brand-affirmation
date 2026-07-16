@@ -116,3 +116,87 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+/* Legal / policy prose */
+.legal-prose {
+  color: color-mix(in oklab, var(--color-ink) 78%, transparent);
+  font-family: var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+.legal-prose > * + * { margin-top: 1.1em; }
+.legal-prose h1 {
+  font-family: var(--font-hero);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-top: 2.4em;
+  line-height: 1.15;
+}
+.legal-prose h1:first-child { margin-top: 0; }
+.legal-prose h2 {
+  font-family: var(--font-hero);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-top: 2em;
+  line-height: 1.2;
+}
+.legal-prose h3 {
+  font-family: var(--font-hero);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 1.6em;
+}
+.legal-prose p { color: color-mix(in oklab, var(--color-ink) 72%, transparent); }
+.legal-prose strong { color: var(--color-ink); font-weight: 600; }
+.legal-prose a {
+  color: var(--color-ever);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.legal-prose ul, .legal-prose ol {
+  padding-left: 1.4em;
+  margin-top: 0.6em;
+}
+.legal-prose ul { list-style: disc; }
+.legal-prose ol { list-style: decimal; }
+.legal-prose li { margin-top: 0.4em; }
+.legal-prose li::marker { color: var(--color-ever); }
+.legal-prose hr {
+  border: 0;
+  border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  margin: 2.4em 0;
+}
+.legal-prose blockquote {
+  border-left: 3px solid var(--color-ever);
+  padding: 0.2em 0 0.2em 1em;
+  color: color-mix(in oklab, var(--color-ink) 65%, transparent);
+  font-style: italic;
+}
+.legal-prose code {
+  background: color-mix(in oklab, var(--color-ink) 6%, transparent);
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+.legal-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 1.2em;
+  display: block;
+  overflow-x: auto;
+}
+.legal-prose thead { background: color-mix(in oklab, var(--color-ever) 8%, transparent); }
+.legal-prose th, .legal-prose td {
+  border: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  padding: 0.6em 0.9em;
+  text-align: left;
+  vertical-align: top;
+}
+.legal-prose th { color: var(--color-ink); font-weight: 600; }
+
