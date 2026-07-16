@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "motion/react";
 import { Reveal } from "@/components/Reveal";
 import semaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import tirzepatide from "@/assets/vial-tirzepatide.png.asset.json";
