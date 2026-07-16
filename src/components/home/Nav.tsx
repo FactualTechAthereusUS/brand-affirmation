@@ -3,8 +3,18 @@ import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logo from "@/assets/blissley-logo.png.asset.json";
 
-const links: { label: string; href: string; hasMenu: boolean }[] = [
-  { label: "Treatments", href: "#", hasMenu: true },
+const treatments: { label: string; href: string }[] = [
+  { label: "Weight Loss", href: "/weight-loss" },
+  { label: "Hair Loss", href: "#" },
+  { label: "Skincare", href: "#" },
+  { label: "Longevity", href: "#" },
+  { label: "Mental Health", href: "#" },
+  { label: "Menopause", href: "#" },
+  { label: "Testosterone", href: "#" },
+];
+
+const links: { label: string; href: string; hasMenu: boolean; menu?: { label: string; href: string }[] }[] = [
+  { label: "Treatments", href: "#", hasMenu: true, menu: treatments },
   { label: "Weight Loss", href: "/weight-loss", hasMenu: false },
   { label: "Skin", href: "#", hasMenu: false },
   { label: "Sexual Health", href: "#", hasMenu: false },
