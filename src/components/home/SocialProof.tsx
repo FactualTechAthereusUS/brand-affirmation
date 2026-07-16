@@ -206,34 +206,36 @@ export function SocialProof() {
           <div className="w-6 shrink-0" />
         </div>
 
-        {/* iPhone-style dot pagination */}
-        <div className="mt-6 flex items-center justify-center gap-1.5">
-          {reviews.map((_, i) => {
-            const dist = Math.abs(i - active);
-            const isActive = i === active;
-            const size = isActive ? 8 : dist === 1 ? 6 : dist === 2 ? 5 : 4;
-            const opacity = isActive ? 1 : dist === 1 ? 0.55 : dist === 2 ? 0.35 : 0.2;
-            return (
-              <button
-                key={i}
-                aria-label={`Go to review ${i + 1}`}
-                onClick={() => {
-                  pause();
-                  goTo(i);
-                }}
-                className="flex h-6 w-6 items-center justify-center"
-              >
-                <span
-                  className="rounded-full bg-ink transition-all duration-500 ease-out"
-                  style={{
-                    width: isActive ? 22 : size,
-                    height: size,
-                    opacity,
-                  }}
-                />
-              </button>
-            );
-          })}
+        {/* iPhone-style pill dot pagination */}
+        <div className="mt-8 flex justify-center">
+          <div className="flex items-center gap-2 rounded-full bg-[#F1EFEA] px-3 py-2">
+            {(() => {
+              const total = reviews.length;
+              const windowSize = Math.min(6, total);
+              let start = Math.max(0, active - Math.floor(windowSize / 2));
+              start = Math.min(start, total - windowSize);
+              const dots = Array.from({ length: windowSize }, (_, k) => start + k);
+              return dots.map((i) => {
+                const isActive = i === active;
+                return (
+                  <button
+                    key={i}
+                    aria-label={`Go to review ${i + 1}`}
+                    onClick={() => {
+                      pause();
+                      goTo(i);
+                    }}
+                    className="rounded-full transition-all duration-500 ease-out"
+                    style={{
+                      width: 8,
+                      height: 8,
+                      backgroundColor: isActive ? "#171717" : "#C9C6BF",
+                    }}
+                  />
+                );
+              });
+            })()}
+          </div>
         </div>
       </div>
     </section>
