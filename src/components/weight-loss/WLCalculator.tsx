@@ -297,19 +297,14 @@ function WeightChart({
         />
 
         {/* start label */}
-        <g>
-          <rect
-            x={startX - 26}
-            y={startY - 30}
-            rx={10}
-            ry={10}
-            width={52}
-            height={20}
-            fill="white"
-          />
+        <motion.g
+          animate={{ x: startX, y: startY }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+        >
+          <rect x={-26} y={-30} rx={10} ry={10} width={52} height={20} fill="white" />
           <text
-            x={startX}
-            y={startY - 16}
+            x={0}
+            y={-16}
             textAnchor="middle"
             fontSize={11}
             fontWeight={700}
@@ -317,22 +312,17 @@ function WeightChart({
           >
             {Math.round(startWeight)} lbs
           </text>
-        </g>
+        </motion.g>
 
         {/* end label */}
-        <g>
-          <rect
-            x={endX - 30}
-            y={endY + 10}
-            rx={10}
-            ry={10}
-            width={52}
-            height={20}
-            fill="white"
-          />
+        <motion.g
+          animate={{ x: endX, y: endY }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+        >
+          <rect x={-30} y={10} rx={10} ry={10} width={52} height={20} fill="white" />
           <text
-            x={endX - 4}
-            y={endY + 24}
+            x={-4}
+            y={24}
             textAnchor="middle"
             fontSize={11}
             fontWeight={700}
@@ -340,7 +330,7 @@ function WeightChart({
           >
             {goalTirz} lbs
           </text>
-        </g>
+        </motion.g>
 
         {/* center callout */}
         <text
