@@ -29,9 +29,11 @@ export function Numbers() {
                 }`}
               >
                 <div className="flex items-baseline text-ink">
-                  <span className="font-sans text-[56px] font-extrabold leading-none tracking-[-0.03em] md:text-[68px]">
-                    {s.n}
-                  </span>
+                  <CountUp
+                    to={s.value}
+                    format={s.display}
+                    className="font-sans text-[56px] font-extrabold leading-none tracking-[-0.03em] md:text-[68px] tabular-nums"
+                  />
                   {s.suffix && (
                     <span className="ml-1 font-sans text-[28px] font-extrabold leading-none tracking-[-0.02em] md:text-[34px]">
                       {s.suffix}
