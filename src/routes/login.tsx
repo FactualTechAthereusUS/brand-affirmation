@@ -87,8 +87,8 @@ function LoginPage() {
 
           <div className="w-full max-w-[420px] pt-16 lg:pt-0">
             <div className="mb-10">
-              <p className="mb-3 font-serif italic text-[15px] text-ever">welcome back.</p>
-              <h1 className="font-serif text-[40px] leading-[1.05] tracking-[-0.02em] text-ink sm:text-[46px]">
+              <p className="mb-3 font-sans italic text-[15px] text-ever">welcome back.</p>
+              <h1 className="font-sans text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink sm:text-[46px]">
                 Sign in to your care.
               </h1>
               <p className="mt-4 text-[15px] leading-relaxed text-ink/60">
