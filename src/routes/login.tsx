@@ -57,7 +57,7 @@ function LoginPage() {
 
               {/* Editorial copy bottom-left */}
               <div className="absolute inset-x-0 bottom-0 z-10 p-10">
-                <h2 className="max-w-[440px] font-serif text-[44px] leading-[1.02] tracking-[-0.02em] text-white">
+                <h2 className="max-w-[440px] font-sans text-[44px] font-semibold leading-[1.02] tracking-[-0.02em] text-white">
                   Welcome back to the version of you that always was.
                 </h2>
                 <p className="mt-5 max-w-[380px] text-[15px] leading-relaxed text-white/85">
