@@ -80,33 +80,33 @@ export function CategoryGrid() {
           </h2>
         </Reveal>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:auto-rows-[minmax(0,260px)] md:gap-5">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-4 md:auto-rows-[minmax(0,260px)] md:gap-5">
           {cards.map((c, i) => {
             const featured = i === 0;
             return (
-              <Reveal key={c.title} delay={i * 0.05}>
+              <Reveal key={c.title} delay={i * 0.06} blur={14} y={30}>
                 <a
                   href="#"
-                  className={`group relative block h-full overflow-hidden rounded-3xl aspect-square md:aspect-auto ${c.span}`}
+                  className={`group relative block h-full overflow-hidden rounded-3xl aspect-[4/3] md:aspect-auto ${c.span}`}
                 >
                   <img
                     src={c.image}
                     alt={c.title}
                     className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${c.position}`}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(23,23,23,0.55)_75%,rgba(23,23,23,0.85)_100%)]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_40%,rgba(23,23,23,0.55)_78%,rgba(23,23,23,0.9)_100%)]" />
 
-                  <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">
-                    <span className="mb-3 w-fit rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md">
+                  <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6">
+                    <span className="mb-3 hidden w-fit rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white backdrop-blur-md md:inline-block">
                       {c.tag}
                     </span>
-                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[26px] md:text-[44px]" : "text-[19px] md:text-[24px]"}`}>
+                    <h3 className={`font-display leading-tight text-white ${featured ? "text-[32px] md:text-[44px]" : "text-[28px] md:text-[24px]"}`}>
                       {c.title}
                     </h3>
                     <p className="mt-1 text-[13px] text-white/80 md:text-[14px]">{c.sub}</p>
                   </div>
 
-                  <div className="absolute bottom-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
+                  <div className="absolute top-4 right-4 md:top-auto md:bottom-4 grid h-11 w-11 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
                     <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
                   </div>
                 </a>
@@ -114,6 +114,7 @@ export function CategoryGrid() {
             );
           })}
         </div>
+
 
         <Reveal delay={0.2}>
           <div className="mt-8 text-center">
