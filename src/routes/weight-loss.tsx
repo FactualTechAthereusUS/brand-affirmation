@@ -6,7 +6,11 @@ import { Nav } from "@/components/home/Nav";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { Footer } from "@/components/home/Footer";
 import { WLHero } from "@/components/weight-loss/WLHero";
-import { WLCalculator } from "@/components/weight-loss/WLCalculator";
+
+
+const WLCalculator = lazy(() =>
+  import("@/components/weight-loss/WLCalculator").then((m) => ({ default: m.WLCalculator })),
+);
 
 const PressLogos = lazy(() =>
   import("@/components/home/PressLogos").then((m) => ({ default: m.PressLogos })),
@@ -76,7 +80,7 @@ function WeightLoss() {
       <main>
         <WLHero />
         <Suspense fallback={<Fallback h={120} />}><PressLogos /></Suspense>
-        <WLCalculator />
+        <Suspense fallback={<Fallback h={600} />}><WLCalculator /></Suspense>
         <Suspense fallback={<Fallback />}><HowItWorks /></Suspense>
         <Suspense fallback={<Fallback />}><WLPrograms /></Suspense>
         <Suspense fallback={<Fallback />}><WhyBlissley /></Suspense>
