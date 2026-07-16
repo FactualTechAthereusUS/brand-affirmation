@@ -124,24 +124,17 @@ export function SocialProof() {
         </Reveal>
       </div>
 
-      {/* Mobile: single-column stack */}
-      <div className="mt-10 space-y-10 px-6 md:hidden">
-        {reviews.map((r, i) => (
-          <Card key={i} r={r} />
-        ))}
-      </div>
-
-      {/* Desktop: horizontal slider */}
-      <div className="mt-14 hidden md:block">
+      {/* Reviews slider */}
+      <div className="mt-10 md:mt-14">
         <div
           ref={trackRef}
-          className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-[max(1.5rem,calc((100vw-1280px)/2))] pb-6"
+          className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-6 md:gap-5 md:px-[max(1.5rem,calc((100vw-1280px)/2))]"
         >
           {reviews.map((r, i) => (
             <div
               key={i}
               data-card
-              className="w-[340px] shrink-0 snap-start lg:w-[380px]"
+              className="w-[85vw] shrink-0 snap-start md:w-[340px] lg:w-[380px]"
             >
               <Card r={r} />
             </div>
