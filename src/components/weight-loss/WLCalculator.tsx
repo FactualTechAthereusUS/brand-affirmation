@@ -98,17 +98,17 @@ export function WLCalculator() {
         },
         scales: {
           x: {
-            grid: { color: "rgba(255,255,255,0.08)" },
-            ticks: { color: "rgba(255,255,255,0.85)", font: { size: 11, weight: 600 } },
+            grid: { color: "rgba(255,255,255,0.18)" },
+            ticks: { color: "#ffffff", font: { size: 11, weight: 600 } },
             border: { display: false },
           },
           y: {
             min: weight * 0.74,
             max: weight * 1.02,
-            grid: { color: "rgba(255,255,255,0.08)" },
+            grid: { color: "rgba(255,255,255,0.18)" },
             ticks: {
-              color: "rgba(255,255,255,0.7)",
-              font: { size: 10 },
+              color: "rgba(255,255,255,0.95)",
+              font: { size: 10, weight: 600 },
               callback: (v) => `${v} lbs`,
               maxTicksLimit: 5,
             },
@@ -166,7 +166,7 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="overflow-hidden rounded-3xl bg-white/25 p-4 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.4)] ring-1 ring-white/40 backdrop-blur-xl sm:p-7 md:p-9"
+            className="overflow-hidden rounded-3xl bg-white/40 p-5 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.5)] ring-1 ring-white/60 backdrop-blur-2xl sm:p-7 md:p-9"
           >
             <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
               <label htmlFor="weight-slider" className="min-w-0 text-sm font-medium text-white md:text-base">
@@ -236,25 +236,25 @@ export function WLCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="overflow-hidden rounded-3xl bg-white/25 p-4 ring-1 ring-white/40 backdrop-blur-xl sm:p-5 md:p-7"
+            className="overflow-hidden rounded-3xl bg-white/40 p-5 shadow-[0_20px_60px_-20px_rgba(122,31,43,0.5)] ring-1 ring-white/60 backdrop-blur-2xl sm:p-6 md:p-7"
           >
             <div className="flex flex-col gap-3 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="text-[10px] uppercase tracking-wide text-white/60 sm:text-xs">Projected in 5 months</div>
-                <div className="text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">{endTirz} lbs</div>
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-white/95 sm:text-xs">Projected in 5 months</div>
+                <div className="text-2xl font-bold tracking-tight sm:text-3xl md:text-3xl">{endTirz} lbs</div>
               </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-white/80">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-medium text-white sm:text-xs">
                 <span className="inline-flex items-center gap-2">
                   <span className="h-[2px] w-6 rounded bg-white" /> Tirzepatide
                 </span>
                 <span className="inline-flex items-center gap-2">
-                  <span className="h-[2px] w-6 rounded border-t-2 border-dashed border-white/70" />
+                  <span className="h-[2px] w-6 rounded border-t-2 border-dashed border-white/80" />
                   Semaglutide
                 </span>
               </div>
             </div>
 
-            <div className="relative mt-4 h-[240px] w-full sm:h-[280px] md:h-[340px]">
+            <div className="relative mt-4 h-[260px] w-full sm:h-[300px] md:h-[340px]">
               <canvas ref={canvasRef} />
             </div>
           </motion.div>
