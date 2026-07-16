@@ -8,6 +8,9 @@ import b38 from "@/assets/ba-38.png.asset.json";
 import b39 from "@/assets/ba-39.png.asset.json";
 import b40 from "@/assets/ba-40.png.asset.json";
 import b41 from "@/assets/ba-41.png.asset.json";
+import b42 from "@/assets/ba-42.png.asset.json";
+import b43 from "@/assets/ba-43.png.asset.json";
+import verifiedCheck from "@/assets/verified-check.png.asset.json";
 
 type BA = {
   name: string;
@@ -21,6 +24,7 @@ const items: BA[] = [
   { name: "Megan R.", caption: "After GLP-1", before: b36.url, after: b37.url },
   { name: "Sophie L.", caption: "After GLP-1", before: b38.url, after: b39.url },
   { name: "Missel M.", caption: "After GLP-1", before: b40.url, after: b41.url },
+  { name: "Brandon T.", caption: "After GLP-1", before: b42.url, after: b43.url },
 ];
 
 function Badge({ label, tone }: { label: string; tone: "before" | "after" }) {
