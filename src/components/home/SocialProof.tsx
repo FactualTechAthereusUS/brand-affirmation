@@ -62,13 +62,10 @@ function Stars() {
   );
 }
 
-function Avatar({ name, tone }: { name: string; tone: string }) {
+function Avatar({ name }: { name: string }) {
   const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[12px] font-medium text-ink/70 ring-1 ring-black/[0.04]"
-      style={{ backgroundColor: tone }}
-    >
+    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[12px] font-medium text-ink/70 ring-1 ring-black/[0.06]">
       {initials}
     </div>
   );
@@ -85,7 +82,7 @@ function Card({ r }: { r: Review }) {
       </div>
       {/* Meta row */}
       <div className="mt-5 flex items-center gap-3">
-        <Avatar name={r.name} tone={r.tone} />
+        <Avatar name={r.name} />
         <div className="min-w-0">
           <div className="truncate text-[15px] font-medium text-ink">{r.name}</div>
         </div>

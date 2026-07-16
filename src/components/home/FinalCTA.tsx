@@ -3,17 +3,17 @@ import { Reveal } from "../Reveal";
 
 export function FinalCTA() {
   return (
-    <section className="bg-ever px-6 py-20 text-canvas md:py-28">
+    <section className="bg-white px-6 py-20 text-ink md:py-28">
       <div className="mx-auto max-w-2xl text-center">
         <Reveal>
-          <h2 className="text-[40px] leading-[1.05] text-canvas md:text-[64px]">
+          <h2 className="text-[40px] leading-[1.05] text-ink md:text-[64px]">
             Ready to start
             <br />
-            <span className="italic">becoming?</span>
+            <span className="italic text-ever">becoming?</span>
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-5 text-[16px] leading-[1.5] text-canvas/75 md:text-[18px]">
+          <p className="mt-5 text-[16px] leading-[1.5] text-ink/60 md:text-[18px]">
             Free assessment. No commitment.
             <br />
             Physician review within 24 hours.
@@ -26,14 +26,14 @@ export function FinalCTA() {
               Take Your Assessment
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </button>
-            <button className="h-[52px] w-full rounded-full border-[1.5px] border-canvas bg-transparent px-7 text-[15px] font-medium text-canvas transition-colors hover:bg-canvas hover:text-ink sm:w-auto md:h-14">
+            <button className="h-[52px] w-full rounded-full border-[1.5px] border-ink/15 bg-transparent px-7 text-[15px] font-medium text-ink transition-colors hover:bg-ink hover:text-canvas sm:w-auto md:h-14">
               Explore Treatments
             </button>
           </div>
         </Reveal>
 
         <Reveal delay={0.3}>
-          <p className="mt-5 text-[12px] text-canvas/55">
+          <p className="mt-5 text-[12px] text-ink/50">
             Free to start · No credit card required · Cancel anytime
           </p>
         </Reveal>

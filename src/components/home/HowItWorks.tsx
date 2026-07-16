@@ -12,21 +12,21 @@ const steps = [
     title: "Assessment",
     body: "4-minute intake. Tell us about yourself, your goals, and your health history.",
     icon: iconAssessment.url,
-    tint: "bg-[#EEF0F8]",
+    tint: "bg-white border border-ink/[0.06]",
   },
   {
     n: "02",
     title: "Medical Review",
     body: "A board-certified physician reviews your case within 24 hours and writes your prescription.",
     icon: iconReview.url,
-    tint: "bg-[#EAF1F6]",
+    tint: "bg-white border border-ink/[0.06]",
   },
   {
     n: "03",
     title: "Delivered",
     body: "Your medication arrives from a licensed US pharmacy. Same price at every dose. Forever.",
     icon: iconDelivered.url,
-    tint: "bg-[#F6F1E7]",
+    tint: "bg-white border border-ink/[0.06]",
   },
 ];
 
