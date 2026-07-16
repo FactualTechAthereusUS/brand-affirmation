@@ -203,7 +203,7 @@ export function Nav() {
 
             <div className="relative flex items-center gap-3">
               <button className="h-14 flex-1 rounded-full bg-canvas text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-[1.01] active:scale-[0.99]">
-                Get started
+                Start Assessment
               </button>
               <a href="/login" className="grid h-14 place-items-center rounded-full border border-white/20 bg-white/[0.08] px-7 text-[15px] font-medium text-canvas backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:bg-white/[0.14]">
                 Login
