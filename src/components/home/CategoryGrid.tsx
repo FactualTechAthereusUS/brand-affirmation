@@ -35,7 +35,7 @@ export function CategoryGrid() {
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <h2 className="font-display text-[34px] leading-[1.05] text-ink md:text-[56px]">
+            <h2 className="text-[34px] leading-[1.05] text-ink md:text-[56px]">
               What can we help you <span className="font-display italic font-normal">with?</span>
             </h2>
             <div className="hidden items-center gap-3 md:flex">
