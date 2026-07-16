@@ -45,17 +45,17 @@ export function Products() {
           </div>
         </Reveal>
 
-        {/* Mobile: snap slider with peek. Desktop: 2-up grid */}
+        {/* Mobile: snap slider with peek. Desktop: 2-up compact grid */}
         <div className="-mx-5 md:mx-0">
           <div
-            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:grid md:snap-none md:grid-cols-2 md:gap-8 md:overflow-visible md:px-0"
+            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:mx-auto md:grid md:max-w-3xl md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
             {products.map((p, i) => (
               <Reveal key={p.title} delay={i * 0.08}>
-                <article className="group flex w-[85vw] max-w-[420px] shrink-0 snap-start flex-col md:w-auto md:max-w-none">
-                  {/* Image fills the card top */}
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] bg-[#f5f2ec]">
+                <article className="group flex w-[70vw] max-w-[300px] shrink-0 snap-start flex-col md:w-auto md:max-w-none">
+                  {/* Image */}
+                  <div className="relative aspect-square overflow-hidden rounded-[18px] bg-[#f5f2ec]">
                     <img
                       src={p.img}
                       alt={p.title}
@@ -64,22 +64,22 @@ export function Products() {
                   </div>
 
                   {/* Text */}
-                  <div className="mt-5 flex flex-col gap-2 px-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
+                  <div className="mt-3.5 flex flex-col gap-1.5 px-0.5">
+                    <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
                       {p.badge}
                     </span>
-                    <h3 className="text-[22px] md:text-[26px] font-medium tracking-tight text-ink">
+                    <h3 className="text-[16px] md:text-[17px] font-medium tracking-tight text-ink">
                       {p.title}
                     </h3>
-                    <p className="text-[14px] leading-relaxed text-ink/55">{p.desc}</p>
-                    <div className="mt-1 text-[16px] font-semibold text-ink">{p.price}</div>
+                    <p className="text-[12.5px] leading-snug text-ink/55">{p.desc}</p>
+                    <div className="mt-0.5 text-[13.5px] font-semibold text-ink">{p.price}</div>
 
-                    <button className="mt-4 h-12 w-full rounded-full bg-ink text-sm font-medium text-white transition-transform hover:scale-[1.01] active:scale-[0.99]">
+                    <button className="mt-2.5 h-10 w-full rounded-full bg-ink text-[13px] font-medium text-white transition-transform hover:scale-[1.01] active:scale-[0.99]">
                       Get Started
                     </button>
                     <a
                       href="#"
-                      className="mt-2 text-center text-[13px] text-ink/50 underline underline-offset-4 hover:text-ink"
+                      className="mt-1 text-center text-[11.5px] text-ink/50 underline underline-offset-4 hover:text-ink"
                     >
                       {p.link}
                     </a>
@@ -89,6 +89,7 @@ export function Products() {
             ))}
           </div>
         </div>
+
 
         <div className="mt-10 text-center md:hidden">
           <a href="#" className="text-sm text-ink/70 underline underline-offset-4">
