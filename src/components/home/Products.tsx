@@ -95,9 +95,14 @@ export function Products() {
                     <p className="text-[12.5px] leading-snug text-ink/55">{p.desc}</p>
                     <div className="mt-0.5 text-[13.5px] font-semibold text-ink">{p.price}</div>
 
-                    <button className="mt-2.5 h-10 w-full rounded-full bg-ink text-[13px] font-medium text-white transition-transform hover:scale-[1.01] active:scale-[0.99]">
+                    <motion.button
+                      whileHover={{ scale: 1.03, y: -1 }}
+                      whileTap={{ scale: 0.96 }}
+                      transition={{ type: "spring", stiffness: 420, damping: 26 }}
+                      className="mt-2.5 h-10 w-full rounded-full bg-ink text-[13px] font-medium text-white"
+                    >
                       Get Started
-                    </button>
+                    </motion.button>
                     <a
                       href="#"
                       className="mt-1 text-center text-[11.5px] text-ink/50 underline underline-offset-4 hover:text-ink"
