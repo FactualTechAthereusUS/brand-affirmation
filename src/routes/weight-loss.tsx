@@ -80,7 +80,7 @@ function WeightLoss() {
       <main>
         <WLHero />
         <Suspense fallback={<Fallback h={120} />}><PressLogos /></Suspense>
-        <WLCalculator />
+        <Suspense fallback={<Fallback h={600} />}><WLCalculator /></Suspense>
         <Suspense fallback={<Fallback />}><HowItWorks /></Suspense>
         <Suspense fallback={<Fallback />}><WLPrograms /></Suspense>
         <Suspense fallback={<Fallback />}><WhyBlissley /></Suspense>
