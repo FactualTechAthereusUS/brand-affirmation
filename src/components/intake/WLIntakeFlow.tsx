@@ -1079,51 +1079,49 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
         </h2>
       </motion.div>
 
-      <motion.article
+      <motion.div
         initial={{ opacity: 0, scale: 0.98, filter: "blur(6px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-hidden rounded-[22px] bg-white ring-1 ring-black/5 shadow-[0_10px_40px_-16px_rgba(0,0,0,0.18)]"
+        className="grid grid-cols-2 gap-2 md:gap-3"
       >
-        <div className="grid grid-cols-2 gap-0">
-          <div className="relative overflow-hidden bg-[#F3F2EE]">
-            <div className="aspect-[4/5] w-full">
-              <img src={story.before} alt={`${story.name} before`} className="h-full w-full object-cover" />
-            </div>
-            <span className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]" style={{ backgroundColor: "#0E3B36" }}>
-              Before
-            </span>
-          </div>
-          <div className="relative overflow-hidden bg-[#F3F2EE]">
-            <div className="aspect-[4/5] w-full">
-              <img src={story.after} alt={`${story.name} after`} className="h-full w-full object-cover" />
-            </div>
-            <span className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]" style={{ backgroundColor: "#ee7273" }}>
-              After
-            </span>
+        <div className="relative overflow-hidden rounded-[6px] bg-[#F3F2EE]">
+          <div className="aspect-[3/5] w-full md:aspect-[4/6]">
+            <img src={story.before} alt={`${story.name} before`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
         </div>
+        <div className="relative overflow-hidden rounded-[6px] bg-[#F3F2EE]">
+          <div className="aspect-[3/5] w-full md:aspect-[4/6]">
+            <img src={story.after} alt={`${story.name} after`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
+          </div>
+        </div>
+      </motion.div>
 
-        <div className="px-5 py-5 md:px-6 md:py-6">
-          <div className="flex items-center gap-1" aria-label="5 star rating">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#ee7273" aria-hidden>
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            ))}
-          </div>
-          <p className="mt-3 font-serif text-[17px] leading-[1.55] tracking-[-0.005em] text-ink/90 md:text-[19px]">
-            &ldquo;{story.quote}&rdquo;
-          </p>
-          <div className="mt-5 flex items-center justify-between border-t border-black/5 pt-4">
-            <div className="flex min-w-0 items-center gap-2">
-              <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
-              <span className="truncate text-[14.5px] font-medium text-ink">{story.name}</span>
-            </div>
-            <span className="shrink-0 text-[13px] font-semibold text-ever">{story.result}</span>
-          </div>
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45, duration: 0.5 }}
+        className="mt-6"
+      >
+        <div className="flex items-center gap-1" aria-label="5 star rating">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#ee7273" aria-hidden>
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+          ))}
         </div>
-      </motion.article>
+        <p className="mt-3 font-serif text-[17px] leading-[1.55] tracking-[-0.005em] text-ink/90 md:text-[19px]">
+          &ldquo;{story.quote}&rdquo;
+        </p>
+        <div className="mt-5 flex items-center justify-between border-t border-black/5 pt-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
+            <span className="truncate text-[14.5px] font-medium text-ink">{story.name}</span>
+          </div>
+          <span className="shrink-0 text-[13px] font-semibold text-ever">{story.result}</span>
+        </div>
+      </motion.div>
+
 
       <motion.div
         initial={{ opacity: 0, y: 8 }}
