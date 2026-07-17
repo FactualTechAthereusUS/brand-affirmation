@@ -1,17 +1,86 @@
 import { motion } from "motion/react";
 import { Check, ArrowUpRight, ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
+import iconStart from "@/assets/milestone-start.png.asset.json";
+import iconProfile from "@/assets/milestone-profile.png.asset.json";
+import iconHealth from "@/assets/milestone-health.png.asset.json";
+import iconResults from "@/assets/milestone-results.png.asset.json";
 
-/* ─────────────────────────  Progress bar  ───────────────────────── */
+/* ─────────────────────────  Progress bar with milestones  ───────────────────────── */
+const MILESTONES = [
+  { key: "start", label: "Start", icon: iconStart.url, pos: 0 },
+  { key: "profile", label: "Profile", icon: iconProfile.url, pos: 0.34 },
+  { key: "health", label: "Health", icon: iconHealth.url, pos: 0.72 },
+  { key: "results", label: "Results", icon: iconResults.url, pos: 1 },
+];
+
 export function ProgressBar({ value }: { value: number }) {
+  const v = Math.min(1, Math.max(0.04, value));
+  const fillPct = v * 100;
+
   return (
-    <div className="h-[10px] w-full overflow-hidden rounded-full bg-ink/[0.08] md:h-[12px]">
-      <motion.div
-        className="h-full rounded-full bg-ever"
-        initial={false}
-        animate={{ width: `${Math.min(100, Math.max(4, value * 100))}%` }}
-        transition={{ type: "spring", stiffness: 140, damping: 22 }}
-      />
+    <div className="relative w-full pt-1 pb-6 md:pb-7">
+      {/* Track */}
+      <div className="relative h-[6px] w-full rounded-full bg-ink/[0.08] md:h-[7px]">
+        {/* Fill */}
+        <motion.div
+          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-ever to-[#f38a8b]"
+          initial={false}
+          animate={{ width: `${fillPct}%` }}
+          transition={{ type: "spring", stiffness: 140, damping: 22 }}
+        />
+
+        {/* Milestone nodes */}
+        {MILESTONES.map((m) => {
+          const reached = v >= m.pos - 0.001;
+          const active = Math.abs(v - m.pos) < 0.12 || (m.pos === 1 && v >= 0.98);
+          return (
+            <div
+              key={m.key}
+              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${m.pos * 100}%` }}
+            >
+              <motion.div
+                className="relative grid place-items-center"
+                animate={{ scale: active ? 1.08 : 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+              >
+                {/* Pulse ring when active */}
+                {active && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-ever/40"
+                    initial={{ scale: 1, opacity: 0.6 }}
+                    animate={{ scale: [1, 1.8, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                  />
+                )}
+                <motion.div
+                  className={`relative grid h-[26px] w-[26px] place-items-center overflow-hidden rounded-full bg-white ring-2 transition-colors md:h-[30px] md:w-[30px] ${
+                    reached ? "ring-ever shadow-[0_4px_12px_rgba(238,114,115,0.35)]" : "ring-ink/15"
+                  }`}
+                  animate={{ filter: reached ? "grayscale(0)" : "grayscale(1)", opacity: reached ? 1 : 0.55 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <img
+                    src={m.icon}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    draggable={false}
+                  />
+                </motion.div>
+                {/* Label */}
+                <span
+                  className={`pointer-events-none absolute top-[calc(100%+6px)] whitespace-nowrap text-[10px] font-medium tracking-wide transition-colors md:text-[11px] ${
+                    reached ? "text-ink/75" : "text-ink/35"
+                  }`}
+                >
+                  {m.label}
+                </span>
+              </motion.div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
