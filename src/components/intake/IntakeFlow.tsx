@@ -593,6 +593,17 @@ export function IntakeFlow() {
               </ScreenShell>
             )}
 
+            {current === "wl_projection" && (
+              <WLProjectionScreen
+                firstName={answers.firstName}
+                weightLbs={answers.weightLbs}
+                bmi={bmi}
+                onNext={next}
+              />
+            )}
+
+
+
             {/* ─────── Sexual Health ─────── */}
             {current === "sh_concern" && (
               <ScreenShell title="What would you like to address?">
