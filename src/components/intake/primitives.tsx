@@ -8,73 +8,87 @@ import iconResults from "@/assets/milestone-results.png.asset.json";
 
 /* ─────────────────────────  Progress bar with milestones  ───────────────────────── */
 const MILESTONES = [
-  { key: "start", label: "Start", icon: iconStart.url, pos: 0 },
-  { key: "profile", label: "Profile", icon: iconProfile.url, pos: 0.34 },
-  { key: "health", label: "Health", icon: iconHealth.url, pos: 0.72 },
-  { key: "results", label: "Results", icon: iconResults.url, pos: 1 },
+  { key: "start", label: "Start", icon: iconStart.url },
+  { key: "profile", label: "Profile", icon: iconProfile.url },
+  { key: "health", label: "Health", icon: iconHealth.url },
+  { key: "results", label: "Results", icon: iconResults.url },
 ];
 
 export function ProgressBar({ value }: { value: number }) {
-  const v = Math.min(1, Math.max(0.04, value));
-  const fillPct = v * 100;
+  const v = Math.min(1, Math.max(0, value));
+  // 3 segments between 4 nodes. Determine per-segment fill 0-1.
+  const scaled = v * 3;
 
   return (
-    <div className="relative w-full px-4 pt-2 pb-6 md:px-6 md:pb-7">
-      {/* Track */}
-      <div className="relative h-[10px] w-full rounded-full bg-ink/[0.08] md:h-[12px]">
-        {/* Fill */}
-        <motion.div
-          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-ever to-[#f38a8b]"
-          initial={false}
-          animate={{ width: `${fillPct}%` }}
-          transition={{ type: "spring", stiffness: 140, damping: 22 }}
-        />
+    <div className="w-full px-5 pt-2 pb-8 md:px-8 md:pb-9">
+      <div className="flex items-center">
+        {MILESTONES.map((m, i) => {
+          const reached = v >= i / 3 - 0.001;
+          const active =
+            (i === 0 && v < 1 / 3) ||
+            (i === 1 && v >= 1 / 3 && v < 2 / 3) ||
+            (i === 2 && v >= 2 / 3 && v < 0.999) ||
+            (i === 3 && v >= 0.999);
 
-        {/* Milestone nodes — sit inline on the bar, connected */}
-        {MILESTONES.map((m) => {
-          const reached = v >= m.pos - 0.001;
-          const active = Math.abs(v - m.pos) < 0.12 || (m.pos === 1 && v >= 0.98);
           return (
-            <div
-              key={m.key}
-              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${m.pos * 100}%` }}
-            >
-              <motion.div
-                className="relative grid place-items-center"
-                animate={{ scale: active ? 1.06 : 1 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-              >
-                {active && (
-                  <motion.span
-                    className="absolute inset-0 rounded-full bg-ever/40"
-                    initial={{ scale: 1, opacity: 0.6 }}
-                    animate={{ scale: [1, 1.9, 1], opacity: [0.5, 0, 0.5] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-                  />
-                )}
+            <div key={m.key} className="flex flex-1 items-center last:flex-none">
+              {/* Node */}
+              <div className="relative shrink-0">
                 <motion.div
-                  className={`relative grid h-[28px] w-[28px] place-items-center overflow-hidden rounded-full bg-white ring-[3px] transition-colors md:h-[32px] md:w-[32px] ${
-                    reached ? "ring-ever shadow-[0_4px_12px_rgba(238,114,115,0.4)]" : "ring-ink/15"
-                  }`}
-                  animate={{ filter: reached ? "grayscale(0)" : "grayscale(1)", opacity: reached ? 1 : 0.55 }}
-                  transition={{ duration: 0.35 }}
+                  className="relative grid place-items-center"
+                  animate={{ scale: active ? 1.08 : 1 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
                 >
-                  <img
-                    src={m.icon}
-                    alt=""
-                    className="h-full w-full object-cover"
-                    draggable={false}
-                  />
+                  {active && (
+                    <motion.span
+                      className="absolute inset-0 rounded-full bg-ever/35"
+                      initial={{ scale: 1, opacity: 0.6 }}
+                      animate={{ scale: [1, 1.9, 1], opacity: [0.5, 0, 0.5] }}
+                      transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                    />
+                  )}
+                  <motion.div
+                    className={`relative grid h-[36px] w-[36px] place-items-center overflow-hidden rounded-full bg-white ring-[3px] transition-colors md:h-[42px] md:w-[42px] ${
+                      reached
+                        ? "ring-ever shadow-[0_4px_14px_rgba(238,114,115,0.4)]"
+                        : "ring-ink/15"
+                    }`}
+                    animate={{
+                      filter: reached ? "grayscale(0)" : "grayscale(1)",
+                      opacity: reached ? 1 : 0.55,
+                    }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <img
+                      src={m.icon}
+                      alt=""
+                      className="h-full w-full object-cover"
+                      draggable={false}
+                    />
+                  </motion.div>
                 </motion.div>
                 <span
-                  className={`pointer-events-none absolute top-[calc(100%+8px)] whitespace-nowrap text-[10px] font-medium tracking-wide transition-colors md:text-[11px] ${
-                    reached ? "text-ink/75" : "text-ink/35"
+                  className={`pointer-events-none absolute left-1/2 top-[calc(100%+8px)] -translate-x-1/2 whitespace-nowrap text-[10.5px] font-medium tracking-wide transition-colors md:text-[11.5px] ${
+                    reached ? "text-ink/80" : "text-ink/40"
                   }`}
                 >
                   {m.label}
                 </span>
-              </motion.div>
+              </div>
+
+              {/* Connector segment (skip after last node) */}
+              {i < MILESTONES.length - 1 && (
+                <div className="relative mx-1.5 h-[8px] flex-1 overflow-hidden rounded-full bg-ink/[0.08] md:h-[10px] md:mx-2">
+                  <motion.div
+                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-ever to-[#f38a8b]"
+                    initial={false}
+                    animate={{
+                      width: `${Math.max(0, Math.min(1, scaled - i)) * 100}%`,
+                    }}
+                    transition={{ type: "spring", stiffness: 140, damping: 22 }}
+                  />
+                </div>
+              )}
             </div>
           );
         })}
