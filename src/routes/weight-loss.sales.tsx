@@ -298,14 +298,14 @@ function AnnouncementBar({ firstName }: { firstName: string }) {
   const { label } = useReservedCountdown();
   return (
     <div
-      className="relative z-30 w-full bg-[#0B1B3D] text-white"
+      className="relative z-30 w-full bg-ever text-white"
       role="status"
       aria-live="polite"
     >
       <div className="mx-auto flex h-9 max-w-6xl items-center justify-center px-4 text-center sm:h-10">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.04em]">
+        <span className="font-sans text-[13px] font-medium">
           {firstName}, your approval is valid for ·{" "}
-          <span className="tabular-nums font-bold text-[#F5C542]">{label}</span>
+          <span className="tabular-nums font-semibold">{label}</span>
         </span>
       </div>
     </div>
