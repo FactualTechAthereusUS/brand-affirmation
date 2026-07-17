@@ -146,31 +146,34 @@ export function IntakeFlow() {
             <img src={logo.url} alt="Blissley" className="h-11 w-auto md:h-14" />
           </Link>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <span className="text-xs font-semibold text-ink sm:text-sm">Excellent 4.6</span>
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="flex h-5 w-5 items-center justify-center rounded-sm bg-[#00b67a] md:h-6 md:w-6"
-                >
-                  <svg className="h-3 w-3 fill-white md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                </div>
-              ))}
-              <div className="relative h-5 w-5 rounded-sm bg-[#e5e7eb] md:h-6 md:w-6">
-                <svg className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 fill-[#00b67a]/30 md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            <span className="text-xs font-semibold text-ink sm:text-sm">Excellent 4.9</span>
+            <div className="relative flex h-4 w-20 sm:h-5 sm:w-24">
+              {/* Empty stars background */}
+              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 96 16" aria-hidden="true">
+                {[0, 19.2, 38.4, 57.6, 76.8].map((x, i) => (
+                  <path
+                    key={i}
+                    d="M8 1.2l1.9 4.2 4.6.5L11 9.3l1.1 4.5L8 11.5l-4.1 2.3 1.1-4.5L1.5 5.9l4.6-.5L8 1.2z"
+                    fill="none"
+                    stroke="#ee7273"
+                    strokeWidth="1.2"
+                    transform={`translate(${x}, 0)`}
+                  />
+                ))}
+              </svg>
+              {/* Filled stars foreground clipped to 98% */}
+              <div className="absolute inset-0 overflow-hidden" style={{ width: "98%" }}>
+                <svg className="h-full w-20 fill-[#ee7273] sm:w-24" viewBox="0 0 96 16" aria-hidden="true">
+                  {[0, 19.2, 38.4, 57.6, 76.8].map((x, i) => (
+                    <path
+                      key={i}
+                      d="M8 1.2l1.9 4.2 4.6.5L11 9.3l1.1 4.5L8 11.5l-4.1 2.3 1.1-4.5L1.5 5.9l4.6-.5L8 1.2z"
+                      transform={`translate(${x}, 0)`}
+                    />
+                  ))}
                 </svg>
-                <div
-                  className="absolute inset-0 bg-[#00b67a]"
-                  style={{ clipPath: "inset(0 50% 0 0)" }}
-                >
-                  <svg className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 fill-white md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                </div>
               </div>
+              <span className="sr-only">Rated 4.9 out of 5 stars</span>
             </div>
           </div>
         </div>
