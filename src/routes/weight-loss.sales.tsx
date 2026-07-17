@@ -240,7 +240,7 @@ function WeightLossSalesPage() {
 
       <HowItWorks />
 
-      <RealResults />
+      <SocialProof />
 
       <Mechanism />
 
