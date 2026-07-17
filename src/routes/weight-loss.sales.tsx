@@ -388,11 +388,6 @@ function Hero({
 
   return (
     <section className="relative overflow-hidden bg-white">
-      {/* soft ambient glow */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-ever/10 blur-[120px]" />
-      </div>
-
       <div className="relative mx-auto max-w-[680px] px-5 pb-10 pt-8 text-center sm:pt-12">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-ink/80 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.04em] text-white backdrop-blur-md">
