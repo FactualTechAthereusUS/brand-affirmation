@@ -9,6 +9,11 @@ import {
   TextField,
 } from "./primitives";
 import logo from "@/assets/blissley-logo.png.asset.json";
+import verifiedCheck from "@/assets/verified-check.png.asset.json";
+import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
+import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
+import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
+import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 
 /* ────────────────────  Types  ──────────────────── */
 type Sex = "female" | "male";
