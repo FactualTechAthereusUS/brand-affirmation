@@ -163,7 +163,7 @@ export function WLIntakeFlow() {
           <div className="mx-auto flex h-[64px] max-w-[720px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
             <BackBtn onClick={prev} invisible={idx === 0} />
             <Link to="/" className="flex items-center">
-              <img src={logo.url} alt="Blissley" className="h-8 w-auto md:h-9" />
+              <img src={logo.url} alt="Blissley" className="h-10 w-auto md:h-12" />
             </Link>
             <div className="w-[72px]" />
           </div>
