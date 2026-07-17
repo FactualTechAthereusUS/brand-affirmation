@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion, useSpring, useTransform } from "motion/react";
 import { Link } from "@tanstack/react-router";
 import {
   BackBtn,
@@ -9,7 +9,6 @@ import {
   TextField,
 } from "./primitives";
 import logo from "@/assets/blissley-logo.png.asset.json";
-import logoWhite from "@/assets/blissley-logo.png.asset.json";
 
 /* ────────────────────  Types  ──────────────────── */
 type Sex = "female" | "male";
