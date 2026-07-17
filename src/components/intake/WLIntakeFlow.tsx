@@ -499,6 +499,13 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
+            {/* 8.5 — Social proof */}
+            {current === "social_proof" && (
+              <SocialProofScreen sex={answers.sex} onNext={next} />
+            )}
+
+
+
             {/* 9 — GLP-1 history */}
             {current === "glp1" && (
               <ScreenShell
