@@ -155,6 +155,17 @@ export function WLIntakeFlow() {
 
   const isLoading = current === "loading";
 
+  // Persist answers for the sales page as soon as we hit loading
+  useEffect(() => {
+    if (current !== "loading") return;
+    try {
+      sessionStorage.setItem(
+        "blissley_intake_wl",
+        JSON.stringify({ ...answers, bmi }),
+      );
+    } catch {}
+  }, [current, answers, bmi]);
+
   return (
     <div className="relative min-h-[100svh] bg-white pb-24">
       {/* Sticky header (hidden on loading) */}
@@ -841,6 +852,15 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
     return () => clearTimeout(t);
   }, [step, steps.length]);
 
+  // Auto-redirect to sales page as soon as we hit "done"
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => {
+      window.location.href = "/weight-loss/sales";
+    }, 900);
+    return () => clearTimeout(t);
+  }, [done]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -942,16 +962,9 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
               Your plan is ready.
             </h2>
             <p className="mt-3 max-w-[380px] text-[15px] leading-[1.55] text-white/85">
-              A licensed physician will review your case within 24 hours and reach out with next steps.
+              Redirecting you to your personalized program…
             </p>
-            <motion.a
-              href="/"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-10 inline-flex h-[56px] items-center justify-center rounded-full bg-white px-8 text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
-            >
-              See My Plan
-            </motion.a>
+
           </motion.div>
         )}
       </div>
