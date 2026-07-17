@@ -5,6 +5,7 @@ import { ArrowRight, Check, ChevronDown, Lock, ShieldCheck, Sparkles, Star, Time
 import logo from "@/assets/blissley-logo.png.asset.json";
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import { SocialProof } from "@/components/home/SocialProof";
+import { CountUp } from "@/components/CountUp";
 
 export const Route = createFileRoute("/weight-loss/sales")({
   component: WeightLossSalesPage,
