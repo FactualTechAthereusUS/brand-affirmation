@@ -376,8 +376,8 @@ function Hero({
 
       <div className="relative mx-auto max-w-4xl px-5 pb-10 pt-8 text-center sm:pt-12">
         <Reveal>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E8F5E9] px-3 py-1 text-[11.5px] font-medium text-[#2E7D32]">
-            <Check className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-ink/80 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.04em] text-white backdrop-blur-md">
+            <img src={verifiedCheck.url} alt="" className="h-4 w-4 shrink-0" aria-hidden />
             Assessment complete — you're a strong candidate
           </span>
         </Reveal>
