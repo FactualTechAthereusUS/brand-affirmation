@@ -62,7 +62,9 @@ type Answers = {
   // Medical
   medContraindications?: string[];
   medications?: string;
+  noMedications?: boolean;
   allergies?: string;
+  noAllergies?: boolean;
   phone?: string;
   consentTOS?: boolean;
   consentSMS?: boolean;
