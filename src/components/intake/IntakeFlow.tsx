@@ -145,8 +145,8 @@ export function IntakeFlow() {
           <Link to="/" className="flex items-center">
             <img src={logo.url} alt="Blissley" className="h-11 w-auto md:h-14" />
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="hidden text-sm font-semibold text-ink sm:inline">Excellent 4.6</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-xs font-semibold text-ink sm:text-sm">Excellent 4.6</span>
             <div className="flex gap-0.5">
               {[1, 2, 3, 4].map((i) => (
                 <div
