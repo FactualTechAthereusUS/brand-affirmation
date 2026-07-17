@@ -212,9 +212,9 @@ function WeightLossSalesPage() {
   const totalToday = selectedPlan.today + (priority ? PRIORITY_ADDON : 0);
 
   return (
-    <main className="min-h-[100svh] bg-white text-ink pt-9 sm:pt-10">
-      <AnnouncementBar firstName={firstName} />
+    <main className="min-h-[100svh] bg-white text-ink">
       <SalesNav />
+      <AnnouncementBar firstName={firstName} />
 
 
       <Hero
