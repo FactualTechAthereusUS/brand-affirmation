@@ -212,9 +212,9 @@ function WeightLossSalesPage() {
   const totalToday = selectedPlan.today + (priority ? PRIORITY_ADDON : 0);
 
   return (
-    <main className="min-h-[100svh] bg-white text-ink pt-9 sm:pt-10">
-      <AnnouncementBar firstName={firstName} />
+    <main className="min-h-[100svh] bg-white text-ink">
       <SalesNav />
+      <AnnouncementBar firstName={firstName} />
 
 
       <Hero
@@ -298,14 +298,14 @@ function AnnouncementBar({ firstName }: { firstName: string }) {
   const { label } = useReservedCountdown();
   return (
     <div
-      className="fixed inset-x-0 top-0 z-40 w-full bg-ever text-white"
+      className="relative z-30 w-full bg-[#0B1B3D] text-white"
       role="status"
       aria-live="polite"
     >
-      <div className="mx-auto flex h-9 max-w-6xl items-center justify-center px-4 text-center text-[13px] font-medium tracking-tight sm:h-10">
-        <span>
-          ⏱️ {firstName}, your approval is valid for ·{" "}
-          <span className="tabular-nums font-semibold">{label}</span>
+      <div className="mx-auto flex h-9 max-w-6xl items-center justify-center px-4 text-center sm:h-10">
+        <span className="text-[13px] font-semibold uppercase tracking-[0.04em]">
+          {firstName}, your approval is valid for ·{" "}
+          <span className="tabular-nums font-bold text-[#F5C542]">{label}</span>
         </span>
       </div>
     </div>
