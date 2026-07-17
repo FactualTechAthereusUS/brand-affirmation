@@ -1072,8 +1072,9 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
         className="mb-5 md:mb-6"
       >
         <span
-          className="inline-flex items-center gap-1.5 rounded-full border border-[#ee7273]/25 bg-[#ee7273]/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ee7273] shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150"
+          className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-4 py-2 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150 md:text-[11px]"
         >
+          <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
           Real patient story
         </span>
         <h2 className="mt-4 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink md:text-[34px]">
