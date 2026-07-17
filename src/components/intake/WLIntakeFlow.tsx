@@ -1071,10 +1071,12 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
         transition={{ delay: 0.1, duration: 0.5 }}
         className="mb-5 md:mb-6"
       >
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-ever/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ever">
+        <span
+          className="inline-flex items-center gap-1.5 rounded-full border border-[#ee7273]/25 bg-[#ee7273]/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ee7273] shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150"
+        >
           Real patient story
         </span>
-        <h2 className="mt-3 font-serif text-[26px] leading-[1.15] tracking-[-0.015em] text-ink md:text-[32px]">
+        <h2 className="mt-4 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink md:text-[34px]">
           You&rsquo;re not alone in this.
         </h2>
       </motion.div>
@@ -1085,15 +1087,21 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
         transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="grid grid-cols-2 gap-2 md:gap-3"
       >
-        <div className="relative overflow-hidden rounded-[6px] bg-[#F3F2EE]">
+        <div className="relative overflow-hidden rounded-[10px] bg-[#F3F2EE]">
           <div className="aspect-[3/5] w-full md:aspect-[4/6]">
             <img src={story.before} alt={`${story.name} before`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
+          <span className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
+            Before
+          </span>
         </div>
-        <div className="relative overflow-hidden rounded-[6px] bg-[#F3F2EE]">
+        <div className="relative overflow-hidden rounded-[10px] bg-[#F3F2EE]">
           <div className="aspect-[3/5] w-full md:aspect-[4/6]">
             <img src={story.after} alt={`${story.name} after`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
+          <span className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-[#ee7273]/40 px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
+            After
+          </span>
         </div>
       </motion.div>
 
@@ -1110,9 +1118,10 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
             </svg>
           ))}
         </div>
-        <p className="mt-3 font-serif text-[17px] leading-[1.55] tracking-[-0.005em] text-ink/90 md:text-[19px]">
+        <p className="mt-3 text-[16.5px] leading-[1.55] tracking-[-0.005em] text-ink/85 md:text-[18px]">
           &ldquo;{story.quote}&rdquo;
         </p>
+
         <div className="mt-5 flex items-center justify-between border-t border-black/5 pt-4">
           <div className="flex min-w-0 items-center gap-2">
             <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
