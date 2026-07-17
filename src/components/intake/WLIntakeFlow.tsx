@@ -1091,7 +1091,8 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
           <div className="aspect-[3/5] w-full md:aspect-[4/6]">
             <img src={story.before} alt={`${story.name} before`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
-          <span className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
+          <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
             Before
           </span>
         </div>
@@ -1099,7 +1100,8 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
           <div className="aspect-[3/5] w-full md:aspect-[4/6]">
             <img src={story.after} alt={`${story.name} after`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
-          <span className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-[#ee7273]/40 px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
+          <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
             After
           </span>
         </div>
