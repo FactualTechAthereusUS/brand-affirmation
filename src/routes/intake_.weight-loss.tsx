@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { WLIntakeFlow } from "@/components/intake/WLIntakeFlow";
 
-export const Route = createFileRoute("/intake/weight-loss")({
+export const Route = createFileRoute("/intake_/weight-loss")({
   head: () => ({
     meta: [
       { title: "Start your weight loss assessment — Blissley" },
