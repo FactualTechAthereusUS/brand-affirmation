@@ -1378,20 +1378,20 @@ function FinalCTA({
 
 function SalesFooter() {
   return (
-    <footer className="bg-[#0f0f0f] py-12 text-white/60">
+    <footer className="border-t border-ink/[0.06] bg-white py-12 text-ink/60">
       <div className="mx-auto max-w-6xl px-5">
-        <img src={logo.url} alt="Blissley" className="h-6 w-auto brightness-0 invert" />
-        <p className="mt-3 max-w-md text-[13.5px] italic text-white/45">
+        <img src={logo.url} alt="Blissley" className="h-6 w-auto" />
+        <p className="mt-3 max-w-md text-[13.5px] italic text-ink/50">
           Become who you were always supposed to be.
         </p>
         <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[12px]">
-          <a href="/legal/privacy" className="hover:text-white">Privacy Policy</a>
-          <a href="/legal/terms" className="hover:text-white">Terms</a>
-          <a href="/legal/medication-safety" className="hover:text-white">HIPAA Notice</a>
-          <a href="/legal/refund" className="hover:text-white">Refund Policy</a>
-          <a href="/legal/shipping" className="hover:text-white">Cancellation</a>
+          <a href="/legal/privacy" className="hover:text-ink">Privacy Policy</a>
+          <a href="/legal/terms" className="hover:text-ink">Terms</a>
+          <a href="/legal/medication-safety" className="hover:text-ink">HIPAA Notice</a>
+          <a href="/legal/refund" className="hover:text-ink">Refund Policy</a>
+          <a href="/legal/shipping" className="hover:text-ink">Cancellation</a>
         </div>
-        <p className="mt-6 max-w-3xl text-[11px] leading-[1.7] text-white/30">
+        <p className="mt-6 max-w-3xl text-[11px] leading-[1.7] text-ink/40">
           © 2026 TheFactual LLC DBA Blissley. Blissley is a technology platform and does not
           practice medicine. Physician services are provided by independent licensed practitioners.
           Individual results vary. Compounded medications are not FDA-approved.
@@ -1400,3 +1400,4 @@ function SalesFooter() {
     </footer>
   );
 }
+
