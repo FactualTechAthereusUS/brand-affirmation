@@ -962,16 +962,9 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
               Your plan is ready.
             </h2>
             <p className="mt-3 max-w-[380px] text-[15px] leading-[1.55] text-white/85">
-              A licensed physician will review your case within 24 hours and reach out with next steps.
+              Redirecting you to your personalized program…
             </p>
-            <motion.a
-              href="/"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-10 inline-flex h-[56px] items-center justify-center rounded-full bg-white px-8 text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
-            >
-              See My Plan
-            </motion.a>
+
           </motion.div>
         )}
       </div>
