@@ -158,17 +158,15 @@ export function IntakeFlow() {
                   </svg>
                 </div>
               ))}
-              <div className="relative h-5 w-5 overflow-hidden rounded-sm bg-[#00b67a] md:h-6 md:w-6">
-                <div className="absolute inset-0 w-1/2 bg-[#00b67a]">
+              <div className="relative h-5 w-5 overflow-hidden rounded-sm bg-[#e5e7eb] md:h-6 md:w-6">
+                <div className="absolute inset-0 w-1/2 overflow-hidden bg-[#00b67a]">
                   <svg className="h-3 w-3 fill-white md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 </div>
-                <div className="absolute inset-0 left-1/2 w-1/2 bg-[#00b67a]/20">
-                  <svg className="h-3 w-3 fill-[#00b67a] md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                </div>
+                <svg className="absolute inset-0 h-3 w-3 fill-[#00b67a] opacity-30 md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
               </div>
             </div>
           </div>
