@@ -655,8 +655,8 @@ export function WLIntakeFlow() {
                   <PrimaryButton
                     onClick={next}
                     disabled={
-                      !answers.medications?.trim() ||
-                      !answers.allergies?.trim() ||
+                      (!answers.medications?.trim() && !answers.noMedications) ||
+                      (!answers.allergies?.trim() && !answers.noAllergies) ||
                       !answers.state ||
                       !answers.phone?.trim() ||
                       !answers.consentTOS
