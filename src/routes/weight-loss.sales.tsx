@@ -231,6 +231,8 @@ function WeightLossSalesPage() {
         glp1History={intake.glp1History}
         glp1Which={intake.glp1Which}
         glp1Dose={intake.glp1Dose}
+        startWeight={startWeight}
+        bmi={intake.bmi ?? null}
       />
 
 
