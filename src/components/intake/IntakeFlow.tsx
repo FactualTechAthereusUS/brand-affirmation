@@ -402,59 +402,109 @@ export function IntakeFlow() {
               </ScreenShell>
             )}
 
-            {current === "wl_hw" && (
-              <ScreenShell
-                title="A couple of quick numbers."
-                sub="This helps us understand your starting point and estimate your results."
-                footer={
-                  <>
-                    <PrimaryButton
-                      onClick={next}
-                      disabled={!answers.heightFt || !answers.weightLbs}
+            {current === "wl_hw" && (() => {
+              const categories = [
+                { key: "under", label: "Underweight", range: "<18.5", min: 0, max: 18.5, color: "#7aa5c4" },
+                { key: "normal", label: "Normal", range: "18.5–24.9", min: 18.5, max: 25, color: "#6fbf8a" },
+                { key: "over", label: "Overweight", range: "25–29.9", min: 25, max: 30, color: "#e8a86b" },
+                { key: "obese", label: "Obese", range: "≥30", min: 30, max: 45, color: "#ee7273" },
+              ];
+              const activeIdx = bmi === null ? -1 : categories.findIndex((c) => bmi < c.max);
+              const active = activeIdx === -1 ? categories[categories.length - 1] : categories[activeIdx];
+              const displayLabel = bmi !== null && bmi >= 35 ? "Severe Obesity" : active?.label ?? "";
+              const pct = bmi === null ? 0 : Math.min(100, Math.max(2, ((bmi - 12) / (45 - 12)) * 100));
+              return (
+                <ScreenShell
+                  title="What is your current height and weight?"
+                  sub="We'll calculate your BMI to check your eligibility."
+                  footer={
+                    <>
+                      <PrimaryButton
+                        onClick={next}
+                        disabled={!answers.heightFt || !answers.weightLbs}
+                      >
+                        Continue
+                      </PrimaryButton>
+                      <p className="mt-4 text-[12px] text-ink/45">
+                        GLP-1 programs are typically recommended for a BMI of 27 or above.
+                      </p>
+                    </>
+                  }
+                >
+                  <TextField
+                    label="Weight (pounds)"
+                    type="number"
+                    value={answers.weightLbs ?? ""}
+                    onChange={(v) => set({ weightLbs: v })}
+                    placeholder="210"
+                  />
+                  <div className="mt-1">
+                    <span className="mb-2 block text-[13px] font-medium text-ink/70">Height</span>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <TextField
+                          type="number"
+                          value={answers.heightFt ?? ""}
+                          onChange={(v) => set({ heightFt: v })}
+                          placeholder="5"
+                        />
+                        <span className="mt-1.5 block text-[12px] text-ink/50">Feet</span>
+                      </div>
+                      <div>
+                        <TextField
+                          type="number"
+                          value={answers.heightIn ?? ""}
+                          onChange={(v) => set({ heightIn: v })}
+                          placeholder="6"
+                        />
+                        <span className="mt-1.5 block text-[12px] text-ink/50">Inches</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {bmi !== null && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="mt-4"
                     >
-                      Continue
-                    </PrimaryButton>
-                    <p className="mt-4 text-[12px] text-ink/45">
-                      GLP-1 programs are typically recommended for a BMI of 27 or above.
-                    </p>
-                  </>
-                }
-              >
-                <div className="grid grid-cols-2 gap-3">
-                  <TextField
-                    label="Height (ft)"
-                    type="number"
-                    value={answers.heightFt ?? ""}
-                    onChange={(v) => set({ heightFt: v })}
-                    placeholder="5"
-                  />
-                  <TextField
-                    label="Height (in)"
-                    type="number"
-                    value={answers.heightIn ?? ""}
-                    onChange={(v) => set({ heightIn: v })}
-                    placeholder="6"
-                  />
-                </div>
-                <TextField
-                  label="Weight (lbs)"
-                  type="number"
-                  value={answers.weightLbs ?? ""}
-                  onChange={(v) => set({ weightLbs: v })}
-                  placeholder="210"
-                />
-                {bmi !== null && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-1 flex items-center justify-between rounded-2xl border border-ever/25 bg-ever/[0.06] px-5 py-4"
-                  >
-                    <span className="text-[14px] font-medium text-ink/70">Your BMI</span>
-                    <span className="text-[24px] font-bold text-ever">{bmi}</span>
-                  </motion.div>
-                )}
-              </ScreenShell>
-            )}
+                      <span className="mb-2 block text-[13px] font-medium text-ink/60">Your BMI Result</span>
+                      <div className="relative h-[52px] w-full overflow-hidden rounded-full bg-ink/[0.06]">
+                        <motion.div
+                          initial={false}
+                          animate={{ width: `${pct}%`, backgroundColor: active?.color }}
+                          transition={{ type: "spring", stiffness: 140, damping: 22 }}
+                          className="absolute inset-y-0 left-0 rounded-full"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-[15px] font-semibold text-ink">
+                            {bmi} · {displayLabel}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mt-3 grid grid-cols-4 gap-2">
+                        {categories.map((c, i) => (
+                          <div key={c.key} className="flex flex-col">
+                            <span
+                              className={`text-[12px] font-medium transition-colors ${
+                                i === activeIdx || (activeIdx === -1 && c.key === "obese")
+                                  ? "text-ink"
+                                  : "text-ink/45"
+                              }`}
+                            >
+                              {c.label}
+                            </span>
+                            <span className="text-[11px] text-ink/40">{c.range}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </ScreenShell>
+              );
+            })()}
+
 
             {current === "wl_glp1" && (
               <ScreenShell
