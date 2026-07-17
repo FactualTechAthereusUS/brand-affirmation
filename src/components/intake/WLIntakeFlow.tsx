@@ -1058,6 +1058,31 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
     return () => clearTimeout(t);
   }, [onNext]);
 
+  const highlights = isMale
+    ? ["ready to give up", "6 months later, wow"]
+    : ["ready to give up", "6 months later, wow"];
+
+  // Split quote to highlight fragments in coral
+  const renderQuote = () => {
+    let text = `"${story.quote}"`;
+    const parts: Array<{ text: string; hi?: boolean }> = [{ text }];
+    highlights.forEach((h) => {
+      const next: typeof parts = [];
+      parts.forEach((p) => {
+        if (p.hi) { next.push(p); return; }
+        const idx = p.text.toLowerCase().indexOf(h.toLowerCase());
+        if (idx === -1) { next.push(p); return; }
+        next.push({ text: p.text.slice(0, idx) });
+        next.push({ text: p.text.slice(idx, idx + h.length), hi: true });
+        next.push({ text: p.text.slice(idx + h.length) });
+      });
+      parts.splice(0, parts.length, ...next);
+    });
+    return parts.map((p, i) =>
+      p.hi ? <span key={i} className="text-ever">{p.text}</span> : <span key={i}>{p.text}</span>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -1068,68 +1093,51 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
       <motion.p
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.4 }}
-        className="mb-4 text-[13px] font-medium uppercase tracking-[0.14em] text-ever"
+        transition={{ delay: 0.1, duration: 0.5 }}
+        className="font-serif text-[24px] leading-[1.28] tracking-[-0.01em] text-ink md:text-[30px]"
       >
-        Someone just like you
+        {renderQuote()}
       </motion.p>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
+        initial={{ opacity: 0, scale: 0.98, filter: "blur(6px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-hidden rounded-[22px] bg-white ring-1 ring-black/5 shadow-[0_6px_30px_-12px_rgba(0,0,0,0.18)]"
+        transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-6 grid grid-cols-2 gap-2 overflow-hidden md:mt-8 md:gap-3"
       >
-        <div className="grid grid-cols-2 gap-0">
-          <div className="relative overflow-hidden bg-[#F3F2EE]">
-            <div className="aspect-[4/5] w-full">
-              <img src={story.before} alt="Before" className="h-full w-full object-cover" />
-            </div>
-            <span className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]" style={{ backgroundColor: "#0E3B36" }}>
-              Before
-            </span>
-          </div>
-          <div className="relative overflow-hidden bg-[#F3F2EE]">
-            <div className="aspect-[4/5] w-full">
-              <img src={story.after} alt="After" className="h-full w-full object-cover" />
-            </div>
-            <span className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]" style={{ backgroundColor: "#ee7273" }}>
-              After
-            </span>
+        <div className="relative overflow-hidden rounded-[6px] bg-[#F3F2EE]">
+          <div className="aspect-[3/5] w-full md:aspect-[4/6]">
+            <img src={story.before} alt="Before" className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
         </div>
-
-        <div className="px-5 py-5 md:px-6 md:py-6">
-          <div className="flex items-center gap-1" aria-label="5 star rating">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#ee7273" aria-hidden>
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            ))}
-          </div>
-          <p className="mt-3 text-[15.5px] leading-[1.6] text-ink/85 md:text-[16px]">
-            &ldquo;{story.quote}&rdquo;
-          </p>
-          <div className="mt-4 flex items-center gap-2">
-            <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
-            <span className="text-[13.5px] text-ink/70">
-              <span className="font-semibold text-ink">{story.name}</span>
-              <span className="mx-1.5 text-ink/30">·</span>
-              <span className="font-semibold text-ever">{story.result}</span>
-            </span>
+        <div className="relative overflow-hidden rounded-[6px] bg-[#F3F2EE]">
+          <div className="aspect-[3/5] w-full md:aspect-[4/6]">
+            <img src={story.after} alt="After" className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
         </div>
       </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="mt-5 text-center font-serif italic text-[15.5px] text-ink/60 md:text-[16px]"
+      >
+        {isMale
+          ? "Michael lost 50lbs and got his confidence back"
+          : "Jennifer lost 34lbs and has renewed confidence"}
+      </motion.p>
 
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.4 }}
+        transition={{ delay: 0.65, duration: 0.4 }}
         className="mt-8"
       >
-        <PrimaryButton onClick={onNext}>This could be me</PrimaryButton>
+        <PrimaryButton onClick={onNext}>Next →</PrimaryButton>
       </motion.div>
     </motion.div>
   );
 }
+
 
