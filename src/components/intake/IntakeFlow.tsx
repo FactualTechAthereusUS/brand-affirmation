@@ -1201,7 +1201,11 @@ function WLProjectionScreen({
   const lossLbs = Math.round(start * lossPct);
   const end = start - lossLbs;
 
-  const months = ["Now", "M1", "M2", "M3", "M4", "M5", "M6"];
+  // Month labels: current month + next 6
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const now = new Date();
+  const months = Array.from({ length: 7 }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
+
   // Cubic ease-out from start → end across 7 points
   const points = months.map((_, i) => {
     const t = i / (months.length - 1);
@@ -1211,11 +1215,11 @@ function WLProjectionScreen({
 
   // SVG geometry
   const W = 640;
-  const H = 260;
-  const padL = 56;
-  const padR = 32;
-  const padT = 24;
-  const padB = 40;
+  const H = 300;
+  const padL = 64;
+  const padR = 28;
+  const padT = 28;
+  const padB = 44;
   const xAt = (i: number) => padL + (i / (months.length - 1)) * (W - padL - padR);
   const yAt = (v: number) => {
     const min = end - 4;
@@ -1235,8 +1239,6 @@ function WLProjectionScreen({
     return `${acc} C ${cx1} ${prevY}, ${cx2} ${y}, ${x} ${y}`;
   }, "");
 
-  const areaPath = `${path} L ${xAt(months.length - 1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -1244,103 +1246,82 @@ function WLProjectionScreen({
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto flex w-full max-w-[640px] flex-col"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 6 }}
+      <motion.h2
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05, duration: 0.5 }}
-        className="inline-flex w-fit items-center gap-2 rounded-full border border-ever/25 bg-ever/[0.06] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ever"
+        className="font-hero text-[26px] font-bold leading-[1.15] tracking-[-0.02em] text-ink md:text-[32px]"
       >
-        Your projection
-      </motion.div>
-      <h2 className="mt-5 font-hero text-[30px] font-bold leading-[1.05] tracking-[-0.03em] text-ink md:text-[40px]">
-        {firstName || "You"}, in six months you could lose{" "}
+        {firstName ? `${firstName}, in` : "In"} six months, you could lose{" "}
         <span className="text-ever">{lossLbs} lbs</span>.
-      </h2>
-      <p className="mt-3 max-w-[520px] text-[15px] leading-[1.55] text-ink/60">
-        Based on your profile, Blissley patients with a similar starting weight
-        lose an average of {(lossPct * 100).toFixed(1)}% body weight over their
-        first six months. Individual results vary with treatment adherence.
-      </p>
+      </motion.h2>
 
-      {/* Chart card */}
+      {/* Chart */}
       <motion.div
-        initial={{ opacity: 0, y: -32, filter: "blur(10px)" }}
+        initial={{ opacity: 0, y: -20, filter: "blur(8px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ delay: 0.2, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mt-8 overflow-hidden rounded-3xl border border-ink/10 bg-gradient-to-b from-white to-[#fff7f7] p-4 shadow-[0_20px_60px_-30px_rgba(238,114,115,0.35)] md:p-6"
+        transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-8"
       >
-        {/* Ambient coral glow */}
-        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-ever/25 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-ever/15 blur-3xl" />
-
-        <svg viewBox={`0 0 ${W} ${H}`} className="relative block w-full">
+        <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
           <defs>
             <linearGradient id="wlLine" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0%" stopColor="#ee7273" />
-              <stop offset="100%" stopColor="#f39c9d" />
-            </linearGradient>
-            <linearGradient id="wlArea" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
+              <stop offset="100%" stopColor="#ee7273" />
             </linearGradient>
           </defs>
 
-          {/* Y guides */}
-          {[0, 1, 2, 3].map((i) => {
-            const y = padT + (i / 3) * (H - padT - padB);
-            return (
-              <line
-                key={i}
-                x1={padL}
-                x2={W - padR}
-                y1={y}
-                y2={y}
-                stroke="#171717"
-                strokeOpacity="0.06"
-                strokeDasharray="4 6"
-              />
-            );
-          })}
+          {/* Dashed guide at top (start) */}
+          <line
+            x1={padL}
+            x2={W - padR}
+            y1={yAt(start)}
+            y2={yAt(start)}
+            stroke="#171717"
+            strokeOpacity="0.18"
+            strokeDasharray="5 6"
+          />
+          {/* Dashed guide at bottom (end) */}
+          <line
+            x1={padL}
+            x2={W - padR}
+            y1={yAt(end)}
+            y2={yAt(end)}
+            stroke="#171717"
+            strokeOpacity="0.18"
+            strokeDasharray="5 6"
+          />
 
           {/* Start / end labels */}
-          <text x={padL - 10} y={yAt(start) + 4} textAnchor="end" className="fill-ink/60" style={{ fontSize: 12, fontWeight: 500 }}>
+          <text x={padL - 12} y={yAt(start) + 4} textAnchor="end" className="fill-ink/70" style={{ fontSize: 13, fontWeight: 500 }}>
             {start} lbs
           </text>
-          <text x={padL - 10} y={yAt(end) + 4} textAnchor="end" className="fill-ink/60" style={{ fontSize: 12, fontWeight: 500 }}>
+          <text x={padL - 12} y={yAt(end) + 4} textAnchor="end" className="fill-ink/70" style={{ fontSize: 13, fontWeight: 500 }}>
             {end} lbs
           </text>
 
-          {/* Area fill */}
-          <motion.path
-            d={areaPath}
-            fill="url(#wlArea)"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
-          />
-
-          {/* Line drop-in */}
+          {/* Line */}
           <motion.path
             d={path}
             fill="none"
             stroke="url(#wlLine)"
-            strokeWidth={4}
+            strokeWidth={5}
             strokeLinecap="round"
             strokeLinejoin="round"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ delay: 0.55, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           />
 
           {/* Start dot */}
           <motion.circle
             cx={xAt(0)}
             cy={yAt(start)}
-            r={7}
+            r={8}
             fill="#ee7273"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.55, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
+            transition={{ delay: 0.5, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
           />
           {/* End dot */}
           <motion.circle
@@ -1350,67 +1331,43 @@ function WLProjectionScreen({
             fill="#ee7273"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1.9, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}
-          />
-          <motion.circle
-            cx={xAt(months.length - 1)}
-            cy={yAt(end)}
-            r={16}
-            fill="#ee7273"
-            fillOpacity="0.25"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: [0, 1.4, 1], opacity: [0, 0.6, 0.35] }}
-            transition={{ delay: 1.9, duration: 1.1 }}
+            transition={{ delay: 1.8, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}
           />
 
           {/* X labels */}
           {months.map((m, i) => (
             <text
-              key={m}
+              key={`${m}-${i}`}
               x={xAt(i)}
-              y={H - 12}
+              y={H - 14}
               textAnchor="middle"
-              className="fill-ink/50"
-              style={{ fontSize: 11, fontWeight: 500 }}
+              className="fill-ink/60"
+              style={{ fontSize: 12, fontWeight: 500 }}
             >
               {m}
             </text>
           ))}
         </svg>
-
-        {/* Stat row */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.1, duration: 0.5 }}
-          className="mt-4 grid grid-cols-3 gap-2 border-t border-ink/[0.08] pt-4"
-        >
-          <div>
-            <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-ink/45">Starting</div>
-            <div className="mt-1 font-hero text-[20px] font-bold text-ink">{start} lbs</div>
-          </div>
-          <div>
-            <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-ink/45">In 6 months</div>
-            <div className="mt-1 font-hero text-[20px] font-bold text-ever">{end} lbs</div>
-          </div>
-          <div>
-            <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-ink/45">You lose</div>
-            <div className="mt-1 font-hero text-[20px] font-bold text-ink">-{lossLbs} lbs</div>
-          </div>
-        </motion.div>
       </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.6, duration: 0.5 }}
+        className="mt-8 text-[15px] leading-[1.6] text-ink/65"
+      >
+        Our users with a similar starting BMI to yours lose an average of{" "}
+        {(lossPct * 100).toFixed(1)}% body weight in six months. Individual
+        results may vary based on starting BMI and treatment adherence.
+      </motion.p>
 
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.3, duration: 0.5 }}
-        className="mt-8"
+        transition={{ delay: 1.9, duration: 0.5 }}
+        className="mt-10"
       >
         <PrimaryButton onClick={onNext}>Continue</PrimaryButton>
-        <p className="mt-4 text-center text-[12px] text-ink/45">
-          Projection based on published GLP-1 clinical trial data. Your physician
-          confirms your individualized plan.
-        </p>
       </motion.div>
     </motion.div>
   );
