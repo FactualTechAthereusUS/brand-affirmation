@@ -801,7 +801,7 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
 
       {/* Logo */}
       <div className="relative z-10 flex items-center justify-center pt-10 md:pt-14">
-        <img src={logoWhite.url} alt="Blissley" className="h-9 w-auto brightness-0 invert md:h-10" />
+        <img src={logo.url} alt="Blissley" className="h-9 w-auto brightness-0 invert md:h-10" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100svh-120px)] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center">
