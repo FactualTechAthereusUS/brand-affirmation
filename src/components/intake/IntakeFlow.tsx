@@ -11,6 +11,7 @@ import {
   TextField,
 } from "./primitives";
 import logo from "@/assets/blissley-logo.png.asset.json";
+import trustBadge from "@/assets/trustpilot-excellent-46.png.asset.json";
 import catWeight from "@/assets/cat-weight.png.asset.json";
 import catSexual from "@/assets/cat-sexual.png.asset.json";
 import catSkin from "@/assets/cat-skin.png.asset.json";
