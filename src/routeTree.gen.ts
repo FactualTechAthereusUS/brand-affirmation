@@ -18,6 +18,7 @@ import { Route as MedicationSafetyRouteImport } from './routes/medication-safety
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as IntakeWeightLossRouteImport } from './routes/intake_.weight-loss'
 
 const WeightLossRoute = WeightLossRouteImport.update({
@@ -65,6 +66,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WeightLossSalesRoute = WeightLossSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => WeightLossRoute,
+} as any)
 const IntakeWeightLossRoute = IntakeWeightLossRouteImport.update({
   id: '/intake_/weight-loss',
   path: '/intake/weight-loss',
@@ -80,8 +86,9 @@ export interface FileRoutesByFullPath {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
-  '/weight-loss': typeof WeightLossRoute
+  '/weight-loss': typeof WeightLossRouteWithChildren
   '/intake/weight-loss': typeof IntakeWeightLossRoute
+  '/weight-loss/sales': typeof WeightLossSalesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -92,8 +99,9 @@ export interface FileRoutesByTo {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
-  '/weight-loss': typeof WeightLossRoute
+  '/weight-loss': typeof WeightLossRouteWithChildren
   '/intake/weight-loss': typeof IntakeWeightLossRoute
+  '/weight-loss/sales': typeof WeightLossSalesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,8 +113,9 @@ export interface FileRoutesById {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
-  '/weight-loss': typeof WeightLossRoute
+  '/weight-loss': typeof WeightLossRouteWithChildren
   '/intake_/weight-loss': typeof IntakeWeightLossRoute
+  '/weight-loss/sales': typeof WeightLossSalesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/weight-loss'
     | '/intake/weight-loss'
+    | '/weight-loss/sales'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/weight-loss'
     | '/intake/weight-loss'
+    | '/weight-loss/sales'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/weight-loss'
     | '/intake_/weight-loss'
+    | '/weight-loss/sales'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,7 +168,7 @@ export interface RootRouteChildren {
   RefundRoute: typeof RefundRoute
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
-  WeightLossRoute: typeof WeightLossRoute
+  WeightLossRoute: typeof WeightLossRouteWithChildren
   IntakeWeightLossRoute: typeof IntakeWeightLossRoute
 }
 
@@ -225,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/weight-loss/sales': {
+      id: '/weight-loss/sales'
+      path: '/sales'
+      fullPath: '/weight-loss/sales'
+      preLoaderRoute: typeof WeightLossSalesRouteImport
+      parentRoute: typeof WeightLossRoute
+    }
     '/intake_/weight-loss': {
       id: '/intake_/weight-loss'
       path: '/intake/weight-loss'
@@ -235,6 +254,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface WeightLossRouteChildren {
+  WeightLossSalesRoute: typeof WeightLossSalesRoute
+}
+
+const WeightLossRouteChildren: WeightLossRouteChildren = {
+  WeightLossSalesRoute: WeightLossSalesRoute,
+}
+
+const WeightLossRouteWithChildren = WeightLossRoute._addFileChildren(
+  WeightLossRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   IntakeRoute: IntakeRoute,
@@ -244,7 +275,7 @@ const rootRouteChildren: RootRouteChildren = {
   RefundRoute: RefundRoute,
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
-  WeightLossRoute: WeightLossRoute,
+  WeightLossRoute: WeightLossRouteWithChildren,
   IntakeWeightLossRoute: IntakeWeightLossRoute,
 }
 export const routeTree = rootRouteImport
