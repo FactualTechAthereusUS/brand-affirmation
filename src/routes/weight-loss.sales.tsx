@@ -294,6 +294,30 @@ function useReservedCountdown(seconds = 15 * 60) {
   return { label: `${m}:${s}`, expired: remaining <= 0 };
 }
 
+function AnnouncementBar({ firstName }: { firstName: string }) {
+  const { label, expired } = useReservedCountdown();
+  return (
+    <div
+      className="fixed inset-x-0 top-0 z-40 w-full bg-ever text-white"
+      role="status"
+      aria-live="polite"
+    >
+      <div className="mx-auto flex h-9 max-w-6xl items-center justify-center px-4 text-center text-[12px] font-medium tracking-tight sm:h-10 sm:text-[13px]">
+        {expired ? (
+          <span>⚠️ Slot expiring — complete your order</span>
+        ) : (
+          <span>
+            ⏱️ {firstName}, your approval is valid for ·{" "}
+            <span className="tabular-nums font-semibold">{label}</span>
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+
 
 /* ────────────────────────────────────────────────────────────
    Nav
