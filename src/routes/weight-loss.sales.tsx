@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, ChevronDown, Lock, ShieldCheck, Sparkles, Star, Timer, Zap } from "lucide-react";
 import logo from "@/assets/blissley-logo.png.asset.json";
+import { SocialProof } from "@/components/home/SocialProof";
 
 export const Route = createFileRoute("/weight-loss/sales")({
   component: WeightLossSalesPage,
@@ -239,7 +240,7 @@ function WeightLossSalesPage() {
 
       <HowItWorks />
 
-      <RealResults />
+      <SocialProof />
 
       <Mechanism />
 
@@ -806,89 +807,8 @@ function HowItWorks() {
 
 
 /* ────────────────────────────────────────────────────────────
-   Section 6 — Real results
+   Section 6 — Real results (homepage review carousel)
    ──────────────────────────────────────────────────────────── */
-
-const REVIEWS = [
-  {
-    q: "The food noise is just gone. I didn't know everyone's head wasn't like mine. The constant negotiating with myself about food just stopped. The weight loss is great but that part changed my life.",
-    n: "Jennifer R., 41",
-    m: "Weight Loss · 5 months",
-  },
-  {
-    q: "50 lbs down in 7 months. I haven't seen that number on a scale in 30 years. I stepped off and stepped back on just to make sure.",
-    n: "Michael T., 52",
-    m: "Weight Loss · 7 months",
-  },
-  {
-    q: "The billing was exactly $249. Same when my dose went up. I called to double check. I genuinely could not believe it. After what happened at my last provider I actually cried.",
-    n: "Sarah M., 47",
-    m: "Weight Loss · 4 months",
-  },
-  {
-    q: "My doctor told me to just eat less for 10 years. 10 years of that same advice that never worked. This worked in 6 weeks.",
-    n: "Lisa K., 39",
-    m: "Weight Loss · 2 months",
-  },
-];
-
-function RealResults() {
-  return (
-    <section className="bg-ink/[0.02] py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl">
-        <div className="px-5">
-          <Reveal>
-            <div className="text-center">
-              <EyebrowChip>Real stories</EyebrowChip>
-              <h2 className="font-hero mt-4 text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[38px]">
-                Real patients. Real results.
-              </h2>
-              <div className="mt-3 flex items-center justify-center gap-1 text-[13.5px] text-ink/60">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-ever text-ever" />
-                ))}
-                <span className="ml-2">4.8 out of 5 · 3,000+ patients</span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-
-        {/* photo strip */}
-        <Reveal delay={0.08}>
-          <div className="mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="snap-start shrink-0" style={{ width: 160 }}>
-                <PlaceholderImage ratio="aspect-[4/5]" label={`Patient ${i + 1}`} />
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
-        {/* review cards */}
-        <Reveal delay={0.15}>
-          <div className="mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {REVIEWS.map((r) => (
-              <div
-                key={r.n}
-                className="w-[320px] shrink-0 snap-start rounded-2xl border border-ink/[0.06] bg-white p-5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.2)]"
-              >
-                <div className="flex gap-0.5">
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-ever text-ever" />
-                  ))}
-                </div>
-                <p className="mt-3 text-[14.5px] leading-[1.65] text-ink/85">"{r.q}"</p>
-                <div className="mt-4 border-t border-ink/[0.06] pt-3 text-[12.5px] text-ink/55">
-                  <span className="font-semibold text-ink">{r.n}</span> · {r.m}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
 /* ────────────────────────────────────────────────────────────
    Section 7 — Mechanism / belief builder
