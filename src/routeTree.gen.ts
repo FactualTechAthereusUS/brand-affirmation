@@ -18,6 +18,7 @@ import { Route as MedicationSafetyRouteImport } from './routes/medication-safety
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as IntakeWeightLossRouteImport } from './routes/intake.weight-loss'
 
 const WeightLossRoute = WeightLossRouteImport.update({
   id: '/weight-loss',
@@ -64,10 +65,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntakeWeightLossRoute = IntakeWeightLossRouteImport.update({
+  id: '/weight-loss',
+  path: '/weight-loss',
+  getParentRoute: () => IntakeRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/intake': typeof IntakeRoute
+  '/intake': typeof IntakeRouteWithChildren
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
@@ -75,10 +81,11 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/weight-loss': typeof WeightLossRoute
+  '/intake/weight-loss': typeof IntakeWeightLossRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/intake': typeof IntakeRoute
+  '/intake': typeof IntakeRouteWithChildren
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
@@ -86,11 +93,12 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/weight-loss': typeof WeightLossRoute
+  '/intake/weight-loss': typeof IntakeWeightLossRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/intake': typeof IntakeRoute
+  '/intake': typeof IntakeRouteWithChildren
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/weight-loss': typeof WeightLossRoute
+  '/intake/weight-loss': typeof IntakeWeightLossRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/weight-loss'
+    | '/intake/weight-loss'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/weight-loss'
+    | '/intake/weight-loss'
   id:
     | '__root__'
     | '/'
@@ -133,11 +144,12 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/weight-loss'
+    | '/intake/weight-loss'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  IntakeRoute: typeof IntakeRoute
+  IntakeRoute: typeof IntakeRouteWithChildren
   LoginRoute: typeof LoginRoute
   MedicationSafetyRoute: typeof MedicationSafetyRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -212,12 +224,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/intake/weight-loss': {
+      id: '/intake/weight-loss'
+      path: '/weight-loss'
+      fullPath: '/intake/weight-loss'
+      preLoaderRoute: typeof IntakeWeightLossRouteImport
+      parentRoute: typeof IntakeRoute
+    }
   }
 }
 
+interface IntakeRouteChildren {
+  IntakeWeightLossRoute: typeof IntakeWeightLossRoute
+}
+
+const IntakeRouteChildren: IntakeRouteChildren = {
+  IntakeWeightLossRoute: IntakeWeightLossRoute,
+}
+
+const IntakeRouteWithChildren =
+  IntakeRoute._addFileChildren(IntakeRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  IntakeRoute: IntakeRoute,
+  IntakeRoute: IntakeRouteWithChildren,
   LoginRoute: LoginRoute,
   MedicationSafetyRoute: MedicationSafetyRoute,
   PrivacyRoute: PrivacyRoute,
