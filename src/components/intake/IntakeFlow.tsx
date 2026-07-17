@@ -143,13 +143,35 @@ export function IntakeFlow() {
         <div className="mx-auto flex h-[64px] max-w-[900px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
           <BackBtn onClick={prev} invisible={idx === 0 || current === "loading"} />
           <Link to="/" className="flex items-center">
-            <img src={logo.url} alt="Blissley" className="h-10 w-auto md:h-12" />
+            <img src={logo.url} alt="Blissley" className="h-11 w-auto md:h-14" />
           </Link>
-          <img
-            src={trustBadge.url}
-            alt="Excellent 4.6 rating"
-            className="h-7 w-auto md:h-8"
-          />
+          <div className="flex items-center gap-2">
+            <span className="hidden text-sm font-semibold text-ink sm:inline">Excellent 4.6</span>
+            <div className="flex gap-0.5">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="flex h-5 w-5 items-center justify-center rounded-sm bg-[#00b67a] md:h-6 md:w-6"
+                >
+                  <svg className="h-3 w-3 fill-white md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+              ))}
+              <div className="relative h-5 w-5 overflow-hidden rounded-sm bg-[#00b67a] md:h-6 md:w-6">
+                <div className="absolute inset-0 w-1/2 bg-[#00b67a]">
+                  <svg className="h-3 w-3 fill-white md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+                <div className="absolute inset-0 left-1/2 w-1/2 bg-[#00b67a]/20">
+                  <svg className="h-3 w-3 fill-[#00b67a] md:h-3.5 md:w-3.5" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="mx-auto max-w-[900px] px-5 pb-3 md:px-8">
           <ProgressBar value={progress} />
