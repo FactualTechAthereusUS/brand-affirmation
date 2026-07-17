@@ -376,6 +376,8 @@ function Hero({
   glp1History,
   glp1Which,
   glp1Dose,
+  startWeight,
+  bmi,
 }: {
   firstName: string;
   toLose: number;
@@ -384,10 +386,39 @@ function Hero({
   glp1History?: string;
   glp1Which?: string;
   glp1Dose?: string;
+  startWeight: number;
+  bmi: number | null;
 }) {
   const hasPriorGLP1 =
     typeof glp1History === "string" && glp1History.startsWith("Yes");
   const priorLabel = [glp1Which, glp1Dose].filter(Boolean).join(" · ");
+
+  // Projection chart (same math/animation as bottom Projection section)
+  const start = Math.max(120, Math.min(500, startWeight));
+  const lossPct = bmi && bmi >= 30 ? 0.17 : bmi && bmi >= 27 ? 0.14 : 0.11;
+  const lossLbs = Math.round(start * lossPct);
+  const end = start - lossLbs;
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const now = new Date();
+  const months = Array.from({ length: 7 }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
+  const points = months.map((_, i) => {
+    const t = i / (months.length - 1);
+    const eased = 1 - Math.pow(1 - t, 2.4);
+    return start - (start - end) * eased;
+  });
+  const W = 640, H = 260, padL = 64, padR = 28, padT = 24, padB = 40;
+  const xAt = (i: number) => padL + (i / (months.length - 1)) * (W - padL - padR);
+  const yAt = (v: number) => {
+    const min = end - 4, max = start + 4;
+    return padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
+  };
+  const path = points.reduce((acc, v, i) => {
+    const x = xAt(i), y = yAt(v);
+    if (i === 0) return `M ${x} ${y}`;
+    const prevX = xAt(i - 1), prevY = yAt(points[i - 1]);
+    const cx1 = prevX + (x - prevX) * 0.5, cx2 = prevX + (x - prevX) * 0.5;
+    return `${acc} C ${cx1} ${prevY}, ${cx2} ${y}, ${x} ${y}`;
+  }, "");
 
   return (
     <section className="relative overflow-hidden bg-white">
@@ -411,20 +442,66 @@ function Hero({
           </p>
         </Reveal>
 
-        {/* Success metric — DirectMeds-style badge */}
-        <Reveal delay={0.15}>
-          <div className="mx-auto mt-7 inline-flex flex-col items-center rounded-3xl border border-ever/20 bg-ever/[0.06] px-8 py-6 sm:px-10 sm:py-7">
-            <div className="text-[48px] font-bold leading-none tracking-[-0.03em] text-ever sm:text-[60px]">
-              94.6%
-            </div>
-            <div className="mt-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink/80">
-              Very High Likelihood of Success
-            </div>
-            <div className="mt-1 text-[12px] text-ink/55">
-              Based on your assessment profile
-            </div>
+        {/* Projection chart — same as bottom section */}
+        <motion.div
+          initial={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto mt-8 rounded-3xl border border-ink/[0.08] bg-white p-4 shadow-[0_10px_40px_-20px_rgba(23,23,23,0.15)] sm:p-6"
+        >
+          <div className="mb-2 text-left text-[11px] font-semibold uppercase tracking-[0.14em] text-ever">
+            Your projection
           </div>
-        </Reveal>
+          <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
+            <defs>
+              <linearGradient id="heroLine" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stopColor="#ee7273" />
+                <stop offset="100%" stopColor="#ee7273" />
+              </linearGradient>
+            </defs>
+            <line x1={padL} x2={W - padR} y1={yAt(start)} y2={yAt(start)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
+            <line x1={padL} x2={W - padR} y1={yAt(end)} y2={yAt(end)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
+            <text x={padL - 12} y={yAt(start) + 4} textAnchor="end" className="fill-ink/70" style={{ fontSize: 13, fontWeight: 500 }}>
+              {start} lbs
+            </text>
+            <text x={padL - 12} y={yAt(end) + 4} textAnchor="end" className="fill-ink/70" style={{ fontSize: 13, fontWeight: 500 }}>
+              {end} lbs
+            </text>
+            <motion.path
+              d={path}
+              fill="none"
+              stroke="url(#heroLine)"
+              strokeWidth={5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <motion.circle
+              cx={xAt(0)} cy={yAt(start)} r={8} fill="#ee7273"
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
+            />
+            <motion.circle
+              cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#ee7273"
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1.7, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}
+            />
+            {months.map((m, i) => (
+              <text key={`${m}-${i}`} x={xAt(i)} y={H - 12} textAnchor="middle" className="fill-ink/60" style={{ fontSize: 12, fontWeight: 500 }}>
+                {m}
+              </text>
+            ))}
+          </svg>
+        </motion.div>
+
 
         {/* Personalized data strip — Numbers-style clone */}
         <div className="mx-auto mt-10 max-w-[720px]">
