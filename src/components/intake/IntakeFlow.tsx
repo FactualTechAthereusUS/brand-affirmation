@@ -144,9 +144,13 @@ export function IntakeFlow() {
         <div className="mx-auto flex h-[64px] max-w-[900px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
           <BackBtn onClick={prev} invisible={idx === 0 || current === "loading"} />
           <Link to="/" className="flex items-center">
-            <img src={logo.url} alt="Blissley" className="h-8 w-auto md:h-9" />
+            <img src={logo.url} alt="Blissley" className="h-10 w-auto md:h-12" />
           </Link>
-          <div className="w-[72px]" />
+          <img
+            src={trustBadge.url}
+            alt="Excellent 4.6 rating"
+            className="h-7 w-auto md:h-8"
+          />
         </div>
         <div className="mx-auto max-w-[900px] px-5 pb-3 md:px-8">
           <ProgressBar value={progress} />
