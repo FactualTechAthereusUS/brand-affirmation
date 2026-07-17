@@ -423,31 +423,50 @@ function Hero({
           </div>
         </Reveal>
 
-        {/* Personalized data strip */}
-        <Reveal delay={0.2}>
-          <div className="mx-auto mt-7 grid max-w-[580px] grid-cols-3 divide-x divide-ink/[0.06] rounded-3xl border border-ink/[0.06] bg-white p-5 text-left shadow-[0_8px_30px_-18px_rgba(23,23,23,0.12)] sm:p-6">
-            <div className="px-2 first:pl-0 last:pr-0 sm:px-4">
-              <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">To lose</div>
-              <div className="mt-1.5 text-[22px] font-bold tracking-tight text-ink sm:text-[28px]">
-                {toLose} <span className="text-[13px] font-medium text-ink/60">lbs</span>
+        {/* Personalized data strip — Numbers-style */}
+        <div className="mx-auto mt-10 grid max-w-[720px] grid-cols-3 gap-y-8">
+          {[
+            { kind: "num" as const, value: toLose, suffix: "lbs", label: "To lose" },
+            { kind: "num" as const, value: timelineWeeks, prefix: "~", suffix: "wks", label: "Timeline · physician est." },
+            { kind: "text" as const, value: "Semaglutide", suffix: "inj.", label: "Recommended" },
+          ].map((s, i) => (
+            <Reveal key={s.label} delay={0.18 + i * 0.06}>
+              <div
+                className={`flex flex-col items-start gap-2 px-3 sm:px-6 ${
+                  i > 0 ? "border-l border-ink/10" : ""
+                }`}
+              >
+                <div className="flex items-baseline text-ink">
+                  {s.kind === "num" ? (
+                    <>
+                      {s.prefix && (
+                        <span className="mr-0.5 font-sans text-[28px] font-extrabold leading-none tracking-[-0.02em] sm:text-[34px]">
+                          {s.prefix}
+                        </span>
+                      )}
+                      <CountUp
+                        to={Number(s.value) || 0}
+                        format={(n) => Math.round(n).toString()}
+                        className="font-sans text-[44px] font-extrabold leading-none tracking-[-0.03em] sm:text-[64px] tabular-nums"
+                      />
+                      <span className="ml-1 font-sans text-[18px] font-extrabold leading-none tracking-[-0.02em] sm:text-[24px]">
+                        {s.suffix}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="font-sans text-[26px] font-extrabold leading-none tracking-[-0.02em] sm:text-[36px]">
+                      {s.value}
+                    </span>
+                  )}
+                </div>
+                <p className="max-w-[180px] text-[12px] leading-[1.35] text-ink/55 sm:text-[14px]">
+                  {s.label}
+                </p>
               </div>
-            </div>
-            <div className="px-2 first:pl-0 last:pr-0 sm:px-4">
-              <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">Timeline</div>
-              <div className="mt-1.5 text-[22px] font-bold tracking-tight text-ink sm:text-[28px]">
-                ~{timelineWeeks} <span className="text-[13px] font-medium text-ink/60">weeks</span>
-              </div>
-              <div className="mt-0.5 text-[11px] text-ink/45">physician est.</div>
-            </div>
-            <div className="px-2 first:pl-0 last:pr-0 sm:px-4">
-              <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">Recommended</div>
-              <div className="mt-1.5 text-[16px] font-bold tracking-tight text-ink sm:text-[19px]">
-                Semaglutide
-              </div>
-              <div className="mt-0.5 text-[11px] text-ink/45">Injectable</div>
-            </div>
-          </div>
-        </Reveal>
+            </Reveal>
+          ))}
+        </div>
+
 
         {/* Prior GLP-1 note */}
         {hasPriorGLP1 && (
