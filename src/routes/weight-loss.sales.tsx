@@ -213,8 +213,8 @@ function WeightLossSalesPage() {
 
   return (
     <main className="min-h-[100svh] bg-white text-ink">
-      <AnnouncementBar firstName={firstName} />
       <SalesNav />
+
 
       <Hero
         firstName={firstName}
@@ -292,26 +292,6 @@ function useReservedCountdown(seconds = 15 * 60) {
   return { label: `${m}:${s}`, expired: remaining <= 0 };
 }
 
-function AnnouncementBar({ firstName }: { firstName: string }) {
-  const { label, expired } = useReservedCountdown();
-  return (
-    <div className="sticky top-0 z-40 w-full bg-ink text-white">
-      <div className="mx-auto flex h-9 max-w-6xl items-center justify-center gap-2 px-4 text-[12.5px]">
-        <Timer className="h-3.5 w-3.5" />
-        {expired ? (
-          <span className="text-white/90">
-            Slot expiring — complete your order to keep it
-          </span>
-        ) : (
-          <span className="text-white/90">
-            {firstName}, your physician slot is reserved ·{" "}
-            <span className="font-semibold tabular-nums text-white">{label}</span>
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
 
 /* ────────────────────────────────────────────────────────────
    Nav
@@ -319,7 +299,8 @@ function AnnouncementBar({ firstName }: { firstName: string }) {
 
 function SalesNav() {
   return (
-    <header className="sticky top-9 z-30 w-full border-b border-ink/[0.06] bg-white/85 backdrop-blur-xl">
+    <header className="relative z-30 w-full border-b border-ink/[0.06] bg-white">
+
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-5">
         <img src={logo.url} alt="Blissley" className="h-6 w-auto sm:h-8" />
         <div className="flex items-center gap-2 sm:gap-2.5">
@@ -773,10 +754,10 @@ function HowItWorks() {
     },
   ];
   return (
-    <section className="bg-ink py-16 text-white sm:py-24">
+    <section className="bg-white py-16 text-ink sm:py-24">
       <div className="mx-auto max-w-3xl px-5">
         <Reveal>
-          <h2 className="font-hero text-center text-[28px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[38px]">
+          <h2 className="font-hero text-center text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[38px]">
             Here's exactly what happens after you click.
           </h2>
         </Reveal>
@@ -787,19 +768,20 @@ function HowItWorks() {
                 <div className="font-hero text-[42px] font-bold text-ever sm:text-[52px]">{s.n}</div>
                 <div>
                   <div className="text-[17px] font-semibold sm:text-[19px]">{s.t}</div>
-                  <p className="mt-2 text-[14px] leading-[1.6] text-white/70">{s.b}</p>
+                  <p className="mt-2 text-[14px] leading-[1.6] text-ink/70">{s.b}</p>
                 </div>
               </div>
             </Reveal>
           ))}
         </div>
         <div className="mx-auto mt-12 max-w-md">
-          <PrimaryCTA variant="light">Start my program</PrimaryCTA>
+          <PrimaryCTA variant="dark">Start my program</PrimaryCTA>
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ────────────────────────────────────────────────────────────
    Section 6 — Real results
@@ -1284,16 +1266,16 @@ function FinalCTA({
 }) {
   const { label } = useReservedCountdown();
   return (
-    <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
+    <section className="relative overflow-hidden bg-white py-16 text-ink sm:py-24">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-ever/25 blur-[140px]" />
+        <div className="absolute -top-40 left-1/2 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-ever/10 blur-[140px]" />
       </div>
       <div className="relative mx-auto max-w-2xl px-5 text-center">
         <Reveal>
-          <h2 className="font-hero text-[30px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[42px]">
+          <h2 className="font-hero text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[42px]">
             {firstName}, your program is ready.
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.55] text-white/75">
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.55] text-ink/70">
             Physician review in 24 hours. Ships in 48 hours. Same price at every dose. Forever.
           </p>
         </Reveal>
@@ -1309,14 +1291,14 @@ function FinalCTA({
                 onClick={() => setPlan(k)}
                 className={`flex w-full items-center justify-between gap-3 rounded-2xl px-4 py-3.5 transition-all ${
                   selected
-                    ? "bg-white text-ink shadow-[0_20px_60px_-30px_rgba(0,0,0,0.6)]"
-                    : "bg-white/10 text-white/85 hover:bg-white/15"
+                    ? "bg-white text-ink shadow-[0_20px_60px_-30px_rgba(0,0,0,0.18)] ring-1 ring-ink/[0.08]"
+                    : "bg-ink/[0.035] text-ink/80 hover:bg-ink/[0.06]"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span
                     className={`grid h-4 w-4 place-items-center rounded-full border-2 ${
-                      selected ? "border-ever bg-ever" : "border-white/50"
+                      selected ? "border-ever bg-ever" : "border-ink/30"
                     }`}
                   >
                     {selected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
@@ -1325,7 +1307,7 @@ function FinalCTA({
                     {p.title}
                     {p.badge && (
                       <span className={`ml-2 rounded-full px-1.5 py-0.5 text-[9.5px] font-bold ${
-                        selected ? (p.badge.kind === "popular" ? "bg-ever text-white" : "bg-ink text-white") : "bg-white/20"
+                        selected ? (p.badge.kind === "popular" ? "bg-ever text-white" : "bg-ink text-white") : "bg-ink/[0.08] text-ink/70"
                       }`}>
                         {p.badge.label}
                       </span>
@@ -1334,7 +1316,7 @@ function FinalCTA({
                 </div>
                 <span className="text-[13px] tabular-nums">
                   ${p.today.toLocaleString()}{" "}
-                  <span className={selected ? "text-ink/50" : "text-white/60"}>
+                  <span className={selected ? "text-ink/50" : "text-ink/55"}>
                     (${p.perMonth}/mo)
                   </span>
                 </span>
@@ -1347,27 +1329,27 @@ function FinalCTA({
           type="button"
           onClick={() => setPriority(!priority)}
           className={`mt-4 flex w-full items-center gap-3 rounded-2xl border-2 border-dashed px-4 py-3 text-left transition-all ${
-            priority ? "border-white bg-white/10" : "border-white/40 bg-white/5 hover:border-white/60"
+            priority ? "border-ever bg-ever/[0.05]" : "border-ink/[0.15] bg-ink/[0.02] hover:border-ever/40"
           }`}
         >
           <span
             className={`grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 ${
-              priority ? "border-white bg-white text-ink" : "border-white/50"
+              priority ? "border-ever bg-ever text-white" : "border-ink/30"
             }`}
           >
             {priority && <Check className="h-3.5 w-3.5" />}
           </span>
           <span className="text-[13.5px] font-medium">
-            <Zap className="mr-1 inline h-3.5 w-3.5 text-white" />
-            Priority Physician Review <span className="text-white/70">+${PRIORITY_ADDON}</span>
+            <Zap className="mr-1 inline h-3.5 w-3.5 text-ever" />
+            Priority Physician Review <span className="text-ink/60">+${PRIORITY_ADDON}</span>
           </span>
         </button>
 
         <div className="mt-6">
-          <PrimaryCTA variant="light">Start my program</PrimaryCTA>
+          <PrimaryCTA variant="dark">Start my program</PrimaryCTA>
         </div>
 
-        <div className="mt-4 flex flex-col items-center gap-1 text-[12px] text-white/60">
+        <div className="mt-4 flex flex-col items-center gap-1 text-[12px] text-ink/55">
           <div className="flex items-center gap-1.5">
             <Lock className="h-3 w-3" /> Secure · Cancel anytime · Same price forever · HIPAA
           </div>
@@ -1375,11 +1357,11 @@ function FinalCTA({
             <Timer className="mr-1 inline h-3 w-3" /> Slot reserved · Expires: {label}
           </div>
           <div className="tabular-nums">
-            Total today: <span className="font-semibold text-white">${totalToday.toFixed(2)}</span>
+            Total today: <span className="font-semibold text-ink">${totalToday.toFixed(2)}</span>
           </div>
         </div>
 
-        <p className="mx-auto mt-8 max-w-xl text-[11px] leading-[1.6] text-white/40">
+        <p className="mx-auto mt-8 max-w-xl text-[11px] leading-[1.6] text-ink/40">
           *The $249 promotional rate applies to your first month only for new customers on the
           monthly plan. Standard rate is $299/mo from month 2. 3-month and 6-month prepaid plans
           available at $237/mo. Same price at every dose level. Terms vary by state.
@@ -1389,26 +1371,27 @@ function FinalCTA({
   );
 }
 
+
 /* ────────────────────────────────────────────────────────────
    Footer
    ──────────────────────────────────────────────────────────── */
 
 function SalesFooter() {
   return (
-    <footer className="bg-[#0f0f0f] py-12 text-white/60">
+    <footer className="border-t border-ink/[0.06] bg-white py-12 text-ink/60">
       <div className="mx-auto max-w-6xl px-5">
-        <img src={logo.url} alt="Blissley" className="h-6 w-auto brightness-0 invert" />
-        <p className="mt-3 max-w-md text-[13.5px] italic text-white/45">
+        <img src={logo.url} alt="Blissley" className="h-6 w-auto" />
+        <p className="mt-3 max-w-md text-[13.5px] italic text-ink/50">
           Become who you were always supposed to be.
         </p>
         <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[12px]">
-          <a href="/legal/privacy" className="hover:text-white">Privacy Policy</a>
-          <a href="/legal/terms" className="hover:text-white">Terms</a>
-          <a href="/legal/medication-safety" className="hover:text-white">HIPAA Notice</a>
-          <a href="/legal/refund" className="hover:text-white">Refund Policy</a>
-          <a href="/legal/shipping" className="hover:text-white">Cancellation</a>
+          <a href="/legal/privacy" className="hover:text-ink">Privacy Policy</a>
+          <a href="/legal/terms" className="hover:text-ink">Terms</a>
+          <a href="/legal/medication-safety" className="hover:text-ink">HIPAA Notice</a>
+          <a href="/legal/refund" className="hover:text-ink">Refund Policy</a>
+          <a href="/legal/shipping" className="hover:text-ink">Cancellation</a>
         </div>
-        <p className="mt-6 max-w-3xl text-[11px] leading-[1.7] text-white/30">
+        <p className="mt-6 max-w-3xl text-[11px] leading-[1.7] text-ink/40">
           © 2026 TheFactual LLC DBA Blissley. Blissley is a technology platform and does not
           practice medicine. Physician services are provided by independent licensed practitioners.
           Individual results vary. Compounded medications are not FDA-approved.
@@ -1417,3 +1400,4 @@ function SalesFooter() {
     </footer>
   );
 }
+
