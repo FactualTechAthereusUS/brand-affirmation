@@ -29,6 +29,9 @@ type Intake = {
   state?: string;
   bmi?: number | null;
   sex?: "male" | "female";
+  glp1History?: string;
+  glp1Which?: string;
+  glp1Dose?: string;
 };
 
 type PlanKey = "monthly" | "three" | "six";
