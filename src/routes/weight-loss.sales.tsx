@@ -424,49 +424,52 @@ function Hero({
           </div>
         </Reveal>
 
-        {/* Personalized data strip — Numbers-style */}
-        <div className="mx-auto mt-10 grid max-w-[720px] grid-cols-3 gap-y-8">
-          {[
-            { kind: "num" as const, value: toLose, suffix: "lbs", label: "To lose" },
-            { kind: "num" as const, value: timelineWeeks, prefix: "~", suffix: "wks", label: "Timeline · physician est." },
-            { kind: "text" as const, value: "Semaglutide", suffix: "inj.", label: "Recommended" },
-          ].map((s, i) => (
-            <Reveal key={s.label} delay={0.18 + i * 0.06}>
-              <div
-                className={`flex flex-col items-start gap-2 px-3 sm:px-6 ${
-                  i > 0 ? "border-l border-ink/10" : ""
-                }`}
-              >
-                <div className="flex items-baseline text-ink">
-                  {s.kind === "num" ? (
-                    <>
-                      {s.prefix && (
-                        <span className="mr-0.5 font-sans text-[28px] font-extrabold leading-none tracking-[-0.02em] sm:text-[34px]">
-                          {s.prefix}
+        {/* Personalized data strip — Numbers-style clone */}
+        <div className="mx-auto mt-10 max-w-[720px]">
+          <div className="grid grid-cols-1 gap-y-10 md:grid-cols-3 md:gap-y-0">
+            {[
+              { kind: "num" as const, value: toLose, suffix: "lbs", label: "To lose" },
+              { kind: "num" as const, value: timelineWeeks, prefix: "~", suffix: "wks", label: "Timeline · physician est." },
+              { kind: "text" as const, value: "Semaglutide", label: "Recommended" },
+            ].map((s, i) => (
+              <Reveal key={s.label} delay={0.18 + i * 0.06}>
+                <div
+                  className={`flex items-baseline gap-3 md:flex-col md:items-start md:gap-4 md:px-6 ${
+                    i > 0 ? "md:border-l md:border-ink/10" : ""
+                  }`}
+                >
+                  <div className="flex items-baseline text-ink">
+                    {s.kind === "num" ? (
+                      <>
+                        {s.prefix && (
+                          <span className="mr-0.5 font-sans text-[40px] font-extrabold leading-none tracking-[-0.02em] md:text-[52px]">
+                            {s.prefix}
+                          </span>
+                        )}
+                        <CountUp
+                          to={Number(s.value) || 0}
+                          format={(n: number) => Math.round(n).toString()}
+                          className="font-sans text-[56px] font-extrabold leading-none tracking-[-0.03em] md:text-[68px] tabular-nums"
+                        />
+                        <span className="ml-1 font-sans text-[28px] font-extrabold leading-none tracking-[-0.02em] md:text-[34px]">
+                          {s.suffix}
                         </span>
-                      )}
-                      <CountUp
-                        to={Number(s.value) || 0}
-                        format={(n: number) => Math.round(n).toString()}
-                        className="font-sans text-[44px] font-extrabold leading-none tracking-[-0.03em] sm:text-[64px] tabular-nums"
-                      />
-                      <span className="ml-1 font-sans text-[18px] font-extrabold leading-none tracking-[-0.02em] sm:text-[24px]">
-                        {s.suffix}
+                      </>
+                    ) : (
+                      <span className="font-sans text-[38px] font-extrabold leading-none tracking-[-0.02em] md:text-[44px]">
+                        {s.value}
                       </span>
-                    </>
-                  ) : (
-                    <span className="font-sans text-[26px] font-extrabold leading-none tracking-[-0.02em] sm:text-[36px]">
-                      {s.value}
-                    </span>
-                  )}
+                    )}
+                  </div>
+                  <p className="max-w-[200px] text-[14px] leading-[1.35] text-[#6B6B6B] md:text-[15px]">
+                    {s.label}
+                  </p>
                 </div>
-                <p className="max-w-[180px] text-[12px] leading-[1.35] text-ink/55 sm:text-[14px]">
-                  {s.label}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
+          </div>
         </div>
+
 
 
         {/* Prior GLP-1 note */}
