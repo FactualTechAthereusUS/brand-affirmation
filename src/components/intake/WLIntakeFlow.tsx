@@ -1030,3 +1030,106 @@ function WLProjectionScreen({
     </motion.div>
   );
 }
+
+/* ────────────────────  Social Proof Screen  ──────────────────── */
+function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
+  const isMale = sex === "male";
+  const story = isMale
+    ? {
+        before: spMaleBefore.url,
+        after: spMaleAfter.url,
+        quote:
+          "I hadn't seen the 230s on a scale in 30 years. The doctor kept telling me to eat less. 10 years of that. 6 months in and I'm down 50 lbs and off two medications. Actual game changer.",
+        name: "Michael T., 52",
+        result: "Lost 50 lbs · 6 months",
+      }
+    : {
+        before: spFemaleBefore.url,
+        after: spFemaleAfter.url,
+        quote:
+          "I had completely stopped taking pictures of myself. 4 years of avoiding every camera at every family event. Down 34 lbs and last month I asked someone to take a photo of me. I didn't even think twice.",
+        name: "Jennifer R., 44",
+        result: "Lost 34 lbs · 4 months",
+      };
+
+  // Auto-advance after 8s
+  useEffect(() => {
+    const t = setTimeout(onNext, 8000);
+    return () => clearTimeout(t);
+  }, [onNext]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="flex flex-col"
+    >
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.4 }}
+        className="mb-4 text-[13px] font-medium uppercase tracking-[0.14em] text-ever"
+      >
+        Someone just like you
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="overflow-hidden rounded-[22px] bg-white ring-1 ring-black/5 shadow-[0_6px_30px_-12px_rgba(0,0,0,0.18)]"
+      >
+        <div className="grid grid-cols-2 gap-0">
+          <div className="relative overflow-hidden bg-[#F3F2EE]">
+            <div className="aspect-[4/5] w-full">
+              <img src={story.before} alt="Before" className="h-full w-full object-cover" />
+            </div>
+            <span className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]" style={{ backgroundColor: "#0E3B36" }}>
+              Before
+            </span>
+          </div>
+          <div className="relative overflow-hidden bg-[#F3F2EE]">
+            <div className="aspect-[4/5] w-full">
+              <img src={story.after} alt="After" className="h-full w-full object-cover" />
+            </div>
+            <span className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]" style={{ backgroundColor: "#ee7273" }}>
+              After
+            </span>
+          </div>
+        </div>
+
+        <div className="px-5 py-5 md:px-6 md:py-6">
+          <div className="flex items-center gap-1" aria-label="5 star rating">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#ee7273" aria-hidden>
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            ))}
+          </div>
+          <p className="mt-3 text-[15.5px] leading-[1.6] text-ink/85 md:text-[16px]">
+            &ldquo;{story.quote}&rdquo;
+          </p>
+          <div className="mt-4 flex items-center gap-2">
+            <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
+            <span className="text-[13.5px] text-ink/70">
+              <span className="font-semibold text-ink">{story.name}</span>
+              <span className="mx-1.5 text-ink/30">·</span>
+              <span className="font-semibold text-ever">{story.result}</span>
+            </span>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.4 }}
+        className="mt-8"
+      >
+        <PrimaryButton onClick={onNext}>This could be me</PrimaryButton>
+      </motion.div>
+    </motion.div>
+  );
+}
+
