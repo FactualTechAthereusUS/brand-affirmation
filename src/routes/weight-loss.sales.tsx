@@ -212,7 +212,8 @@ function WeightLossSalesPage() {
   const totalToday = selectedPlan.today + (priority ? PRIORITY_ADDON : 0);
 
   return (
-    <main className="min-h-[100svh] bg-white text-ink">
+    <main className="min-h-[100svh] bg-white text-ink pt-9 sm:pt-10">
+      <AnnouncementBar firstName={firstName} />
       <SalesNav />
 
 
@@ -221,6 +222,7 @@ function WeightLossSalesPage() {
         toLose={toLose}
         timelineWeeks={timelineWeeks}
       />
+
 
       <PriceAnchor />
 
@@ -291,6 +293,30 @@ function useReservedCountdown(seconds = 15 * 60) {
   const s = (remaining % 60).toString().padStart(2, "0");
   return { label: `${m}:${s}`, expired: remaining <= 0 };
 }
+
+function AnnouncementBar({ firstName }: { firstName: string }) {
+  const { label, expired } = useReservedCountdown();
+  return (
+    <div
+      className="fixed inset-x-0 top-0 z-40 w-full bg-ever text-white"
+      role="status"
+      aria-live="polite"
+    >
+      <div className="mx-auto flex h-9 max-w-6xl items-center justify-center px-4 text-center text-[12px] font-medium tracking-tight sm:h-10 sm:text-[13px]">
+        {expired ? (
+          <span>⚠️ Slot expiring — complete your order</span>
+        ) : (
+          <span>
+            ⏱️ {firstName}, your approval is valid for ·{" "}
+            <span className="tabular-nums font-semibold">{label}</span>
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
 
 
 /* ────────────────────────────────────────────────────────────
