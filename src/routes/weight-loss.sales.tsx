@@ -754,10 +754,10 @@ function HowItWorks() {
     },
   ];
   return (
-    <section className="bg-ink py-16 text-white sm:py-24">
+    <section className="bg-white py-16 text-ink sm:py-24">
       <div className="mx-auto max-w-3xl px-5">
         <Reveal>
-          <h2 className="font-hero text-center text-[28px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[38px]">
+          <h2 className="font-hero text-center text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[38px]">
             Here's exactly what happens after you click.
           </h2>
         </Reveal>
@@ -768,19 +768,20 @@ function HowItWorks() {
                 <div className="font-hero text-[42px] font-bold text-ever sm:text-[52px]">{s.n}</div>
                 <div>
                   <div className="text-[17px] font-semibold sm:text-[19px]">{s.t}</div>
-                  <p className="mt-2 text-[14px] leading-[1.6] text-white/70">{s.b}</p>
+                  <p className="mt-2 text-[14px] leading-[1.6] text-ink/70">{s.b}</p>
                 </div>
               </div>
             </Reveal>
           ))}
         </div>
         <div className="mx-auto mt-12 max-w-md">
-          <PrimaryCTA variant="light">Start my program</PrimaryCTA>
+          <PrimaryCTA variant="dark">Start my program</PrimaryCTA>
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ────────────────────────────────────────────────────────────
    Section 6 — Real results
