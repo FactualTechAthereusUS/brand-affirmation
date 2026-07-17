@@ -299,7 +299,8 @@ function useReservedCountdown(seconds = 15 * 60) {
 
 function SalesNav() {
   return (
-    <header className="sticky top-9 z-30 w-full border-b border-ink/[0.06] bg-white/85 backdrop-blur-xl">
+    <header className="relative z-30 w-full border-b border-ink/[0.06] bg-white">
+
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-5">
         <img src={logo.url} alt="Blissley" className="h-6 w-auto sm:h-8" />
         <div className="flex items-center gap-2 sm:gap-2.5">
