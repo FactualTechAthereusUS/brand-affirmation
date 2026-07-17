@@ -852,6 +852,15 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
     return () => clearTimeout(t);
   }, [step, steps.length]);
 
+  // Auto-redirect to sales page as soon as we hit "done"
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => {
+      window.location.href = "/weight-loss/sales";
+    }, 900);
+    return () => clearTimeout(t);
+  }, [done]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
