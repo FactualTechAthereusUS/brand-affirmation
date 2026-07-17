@@ -142,13 +142,15 @@ export function CategoryCard({
   tag,
   title,
   sub,
-  gradient,
+  image,
+  position = "object-center",
   onClick,
 }: {
   tag: string;
   title: string;
   sub: string;
-  gradient: string;
+  image: string;
+  position?: string;
   onClick: () => void;
 }) {
   return (
@@ -156,35 +158,36 @@ export function CategoryCard({
       type="button"
       onClick={onClick}
       whileHover={{ y: -3 }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.985 }}
       transition={{ type: "spring", stiffness: 380, damping: 26 }}
-      className="group relative flex w-full overflow-hidden rounded-2xl border border-ink/10 bg-white text-left shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_16px_40px_rgba(0,0,0,0.10)]"
+      className="group relative block aspect-[5/3] w-full overflow-hidden rounded-3xl text-left shadow-[0_2px_10px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_18px_44px_rgba(0,0,0,0.14)]"
     >
-      {/* Left visual with gradient placeholder */}
-      <div
-        className="relative h-[104px] w-[104px] shrink-0 md:h-[128px] md:w-[128px]"
-        style={{ background: gradient }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-black/15" />
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-center px-4 py-4 md:px-6">
-        <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ever md:text-[11px]">
+      <img
+        src={image}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${position}`}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_40%,rgba(23,23,23,0.55)_78%,rgba(23,23,23,0.92)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 flex flex-col p-5 md:p-6">
+        <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white/80 md:text-[11px]">
           {tag}
         </span>
-        <span className="mt-1 text-[18px] font-bold tracking-[-0.02em] text-ink md:text-[20px]">
+        <span className="mt-1 font-sans text-[24px] leading-tight tracking-[-0.01em] text-white md:text-[28px]">
           {title}
         </span>
-        <span className="mt-1 line-clamp-2 text-[13px] leading-[1.45] text-ink/60 md:text-[14px]">
+        <span className="mt-1 line-clamp-2 max-w-[92%] text-[13px] leading-[1.45] text-white/75 md:text-[14px]">
           {sub}
         </span>
       </div>
-      <ArrowUpRight
-        className="mr-4 hidden h-5 w-5 self-center text-ink/40 transition-transform duration-300 group-hover:rotate-45 group-hover:text-ink md:block"
-        strokeWidth={2}
-      />
+      <div className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
+        <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+      </div>
     </motion.button>
   );
 }
+
 
 /* ─────────────────────────  Text input  ───────────────────────── */
 export function TextField({
