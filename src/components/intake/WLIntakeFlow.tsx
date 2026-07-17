@@ -40,7 +40,9 @@ type Answers = {
   qualifyingConditions?: string[];
   contraindications?: string[];
   medications?: string;
+  noMedications?: boolean;
   allergies?: string;
+  noAllergies?: boolean;
   state?: string;
   phone?: string;
   consentTOS?: boolean;
