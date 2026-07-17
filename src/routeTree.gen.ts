@@ -18,7 +18,7 @@ import { Route as MedicationSafetyRouteImport } from './routes/medication-safety
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as IntakeWeightLossRouteImport } from './routes/intake.weight-loss'
+import { Route as IntakeWeightLossRouteImport } from './routes/intake_.weight-loss'
 
 const WeightLossRoute = WeightLossRouteImport.update({
   id: '/weight-loss',
@@ -66,14 +66,14 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntakeWeightLossRoute = IntakeWeightLossRouteImport.update({
-  id: '/weight-loss',
-  path: '/weight-loss',
-  getParentRoute: () => IntakeRoute,
+  id: '/intake_/weight-loss',
+  path: '/intake/weight-loss',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/intake': typeof IntakeRouteWithChildren
+  '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
@@ -85,7 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/intake': typeof IntakeRouteWithChildren
+  '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
@@ -98,7 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/intake': typeof IntakeRouteWithChildren
+  '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
@@ -106,7 +106,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/weight-loss': typeof WeightLossRoute
-  '/intake/weight-loss': typeof IntakeWeightLossRoute
+  '/intake_/weight-loss': typeof IntakeWeightLossRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -144,12 +144,12 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/weight-loss'
-    | '/intake/weight-loss'
+    | '/intake_/weight-loss'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  IntakeRoute: typeof IntakeRouteWithChildren
+  IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
   MedicationSafetyRoute: typeof MedicationSafetyRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -157,6 +157,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   WeightLossRoute: typeof WeightLossRoute
+  IntakeWeightLossRoute: typeof IntakeWeightLossRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,30 +225,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/intake/weight-loss': {
-      id: '/intake/weight-loss'
-      path: '/weight-loss'
+    '/intake_/weight-loss': {
+      id: '/intake_/weight-loss'
+      path: '/intake/weight-loss'
       fullPath: '/intake/weight-loss'
       preLoaderRoute: typeof IntakeWeightLossRouteImport
-      parentRoute: typeof IntakeRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface IntakeRouteChildren {
-  IntakeWeightLossRoute: typeof IntakeWeightLossRoute
-}
-
-const IntakeRouteChildren: IntakeRouteChildren = {
-  IntakeWeightLossRoute: IntakeWeightLossRoute,
-}
-
-const IntakeRouteWithChildren =
-  IntakeRoute._addFileChildren(IntakeRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  IntakeRoute: IntakeRouteWithChildren,
+  IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
   MedicationSafetyRoute: MedicationSafetyRoute,
   PrivacyRoute: PrivacyRoute,
@@ -255,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   WeightLossRoute: WeightLossRoute,
+  IntakeWeightLossRoute: IntakeWeightLossRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
