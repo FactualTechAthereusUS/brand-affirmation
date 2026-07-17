@@ -83,7 +83,7 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 const COMMON: string[] = ["name", "category", "dob", "sex", "state"];
 const MED: string[] = ["contra", "meds", "loading"];
 const PATH: Record<Category, string[]> = {
-  weight_loss: ["wl_goal", "wl_howlong", "wl_tried", "wl_hw", "wl_glp1", "wl_conditions"],
+  weight_loss: ["wl_goal", "wl_howlong", "wl_tried", "wl_hw", "wl_glp1", "wl_conditions", "wl_projection"],
   sexual_health: ["sh_concern", "sh_howlong", "sh_tried", "sh_health"],
   skin_hair: ["sk_concern", "sk_howlong", "sk_tried", "sk_skin"],
   hormones: ["hm_concern", "hm_howlong", "hm_health"],
@@ -592,6 +592,17 @@ export function IntakeFlow() {
                 ))}
               </ScreenShell>
             )}
+
+            {current === "wl_projection" && (
+              <WLProjectionScreen
+                firstName={answers.firstName}
+                weightLbs={answers.weightLbs}
+                bmi={bmi}
+                onNext={next}
+              />
+            )}
+
+
 
             {/* ─────── Sexual Health ─────── */}
             {current === "sh_concern" && (
@@ -1171,3 +1182,237 @@ function LoadingScreen({ answers }: { answers: Answers }) {
     </motion.div>
   );
 }
+
+/* ────────────────────  Weight-loss projection screen  ──────────────────── */
+function WLProjectionScreen({
+  firstName,
+  weightLbs,
+  bmi,
+  onNext,
+}: {
+  firstName: string;
+  weightLbs?: string;
+  bmi: number | null;
+  onNext: () => void;
+}) {
+  const start = Math.max(120, Math.min(500, parseFloat(weightLbs || "210") || 210));
+  // Achievable loss: ~15% over 6 months on tirzepatide-class GLP-1s, scaled by BMI
+  const lossPct = bmi && bmi >= 30 ? 0.17 : bmi && bmi >= 27 ? 0.14 : 0.11;
+  const lossLbs = Math.round(start * lossPct);
+  const end = start - lossLbs;
+
+  const months = ["Now", "M1", "M2", "M3", "M4", "M5", "M6"];
+  // Cubic ease-out from start → end across 7 points
+  const points = months.map((_, i) => {
+    const t = i / (months.length - 1);
+    const eased = 1 - Math.pow(1 - t, 2.4);
+    return start - (start - end) * eased;
+  });
+
+  // SVG geometry
+  const W = 640;
+  const H = 260;
+  const padL = 56;
+  const padR = 32;
+  const padT = 24;
+  const padB = 40;
+  const xAt = (i: number) => padL + (i / (months.length - 1)) * (W - padL - padR);
+  const yAt = (v: number) => {
+    const min = end - 4;
+    const max = start + 4;
+    return padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
+  };
+
+  // Smooth cubic bezier path
+  const path = points.reduce((acc, v, i) => {
+    const x = xAt(i);
+    const y = yAt(v);
+    if (i === 0) return `M ${x} ${y}`;
+    const prevX = xAt(i - 1);
+    const prevY = yAt(points[i - 1]);
+    const cx1 = prevX + (x - prevX) * 0.5;
+    const cx2 = prevX + (x - prevX) * 0.5;
+    return `${acc} C ${cx1} ${prevY}, ${cx2} ${y}, ${x} ${y}`;
+  }, "");
+
+  const areaPath = `${path} L ${xAt(months.length - 1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="mx-auto flex w-full max-w-[640px] flex-col"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05, duration: 0.5 }}
+        className="inline-flex w-fit items-center gap-2 rounded-full border border-ever/25 bg-ever/[0.06] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ever"
+      >
+        Your projection
+      </motion.div>
+      <h2 className="mt-5 font-hero text-[30px] font-bold leading-[1.05] tracking-[-0.03em] text-ink md:text-[40px]">
+        {firstName || "You"}, in six months you could lose{" "}
+        <span className="text-ever">{lossLbs} lbs</span>.
+      </h2>
+      <p className="mt-3 max-w-[520px] text-[15px] leading-[1.55] text-ink/60">
+        Based on your profile, Blissley patients with a similar starting weight
+        lose an average of {(lossPct * 100).toFixed(1)}% body weight over their
+        first six months. Individual results vary with treatment adherence.
+      </p>
+
+      {/* Chart card */}
+      <motion.div
+        initial={{ opacity: 0, y: -32, filter: "blur(10px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ delay: 0.2, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mt-8 overflow-hidden rounded-3xl border border-ink/10 bg-gradient-to-b from-white to-[#fff7f7] p-4 shadow-[0_20px_60px_-30px_rgba(238,114,115,0.35)] md:p-6"
+      >
+        {/* Ambient coral glow */}
+        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-ever/25 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-ever/15 blur-3xl" />
+
+        <svg viewBox={`0 0 ${W} ${H}`} className="relative block w-full">
+          <defs>
+            <linearGradient id="wlLine" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%" stopColor="#ee7273" />
+              <stop offset="100%" stopColor="#f39c9d" />
+            </linearGradient>
+            <linearGradient id="wlArea" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {/* Y guides */}
+          {[0, 1, 2, 3].map((i) => {
+            const y = padT + (i / 3) * (H - padT - padB);
+            return (
+              <line
+                key={i}
+                x1={padL}
+                x2={W - padR}
+                y1={y}
+                y2={y}
+                stroke="#171717"
+                strokeOpacity="0.06"
+                strokeDasharray="4 6"
+              />
+            );
+          })}
+
+          {/* Start / end labels */}
+          <text x={padL - 10} y={yAt(start) + 4} textAnchor="end" className="fill-ink/60" style={{ fontSize: 12, fontWeight: 500 }}>
+            {start} lbs
+          </text>
+          <text x={padL - 10} y={yAt(end) + 4} textAnchor="end" className="fill-ink/60" style={{ fontSize: 12, fontWeight: 500 }}>
+            {end} lbs
+          </text>
+
+          {/* Area fill */}
+          <motion.path
+            d={areaPath}
+            fill="url(#wlArea)"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 0.6 }}
+          />
+
+          {/* Line drop-in */}
+          <motion.path
+            d={path}
+            fill="none"
+            stroke="url(#wlLine)"
+            strokeWidth={4}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ delay: 0.55, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+          />
+
+          {/* Start dot */}
+          <motion.circle
+            cx={xAt(0)}
+            cy={yAt(start)}
+            r={7}
+            fill="#ee7273"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
+          />
+          {/* End dot */}
+          <motion.circle
+            cx={xAt(months.length - 1)}
+            cy={yAt(end)}
+            r={9}
+            fill="#ee7273"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 1.9, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}
+          />
+          <motion.circle
+            cx={xAt(months.length - 1)}
+            cy={yAt(end)}
+            r={16}
+            fill="#ee7273"
+            fillOpacity="0.25"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: [0, 1.4, 1], opacity: [0, 0.6, 0.35] }}
+            transition={{ delay: 1.9, duration: 1.1 }}
+          />
+
+          {/* X labels */}
+          {months.map((m, i) => (
+            <text
+              key={m}
+              x={xAt(i)}
+              y={H - 12}
+              textAnchor="middle"
+              className="fill-ink/50"
+              style={{ fontSize: 11, fontWeight: 500 }}
+            >
+              {m}
+            </text>
+          ))}
+        </svg>
+
+        {/* Stat row */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.1, duration: 0.5 }}
+          className="mt-4 grid grid-cols-3 gap-2 border-t border-ink/[0.08] pt-4"
+        >
+          <div>
+            <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-ink/45">Starting</div>
+            <div className="mt-1 font-hero text-[20px] font-bold text-ink">{start} lbs</div>
+          </div>
+          <div>
+            <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-ink/45">In 6 months</div>
+            <div className="mt-1 font-hero text-[20px] font-bold text-ever">{end} lbs</div>
+          </div>
+          <div>
+            <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-ink/45">You lose</div>
+            <div className="mt-1 font-hero text-[20px] font-bold text-ink">-{lossLbs} lbs</div>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.3, duration: 0.5 }}
+        className="mt-8"
+      >
+        <PrimaryButton onClick={onNext}>Continue</PrimaryButton>
+        <p className="mt-4 text-center text-[12px] text-ink/45">
+          Projection based on published GLP-1 clinical trial data. Your physician
+          confirms your individualized plan.
+        </p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
