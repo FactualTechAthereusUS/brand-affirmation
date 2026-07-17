@@ -62,7 +62,9 @@ type Answers = {
   // Medical
   medContraindications?: string[];
   medications?: string;
+  noMedications?: boolean;
   allergies?: string;
+  noAllergies?: boolean;
   phone?: string;
   consentTOS?: boolean;
   consentSMS?: boolean;
@@ -931,9 +933,14 @@ export function IntakeFlow() {
               <ScreenShell
                 title={`Almost done, ${answers.firstName || "there"}.`}
                 footer={
-                  <PrimaryButton
+                <PrimaryButton
                     onClick={next}
-                    disabled={!answers.medications?.trim() || !answers.allergies?.trim() || !answers.phone?.trim() || !answers.consentTOS}
+                    disabled={
+                      (!answers.medications?.trim() && !answers.noMedications) ||
+                      (!answers.allergies?.trim() && !answers.noAllergies) ||
+                      !answers.phone?.trim() ||
+                      !answers.consentTOS
+                    }
                   >
                     Get My Results
                   </PrimaryButton>
@@ -942,22 +949,78 @@ export function IntakeFlow() {
                 <label className="block">
                   <span className="mb-2 block text-[13px] font-medium text-ink/70">Current medications</span>
                   <textarea
-                    value={answers.medications ?? ""}
-                    onChange={(e) => set({ medications: e.target.value })}
-                    placeholder="List name, dose, and frequency. Type 'none' if not applicable."
+                    value={answers.noMedications ? "None" : (answers.medications ?? "")}
+                    onChange={(e) => set({ medications: e.target.value, noMedications: false })}
+                    placeholder="List name, dose, and frequency."
                     rows={3}
-                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    disabled={answers.noMedications}
+                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
                   />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      set({
+                        noMedications: !answers.noMedications,
+                        medications: !answers.noMedications ? "None" : "",
+                      })
+                    }
+                    className={`mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all ${
+                      answers.noMedications
+                        ? "border-ever/30 bg-ever/[0.08]"
+                        : "border-ink/10 bg-white hover:border-ink/20"
+                    }`}
+                  >
+                    <span
+                      className={`grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 transition-all ${
+                        answers.noMedications ? "border-ever bg-ever text-white" : "border-ink/25 bg-white"
+                      }`}
+                    >
+                      {answers.noMedications && (
+                        <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M2.5 6.5L5 9L9.5 3.5" />
+                        </svg>
+                      )}
+                    </span>
+                    <span className="text-[13px] font-medium text-ink/80">I don't take any medications</span>
+                  </button>
                 </label>
                 <label className="block">
                   <span className="mb-2 block text-[13px] font-medium text-ink/70">Medication allergies</span>
                   <textarea
-                    value={answers.allergies ?? ""}
-                    onChange={(e) => set({ allergies: e.target.value })}
-                    placeholder="List allergies and reactions. Type 'none' if not applicable."
+                    value={answers.noAllergies ? "None" : (answers.allergies ?? "")}
+                    onChange={(e) => set({ allergies: e.target.value, noAllergies: false })}
+                    placeholder="List allergies and reactions."
                     rows={3}
-                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    disabled={answers.noAllergies}
+                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
                   />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      set({
+                        noAllergies: !answers.noAllergies,
+                        allergies: !answers.noAllergies ? "None" : "",
+                      })
+                    }
+                    className={`mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all ${
+                      answers.noAllergies
+                        ? "border-ever/30 bg-ever/[0.08]"
+                        : "border-ink/10 bg-white hover:border-ink/20"
+                    }`}
+                  >
+                    <span
+                      className={`grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 transition-all ${
+                        answers.noAllergies ? "border-ever bg-ever text-white" : "border-ink/25 bg-white"
+                      }`}
+                    >
+                      {answers.noAllergies && (
+                        <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M2.5 6.5L5 9L9.5 3.5" />
+                        </svg>
+                      )}
+                    </span>
+                    <span className="text-[13px] font-medium text-ink/80">I don't have any medication allergies</span>
+                  </button>
                 </label>
                 <TextField
                   label="Phone number"
