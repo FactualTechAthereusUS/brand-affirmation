@@ -92,6 +92,7 @@ const BASE_SCREENS = [
   "hw",                // 6
   "weight_goal",       // 7
   "tried",             // 8
+  "social_proof",      // 8.5 - patient story
   "glp1",              // 9
   "conditions",        // 10
   "projection",        // calculator clone
