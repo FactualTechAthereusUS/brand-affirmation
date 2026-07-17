@@ -226,6 +226,10 @@ function WeightLossSalesPage() {
         firstName={firstName}
         toLose={toLose}
         timelineWeeks={timelineWeeks}
+        state={intake.state}
+        glp1History={intake.glp1History}
+        glp1Which={intake.glp1Which}
+        glp1Dose={intake.glp1Dose}
       />
 
 
