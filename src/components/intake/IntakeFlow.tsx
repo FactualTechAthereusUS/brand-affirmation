@@ -137,15 +137,9 @@ export function IntakeFlow() {
   }, [answers.heightFt, answers.heightIn, answers.weightLbs]);
 
   return (
-    <div className="relative min-h-[100svh] bg-[#f8f6f2] pb-24">
-      {/* Ambient coral wash */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-24 h-[420px] w-[420px] rounded-full bg-ever/15 blur-[100px]" />
-        <div className="absolute top-1/3 -left-32 h-[380px] w-[380px] rounded-full bg-[#c4a265]/10 blur-[100px]" />
-      </div>
-
+    <div className="relative min-h-[100svh] bg-white pb-24">
       {/* Sticky header */}
-      <div className="sticky top-0 z-20 border-b border-ink/[0.06] bg-[#f8f6f2]/85 backdrop-blur-xl backdrop-saturate-150">
+      <div className="sticky top-0 z-20 border-b border-ink/[0.06] bg-white/85 backdrop-blur-xl backdrop-saturate-150">
         <div className="mx-auto flex h-[64px] max-w-[900px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
           <BackBtn onClick={prev} invisible={idx === 0 || current === "loading"} />
           <Link to="/" className="flex items-center">
