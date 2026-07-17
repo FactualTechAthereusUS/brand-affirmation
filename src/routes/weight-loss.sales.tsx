@@ -320,12 +320,29 @@ function AnnouncementBar({ firstName }: { firstName: string }) {
 function SalesNav() {
   return (
     <header className="sticky top-9 z-30 w-full border-b border-ink/[0.06] bg-white/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
-        <img src={logo.url} alt="Blissley" className="h-7 w-auto" />
-        <div className="flex items-center gap-1.5 text-[12.5px] text-ink/70">
-          <Star className="h-3.5 w-3.5 fill-ever text-ever" />
-          <span className="font-semibold text-ink">4.8</span>
-          <span className="hidden sm:inline">· 3,000+ patients</span>
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-5">
+        <img src={logo.url} alt="Blissley" className="h-6 w-auto sm:h-8" />
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <span className="text-[12px] font-semibold text-ink sm:text-[13.5px]">
+            Excellent <span className="tabular-nums">4.6</span>
+          </span>
+          <div
+            className="flex items-center gap-[2px]"
+            role="img"
+            aria-label="Rated 4.6 out of 5 stars"
+          >
+            {[0, 1, 2, 3, 4].map((i) => (
+              <span
+                key={i}
+                className="grid h-4 w-4 place-items-center bg-ever sm:h-[18px] sm:w-[18px]"
+              >
+                <Star
+                  className="h-2.5 w-2.5 fill-white text-white sm:h-3 sm:w-3"
+                  strokeWidth={0}
+                />
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </header>
