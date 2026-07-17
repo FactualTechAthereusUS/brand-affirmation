@@ -19,9 +19,9 @@ export function ProgressBar({ value }: { value: number }) {
   const fillPct = v * 100;
 
   return (
-    <div className="relative w-full pt-1 pb-6 md:pb-7">
+    <div className="relative w-full px-4 pt-2 pb-6 md:px-6 md:pb-7">
       {/* Track */}
-      <div className="relative h-[6px] w-full rounded-full bg-ink/[0.08] md:h-[7px]">
+      <div className="relative h-[10px] w-full rounded-full bg-ink/[0.08] md:h-[12px]">
         {/* Fill */}
         <motion.div
           className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-ever to-[#f38a8b]"
@@ -30,7 +30,7 @@ export function ProgressBar({ value }: { value: number }) {
           transition={{ type: "spring", stiffness: 140, damping: 22 }}
         />
 
-        {/* Milestone nodes */}
+        {/* Milestone nodes — sit inline on the bar, connected */}
         {MILESTONES.map((m) => {
           const reached = v >= m.pos - 0.001;
           const active = Math.abs(v - m.pos) < 0.12 || (m.pos === 1 && v >= 0.98);
@@ -42,21 +42,20 @@ export function ProgressBar({ value }: { value: number }) {
             >
               <motion.div
                 className="relative grid place-items-center"
-                animate={{ scale: active ? 1.08 : 1 }}
+                animate={{ scale: active ? 1.06 : 1 }}
                 transition={{ type: "spring", stiffness: 260, damping: 18 }}
               >
-                {/* Pulse ring when active */}
                 {active && (
                   <motion.span
                     className="absolute inset-0 rounded-full bg-ever/40"
                     initial={{ scale: 1, opacity: 0.6 }}
-                    animate={{ scale: [1, 1.8, 1], opacity: [0.5, 0, 0.5] }}
+                    animate={{ scale: [1, 1.9, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
                   />
                 )}
                 <motion.div
-                  className={`relative grid h-[26px] w-[26px] place-items-center overflow-hidden rounded-full bg-white ring-2 transition-colors md:h-[30px] md:w-[30px] ${
-                    reached ? "ring-ever shadow-[0_4px_12px_rgba(238,114,115,0.35)]" : "ring-ink/15"
+                  className={`relative grid h-[28px] w-[28px] place-items-center overflow-hidden rounded-full bg-white ring-[3px] transition-colors md:h-[32px] md:w-[32px] ${
+                    reached ? "ring-ever shadow-[0_4px_12px_rgba(238,114,115,0.4)]" : "ring-ink/15"
                   }`}
                   animate={{ filter: reached ? "grayscale(0)" : "grayscale(1)", opacity: reached ? 1 : 0.55 }}
                   transition={{ duration: 0.35 }}
@@ -68,9 +67,8 @@ export function ProgressBar({ value }: { value: number }) {
                     draggable={false}
                   />
                 </motion.div>
-                {/* Label */}
                 <span
-                  className={`pointer-events-none absolute top-[calc(100%+6px)] whitespace-nowrap text-[10px] font-medium tracking-wide transition-colors md:text-[11px] ${
+                  className={`pointer-events-none absolute top-[calc(100%+8px)] whitespace-nowrap text-[10px] font-medium tracking-wide transition-colors md:text-[11px] ${
                     reached ? "text-ink/75" : "text-ink/35"
                   }`}
                 >
