@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, ChevronDown, Lock, ShieldCheck, Sparkles, Star, Timer, Zap } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Lock, ShieldCheck, Sparkles, Star, Timer, Zap } from "lucide-react";
 import logo from "@/assets/blissley-logo.png.asset.json";
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import { SocialProof } from "@/components/home/SocialProof";
