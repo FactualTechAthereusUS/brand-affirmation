@@ -104,7 +104,17 @@ export function IntakeFlow() {
   const progress = (idx + 1) / flow.length;
 
   const set = (patch: Partial<Answers>) => setAnswers((a) => ({ ...a, ...patch }));
-  const next = () => setIdx((i) => Math.min(flow.length - 1, i + 1));
+  const next = () =>
+    setIdx((i) => {
+      // If we've hit the end of the currently-known flow but the user has
+      // no category selected, bounce them back to the category picker so the
+      // path can be built out. Prevents getting stuck on `state`.
+      if (i >= flow.length - 1 && !answers.category) {
+        const catIdx = flow.indexOf("category");
+        return catIdx >= 0 ? catIdx : 0;
+      }
+      return Math.min(flow.length - 1, i + 1);
+    });
   const prev = () => setIdx((i) => Math.max(0, i - 1));
 
   // Auto-advance helper: single-select that immediately advances
