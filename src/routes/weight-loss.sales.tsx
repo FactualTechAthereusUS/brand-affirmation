@@ -213,8 +213,8 @@ function WeightLossSalesPage() {
 
   return (
     <main className="min-h-[100svh] bg-white text-ink">
-      <AnnouncementBar firstName={firstName} />
       <SalesNav />
+
 
       <Hero
         firstName={firstName}
