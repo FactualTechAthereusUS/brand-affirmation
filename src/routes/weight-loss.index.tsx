@@ -40,7 +40,7 @@ const DeferredEffects = lazy(() =>
   import("@/components/DeferredEffects").then((m) => ({ default: m.DeferredEffects })),
 );
 
-export const Route = createFileRoute("/weight-loss/")({
+export const Route = createFileRoute("/weight-loss")({
   head: () => ({
     meta: [
       { title: "Weight Loss — Physician-prescribed GLP-1 | Blissley" },
