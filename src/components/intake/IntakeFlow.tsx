@@ -209,30 +209,35 @@ export function IntakeFlow() {
                   tag="GLP-1 Programs"
                   title="Weight Loss"
                   sub="Lose weight and keep it off with physician-prescribed GLP-1 therapy"
-                  gradient="linear-gradient(135deg,#ee7273 0%,#f9b7a8 100%)"
+                  image={catWeight.url}
+                  position="object-center"
                   onClick={() => pickThenNext("category", "weight_loss")}
                 />
                 <CategoryCard
                   tag="Sexual Wellness"
                   title="Sexual Health"
-                  sub="ED treatment, libido, and performance — discreet and physician-supervised"
-                  gradient="linear-gradient(135deg,#c4998a 0%,#e8c4b8 100%)"
+                  sub="ED treatment, libido, and performance. Discreet and physician-supervised."
+                  image={catSexual.url}
+                  position="object-center"
                   onClick={() => pickThenNext("category", "sexual_health")}
                 />
                 <CategoryCard
                   tag="Prescription Skincare"
                   title="Skin & Hair"
                   sub="Physician-formulated treatments for acne, aging, and hair loss"
-                  gradient="linear-gradient(135deg,#c4a265 0%,#e8d5a8 100%)"
+                  image={catSkin.url}
+                  position="object-center"
                   onClick={() => pickThenNext("category", "skin_hair")}
                 />
                 <CategoryCard
                   tag="NAD+ · HRT · TRT"
                   title="Hormones & Longevity"
-                  sub="TRT, HRT, NAD+ — restore energy, balance, and vitality"
-                  gradient="linear-gradient(135deg,#8b9bb4 0%,#c8d2df 100%)"
+                  sub="TRT, HRT, NAD+. Restore energy, balance, and vitality."
+                  image={catLongevity.url}
+                  position="object-center"
                   onClick={() => pickThenNext("category", "hormones")}
                 />
+
               </ScreenShell>
             )}
 
