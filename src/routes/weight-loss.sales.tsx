@@ -447,7 +447,7 @@ function Hero({
                       )}
                       <CountUp
                         to={Number(s.value) || 0}
-                        format={(n) => Math.round(n).toString()}
+                        format={(n: number) => Math.round(n).toString()}
                         className="font-sans text-[44px] font-extrabold leading-none tracking-[-0.03em] sm:text-[64px] tabular-nums"
                       />
                       <span className="ml-1 font-sans text-[18px] font-extrabold leading-none tracking-[-0.02em] sm:text-[24px]">
