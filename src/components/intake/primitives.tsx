@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 /* ─────────────────────────  Progress bar  ───────────────────────── */
 export function ProgressBar({ value }: { value: number }) {
   return (
-    <div className="h-[16px] w-full overflow-hidden rounded-full bg-ink/[0.08] md:h-[20px]">
+    <div className="h-[10px] w-full overflow-hidden rounded-full bg-ink/[0.08] md:h-[12px]">
       <motion.div
         className="h-full rounded-full bg-ever"
         initial={false}
