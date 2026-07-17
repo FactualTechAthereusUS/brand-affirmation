@@ -83,7 +83,7 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 const COMMON: string[] = ["name", "category", "dob", "sex", "state"];
 const MED: string[] = ["contra", "meds", "loading"];
 const PATH: Record<Category, string[]> = {
-  weight_loss: ["wl_goal", "wl_howlong", "wl_tried", "wl_hw", "wl_glp1", "wl_conditions"],
+  weight_loss: ["wl_goal", "wl_howlong", "wl_tried", "wl_hw", "wl_glp1", "wl_conditions", "wl_projection"],
   sexual_health: ["sh_concern", "sh_howlong", "sh_tried", "sh_health"],
   skin_hair: ["sk_concern", "sk_howlong", "sk_tried", "sk_skin"],
   hormones: ["hm_concern", "hm_howlong", "hm_health"],
