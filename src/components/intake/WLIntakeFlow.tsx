@@ -155,6 +155,17 @@ export function WLIntakeFlow() {
 
   const isLoading = current === "loading";
 
+  // Persist answers for the sales page as soon as we hit loading
+  useEffect(() => {
+    if (current !== "loading") return;
+    try {
+      sessionStorage.setItem(
+        "blissley_intake_wl",
+        JSON.stringify({ ...answers, bmi }),
+      );
+    } catch {}
+  }, [current, answers, bmi]);
+
   return (
     <div className="relative min-h-[100svh] bg-white pb-24">
       {/* Sticky header (hidden on loading) */}
