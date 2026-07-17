@@ -145,9 +145,7 @@ export function IntakeFlow() {
           <Link to="/" className="flex items-center">
             <img src={logo.url} alt="Blissley" className="h-8 w-auto md:h-9" />
           </Link>
-          <span className="w-[72px] text-right text-[12px] font-medium text-ink/50">
-            {idx + 1} / {flow.length}
-          </span>
+          <div className="w-[72px]" />
         </div>
         <div className="mx-auto max-w-[900px] px-5 pb-3 md:px-8">
           <ProgressBar value={progress} />
