@@ -155,20 +155,21 @@ export function Nav() {
             >
               Login
             </a>
-            <motion.button
+            <motion.a
+              href="/intake"
               whileHover={{ scale: 1.04, y: -1 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 420, damping: 26 }}
-              className="rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-canvas"
+              className="inline-block rounded-full bg-ink px-5 py-2.5 text-[14px] font-medium text-canvas"
             >
               Get Started
-            </motion.button>
+            </motion.a>
           </div>
 
           {/* Mobile actions — liquid glass Get started + hamburger */}
           <div className="flex items-center gap-2 lg:hidden">
             <a
-              href="#"
+              href="/intake"
               className={`rounded-full px-5 py-2.5 text-[15px] font-medium backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ${
                 scrolled
                   ? "bg-ink text-canvas shadow-[0_2px_8px_rgba(0,0,0,0.12)]"
@@ -238,9 +239,9 @@ export function Nav() {
             </nav>
 
             <div className="relative flex items-center gap-3">
-              <button className="h-14 flex-1 rounded-full bg-canvas text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-[1.01] active:scale-[0.99]">
+              <a href="/intake" className="grid h-14 flex-1 place-items-center rounded-full bg-canvas text-[15px] font-medium text-ink shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-[1.01] active:scale-[0.99]">
                 Start Assessment
-              </button>
+              </a>
               <a href="/login" className="grid h-14 place-items-center rounded-full border border-white/20 bg-white/[0.08] px-7 text-[15px] font-medium text-canvas backdrop-blur-2xl backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:bg-white/[0.14]">
                 Login
               </a>

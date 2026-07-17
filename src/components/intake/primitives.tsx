@@ -1,0 +1,236 @@
+import { motion } from "motion/react";
+import { Check, ArrowUpRight, ArrowLeft } from "lucide-react";
+import type { ReactNode } from "react";
+
+/* ─────────────────────────  Progress bar  ───────────────────────── */
+export function ProgressBar({ value }: { value: number }) {
+  return (
+    <div className="h-[3px] w-full overflow-hidden rounded-full bg-ink/[0.06]">
+      <motion.div
+        className="h-full rounded-full bg-ever"
+        initial={false}
+        animate={{ width: `${Math.min(100, Math.max(4, value * 100))}%` }}
+        transition={{ type: "spring", stiffness: 140, damping: 22 }}
+      />
+    </div>
+  );
+}
+
+/* ─────────────────────────  Screen shell  ───────────────────────── */
+export function ScreenShell({
+  title,
+  sub,
+  children,
+  footer,
+  compact = false,
+}: {
+  title?: string;
+  sub?: string;
+  children: ReactNode;
+  footer?: ReactNode;
+  compact?: boolean;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="mx-auto flex w-full max-w-[640px] flex-1 flex-col"
+    >
+      {title && (
+        <h1
+          className={`font-hero font-bold tracking-[-0.03em] text-ink ${
+            compact ? "text-[24px] md:text-[30px]" : "text-[28px] leading-[1.1] md:text-[40px]"
+          }`}
+        >
+          {title}
+        </h1>
+      )}
+      {sub && (
+        <p className="mt-3 max-w-[520px] text-[15px] leading-[1.55] text-ink/60 md:text-[16px]">
+          {sub}
+        </p>
+      )}
+      <div className="mt-8 flex flex-col gap-3 md:mt-10">{children}</div>
+      {footer && <div className="mt-8">{footer}</div>}
+    </motion.div>
+  );
+}
+
+/* ─────────────────────────  Primary button  ───────────────────────── */
+export function PrimaryButton({
+  children = "Continue",
+  onClick,
+  disabled,
+  type = "button",
+}: {
+  children?: ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit";
+}) {
+  return (
+    <motion.button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      whileHover={disabled ? undefined : { scale: 1.02, y: -1 }}
+      whileTap={disabled ? undefined : { scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 420, damping: 26 }}
+      className="group inline-flex h-[56px] w-full items-center justify-center gap-2 rounded-full bg-ink px-6 text-[15px] font-medium text-canvas shadow-[0_10px_28px_rgba(0,0,0,0.18)] transition-opacity disabled:cursor-not-allowed disabled:opacity-40 md:h-[60px] md:w-auto md:min-w-[220px]"
+    >
+      {children}
+      <ArrowUpRight
+        className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 group-disabled:rotate-0"
+        strokeWidth={2}
+      />
+    </motion.button>
+  );
+}
+
+/* ─────────────────────────  Option card (single/multi)  ───────────────────────── */
+export function OptionCard({
+  label,
+  sub,
+  selected,
+  onClick,
+  compact = false,
+}: {
+  label: string;
+  sub?: string;
+  selected: boolean;
+  onClick: () => void;
+  compact?: boolean;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileTap={{ scale: 0.985 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      className={`group relative flex w-full items-center gap-4 rounded-2xl border bg-white px-5 text-left transition-all ${
+        compact ? "py-3.5" : "py-4 md:py-5"
+      } ${
+        selected
+          ? "border-ever/70 bg-ever/[0.04] shadow-[0_0_0_3px_rgba(238,114,115,0.12)]"
+          : "border-ink/10 hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+      }`}
+    >
+      <span
+        className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all ${
+          selected ? "border-ever bg-ever text-white" : "border-ink/25 bg-white text-transparent"
+        }`}
+        aria-hidden
+      >
+        <Check className="h-3.5 w-3.5" strokeWidth={3} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[15px] font-medium text-ink md:text-[16px]">{label}</span>
+        {sub && (
+          <span className="mt-0.5 block text-[13px] leading-[1.45] text-ink/55 md:text-[14px]">
+            {sub}
+          </span>
+        )}
+      </span>
+    </motion.button>
+  );
+}
+
+/* ─────────────────────────  Category card (image bg)  ───────────────────────── */
+export function CategoryCard({
+  tag,
+  title,
+  sub,
+  gradient,
+  onClick,
+}: {
+  tag: string;
+  title: string;
+  sub: string;
+  gradient: string;
+  onClick: () => void;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 380, damping: 26 }}
+      className="group relative flex w-full overflow-hidden rounded-2xl border border-ink/10 bg-white text-left shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_16px_40px_rgba(0,0,0,0.10)]"
+    >
+      {/* Left visual with gradient placeholder */}
+      <div
+        className="relative h-[104px] w-[104px] shrink-0 md:h-[128px] md:w-[128px]"
+        style={{ background: gradient }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-black/15" />
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-center px-4 py-4 md:px-6">
+        <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ever md:text-[11px]">
+          {tag}
+        </span>
+        <span className="mt-1 text-[18px] font-bold tracking-[-0.02em] text-ink md:text-[20px]">
+          {title}
+        </span>
+        <span className="mt-1 line-clamp-2 text-[13px] leading-[1.45] text-ink/60 md:text-[14px]">
+          {sub}
+        </span>
+      </div>
+      <ArrowUpRight
+        className="mr-4 hidden h-5 w-5 self-center text-ink/40 transition-transform duration-300 group-hover:rotate-45 group-hover:text-ink md:block"
+        strokeWidth={2}
+      />
+    </motion.button>
+  );
+}
+
+/* ─────────────────────────  Text input  ───────────────────────── */
+export function TextField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  autoFocus,
+}: {
+  label?: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  type?: "text" | "email" | "tel" | "number";
+  autoFocus?: boolean;
+}) {
+  return (
+    <label className="block">
+      {label && (
+        <span className="mb-2 block text-[13px] font-medium text-ink/70">{label}</span>
+      )}
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white px-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+      />
+    </label>
+  );
+}
+
+/* ─────────────────────────  Back button  ───────────────────────── */
+export function BackBtn({ onClick, invisible }: { onClick: () => void; invisible?: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white px-3.5 py-2 text-[13px] font-medium text-ink/70 transition-colors hover:border-ink/25 hover:text-ink ${
+        invisible ? "invisible" : ""
+      }`}
+    >
+      <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
+      Back
+    </button>
+  );
+}

@@ -86,7 +86,8 @@ export function WLHero() {
             transition={{ duration: 0.7, delay: 0.32 }}
             className="mt-6 flex flex-wrap items-center gap-3 md:mt-8"
           >
-            <motion.button
+            <motion.a
+              href="/intake"
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 420, damping: 26 }}
@@ -103,7 +104,7 @@ export function WLHero() {
               <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-canvas transition-transform duration-300 group-hover:rotate-45 md:h-11 md:w-11">
                 <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
               </span>
-            </motion.button>
+            </motion.a>
 
             <motion.button
               whileHover={{ scale: 1.03, y: -1, backgroundColor: "rgba(255,255,255,0.16)" }}
