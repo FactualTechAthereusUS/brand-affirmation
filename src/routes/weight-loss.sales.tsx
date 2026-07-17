@@ -365,11 +365,23 @@ function Hero({
   firstName,
   toLose,
   timelineWeeks,
+  state,
+  glp1History,
+  glp1Which,
+  glp1Dose,
 }: {
   firstName: string;
   toLose: number;
   timelineWeeks: number;
+  state?: string;
+  glp1History?: string;
+  glp1Which?: string;
+  glp1Dose?: string;
 }) {
+  const hasPriorGLP1 =
+    typeof glp1History === "string" && glp1History.startsWith("Yes");
+  const priorLabel = [glp1Which, glp1Dose].filter(Boolean).join(" · ");
+
   return (
     <section className="relative overflow-hidden bg-white">
       {/* soft ambient glow */}
@@ -377,74 +389,111 @@ function Hero({
         <div className="absolute -top-40 left-1/2 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-ever/10 blur-[120px]" />
       </div>
 
-      <div className="relative mx-auto max-w-4xl px-5 pb-10 pt-8 text-center sm:pt-12">
+      <div className="relative mx-auto max-w-[680px] px-5 pb-10 pt-8 text-center sm:pt-12">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-ink/80 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.04em] text-white backdrop-blur-md">
             <img src={verifiedCheck.url} alt="" className="h-4 w-4 shrink-0" aria-hidden />
-            you're a strong candidate
+            Assessment Complete
           </span>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="font-hero mt-5 text-[36px] font-bold leading-[1.05] tracking-[-0.02em] text-ink sm:text-[48px] md:text-[56px]">
-            {firstName}'s Weight Loss Program
+          <h1 className="font-hero mt-5 text-[34px] font-bold leading-[1.05] tracking-[-0.02em] text-ink sm:text-[46px] md:text-[54px]">
+            {firstName}, you've been approved.
           </h1>
         </Reveal>
 
         <Reveal delay={0.1}>
           <p className="mx-auto mt-4 max-w-[520px] text-[15.5px] leading-[1.55] text-ink/65 sm:text-[17px]">
-            Physician-prescribed GLP-1 therapy. Approved in 24 hours.
-            Ships in 48 hours. <span className="text-ink">Same price at every dose. Forever.</span>
+            Based on your assessment, you have a very high likelihood of success with physician-supervised GLP-1 therapy.
           </p>
         </Reveal>
 
-        {/* Personalized data card */}
+        {/* Success metric — DirectMeds-style badge */}
         <Reveal delay={0.15}>
-          <div className="mx-auto mt-8 grid max-w-[520px] grid-cols-3 gap-4 rounded-3xl border border-ink/[0.06] bg-ink/[0.03] p-5 text-left sm:p-6">
-            <div>
+          <div className="mx-auto mt-7 inline-flex flex-col items-center rounded-3xl border border-ever/20 bg-ever/[0.06] px-8 py-6 sm:px-10 sm:py-7">
+            <div className="text-[48px] font-bold leading-none tracking-[-0.03em] text-ever sm:text-[60px]">
+              94.6%
+            </div>
+            <div className="mt-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink/80">
+              Very High Likelihood of Success
+            </div>
+            <div className="mt-1 text-[12px] text-ink/55">
+              Based on your assessment profile
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Personalized data strip */}
+        <Reveal delay={0.2}>
+          <div className="mx-auto mt-7 grid max-w-[580px] grid-cols-3 divide-x divide-ink/[0.06] rounded-3xl border border-ink/[0.06] bg-white p-5 text-left shadow-[0_8px_30px_-18px_rgba(23,23,23,0.12)] sm:p-6">
+            <div className="px-2 first:pl-0 last:pr-0 sm:px-4">
               <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">To lose</div>
-              <div className="mt-1 text-[22px] font-bold tracking-tight text-ink sm:text-[26px]">
+              <div className="mt-1.5 text-[22px] font-bold tracking-tight text-ink sm:text-[28px]">
                 {toLose} <span className="text-[13px] font-medium text-ink/60">lbs</span>
               </div>
             </div>
-            <div>
+            <div className="px-2 first:pl-0 last:pr-0 sm:px-4">
               <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">Timeline</div>
-              <div className="mt-1 text-[22px] font-bold tracking-tight text-ink sm:text-[26px]">
+              <div className="mt-1.5 text-[22px] font-bold tracking-tight text-ink sm:text-[28px]">
                 ~{timelineWeeks} <span className="text-[13px] font-medium text-ink/60">weeks</span>
               </div>
+              <div className="mt-0.5 text-[11px] text-ink/45">physician est.</div>
             </div>
-            <div>
+            <div className="px-2 first:pl-0 last:pr-0 sm:px-4">
               <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">Recommended</div>
-              <div className="mt-1 text-[17px] font-bold tracking-tight text-ink sm:text-[19px]">
+              <div className="mt-1.5 text-[16px] font-bold tracking-tight text-ink sm:text-[19px]">
                 Semaglutide
               </div>
+              <div className="mt-0.5 text-[11px] text-ink/45">Injectable</div>
             </div>
           </div>
         </Reveal>
 
-        {/* Trust icons */}
-        <Reveal delay={0.2}>
-          <div className="mx-auto mt-5 grid max-w-[520px] grid-cols-2 gap-2 text-[12.5px]">
+        {/* Prior GLP-1 note */}
+        {hasPriorGLP1 && (
+          <Reveal delay={0.22}>
+            <div className="mx-auto mt-4 flex max-w-[580px] items-start gap-3 rounded-2xl border border-ever/15 bg-ever/[0.04] p-4 text-left">
+              <span className="mt-0.5 text-base">📋</span>
+              <div>
+                <div className="text-[14px] font-semibold text-ink">Your prior dose on file — no restart needed.</div>
+                <div className="mt-0.5 text-[13px] leading-relaxed text-ink/60">
+                  Your physician will match your current protocol{priorLabel ? ` (${priorLabel})` : ""}.
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        )}
+
+        {/* Physician availability */}
+        {state && (
+          <Reveal delay={0.24}>
+            <div className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full border border-ink/[0.08] bg-ink/[0.03] px-4 py-2 text-[13px] text-ink/70">
+              <span>🩺</span>
+              <span>
+                Physician available in <span className="font-semibold text-ink">{state}</span> — reviewing cases now
+              </span>
+            </div>
+          </Reveal>
+        )}
+
+        {/* 4 micro trust badges in a row */}
+        <Reveal delay={0.28}>
+          <div className="mx-auto mt-7 flex max-w-[580px] flex-wrap items-center justify-center gap-2 text-[12px] sm:gap-3 sm:text-[13px]">
             {[
-              "🏥 Board-certified",
-              "💊 Licensed US pharmacy",
-              "🔒 HIPAA compliant",
-              "⭐ 4.8 · 3,000+ patients",
+              { icon: "🏥", label: "Board-certified" },
+              { icon: "💊", label: "Licensed US pharmacy" },
+              { icon: "🔒", label: "HIPAA" },
+              { icon: "⭐", label: "4.8/5" },
             ].map((t) => (
-              <div key={t} className="rounded-full bg-ink/[0.04] px-3 py-2 text-center text-ink/70">
-                {t}
+              <div
+                key={t.label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-ink/[0.06] bg-white px-3 py-1.5 text-ink/75 shadow-[0_2px_8px_-4px_rgba(23,23,23,0.08)]"
+              >
+                <span>{t.icon}</span>
+                <span>{t.label}</span>
               </div>
             ))}
-          </div>
-        </Reveal>
-
-        {/* Product image */}
-        <Reveal delay={0.25}>
-          <div className="relative mt-10">
-            <PlaceholderImage ratio="aspect-[16/9]" label="Blissley vial · editorial flat lay" />
-            <div className="absolute bottom-4 left-4 rounded-full bg-white/95 px-4 py-2 text-[13px] font-medium text-ink shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)] backdrop-blur">
-              The Metabolic Reset Program
-            </div>
           </div>
         </Reveal>
       </div>
