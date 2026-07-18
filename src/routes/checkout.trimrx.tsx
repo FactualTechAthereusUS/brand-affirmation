@@ -324,7 +324,7 @@ function CheckoutPage() {
       {/* MAIN FLOW */}
       <form
         onSubmit={onSubmit}
-        className="mx-auto flex w-full max-w-[760px] flex-col gap-6 px-4 pb-16 sm:px-6"
+        className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 pb-16 sm:px-6"
       >
         <motion.div
           initial="hidden"
@@ -333,11 +333,12 @@ function CheckoutPage() {
             hidden: {},
             show: { transition: { staggerChildren: 0.06 } },
           }}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-8"
         >
           {/* Shipping */}
-          <FormCard>
+          <FormCard className="order-1 lg:order-none lg:col-start-1 lg:row-start-1">
             <StepBadge label="Shipping Address" />
+
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full Name" className="sm:col-span-2">
@@ -413,8 +414,9 @@ function CheckoutPage() {
             </FormCard>
 
             {/* Your Treatment — middle section */}
-            <FormCard>
+            <FormCard className="order-2 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-7 lg:sticky lg:top-6 lg:self-start">
               <StepBadge label="Your Treatment" />
+
 
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -562,8 +564,9 @@ function CheckoutPage() {
             </FormCard>
 
             {/* Payment */}
-            <FormCard>
+            <FormCard className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
               <StepBadge label="Payment" />
+
 
               {/* Payment methods — accordion list */}
               <div className="space-y-3">
@@ -774,7 +777,7 @@ function CheckoutPage() {
               type="submit"
               disabled={!canSubmit || submitting}
               whileTap={{ scale: 0.99 }}
-              className="w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60"
+              className="order-4 w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60 lg:order-none lg:col-start-1 lg:row-start-3"
               style={{
                 background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)`,
                 boxShadow: `0 18px 40px -12px ${NAVY}66`,
@@ -786,7 +789,7 @@ function CheckoutPage() {
             </motion.button>
 
             {/* Trustpilot */}
-            <div className="flex items-center justify-center gap-2.5 pt-1">
+            <div className="order-5 flex items-center justify-center gap-2.5 pt-1 lg:order-none lg:col-start-1 lg:row-start-4">
               <span className="text-[15px] font-bold text-ink">Excellent</span>
               <img
                 src={trustpilotBadge.url}
@@ -796,7 +799,7 @@ function CheckoutPage() {
             </div>
 
             {/* Trust footer */}
-            <div className="flex flex-col items-center gap-2 text-center">
+            <div className="order-6 flex flex-col items-center gap-2 text-center lg:order-none lg:col-start-1 lg:row-start-5">
               <div className="flex items-center gap-2 text-[12.5px] font-semibold text-ink/70">
                 <Lock className="h-3.5 w-3.5" style={{ color: GREEN }} />
                 256-bit SSL encryption · PCI DSS compliant
@@ -808,7 +811,7 @@ function CheckoutPage() {
               <PayIcons className="mt-1 justify-center" />
             </div>
 
-            <p className="text-center text-[11.5px] leading-relaxed text-ink/50">
+            <p className="order-7 text-center text-[11.5px] leading-relaxed text-ink/50 lg:order-none lg:col-start-1 lg:row-start-6">
               By continuing, I confirm I have read and agree to Blissley's
               Telehealth, Privacy, Shipping, and Terms & Conditions; consent to
               the collection, use, and disclosure of my PHI; and authorize
@@ -819,7 +822,10 @@ function CheckoutPage() {
               Policy.
             </p>
 
-            <ReviewSlider />
+            <div className="order-8 lg:order-none lg:col-start-1 lg:row-start-7">
+              <ReviewSlider />
+            </div>
+
           </motion.div>
         </form>
       </div>
@@ -975,7 +981,7 @@ function Row({
   );
 }
 
-function FormCard({ children }: { children: React.ReactNode }) {
+function FormCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <motion.div
       variants={{
@@ -983,12 +989,13 @@ function FormCard({ children }: { children: React.ReactNode }) {
         show: { opacity: 1, y: 0, filter: "blur(0px)" },
       }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="p-0"
+      className={`p-0 ${className}`}
     >
       {children}
     </motion.div>
   );
 }
+
 
 function MethodTab({
   active,
