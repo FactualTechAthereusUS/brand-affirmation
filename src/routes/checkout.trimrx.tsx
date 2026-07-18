@@ -759,7 +759,7 @@ function CheckoutPage() {
                         >
                           You'll be redirected to complete your{" "}
                           <b className="capitalize">{m.label}</b> checkout after
-                          confirming your order — split into 4 interest-free
+                          confirming your order, split into 4 interest-free
                           payments.
                         </div>
                       )}
@@ -782,7 +782,7 @@ function CheckoutPage() {
             >
               {submitting
                 ? "Processing…"
-                : `Continue — $0 charged today`}
+                : `Continue ($0 charged today)`}
             </motion.button>
 
             {/* Trustpilot */}
@@ -790,7 +790,7 @@ function CheckoutPage() {
               <span className="text-[15px] font-bold text-ink">Excellent</span>
               <img
                 src={trustpilotBadge.url}
-                alt="Trustpilot — Excellent"
+                alt="Trustpilot Excellent"
                 className="h-5 w-auto"
               />
             </div>
