@@ -9,6 +9,7 @@ import {
   PrimaryButton,
   ProgressBar,
   ScreenShell,
+  StateSelect,
   TextField,
 } from "./primitives";
 import logo from "@/assets/blissley-logo.png.asset.json";
@@ -328,16 +329,11 @@ export function IntakeFlow() {
                   </>
                 }
               >
-                <select
+                <StateSelect
                   value={answers.state ?? ""}
-                  onChange={(e) => set({ state: e.target.value })}
-                  className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white px-4 text-[16px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
-                >
-                  <option value="">Select your state</option>
-                  {US_STATES.map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
+                  onChange={(v) => set({ state: v })}
+                  states={US_STATES}
+                />
               </ScreenShell>
             )}
 
