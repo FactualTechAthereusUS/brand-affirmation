@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
+import { PayIcons } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import forbes from "@/assets/forbes-health.png.asset.json";
