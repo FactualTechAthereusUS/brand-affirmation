@@ -294,7 +294,7 @@ function CheckoutPage() {
       {/* MAIN GRID */}
       <div className="mx-auto grid w-full max-w-[1080px] gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
         {/* ── LEFT: Order summary ── */}
-        <div className="order-1 lg:order-2">
+        <div className="order-2 lg:order-2">
           <motion.aside
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
