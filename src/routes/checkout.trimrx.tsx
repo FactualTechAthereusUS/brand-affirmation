@@ -414,8 +414,9 @@ function CheckoutPage() {
             </FormCard>
 
             {/* Your Treatment — middle section */}
-            <FormCard>
+            <FormCard className="order-2 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-7 lg:sticky lg:top-6 lg:self-start">
               <StepBadge label="Your Treatment" />
+
 
               <div className="flex items-center justify-between gap-4">
                 <div>
