@@ -685,14 +685,25 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 14, Kristin story */}
             {current === "kristin_story" && (
-              <StoryScreen
-                quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
-                name="Kristin"
-                result="Lost 29 lbs · Renewed confidence"
-                before={kristinBefore.url}
-                after={kristinAfter.url}
-                onNext={next}
-              />
+              answers.sex === "male" ? (
+                <StoryScreen
+                  quote="50 lbs down in 7 months. I stepped off the scale and stepped back on just to make sure."
+                  name="Michael T."
+                  result="Lost 50 lbs · 7 months"
+                  before={spMaleBefore.url}
+                  after={spMaleAfter.url}
+                  onNext={next}
+                />
+              ) : (
+                <StoryScreen
+                  quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
+                  name="Kristin"
+                  result="Lost 29 lbs · Renewed confidence"
+                  before={kristinBefore.url}
+                  after={kristinAfter.url}
+                  onNext={next}
+                />
+              )
             )}
 
             {/* 15, Contraindications */}
@@ -859,14 +870,25 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 23, Daiene story */}
             {current === "daiene_story" && (
-              <StoryScreen
-                quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
-                name="Daiene"
-                result="Lost 90 lbs · Off blood pressure medication"
-                before={daieneBefore.url}
-                after={daieneAfter.url}
-                onNext={next}
-              />
+              answers.sex === "male" ? (
+                <StoryScreen
+                  quote="The food noise is just gone. My blood pressure is back to normal and I'm off two medications."
+                  name="David R."
+                  result="Lost 62 lbs · Off BP medication"
+                  before={spMaleBefore.url}
+                  after={spMaleAfter.url}
+                  onNext={next}
+                />
+              ) : (
+                <StoryScreen
+                  quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
+                  name="Daiene"
+                  result="Lost 90 lbs · Off blood pressure medication"
+                  before={daieneBefore.url}
+                  after={daieneAfter.url}
+                  onNext={next}
+                />
+              )
             )}
 
             {/* 24, Resting HR */}
