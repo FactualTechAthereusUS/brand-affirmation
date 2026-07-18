@@ -320,7 +320,10 @@ function PlanCard({
 
         <button
           type="button"
-          onClick={onSelect}
+          onClick={() => {
+            onSelect();
+            onCheckout();
+          }}
           className="mt-3 flex w-full flex-col items-center justify-center rounded-xl px-4 py-3.5 text-[15px] font-semibold transition-all"
           style={{
             background: "#CFE0CC",
