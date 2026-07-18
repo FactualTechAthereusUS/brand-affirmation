@@ -21,6 +21,7 @@ type Preg = "pregnant" | "breastfeeding" | "none";
 
 type Answers = {
   firstName: string;
+  lastName: string;
   email: string;
   primaryGoal?: string;
   struggleDuration?: string;
@@ -34,11 +35,17 @@ type Answers = {
   weightLbs?: string;
   weightGoal?: string;
   triedBefore?: string[];
+  pastSurgeries?: "no" | "yes";
+  pastSurgeriesDetail?: string;
+  currentConditions?: "no" | "yes";
+  currentConditionsDetail?: string;
   glp1History?: string;
   glp1Which?: string;
   glp1Dose?: string;
   qualifyingConditions?: string[];
+  weightSymptoms?: string[];
   contraindications?: string[];
+  bariatric?: string;
   medications?: string;
   noMedications?: boolean;
   allergies?: string;
@@ -48,6 +55,7 @@ type Answers = {
   consentTOS?: boolean;
   consentSMS?: boolean;
 };
+
 
 const US_STATES = [
   "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia",
