@@ -709,11 +709,37 @@ export function BlissleyIntakeFlow() {
                           <span className="font-serif text-[52px] sm:text-[68px] leading-none font-bold text-white">#1</span>
                           <img src={blissleyWhite.url} alt="Blissley" className="h-7 sm:h-10 w-auto object-contain" />
                         </div>
-                        <div className="mt-3 flex items-center gap-2 text-[13px] text-white/95">
+                        <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] sm:text-[14px] text-white/95">
                           <span className="rounded-md bg-white px-2 py-1 font-semibold text-[#1D437B]">9.8</span>
                           <span className="font-medium">Exceptional</span>
+                          <span className="text-white/40">·</span>
+                          <span className="flex items-center gap-0.5 text-[#ee7273]">
+                            {[0,1,2,3,4].map((i) => (
+                              <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" aria-hidden>
+                                <path d="M10 1.5l2.6 5.27 5.82.84-4.21 4.1.99 5.79L10 14.77l-5.2 2.73.99-5.79L1.58 7.61l5.82-.84L10 1.5z"/>
+                              </svg>
+                            ))}
+                          </span>
                         </div>
+                        <ul className="mt-4 space-y-2 text-[13px] sm:text-[14.5px] text-white/95">
+                          {[
+                            "Personalized GLP-1 protocols for your body",
+                            "Physician review within 24 hours",
+                            "Includes nausea & side-effect support",
+                            "Improves treatment adherence and comfort",
+                          ].map((f) => (
+                            <li key={f} className="flex items-start gap-2.5 sm:gap-3">
+                              <span className="mt-0.5 grid h-4 w-4 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-white">
+                                <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                                  <path d="M4 10.5l4 4 8-9" />
+                                </svg>
+                              </span>
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
+
                       <div className="inline-flex w-max items-center gap-2.5 rounded-full border border-white/15 bg-black/40 px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-xl">
                         <span className="h-2 w-2 rounded-full bg-[#ee7273]" /> Most popular
                       </div>
