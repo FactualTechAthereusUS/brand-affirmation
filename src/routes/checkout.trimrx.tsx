@@ -470,11 +470,6 @@ function CheckoutPage() {
             <FormCard>
               <StepBadge label="Shipping Address" />
 
-              <div className="mb-3 flex items-center gap-2 text-[12.5px] text-ink/60">
-                <ShieldCheck className="h-4 w-4" style={{ color: GREEN }} />
-                Your privacy guaranteed
-              </div>
-
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full Name" className="sm:col-span-2">
                   <TextInput
