@@ -446,7 +446,7 @@ export function TrimRxIntakeFlowV2() {
                     key={o}
                     label={o}
                     selected={(answers.safety ?? []).includes(o)}
-                    onClick={() => toggleMulti("safety", o, "None of the above")}
+                    onClick={() => pickSafety(o)}
                   />
                 ))}
               </ScreenShell>
