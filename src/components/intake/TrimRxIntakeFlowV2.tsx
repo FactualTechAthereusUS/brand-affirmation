@@ -336,19 +336,34 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 1, BMI reveal + goal weight */}
             {current === "bmi_goal" && (
-              <ScreenShell
-                title={bmi ? `Perfect! With a BMI of ${bmi}, we can continue.` : "Great, let's set your goal."}
-                sub="We're in this together. Your goal is our goal."
-                footer={
-                  <PrimaryButton
-                    onClick={next}
-                    disabled={!answers.goalWeight || parseFloat(answers.goalWeight) >= parseFloat(answers.weightLbs || "0")}
-                  >
-                    Next →
-                  </PrimaryButton>
-                }
-              >
-                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/5] sm:aspect-[16/10] md:aspect-[21/10]">
+              <>
+                <ScreenShell
+                  title={bmi ? `Perfect! With a BMI of ${bmi}, we can continue.` : "Great, let's set your goal."}
+                  sub="We're in this together. Your goal is our goal."
+                  footer={
+                    <PrimaryButton
+                      onClick={next}
+                      disabled={!answers.goalWeight || parseFloat(answers.goalWeight) >= parseFloat(answers.weightLbs || "0")}
+                    >
+                      Next →
+                    </PrimaryButton>
+                  }
+                >
+                  <TextField
+                    label="What is your goal weight? (lbs)"
+                    type="number"
+                    value={answers.goalWeight ?? ""}
+                    onChange={(v) => set({ goalWeight: v })}
+                    placeholder="155"
+                  />
+                  {answers.goalWeight && parseFloat(answers.goalWeight) < parseFloat(answers.weightLbs || "0") && (
+                    <div className="inline-flex w-max items-center gap-2 rounded-full bg-ever/10 px-4 py-2 text-[13px] font-semibold text-ever">
+                      <TrendingDown className="h-4 w-4" />
+                      Target: −{parseFloat(answers.weightLbs!) - parseFloat(answers.goalWeight)} lbs
+                    </div>
+                  )}
+                </ScreenShell>
+                <div className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/5] sm:aspect-[16/10] md:aspect-[21/10]">
                   <img
                     src={trxHeroWoman2Mobile.url}
                     alt="Woman reaching toward camera under blue sky"
@@ -372,22 +387,7 @@ export function TrimRxIntakeFlowV2() {
                     </div>
                   </div>
                 </div>
-
-
-                <TextField
-                  label="What is your goal weight? (lbs)"
-                  type="number"
-                  value={answers.goalWeight ?? ""}
-                  onChange={(v) => set({ goalWeight: v })}
-                  placeholder="155"
-                />
-                {answers.goalWeight && parseFloat(answers.goalWeight) < parseFloat(answers.weightLbs || "0") && (
-                  <div className="inline-flex w-max items-center gap-2 rounded-full bg-ever/10 px-4 py-2 text-[13px] font-semibold text-ever">
-                    <TrendingDown className="h-4 w-4" />
-                    Target: −{parseFloat(answers.weightLbs!) - parseFloat(answers.goalWeight)} lbs
-                  </div>
-                )}
-              </ScreenShell>
+              </>
             )}
 
             {/* 2, Sex */}
