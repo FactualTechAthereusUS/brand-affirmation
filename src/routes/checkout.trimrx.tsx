@@ -703,19 +703,13 @@ function CheckoutPage() {
                       className="overflow-hidden rounded-2xl border"
                       style={{
                         borderColor:
-                          payMethod === m.key
-                            ? "#E5C9A6"
-                            : "rgba(0,0,0,0.10)",
+                          payMethod === m.key ? NAVY : "rgba(0,0,0,0.10)",
                       }}
                     >
                       <button
                         type="button"
                         onClick={() => setPayMethod(m.key)}
-                        className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
-                        style={{
-                          background:
-                            payMethod === m.key ? "#FBEFE1" : "#FFFFFF",
-                        }}
+                        className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
                       >
                         <div className="flex items-center gap-3">
                           <Radio active={payMethod === m.key} />
@@ -725,6 +719,7 @@ function CheckoutPage() {
                         </div>
                         <img src={m.img} alt={m.label} className="h-5" />
                       </button>
+
                       {payMethod === m.key && (
                         <div
                           className="border-t border-black/10 bg-[#F3F4F6] p-4 text-[13.5px] text-ink/70"
