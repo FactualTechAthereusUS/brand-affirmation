@@ -12,9 +12,6 @@ import {
   X as XIcon,
   Trophy,
   ShieldCheck,
-  Activity,
-  Heart,
-  Pill,
   Scale as ScaleIcon,
 } from "lucide-react";
 import {
