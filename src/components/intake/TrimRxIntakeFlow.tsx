@@ -342,19 +342,19 @@ export function TrimRxIntakeFlow() {
   return (
     <div className="relative min-h-[100svh] bg-white pb-24">
       {!isLoading && (
-        <div className="sticky top-0 z-20 bg-white/85 backdrop-blur-xl backdrop-saturate-150">
-          <div className="mx-auto flex h-[64px] max-w-[860px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
-            <BackBtn onClick={prev} invisible={idx === 0} />
-            <Link to="/" className="flex items-center gap-3">
-              <img src={logo.url} alt="Blissley" className="h-10 w-auto md:h-12" />
-            </Link>
-            <div className="hidden md:block">
-              <FeaturedIn />
-            </div>
-            <div className="w-[72px] md:hidden" />
-          </div>
-          <div className="mx-auto max-w-[860px] px-5 pb-4 md:px-8 md:pb-5">
-            <StageBar stage={stage} />
+        <div
+          className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur-xl"
+          style={{ borderColor: "rgba(23,23,23,0.08)" }}
+        >
+          <TrxHeader onBack={prev} showBack={idx > 0} />
+          <div
+            className="border-t px-4 py-3 md:px-8 md:py-4"
+            style={{
+              borderColor: "rgba(23,23,23,0.06)",
+              background: "rgba(29,67,123,0.03)",
+            }}
+          >
+            <TrxStepper stage={stage} />
           </div>
         </div>
       )}
