@@ -271,33 +271,34 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 0, Height & Weight */}
             {current === "hw" && (
-              <ScreenShell
-                title="Reach your goal weight fast, {{without restrictive diets and exercise.}}"
-                sub="Let's calculate your BMI to make sure you're a good candidate for medical weight loss."
-                footer={
-                  <PrimaryButton
-                    onClick={next}
-                    disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}
-                  >
-                    Next →
-                  </PrimaryButton>
-                }
-              >
-                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/10] md:aspect-[16/9] mb-2">
+              <>
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/10] md:aspect-[21/9] mb-6 md:mb-8">
                   <img
                     src={trxHeroImg.url}
                     alt="Woman smiling at golden hour"
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="eager"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
                   <span
-                    className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white font-serif italic leading-none tracking-tight text-[36px] md:text-[56px]"
+                    className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white font-serif italic leading-none tracking-tight text-[40px] md:text-[64px]"
                     style={{ textShadow: "0 2px 20px rgba(0,0,0,0.35)" }}
                   >
                     blissley
                   </span>
                 </div>
+                <ScreenShell
+                  title="Reach your goal weight fast, {{without restrictive diets and exercise.}}"
+                  sub="Let's calculate your BMI to make sure you're a good candidate for medical weight loss."
+                  footer={
+                    <PrimaryButton
+                      onClick={next}
+                      disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}
+                    >
+                      Next →
+                    </PrimaryButton>
+                  }
+                >
                 <label className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink/55">
                   What is your height and weight?
                 </label>
