@@ -14,14 +14,16 @@ import {
   ShieldCheck,
   Scale as ScaleIcon,
 } from "lucide-react";
+import { StateSelect } from "./primitives";
 import {
-  OptionCard,
-  PrimaryButton,
-  ScreenShell,
-  StateSelect,
-  TextField,
-} from "./primitives";
-import { TrxHeader } from "./TrxUI";
+  TrxButton as PrimaryButton,
+  TrxOption as OptionCard,
+  TrxIconOption,
+  TrxField as TextField,
+  TrxScreen as ScreenShell,
+  TrxStepper,
+  TrxHeader,
+} from "./TrxUIPink";
 import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
@@ -140,84 +142,8 @@ function stageOf(idx: number, sex?: Sex): number {
   return 3;
 }
 
-/* ────────────  Local IconOption (V1 UI style)  ──────────── */
-function IconOption({
-  icon,
-  label,
-  selected,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      whileTap={{ scale: 0.985 }}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      className={`group flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-all md:py-5 ${
-        selected
-          ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
-          : "border-ink/10 bg-white hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
-      }`}
-    >
-      <span
-        className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${
-          selected ? "bg-white/15 text-white" : "bg-ever/[0.08] text-ever"
-        }`}
-      >
-        {icon}
-      </span>
-      <span className={`min-w-0 flex-1 text-[15px] font-medium md:text-[16px] ${selected ? "text-white" : "text-ink"}`}>
-        {label}
-      </span>
-    </motion.button>
-  );
-}
-
-/* ────────────  V1 progress bar (5 segments)  ──────────── */
-function StageBar({ stage }: { stage: number }) {
-  const STAGES = ["Start", "Preliminary", "Health", "Details", "Eligibility"] as const;
-  return (
-    <div className="mx-auto flex w-full max-w-[720px] items-center gap-1.5 md:gap-2">
-      {STAGES.map((label, i) => {
-        const done = i < stage;
-        const active = i === stage;
-        return (
-          <div key={label} className="flex flex-1 flex-col items-start gap-1.5">
-            <div className="relative h-[6px] w-full overflow-hidden rounded-full bg-ink/[0.08]">
-              <motion.div
-                initial={false}
-                animate={{ width: done || active ? "100%" : "0%" }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full rounded-full"
-                style={{
-                  background: done
-                    ? "#ee7273"
-                    : active
-                      ? "linear-gradient(90deg,#ee7273,#f4a3a4)"
-                      : "transparent",
-                }}
-              />
-            </div>
-            <span
-              className={`hidden text-[10px] font-semibold uppercase tracking-[0.14em] md:block ${
-                active ? "text-ever" : done ? "text-ink/70" : "text-ink/35"
-              }`}
-            >
-              {label}
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-const TrxStepper = StageBar;
-
+/* IconOption is now provided by TrxUI (TrxIconOption). Alias kept for callsites. */
+const IconOption = TrxIconOption;
 
 /* ────────────  Yes/No + optional detail  ──────────── */
 function YesNoWithDetail({
@@ -243,7 +169,7 @@ function YesNoWithDetail({
             onClick={() => onChange(v)}
             className={`h-[54px] rounded-lg border text-[15px] font-medium capitalize transition-all ${
               value === v
-                ? "border-[#1D437B] bg-[#1D437B] text-white shadow-[0_8px_20px_rgba(29,67,123,0.22)]"
+                ? "border-[#ee7273] bg-[#ee7273] text-white shadow-[0_8px_20px_rgba(238,114,115,0.22)]"
                 : "border-ink/12 bg-white text-ink hover:border-ink/30"
             }`}
           >
@@ -259,7 +185,7 @@ function YesNoWithDetail({
           onChange={(e) => onDetail(e.target.value)}
           placeholder={detailPlaceholder ?? "Please add brief details…"}
           rows={4}
-          className="mt-2 w-full resize-none rounded-lg border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none focus:border-[#1D437B] focus:shadow-[0_0_0_3px_rgba(29,67,123,0.12)]"
+          className="mt-2 w-full resize-none rounded-lg border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none focus:border-[#ee7273] focus:shadow-[0_0_0_3px_rgba(238,114,115,0.12)]"
         />
       )}
     </>
@@ -267,7 +193,7 @@ function YesNoWithDetail({
 }
 
 /* ────────────  Main  ──────────── */
-export function TrimRxIntakeFlow() {
+export function WeightLoss3IntakeFlow() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
 
@@ -615,7 +541,7 @@ export function TrimRxIntakeFlow() {
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_70px_rgba(29,67,123,0.22)] lg:w-[calc(100vw-48px)] lg:h-[600px] lg:flex lg:flex-col xl:-mx-[216px] xl:w-[1152px] xl:h-[600px]"
+                  className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_70px_rgba(238,114,115,0.22)] lg:w-[calc(100vw-48px)] lg:h-[600px] lg:flex lg:flex-col xl:-mx-[216px] xl:w-[1152px] xl:h-[600px]"
                 >
                   {/* Yahoo Health banner */}
                   <div className="flex items-center bg-[#6001D2] px-5 py-3 sm:px-7 sm:py-4">
@@ -669,7 +595,7 @@ export function TrimRxIntakeFlow() {
                         </div>
 
                         <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] sm:text-[14px] text-white/95">
-                          <span className="rounded-md bg-white px-2 py-1 font-semibold text-[#1D437B]">9.8</span>
+                          <span className="rounded-md bg-white px-2 py-1 font-semibold text-[#ee7273]">9.8</span>
                           <span className="font-medium">Exceptional</span>
                           <span className="text-white/40">·</span>
                           <span className="flex items-center gap-0.5 text-[#ee7273]">
@@ -690,7 +616,7 @@ export function TrimRxIntakeFlow() {
                           ].map((f) => (
                             <li key={f} className="flex items-start gap-2.5 sm:gap-3">
                               <span className="mt-0.5 grid h-4 w-4 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-white">
-                                <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                                <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#ee7273]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                                   <path d="M4 10.5l4 4 8-9" />
                                 </svg>
                               </span>
@@ -1160,7 +1086,7 @@ export function TrimRxIntakeFlow() {
                       Verify eligibility →
                     </PrimaryButton>
                     <p className="mt-4 flex items-center gap-2 text-[12px] text-ink/50">
-                      <ShieldCheck className="h-4 w-4 text-[#1D437B]" />
+                      <ShieldCheck className="h-4 w-4 text-[#ee7273]" />
                       Your information is never shared and is protected by HIPAA.
                     </p>
                   </>
@@ -1319,17 +1245,17 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
             x2={W - padR}
             y1={yAt(v)}
             y2={yAt(v)}
-            stroke="#1D437B"
+            stroke="#ee7273"
             strokeOpacity="0.14"
             strokeDasharray="5 7"
           />
         ))}
 
         {/* Y axis */}
-        <line x1={padL} x2={padL} y1={padT - 6} y2={H - padB} stroke="#1D437B" strokeOpacity="0.35" strokeWidth="1.2" />
-        <polygon points={`${padL - 4},${padT - 6} ${padL + 4},${padT - 6} ${padL},${padT - 14}`} fill="#1D437B" fillOpacity="0.55" />
+        <line x1={padL} x2={padL} y1={padT - 6} y2={H - padB} stroke="#ee7273" strokeOpacity="0.35" strokeWidth="1.2" />
+        <polygon points={`${padL - 4},${padT - 6} ${padL + 4},${padT - 6} ${padL},${padT - 14}`} fill="#ee7273" fillOpacity="0.55" />
         {/* X axis */}
-        <line x1={padL} x2={W - padR} y1={H - padB} y2={H - padB} stroke="#1D437B" strokeOpacity="0.35" strokeWidth="1.2" />
+        <line x1={padL} x2={W - padR} y1={H - padB} y2={H - padB} stroke="#ee7273" strokeOpacity="0.35" strokeWidth="1.2" />
 
         {/* Y label */}
         <text x={padL + 12} y={padT + 24} style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>Metabolic</text>
@@ -1337,8 +1263,8 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
 
         {/* Ease of weight loss arrow (mid-right of curve) */}
         <g transform={`translate(${xAt(0.72)}, ${yAt(0.86)})`}>
-          <line x1="0" y1="0" x2="70" y2="0" stroke="#1D437B" strokeWidth="1.6" />
-          <polygon points="70,-5 82,0 70,5" fill="#1D437B" />
+          <line x1="0" y1="0" x2="70" y2="0" stroke="#ee7273" strokeWidth="1.6" />
+          <polygon points="70,-5 82,0 70,5" fill="#ee7273" />
           <text x="0" y="22" style={{ fontSize: 13, fontWeight: 500, fill: "#171717" }}>Ease of</text>
           <text x="0" y="38" style={{ fontSize: 13, fontWeight: 500, fill: "#171717" }}>weight loss</text>
         </g>
@@ -1427,7 +1353,7 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
             style={{
               left: `${(xAt(hover.t) / W) * 100}%`,
             }}
-            className="pointer-events-none absolute top-2 -translate-x-1/2 rounded-2xl bg-ever px-3.5 py-2.5 text-white shadow-[0_10px_30px_rgba(29,67,123,0.28)]"
+            className="pointer-events-none absolute top-2 -translate-x-1/2 rounded-2xl bg-ever px-3.5 py-2.5 text-white shadow-[0_10px_30px_rgba(238,114,115,0.28)]"
           >
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70">Week {hoverWeek}</div>
             <div className="mt-0.5 flex items-baseline gap-1.5">
@@ -1611,7 +1537,7 @@ function LoadingScreen({ firstName, state }: { firstName?: string; state?: strin
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#ee7273] via-[#295a9a] to-[#ee7273]" />
       <motion.div className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
         animate={{ x: [0, 40, 0], y: [0, -30, 0] }} transition={{ duration: 12, repeat: Infinity }} />
       <motion.div className="absolute -right-40 bottom-1/4 h-[560px] w-[560px] rounded-full bg-[#ffd7c0]/25 blur-[130px]"
