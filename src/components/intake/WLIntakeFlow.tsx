@@ -1026,12 +1026,10 @@ export function WLIntakeFlow() {
                     ))}
                   </select>
                 </label>
-                <TextField
+                <PhoneField
                   label="Phone number"
-                  type="tel"
                   value={answers.phone ?? ""}
                   onChange={(v) => set({ phone: v })}
-                  placeholder="(555) 123-4567"
                 />
                 <p className="-mt-1 text-[12px] text-ink/50">Your physician may need to reach you.</p>
 
