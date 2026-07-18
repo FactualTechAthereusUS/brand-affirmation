@@ -20,7 +20,8 @@ import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
-import { Route as IntakeWeightLossTrimxrxRouteImport } from './routes/intake_.weight-loss-trimxrx'
+import { Route as IntakeWeightLossTrimrx2RouteImport } from './routes/intake_.weight-loss-trimrx-2'
+import { Route as IntakeWeightLossTrimrxRouteImport } from './routes/intake_.weight-loss-trimrx'
 import { Route as IntakeWeightLossRouteImport } from './routes/intake_.weight-loss'
 
 const TestStateRoute = TestStateRouteImport.update({
@@ -78,9 +79,14 @@ const WeightLossSalesRoute = WeightLossSalesRouteImport.update({
   path: '/weight-loss/sales',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IntakeWeightLossTrimxrxRoute = IntakeWeightLossTrimxrxRouteImport.update({
-  id: '/intake_/weight-loss-trimxrx',
-  path: '/intake/weight-loss-trimxrx',
+const IntakeWeightLossTrimrx2Route = IntakeWeightLossTrimrx2RouteImport.update({
+  id: '/intake_/weight-loss-trimrx-2',
+  path: '/intake/weight-loss-trimrx-2',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntakeWeightLossTrimrxRoute = IntakeWeightLossTrimrxRouteImport.update({
+  id: '/intake_/weight-loss-trimrx',
+  path: '/intake/weight-loss-trimrx',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntakeWeightLossRoute = IntakeWeightLossRouteImport.update({
@@ -100,7 +106,8 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
   '/intake/weight-loss': typeof IntakeWeightLossRoute
-  '/intake/weight-loss-trimxrx': typeof IntakeWeightLossTrimxrxRoute
+  '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
+  '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/weight-loss/': typeof WeightLossIndexRoute
 }
@@ -115,7 +122,8 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
   '/intake/weight-loss': typeof IntakeWeightLossRoute
-  '/intake/weight-loss-trimxrx': typeof IntakeWeightLossTrimxrxRoute
+  '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
+  '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/weight-loss': typeof WeightLossIndexRoute
 }
@@ -131,7 +139,8 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
   '/intake_/weight-loss': typeof IntakeWeightLossRoute
-  '/intake_/weight-loss-trimxrx': typeof IntakeWeightLossTrimxrxRoute
+  '/intake_/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
+  '/intake_/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/weight-loss/': typeof WeightLossIndexRoute
 }
@@ -148,7 +157,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/test-state'
     | '/intake/weight-loss'
-    | '/intake/weight-loss-trimxrx'
+    | '/intake/weight-loss-trimrx'
+    | '/intake/weight-loss-trimrx-2'
     | '/weight-loss/sales'
     | '/weight-loss/'
   fileRoutesByTo: FileRoutesByTo
@@ -163,7 +173,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/test-state'
     | '/intake/weight-loss'
-    | '/intake/weight-loss-trimxrx'
+    | '/intake/weight-loss-trimrx'
+    | '/intake/weight-loss-trimrx-2'
     | '/weight-loss/sales'
     | '/weight-loss'
   id:
@@ -178,7 +189,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/test-state'
     | '/intake_/weight-loss'
-    | '/intake_/weight-loss-trimxrx'
+    | '/intake_/weight-loss-trimrx'
+    | '/intake_/weight-loss-trimrx-2'
     | '/weight-loss/sales'
     | '/weight-loss/'
   fileRoutesById: FileRoutesById
@@ -194,7 +206,8 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
   IntakeWeightLossRoute: typeof IntakeWeightLossRoute
-  IntakeWeightLossTrimxrxRoute: typeof IntakeWeightLossTrimxrxRoute
+  IntakeWeightLossTrimrxRoute: typeof IntakeWeightLossTrimrxRoute
+  IntakeWeightLossTrimrx2Route: typeof IntakeWeightLossTrimrx2Route
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
 }
@@ -278,11 +291,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightLossSalesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/intake_/weight-loss-trimxrx': {
-      id: '/intake_/weight-loss-trimxrx'
-      path: '/intake/weight-loss-trimxrx'
-      fullPath: '/intake/weight-loss-trimxrx'
-      preLoaderRoute: typeof IntakeWeightLossTrimxrxRouteImport
+    '/intake_/weight-loss-trimrx-2': {
+      id: '/intake_/weight-loss-trimrx-2'
+      path: '/intake/weight-loss-trimrx-2'
+      fullPath: '/intake/weight-loss-trimrx-2'
+      preLoaderRoute: typeof IntakeWeightLossTrimrx2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intake_/weight-loss-trimrx': {
+      id: '/intake_/weight-loss-trimrx'
+      path: '/intake/weight-loss-trimrx'
+      fullPath: '/intake/weight-loss-trimrx'
+      preLoaderRoute: typeof IntakeWeightLossTrimrxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/intake_/weight-loss': {
@@ -306,7 +326,8 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
   IntakeWeightLossRoute: IntakeWeightLossRoute,
-  IntakeWeightLossTrimxrxRoute: IntakeWeightLossTrimxrxRoute,
+  IntakeWeightLossTrimrxRoute: IntakeWeightLossTrimrxRoute,
+  IntakeWeightLossTrimrx2Route: IntakeWeightLossTrimrx2Route,
   WeightLossSalesRoute: WeightLossSalesRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
 }

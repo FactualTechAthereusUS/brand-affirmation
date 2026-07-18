@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Link } from "@tanstack/react-router";
+
 import {
   Moon,
   Frown,
@@ -14,15 +14,16 @@ import {
   ShieldCheck,
   Scale as ScaleIcon,
 } from "lucide-react";
+import { StateSelect } from "./primitives";
 import {
-  BackBtn,
-  OptionCard,
-  PrimaryButton,
-  ScreenShell,
-  StateSelect,
-  TextField,
-} from "./primitives";
-import logo from "@/assets/blissley-logo.png.asset.json";
+  TrxButton as PrimaryButton,
+  TrxOption as OptionCard,
+  TrxIconOption,
+  TrxField as TextField,
+  TrxScreen as ScreenShell,
+  TrxStepper,
+  TrxHeader,
+} from "./TrxUI";
 import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
@@ -110,7 +111,7 @@ const SCREENS = [
 
 type ScreenId = (typeof SCREENS)[number];
 
-const STAGES = ["Start", "Preliminary", "Health", "Details", "Eligibility"] as const;
+
 function stageOf(idx: number, sex?: Sex): number {
   // Trim female_effects (idx 4) if not female, shift accordingly by using screen id instead
   const id = SCREENS[idx];
@@ -125,96 +126,8 @@ function stageOf(idx: number, sex?: Sex): number {
   return 3;
 }
 
-/* ────────────  Progress bar (5 segments)  ──────────── */
-function StageBar({ stage }: { stage: number }) {
-  return (
-    <div className="mx-auto flex w-full max-w-[720px] items-center gap-1.5 md:gap-2">
-      {STAGES.map((label, i) => {
-        const done = i < stage;
-        const active = i === stage;
-        return (
-          <div key={label} className="flex flex-1 flex-col items-start gap-1.5">
-            <div className="relative h-[6px] w-full overflow-hidden rounded-full bg-ink/[0.08]">
-              <motion.div
-                initial={false}
-                animate={{ width: done || active ? "100%" : "0%" }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full rounded-full"
-                style={{
-                  background: done
-                    ? "#1D437B"
-                    : active
-                      ? "linear-gradient(90deg,#1D437B,#ee7273)"
-                      : "transparent",
-                }}
-              />
-            </div>
-            <span
-              className={`hidden text-[10px] font-semibold uppercase tracking-[0.14em] md:block ${
-                active ? "text-[#1D437B]" : done ? "text-ink/70" : "text-ink/35"
-              }`}
-            >
-              {label}
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ────────────  Featured logos strip  ──────────── */
-function FeaturedIn() {
-  const items = ["Forbes", "WebMD", "Yahoo!", "NY Post"];
-  return (
-    <div className="hidden items-center gap-3 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink/45 md:flex">
-      <span>Featured in</span>
-      {items.map((n) => (
-        <span key={n} className="text-ink/60">
-          {n}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-/* ────────────  Icon option card (icon + label)  ──────────── */
-function IconOption({
-  icon,
-  label,
-  selected,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      whileTap={{ scale: 0.985 }}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      className={`group flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-all md:py-5 ${
-        selected
-          ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
-          : "border-ink/10 bg-white hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
-      }`}
-    >
-      <span
-        className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${
-          selected ? "bg-white/15 text-white" : "bg-[#1D437B]/[0.08] text-[#1D437B]"
-        }`}
-      >
-        {icon}
-      </span>
-      <span className={`min-w-0 flex-1 text-[15px] font-medium md:text-[16px] ${selected ? "text-white" : "text-ink"}`}>
-        {label}
-      </span>
-    </motion.button>
-  );
-}
+/* IconOption is now provided by TrxUI (TrxIconOption). Alias kept for callsites. */
+const IconOption = TrxIconOption;
 
 /* ────────────  Yes/No + optional detail  ──────────── */
 function YesNoWithDetail({
@@ -238,10 +151,10 @@ function YesNoWithDetail({
             key={v}
             type="button"
             onClick={() => onChange(v)}
-            className={`h-[56px] rounded-2xl border text-[15px] font-medium capitalize transition-all ${
+            className={`h-[54px] rounded-lg border text-[15px] font-medium capitalize transition-all ${
               value === v
-                ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
-                : "border-ink/10 bg-white text-ink hover:border-ink/30"
+                ? "border-[#1D437B] bg-[#1D437B] text-white shadow-[0_8px_20px_rgba(29,67,123,0.22)]"
+                : "border-ink/12 bg-white text-ink hover:border-ink/30"
             }`}
           >
             {v}
@@ -256,7 +169,7 @@ function YesNoWithDetail({
           onChange={(e) => onDetail(e.target.value)}
           placeholder={detailPlaceholder ?? "Please add brief details…"}
           rows={4}
-          className="mt-2 w-full resize-none rounded-2xl border border-ink/12 bg-white px-4 py-3 text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+          className="mt-2 w-full resize-none rounded-lg border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none focus:border-[#1D437B] focus:shadow-[0_0_0_3px_rgba(29,67,123,0.12)]"
         />
       )}
     </>
@@ -264,7 +177,7 @@ function YesNoWithDetail({
 }
 
 /* ────────────  Main  ──────────── */
-export function TrimRxIntakeFlow() {
+export function TrimRxIntakeFlowV2() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
 
@@ -340,19 +253,19 @@ export function TrimRxIntakeFlow() {
   return (
     <div className="relative min-h-[100svh] bg-white pb-24">
       {!isLoading && (
-        <div className="sticky top-0 z-20 bg-white/85 backdrop-blur-xl backdrop-saturate-150">
-          <div className="mx-auto flex h-[64px] max-w-[860px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
-            <BackBtn onClick={prev} invisible={idx === 0} />
-            <Link to="/" className="flex items-center gap-3">
-              <img src={logo.url} alt="Blissley" className="h-10 w-auto md:h-12" />
-            </Link>
-            <div className="hidden md:block">
-              <FeaturedIn />
-            </div>
-            <div className="w-[72px] md:hidden" />
-          </div>
-          <div className="mx-auto max-w-[860px] px-5 pb-4 md:px-8 md:pb-5">
-            <StageBar stage={stage} />
+        <div
+          className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur-xl"
+          style={{ borderColor: "rgba(23,23,23,0.08)" }}
+        >
+          <TrxHeader onBack={prev} showBack={idx > 0} />
+          <div
+            className="border-t px-4 py-3 md:px-8 md:py-4"
+            style={{
+              borderColor: "rgba(23,23,23,0.06)",
+              background: "rgba(29,67,123,0.03)",
+            }}
+          >
+            <TrxStepper stage={stage} />
           </div>
         </div>
       )}
@@ -364,7 +277,7 @@ export function TrimRxIntakeFlow() {
             {/* 0, Height & Weight */}
             {current === "hw" && (
               <ScreenShell
-                title="Reach your goal weight fast, without restrictive diets."
+                title="Reach your goal weight fast, {{without restrictive diets and exercise.}}"
                 sub="Let's calculate your BMI to make sure you're a good candidate for medical weight loss."
                 footer={
                   <PrimaryButton
@@ -482,32 +395,34 @@ export function TrimRxIntakeFlow() {
             {/* 4, Female-specific effects */}
             {current === "female_effects" && (
               <ScreenShell
-                title="Women experience unique effects from weight gain."
+                title="Women experience {{unique effects}} from weight gain."
                 sub="Do you experience any of the following?"
                 footer={<PrimaryButton onClick={next} disabled={!(answers.femaleEffects && answers.femaleEffects.length)}>Next →</PrimaryButton>}
               >
-                {[
-                  { label: "Low Libido", icon: <TrendingDown className="h-5 w-5" /> },
-                  { label: "Hair Loss", icon: <Scissors className="h-5 w-5" /> },
-                  { label: "Skin Issues", icon: <Sparkles className="h-5 w-5" /> },
-                  { label: "Cognition Issues", icon: <Brain className="h-5 w-5" /> },
-                  { label: "None of these", icon: <XIcon className="h-5 w-5" /> },
-                ].map((o) => (
-                  <IconOption
-                    key={o.label}
-                    icon={o.icon}
-                    label={o.label}
-                    selected={(answers.femaleEffects ?? []).includes(o.label)}
-                    onClick={() => toggleMulti("femaleEffects", o.label, "None of these")}
-                  />
-                ))}
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {[
+                    { label: "Low Libido", icon: <TrendingDown /> },
+                    { label: "Hair Loss", icon: <Scissors /> },
+                    { label: "Skin Issues", icon: <Sparkles /> },
+                    { label: "Cognition Issues", icon: <Brain /> },
+                    { label: "None of these", icon: <XIcon /> },
+                  ].map((o) => (
+                    <IconOption
+                      key={o.label}
+                      icon={o.icon}
+                      label={o.label}
+                      selected={(answers.femaleEffects ?? []).includes(o.label)}
+                      onClick={() => toggleMulti("femaleEffects", o.label, "None of these")}
+                    />
+                  ))}
+                </div>
               </ScreenShell>
             )}
 
             {/* 5, Priority */}
             {current === "priority" && (
               <ScreenShell
-                title="We can help with all of these, but choose the most important for you."
+                title="We can help with all of these, but choose the {{most important for you}}."
                 sub="Which of these is your priority?"
               >
                 {["Lose Weight", "Gain Muscle", "Maintain My Current Body"].map((o) => (
@@ -562,7 +477,7 @@ export function TrimRxIntakeFlow() {
             {/* 7, Metabolic science */}
             {current === "metabolic_science" && (
               <ScreenShell
-                title="It feels like magic, but it's metabolic science."
+                title="It feels like magic, but it's {{metabolic science}}."
                 sub={`On average, our patients lose over 20% of their body weight. GLP-1 medications are extremely effective, offering a strong path toward your ${answers.goalWeight || "goal"} lb goal.`}
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
@@ -585,7 +500,7 @@ export function TrimRxIntakeFlow() {
             {/* 9, GLP-1 how it works curve */}
             {current === "glp1_curve" && (
               <ScreenShell
-                title="How will GLP-1 work for you?"
+                title="How will {{GLP-1 work}} for you?"
                 sub="We identify the root causes of your metabolic issues, so you get a long-term solution, not just a quick fix."
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
@@ -617,7 +532,7 @@ export function TrimRxIntakeFlow() {
             {/* 11, Motivation reason */}
             {current === "motivation_reason" && (
               <ScreenShell
-                title="Improving your life requires motivation."
+                title="Improving your life requires {{motivation}}."
                 sub="What is your primary reason for taking weight loss seriously?"
               >
                 {[
@@ -637,19 +552,21 @@ export function TrimRxIntakeFlow() {
                 title="How is your sleep, overall?"
                 sub="How you sleep tells us a lot about your cortisol and metabolic efficiency."
               >
-                {[
-                  { label: "Pretty good", icon: <BedDouble className="h-5 w-5" /> },
-                  { label: "A bit restless", icon: <Frown className="h-5 w-5" /> },
-                  { label: "I don't sleep well", icon: <Moon className="h-5 w-5" /> },
-                ].map((o) => (
-                  <IconOption
-                    key={o.label}
-                    icon={o.icon}
-                    label={o.label}
-                    selected={answers.sleepQuality === o.label}
-                    onClick={() => pickThenNext("sleepQuality", o.label)}
-                  />
-                ))}
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "Pretty good", icon: <BedDouble /> },
+                    { label: "A bit restless", icon: <Frown /> },
+                    { label: "I don't sleep well", icon: <Moon /> },
+                  ].map((o) => (
+                    <IconOption
+                      key={o.label}
+                      icon={o.icon}
+                      label={o.label}
+                      selected={answers.sleepQuality === o.label}
+                      onClick={() => pickThenNext("sleepQuality", o.label)}
+                    />
+                  ))}
+                </div>
               </ScreenShell>
             )}
 
@@ -677,7 +594,7 @@ export function TrimRxIntakeFlow() {
             {/* 15, Contraindications */}
             {current === "contra" && (
               <ScreenShell
-                title="GLP-1 is safe, but a few conditions might prevent you from being prescribed."
+                title="GLP-1 is {{safe}}, but a few conditions might prevent you from being prescribed."
                 sub="Your answers are completely confidential and protected by HIPAA."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.contra && answers.contra.length)}>Next →</PrimaryButton>}
               >
@@ -882,7 +799,7 @@ export function TrimRxIntakeFlow() {
             {/* 26, Affordability vs Potency */}
             {current === "affordability" && (
               <ScreenShell
-                title="Looking good! Let's match you with the best medication."
+                title="{{Looking good!}} Let's match you with the best medication."
                 sub="Which of these is most important to you?"
               >
                 {["Affordability", "Potency"].map((o) => (
@@ -910,7 +827,7 @@ export function TrimRxIntakeFlow() {
             {/* 28, Motivation level */}
             {current === "motivation_level" && (
               <ScreenShell
-                title="Let's better understand your current state of mind."
+                title="Let's better understand your {{current state of mind}}."
                 sub="How motivated are you to reach your weight goal?"
               >
                 {["I'm Ready!", "I'm feeling hopeful", "I'm cautious"].map((o) => (
@@ -939,7 +856,7 @@ export function TrimRxIntakeFlow() {
             {/* 30, Personalization */}
             {current === "personalization" && (
               <ScreenShell
-                title="Your needs are unique, your medicine should be, too."
+                title="Your needs are {{unique}}, your medicine should be, {{too}}."
                 sub="Please select the options you're interested in."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.personalization && answers.personalization.length)}>Next →</PrimaryButton>}
               >
@@ -1220,7 +1137,7 @@ function LoadingScreen({ firstName, state }: { firstName?: string; state?: strin
         animate={{ x: [0, -30, 0], y: [0, 40, 0] }} transition={{ duration: 14, repeat: Infinity }} />
 
       <div className="relative z-10 flex items-center justify-center pt-10 md:pt-14">
-        <img src={logo.url} alt="Blissley" className="h-9 w-auto brightness-0 invert md:h-10" />
+        <span className="font-hero text-[26px] italic tracking-tight text-white md:text-[30px]">blissley</span>
       </div>
       <div className="relative z-10 mx-auto flex min-h-[calc(100svh-120px)] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center">
         <div className="relative grid h-24 w-24 place-items-center">
