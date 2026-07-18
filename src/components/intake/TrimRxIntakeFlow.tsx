@@ -400,21 +400,23 @@ export function TrimRxIntakeFlow() {
                 sub="Do you experience any of the following?"
                 footer={<PrimaryButton onClick={next} disabled={!(answers.femaleEffects && answers.femaleEffects.length)}>Next →</PrimaryButton>}
               >
-                {[
-                  { label: "Low Libido", icon: <TrendingDown className="h-5 w-5" /> },
-                  { label: "Hair Loss", icon: <Scissors className="h-5 w-5" /> },
-                  { label: "Skin Issues", icon: <Sparkles className="h-5 w-5" /> },
-                  { label: "Cognition Issues", icon: <Brain className="h-5 w-5" /> },
-                  { label: "None of these", icon: <XIcon className="h-5 w-5" /> },
-                ].map((o) => (
-                  <IconOption
-                    key={o.label}
-                    icon={o.icon}
-                    label={o.label}
-                    selected={(answers.femaleEffects ?? []).includes(o.label)}
-                    onClick={() => toggleMulti("femaleEffects", o.label, "None of these")}
-                  />
-                ))}
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {[
+                    { label: "Low Libido", icon: <TrendingDown /> },
+                    { label: "Hair Loss", icon: <Scissors /> },
+                    { label: "Skin Issues", icon: <Sparkles /> },
+                    { label: "Cognition Issues", icon: <Brain /> },
+                    { label: "None of these", icon: <XIcon /> },
+                  ].map((o) => (
+                    <IconOption
+                      key={o.label}
+                      icon={o.icon}
+                      label={o.label}
+                      selected={(answers.femaleEffects ?? []).includes(o.label)}
+                      onClick={() => toggleMulti("femaleEffects", o.label, "None of these")}
+                    />
+                  ))}
+                </div>
               </ScreenShell>
             )}
 
