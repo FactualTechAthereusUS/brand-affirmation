@@ -360,53 +360,8 @@ export function PhoneField({
   );
 }
 
-/* ─────────────────────────  State selector with flags  ───────────────────────── */
-const STATE_ABBR: Record<string, string> = {
-  Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA",
-  Colorado: "CO", Connecticut: "CT", Delaware: "DE", Florida: "FL", Georgia: "GA",
-  Hawaii: "HI", Idaho: "ID", Illinois: "IL", Indiana: "IN", Iowa: "IA", Kansas: "KS",
-  Kentucky: "KY", Louisiana: "LA", Maine: "ME", Maryland: "MD", Massachusetts: "MA",
-  Michigan: "MI", Minnesota: "MN", Mississippi: "MS", Missouri: "MO", Montana: "MT",
-  Nebraska: "NE", Nevada: "NV", "New Hampshire": "NH", "New Jersey": "NJ",
-  "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND",
-  Ohio: "OH", Oklahoma: "OK", Oregon: "OR", Pennsylvania: "PA", "Rhode Island": "RI",
-  "South Carolina": "SC", "South Dakota": "SD", Tennessee: "TN", Texas: "TX", Utah: "UT",
-  Vermont: "VT", Virginia: "VA", Washington: "WA", "West Virginia": "WV",
-  Wisconsin: "WI", Wyoming: "WY",
-};
+/* ─────────────────────────  State selector  ───────────────────────── */
 
-function stringToHsl(str: string, s = 55, l = 52) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  const h = Math.abs(hash % 360);
-  return `hsl(${h} ${s}% ${l}%)`;
-}
-
-function StateFlag({ state, className = "" }: { state: string; className?: string }) {
-  const abbr = STATE_ABBR[state] ?? state.slice(0, 2).toUpperCase();
-  const bg = stringToHsl(state);
-  return (
-    <span
-      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[4px] border border-ink/8 shadow-sm ${className}`}
-      style={{ background: bg }}
-      aria-hidden
-    >
-      <svg
-        viewBox="0 0 40 28"
-        className="absolute inset-0 h-full w-full opacity-25"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0 14 Q10 8 20 14 T40 14 V28 H0 Z"
-          fill="rgba(255,255,255,0.35)"
-        />
-      </svg>
-      <span className="relative z-10 text-[10px] font-bold uppercase tracking-tight text-white">
-        {abbr}
-      </span>
-    </span>
-  );
-}
 
 export function StateSelect({
   label,
