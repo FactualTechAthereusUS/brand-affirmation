@@ -687,8 +687,8 @@ export function TrimRxIntakeFlowV2() {
                 quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
                 name="Kristin"
                 result="Lost 29 lbs · Renewed confidence"
-                before={review22.url}
-                after={review27.url}
+                before={kristinBefore.url}
+                after={kristinAfter.url}
                 onNext={next}
               />
             )}
