@@ -10,7 +10,7 @@ import r26 from "@/assets/review-26.png.asset.json";
 import r27 from "@/assets/review-27.png.asset.json";
 import r28 from "@/assets/review-28.png.asset.json";
 
-type Review = {
+export type Review = {
   lead: string;
   body: string;
   name: string;
@@ -21,7 +21,7 @@ type Review = {
 const M = [r20.url, r21.url, r22.url, r28.url];
 const W = [r23.url, r24.url, r25.url, r26.url, r27.url];
 
-const reviews: Review[] = [
+export const reviews: Review[] = [
   { lead: "I've gotten parts of myself back I thought were gone forever.", body: "A year and a half ago I weighed almost 330 pounds. Just getting out of bed and showering was a challenge. I avoided pictures. I convinced myself the best years of my life were already behind me. Then I stepped on the scale this morning and saw under 200 pounds for the first time in 16 years.", name: "Sarah M., 44", meta: "Weight Loss · 18 months", image: W[0] },
   { lead: "I didn't know everyone's head wasn't like mine.", body: "The constant negotiating with myself about food. What did I just eat. I already ruined today. I'll start fresh Monday. I thought that was just what brains did. Week 3 it just stopped. I genuinely cannot explain what that quiet feels like if you've never had it.", name: "Jennifer R., 41", meta: "Weight Loss · 3 months", image: W[1] },
   { lead: "50 pounds down in 7 months. Still amazed every single day.", body: "But the number isn't even the best part. I walk everywhere now because I actually enjoy it. I say yes to things instead of making excuses. I haven't felt like this in years.", name: "Michael T., 52", meta: "Weight Loss · 7 months", image: M[0] },
