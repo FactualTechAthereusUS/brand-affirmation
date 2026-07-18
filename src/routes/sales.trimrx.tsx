@@ -420,22 +420,23 @@ function SalesTrimRxPage() {
 
   return (
     <div className="min-h-screen" style={{ background: CANVAS }}>
+      <TrxHeader onBack={() => window.history.back()} showBack={false} />
+
       {/* Discount banner */}
-      <div
-        className="w-full border-b border-dashed"
-        style={{
-          background: "#FEF7DA",
-          borderColor: "#E7B94A",
-          color: "#7A5A00",
-        }}
-      >
-        <div className="mx-auto flex max-w-[1080px] items-center justify-center gap-2 px-4 py-2.5 text-[13px] font-semibold sm:text-[14px]">
-          <PartyPopper className="h-4 w-4" />
+      <div className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-4 sm:px-6">
+        <div
+          className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-3 text-center text-[13px] font-semibold sm:text-[14px]"
+          style={{
+            background: "#FEF7DA",
+            borderColor: "#E7B94A",
+            color: "#171717",
+          }}
+        >
+          <PartyPopper className="h-5 w-5" />
           First shipment $120 OFF
         </div>
       </div>
 
-      <TrxHeader onBack={() => window.history.back()} showBack={false} />
 
       {/* SECTION 1 — Reservation + Treatment */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-10 pt-2 sm:px-6">
