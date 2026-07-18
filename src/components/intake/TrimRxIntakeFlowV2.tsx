@@ -254,7 +254,7 @@ export function TrimRxIntakeFlowV2() {
     <div className="relative min-h-[100svh] bg-white pb-24">
       {!isLoading && (
         <div
-          className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur-xl"
+          className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl"
           style={{ borderColor: "rgba(23,23,23,0.08)" }}
         >
           <TrxHeader onBack={prev} showBack={idx > 0} />
