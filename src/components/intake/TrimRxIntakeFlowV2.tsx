@@ -474,7 +474,7 @@ export function TrimRxIntakeFlowV2() {
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_70px_rgba(29,67,123,0.22)]"
+                  className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_70px_rgba(29,67,123,0.22)] lg:w-[calc(100vw-48px)] lg:h-[600px] lg:flex lg:flex-col xl:-mx-[216px] xl:w-[1152px] xl:h-[600px]"
                 >
                   {/* Yahoo Health banner */}
                   <div className="flex items-center bg-[#6001D2] px-5 py-3 sm:px-7 sm:py-4">
@@ -500,7 +500,7 @@ export function TrimRxIntakeFlowV2() {
                   </div>
 
                   {/* Full-bleed hero image body */}
-                  <div className="relative w-full aspect-[9/14] sm:aspect-[16/10] md:aspect-[16/9]">
+                  <div className="relative w-full aspect-[9/14] sm:aspect-[16/10] lg:aspect-auto lg:flex-1">
                     {/* Mobile image */}
                     <img
                       src={trxRankedHeroMobile.url}
