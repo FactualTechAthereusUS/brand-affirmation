@@ -29,6 +29,7 @@ import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
 import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
+import blissleyWhite from "@/assets/blissley-white.png.asset.json";
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import review22 from "@/assets/review-22.png.asset.json";
 import review27 from "@/assets/review-27.png.asset.json";
@@ -280,12 +281,11 @@ export function TrimRxIntakeFlowV2() {
                     loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
-                  <span
-                    className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white font-serif italic leading-none tracking-tight text-[40px] md:text-[64px]"
-                    style={{ textShadow: "0 2px 20px rgba(0,0,0,0.35)" }}
-                  >
-                    blissley
-                  </span>
+                  <img
+                    src={blissleyWhite.url}
+                    alt="Blissley"
+                    className="absolute bottom-4 left-4 md:bottom-6 md:left-6 h-8 md:h-12 w-auto drop-shadow-lg"
+                  />
                 </div>
                 <ScreenShell
                   title="Reach your goal weight fast, {{without restrictive diets and exercise.}}"
