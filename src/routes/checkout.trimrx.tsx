@@ -1,6 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { motion } from "motion/react";
+import { reviews } from "@/components/home/SocialProof";
 import {
   ArrowLeft,
   Check,
@@ -775,9 +782,157 @@ function CheckoutPage() {
               only stops future charges; refunds are governed by the Refund
               Policy.
             </p>
+
+            <ReviewSlider />
           </motion.div>
         </form>
       </div>
+  );
+}
+
+/* ── Review slider (no images, no bullets) ── */
+function ReviewSlider() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const pausedRef = useRef(false);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const goTo = useCallback(
+    (index: number, behavior: ScrollBehavior = "smooth") => {
+      const el = trackRef.current;
+      if (!el) return;
+      const cards = el.querySelectorAll<HTMLElement>("[data-review-card]");
+      const target = cards[index];
+      if (!target) return;
+      const left = target.offsetLeft - (el.clientWidth - target.offsetWidth) / 2;
+      el.scrollTo({ left, behavior });
+    },
+    []
+  );
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const center = el.scrollLeft + el.clientWidth / 2;
+        const cards = Array.from(el.querySelectorAll<HTMLElement>("[data-review-card]"));
+        let best = 0;
+        let bestDist = Infinity;
+        cards.forEach((c, i) => {
+          const mid = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(mid - center);
+          if (d < bestDist) {
+            bestDist = d;
+            best = i;
+          }
+        });
+        setActive(best);
+      });
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const pause = useCallback(() => {
+    pausedRef.current = true;
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, 6000);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (pausedRef.current) return;
+      const el = trackRef.current;
+      if (!el) return;
+      if (document.hidden) return;
+      const cards = el.querySelectorAll<HTMLElement>("[data-review-card]");
+      if (!cards.length) return;
+      const next = (active + 1) % cards.length;
+      goTo(next);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [active, goTo]);
+
+  return (
+    <div className="pt-2">
+      <div className="mb-4 text-center">
+        <h3 className="text-[18px] font-semibold text-ink">
+          What people are{" "}
+          <span className="italic" style={{ color: PINK }}>
+            saying.
+          </span>
+        </h3>
+        <div className="mt-1 flex items-center justify-center gap-1.5 text-[13px] text-ink/60">
+          <span className="font-bold text-ink">4.96</span>
+          <span>TrustScore · 3,826 reviews</span>
+        </div>
+      </div>
+
+      <div
+        ref={trackRef}
+        onPointerDown={pause}
+        onWheel={pause}
+        onTouchStart={pause}
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-2"
+      >
+        {reviews.map((r, i) => (
+          <div
+            key={i}
+            data-review-card
+            className="w-[85%] shrink-0 snap-center sm:w-[70%] md:w-[60%]"
+          >
+            <div
+              className="rounded-2xl border border-black/8 bg-white p-5 transition-all duration-500 ease-out"
+              style={{
+                opacity: i === active ? 1 : 0.45,
+                transform: i === active ? "scale(1)" : "scale(0.97)",
+                filter: i === active ? "blur(0px)" : "blur(2px)",
+              }}
+            >
+              <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                {Array.from({ length: 5 }).map((_, s) => (
+                  <svg
+                    key={s}
+                    viewBox="0 0 20 20"
+                    className="h-4 w-4"
+                    style={{ fill: PINK }}
+                  >
+                    <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="mt-3 text-[15px] font-semibold leading-[1.35] text-ink">
+                {r.lead}
+              </p>
+              <p className="mt-2 text-[14px] leading-[1.55] text-ink/70">
+                {r.body}
+              </p>
+              <div className="mt-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F3F2EE] text-[12px] font-bold text-ink/70">
+                  {r.name.split(" ")[0][0]}
+                </div>
+                <div>
+                  <div className="text-[13.5px] font-medium text-ink">
+                    {r.name}
+                  </div>
+                  <div className="text-[12px] text-ink/55">{r.meta}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div className="w-4 shrink-0" />
+      </div>
+    </div>
   );
 }
 
