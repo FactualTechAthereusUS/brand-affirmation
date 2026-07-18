@@ -232,7 +232,7 @@ function PlanCard({
   const isPopular = plan.badge?.kind === "popular";
   // Selected accents: green for Most Popular, blue for Best Deal
   const GREEN = "#16A34A";
-  const GREEN_TINT = "#EAFBEF";
+  const GREEN_TINT = "#F0FDF4";
   const BLUE_TINT = "#DFF0FA";
   const accent = isBest ? NAVY : isPopular ? GREEN : NAVY;
   const bg = selected
