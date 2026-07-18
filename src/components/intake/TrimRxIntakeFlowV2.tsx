@@ -198,11 +198,16 @@ export function TrimRxIntakeFlowV2() {
   const [answers, setAnswers] = useState<Answers>({});
 
   const set = (patch: Partial<Answers>) => setAnswers((a) => ({ ...a, ...patch }));
+  const goTo = (id: ScreenId) => {
+    const i = SCREENS.indexOf(id);
+    if (i >= 0) setIdx(i);
+  };
   const next = () => {
     setIdx((i) => {
       let n = Math.min(SCREENS.length - 1, i + 1);
-      // Skip female_effects for males
       if (SCREENS[n] === "female_effects" && answers.sex !== "female") n = n + 1;
+      // never step into terminal blocked screens via next()
+      if (SCREENS[n] === "blocked_pregnancy" || SCREENS[n] === "blocked_minor") n = i;
       return n;
     });
   };
@@ -216,6 +221,20 @@ export function TrimRxIntakeFlowV2() {
   const pickThenNext = <K extends keyof Answers>(key: K, value: Answers[K]) => {
     set({ [key]: value } as Partial<Answers>);
     setTimeout(next, 220);
+  };
+  const pickSafety = (value: string) => {
+    // Any of the first 3 = pregnancy hard stop
+    const HARD = [
+      "Currently or possibly pregnant, or actively trying to become pregnant",
+      "Breastfeeding or bottle-feeding with breastmilk",
+      "Have given birth to a child within the last 6 months",
+    ];
+    if (HARD.includes(value)) {
+      set({ safety: [value] });
+      setTimeout(() => goTo("blocked_pregnancy"), 180);
+      return;
+    }
+    toggleMulti("safety", value, "None of the above");
   };
   const toggleMulti = (key: keyof Answers, value: string, none = "None of the above") => {
     setAnswers((a) => {
