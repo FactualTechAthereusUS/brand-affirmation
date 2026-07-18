@@ -31,7 +31,6 @@ import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman-2.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
-import rankedHero from "@/assets/ranked-hero.png.asset.json";
 
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import review22 from "@/assets/review-22.png.asset.json";
@@ -464,83 +463,21 @@ export function TrimRxIntakeFlowV2() {
             {/* 6, Ranked #1 */}
             {current === "ranked" && (
               <ScreenShell title="Blissley is proud to be ranked #1." footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}>
-                {/* Hero image card with image on the right, text room on the left */}
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative overflow-hidden rounded-3xl aspect-[16/10] md:aspect-[21/9] bg-[#8fb8dc]"
+                  className="relative overflow-hidden rounded-3xl border border-ink/8 bg-gradient-to-br from-[#1D437B] to-[#1D437B]/90 p-7 text-white shadow-[0_20px_60px_rgba(29,67,123,0.28)]"
                 >
-                  <img
-                    src={rankedHero.url}
-                    alt="Woman breathing under a bright blue sky"
-                    className="absolute inset-0 h-full w-full object-cover object-[75%_center] md:object-[70%_center]"
-                    loading="lazy"
-                  />
-                  {/* left-side gradient to keep space for text */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent md:from-black/50 md:via-black/10" />
-                  <div className="absolute inset-y-0 left-0 flex w-[62%] md:w-[55%] flex-col justify-center gap-3 px-5 md:px-8">
-                    <img
-                      src={blissleyWhite.url}
-                      alt="Blissley"
-                      className="h-7 md:h-10 w-auto drop-shadow-lg"
-                    />
-                    <div className="font-serif text-white text-[20px] md:text-[30px] leading-[1.15] drop-shadow-md">
-                      Ranked <span className="italic">#1</span> for weight loss care
-                    </div>
-                    <div className="hidden md:flex items-center gap-2 text-white/90 text-[13px]">
-                      <span className="rounded-md bg-white/20 backdrop-blur px-2 py-0.5 font-semibold">9.8</span>
-                      Exceptional · <span className="tracking-widest">★★★★★</span>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Yahoo Health banner */}
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 }}
-                  className="mt-4 flex items-center justify-center rounded-2xl bg-[#6001D2] px-6 py-4 md:py-5 shadow-[0_10px_30px_rgba(96,1,210,0.25)]"
-                >
-                  <svg viewBox="0 0 1050.32 154.49" aria-label="Yahoo Health" role="img" className="h-6 md:h-8 w-auto" preserveAspectRatio="xMinYMin meet">
-                    <g fill="#ffffff">
-                      <path d="M143.7,97.99c-10.01,0-17.65-7.63-17.65-17.47s7.64-17.48,17.65-17.48,17.48,7.63,17.48,17.48-7.64,17.47-17.48,17.47ZM160.5,45.91c-4.58-5.94-13.06-10.01-22.9-10.01-23.24,0-40.56,20.53-40.56,44.62s17.14,44.62,40.56,44.62c9.84,0,18.32-3.9,22.9-10.18v7.97h29.01V37.93h-29.01v7.97Z"/>
-                      <path d="M251.78,35.9c-9.67,0-17.13,3.74-22.39,10.35V.27h-29.86v122.67h30.03v-45.3c0-8.82,4.24-14.08,11.03-14.08s10.35,4.58,10.35,13.07v46.32h30.03v-53.44c0-20.7-11.19-33.59-29.18-33.59Z"/>
-                      <path d="M428.74,97.66c-9.84,0-16.96-7.63-16.96-17.14s7.12-17.14,16.96-17.14,16.97,7.64,16.97,17.14-7.13,17.14-16.97,17.14ZM428.74,35.9c-25.95,0-45.47,19.17-45.47,44.62s19.51,44.62,45.47,44.62,45.48-19.17,45.48-44.62-19.51-44.62-45.48-44.62Z"/>
-                      <path d="M332.71,97.66c-9.84,0-16.96-7.63-16.96-17.14s7.12-17.14,16.96-17.14,16.97,7.64,16.97,17.14-7.13,17.14-16.97,17.14ZM332.71,35.9c-25.95,0-45.47,19.17-45.47,44.62s19.51,44.62,45.47,44.62,45.48-19.17,45.48-44.62-19.51-44.62-45.48-44.62Z"/>
-                      <polygon points="71.77 37.93 52.09 87.81 32.58 37.93 0 37.93 36.31 123.61 23.25 154.49 55.14 154.49 103.5 37.93 71.77 37.93"/>
-                      <path d="M498.14,84.76c-11.54,0-20.2,9.33-20.2,20.19s8.32,19.51,19.52,19.51,20.19-9.16,20.19-20.19-8.32-19.51-19.51-19.51Z"/>
-                      <polygon points="520.7 .27 488.8 77.29 524.43 77.29 556.33 .27 520.7 .27"/>
-                      <path d="M595.75,122.91h-31.11V0h31.11v48.28c2.38-4.19,5.61-7.37,9.69-9.52,4.08-2.15,8.73-3.23,13.94-3.23,9.18,0,16.41,2.98,21.67,8.92,5.27,5.95,7.91,14.08,7.91,24.4v54.06h-31.11v-46.07c0-4.08-.96-7.25-2.89-9.52-1.93-2.27-4.53-3.4-7.82-3.4-3.51,0-6.29,1.22-8.33,3.66-2.04,2.44-3.06,5.81-3.06,10.11v45.22Z"/>
-                      <path d="M742.63,104.38c-8.27,13.94-21.87,20.91-40.8,20.91-6.91,0-13.17-1.05-18.79-3.15s-10.37-5.1-14.28-9.01c-3.91-3.91-6.94-8.61-9.09-14.11-2.15-5.5-3.23-11.65-3.23-18.45s1.16-12.44,3.49-17.94c2.32-5.5,5.5-10.26,9.52-14.28,4.02-4.02,8.78-7.17,14.28-9.44,5.5-2.27,11.42-3.4,17.77-3.4s12.55,1.1,17.93,3.31c5.38,2.21,10.03,5.33,13.94,9.35,3.91,4.02,6.94,8.9,9.09,14.62,2.15,5.72,3.23,12.04,3.23,18.96,0,1.36-.03,2.58-.08,3.66-.06,1.08-.14,2.01-.26,2.8h-58.65c.23,3.85,1.81,6.97,4.76,9.35,2.95,2.38,6.46,3.57,10.54,3.57,3.06,0,5.7-.54,7.91-1.62,2.21-1.08,4.28-2.86,6.2-5.35l26.52,10.2ZM715.6,70.55c-.34-3.51-1.81-6.32-4.42-8.42-2.61-2.1-5.89-3.15-9.86-3.15s-7.28,1.05-9.95,3.15c-2.66,2.1-4.17,4.9-4.5,8.42h28.73Z"/>
-                      <path d="M845.48,37.91v85h-30.6v-9.18c-6.57,7.59-15.24,11.39-26.01,11.39-5.44,0-10.54-1.13-15.3-3.4s-8.87-5.41-12.33-9.44c-3.46-4.02-6.18-8.75-8.16-14.19-1.98-5.44-2.97-11.33-2.97-17.68s.99-12.1,2.97-17.6c1.98-5.5,4.7-10.23,8.16-14.19,3.46-3.97,7.57-7.11,12.33-9.44,4.76-2.32,9.86-3.48,15.3-3.48s10.34.94,14.71,2.81c4.36,1.87,8.13,4.73,11.3,8.58v-9.18h30.6ZM781.05,80.41c0,2.38.45,4.59,1.36,6.63.91,2.04,2.15,3.83,3.74,5.35,1.59,1.53,3.43,2.75,5.52,3.66,2.1.91,4.33,1.36,6.72,1.36s4.62-.45,6.71-1.36c2.1-.91,3.94-2.12,5.52-3.66,1.59-1.53,2.83-3.31,3.74-5.35.91-2.04,1.36-4.25,1.36-6.63s-.46-4.59-1.36-6.63c-.91-2.04-2.15-3.83-3.74-5.35-1.59-1.53-3.43-2.75-5.52-3.66-2.1-.91-4.34-1.36-6.71-1.36s-4.62.45-6.72,1.36c-2.1.91-3.94,2.12-5.52,3.66-1.59,1.53-2.83,3.31-3.74,5.35-.91,2.04-1.36,4.25-1.36,6.63Z"/>
-                      <path d="M889.34,0v122.91h-31.11V0h31.11z"/>
-                      <path d="M938.13,11.56v26.35h19.89v24.99h-19.89v22.95c0,4.19.91,7.17,2.72,8.93,1.81,1.76,4.53,2.63,8.16,2.63,1.59,0,3.14-.14,4.67-.42,1.53-.28,2.98-.71,4.33-1.28v26.35c-1.81.68-4.39,1.36-7.73,2.04-3.34.68-7.23,1.02-11.65,1.02-9.86,0-17.57-2.78-23.12-8.33-5.55-5.55-8.33-13.43-8.33-23.63v-30.26h-11.39v-24.99h11.39V11.56h30.94Z"/>
-                      <path d="M997.11,122.91h-31.11V0h31.11v48.28c2.38-4.19,5.61-7.37,9.69-9.52,4.08-2.15,8.73-3.23,13.94-3.23,9.18,0,16.4,2.98,21.67,8.92,5.27,5.95,7.91,14.08,7.91,24.4v54.06h-31.11v-46.07c0-4.08-.96-7.25-2.89-9.52-1.93-2.27-4.53-3.4-7.82-3.4-3.51,0-6.29,1.22-8.33,3.66-2.04,2.44-3.06,5.81-3.06,10.11v45.22Z"/>
-                    </g>
-                  </svg>
-                </motion.div>
-
-                {/* Info card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="mt-4 relative overflow-hidden rounded-3xl border border-ink/8 bg-gradient-to-br from-[#1D437B] to-[#1D437B]/90 p-6 md:p-7 text-white shadow-[0_20px_60px_rgba(29,67,123,0.28)]"
-                >
-                  <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
+                  <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
                     <Trophy className="h-4 w-4" /> Best overall
                   </div>
-                  <div className="mt-4 flex items-center gap-3">
-                    <span className="text-[38px] md:text-[42px] font-bold leading-none">#1</span>
-                    <img
-                      src={blissleyWhite.url}
-                      alt="Blissley"
-                      className="h-6 md:h-8 w-auto"
-                    />
+                  <div className="mt-4 flex items-baseline gap-3">
+                    <span className="text-[42px] font-bold leading-none">#1</span>
+                    <span className="text-[20px] font-semibold">Blissley</span>
                   </div>
-                  <div className="mt-3 flex items-center gap-2 text-[13px] text-white/85">
+                  <div className="mt-2 flex items-center gap-2 text-[13px] text-white/85">
                     <span className="rounded-md bg-white/15 px-2 py-0.5 font-semibold">9.8</span>
-                    Exceptional · <span className="tracking-widest">★★★★★</span>
+                    Exceptional · ★★★★★
                   </div>
                   <ul className="mt-5 space-y-2 text-[14px] text-white/90">
                     {[
@@ -550,11 +487,11 @@ export function TrimRxIntakeFlowV2() {
                       "Improves treatment adherence and comfort",
                     ].map((f) => (
                       <li key={f} className="flex items-start gap-2">
-                        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#ee7273]" /> {f}
+                        <ShieldCheck className="mt-0.5 h-4 w-4 text-[#ee7273]" /> {f}
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-6 inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em]">
+                  <div className="mt-6 inline-flex rounded-full bg-ever px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em]">
                     Most popular
                   </div>
                 </motion.div>
