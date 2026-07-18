@@ -1013,7 +1013,7 @@ export function BlissleyIntakeFlow() {
                 firstName={answers.firstName}
                 state={answers.state}
                 goalWeight={answers.goalWeight}
-                onDone={() => (window.location.href = "/weight-loss/sales")}
+                onDone={() => (window.location.href = "/sales/trimrx")}
                 answers={{ q1: answers.q1, q2: answers.q2, q3: answers.q3 }}
                 setQ={(k, v) => set({ [k]: v } as Partial<Answers>)}
               />
