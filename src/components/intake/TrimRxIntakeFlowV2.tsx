@@ -41,6 +41,8 @@ import kristinBefore from "@/assets/kristin-before.png.asset.json";
 import kristinAfter from "@/assets/kristin-after.png.asset.json";
 import daieneBefore from "@/assets/daiene-before.png.asset.json";
 import daieneAfter from "@/assets/daiene-after.png.asset.json";
+import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
+import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
 
 /* ────────────  Types  ──────────── */
 type Sex = "female" | "male";
