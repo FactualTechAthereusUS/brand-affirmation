@@ -560,8 +560,8 @@ export function TrimRxIntakeFlowV2() {
                       </div>
 
                       <div className="w-full max-w-[58%]">
-                        <div className="inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_24px_rgba(238,114,115,0.4)]">
-                          Most popular
+                        <div className="inline-flex rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-[12px] font-semibold tracking-[0.02em] text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl">
+                          See How It Works
                         </div>
                       </div>
                     </div>
