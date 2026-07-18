@@ -5,6 +5,7 @@ import {
   BackBtn,
   CategoryCard,
   OptionCard,
+  PhoneField,
   PrimaryButton,
   ProgressBar,
   ScreenShell,
@@ -1022,12 +1023,10 @@ export function IntakeFlow() {
                     <span className="text-[13px] font-medium text-ink/80">I don't have any medication allergies</span>
                   </button>
                 </label>
-                <TextField
+                <PhoneField
                   label="Phone number"
-                  type="tel"
                   value={answers.phone ?? ""}
                   onChange={(v) => set({ phone: v })}
-                  placeholder="(555) 123-4567"
                 />
                 <div className="mt-2 flex flex-col gap-3">
                   <ConsentRow
