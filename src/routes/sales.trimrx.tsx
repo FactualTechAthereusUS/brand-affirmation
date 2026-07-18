@@ -1,17 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import {
-  Check,
-  TrendingUp,
-  Pencil,
-  Phone,
-  Truck,
-  Syringe,
-  MessageSquare,
-  ShieldCheck,
-  PartyPopper,
-} from "lucide-react";
+import { Check, ShieldCheck, PartyPopper } from "lucide-react";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
 import { PayIcons } from "@/components/PayIcons";
@@ -23,6 +13,13 @@ import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
+import icon15 from "@/assets/icon-15.png.asset.json";
+import icon16 from "@/assets/icon-16.png.asset.json";
+import icon17 from "@/assets/icon-17.png.asset.json";
+import icon18 from "@/assets/icon-18.png.asset.json";
+import icon19 from "@/assets/icon-19.png.asset.json";
+import icon20 from "@/assets/icon-20.png.asset.json";
+
 
 export const Route = createFileRoute("/sales/trimrx")({
   component: SalesTrimRxPage,
@@ -347,13 +344,14 @@ function PlanCard({
 
 /* ─────────  Includes row  ───────── */
 const INCLUDES = [
-  { icon: TrendingUp, label: "Free Dosage Increases" },
-  { icon: Pencil, label: "Treatment changes at anytime" },
-  { icon: Phone, label: "Unlimited Free Doctor Consults" },
-  { icon: Truck, label: "Free Expedited Shipping" },
-  { icon: Syringe, label: "Home Injection Kit Included" },
-  { icon: MessageSquare, label: "24/7 Customer Support" },
+  { icon: icon15.url, label: "Free Dosage Increases" },
+  { icon: icon16.url, label: "Treatment changes at anytime!" },
+  { icon: icon17.url, label: "Unlimited Free Doctor Consults" },
+  { icon: icon18.url, label: "Free Expedited Shipping" },
+  { icon: icon19.url, label: "Home Injection Kit Included" },
+  { icon: icon20.url, label: "24/7 Customer Support" },
 ];
+
 
 
 /* ─────────  Page  ───────── */
@@ -520,19 +518,15 @@ function SalesTrimRxPage() {
         <div className="rounded-3xl border bg-white p-6 sm:p-8"
              style={{ borderColor: "rgba(23,23,23,0.08)" }}>
           <h3 className="text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
-          <ul className="mt-4 grid grid-cols-1 gap-y-3 gap-x-6 sm:grid-cols-2">
-            {INCLUDES.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-3 text-[14px] text-ink/85">
-                <span
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-full"
-                  style={{ background: `${NAVY}0F`, color: NAVY }}
-                >
-                  <Icon className="h-4 w-4" strokeWidth={2} />
-                </span>
+          <ul className="mt-4 flex flex-col gap-3.5">
+            {INCLUDES.map(({ icon, label }) => (
+              <li key={label} className="flex items-center gap-3 text-[15px] text-ink">
+                <img src={icon} alt="" className="h-6 w-6 shrink-0 object-contain" />
                 {label}
               </li>
             ))}
           </ul>
+
 
           <hr className="my-6 border-ink/10" />
 
