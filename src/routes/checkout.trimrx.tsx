@@ -864,19 +864,6 @@ function ReviewSlider() {
 
   return (
     <div className="pt-2">
-      <div className="mb-4 text-center">
-        <h3 className="text-[18px] font-semibold text-ink">
-          What people are{" "}
-          <span className="italic" style={{ color: PINK }}>
-            saying.
-          </span>
-        </h3>
-        <div className="mt-1 flex items-center justify-center gap-1.5 text-[13px] text-ink/60">
-          <span className="font-bold text-ink">4.96</span>
-          <span>TrustScore · 3,826 reviews</span>
-        </div>
-      </div>
-
       <div
         ref={trackRef}
         onPointerDown={pause}
@@ -888,7 +875,7 @@ function ReviewSlider() {
           <div
             key={i}
             data-review-card
-            className="w-[85%] shrink-0 snap-center sm:w-[70%] md:w-[60%]"
+            className="w-[92%] shrink-0 snap-center sm:w-[78%] md:w-[68%]"
           >
             <div
               className="rounded-2xl border border-black/8 bg-white p-5 transition-all duration-500 ease-out"
