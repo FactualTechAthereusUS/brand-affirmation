@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Check, ShieldCheck, PartyPopper } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
 import { PayIcons } from "@/components/PayIcons";
