@@ -283,12 +283,12 @@ export function TrxHeader({
   showBack: boolean;
 }) {
   return (
-    <div className="relative mx-auto w-full max-w-[1080px] px-4 py-3 md:px-8 md:py-4">
+    <div className="relative mx-auto w-full max-w-[1080px] px-4 py-4 md:px-8 md:py-6">
       {showBack && (
         <button
           type="button"
           onClick={onBack}
-          className="absolute left-4 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink md:left-8"
+          className="absolute left-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink md:left-4"
           aria-label="Back"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -297,8 +297,9 @@ export function TrxHeader({
       <img
         src={trimrxHeader.url}
         alt="TrimRx"
-        className="mx-auto h-auto w-full max-w-[709px]"
+        className="mx-auto block h-8 w-auto sm:h-10 md:h-12"
       />
     </div>
+
   );
 }
