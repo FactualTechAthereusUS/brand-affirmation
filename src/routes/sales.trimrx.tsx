@@ -266,8 +266,8 @@ function PlanCard({
             <span
               className="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-semibold"
               style={{
-                background: isBest ? "#DDECF5" : "#DFF4E6",
-                color: isBest ? NAVY : "#137A3A",
+                background: isBest ? "#DDECF5" : "#DCFCE7",
+                color: isBest ? NAVY : "#16A34A",
               }}
             >
               {plan.badge.label}
