@@ -305,41 +305,6 @@ const INCLUDES = [
   { icon: MessageSquare, label: "24/7 Customer Support" },
 ];
 
-/* ─────────  Payment icons (reused from footer style, inline SVG)  ───────── */
-function PayIcons() {
-  const cards = [
-    { label: "Visa", bg: "#1A1F71", text: "VISA", font: "italic" },
-    { label: "Mastercard", bg: "#000" },
-    { label: "Amex", bg: "#006FCF", text: "AMEX" },
-    { label: "Discover", bg: "#F5F5F5", text: "DISCOVER", fg: "#111" },
-    { label: "Apple Pay", bg: "#000",  },
-    { label: "Google Pay", bg: "#F5F5F5", fg: "#111" },
-  ];
-  return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      {cards.map((c) => (
-        <span
-          key={c.label}
-          className="grid h-6 w-[42px] place-items-center rounded-[5px] text-[9px] font-bold tracking-[0.06em]"
-          style={{ background: c.bg, color: c.fg ?? "#fff", fontStyle: c.font as any }}
-        >
-          {c.label === "Mastercard" ? (
-            <span className="flex items-center">
-              <span className="h-3 w-3 rounded-full" style={{ background: "#EB001B" }} />
-              <span className="-ml-1 h-3 w-3 rounded-full" style={{ background: "#F79E1B" }} />
-            </span>
-          ) : c.label === "Apple Pay" ? (
-            <span></span>
-          ) : c.label === "Google Pay" ? (
-            <span style={{ color: "#4285F4" }}>G</span>
-          ) : (
-            c.text ?? c.label
-          )}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 /* ─────────  Page  ───────── */
 function SalesTrimRxPage() {
