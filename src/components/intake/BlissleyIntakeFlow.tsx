@@ -286,7 +286,7 @@ export function BlissleyIntakeFlow() {
         <AnimatePresence mode="wait">
           <div key={current} className="flex flex-col">
 
-            {/* 1 — BMI qualifier */}
+            {/* 1 - BMI qualifier */}
             {current === "bmi" && (
               <>
                 <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/10] md:aspect-[21/9] mb-6 md:mb-8">
@@ -299,7 +299,7 @@ export function BlissleyIntakeFlow() {
                 </div>
                 <ScreenShell
                   title={`"Let's see if you qualify {{for medical weight loss.}}"`}
-                  sub="Enter your height and weight — we'll check your BMI instantly."
+                  sub="Enter your height and weight - we'll check your BMI instantly."
                   footer={
                     <PrimaryButton onClick={next} disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}>
                       Next →
@@ -325,16 +325,16 @@ export function BlissleyIntakeFlow() {
                           : "border-ink/10 bg-ink/[0.03] text-ink/80"
                       }`}
                     >
-                      {bmi >= 27 && <>✅ BMI {bmi} — You qualify. Let's go.</>}
-                      {bmi >= 25 && bmi < 27 && <>🔶 BMI {bmi} — Your physician will review.</>}
-                      {bmi < 25 && <>BMI {bmi} — Our program is typically for BMI 27+. A physician will still review your case.</>}
+                      {bmi >= 27 && <>✅ BMI {bmi} - You qualify. Let's go.</>}
+                      {bmi >= 25 && bmi < 27 && <>🔶 BMI {bmi} - Your physician will review.</>}
+                      {bmi < 25 && <>BMI {bmi} - Our program is typically for BMI 27+. A physician will still review your case.</>}
                     </motion.div>
                   )}
                 </ScreenShell>
               </>
             )}
 
-            {/* 2 — Name + email */}
+            {/* 2 - Name + email */}
             {current === "lead" && (
               <ScreenShell
                 title="Great. Let's build your {{personalized program.}}"
@@ -374,7 +374,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 3 — Goal weight */}
+            {/* 3 - Goal weight */}
             {current === "goal" && (
               <>
                 <ScreenShell
@@ -412,7 +412,7 @@ export function BlissleyIntakeFlow() {
               </>
             )}
 
-            {/* 4 — Sex + DOB */}
+            {/* 4 - Sex + DOB */}
             {current === "sex_dob" && (() => {
               const m = parseInt(answers.dobMonth || "0", 10);
               const d = parseInt(answers.dobDay || "0", 10);
@@ -449,7 +449,7 @@ export function BlissleyIntakeFlow() {
               );
             })()}
 
-            {/* 4A — Pregnancy */}
+            {/* 4A - Pregnancy */}
             {current === "pregnancy" && (
               <ScreenShell
                 title="Safety, {{first.}}"
@@ -486,7 +486,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 5 — Pain specification */}
+            {/* 5 - Pain specification */}
             {current === "pain_spec" && (
               <ScreenShell
                 title={fname ? `${fname}, which {{best describes}} your situation right now?` : "Which best describes your situation?"}
@@ -502,21 +502,21 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 6 — Pain severity */}
+            {/* 6 - Pain severity */}
             {current === "pain_sev" && (
               <ScreenShell title={`How much does this affect your day-to-day, ${fname || "friend"}?`}>
                 {[
-                  { label: "A lot — it's on my mind constantly", icon: <Flame /> },
-                  { label: "Quite a bit — it affects how I feel most days", icon: <Frown /> },
-                  { label: "Somewhat — it's a recurring frustration", icon: <Meh /> },
-                  { label: "Not too much — I just want to be healthier overall", icon: <Smile /> },
+                  { label: "A lot - it's on my mind constantly", icon: <Flame /> },
+                  { label: "Quite a bit - it affects how I feel most days", icon: <Frown /> },
+                  { label: "Somewhat - it's a recurring frustration", icon: <Meh /> },
+                  { label: "Not too much - I just want to be healthier overall", icon: <Smile /> },
                 ].map((o) => (
                   <OptionCard key={o.label} label={o.label} selected={answers.painSeverity === o.label} onClick={() => pickThenNext("painSeverity", o.label)} />
                 ))}
               </ScreenShell>
             )}
 
-            {/* 7 — Pain timeline */}
+            {/* 7 - Pain timeline */}
             {current === "pain_time" && (
               <ScreenShell title={`How long have you been dealing with this${fname ? `, ${fname}` : ""}?`}>
                 {["Less than 1 year", "1 to 3 years", "3 to 10 years", "More than 10 years"].map((o) => (
@@ -530,7 +530,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 8 — Failed solutions */}
+            {/* 8 - Failed solutions */}
             {current === "failed" && (
               <ScreenShell
                 title={`${fname || "You"}, what have you {{already tried?}}`}
@@ -544,7 +544,7 @@ export function BlissleyIntakeFlow() {
                   "Weight loss programs (WW, Noom, etc.)",
                   "Gym or personal trainer",
                   "Prescription medication",
-                  "I've lost count — tried everything",
+                  "I've lost count - tried everything",
                 ].map((o) => (
                   <OptionCard
                     key={o}
@@ -573,7 +573,7 @@ export function BlissleyIntakeFlow() {
               />
             )}
 
-            {/* Info slide 1 — Belief seeding */}
+            {/* Info slide 1 - Belief seeding */}
             {current === "belief" && (
               <ScreenShell
                 title="It feels like failure. It's actually {{biology.}}"
@@ -583,26 +583,26 @@ export function BlissleyIntakeFlow() {
                 <MetabolicChart />
                 <div className="mt-4 space-y-4 text-[15px] leading-[1.6] text-ink/80">
                   <p>Your metabolism has a hunger regulation system. When it's dysregulated, no amount of willpower can override it consistently.</p>
-                  <p>GLP-1 medications are the first treatment that works at the source — regulating hunger signals in your brain directly. On average, patients lose over 20% of body weight, and keep it off.</p>
+                  <p>GLP-1 medications are the first treatment that works at the source - regulating hunger signals in your brain directly. On average, patients lose over 20% of body weight, and keep it off.</p>
                 </div>
               </ScreenShell>
             )}
 
-            {/* 9 — Primary desire */}
+            {/* 9 - Primary desire */}
             {current === "primary_desire" && (
               <ScreenShell title={`What matters most to you${fname ? `, ${fname}` : ""}?`}>
                 {[
                   { label: `Reaching ${answers.goalWeight || "my goal"} lbs and staying there`, icon: <ScaleIcon /> },
                   { label: "Getting my energy and confidence back", icon: <Zap /> },
                   { label: "Improving my health and reducing risk", icon: <Heart /> },
-                  { label: "All of these — I'm ready for a complete change", icon: <Sparkles /> },
+                  { label: "All of these - I'm ready for a complete change", icon: <Sparkles /> },
                 ].map((o) => (
                   <OptionCard key={o.label} label={o.label} selected={answers.primaryDesire === o.label} onClick={() => pickThenNext("primaryDesire", o.label)} />
                 ))}
               </ScreenShell>
             )}
 
-            {/* 10 — Sleep quality */}
+            {/* 10 - Sleep quality */}
             {current === "sleep" && (
               <ScreenShell
                 title="How you sleep tells us a lot about your {{metabolism.}}"
@@ -620,7 +620,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 11 — Motivation */}
+            {/* 11 - Motivation */}
             {current === "motivation" && (
               <ScreenShell title={`What's your primary reason for taking this seriously right now${fname ? `, ${fname}` : ""}?`}>
                 {[
@@ -634,13 +634,13 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* Interstitial — Pace projection */}
+            {/* Interstitial - Pace projection */}
             {current === "pace_project" && (
               <ScreenShell
                 title={`${fname ? `${fname}'s` : "Your"} personalized {{projection.}}`}
                 sub={
                   paceCalc
-                    ? `Most patients at your profile lose 2.5 to 3.8 lbs per week. Reaching ${paceCalc.goal} lbs is achievable in roughly ${paceCalc.weeksFast} to ${paceCalc.weeksSlow} weeks — without restrictive diets, and with a physician guiding every step.`
+                    ? `Most patients at your profile lose 2.5 to 3.8 lbs per week. Reaching ${paceCalc.goal} lbs is achievable in roughly ${paceCalc.weeksFast} to ${paceCalc.weeksSlow} weeks - without restrictive diets, and with a physician guiding every step.`
                     : "Enter your goal to see your personalized timeline."
                 }
                 footer={<PrimaryButton onClick={next}>Continue →</PrimaryButton>}
@@ -656,7 +656,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* Story — Daiene/David */}
+            {/* Story - Daiene/David */}
             {current === "daiene" && (
               <StoryScreen
                 quote={
@@ -672,7 +672,7 @@ export function BlissleyIntakeFlow() {
               />
             )}
 
-            {/* 12 — Pace preference */}
+            {/* 12 - Pace preference */}
             {current === "pace_pref" && (
               <ScreenShell
                 title={
@@ -684,23 +684,23 @@ export function BlissleyIntakeFlow() {
                 {[
                   "That works for me",
                   "I'd like to get there faster",
-                  "That's faster than I expected — I'm open to it",
+                  "That's faster than I expected - I'm open to it",
                 ].map((o) => (
                   <OptionCard key={o} label={o} selected={answers.pacePreference === o} onClick={() => pickThenNext("pacePreference", o)} />
                 ))}
               </ScreenShell>
             )}
 
-            {/* 13 — Commitment */}
+            {/* 13 - Commitment */}
             {current === "commitment" && (
               <ScreenShell
                 title={`${fname || "One"}, {{one last question}} before your results.`}
                 sub="How committed are you to making this change?"
               >
                 {[
-                  "Very — I'm ready to start now",
-                  "Serious — I want to understand what's involved first",
-                  "Curious — I still have questions",
+                  "Very - I'm ready to start now",
+                  "Serious - I want to understand what's involved first",
+                  "Curious - I still have questions",
                 ].map((o) => (
                   <OptionCard key={o} label={o} selected={answers.commitment === o} onClick={() => pickThenNext("commitment", o)} />
                 ))}
@@ -744,7 +744,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 14 — Contraindications */}
+            {/* 14 - Contraindications */}
             {current === "contra" && (
               <ScreenShell
                 title="A few {{safety checks.}}"
@@ -776,7 +776,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 15 — Health conditions */}
+            {/* 15 - Health conditions */}
             {current === "health" && (() => {
               const isMale = answers.sex === "male";
               const options = [
@@ -793,7 +793,7 @@ export function BlissleyIntakeFlow() {
               return (
                 <ScreenShell
                   title="A few more {{health questions.}}"
-                  sub="These conditions often make you a stronger candidate — GLP-1 directly improves them."
+                  sub="These conditions often make you a stronger candidate - GLP-1 directly improves them."
                   footer={<PrimaryButton onClick={next} disabled={!(answers.healthConditions && answers.healthConditions.length)}>Next →</PrimaryButton>}
                 >
                   {options.map((o) => (
@@ -809,21 +809,21 @@ export function BlissleyIntakeFlow() {
               );
             })()}
 
-            {/* 16 — Prior GLP-1 */}
+            {/* 16 - Prior GLP-1 */}
             {current === "prior_glp1" && (
               <ScreenShell
                 title={`Have you taken weight-loss medication before${fname ? `, ${fname}` : ""}?`}
                 footer={<PrimaryButton onClick={next} disabled={!answers.priorGlp1}>Next →</PrimaryButton>}
               >
                 {[
-                  "No — this is my first time",
-                  "Yes — Semaglutide (Ozempic / Wegovy / compounded)",
-                  "Yes — Tirzepatide (Mounjaro / Zepbound / compounded)",
-                  "Yes — different medication",
+                  "No - this is my first time",
+                  "Yes - Semaglutide (Ozempic / Wegovy / compounded)",
+                  "Yes - Tirzepatide (Mounjaro / Zepbound / compounded)",
+                  "Yes - different medication",
                 ].map((o) => (
                   <OptionCard key={o} label={o} selected={answers.priorGlp1 === o} onClick={() => set({ priorGlp1: o })} />
                 ))}
-                {answers.priorGlp1?.startsWith("Yes — Sema") || answers.priorGlp1?.startsWith("Yes — Tirz") ? (
+                {answers.priorGlp1?.startsWith("Yes - Sema") || answers.priorGlp1?.startsWith("Yes - Tirz") ? (
                   <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-3 space-y-3 border-t border-ink/10 pt-4">
                     <TextField label="Last weekly dose" value={answers.priorDose ?? ""} onChange={(v) => set({ priorDose: v })} placeholder="e.g. 0.5mg" />
                     <div className="grid grid-cols-3 gap-3">
@@ -832,13 +832,13 @@ export function BlissleyIntakeFlow() {
                       <TextField label="Year" type="number" value={answers.priorLastYear ?? ""} onChange={(v) => set({ priorLastYear: v })} placeholder="YYYY" />
                     </div>
                     <TextField label="Months on medication" type="number" value={answers.priorMonths ?? ""} onChange={(v) => set({ priorMonths: v })} placeholder="6" />
-                    <p className="text-[12.5px] text-ink/60">We match your current dose — no restart needed.</p>
+                    <p className="text-[12.5px] text-ink/60">We match your current dose - no restart needed.</p>
                   </motion.div>
                 ) : null}
               </ScreenShell>
             )}
 
-            {/* 17 — Medical history */}
+            {/* 17 - Medical history */}
             {current === "med_history" && (
               <ScreenShell
                 title={`Last medical questions${fname ? `, ${fname}` : ""}.`}
@@ -869,7 +869,7 @@ export function BlissleyIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 18 — Phone + state */}
+            {/* 18 - Phone + state */}
             {current === "phone_state" && (
               <ScreenShell
                 title={`${fname || "You"}, {{two last things}} and your results are ready.`}
@@ -893,7 +893,7 @@ export function BlissleyIntakeFlow() {
               />
             )}
 
-            {/* Terminal — Under 18 */}
+            {/* Terminal - Under 18 */}
             {current === "blocked_minor" && (
               <div className="mx-auto max-w-[560px] py-10 text-center">
                 <div className="inline-flex items-center gap-2 rounded-full bg-ink/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink">Age requirement</div>
@@ -903,12 +903,12 @@ export function BlissleyIntakeFlow() {
               </div>
             )}
 
-            {/* Terminal — Pregnancy waitlist */}
+            {/* Terminal - Pregnancy waitlist */}
             {current === "blocked_pregnancy" && (
               <div className="mx-auto max-w-[560px] py-10 text-center">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">Safety first</div>
                 <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">GLP-1 isn't safe during pregnancy or nursing.</h1>
-                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">We'd love to help when the time is right. We'll reach out when you're eligible — no follow-up until then.</p>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">We'd love to help when the time is right. We'll reach out when you're eligible - no follow-up until then.</p>
                 <div className="mt-8"><PrimaryButton onClick={() => (window.location.href = "/")}>Notify me when I'm eligible →</PrimaryButton></div>
               </div>
             )}
@@ -1199,7 +1199,7 @@ function LoadingScreen({
             {phase === 2 && (
               <>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">Almost there</div>
-                <div className="mt-2 font-hero text-[20px] font-semibold text-white md:text-[24px]">Did you know metabolism — not willpower — is the root cause of weight struggles for most people?</div>
+                <div className="mt-2 font-hero text-[20px] font-semibold text-white md:text-[24px]">Did you know metabolism - not willpower - is the root cause of weight struggles for most people?</div>
                 <div className="mt-5 grid grid-cols-2 gap-3">
                   {["Yes", "Not sure"].map((v) => (
                     <button key={v} onClick={() => pickQ("q2", v)} className="h-[52px] rounded-full bg-white/15 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/25">{v}</button>
