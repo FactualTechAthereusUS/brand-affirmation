@@ -621,22 +621,9 @@ function SalesTrimRxPage() {
           </div>
         </div>
 
-        {/* Trust footer */}
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <img
-            src={trustpilot.url}
-            alt="Excellent 4.8 · 100,000+ happy customers"
-            className="h-6 w-auto sm:h-7"
-          />
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">
-              As seen on
-            </span>
-            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
-          </div>
-
+        <div className="mt-10 flex justify-center">
           <div
-            className="mt-4 flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] text-ink/60"
+            className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] text-ink/60"
             style={{ borderColor: "rgba(23,23,23,0.10)", background: "#fff" }}
           >
             <ShieldCheck className="h-3.5 w-3.5" style={{ color: NAVY }} />
