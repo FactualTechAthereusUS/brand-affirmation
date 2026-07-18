@@ -870,14 +870,25 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 23, Daiene story */}
             {current === "daiene_story" && (
-              <StoryScreen
-                quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
-                name="Daiene"
-                result="Lost 90 lbs · Off blood pressure medication"
-                before={daieneBefore.url}
-                after={daieneAfter.url}
-                onNext={next}
-              />
+              answers.sex === "male" ? (
+                <StoryScreen
+                  quote="The food noise is just gone. My blood pressure is back to normal and I'm off two medications."
+                  name="David R."
+                  result="Lost 62 lbs · Off BP medication"
+                  before={spMaleBefore.url}
+                  after={spMaleAfter.url}
+                  onNext={next}
+                />
+              ) : (
+                <StoryScreen
+                  quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
+                  name="Daiene"
+                  result="Lost 90 lbs · Off blood pressure medication"
+                  before={daieneBefore.url}
+                  after={daieneAfter.url}
+                  onNext={next}
+                />
+              )
             )}
 
             {/* 24, Resting HR */}
