@@ -121,6 +121,8 @@ const SCREENS = [
   "personalization",     // 30
   "eligibility",         // 31 Eligibility
   "loading",             // 32
+  "blocked_pregnancy",   // terminal
+  "blocked_minor",       // terminal
 ] as const;
 
 type ScreenId = (typeof SCREENS)[number];
