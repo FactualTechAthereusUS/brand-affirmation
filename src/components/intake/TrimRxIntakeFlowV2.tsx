@@ -249,7 +249,7 @@ export function TrimRxIntakeFlowV2() {
 
   const current: ScreenId = SCREENS[idx];
   const stage = stageOf(idx, answers.sex);
-  const isLoading = current === "loading";
+  const isLoading = current === "loading" || current === "blocked_pregnancy" || current === "blocked_minor";
 
   const bmi = useMemo(() => {
     const ft = parseFloat(answers.heightFt || "0");
