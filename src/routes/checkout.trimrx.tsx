@@ -740,19 +740,7 @@ function CheckoutPage() {
                 <Truck className="h-3.5 w-3.5" />
                 Discreet, temperature-controlled shipping
               </div>
-              <PayIcons
-                className="mt-1 justify-center"
-                kinds={[
-                  "visa",
-                  "mastercard",
-                  "amex",
-                  "discover",
-                  "applepay",
-                  "googlepay",
-                  "paypal",
-                ]}
-                height={18}
-              />
+              <PayIcons className="mt-1 justify-center" />
             </div>
 
             <p className="text-center text-[11.5px] leading-relaxed text-ink/50">
