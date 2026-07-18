@@ -257,39 +257,32 @@ function PlanCard({
           : "0 1px 0 rgba(0,0,0,0.02)",
       }}
     >
-      <div className="p-4 sm:p-5">
+      <div className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <h3
-                className="text-[17px] font-semibold sm:text-[18px]"
-                style={{ color: NAVY }}
-              >
-                {plan.title}
-              </h3>
-              {plan.badge && (
-                <span
-                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11.5px] font-semibold"
-                  style={{
-                    background: isBest ? "#CFE7F5" : "#D6F3DF",
-                    color: isBest ? NAVY : "#0E6B33",
-                  }}
-                >
-                  {plan.badge.label}
-                </span>
-              )}
-            </div>
-            <p className="mt-1 text-[13.5px] leading-snug text-ink/60">
-              {plan.desc}
-            </p>
-          </div>
-          <span
-            className="shrink-0 text-[12px] font-semibold"
-            style={{ color: NAVY }}
-          >
+          <h3 className="text-[19px] font-bold text-ink sm:text-[20px]">
+            {plan.title}
+          </h3>
+          {plan.badge && (
+            <span
+              className="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-semibold"
+              style={{
+                background: isBest ? "#DDECF5" : "#DFF4E6",
+                color: isBest ? NAVY : "#137A3A",
+              }}
+            >
+              {plan.badge.label}
+            </span>
+          )}
+        </div>
+        <div className="mt-2 flex items-start justify-between gap-4">
+          <p className="max-w-[62%] text-[14.5px] leading-snug text-ink/60">
+            {plan.desc}
+          </p>
+          <span className="shrink-0 text-[14px] font-bold text-ink">
             {plan.supply}
           </span>
         </div>
+
 
         {plan.installments && (
           <div className="mt-4 flex items-center justify-between gap-3">
@@ -514,51 +507,53 @@ function SalesTrimRxPage() {
 
       {/* SECTION 2 — Plans (only after treatment selected) */}
       {treatment && (
-        <section className="mx-auto w-full max-w-[720px] px-4 pb-16 sm:px-6">
-          <div className="flex items-center gap-3">
-            <span
-              className="rounded-full px-3 py-1 text-[11.5px] font-semibold text-white"
-              style={{ background: NAVY }}
-            >
-              Step 2
-            </span>
-            <h2 className="text-[17px] font-semibold text-ink sm:text-[18px]">
-              Select Your Plan
-            </h2>
-          </div>
-          <p className="mt-2 max-w-[600px] text-[13.5px] leading-snug text-ink/60">
-            Lock in your savings without a big upfront payment — use free financing or pay in
-            full with your card.
-          </p>
-
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.05 }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.06 } },
-            }}
-            className="mt-8 flex flex-col gap-6"
-          >
-            {plans.map((p) => (
-              <motion.div
-                key={p.key}
-                variants={{
-                  hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
-                  show: { opacity: 1, y: 0, filter: "blur(0px)" },
-                }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        <div style={{ background: "#EFF4FB" }}>
+          <section className="mx-auto w-full max-w-[720px] px-4 py-10 sm:px-6">
+            <div className="flex items-center gap-3">
+              <span
+                className="rounded-full px-3 py-1 text-[11.5px] font-semibold text-white"
+                style={{ background: "#0E1B2E" }}
               >
-                <PlanCard
-                  plan={p}
-                  selected={planKey === p.key}
-                  onSelect={() => setPlanKey(p.key)}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </section>
+                Step 2
+              </span>
+              <h2 className="text-[19px] font-semibold text-ink sm:text-[20px]">
+                Select Your Plan
+              </h2>
+            </div>
+            <p className="mt-2 max-w-[600px] text-[14px] leading-snug text-ink/70">
+              Lock in your savings without a big upfront payment — use free financing or pay in
+              full with your card.
+            </p>
+
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.05 }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.06 } },
+              }}
+              className="mt-6 flex flex-col gap-5"
+            >
+              {plans.map((p) => (
+                <motion.div
+                  key={p.key}
+                  variants={{
+                    hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
+                    show: { opacity: 1, y: 0, filter: "blur(0px)" },
+                  }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <PlanCard
+                    plan={p}
+                    selected={planKey === p.key}
+                    onSelect={() => setPlanKey(p.key)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </section>
+        </div>
       )}
 
       {/* SECTION 3 — Includes / How it works */}
