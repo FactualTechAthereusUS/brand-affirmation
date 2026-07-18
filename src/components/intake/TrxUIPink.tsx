@@ -311,19 +311,14 @@ export function TrxHeader({
           <ArrowLeft className="h-4 w-4" />
         </button>
       )}
-      <div className="mx-auto flex items-center justify-center gap-4 sm:gap-6 md:gap-8">
+      <div className="mx-auto flex items-center justify-center">
         <img
           src={blissleyLogo.url}
           alt="Blissley"
           className="block h-9 w-auto sm:h-11 md:h-14"
         />
-        <span className="block h-9 w-px bg-ink/15 sm:h-11 md:h-14" aria-hidden />
-        <img
-          src={trimrxHeader.url}
-          alt="TrimRx"
-          className="block h-8 w-auto sm:h-10 md:h-12"
-        />
       </div>
+
 
     </div>
 
