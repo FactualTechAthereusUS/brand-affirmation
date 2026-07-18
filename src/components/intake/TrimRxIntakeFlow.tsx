@@ -1058,7 +1058,7 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
       return `${acc} C ${cx} ${pY}, ${cx} ${y}, ${x} ${y}`;
     }, "");
   return (
-    <div className="rounded-3xl border border-ink/8 bg-gradient-to-b from-white to-[#1D437B]/[0.03] p-5">
+    <div className="w-full">
       <div className="mb-3 flex items-center justify-between text-[11.5px] font-semibold uppercase tracking-[0.12em]">
         <span className="flex items-center gap-2 text-ink/55"><span className="h-2 w-4 rounded-full bg-ink/30" /> Without Blissley</span>
         <span className="flex items-center gap-2 text-ever"><span className="h-2 w-4 rounded-full bg-ever" /> With Blissley</span>
