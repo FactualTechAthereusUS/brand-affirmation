@@ -223,10 +223,12 @@ function PlanCard({
   plan,
   selected,
   onSelect,
+  onCheckout,
 }: {
   plan: Plan;
   selected: boolean;
   onSelect: () => void;
+  onCheckout: () => void;
 }) {
   const isBest = plan.badge?.kind === "best";
   const isPopular = plan.badge?.kind === "popular";
