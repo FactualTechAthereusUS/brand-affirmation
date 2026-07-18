@@ -18,7 +18,7 @@ import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
-import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
+import iconDeliveryShieldV2 from "@/assets/icon-delivery-shield-v2.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
