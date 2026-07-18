@@ -654,7 +654,7 @@ export function TrimRxIntakeFlowV2() {
                 title="How is your sleep, overall?"
                 sub="How you sleep tells us a lot about your cortisol and metabolic efficiency."
               >
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   {[
                     { label: "Pretty good", icon: <BedDouble /> },
                     { label: "A bit restless", icon: <Frown /> },
