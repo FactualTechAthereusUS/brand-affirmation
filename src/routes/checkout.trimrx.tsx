@@ -254,6 +254,7 @@ function CheckoutPage() {
     cardNumber: "",
     exp: "",
     cvc: "",
+    nameOnCard: "",
     country: "United States",
     billingSame: true,
     priority: false,
