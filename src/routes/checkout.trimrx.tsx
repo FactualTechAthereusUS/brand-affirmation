@@ -975,7 +975,7 @@ function Row({
   );
 }
 
-function FormCard({ children }: { children: React.ReactNode }) {
+function FormCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <motion.div
       variants={{
@@ -983,12 +983,13 @@ function FormCard({ children }: { children: React.ReactNode }) {
         show: { opacity: 1, y: 0, filter: "blur(0px)" },
       }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="p-0"
+      className={`p-0 ${className}`}
     >
       {children}
     </motion.div>
   );
 }
+
 
 function MethodTab({
   active,
