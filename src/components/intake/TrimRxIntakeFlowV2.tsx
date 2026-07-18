@@ -1153,13 +1153,15 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
         <motion.path
           d={path}
           stroke="#ee7273"
-          strokeWidth={4}
+          strokeWidth={5}
           fill="none"
           strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          strokeLinejoin="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
         />
+
 
         {/* endpoints */}
         <motion.circle
