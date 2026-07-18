@@ -162,10 +162,6 @@ export function PrimaryButton({
       className="group inline-flex h-[56px] w-full items-center justify-center gap-2 rounded-full bg-ink px-6 text-[15px] font-medium text-canvas shadow-[0_10px_28px_rgba(0,0,0,0.18)] transition-opacity disabled:cursor-not-allowed disabled:opacity-40 md:h-[60px] md:w-auto md:min-w-[220px]"
     >
       {children}
-      <ArrowUpRight
-        className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 group-disabled:rotate-0"
-        strokeWidth={2}
-      />
     </motion.button>
   );
 }
