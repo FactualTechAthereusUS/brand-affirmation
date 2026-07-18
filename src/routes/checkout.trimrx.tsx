@@ -289,19 +289,7 @@ function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
-      {/* Top discount strip */}
-      <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
-        <div
-          className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-2.5 text-center text-[12.5px] font-semibold sm:text-[13.5px]"
-          style={{ background: "#FEF7DA", borderColor: "#E7B94A", color: "#171717" }}
-        >
-          <Tag className="h-4 w-4" />
-          Code <span className="mx-1 font-black">JOIN120</span> applied — $120 off
-          your first shipment
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-white">
       <TrxHeader onBack={() => navigate({ to: "/sales/trimrx" })} showBack />
 
       {/* MAIN GRID */}
@@ -314,13 +302,7 @@ function CheckoutPage() {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="lg:sticky lg:top-6"
           >
-            <div
-              className="overflow-hidden rounded-3xl border bg-white"
-              style={{
-                borderColor: "rgba(29,67,123,0.10)",
-                boxShadow: "0 30px 80px -40px rgba(29,67,123,0.25)",
-              }}
-            >
+            <div className="overflow-hidden">
               {/* Header band */}
               <div
                 className="flex items-center justify-between gap-4 px-5 py-4 sm:px-6"
