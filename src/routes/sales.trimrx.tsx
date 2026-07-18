@@ -512,21 +512,6 @@ function SalesTrimRxPage() {
             onSelect={() => setTreatment("tirz")}
           />
         </div>
-
-        {/* Trust row */}
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <img
-            src={trustpilot.url}
-            alt="Excellent 4.8 · 100,000+ happy customers"
-            className="h-6 w-auto sm:h-7"
-          />
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">
-              As seen on
-            </span>
-            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
-          </div>
-        </div>
       </section>
 
       {/* SECTION 2 — Plans (only after treatment selected) */}
