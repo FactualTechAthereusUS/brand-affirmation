@@ -210,7 +210,11 @@ export function WLIntakeFlow() {
                   <>
                     <PrimaryButton
                       onClick={next}
-                      disabled={!answers.firstName.trim() || !/^\S+@\S+\.\S+$/.test(answers.email)}
+                      disabled={
+                        !answers.firstName.trim() ||
+                        !answers.lastName.trim() ||
+                        !/^\S+@\S+\.\S+$/.test(answers.email)
+                      }
                     >
                       Continue
                     </PrimaryButton>
@@ -228,6 +232,12 @@ export function WLIntakeFlow() {
                   autoFocus
                 />
                 <TextField
+                  label="Last name"
+                  value={answers.lastName}
+                  onChange={(v) => set({ lastName: v })}
+                  placeholder="Your last name"
+                />
+                <TextField
                   label="Email"
                   type="email"
                   value={answers.email}
@@ -236,6 +246,7 @@ export function WLIntakeFlow() {
                 />
               </ScreenShell>
             )}
+
 
             {/* 2 — Primary goal */}
             {current === "goal" && (
