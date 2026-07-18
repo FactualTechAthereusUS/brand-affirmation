@@ -327,31 +327,34 @@ export function PhoneField({
         <span className="mb-2 block text-[13px] font-medium text-ink/70">{label}</span>
       )}
       <div className="relative">
-        <div className="pointer-events-none absolute left-5 top-1/2 flex -translate-y-1/2 items-center gap-2">
-          <span className="inline-flex h-5 w-7 items-center justify-center overflow-hidden rounded-sm shadow-sm">
-            <svg viewBox="0 0 1235 650" className="h-full w-full" aria-hidden="true">
-              <rect width="1235" height="650" fill="#fff" />
-              <g fill="#b22234">
-                <rect y="0" width="1235" height="50" />
-                <rect y="100" width="1235" height="50" />
-                <rect y="200" width="1235" height="50" />
-                <rect y="300" width="1235" height="50" />
-                <rect y="400" width="1235" height="50" />
-                <rect y="500" width="1235" height="50" />
-                <rect y="600" width="1235" height="50" />
+        <div className="pointer-events-none absolute left-4 top-1/2 flex -translate-y-1/2 items-center gap-2">
+          <span className="inline-flex h-6 w-8 items-center justify-center overflow-hidden rounded-[3px] shadow-sm ring-1 ring-black/10">
+            <svg viewBox="0 0 60 40" className="block h-full w-full" preserveAspectRatio="none" aria-label="United States">
+              {Array.from({ length: 13 }).map((_, i) => (
+                <rect key={i} x="0" y={i * (40 / 13)} width="60" height={40 / 13} fill={i % 2 === 0 ? "#b22234" : "#ffffff"} />
+              ))}
+              <rect x="0" y="0" width="24" height={7 * (40 / 13)} fill="#3c3b6e" />
+              <g fill="#ffffff" fontSize="3" fontFamily="Arial" textAnchor="middle">
+                {Array.from({ length: 5 }).map((_, r) =>
+                  Array.from({ length: 6 }).map((_, c) => (
+                    <text key={`${r}-${c}`} x={2 + c * 4} y={3 + r * 2.2}>★</text>
+                  ))
+                )}
               </g>
-              <rect width="494" height="350" fill="#3c3b6e" />
             </svg>
           </span>
+          <span className="text-[15px] font-medium text-ink/60">+1</span>
         </div>
         <input
           type="tel"
+          inputMode="tel"
           value={formatUSPhone(value)}
           onChange={(e) => onChange(formatUSPhone(e.target.value))}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white pl-[72px] pr-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+          className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white pl-[96px] pr-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
         />
+
       </div>
     </label>
   );
