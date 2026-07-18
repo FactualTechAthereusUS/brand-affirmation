@@ -305,12 +305,15 @@ export function BlissleyIntakeFlow() {
                 title="Great. Let's build your {{personalized program.}}"
                 sub="First we'll capture the basics so we can email your results."
                 footer={
-                  <PrimaryButton onClick={next} disabled={!answers.firstName || !answers.email || !answers.consent}>
+                  <PrimaryButton onClick={next} disabled={!answers.firstName || !answers.lastName || !answers.email || !answers.consent}>
                     Continue →
                   </PrimaryButton>
                 }
               >
-                <TextField label="First name" value={answers.firstName ?? ""} onChange={(v) => set({ firstName: v })} placeholder="Jane" />
+                <div className="grid grid-cols-2 gap-3">
+                  <TextField label="First name" value={answers.firstName ?? ""} onChange={(v) => set({ firstName: v })} placeholder="Jane" />
+                  <TextField label="Last name" value={answers.lastName ?? ""} onChange={(v) => set({ lastName: v })} placeholder="Doe" />
+                </div>
                 <TextField label="Email address" type="email" value={answers.email ?? ""} onChange={(v) => set({ email: v })} placeholder="you@example.com" />
                 <label className="mt-1 flex items-start gap-3 rounded-xl border border-ink/10 bg-white px-4 py-3 cursor-pointer">
                   <span
