@@ -28,6 +28,7 @@ import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
 import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
+import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import review22 from "@/assets/review-22.png.asset.json";
 import review27 from "@/assets/review-27.png.asset.json";
