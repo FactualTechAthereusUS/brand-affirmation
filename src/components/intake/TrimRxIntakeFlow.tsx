@@ -14,15 +14,17 @@ import {
   ShieldCheck,
   Scale as ScaleIcon,
 } from "lucide-react";
+import { StateSelect } from "./primitives";
 import {
-  BackBtn,
-  OptionCard,
-  PrimaryButton,
-  ScreenShell,
-  StateSelect,
-  TextField,
-} from "./primitives";
-import logo from "@/assets/blissley-logo.png.asset.json";
+  TrxButton as PrimaryButton,
+  TrxOption as OptionCard,
+  TrxIconOption,
+  TrxField as TextField,
+  TrxScreen as ScreenShell,
+  TrxStepper,
+  TrxHeader,
+  NAVY,
+} from "./TrxUI";
 import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
