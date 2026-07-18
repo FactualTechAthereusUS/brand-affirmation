@@ -564,8 +564,9 @@ function CheckoutPage() {
             </FormCard>
 
             {/* Payment */}
-            <FormCard>
+            <FormCard className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
               <StepBadge label="Payment" />
+
 
               {/* Payment methods — accordion list */}
               <div className="space-y-3">
