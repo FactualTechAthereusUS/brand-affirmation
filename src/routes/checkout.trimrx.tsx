@@ -467,7 +467,7 @@ function CheckoutPage() {
           >
             {/* Shipping */}
             <FormCard>
-              <StepBadge n={1} label="Shipping Address" />
+              <StepBadge label="Shipping Address" />
 
               <div className="mb-3 flex items-center gap-2 text-[12.5px] text-ink/60">
                 <ShieldCheck className="h-4 w-4" style={{ color: GREEN }} />
@@ -549,7 +549,7 @@ function CheckoutPage() {
 
             {/* Payment */}
             <FormCard>
-              <StepBadge n={2} label="Payment" />
+              <StepBadge label="Payment" />
 
               {/* Payment methods — accordion list */}
               <div className="space-y-3">
