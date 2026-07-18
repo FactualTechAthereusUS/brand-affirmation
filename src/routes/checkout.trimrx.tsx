@@ -304,8 +304,8 @@ function CheckoutPage() {
             <div className="overflow-hidden">
               {/* Header band */}
               <div
-                className="flex items-center justify-between gap-4 px-5 py-4 sm:px-6"
-                style={{ background: BLUE_TINT }}
+                className="flex items-center justify-between gap-4 bg-white px-5 py-4 sm:px-6"
+                style={{ background: "white" }}
               >
                 <div>
                   <div
