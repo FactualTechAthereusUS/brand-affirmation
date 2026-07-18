@@ -514,9 +514,6 @@ export function TrimRxIntakeFlowV2() {
                       className="absolute inset-0 hidden h-full w-full object-cover sm:block"
                     />
 
-                    {/* Soft bottom blur/fade for text legibility */}
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] sm:h-[60%] bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] sm:h-[40%] backdrop-blur-[6px] [mask-image:linear-gradient(to_top,black_55%,transparent)]" />
 
                     {/* Content overlay — bottom-left */}
                     <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-9 md:p-12">
