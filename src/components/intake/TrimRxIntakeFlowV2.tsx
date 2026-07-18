@@ -418,6 +418,45 @@ export function TrimRxIntakeFlowV2() {
               </>
             )}
 
+            {/* 1b, DOB — age gate */}
+            {current === "dob" && (() => {
+              const m = parseInt(answers.dobMonth || "0", 10);
+              const d = parseInt(answers.dobDay || "0", 10);
+              const y = parseInt(answers.dobYear || "0", 10);
+              const valid = m >= 1 && m <= 12 && d >= 1 && d <= 31 && y >= 1900 && y <= new Date().getFullYear();
+              let age: number | null = null;
+              if (valid) {
+                const today = new Date();
+                age = today.getFullYear() - y;
+                const mDiff = today.getMonth() + 1 - m;
+                if (mDiff < 0 || (mDiff === 0 && today.getDate() < d)) age -= 1;
+              }
+              const handleNext = () => {
+                if (age !== null && age < 18) { goTo("blocked_minor"); return; }
+                next();
+              };
+              return (
+                <ScreenShell
+                  title="What's your date of birth?"
+                  sub="We need to confirm you're 18 or older to prescribe."
+                  footer={
+                    <PrimaryButton onClick={handleNext} disabled={!valid}>
+                      Next →
+                    </PrimaryButton>
+                  }
+                >
+                  <div className="grid grid-cols-3 gap-3">
+                    <TextField label="Month" type="number" value={answers.dobMonth ?? ""} onChange={(v) => set({ dobMonth: v })} placeholder="MM" />
+                    <TextField label="Day" type="number" value={answers.dobDay ?? ""} onChange={(v) => set({ dobDay: v })} placeholder="DD" />
+                    <TextField label="Year" type="number" value={answers.dobYear ?? ""} onChange={(v) => set({ dobYear: v })} placeholder="YYYY" />
+                  </div>
+                  {age !== null && age >= 18 && (
+                    <div className="text-[13px] text-ink/60">You're {age}. All set.</div>
+                  )}
+                </ScreenShell>
+              );
+            })()}
+
             {/* 2, Sex */}
             {current === "sex" && (
               <ScreenShell
