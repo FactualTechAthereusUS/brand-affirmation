@@ -112,7 +112,7 @@ type ScreenId = (typeof SCREENS)[number];
 
 const STAGES = ["Start", "Preliminary", "Health", "Details", "Eligibility"] as const;
 function stageOf(idx: number, sex?: Sex): number {
-  // Trim female_effects (idx 4) if not female — shift accordingly by using screen id instead
+  // Trim female_effects (idx 4) if not female, shift accordingly by using screen id instead
   const id = SCREENS[idx];
   if (id === "hw") return 0;
   if (
@@ -361,10 +361,10 @@ export function TrimRxIntakeFlow() {
         <AnimatePresence mode="wait">
           <div key={current} className="flex flex-col">
 
-            {/* 0 — Height & Weight */}
+            {/* 0, Height & Weight */}
             {current === "hw" && (
               <ScreenShell
-                title="Reach your goal weight fast — without restrictive diets."
+                title="Reach your goal weight fast, without restrictive diets."
                 sub="Let's calculate your BMI to make sure you're a good candidate for medical weight loss."
                 footer={
                   <PrimaryButton
@@ -404,10 +404,10 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 1 — BMI reveal + goal weight */}
+            {/* 1, BMI reveal + goal weight */}
             {current === "bmi_goal" && (
               <ScreenShell
-                title={bmi ? `Perfect! With a BMI of ${bmi}, we can continue.` : "Great — let's set your goal."}
+                title={bmi ? `Perfect! With a BMI of ${bmi}, we can continue.` : "Great, let's set your goal."}
                 sub="We're in this together. Your goal is our goal."
                 footer={
                   <PrimaryButton
@@ -445,7 +445,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 2 — Sex */}
+            {/* 2, Sex */}
             {current === "sex" && (
               <ScreenShell
                 title="Are you male or female?"
@@ -456,7 +456,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 3 — Safety */}
+            {/* 3, Safety */}
             {current === "safety" && (
               <ScreenShell
                 title="Safety, first."
@@ -479,7 +479,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 4 — Female-specific effects */}
+            {/* 4, Female-specific effects */}
             {current === "female_effects" && (
               <ScreenShell
                 title="Women experience unique effects from weight gain."
@@ -504,10 +504,10 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 5 — Priority */}
+            {/* 5, Priority */}
             {current === "priority" && (
               <ScreenShell
-                title="We can help with all of these — but choose the most important for you."
+                title="We can help with all of these, but choose the most important for you."
                 sub="Which of these is your priority?"
               >
                 {["Lose Weight", "Gain Muscle", "Maintain My Current Body"].map((o) => (
@@ -521,7 +521,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 6 — Ranked #1 */}
+            {/* 6, Ranked #1 */}
             {current === "ranked" && (
               <ScreenShell title="Blissley is proud to be ranked #1." footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}>
                 <motion.div
@@ -559,18 +559,18 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 7 — Metabolic science */}
+            {/* 7, Metabolic science */}
             {current === "metabolic_science" && (
               <ScreenShell
-                title="It feels like magic — but it's metabolic science."
-                sub={`On average, our patients lose over 20% of their body weight. GLP-1 medications are extremely effective — offering a strong path toward your ${answers.goalWeight || "goal"} lb goal.`}
+                title="It feels like magic, but it's metabolic science."
+                sub={`On average, our patients lose over 20% of their body weight. GLP-1 medications are extremely effective, offering a strong path toward your ${answers.goalWeight || "goal"} lb goal.`}
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
                 <MetabolicChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
               </ScreenShell>
             )}
 
-            {/* 8 — Tania story */}
+            {/* 8, Tania story */}
             {current === "tania_story" && (
               <StoryScreen
                 quote="It really does work. Took about 6 weeks to feel it, but once it kicked in, I dropped 20 pounds of fat and haven't looked back."
@@ -582,11 +582,11 @@ export function TrimRxIntakeFlow() {
               />
             )}
 
-            {/* 9 — GLP-1 how it works curve */}
+            {/* 9, GLP-1 how it works curve */}
             {current === "glp1_curve" && (
               <ScreenShell
                 title="How will GLP-1 work for you?"
-                sub="We identify the root causes of your metabolic issues — so you get a long-term solution, not just a quick fix."
+                sub="We identify the root causes of your metabolic issues, so you get a long-term solution, not just a quick fix."
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
                 <GLP1Curve />
@@ -598,7 +598,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 10 — Pace */}
+            {/* 10, Pace */}
             {current === "pace" && (
               <ScreenShell
                 title="How is that pace for you?"
@@ -614,7 +614,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 11 — Motivation reason */}
+            {/* 11, Motivation reason */}
             {current === "motivation_reason" && (
               <ScreenShell
                 title="Improving your life requires motivation."
@@ -631,7 +631,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 12 — Sleep quality */}
+            {/* 12, Sleep quality */}
             {current === "sleep_quality" && (
               <ScreenShell
                 title="How is your sleep, overall?"
@@ -653,7 +653,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 13 — Sleep hours */}
+            {/* 13, Sleep hours */}
             {current === "sleep_hours" && (
               <ScreenShell title="How many hours of sleep do you usually get each night?">
                 {["Less than 5 hours", "6–7 hours", "8–9 hours", "More than 9 hours"].map((o) => (
@@ -662,10 +662,10 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 14 — Kristin story */}
+            {/* 14, Kristin story */}
             {current === "kristin_story" && (
               <StoryScreen
-                quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later — wow. Thank you for the metabolic reset — game changer."
+                quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
                 name="Kristin"
                 result="Lost 29 lbs · Renewed confidence"
                 before={review22.url}
@@ -674,10 +674,10 @@ export function TrimRxIntakeFlow() {
               />
             )}
 
-            {/* 15 — Contraindications */}
+            {/* 15, Contraindications */}
             {current === "contra" && (
               <ScreenShell
-                title="GLP-1 is safe — but a few conditions might prevent you from being prescribed."
+                title="GLP-1 is safe, but a few conditions might prevent you from being prescribed."
                 sub="Your answers are completely confidential and protected by HIPAA."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.contra && answers.contra.length)}>Next →</PrimaryButton>}
               >
@@ -686,7 +686,7 @@ export function TrimRxIntakeFlow() {
                   "End-stage kidney disease (on or about to be on dialysis)",
                   "End-stage liver disease (cirrhosis)",
                   "Current suicidal thoughts and/or prior suicidal attempt",
-                  "Cancer (active diagnosis, treatment, or in remission < 5 years — excludes non-melanoma skin cancer cured via simple excision)",
+                  "Cancer (active diagnosis, treatment, or in remission < 5 years, excludes non-melanoma skin cancer cured via simple excision)",
                   "History of organ transplant on anti-rejection medication",
                   "Severe gastrointestinal condition (gastroparesis, blockage, IBD)",
                   "Current diagnosis or treatment for alcohol, opioid, or substance use disorder",
@@ -701,7 +701,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 16 — More health questions */}
+            {/* 16, More health questions */}
             {current === "more_conditions" && (
               <ScreenShell
                 title="A few more health questions."
@@ -739,7 +739,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 17 — GLP-1 history */}
+            {/* 17, GLP-1 history */}
             {current === "glp1_history" && (
               <ScreenShell title="Have you taken medication for weight loss within the past month?">
                 {[
@@ -752,7 +752,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 18 — Opiate */}
+            {/* 18, Opiate */}
             {current === "opiate" && (
               <ScreenShell
                 title="Within the last 3 months, have you taken opiate pain medications or opiate-based street drugs?"
@@ -768,7 +768,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 19 — Prior weight loss surgery */}
+            {/* 19, Prior weight loss surgery */}
             {current === "prior_surgery" && (
               <ScreenShell
                 title="Have you had prior weight loss surgeries?"
@@ -784,7 +784,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 20 — Prior program */}
+            {/* 20, Prior program */}
             {current === "prior_program" && (
               <ScreenShell
                 title="Have you ever tried to lose weight in a weight-management program (Jenny Craig, Weight Watchers, etc.)?"
@@ -800,7 +800,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 21 — Willing to */}
+            {/* 21, Willing to */}
             {current === "willing_to" && (
               <ScreenShell
                 title="If clinically appropriate, are you willing to:"
@@ -821,7 +821,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 22 — Weight change */}
+            {/* 22, Weight change */}
             {current === "weight_change" && (
               <ScreenShell title="Has your weight changed in the last year?">
                 {[
@@ -836,10 +836,10 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 23 — Daiene story */}
+            {/* 23, Daiene story */}
             {current === "daiene_story" && (
               <StoryScreen
-                quote="Being a mom makes it so hard to stay on a diet — but the weight vanished with GLP medication!"
+                quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
                 name="Daiene"
                 result="Lost 90 lbs · Off blood pressure medication"
                 before={spFemaleBefore.url}
@@ -848,7 +848,7 @@ export function TrimRxIntakeFlow() {
               />
             )}
 
-            {/* 24 — Resting HR */}
+            {/* 24, Resting HR */}
             {current === "resting_hr" && (
               <ScreenShell
                 title="How about your average resting heart rate?"
@@ -865,7 +865,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 25 — Blood pressure */}
+            {/* 25, Blood pressure */}
             {current === "blood_pressure" && (
               <ScreenShell title="What is your average blood pressure range?">
                 {[
@@ -879,7 +879,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 26 — Affordability vs Potency */}
+            {/* 26, Affordability vs Potency */}
             {current === "affordability" && (
               <ScreenShell
                 title="Looking good! Let's match you with the best medication."
@@ -891,7 +891,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 27 — Current medications */}
+            {/* 27, Current medications */}
             {current === "current_meds" && (
               <ScreenShell
                 title="Do you currently take any medications?"
@@ -907,7 +907,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 28 — Motivation level */}
+            {/* 28, Motivation level */}
             {current === "motivation_level" && (
               <ScreenShell
                 title="Let's better understand your current state of mind."
@@ -919,7 +919,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 29 — Additional info */}
+            {/* 29, Additional info */}
             {current === "additional_info" && (
               <ScreenShell
                 title="Do you have any further information you'd like our medical team to know?"
@@ -936,10 +936,10 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 30 — Personalization */}
+            {/* 30, Personalization */}
             {current === "personalization" && (
               <ScreenShell
-                title="Your needs are unique — your medicine should be, too."
+                title="Your needs are unique, your medicine should be, too."
                 sub="Please select the options you're interested in."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.personalization && answers.personalization.length)}>Next →</PrimaryButton>}
               >
@@ -965,7 +965,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 31 — Eligibility summary + name + state */}
+            {/* 31, Eligibility summary + name + state */}
             {current === "eligibility" && (
               <ScreenShell
                 title="Your medical checkup"
@@ -986,9 +986,9 @@ export function TrimRxIntakeFlow() {
                 }
               >
                 <div className="grid grid-cols-3 gap-3 rounded-2xl border border-ink/10 bg-white p-5">
-                  <SummaryStat label="BMI" value={bmi ? String(bmi) : "—"} />
-                  <SummaryStat label="Current" value={`${answers.weightLbs ?? "—"} lbs`} />
-                  <SummaryStat label="Goal" value={`${answers.goalWeight ?? "—"} lbs`} />
+                  <SummaryStat label="BMI" value={bmi ? String(bmi) : "-"} />
+                  <SummaryStat label="Current" value={`${answers.weightLbs ?? "-"} lbs`} />
+                  <SummaryStat label="Goal" value={`${answers.goalWeight ?? "-"} lbs`} />
                 </div>
                 {paceCalc && (
                   <p className="text-[13.5px] text-ink/60">
@@ -1008,7 +1008,7 @@ export function TrimRxIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 32 — Loading */}
+            {/* 32, Loading */}
             {current === "loading" && <LoadingScreen firstName={answers.firstName} state={answers.state} />}
           </div>
         </AnimatePresence>
