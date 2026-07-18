@@ -685,14 +685,25 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 14, Kristin story */}
             {current === "kristin_story" && (
-              <StoryScreen
-                quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
-                name="Kristin"
-                result="Lost 29 lbs · Renewed confidence"
-                before={kristinBefore.url}
-                after={kristinAfter.url}
-                onNext={next}
-              />
+              answers.sex === "male" ? (
+                <StoryScreen
+                  quote="50 lbs down in 7 months. I stepped off the scale and stepped back on just to make sure."
+                  name="Michael T."
+                  result="Lost 50 lbs · 7 months"
+                  before={spMaleBefore.url}
+                  after={spMaleAfter.url}
+                  onNext={next}
+                />
+              ) : (
+                <StoryScreen
+                  quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
+                  name="Kristin"
+                  result="Lost 29 lbs · Renewed confidence"
+                  before={kristinBefore.url}
+                  after={kristinAfter.url}
+                  onNext={next}
+                />
+              )
             )}
 
             {/* 15, Contraindications */}
