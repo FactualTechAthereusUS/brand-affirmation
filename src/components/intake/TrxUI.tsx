@@ -8,6 +8,22 @@ import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 export const NAVY = "#1D437B";
 export const NAVY_SOFT = "#6B94C7";
 
+/* ─────────  Radio circle (mobile card selector)  ───────── */
+function RadioCircle({ on }: { on: boolean }) {
+  return (
+    <span
+      className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full border transition-colors"
+      style={{
+        borderColor: on ? NAVY : "rgba(29,67,123,0.25)",
+        background: on ? NAVY : "transparent",
+      }}
+      aria-hidden
+    >
+      {on && <span className="h-2 w-2 rounded-full bg-white" />}
+    </span>
+  );
+}
+
 /* ─────────  Highlighted headline  ─────────
    Wrap phrases in {{…}} to render them in lighter blue. */
 export function TrxHeadline({ text, className = "" }: { text: string; className?: string }) {
