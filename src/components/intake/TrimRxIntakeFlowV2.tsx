@@ -348,26 +348,31 @@ export function TrimRxIntakeFlowV2() {
                   </PrimaryButton>
                 }
               >
-                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/11] md:aspect-[21/10]">
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/5] sm:aspect-[16/10] md:aspect-[21/10]">
                   <img
-                    src={trxHeroWoman2.url}
+                    src={trxHeroWoman2Mobile.url}
                     alt="Woman reaching toward camera under blue sky"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover sm:hidden"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 h-28 md:h-36 bg-black/30 backdrop-blur-[10px]" />
+                  <img
+                    src={trxHeroWoman2.url}
+                    alt=""
+                    className="absolute inset-0 hidden h-full w-full object-cover sm:block"
+                    loading="lazy"
+                  />
                   <div className="absolute inset-x-4 bottom-4 md:inset-x-6 md:bottom-6">
                     <div className="min-w-0">
-                      <div className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.14em] text-white/90">
+                      <div className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.16em] text-white/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
                         Join over 500K success stories
                       </div>
-                      <div className="mt-1 text-[15px] md:text-[17px] font-semibold text-white">
+                      <div className="mt-1 font-serif text-[22px] md:text-[28px] font-semibold leading-tight text-white drop-shadow-[0_3px_16px_rgba(0,0,0,0.55)]">
                         Start your journey today
                       </div>
                     </div>
                   </div>
                 </div>
+
 
                 <TextField
                   label="What is your goal weight? (lbs)"
