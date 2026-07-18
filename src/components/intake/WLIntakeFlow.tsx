@@ -754,7 +754,7 @@ export function WLIntakeFlow() {
                 sub="These conditions can actually support your eligibility."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.qualifyingConditions?.length ?? 0)}>Continue</PrimaryButton>}
               >
-                {[
+                {([
                   "None of the above",
                   "High blood pressure",
                   "High cholesterol",
@@ -762,14 +762,15 @@ export function WLIntakeFlow() {
                   "Prediabetes",
                   "Type 2 diabetes (not on insulin)",
                   "Metabolic syndrome",
-                  "PCOS",
+                  answers.sex !== "male" ? "PCOS" : null,
+                  answers.sex !== "male" ? "Urinary stress incontinence" : null,
+                  answers.sex === "male" ? "Clinically proven low testosterone" : null,
                   "Sleep apnea",
                   "Non-alcoholic fatty liver disease (NAFLD)",
                   "Cardiovascular or coronary artery disease",
                   "Acid reflux or GERD",
                   "Joint pain related to weight",
-
-                ].map((o) => (
+                ].filter(Boolean) as string[]).map((o) => (
                   <OptionCard
                     key={o}
                     label={o}
