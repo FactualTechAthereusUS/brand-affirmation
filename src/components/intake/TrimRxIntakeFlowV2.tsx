@@ -863,8 +863,8 @@ export function TrimRxIntakeFlowV2() {
                 quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
                 name="Daiene"
                 result="Lost 90 lbs · Off blood pressure medication"
-                before={spFemaleBefore.url}
-                after={spFemaleAfter.url}
+                before={daieneBefore.url}
+                after={daieneAfter.url}
                 onNext={next}
               />
             )}
