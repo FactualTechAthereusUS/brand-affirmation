@@ -41,7 +41,7 @@ const NAVY = "#1D437B";
 const NAVY_SOFT = "#6B94C7";
 const PINK = "#ee7273";
 const PINK_SOFT = "#f8b9b9";
-const CANVAS = "#F8F5EF";
+const CANVAS = "#FFFFFF";
 
 /* ─────────  Reusable atoms  ───────── */
 function CheckSquare({ on, color = NAVY }: { on: boolean; color?: string }) {
