@@ -81,6 +81,9 @@ type Answers = {
   firstName?: string;
   lastName?: string;
   state?: string;
+  dobMonth?: string;
+  dobDay?: string;
+  dobYear?: string;
 };
 
 const SCREENS = [
