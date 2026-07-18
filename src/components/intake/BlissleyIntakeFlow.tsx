@@ -605,7 +605,7 @@ export function BlissleyIntakeFlow() {
                 sub={`${fname ? `${fname}, e` : "E"}very approach you've tried attacked the behavior. None of them addressed what's actually causing it.`}
                 footer={<PrimaryButton onClick={next}>Continue →</PrimaryButton>}
               >
-                <MetabolicChart />
+                <MetabolicChart start={parseFloat(answers.weightLbs || "")} goal={parseFloat(answers.goalWeight || "")} firstName={fname} />
                 <div className="mt-4 space-y-4 text-[15px] leading-[1.6] text-ink/80">
                   <p>Your metabolism has a hunger regulation system. When it's dysregulated, no amount of willpower can override it consistently.</p>
                   <p>GLP-1 medications are the first treatment that works at the source - regulating hunger signals in your brain directly. On average, patients lose over 20% of body weight, and keep it off.</p>
