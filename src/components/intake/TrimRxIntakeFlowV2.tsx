@@ -474,7 +474,7 @@ export function TrimRxIntakeFlowV2() {
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden rounded-none shadow-[0_24px_70px_rgba(29,67,123,0.22)] sm:rounded-3xl"
+                  className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_70px_rgba(29,67,123,0.22)]"
                 >
                   {/* Yahoo Health banner */}
                   <div className="flex items-center bg-[#6001D2] px-5 py-3 sm:px-7 sm:py-4">
@@ -559,8 +559,9 @@ export function TrimRxIntakeFlowV2() {
                         </ul>
                       </div>
 
-                      <div className="w-full max-w-[58%]">
-                        <div className="inline-flex rounded-full bg-[#ee7273] px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_10px_24px_rgba(238,114,115,0.4)]">
+                      <div className="w-full">
+                        <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/40 px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_8px_24px_rgba(0,0,0,0.25)] backdrop-blur-xl">
+                          <span className="h-2 w-2 rounded-full bg-[#ee7273]" />
                           Most popular
                         </div>
                       </div>
