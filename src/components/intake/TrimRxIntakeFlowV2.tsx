@@ -32,6 +32,7 @@ import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman2-desktop.png.asset.json";
 import trxHeroWoman2Mobile from "@/assets/trx-hero-woman2-mobile.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import trxRankedHero from "@/assets/trx-ranked-desktop.png.asset.json";
 import trxRankedHeroMobile from "@/assets/trx-ranked-mobile.png.asset.json";
 
