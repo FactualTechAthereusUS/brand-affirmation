@@ -583,7 +583,7 @@ export function TrimRxIntakeFlowV2() {
                 sub={`On average, our patients lose over 20% of their body weight. GLP-1 medications are extremely effective, offering a strong path toward your ${answers.goalWeight || "goal"} lb goal.`}
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
-                <MetabolicChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
+                <WeightLossChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
               </ScreenShell>
             )}
 
@@ -606,7 +606,7 @@ export function TrimRxIntakeFlowV2() {
                 sub="We identify the root causes of your metabolic issues, so you get a long-term solution, not just a quick fix."
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
-                <GLP1Curve />
+                <MetabolicChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
                 <ul className="mt-4 space-y-2.5 text-[14.5px] text-ink/75">
                   <li><b className="text-ink">Week 1–4:</b> Your body acclimates to GLP-1 medication.</li>
                   <li><b className="text-ink">Week 4–8:</b> Weight loss increases week over week.</li>
@@ -1241,46 +1241,119 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
 }
 
 
-/* ────────────  Metabolic-rate rising curve (GLP-1)  ──────────── */
-function GLP1Curve() {
-  const W = 640, H = 220, padL = 44, padR = 20, padT = 16, padB = 32;
-  const weeks = ["W0", "W2", "W4", "W6", "W8"];
-  const pts = weeks.map((_, i) => {
-    const t = i / (weeks.length - 1);
-    return 1 - Math.pow(1 - t, 2.4); // 0→1
+/* ────────────  Weight-loss projection (downward curve)  ──────────── */
+function WeightLossChart({ start, goal }: { start: number; goal: number }) {
+  const s = isFinite(start) && start > 0 ? start : 230;
+  const g = isFinite(goal) && goal > 0 && goal < s ? goal : Math.max(120, s - 40);
+  const weeks = [0, 4, 8, 12, 16, 20, 24];
+  const N = 120;
+  const samples = Array.from({ length: N + 1 }, (_, i) => {
+    const t = i / N;
+    // ease-out to goal
+    const eased = 1 - Math.pow(1 - t, 2.2);
+    const w = s - (s - g) * eased;
+    return { t, w };
   });
-  const yAt = (v: number) => padT + (1 - v) * (H - padT - padB);
-  const xAt = (i: number) => padL + (i / (weeks.length - 1)) * (W - padL - padR);
-  const path = pts.reduce((acc, v, i) => {
-    const x = xAt(i), y = yAt(v);
+  const W = 720, H = 320, padL = 56, padR = 28, padT = 40, padB = 44;
+  const xAt = (t: number) => padL + t * (W - padL - padR);
+  const yAt = (w: number) => padT + ((s - w) / (s - g)) * (H - padT - padB);
+  const path = samples.reduce((acc, p, i) => {
+    const x = xAt(p.t), y = yAt(p.w);
     if (i === 0) return `M ${x} ${y}`;
-    const pX = xAt(i - 1), pY = yAt(pts[i - 1]);
+    const prev = samples[i - 1];
+    const pX = xAt(prev.t), pY = yAt(prev.w);
     const cx = pX + (x - pX) * 0.5;
     return `${acc} C ${cx} ${pY}, ${cx} ${y}, ${x} ${y}`;
   }, "");
-  const area = `${path} L ${xAt(weeks.length - 1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
+  const area = `${path} L ${xAt(1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
+
+  const [hover, setHover] = useState<null | { t: number; w: number }>(null);
+  const onMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = ((e.clientX - rect.left) / rect.width) * W;
+    const tRaw = (px - padL) / (W - padL - padR);
+    const t = Math.max(0, Math.min(1, tRaw));
+    setHover(samples[Math.round(t * N)]);
+  };
+  const hoverWeek = hover ? Math.round(hover.t * 24) : null;
+  const hoverW = hover ? Math.round(hover.w) : null;
+  const hoverLost = hover ? Math.round(s - hover.w) : null;
+
   return (
-    <div className="rounded-3xl border border-ink/8 bg-gradient-to-br from-[#1D437B]/[0.05] to-white p-5">
-      <div className="mb-2 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/55">
-        <span>Metabolic rate ↑</span>
-        <span>Ease of weight loss →</span>
-      </div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
+    <div className="relative w-full">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="block w-full touch-none"
+        onPointerMove={onMove}
+        onPointerLeave={() => setHover(null)}
+      >
         <defs>
-          <linearGradient id="glpFill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.32" />
+          <linearGradient id="wlFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
             <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <motion.path d={area} fill="url(#glpFill)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.8 }} />
-        <motion.path d={path} stroke="#ee7273" strokeWidth={4} fill="none" strokeLinecap="round"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }} />
-        <motion.circle cx={xAt(weeks.length - 1)} cy={yAt(1)} r={7} fill="#ee7273"
-          initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.5, type: "spring", stiffness: 260, damping: 18 }} />
-        {weeks.map((w, i) => (
-          <text key={w} x={xAt(i)} y={H - 10} textAnchor="middle" style={{ fontSize: 11, fill: "#17171770" }}>{w}</text>
+
+        {[0.25, 0.5, 0.75].map((v, i) => (
+          <line key={i} x1={padL} x2={W - padR} y1={padT + v * (H - padT - padB)} y2={padT + v * (H - padT - padB)}
+            stroke="#1D437B" strokeOpacity="0.14" strokeDasharray="5 7" />
         ))}
+        <line x1={padL} x2={padL} y1={padT - 6} y2={H - padB} stroke="#1D437B" strokeOpacity="0.35" strokeWidth="1.2" />
+        <line x1={padL} x2={W - padR} y1={H - padB} y2={H - padB} stroke="#1D437B" strokeOpacity="0.35" strokeWidth="1.2" />
+
+        {/* Y labels: start & goal */}
+        <text x={padL - 10} y={yAt(s) + 4} textAnchor="end" style={{ fontSize: 12, fontWeight: 600, fill: "#171717" }}>{Math.round(s)} lb</text>
+        <text x={padL - 10} y={yAt(g) + 4} textAnchor="end" style={{ fontSize: 12, fontWeight: 600, fill: "#ee7273" }}>{Math.round(g)} lb</text>
+
+        <motion.path d={area} fill="url(#wlFill)"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.8 }} />
+        <motion.path d={path} stroke="#ee7273" strokeWidth={5} fill="none" strokeLinecap="round" strokeLinejoin="round"
+          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }} />
+
+        <motion.circle cx={xAt(0)} cy={yAt(s)} r={6} fill="#fff" stroke="#ee7273" strokeWidth="2.5"
+          initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(1)} cy={yAt(g)} r={7} fill="#ee7273"
+          initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.5, type: "spring", stiffness: 260, damping: 18 }} />
+
+        {weeks.map((w) => (
+          <text key={w} x={xAt(w / 24)} y={H - 16} textAnchor="middle" style={{ fontSize: 12, fill: "#17171799" }}>
+            W{w}
+          </text>
+        ))}
+
+        {hover && (
+          <g>
+            <line x1={xAt(hover.t)} x2={xAt(hover.t)} y1={padT - 6} y2={H - padB}
+              stroke="#ee7273" strokeOpacity="0.55" strokeDasharray="4 5" />
+            <circle cx={xAt(hover.t)} cy={yAt(hover.w)} r={8} fill="#fff" stroke="#ee7273" strokeWidth="3" />
+          </g>
+        )}
       </svg>
+
+      <div className="pointer-events-none absolute right-2 top-1 flex items-center rounded-md bg-white/70 px-2 py-1 backdrop-blur-sm sm:right-4 sm:top-2">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto object-contain sm:h-6" />
+      </div>
+
+      <AnimatePresence>
+        {hover && hoverWeek !== null && (
+          <motion.div
+            key={hoverWeek}
+            initial={{ opacity: 0, y: 6, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.96 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            style={{ left: `${(xAt(hover.t) / W) * 100}%` }}
+            className="pointer-events-none absolute top-2 -translate-x-1/2 rounded-2xl bg-ever px-3.5 py-2.5 text-white shadow-[0_10px_30px_rgba(29,67,123,0.28)]"
+          >
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70">Week {hoverWeek}</div>
+            <div className="mt-0.5 flex items-baseline gap-1.5">
+              <span className="text-[18px] font-bold leading-none">{hoverW}</span>
+              <span className="text-[11px] text-white/75">lb · −{hoverLost} lb</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
