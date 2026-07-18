@@ -202,18 +202,17 @@ export function WeightLoss3IntakeFlow() {
     const i = SCREENS.indexOf(id);
     if (i >= 0) setIdx(i);
   };
+  const getNextIndex = (from: number, sex = answers.sex) => {
+    let n = Math.min(SCREENS.length - 1, from + 1);
+    while (sex === "male" && (SCREENS[n] === "safety" || SCREENS[n] === "female_effects")) {
+      n = Math.min(SCREENS.length - 1, n + 1);
+    }
+    if (SCREENS[n] === "female_effects" && sex !== "female") n = n + 1;
+    if (SCREENS[n] === "blocked_pregnancy" || SCREENS[n] === "blocked_minor") n = from;
+    return n;
+  };
   const next = () => {
-    setIdx((i) => {
-      let n = Math.min(SCREENS.length - 1, i + 1);
-      // Skip pregnancy safety + female-only effects for male
-      if (answers.sex === "male" && (SCREENS[n] === "safety" || SCREENS[n] === "female_effects")) {
-        n = Math.min(SCREENS.length - 1, n + (SCREENS[n] === "safety" ? 2 : 1));
-      }
-      if (SCREENS[n] === "female_effects" && answers.sex !== "female") n = n + 1;
-      // never step into terminal blocked screens via next()
-      if (SCREENS[n] === "blocked_pregnancy" || SCREENS[n] === "blocked_minor") n = i;
-      return n;
-    });
+    setIdx((i) => getNextIndex(i));
   };
   const prev = () => {
     setIdx((i) => {
@@ -227,7 +226,9 @@ export function WeightLoss3IntakeFlow() {
   };
   const pickThenNext = <K extends keyof Answers>(key: K, value: Answers[K]) => {
     set({ [key]: value } as Partial<Answers>);
-    setTimeout(next, 220);
+    setTimeout(() => {
+      setIdx((i) => getNextIndex(i, key === "sex" ? (value as Sex) : answers.sex));
+    }, 220);
   };
   const pickSafety = (value: string) => {
     // Any of the first 3 = pregnancy hard stop
