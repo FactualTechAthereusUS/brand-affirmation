@@ -1122,6 +1122,48 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 32, Loading */}
             {current === "loading" && <LoadingScreen firstName={answers.firstName} state={answers.state} />}
+
+            {/* Terminal: Pregnancy hard stop */}
+            {current === "blocked_pregnancy" && (
+              <div className="mx-auto max-w-[560px] py-10 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
+                  Safety first
+                </div>
+                <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">
+                  GLP-1 isn't safe during pregnancy or nursing.
+                </h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">
+                  We'd love to help when the time is right. Leave your email and we'll reach out
+                  when you're eligible — no follow-up until then.
+                </p>
+                <div className="mt-8 flex flex-col gap-3">
+                  <PrimaryButton onClick={() => (window.location.href = "/")}>
+                    Notify me when I'm eligible →
+                  </PrimaryButton>
+                </div>
+              </div>
+            )}
+
+            {/* Terminal: Under 18 hard stop */}
+            {current === "blocked_minor" && (
+              <div className="mx-auto max-w-[560px] py-10 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-ink/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink">
+                  Age requirement
+                </div>
+                <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">
+                  You need to be 18 or older to continue.
+                </h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">
+                  Blissley programs are prescription-only and available to adults 18+. For general
+                  health resources, please talk to a parent, guardian, or your pediatrician.
+                </p>
+                <div className="mt-8">
+                  <PrimaryButton onClick={() => (window.location.href = "/")}>
+                    Return home
+                  </PrimaryButton>
+                </div>
+              </div>
+            )}
           </div>
         </AnimatePresence>
       </div>
