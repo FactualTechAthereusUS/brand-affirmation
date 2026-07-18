@@ -553,19 +553,21 @@ export function TrimRxIntakeFlow() {
                 title="How is your sleep, overall?"
                 sub="How you sleep tells us a lot about your cortisol and metabolic efficiency."
               >
-                {[
-                  { label: "Pretty good", icon: <BedDouble className="h-5 w-5" /> },
-                  { label: "A bit restless", icon: <Frown className="h-5 w-5" /> },
-                  { label: "I don't sleep well", icon: <Moon className="h-5 w-5" /> },
-                ].map((o) => (
-                  <IconOption
-                    key={o.label}
-                    icon={o.icon}
-                    label={o.label}
-                    selected={answers.sleepQuality === o.label}
-                    onClick={() => pickThenNext("sleepQuality", o.label)}
-                  />
-                ))}
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "Pretty good", icon: <BedDouble /> },
+                    { label: "A bit restless", icon: <Frown /> },
+                    { label: "I don't sleep well", icon: <Moon /> },
+                  ].map((o) => (
+                    <IconOption
+                      key={o.label}
+                      icon={o.icon}
+                      label={o.label}
+                      selected={answers.sleepQuality === o.label}
+                      onClick={() => pickThenNext("sleepQuality", o.label)}
+                    />
+                  ))}
+                </div>
               </ScreenShell>
             )}
 
