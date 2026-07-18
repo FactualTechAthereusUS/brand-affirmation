@@ -777,7 +777,7 @@ function CheckoutPage() {
               type="submit"
               disabled={!canSubmit || submitting}
               whileTap={{ scale: 0.99 }}
-              className="w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60"
+              className="order-4 w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60 lg:order-none lg:col-start-1 lg:row-start-3"
               style={{
                 background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)`,
                 boxShadow: `0 18px 40px -12px ${NAVY}66`,
@@ -789,7 +789,7 @@ function CheckoutPage() {
             </motion.button>
 
             {/* Trustpilot */}
-            <div className="flex items-center justify-center gap-2.5 pt-1">
+            <div className="order-5 flex items-center justify-center gap-2.5 pt-1 lg:order-none lg:col-start-1 lg:row-start-4">
               <span className="text-[15px] font-bold text-ink">Excellent</span>
               <img
                 src={trustpilotBadge.url}
@@ -799,7 +799,7 @@ function CheckoutPage() {
             </div>
 
             {/* Trust footer */}
-            <div className="flex flex-col items-center gap-2 text-center">
+            <div className="order-6 flex flex-col items-center gap-2 text-center lg:order-none lg:col-start-1 lg:row-start-5">
               <div className="flex items-center gap-2 text-[12.5px] font-semibold text-ink/70">
                 <Lock className="h-3.5 w-3.5" style={{ color: GREEN }} />
                 256-bit SSL encryption · PCI DSS compliant
@@ -811,7 +811,7 @@ function CheckoutPage() {
               <PayIcons className="mt-1 justify-center" />
             </div>
 
-            <p className="text-center text-[11.5px] leading-relaxed text-ink/50">
+            <p className="order-7 text-center text-[11.5px] leading-relaxed text-ink/50 lg:order-none lg:col-start-1 lg:row-start-6">
               By continuing, I confirm I have read and agree to Blissley's
               Telehealth, Privacy, Shipping, and Terms & Conditions; consent to
               the collection, use, and disclosure of my PHI; and authorize
@@ -822,7 +822,10 @@ function CheckoutPage() {
               Policy.
             </p>
 
-            <ReviewSlider />
+            <div className="order-8 lg:order-none lg:col-start-1 lg:row-start-7">
+              <ReviewSlider />
+            </div>
+
           </motion.div>
         </form>
       </div>
