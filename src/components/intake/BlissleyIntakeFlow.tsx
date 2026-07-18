@@ -55,7 +55,9 @@ type Answers = {
   weightLbs?: string;
   goalWeight?: string;
   firstName?: string;
+  lastName?: string;
   email?: string;
+  symptoms?: string[];
   consent?: boolean;
   sex?: Sex;
   dobMonth?: string;
