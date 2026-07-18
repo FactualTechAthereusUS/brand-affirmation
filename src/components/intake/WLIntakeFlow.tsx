@@ -899,12 +899,14 @@ export function WLIntakeFlow() {
                   <PrimaryButton
                     onClick={next}
                     disabled={
+                      !(answers.diabetesMeds?.length ?? 0) ||
                       (!answers.medications?.trim() && !answers.noMedications) ||
                       (!answers.allergies?.trim() && !answers.noAllergies) ||
                       !answers.state ||
                       !answers.phone?.trim() ||
                       !answers.consentTOS
                     }
+
                   >
                     Get My Results
                   </PrimaryButton>
