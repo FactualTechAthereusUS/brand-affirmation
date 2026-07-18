@@ -847,8 +847,8 @@ export function BlissleyIntakeFlow() {
                 "Low energy or fatigue",
                 "None of the above",
               ];
-              const symptomsDone = (answers.symptoms && answers.symptoms.length) > 0;
-              const conditionsDone = (answers.healthConditions && answers.healthConditions.length) > 0;
+              const symptomsDone = (answers.symptoms?.length ?? 0) > 0;
+              const conditionsDone = (answers.healthConditions?.length ?? 0) > 0;
               return (
                 <ScreenShell
                   title="A few more {{health questions.}}"
