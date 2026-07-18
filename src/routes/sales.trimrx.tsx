@@ -232,7 +232,7 @@ function PlanCard({
   const isPopular = plan.badge?.kind === "popular";
   // Selected accents: green for Most Popular, blue for Best Deal
   const GREEN = "#16A34A";
-  const GREEN_TINT = "#EAFBEF";
+  const GREEN_TINT = "#F0FDF4";
   const BLUE_TINT = "#DFF0FA";
   const accent = isBest ? NAVY : isPopular ? GREEN : NAVY;
   const bg = selected
@@ -266,8 +266,8 @@ function PlanCard({
             <span
               className="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-semibold"
               style={{
-                background: isBest ? "#DDECF5" : "#DFF4E6",
-                color: isBest ? NAVY : "#137A3A",
+                background: isBest ? "#DDECF5" : "#DCFCE7",
+                color: isBest ? NAVY : "#16A34A",
               }}
             >
               {plan.badge.label}
@@ -308,9 +308,9 @@ function PlanCard({
         <div
           className="mt-4 rounded-xl border border-dashed py-2 text-center text-[13px] font-semibold"
           style={{
-            background: "#EAF7EE",
-            borderColor: "#8FCBA0",
-            color: "#137A3A",
+            background: "#F0FDF4",
+            borderColor: "#86EFAC",
+            color: "#16A34A",
           }}
         >
           You are saving ${plan.savings.toLocaleString()}
@@ -379,6 +379,15 @@ function SalesTrimRxPage() {
       savings: 120,
     },
     {
+      key: "six",
+      title: "6-Month Plan",
+      desc: "Your ultimate plan for guaranteed success and consistency",
+      supply: "24 Week Supply",
+      perMo: 191,
+      savings: 526,
+      installments: true,
+    },
+    {
       key: "three",
       title: "3-Month Plan",
       desc: "Receive your 3 month supply in a single shipment",
@@ -387,15 +396,6 @@ function SalesTrimRxPage() {
       savings: 149,
       installments: true,
       badge: { label: "Most Popular", kind: "popular" },
-    },
-    {
-      key: "six",
-      title: "6-Month Plan",
-      desc: "Your ultimate plan for guaranteed success and consistency",
-      supply: "24 Week Supply",
-      perMo: 191,
-      savings: 526,
-      installments: true,
     },
     {
       key: "twelve",
