@@ -138,6 +138,7 @@ function TreatmentCard({
   badgeColor,
   badgeIcon: BadgeIcon,
   vial,
+  vialBg,
   patients,
   selected,
   onSelect,
@@ -149,6 +150,7 @@ function TreatmentCard({
   badgeColor: string;
   badgeIcon: React.ComponentType<{ className?: string }>;
   vial: string;
+  vialBg: string;
   patients: string;
   selected: boolean;
   onSelect: () => void;
@@ -170,34 +172,29 @@ function TreatmentCard({
       aria-labelledby={`${id}-title`}
     >
       <div
-        className="grid h-[74px] w-[74px] shrink-0 place-items-center overflow-hidden rounded-xl sm:h-[86px] sm:w-[86px]"
-        style={{ background: `${NAVY}0A` }}
+        className="grid h-[104px] w-[104px] shrink-0 place-items-center overflow-hidden rounded-xl sm:h-[116px] sm:w-[116px]"
+        style={{ background: vialBg }}
       >
-        <img src={vial} alt="" className="h-full w-full object-contain p-1" />
+        <img src={vial} alt="" className="h-full w-full object-contain p-2" />
       </div>
       <div className="min-w-0 flex-1">
-        <div id={`${id}-title`} className="text-[16px] font-semibold text-ink sm:text-[17px]">
+        <div id={`${id}-title`} className="text-[18px] font-semibold text-ink sm:text-[20px]">
           {title}
         </div>
-        <div className="mt-0.5 text-[13.5px] text-ink/60 sm:text-[14px]">{desc}</div>
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <Pill color={badgeColor}>
-            <BadgeIcon className="h-3.5 w-3.5" />
-            {badge}
-          </Pill>
-          <span className="inline-flex items-center gap-1.5 text-[12px] text-ink/55">
-            <span
-              className="h-1.5 w-1.5 rounded-full"
-              style={{ background: PINK }}
-            />
-            {patients}
-          </span>
+        <div className="mt-1 text-[14px] leading-snug text-ink/60 sm:text-[15px]">{desc}</div>
+        <div className="mt-2 flex items-center gap-1.5 text-[14px] font-medium" style={{ color: badgeColor }}>
+          <BadgeIcon className="h-4 w-4" />
+          {badge}
+        </div>
+        <div className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] text-ink/75">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#16A34A" }} />
+          {patients}
         </div>
       </div>
       <span
-        className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-full border-2 transition-colors"
+        className="grid h-[26px] w-[26px] shrink-0 place-items-center self-start rounded-full border transition-colors"
         style={{
-          borderColor: selected ? NAVY : "rgba(23,23,23,0.20)",
+          borderColor: selected ? NAVY : "rgba(23,23,23,0.22)",
           background: selected ? NAVY : "transparent",
         }}
         aria-hidden
