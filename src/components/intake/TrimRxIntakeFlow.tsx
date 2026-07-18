@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Link } from "@tanstack/react-router";
 import {
   Moon,
   Frown,
@@ -15,13 +14,13 @@ import {
   Scale as ScaleIcon,
 } from "lucide-react";
 import {
-  BackBtn,
   OptionCard,
   PrimaryButton,
   ScreenShell,
   StateSelect,
   TextField,
 } from "./primitives";
+import { TrxHeader } from "./TrxUI";
 import logo from "@/assets/blissley-logo.png.asset.json";
 import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
