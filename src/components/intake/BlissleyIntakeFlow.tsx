@@ -185,25 +185,38 @@ function YesNoWithDetail({
   );
 }
 
-/* ═════════════ BMI meter (visual segmented) ═════════════ */
+/* ═════════════ BMI meter (visual segmented, color-coded) ═════════════ */
 function BmiMeter({ bmi }: { bmi: number }) {
   // Range 15 - 45 mapped to 0-100%
   const min = 15, max = 45;
   const pct = Math.max(0, Math.min(100, ((bmi - min) / (max - min)) * 100));
+
   const segs = [
-    { label: "Underweight", range: "<18.5", to: 18.5 },
-    { label: "Normal", range: "18.5-24.9", to: 25 },
-    { label: "Overweight", range: "25-29.9", to: 30 },
-    { label: "Obese", range: "≥30", to: max },
+    { label: "Underweight", range: "<18.5", color: "#4A90D9", tint: "rgba(74,144,217,0.14)" },
+    { label: "Normal",      range: "18.5-24.9", color: "#3FA663", tint: "rgba(63,166,99,0.14)" },
+    { label: "Overweight",  range: "25-29.9", color: "#E0A83B", tint: "rgba(224,168,59,0.16)" },
+    { label: "Obese",       range: "≥30",    color: "#ee7273", tint: "rgba(238,114,115,0.16)" },
   ];
-  const activeIdx =
-    bmi < 18.5 ? 0 : bmi < 25 ? 1 : bmi < 30 ? 2 : 3;
+
+  const activeIdx = bmi < 18.5 ? 0 : bmi < 25 ? 1 : bmi < 30 ? 2 : 3;
+  const active = segs[activeIdx];
+
   const label =
     bmi < 18.5 ? "Underweight" :
-    bmi < 25 ? "Normal" :
-    bmi < 30 ? "Overweight" :
-    bmi < 35 ? "Obese" :
-    bmi < 40 ? "Severe Obesity" : "Extreme Obesity";
+    bmi < 25   ? "Normal" :
+    bmi < 30   ? "Overweight" :
+    bmi < 35   ? "Obese" :
+    bmi < 40   ? "Severe Obesity" : "Extreme Obesity";
+
+  const message =
+    bmi < 18.5 ? "Your BMI is below the healthy range. GLP-1 therapy isn't the right fit - let's focus on nourishment first."
+    : bmi < 25 ? `Your BMI of ${bmi} sits in the healthy range. GLP-1 therapy is generally reserved for higher BMIs.`
+    : bmi < 27 ? `Your BMI of ${bmi} is slightly elevated. You may qualify with a related condition - we'll check next.`
+    : bmi < 30 ? `Your BMI of ${bmi} qualifies you for GLP-1 therapy. Patients in this range typically lose 15-20% of body weight.`
+    : bmi < 35 ? `Your BMI of ${bmi} indicates obesity. Clinically, GLP-1 medications are a strong fit - patients here lose an average of 21% body weight.`
+    : bmi < 40 ? `Your BMI of ${bmi} indicates severe obesity. GLP-1 therapy is clinically indicated - you're exactly who this treatment was designed for.`
+    : `Your BMI of ${bmi} places you in the highest-risk category. GLP-1 therapy paired with clinical oversight can be life-changing.`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -211,36 +224,79 @@ function BmiMeter({ bmi }: { bmi: number }) {
       transition={{ duration: 0.35 }}
       className="mt-2"
     >
-      <div className="text-[13px] font-medium text-ink/60">Your BMI</div>
-      <div className="relative mt-2 h-[54px] w-full overflow-hidden rounded-full bg-ink/[0.06]">
+      <div className="flex items-baseline justify-between">
+        <div className="text-[13px] font-medium text-ink/60">Your BMI</div>
+        <div className="text-[13px] font-semibold" style={{ color: active.color }}>{label}</div>
+      </div>
+
+      {/* Meter */}
+      <div
+        className="relative mt-2 h-[54px] w-full overflow-hidden rounded-full"
+        style={{ background: active.tint }}
+      >
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${Math.max(pct, 18)}%` }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-y-0 left-0 flex items-center justify-center rounded-full"
-          style={{ background: "#ee7273" }}
+          style={{ background: active.color }}
         >
           <motion.span
+            key={label}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35 }}
-            className="whitespace-nowrap px-4 text-[15px] font-semibold text-ink"
+            className="whitespace-nowrap px-4 text-[15px] font-semibold text-white"
           >
             {bmi} · {label}
           </motion.span>
         </motion.div>
       </div>
+
+      {/* Segment legend */}
       <div className="mt-3 grid grid-cols-4 gap-2">
-        {segs.map((s, i) => (
-          <div key={s.label} className={i === activeIdx ? "text-ink" : "text-ink/45"}>
-            <div className={`text-[13px] ${i === activeIdx ? "font-semibold" : "font-medium"}`}>{s.label}</div>
-            <div className="text-[12px] text-ink/45">{s.range}</div>
-          </div>
-        ))}
+        {segs.map((s, i) => {
+          const isActive = i === activeIdx;
+          return (
+            <div key={s.label}>
+              <div
+                className="h-[3px] w-full rounded-full transition-all"
+                style={{
+                  background: isActive ? s.color : "rgba(23,23,23,0.10)",
+                  transform: isActive ? "scaleY(1.6)" : "scaleY(1)",
+                }}
+              />
+              <div
+                className={`mt-1.5 text-[12.5px] ${isActive ? "font-semibold" : "font-medium text-ink/45"}`}
+                style={isActive ? { color: s.color } : undefined}
+              >
+                {s.label}
+              </div>
+              <div className="text-[11.5px] text-ink/40">{s.range}</div>
+            </div>
+          );
+        })}
       </div>
+
+      {/* Contextual guidance card */}
+      <motion.div
+        key={message}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.4 }}
+        className="mt-4 rounded-2xl border p-3.5 text-[13.5px] leading-[1.55]"
+        style={{
+          borderColor: active.color,
+          background: active.tint,
+          color: "#171717",
+        }}
+      >
+        {message}
+      </motion.div>
     </motion.div>
   );
 }
+
 
 
 export function BlissleyIntakeFlow() {
