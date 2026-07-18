@@ -772,6 +772,16 @@ function CheckoutPage() {
                 : `Continue — $0 charged today`}
             </motion.button>
 
+            {/* Trustpilot */}
+            <div className="flex items-center justify-center gap-2.5 pt-1">
+              <span className="text-[15px] font-bold text-ink">Excellent</span>
+              <img
+                src={trustpilotBadge.url}
+                alt="Trustpilot — Excellent"
+                className="h-5 w-auto"
+              />
+            </div>
+
             {/* Trust footer */}
             <div className="flex flex-col items-center gap-2 text-center">
               <div className="flex items-center gap-2 text-[12.5px] font-semibold text-ink/70">
