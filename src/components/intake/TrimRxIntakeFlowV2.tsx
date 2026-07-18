@@ -177,7 +177,7 @@ function YesNoWithDetail({
 }
 
 /* ────────────  Main  ──────────── */
-export function TrimRxIntakeFlow() {
+export function TrimRxIntakeFlowV2() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
 
