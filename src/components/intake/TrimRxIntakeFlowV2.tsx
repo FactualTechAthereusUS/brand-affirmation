@@ -31,6 +31,7 @@ import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman-2.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+import rankedHero from "@/assets/ranked-hero.png.asset.json";
 
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import review22 from "@/assets/review-22.png.asset.json";
