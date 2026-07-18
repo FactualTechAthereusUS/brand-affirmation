@@ -565,6 +565,21 @@ function SalesTrimRxPage() {
 
       {/* SECTION 3 — Includes / How it works */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
+        {/* Trust row */}
+        <div className="mb-8 flex flex-col items-center gap-3">
+          <img
+            src={trustpilot.url}
+            alt="Excellent 4.8 · 100,000+ happy customers"
+            className="h-6 w-auto sm:h-7"
+          />
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">
+              As seen on
+            </span>
+            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
+          </div>
+        </div>
+
         <div className="p-6 sm:p-8">
           <h3 className="text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
           <ul className="mt-4 flex flex-col gap-3.5">
