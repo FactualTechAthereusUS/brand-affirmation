@@ -18,6 +18,7 @@ import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
+import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
@@ -259,6 +260,7 @@ function CheckoutPage() {
     country: "United States",
     billingSame: true,
     priority: false,
+    insurance: false,
   });
   const [payMethod, setPayMethod] = useState<"card" | "afterpay" | "klarna" | "affirm">(
     "card",
@@ -662,29 +664,52 @@ function CheckoutPage() {
                         Use shipping address as billing address
                       </label>
 
-                      {/* Priority upsell — part of the same flow */}
-                      <label
-                        className="flex cursor-pointer items-start gap-3 border-t border-black/10 px-4 py-4"
-                        style={{
-                          background: form.priority ? "#fff1f1" : "#F3F4F6",
-                        }}
-                      >
-                        <CheckBox
+                      {/* Upsells — part of the same flow */}
+                      <div className="border-t border-black/10 bg-white">
+                        <UpsellRow
+                          on={form.insurance}
+                          onToggle={() => set("insurance", !form.insurance)}
+                          icon={
+                            <img
+                              src={iconDeliveryShield.url}
+                              alt=""
+                              className="h-7 w-7 object-contain invert"
+                            />
+                          }
+                          title={
+                            <>
+                              Shipping insurance{" "}
+                              <span className="font-bold">($3.95)</span>
+                            </>
+                          }
+                          desc="100% Payment guarantee & protect your order from damage, loss, or theft."
+                        />
+                        <div className="mx-4 h-px bg-black/5" />
+                        <UpsellRow
                           on={form.priority}
                           onToggle={() => set("priority", !form.priority)}
-                          color={PINK}
+                          icon={
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2.2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="h-7 w-7 text-white"
+                            >
+                              <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
+                            </svg>
+                          }
+                          title={
+                            <>
+                              Front-of-the-line review{" "}
+                              <span className="font-bold">($49.95)</span>
+                            </>
+                          }
+                          desc="Skip the 6–24 hour wait. Get an instant telehealth review right now."
                         />
-                        <div>
-                          <div className="text-[14.5px] font-bold text-ink">
-                            Yes, put my order at the front of the line!
-                          </div>
-                          <div className="mt-1 text-[13px] leading-snug text-ink/65">
-                            Doctors typically review within 6–24 hours.{" "}
-                            <b>Skip the wait for only $49.95</b> and get an
-                            instant telehealth review right now.
-                          </div>
-                        </div>
-                      </label>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -893,5 +918,54 @@ function CheckBox({
     >
       {on && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3.4} />}
     </span>
+  );
+}
+
+function UpsellRow({
+  on,
+  onToggle,
+  icon,
+  title,
+  desc,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  icon: React.ReactNode;
+  title: React.ReactNode;
+  desc: string;
+}) {
+  return (
+    <label
+      className="flex cursor-pointer items-center gap-3 px-4 py-4 sm:gap-4"
+      style={{ background: on ? "#FFF7F7" : "transparent" }}
+    >
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink sm:h-12 sm:w-12">
+        {icon}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="text-[14px] font-semibold leading-tight text-ink sm:text-[15px]">
+          {title}
+        </div>
+        <div className="mt-1 text-[12.5px] leading-snug text-ink/60 sm:text-[13px]">
+          {desc}
+        </div>
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        onClick={(e) => {
+          e.preventDefault();
+          onToggle();
+        }}
+        className="relative h-7 w-12 shrink-0 rounded-full transition-colors"
+        style={{ background: on ? PINK : "#111111" }}
+      >
+        <span
+          className="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all"
+          style={{ left: on ? "calc(100% - 1.25rem - 0.25rem)" : "0.25rem" }}
+        />
+      </button>
+    </label>
   );
 }
