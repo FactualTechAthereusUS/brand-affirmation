@@ -37,8 +37,8 @@ import trxRankedHero from "@/assets/trx-ranked-desktop.png.asset.json";
 import trxRankedHeroMobile from "@/assets/trx-ranked-mobile.png.asset.json";
 
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
-import review22 from "@/assets/review-22.png.asset.json";
-import review27 from "@/assets/review-27.png.asset.json";
+import kristinBefore from "@/assets/kristin-before.png.asset.json";
+import kristinAfter from "@/assets/kristin-after.png.asset.json";
 
 /* ────────────  Types  ──────────── */
 type Sex = "female" | "male";
