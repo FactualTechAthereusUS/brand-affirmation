@@ -352,21 +352,15 @@ export function TrimRxIntakeFlowV2() {
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-28 md:h-36 bg-black/30 backdrop-blur-[10px]" />
                   <div className="absolute inset-x-4 bottom-4 md:inset-x-6 md:bottom-6">
-                    <div
-                      className="inline-flex max-w-full items-center gap-3 rounded-2xl border border-white/25 bg-white/12 px-4 py-3 md:px-5 md:py-3.5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
-                    >
-                      <div className="grid h-10 w-10 md:h-11 md:w-11 shrink-0 place-items-center rounded-xl bg-white/90 text-[#1D437B]">
-                        <Trophy className="h-5 w-5 md:h-[22px] md:w-[22px]" />
+                    <div className="min-w-0">
+                      <div className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.14em] text-white/90">
+                        Join over 500K success stories
                       </div>
-                      <div className="min-w-0">
-                        <div className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.14em] text-white/85">
-                          Join over 500K success stories
-                        </div>
-                        <div className="mt-0.5 text-[13px] md:text-[14px] text-white/95">
-                          Start your journey today
-                        </div>
+                      <div className="mt-1 text-[15px] md:text-[17px] font-semibold text-white">
+                        Start your journey today
                       </div>
                     </div>
                   </div>
