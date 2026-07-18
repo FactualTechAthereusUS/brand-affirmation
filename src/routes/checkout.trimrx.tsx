@@ -936,7 +936,7 @@ function UpsellRow({
 }) {
   return (
     <label
-      className="flex cursor-pointer items-center gap-3 px-4 py-4 sm:gap-4"
+      className="flex cursor-pointer items-start gap-3 px-4 py-4 sm:gap-4"
       style={{ background: on ? "#FFF7F7" : "transparent" }}
     >
       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink sm:h-12 sm:w-12">
@@ -950,22 +950,42 @@ function UpsellRow({
           {desc}
         </div>
       </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={on}
-        onClick={(e) => {
+      <CheckCircle on={on} onToggle={onToggle} />
+    </label>
+  );
+}
+
+function CheckCircle({
+  on,
+  onToggle,
+  color = NAVY,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  color?: string;
+}) {
+  return (
+    <span
+      role="checkbox"
+      aria-checked={on}
+      tabIndex={0}
+      onClick={(e) => {
+        e.preventDefault();
+        onToggle();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === " " || e.key === "Enter") {
           e.preventDefault();
           onToggle();
-        }}
-        className="relative h-7 w-12 shrink-0 rounded-full transition-colors"
-        style={{ background: on ? PINK : "#111111" }}
-      >
-        <span
-          className="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all"
-          style={{ left: on ? "calc(100% - 1.25rem - 0.25rem)" : "0.25rem" }}
-        />
-      </button>
-    </label>
+        }
+      }}
+      className="mt-0.5 grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded-full border-2 transition-colors"
+      style={{
+        borderColor: on ? color : "rgba(0,0,0,0.22)",
+        background: on ? color : "#FFFFFF",
+      }}
+    >
+      {on && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3.4} />}
+    </span>
   );
 }
