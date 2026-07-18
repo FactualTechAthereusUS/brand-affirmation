@@ -62,7 +62,7 @@ export const Route = createFileRoute("/checkout/trimrx")({
 
 /* ── Plan catalog ── */
 type PlanDef = {
-  key: "monthly" | "three" | "six" | "twelve";
+  key: "monthly" | "three" | "six";
   title: string;
   supply: string;
   months: number;
@@ -73,45 +73,68 @@ type PlanDef = {
   badge?: { label: string; kind: "popular" | "best" };
 };
 
-const PLANS: Record<PlanDef["key"], PlanDef> = {
-  monthly: {
-    key: "monthly",
-    title: "Monthly Plan",
-    supply: "4 Week Supply",
-    months: 1,
-    perMo: 179,
-    originalPerMo: 299,
-    todayPrice: 179,
-    savings: 120,
+const PLANS: Record<"sema" | "tirz", Record<PlanDef["key"], PlanDef>> = {
+  sema: {
+    monthly: {
+      key: "monthly",
+      title: "Monthly Plan",
+      supply: "4 Week Supply",
+      months: 1,
+      perMo: 249,
+      originalPerMo: 299,
+      todayPrice: 249,
+      savings: 50,
+    },
+    three: {
+      key: "three",
+      title: "3-Month Plan",
+      supply: "12 Week Supply",
+      months: 3,
+      perMo: 237,
+      originalPerMo: 299,
+      savings: 186,
+      badge: { label: "Most Popular", kind: "popular" },
+    },
+    six: {
+      key: "six",
+      title: "6-Month Plan",
+      supply: "24 Week Supply",
+      months: 6,
+      perMo: 237,
+      originalPerMo: 299,
+      savings: 522,
+    },
   },
-  three: {
-    key: "three",
-    title: "3-Month Plan",
-    supply: "12 Week Supply",
-    months: 3,
-    perMo: 209,
-    originalPerMo: 299,
-    savings: 149,
-    badge: { label: "Most Popular", kind: "popular" },
-  },
-  six: {
-    key: "six",
-    title: "6-Month Plan",
-    supply: "24 Week Supply",
-    months: 6,
-    perMo: 191,
-    originalPerMo: 299,
-    savings: 526,
-  },
-  twelve: {
-    key: "twelve",
-    title: "12-Month Plan",
-    supply: "48 Week Supply",
-    months: 12,
-    perMo: 174,
-    originalPerMo: 299,
-    savings: 1370,
-    badge: { label: "Best Deal", kind: "best" },
+  tirz: {
+    monthly: {
+      key: "monthly",
+      title: "Monthly Plan",
+      supply: "4 Week Supply",
+      months: 1,
+      perMo: 299,
+      originalPerMo: 399,
+      todayPrice: 299,
+      savings: 100,
+    },
+    three: {
+      key: "three",
+      title: "3-Month Plan",
+      supply: "12 Week Supply",
+      months: 3,
+      perMo: 339,
+      originalPerMo: 399,
+      savings: 180,
+      badge: { label: "Most Popular", kind: "popular" },
+    },
+    six: {
+      key: "six",
+      title: "6-Month Plan",
+      supply: "24 Week Supply",
+      months: 6,
+      perMo: 299,
+      originalPerMo: 399,
+      savings: 600,
+    },
   },
 };
 
