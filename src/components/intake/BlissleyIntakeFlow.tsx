@@ -139,26 +139,8 @@ const STAGE_MAP: Record<ScreenId, number> = {
   blocked_minor: 4, blocked_pregnancy: 4,
 };
 
-/* ═════════════ Header (Blissley only) ═════════════ */
-function Header({ onBack, showBack }: { onBack: () => void; showBack: boolean }) {
-  return (
-    <div className="relative mx-auto w-full max-w-[1080px] px-4 py-4 md:px-8 md:py-6">
-      {showBack && (
-        <button
-          type="button"
-          onClick={onBack}
-          className="absolute left-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink md:left-4"
-          aria-label="Back"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </button>
-      )}
-      <div className="mx-auto flex items-center justify-center">
-        <img src={blissleyLogo.url} alt="Blissley" className="block h-9 w-auto sm:h-11 md:h-12" />
-      </div>
-    </div>
-  );
-}
+
+
 
 /* ═════════════ Yes/No + optional detail ═════════════ */
 function YesNoWithDetail({
