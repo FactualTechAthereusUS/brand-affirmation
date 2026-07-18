@@ -175,7 +175,7 @@ function TreatmentCard({
         className="grid h-[104px] w-[104px] shrink-0 place-items-center overflow-hidden rounded-xl sm:h-[116px] sm:w-[116px]"
         style={{ background: vialBg }}
       >
-        <img src={vial} alt="" className="h-full w-full object-contain p-2" />
+        <img src={vial} alt="" className="h-full w-full object-cover" />
       </div>
       <div className="min-w-0 flex-1">
         <div id={`${id}-title`} className="text-[18px] font-semibold text-ink sm:text-[20px]">
