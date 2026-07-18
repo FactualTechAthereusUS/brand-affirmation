@@ -152,14 +152,14 @@ function TreatmentCard({
         </div>
       </div>
       <span
-        className="grid h-[24px] w-[24px] shrink-0 place-items-center rounded-full border-2 transition-colors"
+        className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-full border-2 transition-colors"
         style={{
           borderColor: selected ? NAVY : "rgba(23,23,23,0.20)",
           background: selected ? NAVY : "transparent",
         }}
         aria-hidden
       >
-        {selected && <span className="h-2 w-2 rounded-full bg-white" />}
+        {selected && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3.4} />}
       </span>
     </motion.button>
   );
