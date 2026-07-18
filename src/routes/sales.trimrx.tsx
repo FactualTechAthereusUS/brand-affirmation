@@ -22,6 +22,7 @@ import trustpilot from "@/assets/trustpilot-rating.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
+import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
 
 export const Route = createFileRoute("/sales/trimrx")({
   component: SalesTrimRxPage,
