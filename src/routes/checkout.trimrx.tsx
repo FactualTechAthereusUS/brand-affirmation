@@ -456,7 +456,7 @@ function CheckoutPage() {
         </div>
 
         {/* ── RIGHT: Forms ── */}
-        <form onSubmit={onSubmit} className="order-2 lg:order-1">
+        <form onSubmit={onSubmit} className="order-1 lg:order-1">
           <motion.div
             initial="hidden"
             animate="show"
