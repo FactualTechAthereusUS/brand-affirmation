@@ -488,10 +488,11 @@ function SalesTrimRxPage() {
             title="Semaglutide"
             desc="Proven, effective, more affordable."
             badge="More Affordable"
-            badgeColor="#1a8f5a"
+            badgeColor="#16A34A"
             badgeIcon={MoneyIcon}
             vial={vialSema.url}
-            patients="12,555 patients chose this today"
+            vialBg="#E4F1E6"
+            patients="12,886 patients chose this today"
             selected={treatment === "sema"}
             onSelect={() => setTreatment("sema")}
           />
@@ -500,10 +501,11 @@ function SalesTrimRxPage() {
             title="Tirzepatide"
             desc="Faster results, dual-action, but more expensive."
             badge="Fastest Results"
-            badgeColor={PINK}
+            badgeColor={NAVY}
             badgeIcon={LightningIcon}
             vial={vialTirz.url}
-            patients="15,180 patients chose this today"
+            vialBg="#BFDDEE"
+            patients="19,720 patients chose this today"
             selected={treatment === "tirz"}
             onSelect={() => setTreatment("tirz")}
           />
