@@ -784,11 +784,7 @@ function FormCard({ children }: { children: React.ReactNode }) {
         show: { opacity: 1, y: 0, filter: "blur(0px)" },
       }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="rounded-3xl border bg-white p-5 sm:p-6"
-      style={{
-        borderColor: "rgba(29,67,123,0.10)",
-        boxShadow: "0 20px 60px -30px rgba(29,67,123,0.18)",
-      }}
+      className="p-0"
     >
       {children}
     </motion.div>
