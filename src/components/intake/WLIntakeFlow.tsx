@@ -44,8 +44,11 @@ type Answers = {
   glp1Dose?: string;
   qualifyingConditions?: string[];
   weightSymptoms?: string[];
+  bloodPressure?: string;
+  restingHR?: string;
   contraindications?: string[];
   bariatric?: string;
+  diabetesMeds?: string[];
   medications?: string;
   noMedications?: boolean;
   allergies?: string;
@@ -55,6 +58,7 @@ type Answers = {
   consentTOS?: boolean;
   consentSMS?: boolean;
 };
+
 
 
 const US_STATES = [
@@ -108,12 +112,15 @@ const BASE_SCREENS = [
   "glp1",              // 9
   "conditions",        // 10
   "weight_symptoms",   // NEW C
+  "bp",                // NEW — blood pressure
+  "hr",                // NEW — resting heart rate
   "projection",        // calculator clone
   "contra",            // 11
   "bariatric",         // NEW D
   "meds",              // 12
   "loading",
 ];
+
 
 
 function buildFlow(sex?: Sex) {
@@ -749,12 +756,17 @@ export function WLIntakeFlow() {
                   "None of the above",
                   "High blood pressure",
                   "High cholesterol",
+                  "Dyslipidemia / high triglycerides",
                   "Prediabetes",
                   "Type 2 diabetes (not on insulin)",
+                  "Metabolic syndrome",
                   "PCOS",
                   "Sleep apnea",
+                  "Non-alcoholic fatty liver disease (NAFLD)",
+                  "Cardiovascular or coronary artery disease",
                   "Acid reflux or GERD",
                   "Joint pain related to weight",
+
                 ].map((o) => (
                   <OptionCard
                     key={o}
@@ -766,6 +778,54 @@ export function WLIntakeFlow() {
                 ))}
               </ScreenShell>
             )}
+
+            {/* NEW — Blood pressure */}
+            {current === "bp" && (
+              <ScreenShell
+                title="What is your blood pressure range?"
+                sub="A blood pressure reading looks like 120/80. If you're not sure, choose the closest option."
+              >
+                {[
+                  "Less than 120/80 — Normal",
+                  "120–129 / below 80 — Slightly elevated",
+                  "130–139 / 80–89 — Stage 1 high blood pressure",
+                  "140/90 or higher — Stage 2 high blood pressure",
+                  "I don't know",
+                ].map((o) => (
+                  <OptionCard
+                    key={o}
+                    label={o}
+                    selected={answers.bloodPressure === o}
+                    onClick={() => pickThenNext("bloodPressure", o)}
+                  />
+                ))}
+              </ScreenShell>
+            )}
+
+            {/* NEW — Resting heart rate */}
+            {current === "hr" && (
+              <ScreenShell
+                title="What is your average resting heart rate?"
+                sub="Check your pulse for 60 seconds, or use your phone's health app."
+              >
+                {[
+                  "Below 60 bpm",
+                  "60 to 100 bpm — Normal",
+                  "101 to 110 bpm",
+                  "Above 110 bpm",
+                  "I don't know",
+                ].map((o) => (
+                  <OptionCard
+                    key={o}
+                    label={o}
+                    selected={answers.restingHR === o}
+                    onClick={() => pickThenNext("restingHR", o)}
+                  />
+                ))}
+              </ScreenShell>
+            )}
+
+
 
             {/* Projection (calculator clone) */}
             {current === "projection" && (
@@ -814,6 +874,10 @@ export function WLIntakeFlow() {
                   "Severe gastrointestinal condition (gastroparesis or IBD)",
                   "Active suicidal thoughts or recent attempt",
                   "Known allergy to semaglutide or tirzepatide",
+                  "Active or prior pancreatitis",
+                  "Triglycerides over 600 mg/dL at any point",
+                  "Alcohol or opioid use disorder (untreated)",
+
                 ].map((o) => (
                   <OptionCard
                     key={o}
@@ -835,19 +899,46 @@ export function WLIntakeFlow() {
                   <PrimaryButton
                     onClick={next}
                     disabled={
+                      !(answers.diabetesMeds?.length ?? 0) ||
                       (!answers.medications?.trim() && !answers.noMedications) ||
                       (!answers.allergies?.trim() && !answers.noAllergies) ||
                       !answers.state ||
                       !answers.phone?.trim() ||
                       !answers.consentTOS
                     }
+
                   >
                     Get My Results
                   </PrimaryButton>
                 }
               >
+                <div>
+                  <span className="mb-2 block text-[13px] font-medium text-ink/70">
+                    Are you currently taking any of these diabetes medications?
+                  </span>
+                  <div className="grid gap-2">
+                    {[
+                      "None of these",
+                      "Insulin (any type)",
+                      "Glimepiride (Amaryl)",
+                      "Glipizide",
+                      "Glyburide",
+                      "Meglitinides (repaglinide, nateglinide)",
+                      "Sitagliptin, Saxagliptin, Linagliptin, or Alogliptin",
+                    ].map((o) => (
+                      <OptionCard
+                        key={o}
+                        label={o}
+                        compact
+                        selected={answers.diabetesMeds?.includes(o) ?? false}
+                        onClick={() => toggleMulti("diabetesMeds", o, "None of these")}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <label className="block">
-                  <span className="mb-2 block text-[13px] font-medium text-ink/70">Current medications</span>
+                  <span className="mb-2 block text-[13px] font-medium text-ink/70">Any other medications not listed above?</span>
+
                   <textarea
                     value={answers.noMedications ? "None" : (answers.medications ?? "")}
                     onChange={(e) => set({ medications: e.target.value, noMedications: false })}
