@@ -500,7 +500,7 @@ export function TrimRxIntakeFlowV2() {
                   </div>
 
                   {/* Full-bleed hero image body */}
-                  <div className="relative w-full aspect-[9/14] sm:aspect-[16/10] md:aspect-[16/9]">
+                  <div className="relative w-full aspect-[9/14] sm:aspect-[16/10] lg:aspect-auto lg:flex-1">
                     {/* Mobile image */}
                     <img
                       src={trxRankedHeroMobile.url}
