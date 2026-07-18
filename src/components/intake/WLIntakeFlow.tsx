@@ -112,12 +112,15 @@ const BASE_SCREENS = [
   "glp1",              // 9
   "conditions",        // 10
   "weight_symptoms",   // NEW C
+  "bp",                // NEW — blood pressure
+  "hr",                // NEW — resting heart rate
   "projection",        // calculator clone
   "contra",            // 11
   "bariatric",         // NEW D
   "meds",              // 12
   "loading",
 ];
+
 
 
 function buildFlow(sex?: Sex) {
