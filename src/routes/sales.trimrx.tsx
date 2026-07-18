@@ -420,10 +420,8 @@ function SalesTrimRxPage() {
 
   return (
     <div className="min-h-screen" style={{ background: CANVAS }}>
-      <TrxHeader onBack={() => window.history.back()} showBack={false} />
-
-      {/* Discount banner */}
-      <div className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-4 sm:px-6">
+      {/* Discount banner — TOP of page */}
+      <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
         <div
           className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-3 text-center text-[13px] font-semibold sm:text-[14px]"
           style={{
@@ -437,6 +435,7 @@ function SalesTrimRxPage() {
         </div>
       </div>
 
+      <TrxHeader onBack={() => window.history.back()} showBack={false} />
 
       {/* SECTION 1 — Reservation + Treatment */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-10 pt-2 sm:px-6">
@@ -452,7 +451,7 @@ function SalesTrimRxPage() {
         >
           Only <b>29</b> discounts left.
           <br />
-          Yours is reserved for <b style={{ color: PINK }}>{time}</b>
+          Yours is reserved for <b style={{ color: NAVY }}>{time}</b>
         </motion.div>
 
         <motion.h1
@@ -466,7 +465,7 @@ function SalesTrimRxPage() {
             <span
               aria-hidden
               className="absolute inset-x-0 -bottom-0.5 h-[3px] rounded-full"
-              style={{ background: PINK }}
+              style={{ background: NAVY_SOFT, opacity: 0.7 }}
             />
           </span>
         </motion.h1>
@@ -512,21 +511,6 @@ function SalesTrimRxPage() {
             selected={treatment === "tirz"}
             onSelect={() => setTreatment("tirz")}
           />
-        </div>
-
-        {/* Trust row */}
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <img
-            src={trustpilot.url}
-            alt="Excellent 4.8 · 100,000+ happy customers"
-            className="h-6 w-auto sm:h-7"
-          />
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">
-              As seen on
-            </span>
-            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
-          </div>
         </div>
       </section>
 
@@ -581,6 +565,21 @@ function SalesTrimRxPage() {
 
       {/* SECTION 3 — Includes / How it works */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
+        {/* Trust row */}
+        <div className="mb-8 flex flex-col items-center gap-3">
+          <img
+            src={trustpilot.url}
+            alt="Excellent 4.8 · 100,000+ happy customers"
+            className="h-6 w-auto sm:h-7"
+          />
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">
+              As seen on
+            </span>
+            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
+          </div>
+        </div>
+
         <div className="p-6 sm:p-8">
           <h3 className="text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
           <ul className="mt-4 flex flex-col gap-3.5">
@@ -622,22 +621,9 @@ function SalesTrimRxPage() {
           </div>
         </div>
 
-        {/* Trust footer */}
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <img
-            src={trustpilot.url}
-            alt="Excellent 4.8 · 100,000+ happy customers"
-            className="h-6 w-auto sm:h-7"
-          />
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">
-              As seen on
-            </span>
-            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
-          </div>
-
+        <div className="mt-10 flex justify-center">
           <div
-            className="mt-4 flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] text-ink/60"
+            className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] text-ink/60"
             style={{ borderColor: "rgba(23,23,23,0.10)", background: "#fff" }}
           >
             <ShieldCheck className="h-3.5 w-3.5" style={{ color: NAVY }} />
