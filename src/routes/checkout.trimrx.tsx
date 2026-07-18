@@ -233,8 +233,8 @@ const US_STATES = [
 function CheckoutPage() {
   const { tx, plan: planKey } = Route.useSearch();
   const navigate = useNavigate();
-  const treatment = TREATMENTS[tx];
-  const plan = PLANS[planKey];
+  const treatment = TREATMENTS[tx as keyof typeof TREATMENTS];
+  const plan = PLANS[planKey as keyof typeof PLANS];
   const time = useCountdown(9);
 
   const dueToday = plan.todayPrice ?? plan.perMo * plan.months;
