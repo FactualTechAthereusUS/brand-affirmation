@@ -1,6 +1,6 @@
-import { motion } from "motion/react";
-import { Check, ArrowUpRight, ArrowLeft } from "lucide-react";
-import type { ReactNode } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Check, ArrowUpRight, ArrowLeft, ChevronDown } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import iconStart from "@/assets/milestone-start.png.asset.json";
 import iconProfile from "@/assets/milestone-profile.png.asset.json";
 import iconHealth from "@/assets/milestone-health.png.asset.json";
@@ -354,6 +354,188 @@ export function PhoneField({
         />
       </div>
     </label>
+  );
+}
+
+/* ─────────────────────────  State selector with flags  ───────────────────────── */
+const STATE_ABBR: Record<string, string> = {
+  Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA",
+  Colorado: "CO", Connecticut: "CT", Delaware: "DE", Florida: "FL", Georgia: "GA",
+  Hawaii: "HI", Idaho: "ID", Illinois: "IL", Indiana: "IN", Iowa: "IA", Kansas: "KS",
+  Kentucky: "KY", Louisiana: "LA", Maine: "ME", Maryland: "MD", Massachusetts: "MA",
+  Michigan: "MI", Minnesota: "MN", Mississippi: "MS", Missouri: "MO", Montana: "MT",
+  Nebraska: "NE", Nevada: "NV", "New Hampshire": "NH", "New Jersey": "NJ",
+  "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND",
+  Ohio: "OH", Oklahoma: "OK", Oregon: "OR", Pennsylvania: "PA", "Rhode Island": "RI",
+  "South Carolina": "SC", "South Dakota": "SD", Tennessee: "TN", Texas: "TX", Utah: "UT",
+  Vermont: "VT", Virginia: "VA", Washington: "WA", "West Virginia": "WV",
+  Wisconsin: "WI", Wyoming: "WY",
+};
+
+function stringToHsl(str: string, s = 55, l = 52) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  const h = Math.abs(hash % 360);
+  return `hsl(${h} ${s}% ${l}%)`;
+}
+
+function StateFlag({ state, className = "" }: { state: string; className?: string }) {
+  const abbr = STATE_ABBR[state] ?? state.slice(0, 2).toUpperCase();
+  const bg = stringToHsl(state);
+  return (
+    <span
+      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[4px] border border-ink/8 shadow-sm ${className}`}
+      style={{ background: bg }}
+      aria-hidden
+    >
+      <svg
+        viewBox="0 0 40 28"
+        className="absolute inset-0 h-full w-full opacity-25"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0 14 Q10 8 20 14 T40 14 V28 H0 Z"
+          fill="rgba(255,255,255,0.35)"
+        />
+      </svg>
+      <span className="relative z-10 text-[10px] font-bold uppercase tracking-tight text-white">
+        {abbr}
+      </span>
+    </span>
+  );
+}
+
+export function StateSelect({
+  label,
+  value,
+  onChange,
+  states,
+  placeholder = "Select your state",
+}: {
+  label?: string;
+  value: string;
+  onChange: (v: string) => void;
+  states: string[];
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!containerRef.current?.contains(e.target as Node)) setOpen(false);
+    }
+    if (open) document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [open]);
+
+  useEffect(() => {
+    if (open) setQuery("");
+  }, [open]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return states;
+    return states.filter((s) => s.toLowerCase().includes(q));
+  }, [states, query]);
+
+  const selectedLabel = value || placeholder;
+
+  return (
+    <div ref={containerRef} className="relative">
+      {label && (
+        <span className="mb-2 block text-[13px] font-medium text-ink/70">{label}</span>
+      )}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={`flex h-[56px] w-full items-center justify-between gap-3 rounded-2xl border bg-white px-4 text-left outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] ${
+          open ? "border-ever shadow-[0_0_0_4px_rgba(238,114,115,0.15)]" : "border-ink/12"
+        }`}
+      >
+        <span className="flex min-w-0 items-center gap-3">
+          {value ? (
+            <StateFlag state={value} className="h-5 w-7" />
+          ) : (
+            <span className="grid h-5 w-7 shrink-0 place-items-center rounded-[4px] border border-ink/10 bg-ink/5">
+              <span className="text-[9px] font-bold uppercase text-ink/40">US</span>
+            </span>
+          )}
+          <span
+            className={`truncate text-[16px] ${
+              value ? "text-ink" : "text-ink/40"
+            }`}
+          >
+            {selectedLabel}
+          </span>
+        </span>
+        <ChevronDown
+          className={`h-5 w-5 shrink-0 text-ink/40 transition-transform ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-[0_18px_44px_rgba(0,0,0,0.14)]"
+          >
+            <div className="border-b border-ink/6 p-3">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search state..."
+                autoFocus
+                className="h-10 w-full rounded-xl border border-ink/10 bg-ink/[0.03] px-3 text-[14px] text-ink placeholder:text-ink/40 outline-none focus:border-ever/60"
+              />
+            </div>
+            <div className="max-h-[260px] overflow-y-auto p-1.5">
+              {filtered.length === 0 ? (
+                <div className="px-4 py-6 text-center text-[14px] text-ink/50">
+                  No states found
+                </div>
+              ) : (
+                filtered.map((s: string) => {
+                  const active = s === value;
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => {
+                        onChange(s);
+                        setOpen(false);
+                      }}
+                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
+                        active ? "bg-ever/10" : "hover:bg-ink/[0.03]"
+                      }`}
+                    >
+                      <StateFlag state={s} className="h-5 w-7" />
+                      <span
+                        className={`flex-1 truncate text-[15px] ${
+                          active ? "font-semibold text-ink" : "text-ink/80"
+                        }`}
+                      >
+                        {s}
+                      </span>
+                      {active && (
+                        <Check className="h-4 w-4 shrink-0 text-ever" strokeWidth={2.5} />
+                      )}
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

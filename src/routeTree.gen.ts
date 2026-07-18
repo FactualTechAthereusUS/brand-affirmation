@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestStateRouteImport } from './routes/test-state'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as RefundRouteImport } from './routes/refund'
@@ -21,6 +22,11 @@ import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as IntakeWeightLossRouteImport } from './routes/intake_.weight-loss'
 
+const TestStateRoute = TestStateRouteImport.update({
+  id: '/test-state',
+  path: '/test-state',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
+  '/test-state': typeof TestStateRoute
   '/intake/weight-loss': typeof IntakeWeightLossRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/weight-loss/': typeof WeightLossIndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
+  '/test-state': typeof TestStateRoute
   '/intake/weight-loss': typeof IntakeWeightLossRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/weight-loss': typeof WeightLossIndexRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
+  '/test-state': typeof TestStateRoute
   '/intake_/weight-loss': typeof IntakeWeightLossRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/weight-loss/': typeof WeightLossIndexRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/refund'
     | '/shipping'
     | '/terms'
+    | '/test-state'
     | '/intake/weight-loss'
     | '/weight-loss/sales'
     | '/weight-loss/'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/refund'
     | '/shipping'
     | '/terms'
+    | '/test-state'
     | '/intake/weight-loss'
     | '/weight-loss/sales'
     | '/weight-loss'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/refund'
     | '/shipping'
     | '/terms'
+    | '/test-state'
     | '/intake_/weight-loss'
     | '/weight-loss/sales'
     | '/weight-loss/'
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   RefundRoute: typeof RefundRoute
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
+  TestStateRoute: typeof TestStateRoute
   IntakeWeightLossRoute: typeof IntakeWeightLossRoute
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
@@ -175,6 +188,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/test-state': {
+      id: '/test-state'
+      path: '/test-state'
+      fullPath: '/test-state'
+      preLoaderRoute: typeof TestStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -264,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   RefundRoute: RefundRoute,
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
+  TestStateRoute: TestStateRoute,
   IntakeWeightLossRoute: IntakeWeightLossRoute,
   WeightLossSalesRoute: WeightLossSalesRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
@@ -271,3 +292,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
