@@ -275,9 +275,6 @@ export function BlissleyIntakeFlow() {
                   <img src={trxHeroImg.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
                   <img src={blissleyWhite.url} alt="Blissley" className="absolute bottom-4 left-4 md:bottom-6 md:left-6 h-8 md:h-12 w-auto drop-shadow-lg" />
-                  <div className="absolute right-4 top-4 md:right-6 md:top-6 rounded-full border border-white/25 bg-black/40 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-xl">
-                    As seen in Forbes · WebMD · Yahoo Health
-                  </div>
                 </div>
                 <ScreenShell
                   title={`"Let's see if you qualify {{for medical weight loss.}}"`}
