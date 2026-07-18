@@ -664,29 +664,52 @@ function CheckoutPage() {
                         Use shipping address as billing address
                       </label>
 
-                      {/* Priority upsell — part of the same flow */}
-                      <label
-                        className="flex cursor-pointer items-start gap-3 border-t border-black/10 px-4 py-4"
-                        style={{
-                          background: form.priority ? "#fff1f1" : "#F3F4F6",
-                        }}
-                      >
-                        <CheckBox
+                      {/* Upsells — part of the same flow */}
+                      <div className="border-t border-black/10 bg-white">
+                        <UpsellRow
+                          on={form.insurance}
+                          onToggle={() => set("insurance", !form.insurance)}
+                          icon={
+                            <img
+                              src={iconDeliveryShield.url}
+                              alt=""
+                              className="h-7 w-7 object-contain invert"
+                            />
+                          }
+                          title={
+                            <>
+                              Shipping insurance{" "}
+                              <span className="font-bold">($3.95)</span>
+                            </>
+                          }
+                          desc="100% Payment guarantee & protect your order from damage, loss, or theft."
+                        />
+                        <div className="mx-4 h-px bg-black/5" />
+                        <UpsellRow
                           on={form.priority}
                           onToggle={() => set("priority", !form.priority)}
-                          color={PINK}
+                          icon={
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2.2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="h-7 w-7 text-white"
+                            >
+                              <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
+                            </svg>
+                          }
+                          title={
+                            <>
+                              Front-of-the-line review{" "}
+                              <span className="font-bold">($49.95)</span>
+                            </>
+                          }
+                          desc="Skip the 6–24 hour wait. Get an instant telehealth review right now."
                         />
-                        <div>
-                          <div className="text-[14.5px] font-bold text-ink">
-                            Yes, put my order at the front of the line!
-                          </div>
-                          <div className="mt-1 text-[13px] leading-snug text-ink/65">
-                            Doctors typically review within 6–24 hours.{" "}
-                            <b>Skip the wait for only $49.95</b> and get an
-                            instant telehealth review right now.
-                          </div>
-                        </div>
-                      </label>
+                      </div>
                     </div>
                   )}
                 </div>
