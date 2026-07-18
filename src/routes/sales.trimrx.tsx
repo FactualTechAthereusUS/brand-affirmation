@@ -507,7 +507,7 @@ function SalesTrimRxPage() {
 
       {/* SECTION 2 — Plans (only after treatment selected) */}
       {treatment && (
-        <div style={{ background: "#EFF4FB" }}>
+        <div style={{ background: "#FFFFFF" }}>
           <section className="mx-auto w-full max-w-[720px] px-4 py-10 sm:px-6">
             <div className="flex items-center gap-3">
               <span
