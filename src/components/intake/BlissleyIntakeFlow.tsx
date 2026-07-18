@@ -1292,19 +1292,18 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
   const N = 7;
   const months = Array.from({ length: N }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
 
-  // Realistic wavy downtrend: clear plateaus + lower-lows (matches reference)
+  // Gentle stepped downtrend with soft plateaus (matches reference)
   const points = months.map((_, i) => {
     const t = i / (N - 1);
-    const eased = 1 - Math.pow(1 - t, 1.8);
-    const wobble = Math.sin(t * Math.PI * 3.2) * (lossLbs * 0.09) * (1 - t * 0.35);
+    const eased = 1 - Math.pow(1 - t, 1.5);
+    const wobble = Math.sin(t * Math.PI * 2.6) * (lossLbs * 0.06) * (1 - t * 0.5);
     return s - lossLbs * eased + wobble;
   });
 
-
-  const W = 720, H = 320, padL = 72, padR = 36, padT = 40, padB = 52;
+  const W = 720, H = 320, padL = 80, padR = 40, padT = 30, padB = 52;
   const xAt = (i: number) => padL + (i / (N - 1)) * (W - padL - padR);
   const yAt = (v: number) => {
-    const min = g - 4, max = s + 4;
+    const min = g - 10, max = s + 10;
     return padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
   };
 
@@ -1322,7 +1321,6 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
     path += ` C ${x1} ${y1}, ${x2} ${y2}, ${xAt(i + 1)} ${yAt(p2)}`;
   }
 
-  const areaPath = `${path} L ${xAt(N - 1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
   const chartKey = `${s}-${g}`;
 
   return (
@@ -1344,62 +1342,36 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
       </div>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
-        <defs>
-          <linearGradient id="wlFill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
         {/* Baselines */}
-        <line x1={padL} x2={W - padR} y1={yAt(s)} y2={yAt(s)} stroke="#171717" strokeOpacity="0.16" strokeDasharray="6 8" />
-        <line x1={padL} x2={W - padR} y1={yAt(g)} y2={yAt(g)} stroke="#171717" strokeOpacity="0.16" strokeDasharray="6 8" />
+        <line x1={padL} x2={W - padR} y1={yAt(s)} y2={yAt(s)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="6 8" />
+        <line x1={padL} x2={W - padR} y1={yAt(g)} y2={yAt(g)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="6 8" />
 
-        {/* Y-axis labels */}
-        <text x={padL - 14} y={yAt(s) + 5} textAnchor="end" style={{ fontSize: 14, fontWeight: 600, fill: "#171717" }}>{Math.round(s)} lbs</text>
-        <text x={padL - 14} y={yAt(s) + 22} textAnchor="end" style={{ fontSize: 11, fontWeight: 500, fill: "#171717", opacity: 0.5 }}>Today</text>
-        <text x={padL - 14} y={yAt(g) + 5} textAnchor="end" style={{ fontSize: 14, fontWeight: 700, fill: "#ee7273" }}>{Math.round(g)} lbs</text>
-        <text x={padL - 14} y={yAt(g) + 22} textAnchor="end" style={{ fontSize: 11, fontWeight: 500, fill: "#171717", opacity: 0.5 }}>Goal</text>
-
-        {/* Fill area */}
-        <motion.path d={areaPath} fill="url(#wlFill)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.9 }} />
+        {/* Y-axis labels — start & goal only */}
+        <text x={padL - 16} y={yAt(s) + 5} textAnchor="end" style={{ fontSize: 16, fontWeight: 600, fill: "#171717" }}>{Math.round(s)} lbs</text>
+        <text x={padL - 16} y={yAt(g) + 5} textAnchor="end" style={{ fontSize: 16, fontWeight: 600, fill: "#171717" }}>{Math.round(g)} lbs</text>
 
         {/* Curve */}
         <motion.path
           d={path}
           fill="none"
           stroke="#ee7273"
-          strokeWidth={6}
+          strokeWidth={7}
           strokeLinecap="round"
           strokeLinejoin="round"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.4, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
         />
 
         {/* Start dot */}
-        <motion.circle cx={xAt(0)} cy={yAt(points[0])} r={8} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(0)} cy={yAt(points[0])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 18 }} />
 
-        {/* Goal halo + dot */}
-        <motion.circle cx={xAt(N - 1)} cy={yAt(points[N - 1])} r={16} fill="#ee7273" fillOpacity={0.18} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.9, duration: 0.5 }} />
+        {/* End dot */}
         <motion.circle cx={xAt(N - 1)} cy={yAt(points[N - 1])} r={10} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.0, type: "spring", stiffness: 220, damping: 16 }} />
-
-        {/* Goal callout above end dot */}
-        <motion.text
-          x={xAt(N - 1)}
-          y={yAt(points[N - 1]) - 22}
-          textAnchor="end"
-          initial={{ opacity: 0, y: yAt(points[N - 1]) - 10 }}
-          animate={{ opacity: 1, y: yAt(points[N - 1]) - 22 }}
-          transition={{ delay: 2.1, duration: 0.5 }}
-          style={{ fontSize: 15, fontWeight: 700, fill: "#171717" }}
-        >
-          {Math.round(g)} lbs
-        </motion.text>
 
         {/* Month labels */}
         {months.map((m, i) => (
-          <text key={`${m}-${i}`} x={xAt(i)} y={H - 14} textAnchor="middle" style={{ fontSize: 13, fontWeight: 500, fill: "#171717", opacity: 0.65 }}>{m}</text>
+          <text key={`${m}-${i}`} x={xAt(i)} y={H - 14} textAnchor="middle" style={{ fontSize: 14, fontWeight: 500, fill: "#171717", opacity: 0.55 }}>{m}</text>
         ))}
       </svg>
     </motion.div>
