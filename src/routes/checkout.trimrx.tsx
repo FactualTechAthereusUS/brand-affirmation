@@ -18,7 +18,7 @@ import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
-import iconDeliveryShieldV2 from "@/assets/icon-delivery-shield-v2.png.asset.json";
+import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
@@ -671,9 +671,9 @@ function CheckoutPage() {
                           onToggle={() => set("insurance", !form.insurance)}
                           icon={
                             <img
-                              src={iconDeliveryShieldV2.url}
+                              src={iconDeliveryShield.url}
                               alt=""
-                              className="h-10 w-10 object-contain sm:h-11 sm:w-11"
+                              className="h-7 w-7 object-contain invert"
                             />
                           }
                           title={
@@ -696,25 +696,18 @@ function CheckoutPage() {
                               strokeWidth={2.2}
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              className="h-9 w-9 text-ink sm:h-10 sm:w-10"
+                              className="h-7 w-7 text-white"
                             >
                               <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
                             </svg>
                           }
                           title={
-                            <span className="font-bold">
-                              Yes, put my order at the front of the line!
-                            </span>
-                          }
-                          desc={
                             <>
-                              Doctors typically review within 6–24 hours.{" "}
-                              <span className="font-bold">
-                                Skip the wait for only $49.95
-                              </span>{" "}
-                              and get an instant telehealth review right now.
+                              Front-of-the-line review{" "}
+                              <span className="font-bold">($49.95)</span>
                             </>
                           }
+                          desc="Skip the 6–24 hour wait. Get an instant telehealth review right now."
                         />
                       </div>
                     </div>
@@ -939,17 +932,17 @@ function UpsellRow({
   onToggle: () => void;
   icon: React.ReactNode;
   title: React.ReactNode;
-  desc: React.ReactNode;
+  desc: string;
 }) {
   return (
     <label
-      className="flex cursor-pointer items-start gap-4 px-4 py-4 sm:gap-5"
+      className="flex cursor-pointer items-center gap-3 px-4 py-4 sm:gap-4"
       style={{ background: on ? "#FFF7F7" : "transparent" }}
     >
-      <span className="grid h-14 w-14 shrink-0 place-items-center sm:h-16 sm:w-16">
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink sm:h-12 sm:w-12">
         {icon}
       </span>
-      <div className="min-w-0 flex-1 pt-0.5">
+      <div className="min-w-0 flex-1">
         <div className="text-[14px] font-semibold leading-tight text-ink sm:text-[15px]">
           {title}
         </div>
@@ -957,42 +950,22 @@ function UpsellRow({
           {desc}
         </div>
       </div>
-      <CheckCircle on={on} onToggle={onToggle} />
-    </label>
-  );
-}
-
-function CheckCircle({
-  on,
-  onToggle,
-  color = NAVY,
-}: {
-  on: boolean;
-  onToggle: () => void;
-  color?: string;
-}) {
-  return (
-    <span
-      role="checkbox"
-      aria-checked={on}
-      tabIndex={0}
-      onClick={(e) => {
-        e.preventDefault();
-        onToggle();
-      }}
-      onKeyDown={(e) => {
-        if (e.key === " " || e.key === "Enter") {
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        onClick={(e) => {
           e.preventDefault();
           onToggle();
-        }
-      }}
-      className="mt-0.5 grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded-full border-2 transition-colors"
-      style={{
-        borderColor: on ? color : "rgba(0,0,0,0.22)",
-        background: on ? color : "#FFFFFF",
-      }}
-    >
-      {on && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3.4} />}
-    </span>
+        }}
+        className="relative h-7 w-12 shrink-0 rounded-full transition-colors"
+        style={{ background: on ? PINK : "#111111" }}
+      >
+        <span
+          className="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all"
+          style={{ left: on ? "calc(100% - 1.25rem - 0.25rem)" : "0.25rem" }}
+        />
+      </button>
+    </label>
   );
 }
