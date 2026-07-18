@@ -48,3 +48,20 @@ export function PayIcons({ className = "" }: { className?: string }) {
     </div>
   );
 }
+
+/* Compact peek: shows first 3 brands + "+N" chip */
+export function PayIconsPeek({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center gap-1.5 ${className}`}>
+      <PayVisa />
+      <PayMastercard />
+      <PayAmex />
+      <span
+        className="inline-flex h-6 min-w-[28px] items-center justify-center rounded-[4px] px-1.5 text-[11px] font-bold text-white"
+        style={{ background: "#1C1C1C" }}
+      >
+        +3
+      </span>
+    </div>
+  );
+}

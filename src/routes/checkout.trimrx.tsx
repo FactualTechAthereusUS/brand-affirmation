@@ -14,7 +14,7 @@ import {
 import { z } from "zod";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
-import { PayIcons } from "@/components/PayIcons";
+import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
@@ -555,161 +555,194 @@ function CheckoutPage() {
             <FormCard>
               <StepBadge n={2} label="Payment" />
 
-              {/* Method tabs */}
-              <div
-                className="mb-5 grid gap-2 rounded-2xl p-1"
-                style={{
-                  background: "#EEF3FA",
-                  gridTemplateColumns: hasInstallments ? "1fr 1fr 1fr 1fr" : "1fr",
-                }}
-              >
-                <MethodTab
-                  active={payMethod === "card"}
-                  onClick={() => setPayMethod("card")}
-                  icon={<CreditCard className="h-4 w-4" />}
-                  label="Card"
-                />
-                {hasInstallments && (
-                  <>
-                    <MethodTab
-                      active={payMethod === "afterpay"}
-                      onClick={() => setPayMethod("afterpay")}
-                      img={payAfterpay.url}
-                    />
-                    <MethodTab
-                      active={payMethod === "klarna"}
-                      onClick={() => setPayMethod("klarna")}
-                      img={payKlarna.url}
-                    />
-                    <MethodTab
-                      active={payMethod === "affirm"}
-                      onClick={() => setPayMethod("affirm")}
-                      img={payAffirm.url}
-                    />
-                  </>
-                )}
-              </div>
-              {payMethod === "card" ? (
-                <div className="overflow-hidden rounded-2xl border border-black/10 bg-[#F3F4F6]">
-                  {/* Card header band */}
-                  <div className="flex items-center justify-between gap-3 border-b border-black/10 bg-white px-4 py-3.5">
-                    <div className="text-[15px] font-bold text-ink">
-                      Credit card
-                    </div>
-                    <PayIcons />
-                  </div>
-
-                  {/* Fields */}
-                  <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-6 sm:gap-3 sm:p-4">
-                    <div className="sm:col-span-6">
-                      <div className="relative">
-                        <TextInput
-                          inputMode="numeric"
-                          autoComplete="cc-number"
-                          placeholder="Card number"
-                          value={form.cardNumber}
-                          onChange={(e) =>
-                            set(
-                              "cardNumber",
-                              e.target.value
-                                .replace(/\D/g, "")
-                                .slice(0, 19)
-                                .replace(/(\d{4})(?=\d)/g, "$1 "),
-                            )
-                          }
-                          className="pr-11"
-                        />
-                        <Lock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
-                      </div>
-                    </div>
-                    <div className="sm:col-span-3">
-                      <TextInput
-                        inputMode="numeric"
-                        autoComplete="cc-exp"
-                        placeholder="Expiration date (MM / YY)"
-                        value={form.exp}
-                        onChange={(e) => {
-                          const v = e.target.value.replace(/\D/g, "").slice(0, 4);
-                          set(
-                            "exp",
-                            v.length > 2 ? `${v.slice(0, 2)} / ${v.slice(2)}` : v,
-                          );
-                        }}
-                      />
-                    </div>
-                    <div className="sm:col-span-3">
-                      <div className="relative">
-                        <TextInput
-                          inputMode="numeric"
-                          autoComplete="cc-csc"
-                          placeholder="Security code"
-                          maxLength={4}
-                          value={form.cvc}
-                          onChange={(e) =>
-                            set("cvc", e.target.value.replace(/\D/g, ""))
-                          }
-                          className="pr-11"
-                        />
-                        <HelpCircle className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
-                      </div>
-                    </div>
-                    <div className="sm:col-span-6">
-                      <TextInput
-                        autoComplete="cc-name"
-                        placeholder="Name on card"
-                        value={form.nameOnCard}
-                        onChange={(e) => set("nameOnCard", e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Billing same */}
-                  <label className="flex cursor-pointer items-center gap-3 border-t border-black/10 bg-white px-4 py-3.5 text-[13.5px] text-ink/85">
-                    <CheckBox
-                      on={form.billingSame}
-                      onToggle={() => set("billingSame", !form.billingSame)}
-                    />
-                    Use shipping address as billing address
-                  </label>
-                </div>
-              ) : (
+              {/* Payment methods — accordion list */}
+              <div className="space-y-3">
+                {/* Credit card row */}
                 <div
-                  className="rounded-2xl border border-dashed p-5 text-[13.5px] text-ink/70"
-                  style={{ borderColor: "rgba(29,67,123,0.25)" }}
+                  className="overflow-hidden rounded-2xl border transition-all"
+                  style={{
+                    borderColor:
+                      payMethod === "card" ? "#E5C9A6" : "rgba(0,0,0,0.10)",
+                    background: "#FFFFFF",
+                  }}
                 >
-                  You'll be redirected to complete your{" "}
-                  <b className="capitalize">{payMethod}</b> checkout after
-                  confirming your order — split into 4 interest-free payments.
+                  <button
+                    type="button"
+                    onClick={() => setPayMethod("card")}
+                    className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
+                    style={{
+                      background:
+                        payMethod === "card" ? "#FBEFE1" : "#FFFFFF",
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Radio active={payMethod === "card"} />
+                      <span className="text-[15px] font-bold text-ink">
+                        Credit card
+                      </span>
+                    </div>
+                    <PayIconsPeek />
+                  </button>
+
+                  {payMethod === "card" && (
+                    <div className="bg-[#F3F4F6]">
+                      {/* Fields */}
+                      <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-6 sm:gap-3 sm:p-4">
+                        <div className="sm:col-span-6">
+                          <div className="relative">
+                            <TextInput
+                              inputMode="numeric"
+                              autoComplete="cc-number"
+                              placeholder="Card number"
+                              value={form.cardNumber}
+                              onChange={(e) =>
+                                set(
+                                  "cardNumber",
+                                  e.target.value
+                                    .replace(/\D/g, "")
+                                    .slice(0, 19)
+                                    .replace(/(\d{4})(?=\d)/g, "$1 "),
+                                )
+                              }
+                              className="pr-11"
+                            />
+                            <Lock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
+                          </div>
+                        </div>
+                        <div className="sm:col-span-6">
+                          <TextInput
+                            inputMode="numeric"
+                            autoComplete="cc-exp"
+                            placeholder="Expiration date (MM / YY)"
+                            value={form.exp}
+                            onChange={(e) => {
+                              const v = e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 4);
+                              set(
+                                "exp",
+                                v.length > 2
+                                  ? `${v.slice(0, 2)} / ${v.slice(2)}`
+                                  : v,
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="sm:col-span-6">
+                          <div className="relative">
+                            <TextInput
+                              inputMode="numeric"
+                              autoComplete="cc-csc"
+                              placeholder="Security code"
+                              maxLength={4}
+                              value={form.cvc}
+                              onChange={(e) =>
+                                set("cvc", e.target.value.replace(/\D/g, ""))
+                              }
+                              className="pr-11"
+                            />
+                            <HelpCircle className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
+                          </div>
+                        </div>
+                        <div className="sm:col-span-6">
+                          <TextInput
+                            autoComplete="cc-name"
+                            placeholder="Name on card"
+                            value={form.nameOnCard}
+                            onChange={(e) => set("nameOnCard", e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Billing same */}
+                      <label className="flex cursor-pointer items-center gap-3 px-4 py-3.5 text-[13.5px] text-ink/85">
+                        <CheckBox
+                          on={form.billingSame}
+                          onToggle={() =>
+                            set("billingSame", !form.billingSame)
+                          }
+                        />
+                        Use shipping address as billing address
+                      </label>
+
+                      {/* Priority upsell — part of the same flow */}
+                      <label
+                        className="flex cursor-pointer items-start gap-3 border-t border-black/10 px-4 py-4"
+                        style={{
+                          background: form.priority ? "#fff1f1" : "#F3F4F6",
+                        }}
+                      >
+                        <CheckBox
+                          on={form.priority}
+                          onToggle={() => set("priority", !form.priority)}
+                          color={PINK}
+                        />
+                        <div>
+                          <div className="text-[14.5px] font-bold text-ink">
+                            Yes, put my order at the front of the line!
+                          </div>
+                          <div className="mt-1 text-[13px] leading-snug text-ink/65">
+                            Doctors typically review within 6–24 hours.{" "}
+                            <b>Skip the wait for only $49.95</b> and get an
+                            instant telehealth review right now.
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  )}
                 </div>
-              )}
 
-
-
-              {/* Priority upsell */}
-              <label
-                className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition-all"
-                style={{
-                  borderColor: form.priority ? PINK : "rgba(29,67,123,0.15)",
-                  background: form.priority ? "#fff1f1" : "#FFFFFF",
-                }}
-              >
-                <CheckBox
-                  on={form.priority}
-                  onToggle={() => set("priority", !form.priority)}
-                  color={PINK}
-                />
-                <div>
-                  <div className="text-[14.5px] font-bold text-ink">
-                    Yes, put my order at the front of the line!
-                  </div>
-                  <div className="mt-1 text-[13px] leading-snug text-ink/65">
-                    Doctors typically review within 6–24 hours.{" "}
-                    <b>Skip the wait for only $49.95</b> and get an instant
-                    telehealth review right now.
-                  </div>
-                </div>
-              </label>
+                {/* BNPL rows */}
+                {hasInstallments &&
+                  (
+                    [
+                      { key: "afterpay", img: payAfterpay.url, label: "Afterpay" },
+                      { key: "klarna", img: payKlarna.url, label: "Klarna" },
+                      { key: "affirm", img: payAffirm.url, label: "Affirm" },
+                    ] as const
+                  ).map((m) => (
+                    <div
+                      key={m.key}
+                      className="overflow-hidden rounded-2xl border"
+                      style={{
+                        borderColor:
+                          payMethod === m.key
+                            ? "#E5C9A6"
+                            : "rgba(0,0,0,0.10)",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setPayMethod(m.key)}
+                        className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
+                        style={{
+                          background:
+                            payMethod === m.key ? "#FBEFE1" : "#FFFFFF",
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Radio active={payMethod === m.key} />
+                          <span className="text-[15px] font-bold text-ink">
+                            {m.label}
+                          </span>
+                        </div>
+                        <img src={m.img} alt={m.label} className="h-5" />
+                      </button>
+                      {payMethod === m.key && (
+                        <div
+                          className="border-t border-black/10 bg-[#F3F4F6] p-4 text-[13.5px] text-ink/70"
+                        >
+                          You'll be redirected to complete your{" "}
+                          <b className="capitalize">{m.label}</b> checkout after
+                          confirming your order — split into 4 interest-free
+                          payments.
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </FormCard>
+
 
             {/* Continue */}
             <motion.button
@@ -821,6 +854,21 @@ function MethodTab({
         </span>
       )}
     </button>
+  );
+}
+
+function Radio({ active }: { active: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className="grid h-5 w-5 shrink-0 place-items-center rounded-full border transition-colors"
+      style={{
+        borderColor: active ? "#B8763A" : "rgba(0,0,0,0.25)",
+        background: active ? "#B8763A" : "#FFFFFF",
+      }}
+    >
+      {active && <span className="h-2 w-2 rounded-full bg-white" />}
+    </span>
   );
 }
 
