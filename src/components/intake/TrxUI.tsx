@@ -188,7 +188,7 @@ export function TrxIconOption({
         </span>
       </div>
       <div className="flex items-center gap-2.5">
-        <CheckSquare on={selected} />
+        <RadioCircle on={selected} />
         <span className="text-left text-[13.5px] font-medium leading-tight text-ink md:text-[14px]">
           {label}
         </span>
