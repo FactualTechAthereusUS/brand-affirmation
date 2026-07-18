@@ -583,7 +583,7 @@ export function TrimRxIntakeFlowV2() {
                 sub={`On average, our patients lose over 20% of their body weight. GLP-1 medications are extremely effective, offering a strong path toward your ${answers.goalWeight || "goal"} lb goal.`}
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
-                <MetabolicChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
+                <WeightLossChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
               </ScreenShell>
             )}
 
@@ -606,7 +606,7 @@ export function TrimRxIntakeFlowV2() {
                 sub="We identify the root causes of your metabolic issues, so you get a long-term solution, not just a quick fix."
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
-                <GLP1Curve />
+                <MetabolicChart start={parseFloat(answers.weightLbs || "230")} goal={parseFloat(answers.goalWeight || "180")} />
                 <ul className="mt-4 space-y-2.5 text-[14.5px] text-ink/75">
                   <li><b className="text-ink">Week 1–4:</b> Your body acclimates to GLP-1 medication.</li>
                   <li><b className="text-ink">Week 4–8:</b> Weight loss increases week over week.</li>
