@@ -589,67 +589,87 @@ function CheckoutPage() {
                 )}
               </div>
 
-              {payMethod === "card" ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
-                  <Field label="Card Number" className="sm:col-span-6">
-                    <div className="relative">
-                      <TextInput
-                        inputMode="numeric"
-                        autoComplete="cc-number"
-                        placeholder="1234 1234 1234 1234"
-                        value={form.cardNumber}
-                        onChange={(e) =>
-                          set(
-                            "cardNumber",
-                            e.target.value
-                              .replace(/\D/g, "")
-                              .slice(0, 19)
-                              .replace(/(\d{4})(?=\d)/g, "$1 "),
-                          )
-                        }
-                        className="pr-24"
-                      />
-                      <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
-                        <PayIcons />
+                <div className="overflow-hidden rounded-2xl border border-black/10 bg-[#F3F4F6]">
+                  {/* Card header band */}
+                  <div className="flex items-center justify-between gap-3 border-b border-black/10 bg-white px-4 py-3.5">
+                    <div className="text-[15px] font-bold text-ink">
+                      Credit card
+                    </div>
+                    <PayIcons />
+                  </div>
+
+                  {/* Fields */}
+                  <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-6 sm:gap-3 sm:p-4">
+                    <div className="sm:col-span-6">
+                      <div className="relative">
+                        <TextInput
+                          inputMode="numeric"
+                          autoComplete="cc-number"
+                          placeholder="Card number"
+                          value={form.cardNumber}
+                          onChange={(e) =>
+                            set(
+                              "cardNumber",
+                              e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 19)
+                                .replace(/(\d{4})(?=\d)/g, "$1 "),
+                            )
+                          }
+                          className="pr-11"
+                        />
+                        <Lock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
                       </div>
                     </div>
-                  </Field>
-                  <Field label="Expiration (MM/YY)" className="sm:col-span-3">
-                    <TextInput
-                      inputMode="numeric"
-                      autoComplete="cc-exp"
-                      placeholder="MM / YY"
-                      value={form.exp}
-                      onChange={(e) => {
-                        const v = e.target.value.replace(/\D/g, "").slice(0, 4);
-                        set(
-                          "exp",
-                          v.length > 2 ? `${v.slice(0, 2)} / ${v.slice(2)}` : v,
-                        );
-                      }}
+                    <div className="sm:col-span-3">
+                      <TextInput
+                        inputMode="numeric"
+                        autoComplete="cc-exp"
+                        placeholder="Expiration date (MM / YY)"
+                        value={form.exp}
+                        onChange={(e) => {
+                          const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                          set(
+                            "exp",
+                            v.length > 2 ? `${v.slice(0, 2)} / ${v.slice(2)}` : v,
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="sm:col-span-3">
+                      <div className="relative">
+                        <TextInput
+                          inputMode="numeric"
+                          autoComplete="cc-csc"
+                          placeholder="Security code"
+                          maxLength={4}
+                          value={form.cvc}
+                          onChange={(e) =>
+                            set("cvc", e.target.value.replace(/\D/g, ""))
+                          }
+                          className="pr-11"
+                        />
+                        <HelpCircle className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-6">
+                      <TextInput
+                        autoComplete="cc-name"
+                        placeholder="Name on card"
+                        value={form.nameOnCard}
+                        onChange={(e) => set("nameOnCard", e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Billing same */}
+                  <label className="flex cursor-pointer items-center gap-3 border-t border-black/10 bg-white px-4 py-3.5 text-[13.5px] text-ink/85">
+                    <CheckBox
+                      on={form.billingSame}
+                      onToggle={() => set("billingSame", !form.billingSame)}
                     />
-                  </Field>
-                  <Field label="Security Code" className="sm:col-span-3">
-                    <TextInput
-                      inputMode="numeric"
-                      autoComplete="cc-csc"
-                      placeholder="CVC"
-                      maxLength={4}
-                      value={form.cvc}
-                      onChange={(e) =>
-                        set("cvc", e.target.value.replace(/\D/g, ""))
-                      }
-                    />
-                  </Field>
-                  <Field label="Country" className="sm:col-span-6">
-                    <SelectInput
-                      value={form.country}
-                      onChange={(e) => set("country", e.target.value)}
-                    >
-                      <option>United States</option>
-                      <option>Canada</option>
-                    </SelectInput>
-                  </Field>
+                    Use shipping address as billing address
+                  </label>
                 </div>
               ) : (
                 <div
@@ -662,14 +682,7 @@ function CheckoutPage() {
                 </div>
               )}
 
-              {/* Billing same */}
-              <label className="mt-4 flex cursor-pointer items-center gap-3 text-[13.5px] text-ink/80">
-                <CheckBox
-                  on={form.billingSame}
-                  onToggle={() => set("billingSame", !form.billingSame)}
-                />
-                Billing address same as shipping
-              </label>
+
 
               {/* Priority upsell */}
               <label
