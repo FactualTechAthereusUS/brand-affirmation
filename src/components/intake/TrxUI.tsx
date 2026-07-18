@@ -4,6 +4,22 @@ import type { ReactNode } from "react";
 import trimrxHeader from "@/assets/trimrx-intake-header.svg.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 
+/* ─────────  Radio circle (mobile card selector)  ───────── */
+function RadioCircle({ on }: { on: boolean }) {
+  return (
+    <span
+      className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full border transition-colors"
+      style={{
+        borderColor: on ? NAVY : "rgba(29,67,123,0.25)",
+        background: on ? NAVY : "transparent",
+      }}
+      aria-hidden
+    >
+      {on && <span className="h-2 w-2 rounded-full bg-white" />}
+    </span>
+  );
+}
+
 
 /* ─────────  Palette  ───────── */
 export const NAVY = "#1D437B";
