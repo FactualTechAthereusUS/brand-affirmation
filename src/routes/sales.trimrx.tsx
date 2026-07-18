@@ -579,6 +579,12 @@ function SalesTrimRxPage() {
                     plan={p}
                     selected={planKey === p.key}
                     onSelect={() => setPlanKey(p.key)}
+                    onCheckout={() =>
+                      navigate({
+                        to: "/checkout/trimrx",
+                        search: { tx: treatment ?? "sema", plan: p.key },
+                      })
+                    }
                   />
                 </motion.div>
               ))}
