@@ -169,7 +169,7 @@ function YesNoWithDetail({
           onChange={(e) => onDetail(e.target.value)}
           placeholder={detailPlaceholder ?? "Please add brief details…"}
           rows={4}
-          className="mt-2 w-full resize-none rounded-2xl border border-ink/12 bg-white px-4 py-3 text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+          className="mt-2 w-full resize-none rounded-lg border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none focus:border-[#1D437B] focus:shadow-[0_0_0_3px_rgba(29,67,123,0.12)]"
         />
       )}
     </>
