@@ -756,12 +756,17 @@ export function WLIntakeFlow() {
                   "None of the above",
                   "High blood pressure",
                   "High cholesterol",
+                  "Dyslipidemia / high triglycerides",
                   "Prediabetes",
                   "Type 2 diabetes (not on insulin)",
+                  "Metabolic syndrome",
                   "PCOS",
                   "Sleep apnea",
+                  "Non-alcoholic fatty liver disease (NAFLD)",
+                  "Cardiovascular or coronary artery disease",
                   "Acid reflux or GERD",
                   "Joint pain related to weight",
+
                 ].map((o) => (
                   <OptionCard
                     key={o}
