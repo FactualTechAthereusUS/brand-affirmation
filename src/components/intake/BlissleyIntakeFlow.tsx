@@ -17,7 +17,6 @@ import {
   Check,
   BedDouble,
   Moon,
-  ArrowLeft,
 } from "lucide-react";
 
 import { PhoneField, StateSelect } from "./primitives";
@@ -32,7 +31,6 @@ import {
   NAVY,
 
 } from "./TrxUI";
-import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman2-desktop.png.asset.json";
