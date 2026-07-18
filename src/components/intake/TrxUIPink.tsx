@@ -1,12 +1,12 @@
 import { motion } from "motion/react";
 import { Check, ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
-import trimrxHeader from "@/assets/trimrx-intake-header.svg.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 
-/* ─────────  Palette  ───────── */
+/* ─────────  Palette (Blissley Pink)  ───────── */
 export const NAVY = "#ee7273";
 export const NAVY_SOFT = "#f4a3a4";
+
 
 /* ─────────  Radio circle (mobile card selector)  ───────── */
 function RadioCircle({ on }: { on: boolean }) {
