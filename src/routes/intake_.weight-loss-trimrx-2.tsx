@@ -4,7 +4,7 @@ import { TrimRxIntakeFlowV2 } from "@/components/intake/TrimRxIntakeFlowV2";
 export const Route = createFileRoute("/intake_/weight-loss-trimrx-2")({
   head: () => ({
     meta: [
-      { title: "Weight loss assessment — Blissley" },
+      { title: "Weight loss assessment - Blissley" },
       {
         name: "description",
         content:

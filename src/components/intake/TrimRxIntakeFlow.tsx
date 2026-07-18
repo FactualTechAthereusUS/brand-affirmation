@@ -492,7 +492,7 @@ export function TrimRxIntakeFlow() {
               </>
             )}
 
-            {/* 1b, DOB — age gate */}
+            {/* 1b, DOB - age gate */}
             {current === "dob" && (() => {
               const m = parseInt(answers.dobMonth || "0", 10);
               const d = parseInt(answers.dobDay || "0", 10);
@@ -656,7 +656,7 @@ export function TrimRxIntakeFlow() {
                     />
 
 
-                    {/* Content overlay — spans full image height, text on left */}
+                    {/* Content overlay - spans full image height, text on left */}
                     <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 sm:p-9 md:p-12">
                       <div className="w-full max-w-[58%] text-white">
                         <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/90">
@@ -1208,7 +1208,7 @@ export function TrimRxIntakeFlow() {
                 </h1>
                 <p className="mt-4 text-[15px] leading-relaxed text-ink/70">
                   We'd love to help when the time is right. Leave your email and we'll reach out
-                  when you're eligible — no follow-up until then.
+                  when you're eligible - no follow-up until then.
                 </p>
                 <div className="mt-8 flex flex-col gap-3">
                   <PrimaryButton onClick={() => (window.location.href = "/")}>
