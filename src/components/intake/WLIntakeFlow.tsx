@@ -102,14 +102,19 @@ const BASE_SCREENS = [
   "hw",                // 6
   "weight_goal",       // 7
   "tried",             // 8
-  "social_proof",      // 8.5 - patient story
+  "past_surgeries",    // NEW A
+  "current_conditions",// NEW B
+  "social_proof",      // patient story
   "glp1",              // 9
   "conditions",        // 10
+  "weight_symptoms",   // NEW C
   "projection",        // calculator clone
   "contra",            // 11
+  "bariatric",         // NEW D
   "meds",              // 12
   "loading",
 ];
+
 
 function buildFlow(sex?: Sex) {
   if (sex === "female") {
