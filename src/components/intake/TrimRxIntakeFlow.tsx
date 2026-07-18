@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Link } from "@tanstack/react-router";
 import {
   Moon,
   Frown,
@@ -15,13 +14,13 @@ import {
   Scale as ScaleIcon,
 } from "lucide-react";
 import {
-  BackBtn,
   OptionCard,
   PrimaryButton,
   ScreenShell,
   StateSelect,
   TextField,
 } from "./primitives";
+import { TrxHeader } from "./TrxUI";
 import logo from "@/assets/blissley-logo.png.asset.json";
 import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
@@ -159,21 +158,6 @@ function StageBar({ stage }: { stage: number }) {
           </div>
         );
       })}
-    </div>
-  );
-}
-
-/* ────────────  Featured logos strip  ──────────── */
-function FeaturedIn() {
-  const items = ["Forbes", "WebMD", "Yahoo!", "NY Post"];
-  return (
-    <div className="hidden items-center gap-3 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink/45 md:flex">
-      <span>Featured in</span>
-      {items.map((n) => (
-        <span key={n} className="text-ink/60">
-          {n}
-        </span>
-      ))}
     </div>
   );
 }
@@ -340,17 +324,8 @@ export function TrimRxIntakeFlow() {
   return (
     <div className="relative min-h-[100svh] bg-white pb-24">
       {!isLoading && (
-        <div className="sticky top-0 z-20 bg-white/85 backdrop-blur-xl backdrop-saturate-150">
-          <div className="mx-auto flex h-[64px] max-w-[860px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
-            <BackBtn onClick={prev} invisible={idx === 0} />
-            <Link to="/" className="flex items-center gap-3">
-              <img src={logo.url} alt="Blissley" className="h-10 w-auto md:h-12" />
-            </Link>
-            <div className="hidden md:block">
-              <FeaturedIn />
-            </div>
-            <div className="w-[72px] md:hidden" />
-          </div>
+        <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl">
+          <TrxHeader onBack={prev} showBack={idx > 0} />
           <div className="mx-auto max-w-[860px] px-5 pb-4 md:px-8 md:pb-5">
             <StageBar stage={stage} />
           </div>
