@@ -207,15 +207,9 @@ function SelectInput(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 }
 
 /* ── Section header ── */
-function StepBadge({ n, label }: { n: number; label: string }) {
+function StepBadge({ label }: { label: string }) {
   return (
     <div className="mb-4 flex items-center gap-3">
-      <span
-        className="grid h-7 w-7 place-items-center rounded-full text-[13px] font-bold text-white"
-        style={{ background: "#0E1B2E" }}
-      >
-        {n}
-      </span>
       <h2 className="text-[17px] font-semibold text-ink sm:text-[18px]">
         {label}
       </h2>
