@@ -494,29 +494,37 @@ export function TrimRxIntakeFlowV2() {
                   </div>
 
                   {/* Full-bleed hero image body */}
-                  <div className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px]">
+                  <div className="relative w-full aspect-[9/14] sm:aspect-[16/10] md:aspect-[16/9]">
+                    {/* Mobile image */}
+                    <img
+                      src={trxRankedHeroMobile.url}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover sm:hidden"
+                    />
+                    {/* Desktop image */}
                     <img
                       src={trxRankedHero.url}
                       alt=""
-                      className="absolute inset-0 h-full w-full object-cover object-[75%_center]"
+                      className="absolute inset-0 hidden h-full w-full object-cover sm:block"
                     />
-                    {/* Dark gradient for text legibility on the left */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent md:hidden" />
 
-                    {/* Content overlay on the left */}
-                    <div className="relative z-10 flex h-full w-full max-w-full md:max-w-[58%] lg:max-w-[52%] p-6 sm:p-9 md:p-12">
-                      <div className="w-full text-white">
-                        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
+                    {/* Soft bottom blur/fade for text legibility */}
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] sm:h-[60%] bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] sm:h-[40%] backdrop-blur-[6px] [mask-image:linear-gradient(to_top,black_55%,transparent)]" />
+
+                    {/* Content overlay — bottom-left */}
+                    <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-9 md:p-12">
+                      <div className="w-full max-w-full sm:max-w-[62%] md:max-w-[54%] text-white">
+                        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/90">
                           <Trophy className="h-4 w-4" /> Best overall
                         </div>
 
-                        <div className="mt-5 flex items-center gap-4">
-                          <span className="font-serif text-[64px] sm:text-[76px] md:text-[88px] leading-none font-bold text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]">#1</span>
-                          <img src={blissleyWhite.url} alt="Blissley" className="h-9 sm:h-11 md:h-14 w-auto object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.3)]" />
+                        <div className="mt-4 flex items-center gap-4">
+                          <span className="font-serif text-[56px] sm:text-[72px] md:text-[88px] leading-none font-bold text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]">#1</span>
+                          <img src={blissleyWhite.url} alt="Blissley" className="h-8 sm:h-11 md:h-14 w-auto object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.35)]" />
                         </div>
 
-                        <div className="mt-5 flex flex-wrap items-center gap-2.5 text-[14px] text-white/95">
+                        <div className="mt-4 flex flex-wrap items-center gap-2.5 text-[14px] text-white/95">
                           <span className="rounded-md bg-white px-2.5 py-1 font-semibold text-[#1D437B]">9.8</span>
                           <span className="font-medium">Exceptional</span>
                           <span className="text-white/40">·</span>
@@ -529,7 +537,7 @@ export function TrimRxIntakeFlowV2() {
                           </span>
                         </div>
 
-                        <ul className="mt-7 space-y-3 text-[15px] text-white/95">
+                        <ul className="mt-5 space-y-2.5 text-[14px] sm:text-[15px] text-white/95">
                           {[
                             "Personalized GLP-1 protocols for your body",
                             "Physician review within 24 hours",
@@ -547,12 +555,13 @@ export function TrimRxIntakeFlowV2() {
                           ))}
                         </ul>
 
-                        <div className="mt-7 inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_24px_rgba(238,114,115,0.4)]">
+                        <div className="mt-6 inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_24px_rgba(238,114,115,0.4)]">
                           Most popular
                         </div>
                       </div>
                     </div>
                   </div>
+
 
                 </motion.div>
               </ScreenShell>
