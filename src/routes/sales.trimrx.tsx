@@ -22,6 +22,7 @@ import trustpilot from "@/assets/trustpilot-rating.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
+import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
 
 export const Route = createFileRoute("/sales/trimrx")({
   component: SalesTrimRxPage,
@@ -503,15 +504,8 @@ function SalesTrimRxPage() {
             <div className="mt-2.5"><PayIcons /></div>
           </div>
 
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border px-3 py-1.5"
-               style={{ borderColor: `${NAVY}22`, background: `${NAVY}06` }}>
-            <span
-              className="grid h-5 w-5 place-items-center rounded-full"
-              style={{ background: NAVY, color: "#fff" }}
-            >
-              <Check className="h-3 w-3" strokeWidth={3.4} />
-            </span>
-            <span className="text-[12.5px] font-semibold text-ink">HSA/FSA Eligible</span>
+          <div className="mt-5">
+            <img src={hsaFsa.url} alt="HSA/FSA Eligible" className="h-8 w-auto" />
           </div>
 
           <div className="mt-6">
