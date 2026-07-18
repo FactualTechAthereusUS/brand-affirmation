@@ -291,184 +291,23 @@ function CheckoutPage() {
     <div className="min-h-screen bg-white">
       <TrxHeader onBack={() => navigate({ to: "/sales/trimrx" })} showBack />
 
-      {/* MAIN GRID */}
-      <div className="mx-auto grid w-full max-w-[1080px] gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
-        {/* ── LEFT: Order summary ── */}
-        <div className="order-2 lg:order-2">
-          <motion.aside
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:sticky lg:top-6"
-          >
-            <div className="overflow-hidden">
-              {/* Header band */}
-              <div
-                className="flex items-center justify-between gap-4 bg-white px-5 py-4 sm:px-6"
-                style={{ background: "white" }}
-              >
-                <div>
-                  <div
-                    className="text-[11px] font-bold uppercase tracking-[0.14em]"
-                    style={{ color: NAVY }}
-                  >
-                    Your Treatment
-                  </div>
-                  <div className="mt-0.5 text-[17px] font-bold text-ink sm:text-[18px]">
-                    {treatment.name}
-                  </div>
-                  <div className="text-[13px] text-ink/60">
-                    {treatment.subtitle}
-                  </div>
-                </div>
-                <div
-                  className="grid h-[84px] w-[84px] shrink-0 place-items-center overflow-hidden rounded-2xl"
-                  style={{ background: treatment.vialBg }}
-                >
-                  <img
-                    src={treatment.vial}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Lines */}
-              <div className="divide-y divide-ink/8 px-5 py-2 sm:px-6">
-                <Row label="Plan" value={<b>{plan.title}</b>} />
-                <Row label="Supply" value={plan.supply} />
-                <Row
-                  label="Total Savings"
-                  value={
-                    <span className="font-bold" style={{ color: GREEN }}>
-                      ${totalSavings.toLocaleString()}
-                    </span>
-                  }
-                />
-                <Row
-                  label="Shipping"
-                  value={
-                    <span className="font-bold" style={{ color: GREEN }}>
-                      FREE
-                    </span>
-                  }
-                />
-                <Row
-                  label="Monthly Price"
-                  value={
-                    <span className="font-bold text-ink">
-                      <span className="mr-1 text-ink/40 line-through">
-                        ${plan.originalPerMo}
-                      </span>
-                      <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
-                    </span>
-                  }
-                />
-              </div>
-
-              {/* Total */}
-              <div
-                className="flex items-center justify-between px-5 py-4 sm:px-6"
-                style={{ background: "#F6F9FE" }}
-              >
-                <div className="text-[15px] font-bold text-ink">
-                  Total if prescribed
-                </div>
-                <div className="text-right">
-                  <span className="mr-2 text-[14px] text-ink/40 line-through">
-                    ${originalTotal.toLocaleString()}
-                  </span>
-                  <span className="text-[20px] font-black" style={{ color: NAVY }}>
-                    ${(plan.perMo * plan.months).toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              {/* Code applied pill */}
-              <div className="px-5 pt-4 sm:px-6">
-                <div
-                  className="flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13.5px] font-bold text-white"
-                  style={{ background: NAVY }}
-                >
-                  <Tag className="h-4 w-4" />
-                  CODE APPLIED: <span className="ml-1">JOIN120</span>
-                </div>
-                <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
-                  Only <span className="text-ink">23 discounts left</span>. Yours
-                  is reserved for{" "}
-                  <span style={{ color: PINK }} className="font-bold">
-                    {time}
-                  </span>
-                </div>
-              </div>
-
-              {/* Feature checklist */}
-              <ul className="mx-5 my-4 space-y-2 rounded-xl bg-[#F6F9FE] p-4 text-[13.5px] sm:mx-6">
-                {[
-                  "Same Price. All Dosage Levels.",
-                  "Prescribed & shipped within 48 hours",
-                  "UNLIMITED doctor calls 7 days a week",
-                ].map((t) => (
-                  <li key={t} className="flex items-start gap-2 text-ink/80">
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0"
-                      style={{ color: GREEN }}
-                      strokeWidth={3}
-                    />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-
-              {/* $0 Due today */}
-              <div className="px-5 pb-5 sm:px-6">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.15 }}
-                  className="rounded-2xl px-4 py-4 text-center"
-                  style={{
-                    background: GREEN_TINT,
-                    border: `1px solid ${GREEN}33`,
-                  }}
-                >
-                  <div
-                    className="text-[18px] font-black"
-                    style={{ color: GREEN }}
-                  >
-                    $0 Due Today!
-                  </div>
-                  <div className="mt-0.5 text-[12.5px] text-ink/70">
-                    Only charged if your prescription is approved.
-                  </div>
-                </motion.div>
-
-                <div className="mt-3 flex items-center justify-center">
-                  <img
-                    src={hsaFsa.url}
-                    alt="HSA/FSA Eligible"
-                    className="h-8 w-auto"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.aside>
-        </div>
-
-        {/* ── RIGHT: Forms ── */}
-        <form onSubmit={onSubmit} className="order-1 lg:order-1">
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.06 } },
-            }}
-            className="flex flex-col gap-6"
-          >
-            {/* Shipping */}
-            <FormCard>
-              <StepBadge label="Shipping Address" />
+      {/* MAIN FLOW */}
+      <form
+        onSubmit={onSubmit}
+        className="mx-auto flex w-full max-w-[760px] flex-col gap-6 px-4 pb-16 sm:px-6"
+      >
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.06 } },
+          }}
+          className="flex flex-col gap-6"
+        >
+          {/* Shipping */}
+          <FormCard>
+            <StepBadge label="Shipping Address" />
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full Name" className="sm:col-span-2">
@@ -540,6 +379,142 @@ function CheckoutPage() {
                     }
                   />
                 </Field>
+              </div>
+            </FormCard>
+
+            {/* Your Treatment — middle section */}
+            <FormCard>
+              <StepBadge label="Your Treatment" />
+
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-[17px] font-bold text-ink sm:text-[18px]">
+                    {treatment.name}
+                  </div>
+                  <div className="text-[13px] text-ink/60">
+                    {treatment.subtitle}
+                  </div>
+                </div>
+                <div
+                  className="grid h-[72px] w-[72px] shrink-0 place-items-center overflow-hidden rounded-2xl"
+                  style={{ background: treatment.vialBg }}
+                >
+                  <img
+                    src={treatment.vial}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </div>
+
+              <div className="divide-y divide-ink/8 py-2">
+                <Row label="Plan" value={<b>{plan.title}</b>} />
+                <Row label="Supply" value={plan.supply} />
+                <Row
+                  label="Total Savings"
+                  value={
+                    <span className="font-bold" style={{ color: GREEN }}>
+                      ${totalSavings.toLocaleString()}
+                    </span>
+                  }
+                />
+                <Row
+                  label="Shipping"
+                  value={
+                    <span className="font-bold" style={{ color: GREEN }}>
+                      FREE
+                    </span>
+                  }
+                />
+                <Row
+                  label="Monthly Price"
+                  value={
+                    <span className="font-bold text-ink">
+                      <span className="mr-1 text-ink/40 line-through">
+                        ${plan.originalPerMo}
+                      </span>
+                      <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
+                    </span>
+                  }
+                />
+              </div>
+
+              <div
+                className="flex items-center justify-between rounded-xl px-4 py-3"
+                style={{ background: "#F6F9FE" }}
+              >
+                <div className="text-[15px] font-bold text-ink">
+                  Total if prescribed
+                </div>
+                <div className="text-right">
+                  <span className="mr-2 text-[14px] text-ink/40 line-through">
+                    ${originalTotal.toLocaleString()}
+                  </span>
+                  <span className="text-[20px] font-black" style={{ color: NAVY }}>
+                    ${(plan.perMo * plan.months).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              <div
+                className="mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13.5px] font-bold text-white"
+                style={{ background: NAVY }}
+              >
+                <Tag className="h-4 w-4" />
+                CODE APPLIED: <span className="ml-1">JOIN120</span>
+              </div>
+              <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
+                Only <span className="text-ink">23 discounts left</span>. Yours
+                is reserved for{" "}
+                <span style={{ color: PINK }} className="font-bold">
+                  {time}
+                </span>
+              </div>
+
+              <ul className="mt-4 space-y-2 rounded-xl bg-[#F6F9FE] p-4 text-[13.5px]">
+                {[
+                  "Same Price. All Dosage Levels.",
+                  "Prescribed & shipped within 48 hours",
+                  "UNLIMITED doctor calls 7 days a week",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2 text-ink/80">
+                    <Check
+                      className="mt-0.5 h-4 w-4 shrink-0"
+                      style={{ color: GREEN }}
+                      strokeWidth={3}
+                    />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="mt-4 rounded-2xl px-4 py-4 text-center"
+                style={{
+                  background: GREEN_TINT,
+                  border: `1px solid ${GREEN}33`,
+                }}
+              >
+                <div
+                  className="text-[18px] font-black"
+                  style={{ color: GREEN }}
+                >
+                  $0 Due Today!
+                </div>
+                <div className="mt-0.5 text-[12.5px] text-ink/70">
+                  Only charged if your prescription is approved.
+                </div>
+              </motion.div>
+
+              <div className="mt-3 flex items-center justify-center">
+                <img
+                  src={hsaFsa.url}
+                  alt="HSA/FSA Eligible"
+                  className="h-8 w-auto"
+                />
               </div>
             </FormCard>
 
@@ -803,7 +778,6 @@ function CheckoutPage() {
           </motion.div>
         </form>
       </div>
-    </div>
   );
 }
 
