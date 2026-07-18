@@ -451,8 +451,11 @@ function CheckoutPage() {
                 <Row
                   label="Shipping"
                   value={
-                    <span className="font-bold" style={{ color: GREEN }}>
-                      FREE
+                    <span className="font-bold">
+                      <span className="mr-1.5 text-ink/40 line-through">
+                        ${30 * plan.months}
+                      </span>
+                      <span style={{ color: GREEN }}>FREE</span>
                     </span>
                   }
                 />
