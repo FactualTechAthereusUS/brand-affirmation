@@ -151,10 +151,10 @@ function YesNoWithDetail({
             key={v}
             type="button"
             onClick={() => onChange(v)}
-            className={`h-[56px] rounded-2xl border text-[15px] font-medium capitalize transition-all ${
+            className={`h-[54px] rounded-lg border text-[15px] font-medium capitalize transition-all ${
               value === v
-                ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
-                : "border-ink/10 bg-white text-ink hover:border-ink/30"
+                ? "border-[#1D437B] bg-[#1D437B] text-white shadow-[0_8px_20px_rgba(29,67,123,0.22)]"
+                : "border-ink/12 bg-white text-ink hover:border-ink/30"
             }`}
           >
             {v}
