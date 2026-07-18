@@ -878,7 +878,7 @@ function ReviewSlider() {
             className="w-[92%] shrink-0 snap-center sm:w-[78%] md:w-[68%]"
           >
             <div
-              className="rounded-2xl border border-black/8 bg-white p-5 transition-all duration-500 ease-out"
+              className="rounded-2xl border border-black/8 bg-white p-4 transition-all duration-500 ease-out"
               style={{
                 opacity: i === active ? 1 : 0.45,
                 transform: i === active ? "scale(1)" : "scale(0.97)",
@@ -897,13 +897,13 @@ function ReviewSlider() {
                   </svg>
                 ))}
               </div>
-              <p className="mt-3 text-[15px] font-semibold leading-[1.35] text-ink">
+              <p className="mt-2 text-[15px] font-semibold leading-[1.35] text-ink">
                 {r.lead}
               </p>
-              <p className="mt-2 text-[14px] leading-[1.55] text-ink/70">
+              <p className="mt-1.5 text-[14px] leading-[1.55] text-ink/70">
                 {r.body}
               </p>
-              <div className="mt-4 flex items-center gap-2.5">
+              <div className="mt-3 flex items-center gap-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F3F2EE] text-[12px] font-bold text-ink/70">
                   {r.name.split(" ")[0][0]}
                 </div>
