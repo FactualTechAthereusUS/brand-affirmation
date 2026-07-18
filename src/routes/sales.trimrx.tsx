@@ -479,6 +479,7 @@ function SalesTrimRxPage() {
             desc="Proven, effective, more affordable."
             badge="More Affordable"
             badgeColor="#1a8f5a"
+            badgeIcon={MoneyIcon}
             vial={vialSema.url}
             patients="12,555 patients chose this today"
             selected={treatment === "sema"}
@@ -490,6 +491,7 @@ function SalesTrimRxPage() {
             desc="Faster results, dual-action, but more expensive."
             badge="Fastest Results"
             badgeColor={PINK}
+            badgeIcon={LightningIcon}
             vial={vialTirz.url}
             patients="15,180 patients chose this today"
             selected={treatment === "tirz"}
