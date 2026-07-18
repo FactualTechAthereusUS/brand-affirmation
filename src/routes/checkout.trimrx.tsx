@@ -782,6 +782,8 @@ function CheckoutPage() {
               only stops future charges; refunds are governed by the Refund
               Policy.
             </p>
+
+            <ReviewSlider />
           </motion.div>
         </form>
       </div>
