@@ -111,7 +111,7 @@ const SCREENS = [
 
 type ScreenId = (typeof SCREENS)[number];
 
-const STAGES = ["Start", "Preliminary", "Health", "Details", "Eligibility"] as const;
+
 function stageOf(idx: number, sex?: Sex): number {
   // Trim female_effects (idx 4) if not female, shift accordingly by using screen id instead
   const id = SCREENS[idx];
