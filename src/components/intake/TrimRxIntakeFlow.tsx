@@ -23,7 +23,6 @@ import {
   TrxScreen as ScreenShell,
   TrxStepper,
   TrxHeader,
-  NAVY,
 } from "./TrxUI";
 import spFemaleBefore from "@/assets/sp-female-before.png.asset.json";
 import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
