@@ -258,13 +258,7 @@ export function TrimRxIntakeFlowV2() {
           style={{ borderColor: "rgba(23,23,23,0.08)" }}
         >
           <TrxHeader onBack={prev} showBack={idx > 0} />
-          <div
-            className="border-t px-4 py-3 md:px-8 md:py-4"
-            style={{
-              borderColor: "rgba(23,23,23,0.06)",
-              background: "rgba(29,67,123,0.03)",
-            }}
-          >
+          <div className="px-4 py-3 md:px-8 md:py-4">
             <TrxStepper stage={stage} />
           </div>
         </div>
