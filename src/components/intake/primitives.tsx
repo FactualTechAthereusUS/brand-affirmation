@@ -510,7 +510,6 @@ export function StateSelect({
                         active ? "bg-ever/10" : "hover:bg-ink/[0.03]"
                       }`}
                     >
-                      <StateFlag state={s} className="h-5 w-7" />
                       <span
                         className={`flex-1 truncate text-[15px] ${
                           active ? "font-semibold text-ink" : "text-ink/80"
