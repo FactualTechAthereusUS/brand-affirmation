@@ -432,7 +432,7 @@ function SalesTrimRxPage() {
             color: "#171717",
           }}
         >
-          <span aria-hidden>🎉</span>
+          <PartyPopper className="h-5 w-5" />
           First shipment $120 OFF
         </div>
       </div>
