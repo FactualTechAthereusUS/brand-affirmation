@@ -910,8 +910,33 @@ export function WLIntakeFlow() {
                   </PrimaryButton>
                 }
               >
+                <div>
+                  <span className="mb-2 block text-[13px] font-medium text-ink/70">
+                    Are you currently taking any of these diabetes medications?
+                  </span>
+                  <div className="grid gap-2">
+                    {[
+                      "None of these",
+                      "Insulin (any type)",
+                      "Glimepiride (Amaryl)",
+                      "Glipizide",
+                      "Glyburide",
+                      "Meglitinides (repaglinide, nateglinide)",
+                      "Sitagliptin, Saxagliptin, Linagliptin, or Alogliptin",
+                    ].map((o) => (
+                      <OptionCard
+                        key={o}
+                        label={o}
+                        compact
+                        selected={answers.diabetesMeds?.includes(o) ?? false}
+                        onClick={() => toggleMulti("diabetesMeds", o, "None of these")}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <label className="block">
-                  <span className="mb-2 block text-[13px] font-medium text-ink/70">Current medications</span>
+                  <span className="mb-2 block text-[13px] font-medium text-ink/70">Any other medications not listed above?</span>
+
                   <textarea
                     value={answers.noMedications ? "None" : (answers.medications ?? "")}
                     onChange={(e) => set({ medications: e.target.value, noMedications: false })}
