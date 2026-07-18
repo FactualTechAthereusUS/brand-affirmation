@@ -562,18 +562,14 @@ function CheckoutPage() {
                   className="overflow-hidden rounded-2xl border transition-all"
                   style={{
                     borderColor:
-                      payMethod === "card" ? "#E5C9A6" : "rgba(0,0,0,0.10)",
+                      payMethod === "card" ? NAVY : "rgba(0,0,0,0.10)",
                     background: "#FFFFFF",
                   }}
                 >
                   <button
                     type="button"
                     onClick={() => setPayMethod("card")}
-                    className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
-                    style={{
-                      background:
-                        payMethod === "card" ? "#FBEFE1" : "#FFFFFF",
-                    }}
+                    className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
                   >
                     <div className="flex items-center gap-3">
                       <Radio active={payMethod === "card"} />
@@ -583,6 +579,7 @@ function CheckoutPage() {
                     </div>
                     <PayIconsPeek />
                   </button>
+
 
                   {payMethod === "card" && (
                     <div className="bg-[#F3F4F6]">
