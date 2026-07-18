@@ -826,6 +826,10 @@ export function WLIntakeFlow() {
                   "Severe gastrointestinal condition (gastroparesis or IBD)",
                   "Active suicidal thoughts or recent attempt",
                   "Known allergy to semaglutide or tirzepatide",
+                  "Active or prior pancreatitis",
+                  "Triglycerides over 600 mg/dL at any point",
+                  "Alcohol or opioid use disorder (untreated)",
+
                 ].map((o) => (
                   <OptionCard
                     key={o}
