@@ -474,7 +474,7 @@ export function TrimRxIntakeFlowV2() {
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative overflow-hidden rounded-3xl shadow-[0_24px_70px_rgba(29,67,123,0.22)]"
+                  className="relative w-[calc(100%+2.5rem)] -mx-5 overflow-hidden rounded-none shadow-[0_24px_70px_rgba(29,67,123,0.22)] sm:rounded-3xl md:w-[calc(100%+4rem)] md:-mx-8"
                 >
                   {/* Yahoo Health banner */}
                   <div className="flex items-center bg-[#6001D2] px-5 py-3 sm:px-7 sm:py-4">
