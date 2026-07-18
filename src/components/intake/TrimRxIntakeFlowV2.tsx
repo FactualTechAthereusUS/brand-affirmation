@@ -283,6 +283,21 @@ export function TrimRxIntakeFlowV2() {
                   </PrimaryButton>
                 }
               >
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/10] md:aspect-[16/9] mb-2">
+                  <img
+                    src={trxHeroImg.url}
+                    alt="Woman smiling at golden hour"
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="eager"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+                  <span
+                    className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white font-serif italic leading-none tracking-tight text-[36px] md:text-[56px]"
+                    style={{ textShadow: "0 2px 20px rgba(0,0,0,0.35)" }}
+                  >
+                    blissley
+                  </span>
+                </div>
                 <label className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink/55">
                   What is your height and weight?
                 </label>
