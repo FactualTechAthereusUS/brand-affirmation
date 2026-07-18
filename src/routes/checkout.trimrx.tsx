@@ -562,18 +562,14 @@ function CheckoutPage() {
                   className="overflow-hidden rounded-2xl border transition-all"
                   style={{
                     borderColor:
-                      payMethod === "card" ? "#E5C9A6" : "rgba(0,0,0,0.10)",
+                      payMethod === "card" ? NAVY : "rgba(0,0,0,0.10)",
                     background: "#FFFFFF",
                   }}
                 >
                   <button
                     type="button"
                     onClick={() => setPayMethod("card")}
-                    className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
-                    style={{
-                      background:
-                        payMethod === "card" ? "#FBEFE1" : "#FFFFFF",
-                    }}
+                    className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
                   >
                     <div className="flex items-center gap-3">
                       <Radio active={payMethod === "card"} />
@@ -583,6 +579,7 @@ function CheckoutPage() {
                     </div>
                     <PayIconsPeek />
                   </button>
+
 
                   {payMethod === "card" && (
                     <div className="bg-[#F3F4F6]">
@@ -706,19 +703,13 @@ function CheckoutPage() {
                       className="overflow-hidden rounded-2xl border"
                       style={{
                         borderColor:
-                          payMethod === m.key
-                            ? "#E5C9A6"
-                            : "rgba(0,0,0,0.10)",
+                          payMethod === m.key ? NAVY : "rgba(0,0,0,0.10)",
                       }}
                     >
                       <button
                         type="button"
                         onClick={() => setPayMethod(m.key)}
-                        className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
-                        style={{
-                          background:
-                            payMethod === m.key ? "#FBEFE1" : "#FFFFFF",
-                        }}
+                        className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
                       >
                         <div className="flex items-center gap-3">
                           <Radio active={payMethod === m.key} />
@@ -728,6 +719,7 @@ function CheckoutPage() {
                         </div>
                         <img src={m.img} alt={m.label} className="h-5" />
                       </button>
+
                       {payMethod === m.key && (
                         <div
                           className="border-t border-black/10 bg-[#F3F4F6] p-4 text-[13.5px] text-ink/70"
@@ -863,8 +855,8 @@ function Radio({ active }: { active: boolean }) {
       aria-hidden
       className="grid h-5 w-5 shrink-0 place-items-center rounded-full border transition-colors"
       style={{
-        borderColor: active ? "#B8763A" : "rgba(0,0,0,0.25)",
-        background: active ? "#B8763A" : "#FFFFFF",
+        borderColor: active ? NAVY : "rgba(0,0,0,0.25)",
+        background: active ? NAVY : "#FFFFFF",
       }}
     >
       {active && <span className="h-2 w-2 rounded-full bg-white" />}
