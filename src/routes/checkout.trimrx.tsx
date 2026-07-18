@@ -536,7 +536,7 @@ function CheckoutPage() {
                     Due Today
                   </div>
                   <div className="mt-1 text-[11.5px] text-ink/60">
-                    Only charged if your prescription is approved.
+                    Only charged if<br />your prescription is approved.
                   </div>
                 </div>
                 <div className="text-right">
