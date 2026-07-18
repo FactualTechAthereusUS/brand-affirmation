@@ -170,7 +170,7 @@ export function WLIntakeFlow() {
     <div className="relative min-h-[100svh] bg-white pb-24">
       {/* Sticky header (hidden on loading) */}
       {!isLoading && (
-        <div className="sticky top-0 z-20 border-b border-ink/[0.06] bg-white/85 backdrop-blur-xl backdrop-saturate-150">
+        <div className="sticky top-0 z-20 bg-white/85 backdrop-blur-xl backdrop-saturate-150">
           <div className="mx-auto flex h-[64px] max-w-[720px] items-center justify-between gap-4 px-5 md:h-[72px] md:px-8">
             <BackBtn onClick={prev} invisible={idx === 0} />
             <Link to="/" className="flex items-center">
