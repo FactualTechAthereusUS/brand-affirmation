@@ -454,24 +454,22 @@ function SalesTrimRxPage() {
           Yours is reserved for <b style={{ color: NAVY }}>{time}</b>
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.05 }}
-          className="mx-auto mt-6 max-w-[560px] text-center font-hero text-[26px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink sm:text-[32px]"
-        >
-          <span className="relative inline-block">
+        <div className="mt-6 text-center">
+          <motion.span
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.05 }}
+            className="inline-block whitespace-nowrap px-1 font-hero text-[22px] font-black tracking-tight text-ink xs:text-[26px] sm:text-[30px] bg-no-repeat"
+            style={{
+              backgroundImage: `linear-gradient(180deg, transparent 70%, ${NAVY_SOFT} 70%, ${NAVY_SOFT} 88%, transparent 88%)`,
+            }}
+          >
             Same Price. All Dosage Levels.
-            <span
-              aria-hidden
-              className="absolute inset-x-0 -bottom-0.5 h-[3px] rounded-full"
-              style={{ background: NAVY_SOFT, opacity: 0.7 }}
-            />
-          </span>
-        </motion.h1>
-        <p className="mt-2 text-center text-[14.5px] text-ink/60">
-          No Hidden Fees. Everything Included.
-        </p>
+          </motion.span>
+          <div className="mt-1 font-light text-[16px] leading-5 text-ink/70 xs:text-[18px]">
+            No Hidden Fees. Everything Included.
+          </div>
+        </div>
 
         {/* Step badge */}
         <div className="mt-8 flex items-center gap-3">
