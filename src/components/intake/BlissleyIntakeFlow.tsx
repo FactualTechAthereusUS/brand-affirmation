@@ -1280,54 +1280,131 @@ function MetabolicChart({
 
 
 
-/* ═════════════ Weight-loss projection ═════════════ */
+/* ═════════════ Weight-loss projection (personalized) ═════════════ */
 function WeightLossChart({ start, goal }: { start: number; goal: number }) {
   const s = Math.max(120, Math.min(500, isFinite(start) && start > 0 ? start : 210));
   const g = isFinite(goal) && goal > 0 && goal < s ? goal : Math.max(120, s - 23);
   const lossLbs = Math.round(s - g);
+  const pctLoss = ((lossLbs / s) * 100).toFixed(1);
+
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const now = new Date();
-  const months = Array.from({ length: 7 }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
+  const N = 7;
+  const months = Array.from({ length: N }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
+
+  // Realistic curve: smooth downward trajectory with tiny plateaus (higher-lows)
   const points = months.map((_, i) => {
-    const t = i / (months.length - 1);
-    const eased = 1 - Math.pow(1 - t, 2.4);
-    return s - lossLbs * eased;
+    const t = i / (N - 1);
+    const eased = 1 - Math.pow(1 - t, 2.2);
+    const wobble = Math.sin(t * Math.PI * 2.6) * (lossLbs * 0.02);
+    return s - lossLbs * eased + wobble;
   });
-  const W = 640, H = 300, padL = 64, padR = 28, padT = 28, padB = 44;
-  const xAt = (i: number) => padL + (i / (months.length - 1)) * (W - padL - padR);
+
+  const W = 720, H = 320, padL = 72, padR = 36, padT = 40, padB = 52;
+  const xAt = (i: number) => padL + (i / (N - 1)) * (W - padL - padR);
   const yAt = (v: number) => {
     const min = g - 4, max = s + 4;
     return padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
   };
-  const path = points.reduce((acc, v, i) => {
-    const x = xAt(i), y = yAt(v);
-    if (i === 0) return `M ${x} ${y}`;
-    const pX = xAt(i - 1), pY = yAt(points[i - 1]);
-    const cx = pX + (x - pX) * 0.5;
-    return `${acc} C ${cx} ${pY}, ${cx} ${y}, ${x} ${y}`;
-  }, "");
+
+  // Smooth Catmull-Rom → cubic Bezier
+  let path = `M ${xAt(0)} ${yAt(points[0])}`;
+  for (let i = 0; i < N - 1; i++) {
+    const p0 = points[i - 1] ?? points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] ?? p2;
+    const x1 = xAt(i) + (xAt(i + 1) - xAt(Math.max(0, i - 1))) / 6;
+    const y1 = yAt(p1) + (yAt(p2) - yAt(p0)) / 6;
+    const x2 = xAt(i + 1) - (xAt(Math.min(N - 1, i + 2)) - xAt(i)) / 6;
+    const y2 = yAt(p2) - (yAt(p3) - yAt(p1)) / 6;
+    path += ` C ${x1} ${y1}, ${x2} ${y2}, ${xAt(i + 1)} ${yAt(p2)}`;
+  }
+
+  const areaPath = `${path} L ${xAt(N - 1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
+  const chartKey = `${s}-${g}`;
+
   return (
     <motion.div
+      key={chartKey}
       initial={{ opacity: 0, y: -20, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="w-full"
     >
+      {/* Header caption */}
+      <div className="mb-3 flex items-baseline justify-between px-1">
+        <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink/60">
+          Your projected trajectory
+        </div>
+        <div className="text-[13px] font-semibold text-[#ee7273]">
+          -{lossLbs} lbs · {pctLoss}% body weight
+        </div>
+      </div>
+
       <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
-        <line x1={padL} x2={W - padR} y1={yAt(s)} y2={yAt(s)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
-        <line x1={padL} x2={W - padR} y1={yAt(g)} y2={yAt(g)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
-        <text x={padL - 12} y={yAt(s) + 4} textAnchor="end" className="fill-ink/70" style={{ fontSize: 13, fontWeight: 500 }}>{Math.round(s)} lbs</text>
-        <text x={padL - 12} y={yAt(g) + 4} textAnchor="end" className="fill-ink/70" style={{ fontSize: 13, fontWeight: 500 }}>{Math.round(g)} lbs</text>
-        <motion.path d={path} fill="none" stroke="#ee7273" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }} />
-        <motion.circle cx={xAt(0)} cy={yAt(s)} r={8} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 18 }} />
-        <motion.circle cx={xAt(months.length - 1)} cy={yAt(g)} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7, type: "spring", stiffness: 220, damping: 16 }} />
+        <defs>
+          <linearGradient id="wlFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* Baselines */}
+        <line x1={padL} x2={W - padR} y1={yAt(s)} y2={yAt(s)} stroke="#171717" strokeOpacity="0.16" strokeDasharray="6 8" />
+        <line x1={padL} x2={W - padR} y1={yAt(g)} y2={yAt(g)} stroke="#171717" strokeOpacity="0.16" strokeDasharray="6 8" />
+
+        {/* Y-axis labels */}
+        <text x={padL - 14} y={yAt(s) + 5} textAnchor="end" style={{ fontSize: 14, fontWeight: 600, fill: "#171717" }}>{Math.round(s)} lbs</text>
+        <text x={padL - 14} y={yAt(s) + 22} textAnchor="end" style={{ fontSize: 11, fontWeight: 500, fill: "#171717", opacity: 0.5 }}>Today</text>
+        <text x={padL - 14} y={yAt(g) + 5} textAnchor="end" style={{ fontSize: 14, fontWeight: 700, fill: "#ee7273" }}>{Math.round(g)} lbs</text>
+        <text x={padL - 14} y={yAt(g) + 22} textAnchor="end" style={{ fontSize: 11, fontWeight: 500, fill: "#171717", opacity: 0.5 }}>Goal</text>
+
+        {/* Fill area */}
+        <motion.path d={areaPath} fill="url(#wlFill)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.9 }} />
+
+        {/* Curve */}
+        <motion.path
+          d={path}
+          fill="none"
+          stroke="#ee7273"
+          strokeWidth={6}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* Start dot */}
+        <motion.circle cx={xAt(0)} cy={yAt(points[0])} r={8} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 18 }} />
+
+        {/* Goal halo + dot */}
+        <motion.circle cx={xAt(N - 1)} cy={yAt(points[N - 1])} r={16} fill="#ee7273" fillOpacity={0.18} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.9, duration: 0.5 }} />
+        <motion.circle cx={xAt(N - 1)} cy={yAt(points[N - 1])} r={10} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.0, type: "spring", stiffness: 220, damping: 16 }} />
+
+        {/* Goal callout above end dot */}
+        <motion.text
+          x={xAt(N - 1)}
+          y={yAt(points[N - 1]) - 22}
+          textAnchor="end"
+          initial={{ opacity: 0, y: yAt(points[N - 1]) - 10 }}
+          animate={{ opacity: 1, y: yAt(points[N - 1]) - 22 }}
+          transition={{ delay: 2.1, duration: 0.5 }}
+          style={{ fontSize: 15, fontWeight: 700, fill: "#171717" }}
+        >
+          {Math.round(g)} lbs
+        </motion.text>
+
+        {/* Month labels */}
         {months.map((m, i) => (
-          <text key={`${m}-${i}`} x={xAt(i)} y={H - 14} textAnchor="middle" className="fill-ink/60" style={{ fontSize: 12, fontWeight: 500 }}>{m}</text>
+          <text key={`${m}-${i}`} x={xAt(i)} y={H - 14} textAnchor="middle" style={{ fontSize: 13, fontWeight: 500, fill: "#171717", opacity: 0.65 }}>{m}</text>
         ))}
       </svg>
     </motion.div>
   );
 }
+
 
 /* ═════════════ Loading with 3 qualifying questions ═════════════ */
 function LoadingScreen({
