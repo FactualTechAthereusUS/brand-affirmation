@@ -545,7 +545,7 @@ function SalesTrimRxPage() {
             hidden: {},
             show: { transition: { staggerChildren: 0.06 } },
           }}
-          className="mt-5 flex flex-col gap-4"
+          className="mt-8 flex flex-col gap-6"
         >
           {plans.map((p) => (
             <motion.div
