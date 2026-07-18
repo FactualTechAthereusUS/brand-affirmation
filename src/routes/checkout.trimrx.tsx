@@ -778,7 +778,6 @@ function CheckoutPage() {
           </motion.div>
         </form>
       </div>
-    </div>
   );
 }
 
