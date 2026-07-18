@@ -367,7 +367,6 @@ const INCLUDES = [
 
 /* ─────────  Page  ───────── */
 function SalesTrimRxPage() {
-function SalesTrimRxPage() {
   const navigate = useNavigate();
   const [treatment, setTreatment] = useState<"sema" | "tirz" | null>(null);
   const [planKey, setPlanKey] = useState<string | null>(null);
