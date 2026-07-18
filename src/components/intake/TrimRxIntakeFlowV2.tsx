@@ -492,59 +492,67 @@ export function TrimRxIntakeFlowV2() {
                     </svg>
                   </div>
 
-                  {/* Hero image body */}
-                  <div className="relative min-h-[520px] sm:min-h-[480px] md:min-h-[440px]">
+                  {/* Full-bleed hero image body */}
+                  <div className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px]">
                     <img
                       src={trxRankedHero.url}
                       alt=""
-                      className="absolute inset-0 h-full w-full object-cover object-[65%_center]"
+                      className="absolute inset-0 h-full w-full object-cover object-[75%_center]"
                     />
+                    {/* Dark gradient for text legibility on the left */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent md:hidden" />
 
                     {/* Content overlay on the left */}
-                    <div className="relative z-10 flex h-full w-full max-w-full md:max-w-[62%] p-5 sm:p-7 md:p-9">
-                      <div className="w-full rounded-2xl bg-white/70 backdrop-blur-xl ring-1 ring-white/60 shadow-[0_20px_50px_rgba(15,25,50,0.15)] p-5 sm:p-6 md:p-7 text-ink">
-                        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/60">
+                    <div className="relative z-10 flex h-full w-full max-w-full md:max-w-[58%] lg:max-w-[52%] p-6 sm:p-9 md:p-12">
+                      <div className="w-full text-white">
+                        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
                           <Trophy className="h-4 w-4" /> Best overall
                         </div>
 
-                        <div className="mt-4 flex items-center gap-3">
-                          <span className="font-serif text-[46px] sm:text-[52px] leading-none font-bold text-[#1D437B]">#1</span>
-                          <img src={blissleyWhite.url} alt="Blissley" className="h-6 sm:h-7 w-auto object-contain [filter:invert(19%)_sepia(45%)_saturate(1440%)_hue-rotate(184deg)_brightness(92%)_contrast(95%)]" />
+                        <div className="mt-5 flex items-center gap-4">
+                          <span className="font-serif text-[64px] sm:text-[76px] md:text-[88px] leading-none font-bold text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]">#1</span>
+                          <img src={blissleyWhite.url} alt="Blissley" className="h-9 sm:h-11 md:h-14 w-auto object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.3)]" />
                         </div>
 
-                        <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] text-ink/80">
-                          <span className="rounded-md bg-[#1D437B] px-2 py-0.5 font-semibold text-white">9.8</span>
-                          <span>Exceptional</span>
-                          <span className="text-ink/30">·</span>
+                        <div className="mt-5 flex flex-wrap items-center gap-2.5 text-[14px] text-white/95">
+                          <span className="rounded-md bg-white px-2.5 py-1 font-semibold text-[#1D437B]">9.8</span>
+                          <span className="font-medium">Exceptional</span>
+                          <span className="text-white/40">·</span>
                           <span className="flex items-center gap-0.5 text-[#ee7273]">
                             {[0,1,2,3,4].map((i) => (
-                              <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 fill-current" aria-hidden>
+                              <svg key={i} viewBox="0 0 20 20" className="h-4 w-4 fill-current drop-shadow-[0_2px_6px_rgba(0,0,0,0.3)]" aria-hidden>
                                 <path d="M10 1.5l2.6 5.27 5.82.84-4.21 4.1.99 5.79L10 14.77l-5.2 2.73.99-5.79L1.58 7.61l5.82-.84L10 1.5z"/>
                               </svg>
                             ))}
                           </span>
                         </div>
 
-                        <ul className="mt-5 space-y-2.5 text-[14px] text-ink/90">
+                        <ul className="mt-7 space-y-3 text-[15px] text-white/95">
                           {[
                             "Personalized GLP-1 protocols for your body",
                             "Physician review within 24 hours",
                             "Includes nausea & side-effect support",
                             "Improves treatment adherence and comfort",
                           ].map((f) => (
-                            <li key={f} className="flex items-start gap-2.5">
-                              <img src={verifiedCheck.url} alt="" className="mt-0.5 h-5 w-5 shrink-0" />
+                            <li key={f} className="flex items-start gap-3">
+                              <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white">
+                                <svg viewBox="0 0 20 20" className="h-3 w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                                  <path d="M4 10.5l4 4 8-9" />
+                                </svg>
+                              </span>
                               <span>{f}</span>
                             </li>
                           ))}
                         </ul>
 
-                        <div className="mt-6 inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_8px_20px_rgba(238,114,115,0.35)]">
+                        <div className="mt-7 inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_24px_rgba(238,114,115,0.4)]">
                           Most popular
                         </div>
                       </div>
                     </div>
                   </div>
+
                 </motion.div>
               </ScreenShell>
             )}
