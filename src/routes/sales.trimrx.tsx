@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
+import { PayIcons } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import forbes from "@/assets/forbes-health.png.asset.json";
@@ -151,14 +152,14 @@ function TreatmentCard({
         </div>
       </div>
       <span
-        className="grid h-[24px] w-[24px] shrink-0 place-items-center rounded-full border-2 transition-colors"
+        className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-full border-2 transition-colors"
         style={{
           borderColor: selected ? NAVY : "rgba(23,23,23,0.20)",
           background: selected ? NAVY : "transparent",
         }}
         aria-hidden
       >
-        {selected && <span className="h-2 w-2 rounded-full bg-white" />}
+        {selected && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3.4} />}
       </span>
     </motion.button>
   );
@@ -187,31 +188,39 @@ function PlanCard({
   selected: boolean;
   onSelect: () => void;
 }) {
-  const highlight = !!plan.badge;
-  const ring = highlight
-    ? plan.badge!.kind === "best"
-      ? NAVY
-      : PINK
-    : selected
-      ? NAVY
+  const isBest = plan.badge?.kind === "best";
+  const isPopular = plan.badge?.kind === "popular";
+  const accent = isBest ? NAVY : PINK;
+  const tint = selected
+    ? `${accent}0E`
+    : isBest
+      ? `${NAVY}08`
+      : isPopular
+        ? `${PINK}08`
+        : "#FFFFFF";
+  const ring = selected
+    ? accent
+    : plan.badge
+      ? accent
       : "rgba(23,23,23,0.10)";
   return (
     <motion.div
       layout
       whileHover={{ y: -2 }}
-      className="relative overflow-hidden rounded-2xl border bg-white transition-all"
+      className="relative overflow-hidden rounded-2xl border transition-all"
       style={{
+        background: tint,
         borderColor: ring,
-        borderWidth: highlight || selected ? 2 : 1,
+        borderWidth: selected || plan.badge ? 2 : 1,
         boxShadow: selected
-          ? "0 20px 40px rgba(29,67,123,0.14)"
+          ? `0 22px 44px ${accent}26`
           : "0 1px 0 rgba(0,0,0,0.02)",
       }}
     >
       {plan.badge && (
         <div
           className="absolute right-4 top-0 -translate-y-1/2 rounded-full px-3 py-1 text-[11px] font-semibold text-white"
-          style={{ background: plan.badge.kind === "best" ? NAVY : PINK }}
+          style={{ background: accent }}
         >
           {plan.badge.label}
         </div>
@@ -219,26 +228,23 @@ function PlanCard({
       <div className="p-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <h3 className="text-[16px] font-semibold text-ink sm:text-[17px]">
-                {plan.title}
-              </h3>
-            </div>
+            <h3 className="text-[17px] font-semibold text-ink sm:text-[18px]" style={{ color: NAVY }}>
+              {plan.title}
+            </h3>
             <p className="mt-0.5 text-[13.5px] leading-snug text-ink/60">
               {plan.desc}
             </p>
           </div>
           <span
-            className="shrink-0 rounded-full border px-2.5 py-1 text-[11.5px] font-medium"
-            style={{ borderColor: `${NAVY}22`, color: NAVY }}
+            className="shrink-0 text-[12px] font-semibold"
+            style={{ color: NAVY }}
           >
             {plan.supply}
           </span>
         </div>
 
         {plan.installments && (
-          <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-dashed p-3"
-               style={{ borderColor: `${NAVY}33`, background: `${NAVY}05` }}>
+          <div className="mt-4 flex items-center justify-between gap-3">
             <div>
               <div className="text-[13.5px] font-semibold" style={{ color: NAVY }}>
                 Easy 0% Installments
@@ -246,47 +252,47 @@ function PlanCard({
               <div className="text-[12px] text-ink/55">Spread payments over 12 months.</div>
             </div>
             <div className="flex items-center gap-1.5">
-              <img src={payAfterpay.url} alt="Afterpay" className="h-4 w-auto" />
-              <img src={payKlarna.url} alt="Klarna" className="h-4 w-auto" />
-              <img src={payAffirm.url} alt="Affirm" className="h-4 w-auto" />
+              <img src={payAfterpay.url} alt="Afterpay" className="h-5 w-auto rounded-[4px]" />
+              <img src={payKlarna.url} alt="Klarna" className="h-5 w-auto rounded-[4px]" />
+              <img src={payAffirm.url} alt="Affirm" className="h-5 w-auto rounded-[4px]" />
             </div>
           </div>
         )}
 
         <div
-          className="mt-3 rounded-xl px-3 py-2 text-center text-[13px] font-semibold"
+          className="mt-4 rounded-xl border border-dashed py-2 text-center text-[13px] font-semibold"
           style={{
-            background: `${PINK}14`,
-            color: "#a83a3b",
+            background: "#EAF7EE",
+            borderColor: "#8FCBA0",
+            color: "#137A3A",
           }}
         >
-          You are saving ${plan.savings}
+          You are saving ${plan.savings.toLocaleString()}
         </div>
 
         <button
           type="button"
           onClick={onSelect}
-          className="mt-3 flex w-full items-center justify-center rounded-xl px-4 py-3.5 text-[14.5px] font-semibold text-white transition-all"
+          className="mt-3 flex w-full flex-col items-center justify-center rounded-xl px-4 py-3.5 text-[15px] font-semibold transition-all"
           style={{
-            background: selected ? PINK : NAVY,
+            background: selected ? accent : `${accent}1F`,
+            color: selected ? "#fff" : NAVY,
             boxShadow: selected
-              ? "0 12px 26px rgba(238,114,115,0.30)"
-              : "0 10px 24px rgba(29,67,123,0.22)",
+              ? `0 12px 26px ${accent}44`
+              : "0 1px 0 rgba(0,0,0,0.02)",
           }}
         >
           {plan.todayPrice ? (
-            <span className="flex flex-col leading-tight">
+            <>
               <span>
                 Select Plan · <span className="line-through opacity-70">${plan.originalMonthly}/month</span>
               </span>
-              <span className="mt-0.5 text-[11px] font-medium opacity-95">
-                PAY ONLY ${plan.todayPrice} LIMITED OFFER
+              <span className="mt-0.5 text-[11.5px] font-medium tracking-[0.04em] opacity-90">
+                PAY ONLY ${plan.todayPrice} · LIMITED OFFER
               </span>
-            </span>
+            </>
           ) : (
-            <span>
-              Select Plan · ${plan.perMo}/mo
-            </span>
+            <span>Select Plan · ${plan.perMo}/mo</span>
           )}
         </button>
       </div>
@@ -304,41 +310,6 @@ const INCLUDES = [
   { icon: MessageSquare, label: "24/7 Customer Support" },
 ];
 
-/* ─────────  Payment icons (reused from footer style, inline SVG)  ───────── */
-function PayIcons() {
-  const cards = [
-    { label: "Visa", bg: "#1A1F71", text: "VISA", font: "italic" },
-    { label: "Mastercard", bg: "#000" },
-    { label: "Amex", bg: "#006FCF", text: "AMEX" },
-    { label: "Discover", bg: "#F5F5F5", text: "DISCOVER", fg: "#111" },
-    { label: "Apple Pay", bg: "#000",  },
-    { label: "Google Pay", bg: "#F5F5F5", fg: "#111" },
-  ];
-  return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      {cards.map((c) => (
-        <span
-          key={c.label}
-          className="grid h-6 w-[42px] place-items-center rounded-[5px] text-[9px] font-bold tracking-[0.06em]"
-          style={{ background: c.bg, color: c.fg ?? "#fff", fontStyle: c.font as any }}
-        >
-          {c.label === "Mastercard" ? (
-            <span className="flex items-center">
-              <span className="h-3 w-3 rounded-full" style={{ background: "#EB001B" }} />
-              <span className="-ml-1 h-3 w-3 rounded-full" style={{ background: "#F79E1B" }} />
-            </span>
-          ) : c.label === "Apple Pay" ? (
-            <span></span>
-          ) : c.label === "Google Pay" ? (
-            <span style={{ color: "#4285F4" }}>G</span>
-          ) : (
-            c.text ?? c.label
-          )}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 /* ─────────  Page  ───────── */
 function SalesTrimRxPage() {
@@ -413,16 +384,14 @@ function SalesTrimRxPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-[520px] rounded-2xl border px-5 py-3 text-center text-[13.5px] leading-snug"
+          className="mx-auto w-full rounded-2xl px-5 py-4 text-center text-[14px] leading-relaxed sm:text-[15px]"
           style={{
-            background: `${NAVY}0A`,
-            borderColor: `${NAVY}22`,
+            background: "#E7EEFB",
             color: NAVY,
           }}
         >
           Only <b>29</b> discounts left.
-          <br className="sm:hidden" />
-          <span className="hidden sm:inline"> </span>
+          <br />
           Yours is reserved for <b style={{ color: PINK }}>{time}</b>
         </motion.div>
 
