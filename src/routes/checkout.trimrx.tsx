@@ -939,7 +939,7 @@ function UpsellRow({
   onToggle: () => void;
   icon: React.ReactNode;
   title: React.ReactNode;
-  desc: string;
+  desc: React.ReactNode;
 }) {
   return (
     <label
