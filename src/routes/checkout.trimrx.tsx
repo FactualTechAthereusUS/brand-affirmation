@@ -501,45 +501,55 @@ function CheckoutPage() {
                 </span>
               </div>
 
-              <ul className="mt-4 space-y-2 rounded-xl bg-[#F6F9FE] p-4 text-[13.5px]">
+              <ul className="mt-5 space-y-3.5 text-[14px]">
                 {[
-                  "Same Price. All Dosage Levels.",
-                  "Prescribed & shipped within 48 hours",
-                  "UNLIMITED doctor calls 7 days a week",
-                ].map((t) => (
-                  <li key={t} className="flex items-start gap-2 text-ink/80">
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0"
-                      style={{ color: GREEN }}
-                      strokeWidth={3}
-                    />
-                    {t}
+                  { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases." },
+                  { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery." },
+                  { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime." },
+                ].map((item) => (
+                  <li key={item.t} className="flex items-start gap-3">
+                    <span
+                      className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
+                      style={{ background: GREEN }}
+                    >
+                      <Check className="h-3 w-3 text-white" strokeWidth={4} />
+                    </span>
+                    <div className="leading-tight">
+                      <div className="font-bold text-ink">{item.t}</div>
+                      <div className="text-[12.5px] text-ink/55">{item.s}</div>
+                    </div>
                   </li>
                 ))}
               </ul>
 
               <motion.div
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.15 }}
-                className="mt-4 rounded-2xl px-4 py-4 text-center"
-                style={{
-                  background: GREEN_TINT,
-                  border: `1px solid ${GREEN}33`,
-                }}
+                className="mt-5 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-5"
               >
-                <div
-                  className="text-[18px] font-black"
-                  style={{ color: GREEN }}
-                >
-                  $0 Due Today!
+                <div>
+                  <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/50">
+                    Due Today
+                  </div>
+                  <div className="mt-1 text-[11.5px] text-ink/60">
+                    Only charged if your prescription is approved.
+                  </div>
                 </div>
-                <div className="mt-0.5 text-[12.5px] text-ink/70">
-                  Only charged if your prescription is approved.
+                <div className="text-right">
+                  <span className="mr-1.5 text-[15px] text-ink/35 line-through">
+                    ${plan.perMo}
+                  </span>
+                  <span
+                    className="text-[28px] font-black leading-none"
+                    style={{ color: GREEN }}
+                  >
+                    $0
+                  </span>
                 </div>
               </motion.div>
 
-              <div className="mt-3 flex items-center justify-center">
+              <div className="mt-4 flex items-center justify-center">
                 <img
                   src={hsaFsa.url}
                   alt="HSA/FSA Eligible"
