@@ -324,7 +324,7 @@ function CheckoutPage() {
       {/* MAIN FLOW */}
       <form
         onSubmit={onSubmit}
-        className="mx-auto flex w-full max-w-[760px] flex-col gap-6 px-4 pb-16 sm:px-6"
+        className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 pb-16 sm:px-6"
       >
         <motion.div
           initial="hidden"
@@ -333,11 +333,12 @@ function CheckoutPage() {
             hidden: {},
             show: { transition: { staggerChildren: 0.06 } },
           }}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-8"
         >
           {/* Shipping */}
-          <FormCard>
+          <FormCard className="order-1 lg:order-none lg:col-start-1 lg:row-start-1">
             <StepBadge label="Shipping Address" />
+
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full Name" className="sm:col-span-2">
