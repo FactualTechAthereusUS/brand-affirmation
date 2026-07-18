@@ -39,6 +39,8 @@ import trxRankedHeroMobile from "@/assets/trx-ranked-mobile.png.asset.json";
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import kristinBefore from "@/assets/kristin-before.png.asset.json";
 import kristinAfter from "@/assets/kristin-after.png.asset.json";
+import daieneBefore from "@/assets/daiene-before.png.asset.json";
+import daieneAfter from "@/assets/daiene-after.png.asset.json";
 
 /* ────────────  Types  ──────────── */
 type Sex = "female" | "male";
@@ -861,8 +863,8 @@ export function TrimRxIntakeFlowV2() {
                 quote="Being a mom makes it so hard to stay on a diet, but the weight vanished with GLP medication!"
                 name="Daiene"
                 result="Lost 90 lbs · Off blood pressure medication"
-                before={spFemaleBefore.url}
-                after={spFemaleAfter.url}
+                before={daieneBefore.url}
+                after={daieneAfter.url}
                 onNext={next}
               />
             )}
