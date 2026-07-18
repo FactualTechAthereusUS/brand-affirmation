@@ -920,3 +920,52 @@ function CheckBox({
     </span>
   );
 }
+
+function UpsellRow({
+  on,
+  onToggle,
+  icon,
+  title,
+  desc,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  icon: React.ReactNode;
+  title: React.ReactNode;
+  desc: string;
+}) {
+  return (
+    <label
+      className="flex cursor-pointer items-center gap-3 px-4 py-4 sm:gap-4"
+      style={{ background: on ? "#FFF7F7" : "transparent" }}
+    >
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink sm:h-12 sm:w-12">
+        {icon}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="text-[14px] font-semibold leading-tight text-ink sm:text-[15px]">
+          {title}
+        </div>
+        <div className="mt-1 text-[12.5px] leading-snug text-ink/60 sm:text-[13px]">
+          {desc}
+        </div>
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        onClick={(e) => {
+          e.preventDefault();
+          onToggle();
+        }}
+        className="relative h-7 w-12 shrink-0 rounded-full transition-colors"
+        style={{ background: on ? PINK : "#111111" }}
+      >
+        <span
+          className="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all"
+          style={{ left: on ? "calc(100% - 1.25rem - 0.25rem)" : "0.25rem" }}
+        />
+      </button>
+    </label>
+  );
+}
