@@ -1006,20 +1006,25 @@ export function TrimRxIntakeFlowV2() {
                   </>
                 }
               >
-                <div className="grid grid-cols-3 gap-3 rounded-2xl border border-ink/10 bg-white p-5">
-                  <SummaryStat label="BMI" value={bmi ? String(bmi) : "-"} />
-                  <SummaryStat label="Current" value={`${answers.weightLbs ?? "-"} lbs`} />
-                  <SummaryStat label="Goal" value={`${answers.goalWeight ?? "-"} lbs`} />
-                </div>
-                {paceCalc && (
-                  <p className="text-[13.5px] text-ink/60">
-                    Estimated timeline: <b className="text-ink">~{Math.round(paceCalc.weeks)} weeks</b> to reach your goal.
+                <div className="space-y-1 text-[16px] leading-relaxed text-ink/80">
+                  <p><span className="font-semibold text-ink">BMI:</span> {bmi ? String(bmi) : "-"}</p>
+                  <p><span className="font-semibold text-ink">Current weight:</span> {answers.weightLbs ?? "-"} lbs</p>
+                  <p>
+                    <span className="font-semibold text-ink">Goal weight:</span> {answers.goalWeight ?? "-"} lbs
+                    {paceCalc && (
+                      <span className="text-ink/70"> in ~{Math.round(paceCalc.weeks)} weeks</span>
+                    )}
                   </p>
-                )}
-                <div className="grid grid-cols-2 gap-3">
-                  <TextField label="First name" value={answers.firstName ?? ""} onChange={(v) => set({ firstName: v })} placeholder="Jane" />
-                  <TextField label="Last name" value={answers.lastName ?? ""} onChange={(v) => set({ lastName: v })} placeholder="Doe" />
                 </div>
+
+                <div className="border-t border-ink/10 pt-5">
+                  <p className="mb-4 text-[18px] font-medium text-ink">Let's proceed to verify your eligibility.</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <TextField label="First name" value={answers.firstName ?? ""} onChange={(v) => set({ firstName: v })} placeholder="Jane" />
+                    <TextField label="Last name" value={answers.lastName ?? ""} onChange={(v) => set({ lastName: v })} placeholder="Doe" />
+                  </div>
+                </div>
+
                 <StateSelect
                   label="What state will your medication be shipped to?"
                   value={answers.state ?? ""}
@@ -1048,14 +1053,6 @@ const US_STATES = [
   "West Virginia","Wisconsin","Wyoming",
 ];
 
-function SummaryStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="text-center">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">{label}</div>
-      <div className="mt-1 text-[22px] font-bold text-ink">{value}</div>
-    </div>
-  );
-}
 
 /* ────────────  Metabolic rate rising S-curve (blended)  ──────────── */
 function MetabolicChart({ start, goal }: { start: number; goal: number }) {
