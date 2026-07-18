@@ -277,7 +277,7 @@ export function TrimRxIntakeFlow() {
             {/* 0, Height & Weight */}
             {current === "hw" && (
               <ScreenShell
-                title="Reach your goal weight fast, without restrictive diets."
+                title="Reach your goal weight fast, {{without restrictive diets and exercise.}}"
                 sub="Let's calculate your BMI to make sure you're a good candidate for medical weight loss."
                 footer={
                   <PrimaryButton
@@ -395,7 +395,7 @@ export function TrimRxIntakeFlow() {
             {/* 4, Female-specific effects */}
             {current === "female_effects" && (
               <ScreenShell
-                title="Women experience unique effects from weight gain."
+                title="Women experience {{unique effects}} from weight gain."
                 sub="Do you experience any of the following?"
                 footer={<PrimaryButton onClick={next} disabled={!(answers.femaleEffects && answers.femaleEffects.length)}>Next →</PrimaryButton>}
               >
@@ -422,7 +422,7 @@ export function TrimRxIntakeFlow() {
             {/* 5, Priority */}
             {current === "priority" && (
               <ScreenShell
-                title="We can help with all of these, but choose the most important for you."
+                title="We can help with all of these, but choose the {{most important for you}}."
                 sub="Which of these is your priority?"
               >
                 {["Lose Weight", "Gain Muscle", "Maintain My Current Body"].map((o) => (
@@ -477,7 +477,7 @@ export function TrimRxIntakeFlow() {
             {/* 7, Metabolic science */}
             {current === "metabolic_science" && (
               <ScreenShell
-                title="It feels like magic, but it's metabolic science."
+                title="It feels like magic, but it's {{metabolic science}}."
                 sub={`On average, our patients lose over 20% of their body weight. GLP-1 medications are extremely effective, offering a strong path toward your ${answers.goalWeight || "goal"} lb goal.`}
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
@@ -500,7 +500,7 @@ export function TrimRxIntakeFlow() {
             {/* 9, GLP-1 how it works curve */}
             {current === "glp1_curve" && (
               <ScreenShell
-                title="How will GLP-1 work for you?"
+                title="How will {{GLP-1 work}} for you?"
                 sub="We identify the root causes of your metabolic issues, so you get a long-term solution, not just a quick fix."
                 footer={<PrimaryButton onClick={next}>Next →</PrimaryButton>}
               >
@@ -532,7 +532,7 @@ export function TrimRxIntakeFlow() {
             {/* 11, Motivation reason */}
             {current === "motivation_reason" && (
               <ScreenShell
-                title="Improving your life requires motivation."
+                title="Improving your life requires {{motivation}}."
                 sub="What is your primary reason for taking weight loss seriously?"
               >
                 {[
@@ -594,7 +594,7 @@ export function TrimRxIntakeFlow() {
             {/* 15, Contraindications */}
             {current === "contra" && (
               <ScreenShell
-                title="GLP-1 is safe, but a few conditions might prevent you from being prescribed."
+                title="GLP-1 is {{safe}}, but a few conditions might prevent you from being prescribed."
                 sub="Your answers are completely confidential and protected by HIPAA."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.contra && answers.contra.length)}>Next →</PrimaryButton>}
               >
@@ -799,7 +799,7 @@ export function TrimRxIntakeFlow() {
             {/* 26, Affordability vs Potency */}
             {current === "affordability" && (
               <ScreenShell
-                title="Looking good! Let's match you with the best medication."
+                title="{{Looking good!}} Let's match you with the best medication."
                 sub="Which of these is most important to you?"
               >
                 {["Affordability", "Potency"].map((o) => (
@@ -827,7 +827,7 @@ export function TrimRxIntakeFlow() {
             {/* 28, Motivation level */}
             {current === "motivation_level" && (
               <ScreenShell
-                title="Let's better understand your current state of mind."
+                title="Let's better understand your {{current state of mind}}."
                 sub="How motivated are you to reach your weight goal?"
               >
                 {["I'm Ready!", "I'm feeling hopeful", "I'm cautious"].map((o) => (
@@ -856,7 +856,7 @@ export function TrimRxIntakeFlow() {
             {/* 30, Personalization */}
             {current === "personalization" && (
               <ScreenShell
-                title="Your needs are unique, your medicine should be, too."
+                title="Your needs are {{unique}}, your medicine should be, {{too}}."
                 sub="Please select the options you're interested in."
                 footer={<PrimaryButton onClick={next} disabled={!(answers.personalization && answers.personalization.length)}>Next →</PrimaryButton>}
               >
