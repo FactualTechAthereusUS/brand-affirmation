@@ -1292,13 +1292,14 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
   const N = 7;
   const months = Array.from({ length: N }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
 
-  // Realistic curve: smooth downward trajectory with tiny plateaus (higher-lows)
+  // Realistic wavy downtrend: clear plateaus + lower-lows (matches reference)
   const points = months.map((_, i) => {
     const t = i / (N - 1);
-    const eased = 1 - Math.pow(1 - t, 2.2);
-    const wobble = Math.sin(t * Math.PI * 2.6) * (lossLbs * 0.02);
+    const eased = 1 - Math.pow(1 - t, 1.8);
+    const wobble = Math.sin(t * Math.PI * 3.2) * (lossLbs * 0.09) * (1 - t * 0.35);
     return s - lossLbs * eased + wobble;
   });
+
 
   const W = 720, H = 320, padL = 72, padR = 36, padT = 40, padB = 52;
   const xAt = (i: number) => padL + (i / (N - 1)) * (W - padL - padR);
