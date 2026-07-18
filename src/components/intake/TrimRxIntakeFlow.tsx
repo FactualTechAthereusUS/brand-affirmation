@@ -162,21 +162,6 @@ function StageBar({ stage }: { stage: number }) {
   );
 }
 
-/* ────────────  Featured logos strip  ──────────── */
-function FeaturedIn() {
-  const items = ["Forbes", "WebMD", "Yahoo!", "NY Post"];
-  return (
-    <div className="hidden items-center gap-3 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink/45 md:flex">
-      <span>Featured in</span>
-      {items.map((n) => (
-        <span key={n} className="text-ink/60">
-          {n}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 /* ────────────  Icon option card (icon + label)  ──────────── */
 function IconOption({
   icon,
