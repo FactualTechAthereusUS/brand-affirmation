@@ -18,7 +18,7 @@ import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
-import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
+import iconDeliveryShieldV2 from "@/assets/icon-delivery-shield-v2.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
@@ -671,9 +671,9 @@ function CheckoutPage() {
                           onToggle={() => set("insurance", !form.insurance)}
                           icon={
                             <img
-                              src={iconDeliveryShield.url}
+                              src={iconDeliveryShieldV2.url}
                               alt=""
-                              className="h-7 w-7 object-contain invert"
+                              className="h-10 w-10 object-contain sm:h-11 sm:w-11"
                             />
                           }
                           title={
@@ -696,18 +696,25 @@ function CheckoutPage() {
                               strokeWidth={2.2}
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              className="h-7 w-7 text-white"
+                              className="h-9 w-9 text-ink sm:h-10 sm:w-10"
                             >
                               <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
                             </svg>
                           }
                           title={
+                            <span className="font-bold">
+                              Yes, put my order at the front of the line!
+                            </span>
+                          }
+                          desc={
                             <>
-                              Front-of-the-line review{" "}
-                              <span className="font-bold">($49.95)</span>
+                              Doctors typically review within 6–24 hours.{" "}
+                              <span className="font-bold">
+                                Skip the wait for only $49.95
+                              </span>{" "}
+                              and get an instant telehealth review right now.
                             </>
                           }
-                          desc="Skip the 6–24 hour wait. Get an instant telehealth review right now."
                         />
                       </div>
                     </div>
@@ -932,17 +939,17 @@ function UpsellRow({
   onToggle: () => void;
   icon: React.ReactNode;
   title: React.ReactNode;
-  desc: string;
+  desc: React.ReactNode;
 }) {
   return (
     <label
-      className="flex cursor-pointer items-start gap-3 px-4 py-4 sm:gap-4"
+      className="flex cursor-pointer items-start gap-4 px-4 py-4 sm:gap-5"
       style={{ background: on ? "#FFF7F7" : "transparent" }}
     >
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink sm:h-12 sm:w-12">
+      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[#F3F4F6] sm:h-16 sm:w-16">
         {icon}
       </span>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 pt-0.5">
         <div className="text-[14px] font-semibold leading-tight text-ink sm:text-[15px]">
           {title}
         </div>
