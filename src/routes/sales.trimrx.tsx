@@ -151,7 +151,7 @@ function TreatmentCard({
   badgeIcon: React.ComponentType<{ className?: string }>;
   vial: string;
   vialBg: string;
-  patients: string;
+  patients: number;
   selected: boolean;
   onSelect: () => void;
 }) {
@@ -188,7 +188,7 @@ function TreatmentCard({
         </div>
         <div className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] text-ink/75">
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#16A34A" }} />
-          {patients}
+          {patients.toLocaleString()} patients chose this today
         </div>
       </div>
       <span
@@ -364,8 +364,33 @@ const INCLUDES = [
 function SalesTrimRxPage() {
   const [treatment, setTreatment] = useState<"sema" | "tirz" | null>(null);
   const [planKey, setPlanKey] = useState<string | null>(null);
+  const [semaPatients, setSemaPatients] = useState(12886);
+  const [tirzPatients, setTirzPatients] = useState(19720);
 
   const time = useCountdown(9);
+
+  useEffect(() => {
+    const tick = () => {
+      const increment = Math.floor(Math.random() * 4) + 1;
+      const target = Math.random() > 0.5 ? "sema" : "tirz";
+      if (target === "sema") {
+        setSemaPatients((n) => n + increment);
+      } else {
+        setTirzPatients((n) => n + increment);
+      }
+    };
+
+    const loop = () => {
+      const delay = Math.random() * 1000 + 2000;
+      return window.setTimeout(() => {
+        tick();
+        timer = loop();
+      }, delay);
+    };
+
+    let timer = loop();
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const plans: Plan[] = [
     {
@@ -485,7 +510,7 @@ function SalesTrimRxPage() {
             badgeIcon={MoneyIcon}
             vial={vialSema.url}
             vialBg="#E4F1E6"
-            patients="12,886 patients chose this today"
+            patients={semaPatients}
             selected={treatment === "sema"}
             onSelect={() => setTreatment("sema")}
           />
@@ -498,7 +523,7 @@ function SalesTrimRxPage() {
             badgeIcon={LightningIcon}
             vial={vialTirz.url}
             vialBg="#BFDDEE"
-            patients="19,720 patients chose this today"
+            patients={tirzPatients}
             selected={treatment === "tirz"}
             onSelect={() => setTreatment("tirz")}
           />
