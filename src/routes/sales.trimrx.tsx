@@ -208,7 +208,7 @@ function PlanCard({
     <motion.div
       layout
       whileHover={{ y: -2 }}
-      className="relative overflow-hidden rounded-2xl border transition-all"
+      className="relative rounded-2xl border transition-all"
       style={{
         background: tint,
         borderColor: ring,
