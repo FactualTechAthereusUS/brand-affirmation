@@ -779,6 +779,54 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
+            {/* NEW — Blood pressure */}
+            {current === "bp" && (
+              <ScreenShell
+                title="What is your blood pressure range?"
+                sub="A blood pressure reading looks like 120/80. If you're not sure, choose the closest option."
+              >
+                {[
+                  "Less than 120/80 — Normal",
+                  "120–129 / below 80 — Slightly elevated",
+                  "130–139 / 80–89 — Stage 1 high blood pressure",
+                  "140/90 or higher — Stage 2 high blood pressure",
+                  "I don't know",
+                ].map((o) => (
+                  <OptionCard
+                    key={o}
+                    label={o}
+                    selected={answers.bloodPressure === o}
+                    onClick={() => pickThenNext("bloodPressure", o)}
+                  />
+                ))}
+              </ScreenShell>
+            )}
+
+            {/* NEW — Resting heart rate */}
+            {current === "hr" && (
+              <ScreenShell
+                title="What is your average resting heart rate?"
+                sub="Check your pulse for 60 seconds, or use your phone's health app."
+              >
+                {[
+                  "Below 60 bpm",
+                  "60 to 100 bpm — Normal",
+                  "101 to 110 bpm",
+                  "Above 110 bpm",
+                  "I don't know",
+                ].map((o) => (
+                  <OptionCard
+                    key={o}
+                    label={o}
+                    selected={answers.restingHR === o}
+                    onClick={() => pickThenNext("restingHR", o)}
+                  />
+                ))}
+              </ScreenShell>
+            )}
+
+
+
             {/* Projection (calculator clone) */}
             {current === "projection" && (
               <WLProjectionScreen
