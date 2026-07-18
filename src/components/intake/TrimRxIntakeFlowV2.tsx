@@ -37,8 +37,8 @@ import trxRankedHero from "@/assets/trx-ranked-desktop.png.asset.json";
 import trxRankedHeroMobile from "@/assets/trx-ranked-mobile.png.asset.json";
 
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
-import review22 from "@/assets/review-22.png.asset.json";
-import review27 from "@/assets/review-27.png.asset.json";
+import kristinBefore from "@/assets/kristin-before.png.asset.json";
+import kristinAfter from "@/assets/kristin-after.png.asset.json";
 
 /* ────────────  Types  ──────────── */
 type Sex = "female" | "male";
@@ -687,8 +687,8 @@ export function TrimRxIntakeFlowV2() {
                 quote="I was ready to give up. After seeing reviews of GLP-1, I had to try. 6 months later, wow. Thank you for the metabolic reset, game changer."
                 name="Kristin"
                 result="Lost 29 lbs · Renewed confidence"
-                before={review22.url}
-                after={review27.url}
+                before={kristinBefore.url}
+                after={kristinAfter.url}
                 onNext={next}
               />
             )}
