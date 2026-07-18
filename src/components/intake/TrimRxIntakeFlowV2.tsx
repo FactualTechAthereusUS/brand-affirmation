@@ -326,6 +326,7 @@ export function TrimRxIntakeFlowV2() {
                   placeholder="250"
                 />
               </ScreenShell>
+              </>
             )}
 
             {/* 1, BMI reveal + goal weight */}
