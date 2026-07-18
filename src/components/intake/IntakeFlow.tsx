@@ -963,23 +963,24 @@ export function IntakeFlow() {
                     }
                     className={`mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all ${
                       answers.noMedications
-                        ? "border-ever/30 bg-ever/[0.08]"
+                        ? "border-ever bg-ever"
                         : "border-ink/10 bg-white hover:border-ink/20"
                     }`}
                   >
                     <span
-                      className={`grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 transition-all ${
-                        answers.noMedications ? "border-ever bg-ever text-white" : "border-ink/25 bg-white"
+                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all ${
+                        answers.noMedications ? "border-white bg-white text-ever" : "border-ink/25 bg-white text-transparent"
                       }`}
                     >
                       {answers.noMedications && (
-                        <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3">
+                        <svg viewBox="0 0 12 12" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M2.5 6.5L5 9L9.5 3.5" />
                         </svg>
                       )}
                     </span>
-                    <span className="text-[13px] font-medium text-ink/80">I don't take any medications</span>
+                    <span className={`text-[14px] font-medium ${answers.noMedications ? "text-white" : "text-ink/80"}`}>I don't take any medications</span>
                   </button>
+
                 </label>
                 <label className="block">
                   <span className="mb-2 block text-[13px] font-medium text-ink/70">Medication allergies</span>
