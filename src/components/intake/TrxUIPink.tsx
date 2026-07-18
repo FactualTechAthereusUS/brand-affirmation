@@ -60,23 +60,53 @@ export function TrxScreen({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+      initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto flex w-full max-w-[720px] flex-1 flex-col"
     >
-      {title && <TrxHeadline text={title} />}
-      {sub && (
-        <p className="mt-3 text-[15.5px] leading-[1.55] text-ink/75 md:text-[16.5px]">
-          {sub}
-        </p>
+      {title && (
+        <motion.div
+          initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ delay: 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <TrxHeadline text={title} />
+        </motion.div>
       )}
-      <div className="mt-7 flex flex-col gap-3 md:mt-9">{children}</div>
-      {footer && <div className="mt-8">{footer}</div>}
+      {sub && (
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.16, duration: 0.45 }}
+          className="mt-3 text-[15.5px] leading-[1.55] text-ink/75 md:text-[16.5px]"
+        >
+          {sub}
+        </motion.p>
+      )}
+      <motion.div
+        initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ delay: 0.24, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-7 flex flex-col gap-3 md:mt-9"
+      >
+        {children}
+      </motion.div>
+      {footer && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.34, duration: 0.45 }}
+          className="mt-8"
+        >
+          {footer}
+        </motion.div>
+      )}
     </motion.div>
   );
 }
+
 
 /* ─────────  Primary (navy pill)  ───────── */
 export function TrxButton({
