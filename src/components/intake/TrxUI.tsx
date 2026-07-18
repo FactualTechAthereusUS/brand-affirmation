@@ -1,8 +1,7 @@
 import { motion } from "motion/react";
-import { Check, ArrowLeft, Star } from "lucide-react";
+import { Check, ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
-import logo from "@/assets/blissley-logo.png.asset.json";
+import trimrxHeader from "@/assets/trimrx-intake-header.svg.asset.json";
 
 /* ─────────  Palette  ───────── */
 export const NAVY = "#1D437B";
