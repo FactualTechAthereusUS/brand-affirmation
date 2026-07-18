@@ -29,7 +29,9 @@ import spFemaleAfter from "@/assets/sp-female-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
 import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
+import trxHeroWoman2 from "@/assets/trx-hero-woman-2.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import review22 from "@/assets/review-22.png.asset.json";
 import review27 from "@/assets/review-27.png.asset.json";
@@ -343,17 +345,33 @@ export function TrimRxIntakeFlowV2() {
                   </PrimaryButton>
                 }
               >
-                <div className="rounded-2xl border border-[#1D437B]/15 bg-[#1D437B]/[0.04] p-5">
-                  <div className="flex items-center gap-4">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-white text-[#1D437B]">
-                      <ScaleIcon className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <div className="text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/55">Join over 500K success stories</div>
-                      <div className="mt-0.5 text-[14px] text-ink/70">Start your journey today</div>
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/11] md:aspect-[21/10]">
+                  <img
+                    src={trxHeroWoman2.url}
+                    alt="Woman reaching toward camera under blue sky"
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+                  <div className="absolute inset-x-4 bottom-4 md:inset-x-6 md:bottom-6">
+                    <div
+                      className="inline-flex max-w-full items-center gap-3 rounded-2xl border border-white/25 bg-white/12 px-4 py-3 md:px-5 md:py-3.5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
+                    >
+                      <div className="grid h-10 w-10 md:h-11 md:w-11 shrink-0 place-items-center rounded-xl bg-white/90 text-[#1D437B]">
+                        <Trophy className="h-5 w-5 md:h-[22px] md:w-[22px]" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.14em] text-white/85">
+                          Join over 500K success stories
+                        </div>
+                        <div className="mt-0.5 text-[13px] md:text-[14px] text-white/95">
+                          Start your journey today
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
                 <TextField
                   label="What is your goal weight? (lbs)"
                   type="number"
