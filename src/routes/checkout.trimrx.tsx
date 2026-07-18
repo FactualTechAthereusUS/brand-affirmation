@@ -41,7 +41,7 @@ const BLUE_TINT = "#E7EEFB";
 
 const searchSchema = z.object({
   tx: z.enum(["sema", "tirz"]).default("sema"),
-  plan: z.enum(["monthly", "three", "six", "twelve"]).default("monthly"),
+  plan: z.enum(["monthly", "three", "six"]).default("monthly"),
 });
 
 export const Route = createFileRoute("/checkout/trimrx")({
