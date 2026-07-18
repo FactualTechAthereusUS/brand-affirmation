@@ -1055,51 +1055,189 @@ function SummaryStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-/* ────────────  Metabolic projection chart (mini)  ──────────── */
+/* ────────────  Metabolic rate rising S-curve (blended)  ──────────── */
 function MetabolicChart({ start, goal }: { start: number; goal: number }) {
-  const months = ["M1", "M2", "M3", "M4", "M6", "M9", "M12"];
-  const withPts = months.map((_, i) => {
-    const t = i / (months.length - 1);
-    const eased = 1 - Math.pow(1 - t, 2.2);
-    return start - (start - goal) * eased;
+  void start; void goal;
+  const weeks = [0, 2, 4, 6, 8, 10, 12];
+  const N = 120;
+  const samples = Array.from({ length: N + 1 }, (_, i) => {
+    const t = i / N;
+    // logistic S-curve, low → high
+    const s = 1 / (1 + Math.exp(-10 * (t - 0.45)));
+    return { t, v: s };
   });
-  const withoutPts = months.map((_, i) => start - i * 0.6);
-  const W = 640, H = 260, padL = 52, padR = 16, padT = 20, padB = 36;
-  const min = goal - 6, max = start + 6;
-  const xAt = (i: number) => padL + (i / (months.length - 1)) * (W - padL - padR);
-  const yAt = (v: number) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
-  const buildPath = (pts: number[]) =>
-    pts.reduce((acc, v, i) => {
-      const x = xAt(i), y = yAt(v);
-      if (i === 0) return `M ${x} ${y}`;
-      const pX = xAt(i - 1), pY = yAt(pts[i - 1]);
-      const cx = pX + (x - pX) * 0.5;
-      return `${acc} C ${cx} ${pY}, ${cx} ${y}, ${x} ${y}`;
-    }, "");
+  const W = 720, H = 320, padL = 44, padR = 28, padT = 40, padB = 44;
+  const xAt = (t: number) => padL + t * (W - padL - padR);
+  const yAt = (v: number) => padT + (1 - v) * (H - padT - padB);
+  const path = samples.reduce((acc, s, i) => {
+    const x = xAt(s.t), y = yAt(s.v);
+    if (i === 0) return `M ${x} ${y}`;
+    const p = samples[i - 1];
+    const pX = xAt(p.t), pY = yAt(p.v);
+    const cx = pX + (x - pX) * 0.5;
+    return `${acc} C ${cx} ${pY}, ${cx} ${y}, ${x} ${y}`;
+  }, "");
+  const area = `${path} L ${xAt(1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
+  const gridYs = [0.15, 0.45, 0.78];
+
+  const [hover, setHover] = useState<null | { t: number; v: number }>(null);
+
+  const onMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    const px = ((e.clientX - rect.left) / rect.width) * W;
+    const tRaw = (px - padL) / (W - padL - padR);
+    const t = Math.max(0, Math.min(1, tRaw));
+    const idx = Math.round(t * N);
+    setHover(samples[idx]);
+  };
+
+  const hoverWeek = hover ? Math.round(hover.t * 12) : null;
+  const hoverPct = hover ? Math.round(hover.v * 100) : null;
+
   return (
-    <div className="w-full">
-      <div className="mb-3 flex items-center justify-between text-[11.5px] font-semibold uppercase tracking-[0.12em]">
-        <span className="flex items-center gap-2 text-ink/55"><span className="h-2 w-4 rounded-full bg-ink/30" /> Without Blissley</span>
-        <span className="flex items-center gap-2 text-ever"><span className="h-2 w-4 rounded-full bg-ever" /> With Blissley</span>
-      </div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
-        <line x1={padL} x2={W - padR} y1={yAt(start)} y2={yAt(start)} stroke="#171717" strokeOpacity="0.15" strokeDasharray="4 6" />
-        <line x1={padL} x2={W - padR} y1={yAt(goal)} y2={yAt(goal)} stroke="#171717" strokeOpacity="0.15" strokeDasharray="4 6" />
-        <text x={padL - 8} y={yAt(start) + 4} textAnchor="end" style={{ fontSize: 11, fill: "#171717aa" }}>{Math.round(start)} lbs</text>
-        <text x={padL - 8} y={yAt(goal) + 4} textAnchor="end" style={{ fontSize: 11, fill: "#171717aa" }}>{Math.round(goal)} lbs</text>
-        <motion.path d={buildPath(withoutPts)} stroke="#17171744" strokeWidth={3} fill="none" strokeDasharray="6 6"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: "easeOut" }} />
-        <motion.path d={buildPath(withPts)} stroke="#ee7273" strokeWidth={4} fill="none" strokeLinecap="round"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }} />
-        <motion.circle cx={xAt(months.length - 1)} cy={yAt(withPts[withPts.length - 1])} r={7} fill="#ee7273"
-          initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.5, type: "spring", stiffness: 240, damping: 16 }} />
-        {months.map((m, i) => (
-          <text key={m} x={xAt(i)} y={H - 12} textAnchor="middle" style={{ fontSize: 11, fill: "#17171780" }}>{m}</text>
+    <div className="relative w-full">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="block w-full touch-none"
+        onPointerMove={onMove}
+        onPointerLeave={() => setHover(null)}
+      >
+        <defs>
+          <linearGradient id="metaFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* grid lines */}
+        {gridYs.map((v, i) => (
+          <line
+            key={i}
+            x1={padL}
+            x2={W - padR}
+            y1={yAt(v)}
+            y2={yAt(v)}
+            stroke="#1D437B"
+            strokeOpacity="0.14"
+            strokeDasharray="5 7"
+          />
         ))}
+
+        {/* Y axis */}
+        <line x1={padL} x2={padL} y1={padT - 6} y2={H - padB} stroke="#1D437B" strokeOpacity="0.35" strokeWidth="1.2" />
+        <polygon points={`${padL - 4},${padT - 6} ${padL + 4},${padT - 6} ${padL},${padT - 14}`} fill="#1D437B" fillOpacity="0.55" />
+        {/* X axis */}
+        <line x1={padL} x2={W - padR} y1={H - padB} y2={H - padB} stroke="#1D437B" strokeOpacity="0.35" strokeWidth="1.2" />
+
+        {/* Y label */}
+        <text x={padL + 12} y={padT + 24} style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>Metabolic</text>
+        <text x={padL + 12} y={padT + 42} style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>rate</text>
+
+        {/* Ease of weight loss arrow (mid-right of curve) */}
+        <g transform={`translate(${xAt(0.72)}, ${yAt(0.86)})`}>
+          <line x1="0" y1="0" x2="70" y2="0" stroke="#1D437B" strokeWidth="1.6" />
+          <polygon points="70,-5 82,0 70,5" fill="#1D437B" />
+          <text x="0" y="22" style={{ fontSize: 13, fontWeight: 500, fill: "#171717" }}>Ease of</text>
+          <text x="0" y="38" style={{ fontSize: 13, fontWeight: 500, fill: "#171717" }}>weight loss</text>
+        </g>
+
+        {/* area + line */}
+        <motion.path
+          d={area}
+          fill="url(#metaFill)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        />
+        <motion.path
+          d={path}
+          stroke="#ee7273"
+          strokeWidth={4}
+          fill="none"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* endpoints */}
+        <motion.circle
+          cx={xAt(0)}
+          cy={yAt(samples[0].v)}
+          r={6}
+          fill="#fff"
+          stroke="#ee7273"
+          strokeWidth="2.5"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3, type: "spring", stiffness: 260, damping: 18 }}
+        />
+        <motion.circle
+          cx={xAt(1)}
+          cy={yAt(1)}
+          r={7}
+          fill="#ee7273"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 1.5, type: "spring", stiffness: 260, damping: 18 }}
+        />
+
+        {/* x labels */}
+        {weeks.map((w) => (
+          <text key={w} x={xAt(w / 12)} y={H - 16} textAnchor="middle" style={{ fontSize: 12, fill: "#17171799" }}>
+            Week {w}
+          </text>
+        ))}
+
+        {/* hover indicator */}
+        {hover && (
+          <g>
+            <line
+              x1={xAt(hover.t)}
+              x2={xAt(hover.t)}
+              y1={padT - 6}
+              y2={H - padB}
+              stroke="#ee7273"
+              strokeOpacity="0.55"
+              strokeDasharray="4 5"
+            />
+            <circle cx={xAt(hover.t)} cy={yAt(hover.v)} r={8} fill="#fff" stroke="#ee7273" strokeWidth="3" />
+          </g>
+        )}
       </svg>
+
+      {/* Blissley logo (top-right, like trimrx in ref) */}
+      <div className="pointer-events-none absolute right-2 top-1 flex items-center rounded-md bg-white/70 px-2 py-1 backdrop-blur-sm sm:right-4 sm:top-2">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto object-contain sm:h-6" />
+      </div>
+
+      {/* Hover overlay card */}
+      <AnimatePresence>
+        {hover && hoverWeek !== null && (
+          <motion.div
+            key={hoverWeek}
+            initial={{ opacity: 0, y: 6, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.96 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              left: `${(xAt(hover.t) / W) * 100}%`,
+            }}
+            className="pointer-events-none absolute top-2 -translate-x-1/2 rounded-2xl bg-ever px-3.5 py-2.5 text-white shadow-[0_10px_30px_rgba(29,67,123,0.28)]"
+          >
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70">Week {hoverWeek}</div>
+            <div className="mt-0.5 flex items-baseline gap-1.5">
+              <span className="text-[18px] font-bold leading-none">{hoverPct}%</span>
+              <span className="text-[11px] text-white/75">metabolic rate</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
 
 /* ────────────  Metabolic-rate rising curve (GLP-1)  ──────────── */
 function GLP1Curve() {
