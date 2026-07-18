@@ -185,7 +185,64 @@ function YesNoWithDetail({
   );
 }
 
-/* ═════════════ Main ═════════════ */
+/* ═════════════ BMI meter (visual segmented) ═════════════ */
+function BmiMeter({ bmi }: { bmi: number }) {
+  // Range 15 - 45 mapped to 0-100%
+  const min = 15, max = 45;
+  const pct = Math.max(0, Math.min(100, ((bmi - min) / (max - min)) * 100));
+  const segs = [
+    { label: "Underweight", range: "<18.5", to: 18.5 },
+    { label: "Normal", range: "18.5-24.9", to: 25 },
+    { label: "Overweight", range: "25-29.9", to: 30 },
+    { label: "Obese", range: "≥30", to: max },
+  ];
+  const activeIdx =
+    bmi < 18.5 ? 0 : bmi < 25 ? 1 : bmi < 30 ? 2 : 3;
+  const label =
+    bmi < 18.5 ? "Underweight" :
+    bmi < 25 ? "Normal" :
+    bmi < 30 ? "Overweight" :
+    bmi < 35 ? "Obese" :
+    bmi < 40 ? "Severe Obesity" : "Extreme Obesity";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="mt-2"
+    >
+      <div className="text-[13px] font-medium text-ink/60">Your BMI</div>
+      <div className="relative mt-2 h-[54px] w-full overflow-hidden rounded-full bg-ink/[0.06]">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${Math.max(pct, 18)}%` }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-y-0 left-0 flex items-center justify-center rounded-full"
+          style={{ background: "#ee7273" }}
+        >
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="whitespace-nowrap px-4 text-[15px] font-semibold text-ink"
+          >
+            {bmi} · {label}
+          </motion.span>
+        </motion.div>
+      </div>
+      <div className="mt-3 grid grid-cols-4 gap-2">
+        {segs.map((s, i) => (
+          <div key={s.label} className={i === activeIdx ? "text-ink" : "text-ink/45"}>
+            <div className={`text-[13px] ${i === activeIdx ? "font-semibold" : "font-medium"}`}>{s.label}</div>
+            <div className="text-[12px] text-ink/45">{s.range}</div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+
 export function BlissleyIntakeFlow() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
