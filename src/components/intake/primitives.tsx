@@ -457,21 +457,12 @@ export function StateSelect({
           open ? "border-ever shadow-[0_0_0_4px_rgba(238,114,115,0.15)]" : "border-ink/12"
         }`}
       >
-        <span className="flex min-w-0 items-center gap-3">
-          {value ? (
-            <StateFlag state={value} className="h-5 w-7" />
-          ) : (
-            <span className="grid h-5 w-7 shrink-0 place-items-center rounded-[4px] border border-ink/10 bg-ink/5">
-              <span className="text-[9px] font-bold uppercase text-ink/40">US</span>
-            </span>
-          )}
-          <span
-            className={`truncate text-[16px] ${
-              value ? "text-ink" : "text-ink/40"
-            }`}
-          >
-            {selectedLabel}
-          </span>
+        <span
+          className={`truncate text-[16px] ${
+            value ? "text-ink" : "text-ink/40"
+          }`}
+        >
+          {selectedLabel}
         </span>
         <ChevronDown
           className={`h-5 w-5 shrink-0 text-ink/40 transition-transform ${
