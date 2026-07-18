@@ -531,8 +531,7 @@ function SalesTrimRxPage() {
 
       {/* SECTION 2 — Includes / How it works */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
-        <div className="rounded-3xl border bg-white p-6 sm:p-8"
-             style={{ borderColor: "rgba(23,23,23,0.08)" }}>
+        <div className="p-6 sm:p-8">
           <h3 className="text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
           <ul className="mt-4 flex flex-col gap-3.5">
             {INCLUDES.map(({ icon, label }) => (
