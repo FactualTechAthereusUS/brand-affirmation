@@ -529,7 +529,56 @@ function SalesTrimRxPage() {
         </div>
       </section>
 
-      {/* SECTION 2 — Includes / How it works */}
+      {/* SECTION 2 — Plans (only after treatment selected) */}
+      {treatment && (
+        <section className="mx-auto w-full max-w-[720px] px-4 pb-16 sm:px-6">
+          <div className="flex items-center gap-3">
+            <span
+              className="rounded-full px-3 py-1 text-[11.5px] font-semibold text-white"
+              style={{ background: NAVY }}
+            >
+              Step 2
+            </span>
+            <h2 className="text-[17px] font-semibold text-ink sm:text-[18px]">
+              Select Your Plan
+            </h2>
+          </div>
+          <p className="mt-2 max-w-[600px] text-[13.5px] leading-snug text-ink/60">
+            Lock in your savings without a big upfront payment — use free financing or pay in
+            full with your card.
+          </p>
+
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.05 }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.06 } },
+            }}
+            className="mt-8 flex flex-col gap-6"
+          >
+            {plans.map((p) => (
+              <motion.div
+                key={p.key}
+                variants={{
+                  hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
+                  show: { opacity: 1, y: 0, filter: "blur(0px)" },
+                }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <PlanCard
+                  plan={p}
+                  selected={planKey === p.key}
+                  onSelect={() => setPlanKey(p.key)}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+      )}
+
+      {/* SECTION 3 — Includes / How it works */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
         <div className="p-6 sm:p-8">
           <h3 className="text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
@@ -541,7 +590,6 @@ function SalesTrimRxPage() {
               </li>
             ))}
           </ul>
-
 
           <hr className="my-6 border-ink/10" />
 
@@ -572,55 +620,8 @@ function SalesTrimRxPage() {
             </div>
           </div>
         </div>
-      </section>
 
-      {/* SECTION 3 — Plans */}
-      <section className="mx-auto w-full max-w-[720px] px-4 pb-16 sm:px-6">
-        <div className="flex items-center gap-3">
-          <span
-            className="rounded-full px-3 py-1 text-[11.5px] font-semibold text-white"
-            style={{ background: NAVY }}
-          >
-            Step 2
-          </span>
-          <h2 className="text-[17px] font-semibold text-ink sm:text-[18px]">
-            Select Your Plan
-          </h2>
-        </div>
-        <p className="mt-2 max-w-[600px] text-[13.5px] leading-snug text-ink/60">
-          Lock in your savings without a big upfront payment — use free financing or pay in
-          full with your card.
-        </p>
-
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.05 }}
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.06 } },
-          }}
-          className="mt-8 flex flex-col gap-6"
-        >
-          {plans.map((p) => (
-            <motion.div
-              key={p.key}
-              variants={{
-                hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
-                show: { opacity: 1, y: 0, filter: "blur(0px)" },
-              }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <PlanCard
-                plan={p}
-                selected={planKey === p.key}
-                onSelect={() => setPlanKey(p.key)}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Trust footer repeat */}
+        {/* Trust footer */}
         <div className="mt-10 flex flex-col items-center gap-3">
           <img
             src={trustpilot.url}
