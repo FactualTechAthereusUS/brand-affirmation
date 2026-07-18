@@ -665,9 +665,9 @@ export function WLIntakeFlow() {
               >
                 {[
                   "No",
-                  "Yes — gastric sleeve",
-                  "Yes — gastric bypass (Roux-en-Y)",
-                  "Yes — other bariatric procedure",
+                  "Yes, gastric sleeve",
+                  "Yes, gastric bypass (Roux-en-Y)",
+                  "Yes, another bariatric procedure",
                 ].map((o) => (
                   <OptionCard
                     key={o}
