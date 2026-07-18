@@ -539,7 +539,7 @@ function CheckoutPage() {
                     Only charged if<br />your prescription is approved.
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right -translate-x-1">
                   <span className="mr-1.5 text-[15px] text-ink/35 line-through">
                     ${plan.perMo}
                   </span>
