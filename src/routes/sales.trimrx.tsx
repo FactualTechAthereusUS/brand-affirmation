@@ -158,9 +158,10 @@ function TreatmentCard({
       type="button"
       onClick={onSelect}
       whileTap={{ scale: 0.995 }}
-      className="group relative flex w-full items-center gap-4 rounded-2xl border bg-white p-3.5 text-left transition-all sm:p-4"
+      className="group relative flex w-full items-center gap-4 rounded-2xl border p-3.5 text-left transition-all sm:p-4"
       style={{
         borderColor: selected ? NAVY : "rgba(23,23,23,0.10)",
+        background: "transparent",
         boxShadow: selected
           ? "0 14px 34px rgba(29,67,123,0.14)"
           : "0 1px 0 rgba(0,0,0,0.02)",
