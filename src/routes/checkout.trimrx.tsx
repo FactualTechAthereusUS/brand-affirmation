@@ -14,7 +14,7 @@ import {
 import { z } from "zod";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
-import { PayIcons } from "@/components/PayIcons";
+import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
