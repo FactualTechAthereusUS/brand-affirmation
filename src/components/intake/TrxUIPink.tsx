@@ -243,7 +243,7 @@ export function TrxField({
   return (
     <label className="block">
       {label && (
-        <span className="mb-2 block text-[14px] font-medium" style={{ color: NAVY }}>
+        <span className="mb-2 block text-[14px] font-medium text-ink">
           {label}
         </span>
       )}
