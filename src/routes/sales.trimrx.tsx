@@ -308,9 +308,9 @@ function PlanCard({
         <div
           className="mt-4 rounded-xl border border-dashed py-2 text-center text-[13px] font-semibold"
           style={{
-            background: "#EAF7EE",
-            borderColor: "#8FCBA0",
-            color: "#137A3A",
+            background: "#F0FDF4",
+            borderColor: "#86EFAC",
+            color: "#16A34A",
           }}
         >
           You are saving ${plan.savings.toLocaleString()}
