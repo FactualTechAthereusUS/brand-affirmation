@@ -9,6 +9,7 @@ import {
   Tag,
   Truck,
   CreditCard,
+  HelpCircle,
 } from "lucide-react";
 import { z } from "zod";
 
