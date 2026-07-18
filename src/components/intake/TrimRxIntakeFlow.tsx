@@ -140,8 +140,84 @@ function stageOf(idx: number, sex?: Sex): number {
   return 3;
 }
 
-/* IconOption is now provided by TrxUI (TrxIconOption). Alias kept for callsites. */
-const IconOption = TrxIconOption;
+/* ────────────  Local IconOption (V1 UI style)  ──────────── */
+function IconOption({
+  icon,
+  label,
+  selected,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileTap={{ scale: 0.985 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      className={`group flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-all md:py-5 ${
+        selected
+          ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
+          : "border-ink/10 bg-white hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+      }`}
+    >
+      <span
+        className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${
+          selected ? "bg-white/15 text-white" : "bg-ever/[0.08] text-ever"
+        }`}
+      >
+        {icon}
+      </span>
+      <span className={`min-w-0 flex-1 text-[15px] font-medium md:text-[16px] ${selected ? "text-white" : "text-ink"}`}>
+        {label}
+      </span>
+    </motion.button>
+  );
+}
+
+/* ────────────  V1 progress bar (5 segments)  ──────────── */
+function StageBar({ stage }: { stage: number }) {
+  const STAGES = ["Start", "Preliminary", "Health", "Details", "Eligibility"] as const;
+  return (
+    <div className="mx-auto flex w-full max-w-[720px] items-center gap-1.5 md:gap-2">
+      {STAGES.map((label, i) => {
+        const done = i < stage;
+        const active = i === stage;
+        return (
+          <div key={label} className="flex flex-1 flex-col items-start gap-1.5">
+            <div className="relative h-[6px] w-full overflow-hidden rounded-full bg-ink/[0.08]">
+              <motion.div
+                initial={false}
+                animate={{ width: done || active ? "100%" : "0%" }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="h-full rounded-full"
+                style={{
+                  background: done
+                    ? "#ee7273"
+                    : active
+                      ? "linear-gradient(90deg,#ee7273,#f4a3a4)"
+                      : "transparent",
+                }}
+              />
+            </div>
+            <span
+              className={`hidden text-[10px] font-semibold uppercase tracking-[0.14em] md:block ${
+                active ? "text-ever" : done ? "text-ink/70" : "text-ink/35"
+              }`}
+            >
+              {label}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+const TrxStepper = StageBar;
+
 
 /* ────────────  Yes/No + optional detail  ──────────── */
 function YesNoWithDetail({
