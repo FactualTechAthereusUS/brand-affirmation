@@ -1,8 +1,7 @@
 import { motion } from "motion/react";
-import { Check, ArrowLeft, Star } from "lucide-react";
+import { Check, ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
-import logo from "@/assets/blissley-logo.png.asset.json";
+import trimrxHeader from "@/assets/trimrx-intake-header.svg.asset.json";
 
 /* ─────────  Palette  ───────── */
 export const NAVY = "#1D437B";
@@ -275,7 +274,7 @@ export function TrxStepper({ stage }: { stage: number }) {
   );
 }
 
-/* ─────────  Header (logo + FEATURED COVERAGE IN + press wordmarks)  ───────── */
+/* ─────────  Header (TrimRx intake header SVG)  ───────── */
 export function TrxHeader({
   onBack,
   showBack,
@@ -284,70 +283,22 @@ export function TrxHeader({
   showBack: boolean;
 }) {
   return (
-    <div className="mx-auto flex w-full max-w-[1080px] items-center justify-between gap-4 px-4 py-3 md:px-8 md:py-4">
-      <div className="flex w-[80px] items-center md:w-[120px]">
-        {showBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="grid h-9 w-9 place-items-center rounded-full text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
-            aria-label="Back"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-
-      <Link to="/" className="flex items-center gap-3">
-        <img src={logo.url} alt="Blissley" className="h-8 w-auto md:h-9" />
-      </Link>
-
-      <div className="flex w-[80px] items-center justify-end md:w-[420px]">
-        {/* Desktop press strip */}
-        <div className="hidden items-center gap-4 md:flex">
-          <div className="flex flex-col items-end leading-tight">
-            <span
-              className="text-[9.5px] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "rgba(23,23,23,0.55)" }}
-            >
-              Featured
-            </span>
-            <span
-              className="text-[9.5px] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "rgba(23,23,23,0.55)" }}
-            >
-              Coverage in
-            </span>
-            <span className="mt-0.5 flex items-center gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-2.5 w-2.5 fill-[#F4B93A] text-[#F4B93A]" />
-              ))}
-            </span>
-          </div>
-          <span
-            className="h-8 w-px"
-            style={{ background: "rgba(23,23,23,0.15)" }}
-          />
-          <div
-            className="flex items-center gap-3 text-[13px] font-semibold"
-            style={{ color: NAVY }}
-          >
-            <span className="font-hero italic">Forbes</span>
-            <span className="tracking-tight">
-              Web<span style={{ color: "#EB2033" }}>MD</span>
-            </span>
-            <span className="tracking-tight">
-              yahoo<span style={{ color: NAVY_SOFT }}>!</span>
-            </span>
-            <span
-              className="rounded-sm px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white"
-              style={{ background: "#111" }}
-            >
-              NY Post
-            </span>
-          </div>
-        </div>
-      </div>
+    <div className="relative mx-auto w-full max-w-[1080px] px-4 py-3 md:px-8 md:py-4">
+      {showBack && (
+        <button
+          type="button"
+          onClick={onBack}
+          className="absolute left-4 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink md:left-8"
+          aria-label="Back"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+      )}
+      <img
+        src={trimrxHeader.url}
+        alt="TrimRx"
+        className="mx-auto h-auto w-full max-w-[709px]"
+      />
     </div>
   );
 }
