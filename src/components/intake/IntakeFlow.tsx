@@ -955,22 +955,17 @@ export function IntakeFlow() {
                   />
                   <button
                     type="button"
+                      data-selected={answers.noMedications ? "true" : "false"}
                     onClick={() =>
                       set({
                         noMedications: !answers.noMedications,
                         medications: !answers.noMedications ? "None" : "",
                       })
                     }
-                    className={`mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all ${
-                      answers.noMedications
-                        ? "border-ever bg-ever"
-                        : "border-ink/10 bg-white hover:border-ink/20"
-                    }`}
+                      className="intake-none-pill mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all"
                   >
                     <span
-                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all ${
-                        answers.noMedications ? "border-white bg-white text-ever" : "border-ink/25 bg-white text-transparent"
-                      }`}
+                        className="intake-none-pill__check grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all"
                     >
                       {answers.noMedications && (
                         <svg viewBox="0 0 12 12" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -978,7 +973,7 @@ export function IntakeFlow() {
                         </svg>
                       )}
                     </span>
-                    <span className={`text-[14px] font-medium ${answers.noMedications ? "text-white" : "text-ink/80"}`}>I don't take any medications</span>
+                      <span className="text-[14px] font-medium text-current">I don't take any medications</span>
                   </button>
 
                 </label>
@@ -994,22 +989,17 @@ export function IntakeFlow() {
                   />
                   <button
                     type="button"
+                      data-selected={answers.noAllergies ? "true" : "false"}
                     onClick={() =>
                       set({
                         noAllergies: !answers.noAllergies,
                         allergies: !answers.noAllergies ? "None" : "",
                       })
                     }
-                    className={`mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all ${
-                      answers.noAllergies
-                        ? "border-ever bg-ever"
-                        : "border-ink/10 bg-white hover:border-ink/20"
-                    }`}
+                      className="intake-none-pill mt-3 flex w-full items-center gap-3 rounded-2xl border p-4 transition-all"
                   >
                     <span
-                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all ${
-                        answers.noAllergies ? "border-white bg-white text-ever" : "border-ink/25 bg-white text-transparent"
-                      }`}
+                        className="intake-none-pill__check grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all"
                     >
                       {answers.noAllergies && (
                         <svg viewBox="0 0 12 12" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -1017,7 +1007,7 @@ export function IntakeFlow() {
                         </svg>
                       )}
                     </span>
-                    <span className={`text-[14px] font-medium ${answers.noAllergies ? "text-white" : "text-ink/80"}`}>I don't have any medication allergies</span>
+                      <span className="text-[14px] font-medium text-current">I don't have any medication allergies</span>
                   </button>
 
                 </label>
