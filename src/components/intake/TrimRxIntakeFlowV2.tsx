@@ -133,7 +133,7 @@ function stageOf(idx: number, sex?: Sex): number {
   const id = SCREENS[idx];
   if (id === "hw") return 0;
   if (
-    ["bmi_goal", "sex", "safety", "female_effects", "priority", "ranked", "metabolic_science", "tania_story", "glp1_curve"].includes(id as string)
+    ["bmi_goal", "dob", "sex", "safety", "female_effects", "priority", "ranked", "metabolic_science", "tania_story", "glp1_curve"].includes(id as string)
   )
     return 1;
   if (["pace", "motivation_reason", "sleep_quality", "sleep_hours", "kristin_story", "contra", "more_conditions"].includes(id as string))
