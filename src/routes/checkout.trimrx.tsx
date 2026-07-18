@@ -207,15 +207,9 @@ function SelectInput(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 }
 
 /* ── Section header ── */
-function StepBadge({ n, label }: { n: number; label: string }) {
+function StepBadge({ label }: { label: string }) {
   return (
     <div className="mb-4 flex items-center gap-3">
-      <span
-        className="grid h-7 w-7 place-items-center rounded-full text-[13px] font-bold text-white"
-        style={{ background: "#0E1B2E" }}
-      >
-        {n}
-      </span>
       <h2 className="text-[17px] font-semibold text-ink sm:text-[18px]">
         {label}
       </h2>
@@ -473,7 +467,7 @@ function CheckoutPage() {
           >
             {/* Shipping */}
             <FormCard>
-              <StepBadge n={1} label="Shipping Address" />
+              <StepBadge label="Shipping Address" />
 
               <div className="mb-3 flex items-center gap-2 text-[12.5px] text-ink/60">
                 <ShieldCheck className="h-4 w-4" style={{ color: GREEN }} />
@@ -555,7 +549,7 @@ function CheckoutPage() {
 
             {/* Payment */}
             <FormCard>
-              <StepBadge n={2} label="Payment" />
+              <StepBadge label="Payment" />
 
               {/* Payment methods — accordion list */}
               <div className="space-y-3">
