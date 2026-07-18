@@ -257,39 +257,32 @@ function PlanCard({
           : "0 1px 0 rgba(0,0,0,0.02)",
       }}
     >
-      <div className="p-4 sm:p-5">
+      <div className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <h3
-                className="text-[17px] font-semibold sm:text-[18px]"
-                style={{ color: NAVY }}
-              >
-                {plan.title}
-              </h3>
-              {plan.badge && (
-                <span
-                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11.5px] font-semibold"
-                  style={{
-                    background: isBest ? "#CFE7F5" : "#D6F3DF",
-                    color: isBest ? NAVY : "#0E6B33",
-                  }}
-                >
-                  {plan.badge.label}
-                </span>
-              )}
-            </div>
-            <p className="mt-1 text-[13.5px] leading-snug text-ink/60">
-              {plan.desc}
-            </p>
-          </div>
-          <span
-            className="shrink-0 text-[12px] font-semibold"
-            style={{ color: NAVY }}
-          >
+          <h3 className="text-[19px] font-bold text-ink sm:text-[20px]">
+            {plan.title}
+          </h3>
+          {plan.badge && (
+            <span
+              className="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-semibold"
+              style={{
+                background: isBest ? "#DDECF5" : "#DFF4E6",
+                color: isBest ? NAVY : "#137A3A",
+              }}
+            >
+              {plan.badge.label}
+            </span>
+          )}
+        </div>
+        <div className="mt-2 flex items-start justify-between gap-4">
+          <p className="max-w-[62%] text-[14.5px] leading-snug text-ink/60">
+            {plan.desc}
+          </p>
+          <span className="shrink-0 text-[14px] font-bold text-ink">
             {plan.supply}
           </span>
         </div>
+
 
         {plan.installments && (
           <div className="mt-4 flex items-center justify-between gap-3">
