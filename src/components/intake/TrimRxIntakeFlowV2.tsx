@@ -89,6 +89,7 @@ type Answers = {
 const SCREENS = [
   "hw",                  // 0  Start
   "bmi_goal",            // 1  Preliminary
+  "dob",                 // 1b Age gate
   "sex",                 // 2
   "safety",              // 3
   "female_effects",      // 4 (female only)
