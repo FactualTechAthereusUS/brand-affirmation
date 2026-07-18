@@ -31,6 +31,7 @@ import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman-2.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+import trxRankedHero from "@/assets/trx-ranked-hero.png.asset.json";
 
 import verifiedCheck from "@/assets/verified-check.png.asset.json";
 import review22 from "@/assets/review-22.png.asset.json";
@@ -466,37 +467,67 @@ export function TrimRxIntakeFlowV2() {
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative overflow-hidden rounded-3xl border border-ink/8 bg-gradient-to-br from-[#1D437B] to-[#1D437B]/90 p-7 text-white shadow-[0_20px_60px_rgba(29,67,123,0.28)]"
+                  className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1D437B] to-[#16345F] text-white shadow-[0_24px_70px_rgba(29,67,123,0.32)]"
                 >
-                  <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
-                    <Trophy className="h-4 w-4" /> Best overall
-                  </div>
-                  <div className="mt-4 flex items-baseline gap-3">
-                    <span className="text-[42px] font-bold leading-none">#1</span>
-                    <span className="text-[20px] font-semibold">Blissley</span>
-                  </div>
-                  <div className="mt-2 flex items-center gap-2 text-[13px] text-white/85">
-                    <span className="rounded-md bg-white/15 px-2 py-0.5 font-semibold">9.8</span>
-                    Exceptional · ★★★★★
-                  </div>
-                  <ul className="mt-5 space-y-2 text-[14px] text-white/90">
-                    {[
-                      "Personalized GLP-1 protocols for your body",
-                      "Physician review within 24 hours",
-                      "Includes nausea & side-effect support",
-                      "Improves treatment adherence and comfort",
-                    ].map((f) => (
-                      <li key={f} className="flex items-start gap-2">
-                        <ShieldCheck className="mt-0.5 h-4 w-4 text-[#ee7273]" /> {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-6 inline-flex rounded-full bg-ever px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em]">
-                    Most popular
+                  <div className="grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr]">
+                    {/* LEFT: content */}
+                    <div className="p-6 sm:p-8 md:p-9">
+                      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+                        <Trophy className="h-4 w-4" /> Best overall
+                      </div>
+
+                      <div className="mt-5 flex items-center gap-3">
+                        <span className="font-serif text-[52px] leading-none font-bold">#1</span>
+                        <img src={blissleyWhite.url} alt="Blissley" className="h-7 sm:h-8 w-auto object-contain" />
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] text-white/85">
+                        <span className="rounded-md bg-white/15 px-2 py-0.5 font-semibold">9.8</span>
+                        <span>Exceptional</span>
+                        <span className="text-white/40">·</span>
+                        <span className="flex items-center gap-0.5 text-[#ee7273]">
+                          {[0,1,2,3,4].map((i) => (
+                            <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 fill-current" aria-hidden>
+                              <path d="M10 1.5l2.6 5.27 5.82.84-4.21 4.1.99 5.79L10 14.77l-5.2 2.73.99-5.79L1.58 7.61l5.82-.84L10 1.5z"/>
+                            </svg>
+                          ))}
+                        </span>
+                      </div>
+
+                      <ul className="mt-6 space-y-3 text-[14.5px] text-white/95">
+                        {[
+                          "Personalized GLP-1 protocols for your body",
+                          "Physician review within 24 hours",
+                          "Includes nausea & side-effect support",
+                          "Improves treatment adherence and comfort",
+                        ].map((f) => (
+                          <li key={f} className="flex items-start gap-3">
+                            <img src={verifiedCheck.url} alt="" className="mt-0.5 h-5 w-5 shrink-0" />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="mt-7 inline-flex rounded-full bg-[#ee7273] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_8px_20px_rgba(238,114,115,0.35)]">
+                        Most popular
+                      </div>
+                    </div>
+
+                    {/* RIGHT: hero image */}
+                    <div className="relative min-h-[240px] md:min-h-full">
+                      <img
+                        src={trxRankedHero.url}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover object-[70%_center]"
+                      />
+                      {/* gradient fade from left navy into image so text side breathes */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#1D437B] via-[#1D437B]/40 to-transparent md:from-[#1D437B] md:via-[#1D437B]/60 md:to-transparent" />
+                    </div>
                   </div>
                 </motion.div>
               </ScreenShell>
             )}
+
 
             {/* 7, Metabolic science */}
             {current === "metabolic_science" && (
