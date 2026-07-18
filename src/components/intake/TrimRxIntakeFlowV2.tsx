@@ -81,11 +81,15 @@ type Answers = {
   firstName?: string;
   lastName?: string;
   state?: string;
+  dobMonth?: string;
+  dobDay?: string;
+  dobYear?: string;
 };
 
 const SCREENS = [
   "hw",                  // 0  Start
   "bmi_goal",            // 1  Preliminary
+  "dob",                 // 1b Age gate
   "sex",                 // 2
   "safety",              // 3
   "female_effects",      // 4 (female only)
@@ -117,6 +121,8 @@ const SCREENS = [
   "personalization",     // 30
   "eligibility",         // 31 Eligibility
   "loading",             // 32
+  "blocked_pregnancy",   // terminal
+  "blocked_minor",       // terminal
 ] as const;
 
 type ScreenId = (typeof SCREENS)[number];
@@ -127,7 +133,7 @@ function stageOf(idx: number, sex?: Sex): number {
   const id = SCREENS[idx];
   if (id === "hw") return 0;
   if (
-    ["bmi_goal", "sex", "safety", "female_effects", "priority", "ranked", "metabolic_science", "tania_story", "glp1_curve"].includes(id as string)
+    ["bmi_goal", "dob", "sex", "safety", "female_effects", "priority", "ranked", "metabolic_science", "tania_story", "glp1_curve"].includes(id as string)
   )
     return 1;
   if (["pace", "motivation_reason", "sleep_quality", "sleep_hours", "kristin_story", "contra", "more_conditions"].includes(id as string))
@@ -192,11 +198,16 @@ export function TrimRxIntakeFlowV2() {
   const [answers, setAnswers] = useState<Answers>({});
 
   const set = (patch: Partial<Answers>) => setAnswers((a) => ({ ...a, ...patch }));
+  const goTo = (id: ScreenId) => {
+    const i = SCREENS.indexOf(id);
+    if (i >= 0) setIdx(i);
+  };
   const next = () => {
     setIdx((i) => {
       let n = Math.min(SCREENS.length - 1, i + 1);
-      // Skip female_effects for males
       if (SCREENS[n] === "female_effects" && answers.sex !== "female") n = n + 1;
+      // never step into terminal blocked screens via next()
+      if (SCREENS[n] === "blocked_pregnancy" || SCREENS[n] === "blocked_minor") n = i;
       return n;
     });
   };
@@ -211,6 +222,20 @@ export function TrimRxIntakeFlowV2() {
     set({ [key]: value } as Partial<Answers>);
     setTimeout(next, 220);
   };
+  const pickSafety = (value: string) => {
+    // Any of the first 3 = pregnancy hard stop
+    const HARD = [
+      "Currently or possibly pregnant, or actively trying to become pregnant",
+      "Breastfeeding or bottle-feeding with breastmilk",
+      "Have given birth to a child within the last 6 months",
+    ];
+    if (HARD.includes(value)) {
+      set({ safety: [value] });
+      setTimeout(() => goTo("blocked_pregnancy"), 180);
+      return;
+    }
+    toggleMulti("safety", value, "None of the above");
+  };
   const toggleMulti = (key: keyof Answers, value: string, none = "None of the above") => {
     setAnswers((a) => {
       const arr = ((a[key] as string[] | undefined) ?? []).slice();
@@ -224,7 +249,7 @@ export function TrimRxIntakeFlowV2() {
 
   const current: ScreenId = SCREENS[idx];
   const stage = stageOf(idx, answers.sex);
-  const isLoading = current === "loading";
+  const isLoading = current === "loading" || current === "blocked_pregnancy" || current === "blocked_minor";
 
   const bmi = useMemo(() => {
     const ft = parseFloat(answers.heightFt || "0");
@@ -393,6 +418,45 @@ export function TrimRxIntakeFlowV2() {
               </>
             )}
 
+            {/* 1b, DOB — age gate */}
+            {current === "dob" && (() => {
+              const m = parseInt(answers.dobMonth || "0", 10);
+              const d = parseInt(answers.dobDay || "0", 10);
+              const y = parseInt(answers.dobYear || "0", 10);
+              const valid = m >= 1 && m <= 12 && d >= 1 && d <= 31 && y >= 1900 && y <= new Date().getFullYear();
+              let age: number | null = null;
+              if (valid) {
+                const today = new Date();
+                age = today.getFullYear() - y;
+                const mDiff = today.getMonth() + 1 - m;
+                if (mDiff < 0 || (mDiff === 0 && today.getDate() < d)) age -= 1;
+              }
+              const handleNext = () => {
+                if (age !== null && age < 18) { goTo("blocked_minor"); return; }
+                next();
+              };
+              return (
+                <ScreenShell
+                  title="What's your date of birth?"
+                  sub="We need to confirm you're 18 or older to prescribe."
+                  footer={
+                    <PrimaryButton onClick={handleNext} disabled={!valid}>
+                      Next →
+                    </PrimaryButton>
+                  }
+                >
+                  <div className="grid grid-cols-3 gap-3">
+                    <TextField label="Month" type="number" value={answers.dobMonth ?? ""} onChange={(v) => set({ dobMonth: v })} placeholder="MM" />
+                    <TextField label="Day" type="number" value={answers.dobDay ?? ""} onChange={(v) => set({ dobDay: v })} placeholder="DD" />
+                    <TextField label="Year" type="number" value={answers.dobYear ?? ""} onChange={(v) => set({ dobYear: v })} placeholder="YYYY" />
+                  </div>
+                  {age !== null && age >= 18 && (
+                    <div className="text-[13px] text-ink/60">You're {age}. All set.</div>
+                  )}
+                </ScreenShell>
+              );
+            })()}
+
             {/* 2, Sex */}
             {current === "sex" && (
               <ScreenShell
@@ -421,7 +485,7 @@ export function TrimRxIntakeFlowV2() {
                     key={o}
                     label={o}
                     selected={(answers.safety ?? []).includes(o)}
-                    onClick={() => toggleMulti("safety", o, "None of the above")}
+                    onClick={() => pickSafety(o)}
                   />
                 ))}
               </ScreenShell>
@@ -1058,6 +1122,48 @@ export function TrimRxIntakeFlowV2() {
 
             {/* 32, Loading */}
             {current === "loading" && <LoadingScreen firstName={answers.firstName} state={answers.state} />}
+
+            {/* Terminal: Pregnancy hard stop */}
+            {current === "blocked_pregnancy" && (
+              <div className="mx-auto max-w-[560px] py-10 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
+                  Safety first
+                </div>
+                <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">
+                  GLP-1 isn't safe during pregnancy or nursing.
+                </h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">
+                  We'd love to help when the time is right. Leave your email and we'll reach out
+                  when you're eligible — no follow-up until then.
+                </p>
+                <div className="mt-8 flex flex-col gap-3">
+                  <PrimaryButton onClick={() => (window.location.href = "/")}>
+                    Notify me when I'm eligible →
+                  </PrimaryButton>
+                </div>
+              </div>
+            )}
+
+            {/* Terminal: Under 18 hard stop */}
+            {current === "blocked_minor" && (
+              <div className="mx-auto max-w-[560px] py-10 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-ink/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink">
+                  Age requirement
+                </div>
+                <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">
+                  You need to be 18 or older to continue.
+                </h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">
+                  Blissley programs are prescription-only and available to adults 18+. For general
+                  health resources, please talk to a parent, guardian, or your pediatrician.
+                </p>
+                <div className="mt-8">
+                  <PrimaryButton onClick={() => (window.location.href = "/")}>
+                    Return home
+                  </PrimaryButton>
+                </div>
+              </div>
+            )}
           </div>
         </AnimatePresence>
       </div>
