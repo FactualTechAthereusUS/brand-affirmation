@@ -1078,25 +1078,31 @@ function StoryScreen({
   );
 }
 
-/* ═════════════ Metabolic S-curve (belief slide) ═════════════ */
+/* ═════════════ Metabolic uptrend curve (belief slide) ═════════════ */
 function MetabolicChart() {
-  const N = 120;
-  const samples = Array.from({ length: N + 1 }, (_, i) => {
-    const t = i / N;
-    const s = 1 / (1 + Math.exp(-10 * (t - 0.45)));
-    return { t, v: s };
-  });
-  const W = 720, H = 300, padL = 44, padR = 28, padT = 32, padB = 44;
-  const xAt = (t: number) => padL + t * (W - padL - padR);
-  const yAt = (v: number) => padT + (1 - v) * (H - padT - padB);
-  const path = samples.reduce((acc, s, i) => {
-    const x = xAt(s.t), y = yAt(s.v);
-    if (i === 0) return `M ${x} ${y}`;
-    const p = samples[i - 1];
-    const pX = xAt(p.t), pY = yAt(p.v);
-    const cx = pX + (x - pX) * 0.5;
-    return `${acc} C ${cx} ${pY}, ${cx} ${y}, ${x} ${y}`;
-  }, "");
+  const months = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan"];
+  const startVal = 30;
+  const endVal = 92;
+  // Higher-highs / higher-lows wavy uptrend (values 0-100, 0 = bottom)
+  const wave = [30, 38, 46, 55, 68, 82, 92];
+  const W = 720, H = 300, padL = 64, padR = 40, padT = 40, padB = 52;
+  const xAt = (i: number) => padL + (i / (wave.length - 1)) * (W - padL - padR);
+  const yAt = (v: number) => padT + (1 - v / 100) * (H - padT - padB);
+
+  // Smooth Catmull-Rom -> cubic Bezier
+  let path = `M ${xAt(0)} ${yAt(wave[0])}`;
+  for (let i = 0; i < wave.length - 1; i++) {
+    const p0 = wave[i - 1] ?? wave[i];
+    const p1 = wave[i];
+    const p2 = wave[i + 1];
+    const p3 = wave[i + 2] ?? p2;
+    const x1 = xAt(i) + (xAt(i + 1) - xAt(i - 1 < 0 ? 0 : i - 1)) / 6;
+    const y1 = yAt(p1) + (yAt(p2) - yAt(p0)) / 6;
+    const x2 = xAt(i + 1) - (xAt(i + 2 > wave.length - 1 ? wave.length - 1 : i + 2) - xAt(i)) / 6;
+    const y2 = yAt(p2) - (yAt(p3) - yAt(p1)) / 6;
+    path += ` C ${x1} ${y1}, ${x2} ${y2}, ${xAt(i + 1)} ${yAt(p2)}`;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -14, filter: "blur(8px)" }}
@@ -1105,23 +1111,40 @@ function MetabolicChart() {
       className="w-full"
     >
       <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
-        <defs>
-          <linearGradient id="mFill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {[0.15, 0.5, 0.85].map((v, i) => (
-          <line key={i} x1={padL} x2={W - padR} y1={yAt(v)} y2={yAt(v)} stroke="#1D437B" strokeOpacity="0.14" strokeDasharray="5 7" />
+        {/* dashed baselines at start (bottom) and end (top) */}
+        <line x1={padL} x2={W - padR} y1={yAt(startVal)} y2={yAt(startVal)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="6 8" />
+        <line x1={padL} x2={W - padR} y1={yAt(endVal)} y2={yAt(endVal)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="6 8" />
+
+        {/* y-axis labels */}
+        <text x={padL - 12} y={yAt(startVal) + 5} textAnchor="end" style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>Low</text>
+        <text x={padL - 12} y={yAt(endVal) + 5} textAnchor="end" style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>Peak</text>
+
+        {/* smooth wavy curve */}
+        <motion.path
+          d={path}
+          stroke="#ee7273"
+          strokeWidth={6}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* endpoint dots */}
+        <motion.circle cx={xAt(0)} cy={yAt(wave[0])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.25, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(wave.length - 1)} cy={yAt(wave[wave.length - 1])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7, type: "spring", stiffness: 260, damping: 18 }} />
+
+        {/* month labels */}
+        {months.map((m, i) => (
+          <text key={m} x={xAt(i)} y={H - 14} textAnchor="middle" style={{ fontSize: 14, fontWeight: 500, fill: "#171717", opacity: 0.7 }}>{m}</text>
         ))}
-        <text x={padL + 8} y={padT + 20} style={{ fontSize: 13, fontWeight: 600, fill: "#171717" }}>Metabolic reset</text>
-        <motion.path d={`${path} L ${xAt(1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`} fill="url(#mFill)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.8 }} />
-        <motion.path d={path} stroke="#ee7273" strokeWidth={5} fill="none" strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }} />
-        <motion.circle cx={xAt(1)} cy={yAt(1)} r={7} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.5, type: "spring", stiffness: 260, damping: 18 }} />
       </svg>
     </motion.div>
   );
 }
+
 
 /* ═════════════ Weight-loss projection ═════════════ */
 function WeightLossChart({ start, goal }: { start: number; goal: number }) {
