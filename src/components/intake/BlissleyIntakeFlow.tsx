@@ -28,7 +28,9 @@ import {
   TrxField as TextField,
   TrxScreen as ScreenShell,
   TrxStepper,
+  TrxHeader,
   NAVY,
+
 } from "./TrxUI";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
