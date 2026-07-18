@@ -260,6 +260,7 @@ function CheckoutPage() {
     country: "United States",
     billingSame: true,
     priority: false,
+    insurance: false,
   });
   const [payMethod, setPayMethod] = useState<"card" | "afterpay" | "klarna" | "affirm">(
     "card",
