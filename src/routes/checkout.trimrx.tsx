@@ -671,9 +671,9 @@ function CheckoutPage() {
                           onToggle={() => set("insurance", !form.insurance)}
                           icon={
                             <img
-                              src={iconDeliveryShield.url}
+                              src={iconDeliveryShieldV2.url}
                               alt=""
-                              className="h-7 w-7 object-contain invert"
+                              className="h-10 w-10 object-contain sm:h-11 sm:w-11"
                             />
                           }
                           title={
@@ -696,18 +696,17 @@ function CheckoutPage() {
                               strokeWidth={2.2}
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              className="h-7 w-7 text-white"
+                              className="h-9 w-9 text-ink sm:h-10 sm:w-10"
                             >
                               <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
                             </svg>
                           }
                           title={
-                            <>
-                              Front-of-the-line review{" "}
-                              <span className="font-bold">($49.95)</span>
-                            </>
+                            <span className="font-bold">
+                              Yes, put my order at the front of the line!
+                            </span>
                           }
-                          desc="Skip the 6–24 hour wait. Get an instant telehealth review right now."
+                          desc="Doctors typically review within 6–24 hours. Skip the wait for only $49.95 and get an instant telehealth review right now."
                         />
                       </div>
                     </div>
