@@ -30,12 +30,11 @@ export function TrxHeadline({ text, className = "" }: { text: string; className?
   const parts = text.split(/(\{\{[^}]+\}\})/g).filter(Boolean);
   return (
     <h1
-      className={`font-hero font-semibold leading-[1.15] tracking-[-0.01em] text-[26px] md:text-[34px] ${className}`}
-      style={{ color: NAVY }}
+      className={`font-hero font-semibold leading-[1.15] tracking-[-0.01em] text-[26px] text-ink md:text-[34px] ${className}`}
     >
       {parts.map((p, i) =>
         p.startsWith("{{") ? (
-          <span key={i} style={{ color: NAVY_SOFT }}>
+          <span key={i} style={{ color: NAVY }}>
             {p.slice(2, -2)}
           </span>
         ) : (
