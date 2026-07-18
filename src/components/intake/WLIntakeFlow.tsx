@@ -44,8 +44,11 @@ type Answers = {
   glp1Dose?: string;
   qualifyingConditions?: string[];
   weightSymptoms?: string[];
+  bloodPressure?: string;
+  restingHR?: string;
   contraindications?: string[];
   bariatric?: string;
+  diabetesMeds?: string[];
   medications?: string;
   noMedications?: boolean;
   allergies?: string;
@@ -55,6 +58,7 @@ type Answers = {
   consentTOS?: boolean;
   consentSMS?: boolean;
 };
+
 
 
 const US_STATES = [
