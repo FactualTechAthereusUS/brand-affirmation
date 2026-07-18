@@ -379,6 +379,15 @@ function SalesTrimRxPage() {
       savings: 120,
     },
     {
+      key: "six",
+      title: "6-Month Plan",
+      desc: "Your ultimate plan for guaranteed success and consistency",
+      supply: "24 Week Supply",
+      perMo: 191,
+      savings: 526,
+      installments: true,
+    },
+    {
       key: "three",
       title: "3-Month Plan",
       desc: "Receive your 3 month supply in a single shipment",
@@ -387,15 +396,6 @@ function SalesTrimRxPage() {
       savings: 149,
       installments: true,
       badge: { label: "Most Popular", kind: "popular" },
-    },
-    {
-      key: "six",
-      title: "6-Month Plan",
-      desc: "Your ultimate plan for guaranteed success and consistency",
-      supply: "24 Week Supply",
-      perMo: 191,
-      savings: 526,
-      installments: true,
     },
     {
       key: "twelve",
