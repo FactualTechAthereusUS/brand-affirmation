@@ -706,7 +706,15 @@ function CheckoutPage() {
                               Yes, put my order at the front of the line!
                             </span>
                           }
-                          desc="Doctors typically review within 6–24 hours. Skip the wait for only $49.95 and get an instant telehealth review right now."
+                          desc={
+                            <>
+                              Doctors typically review within 6–24 hours.{" "}
+                              <span className="font-bold">
+                                Skip the wait for only $49.95
+                              </span>{" "}
+                              and get an instant telehealth review right now.
+                            </>
+                          }
                         />
                       </div>
                     </div>
