@@ -852,11 +852,7 @@ export function TrimRxIntakeFlow() {
             {current === "resting_hr" && (
               <ScreenShell
                 title="How about your average resting heart rate?"
-                sub={
-                  <>
-                    <Heart className="mr-2 inline h-4 w-4 text-ever" /> Approximate is fine.
-                  </>  as unknown as string
-                }
+                sub="An approximate value is fine."
               >
                 {[
                   "< 60 bpm (Slow)",
