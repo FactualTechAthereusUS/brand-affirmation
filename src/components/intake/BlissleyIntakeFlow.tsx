@@ -294,23 +294,7 @@ export function BlissleyIntakeFlow() {
                   </div>
                   <TextField label="Weight (lbs)" type="number" value={answers.weightLbs ?? ""} onChange={(v) => set({ weightLbs: v })} placeholder="200" />
 
-                  {bmi !== null && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`mt-1 rounded-2xl border px-4 py-3.5 text-[14.5px] font-medium ${
-                        bmi >= 27
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                          : bmi >= 25
-                          ? "border-amber-200 bg-amber-50 text-amber-900"
-                          : "border-ink/10 bg-ink/[0.03] text-ink/80"
-                      }`}
-                    >
-                      {bmi >= 27 && <>✅ BMI {bmi} - You qualify. Let's go.</>}
-                      {bmi >= 25 && bmi < 27 && <>🔶 BMI {bmi} - Your physician will review.</>}
-                      {bmi < 25 && <>BMI {bmi} - Our program is typically for BMI 27+. A physician will still review your case.</>}
-                    </motion.div>
-                  )}
+                  {bmi !== null && <BmiMeter bmi={bmi} />}
                 </ScreenShell>
               </>
             )}
