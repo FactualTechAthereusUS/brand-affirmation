@@ -420,10 +420,8 @@ function SalesTrimRxPage() {
 
   return (
     <div className="min-h-screen" style={{ background: CANVAS }}>
-      <TrxHeader onBack={() => window.history.back()} showBack={false} />
-
-      {/* Discount banner */}
-      <div className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-4 sm:px-6">
+      {/* Discount banner — TOP of page */}
+      <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
         <div
           className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-3 text-center text-[13px] font-semibold sm:text-[14px]"
           style={{
@@ -437,6 +435,7 @@ function SalesTrimRxPage() {
         </div>
       </div>
 
+      <TrxHeader onBack={() => window.history.back()} showBack={false} />
 
       {/* SECTION 1 — Reservation + Treatment */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-10 pt-2 sm:px-6">
@@ -452,7 +451,7 @@ function SalesTrimRxPage() {
         >
           Only <b>29</b> discounts left.
           <br />
-          Yours is reserved for <b style={{ color: PINK }}>{time}</b>
+          Yours is reserved for <b style={{ color: NAVY }}>{time}</b>
         </motion.div>
 
         <motion.h1
@@ -466,7 +465,7 @@ function SalesTrimRxPage() {
             <span
               aria-hidden
               className="absolute inset-x-0 -bottom-0.5 h-[3px] rounded-full"
-              style={{ background: PINK }}
+              style={{ background: NAVY_SOFT, opacity: 0.7 }}
             />
           </span>
         </motion.h1>
