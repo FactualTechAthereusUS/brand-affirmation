@@ -384,16 +384,14 @@ function SalesTrimRxPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-[520px] rounded-2xl border px-5 py-3 text-center text-[13.5px] leading-snug"
+          className="mx-auto w-full rounded-2xl px-5 py-4 text-center text-[14px] leading-relaxed sm:text-[15px]"
           style={{
-            background: `${NAVY}0A`,
-            borderColor: `${NAVY}22`,
+            background: "#E7EEFB",
             color: NAVY,
           }}
         >
           Only <b>29</b> discounts left.
-          <br className="sm:hidden" />
-          <span className="hidden sm:inline"> </span>
+          <br />
           Yours is reserved for <b style={{ color: PINK }}>{time}</b>
         </motion.div>
 
