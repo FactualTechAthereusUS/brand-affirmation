@@ -232,48 +232,56 @@ function PlanCard({
 }) {
   const isBest = plan.badge?.kind === "best";
   const isPopular = plan.badge?.kind === "popular";
-  const accent = isBest ? NAVY : PINK;
-  const tint = selected
-    ? `${accent}0E`
-    : isBest
-      ? `${NAVY}08`
+  // Selected accents: green for Most Popular, blue for Best Deal
+  const GREEN = "#16A34A";
+  const GREEN_TINT = "#EAFBEF";
+  const BLUE_TINT = "#DFF0FA";
+  const accent = isBest ? NAVY : isPopular ? GREEN : NAVY;
+  const bg = selected
+    ? isBest
+      ? BLUE_TINT
       : isPopular
-        ? `${PINK}08`
-        : "#FFFFFF";
-  const ring = selected
-    ? accent
-    : plan.badge
-      ? accent
-      : "rgba(23,23,23,0.10)";
+        ? GREEN_TINT
+        : "#F3F7F1"
+    : "#FFFFFF";
+  const borderColor = selected ? accent : "rgba(23,23,23,0.10)";
   return (
     <motion.div
       layout
       whileHover={{ y: -2 }}
       className="relative rounded-2xl border transition-all"
       style={{
-        background: tint,
-        borderColor: ring,
-        borderWidth: selected || plan.badge ? 2 : 1,
+        background: bg,
+        borderColor,
+        borderWidth: selected ? 2 : 1,
         boxShadow: selected
-          ? `0 22px 44px ${accent}26`
+          ? `0 22px 44px ${accent}22`
           : "0 1px 0 rgba(0,0,0,0.02)",
       }}
     >
-      {plan.badge && (
-        <div
-          className="absolute right-4 top-0 -translate-y-1/2 rounded-full px-3 py-1 text-[11px] font-semibold text-white"
-          style={{ background: accent }}
-        >
-          {plan.badge.label}
-        </div>
-      )}
       <div className="p-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <h3 className="text-[17px] font-semibold text-ink sm:text-[18px]" style={{ color: NAVY }}>
-              {plan.title}
-            </h3>
-            <p className="mt-0.5 text-[13.5px] leading-snug text-ink/60">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3
+                className="text-[17px] font-semibold sm:text-[18px]"
+                style={{ color: NAVY }}
+              >
+                {plan.title}
+              </h3>
+              {plan.badge && (
+                <span
+                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11.5px] font-semibold"
+                  style={{
+                    background: isBest ? "#CFE7F5" : "#D6F3DF",
+                    color: isBest ? NAVY : "#0E6B33",
+                  }}
+                >
+                  {plan.badge.label}
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-[13.5px] leading-snug text-ink/60">
               {plan.desc}
             </p>
           </div>
@@ -288,10 +296,15 @@ function PlanCard({
         {plan.installments && (
           <div className="mt-4 flex items-center justify-between gap-3">
             <div>
-              <div className="text-[13.5px] font-semibold" style={{ color: NAVY }}>
+              <div
+                className="text-[13.5px] font-semibold"
+                style={{ color: NAVY }}
+              >
                 Easy 0% Installments
               </div>
-              <div className="text-[12px] text-ink/55">Spread payments over 12 months.</div>
+              <div className="text-[12px] text-ink/55">
+                Spread payments over 12 months.
+              </div>
             </div>
             <div className="flex items-center gap-1.5">
               <img src={payAfterpay.url} alt="Afterpay" className="h-5 w-auto rounded-[4px]" />
@@ -317,20 +330,21 @@ function PlanCard({
           onClick={onSelect}
           className="mt-3 flex w-full flex-col items-center justify-center rounded-xl px-4 py-3.5 text-[15px] font-semibold transition-all"
           style={{
-            background: selected ? accent : `${accent}1F`,
-            color: selected ? "#fff" : NAVY,
-            boxShadow: selected
-              ? `0 12px 26px ${accent}44`
-              : "0 1px 0 rgba(0,0,0,0.02)",
+            background: "#CFE0CC",
+            color: NAVY,
+            boxShadow: "0 1px 0 rgba(0,0,0,0.02)",
           }}
         >
           {plan.todayPrice ? (
             <>
               <span>
-                Select Plan · <span className="line-through opacity-70">${plan.originalMonthly}/month</span>
+                Select Plan ·{" "}
+                <span className="line-through opacity-70">
+                  ${plan.originalMonthly}/month
+                </span>
               </span>
               <span className="mt-0.5 text-[11.5px] font-medium tracking-[0.04em] opacity-90">
-                PAY ONLY ${plan.todayPrice} · LIMITED OFFER
+                PAY ONLY ${plan.todayPrice} LIMITED OFFER
               </span>
             </>
           ) : (
@@ -341,6 +355,7 @@ function PlanCard({
     </motion.div>
   );
 }
+
 
 /* ─────────  Includes row  ───────── */
 const INCLUDES = [
