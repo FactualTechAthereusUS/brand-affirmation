@@ -279,8 +279,10 @@ export function TrimRxIntakeFlow() {
   const next = () => {
     setIdx((i) => {
       let n = Math.min(SCREENS.length - 1, i + 1);
+      if (answers.sex === "male" && (SCREENS[n] === "safety" || SCREENS[n] === "female_effects")) {
+        n = Math.min(SCREENS.length - 1, n + (SCREENS[n] === "safety" ? 2 : 1));
+      }
       if (SCREENS[n] === "female_effects" && answers.sex !== "female") n = n + 1;
-      // never step into terminal blocked screens via next()
       if (SCREENS[n] === "blocked_pregnancy" || SCREENS[n] === "blocked_minor") n = i;
       return n;
     });
@@ -288,6 +290,9 @@ export function TrimRxIntakeFlow() {
   const prev = () => {
     setIdx((i) => {
       let n = Math.max(0, i - 1);
+      if (answers.sex === "male" && (SCREENS[n] === "female_effects" || SCREENS[n] === "safety")) {
+        n = Math.max(0, n - (SCREENS[n] === "female_effects" ? 2 : 1));
+      }
       if (SCREENS[n] === "female_effects" && answers.sex !== "female") n = n - 1;
       return n;
     });
