@@ -627,7 +627,7 @@ function CheckoutPage() {
                         className="pr-24"
                       />
                       <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
-                        <PayIcons kinds={["visa", "mastercard", "amex"]} height={18} />
+                        <PayIcons />
                       </div>
                     </div>
                   </Field>
