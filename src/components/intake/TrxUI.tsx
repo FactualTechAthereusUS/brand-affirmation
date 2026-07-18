@@ -300,9 +300,9 @@ export function TrxHeader({
         <img
           src={blissleyLogo.url}
           alt="Blissley"
-          className="block h-6 w-auto sm:h-7 md:h-9"
+          className="block h-9 w-auto sm:h-11 md:h-14"
         />
-        <span className="block h-6 w-px bg-ink/15 sm:h-7 md:h-9" aria-hidden />
+        <span className="block h-9 w-px bg-ink/15 sm:h-11 md:h-14" aria-hidden />
         <img
           src={trimrxHeader.url}
           alt="TrimRx"
