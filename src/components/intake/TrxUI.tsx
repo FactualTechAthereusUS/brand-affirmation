@@ -2,6 +2,8 @@ import { motion } from "motion/react";
 import { Check, ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 import trimrxHeader from "@/assets/trimrx-intake-header.svg.asset.json";
+import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
+
 
 /* ─────────  Palette  ───────── */
 export const NAVY = "#1D437B";
@@ -294,11 +296,20 @@ export function TrxHeader({
           <ArrowLeft className="h-4 w-4" />
         </button>
       )}
-      <img
-        src={trimrxHeader.url}
-        alt="TrimRx"
-        className="mx-auto block h-8 w-auto sm:h-10 md:h-12"
-      />
+      <div className="mx-auto flex items-center justify-center gap-4 sm:gap-6 md:gap-8">
+        <img
+          src={blissleyLogo.url}
+          alt="Blissley"
+          className="block h-6 w-auto sm:h-7 md:h-9"
+        />
+        <span className="block h-6 w-px bg-ink/15 sm:h-7 md:h-9" aria-hidden />
+        <img
+          src={trimrxHeader.url}
+          alt="TrimRx"
+          className="block h-8 w-auto sm:h-10 md:h-12"
+        />
+      </div>
+
     </div>
 
   );
