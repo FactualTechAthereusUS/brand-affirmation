@@ -55,7 +55,9 @@ type Answers = {
   weightLbs?: string;
   goalWeight?: string;
   firstName?: string;
+  lastName?: string;
   email?: string;
+  symptoms?: string[];
   consent?: boolean;
   sex?: Sex;
   dobMonth?: string;
@@ -183,7 +185,64 @@ function YesNoWithDetail({
   );
 }
 
-/* ═════════════ Main ═════════════ */
+/* ═════════════ BMI meter (visual segmented) ═════════════ */
+function BmiMeter({ bmi }: { bmi: number }) {
+  // Range 15 - 45 mapped to 0-100%
+  const min = 15, max = 45;
+  const pct = Math.max(0, Math.min(100, ((bmi - min) / (max - min)) * 100));
+  const segs = [
+    { label: "Underweight", range: "<18.5", to: 18.5 },
+    { label: "Normal", range: "18.5-24.9", to: 25 },
+    { label: "Overweight", range: "25-29.9", to: 30 },
+    { label: "Obese", range: "≥30", to: max },
+  ];
+  const activeIdx =
+    bmi < 18.5 ? 0 : bmi < 25 ? 1 : bmi < 30 ? 2 : 3;
+  const label =
+    bmi < 18.5 ? "Underweight" :
+    bmi < 25 ? "Normal" :
+    bmi < 30 ? "Overweight" :
+    bmi < 35 ? "Obese" :
+    bmi < 40 ? "Severe Obesity" : "Extreme Obesity";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="mt-2"
+    >
+      <div className="text-[13px] font-medium text-ink/60">Your BMI</div>
+      <div className="relative mt-2 h-[54px] w-full overflow-hidden rounded-full bg-ink/[0.06]">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${Math.max(pct, 18)}%` }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-y-0 left-0 flex items-center justify-center rounded-full"
+          style={{ background: "#ee7273" }}
+        >
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="whitespace-nowrap px-4 text-[15px] font-semibold text-ink"
+          >
+            {bmi} · {label}
+          </motion.span>
+        </motion.div>
+      </div>
+      <div className="mt-3 grid grid-cols-4 gap-2">
+        {segs.map((s, i) => (
+          <div key={s.label} className={i === activeIdx ? "text-ink" : "text-ink/45"}>
+            <div className={`text-[13px] ${i === activeIdx ? "font-semibold" : "font-medium"}`}>{s.label}</div>
+            <div className="text-[12px] text-ink/45">{s.range}</div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+
 export function BlissleyIntakeFlow() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
@@ -292,23 +351,7 @@ export function BlissleyIntakeFlow() {
                   </div>
                   <TextField label="Weight (lbs)" type="number" value={answers.weightLbs ?? ""} onChange={(v) => set({ weightLbs: v })} placeholder="200" />
 
-                  {bmi !== null && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`mt-1 rounded-2xl border px-4 py-3.5 text-[14.5px] font-medium ${
-                        bmi >= 27
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                          : bmi >= 25
-                          ? "border-amber-200 bg-amber-50 text-amber-900"
-                          : "border-ink/10 bg-ink/[0.03] text-ink/80"
-                      }`}
-                    >
-                      {bmi >= 27 && <>✅ BMI {bmi} - You qualify. Let's go.</>}
-                      {bmi >= 25 && bmi < 27 && <>🔶 BMI {bmi} - Your physician will review.</>}
-                      {bmi < 25 && <>BMI {bmi} - Our program is typically for BMI 27+. A physician will still review your case.</>}
-                    </motion.div>
-                  )}
+                  {bmi !== null && <BmiMeter bmi={bmi} />}
                 </ScreenShell>
               </>
             )}
@@ -319,12 +362,15 @@ export function BlissleyIntakeFlow() {
                 title="Great. Let's build your {{personalized program.}}"
                 sub="First we'll capture the basics so we can email your results."
                 footer={
-                  <PrimaryButton onClick={next} disabled={!answers.firstName || !answers.email || !answers.consent}>
+                  <PrimaryButton onClick={next} disabled={!answers.firstName || !answers.lastName || !answers.email || !answers.consent}>
                     Continue →
                   </PrimaryButton>
                 }
               >
-                <TextField label="First name" value={answers.firstName ?? ""} onChange={(v) => set({ firstName: v })} placeholder="Jane" />
+                <div className="grid grid-cols-2 gap-3">
+                  <TextField label="First name" value={answers.firstName ?? ""} onChange={(v) => set({ firstName: v })} placeholder="Jane" />
+                  <TextField label="Last name" value={answers.lastName ?? ""} onChange={(v) => set({ lastName: v })} placeholder="Doe" />
+                </div>
                 <TextField label="Email address" type="email" value={answers.email ?? ""} onChange={(v) => set({ email: v })} placeholder="you@example.com" />
                 <label className="mt-1 flex items-start gap-3 rounded-xl border border-ink/10 bg-white px-4 py-3 cursor-pointer">
                   <span
@@ -795,12 +841,31 @@ export function BlissleyIntakeFlow() {
                 "Severe depression",
                 "None of the above",
               ];
+              const symptomOpts = [
+                "Weight gain despite diet and exercise",
+                "Increased appetite or food cravings",
+                "Low energy or fatigue",
+                "None of the above",
+              ];
+              const symptomsDone = (answers.symptoms?.length ?? 0) > 0;
+              const conditionsDone = (answers.healthConditions?.length ?? 0) > 0;
               return (
                 <ScreenShell
                   title="A few more {{health questions.}}"
                   sub="These conditions often make you a stronger candidate - GLP-1 directly improves them."
-                  footer={<PrimaryButton onClick={next} disabled={!(answers.healthConditions && answers.healthConditions.length)}>Next →</PrimaryButton>}
+                  footer={<PrimaryButton onClick={next} disabled={!symptomsDone || !conditionsDone}>Next →</PrimaryButton>}
                 >
+                  <div className="text-[14px] font-semibold text-ink">Do you experience any of the following symptoms?</div>
+                  {symptomOpts.map((o) => (
+                    <OptionCard
+                      key={o}
+                      label={o}
+                      selected={(answers.symptoms ?? []).includes(o)}
+                      onClick={() => toggleMulti("symptoms", o)}
+                      compact
+                    />
+                  ))}
+                  <div className="mt-4 text-[14px] font-semibold text-ink">Do you have any of these conditions?</div>
                   {options.map((o) => (
                     <OptionCard
                       key={o}
