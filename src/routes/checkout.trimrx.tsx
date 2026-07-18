@@ -261,7 +261,7 @@ function CheckoutPage() {
   const { tx, plan: planKey } = Route.useSearch();
   const navigate = useNavigate();
   const treatment = TREATMENTS[tx as keyof typeof TREATMENTS];
-  const plan = PLANS[tx][planKey];
+  const plan = PLANS[tx as "sema" | "tirz"][planKey as "monthly" | "three" | "six"];
   const time = useCountdown(9);
 
   const dueToday = plan.todayPrice ?? plan.perMo * plan.months;
