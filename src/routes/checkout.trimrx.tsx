@@ -946,7 +946,7 @@ function UpsellRow({
       className="flex cursor-pointer items-start gap-4 px-4 py-4 sm:gap-5"
       style={{ background: on ? "#FFF7F7" : "transparent" }}
     >
-      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[#F3F4F6] sm:h-16 sm:w-16">
+      <span className="grid h-14 w-14 shrink-0 place-items-center sm:h-16 sm:w-16">
         {icon}
       </span>
       <div className="min-w-0 flex-1 pt-0.5">
