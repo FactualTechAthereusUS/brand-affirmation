@@ -186,26 +186,28 @@ export function OptionCard({
       onClick={onClick}
       whileTap={{ scale: 0.985 }}
       transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      className={`group relative flex w-full items-center gap-4 rounded-2xl border bg-white px-5 text-left transition-all ${
+      className={`group relative flex w-full items-center gap-4 rounded-2xl border px-5 text-left transition-all ${
         compact ? "py-3.5" : "py-4 md:py-5"
       } ${
         selected
-          ? "border-ever/70 bg-ever/[0.04] shadow-[0_0_0_3px_rgba(238,114,115,0.12)]"
-          : "border-ink/10 hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+          ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
+          : "border-ink/10 bg-white hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
       }`}
     >
       <span
         className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all ${
-          selected ? "border-ever bg-ever text-white" : "border-ink/25 bg-white text-transparent"
+          selected ? "border-white bg-white text-ever" : "border-ink/25 bg-white text-transparent"
         }`}
         aria-hidden
       >
         <Check className="h-3.5 w-3.5" strokeWidth={3} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[15px] font-medium text-ink md:text-[16px]">{label}</span>
+        <span className={`block text-[15px] font-medium md:text-[16px] ${selected ? "text-white" : "text-ink"}`}>
+          {label}
+        </span>
         {sub && (
-          <span className="mt-0.5 block text-[13px] leading-[1.45] text-ink/55 md:text-[14px]">
+          <span className={`mt-0.5 block text-[13px] leading-[1.45] md:text-[14px] ${selected ? "text-white/80" : "text-ink/55"}`}>
             {sub}
           </span>
         )}
