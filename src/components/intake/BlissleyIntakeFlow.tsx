@@ -8,7 +8,6 @@ import {
   Flame,
   Meh,
   Smile,
-  CalendarDays,
   Scale as ScaleIcon,
   Zap,
   Heart,
@@ -18,9 +17,9 @@ import {
   Check,
   BedDouble,
   Moon,
-  Activity,
-  X as XIcon,
+  ArrowLeft,
 } from "lucide-react";
+
 import { PhoneField, StateSelect } from "./primitives";
 import {
   TrxButton as PrimaryButton,
