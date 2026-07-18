@@ -784,12 +784,31 @@ export function BlissleyIntakeFlow() {
                 "Severe depression",
                 "None of the above",
               ];
+              const symptomOpts = [
+                "Weight gain despite diet and exercise",
+                "Increased appetite or food cravings",
+                "Low energy or fatigue",
+                "None of the above",
+              ];
+              const symptomsDone = (answers.symptoms && answers.symptoms.length) > 0;
+              const conditionsDone = (answers.healthConditions && answers.healthConditions.length) > 0;
               return (
                 <ScreenShell
                   title="A few more {{health questions.}}"
                   sub="These conditions often make you a stronger candidate - GLP-1 directly improves them."
-                  footer={<PrimaryButton onClick={next} disabled={!(answers.healthConditions && answers.healthConditions.length)}>Next →</PrimaryButton>}
+                  footer={<PrimaryButton onClick={next} disabled={!symptomsDone || !conditionsDone}>Next →</PrimaryButton>}
                 >
+                  <div className="text-[14px] font-semibold text-ink">Do you experience any of the following symptoms?</div>
+                  {symptomOpts.map((o) => (
+                    <OptionCard
+                      key={o}
+                      label={o}
+                      selected={(answers.symptoms ?? []).includes(o)}
+                      onClick={() => toggleMulti("symptoms", o)}
+                      compact
+                    />
+                  ))}
+                  <div className="mt-4 text-[14px] font-semibold text-ink">Do you have any of these conditions?</div>
                   {options.map((o) => (
                     <OptionCard
                       key={o}
