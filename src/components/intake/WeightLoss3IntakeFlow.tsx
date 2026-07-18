@@ -811,7 +811,7 @@ export function WeightLoss3IntakeFlow() {
                 sub="Do any of these apply to you?"
                 footer={<PrimaryButton onClick={next} disabled={!(answers.moreConditions && answers.moreConditions.length)}>Next →</PrimaryButton>}
               >
-                {[
+                {([
                   "None of these",
                   "Active Gall Bladder Disease",
                   "Hypertension (high blood pressure)",
@@ -827,10 +827,10 @@ export function WeightLoss3IntakeFlow() {
                   "Severe Depression",
                   "Liver disease, including fatty liver",
                   "Congestive heart failure",
-                  "Urinary stress incontinence",
-                  "Polycystic ovarian syndrome (PCOS)",
-                  "Clinically proven low testosterone",
-                ].map((o) => (
+                  answers.sex !== "male" ? "Urinary stress incontinence" : null,
+                  answers.sex !== "male" ? "Polycystic ovarian syndrome (PCOS)" : null,
+                  answers.sex === "male" ? "Clinically proven low testosterone" : null,
+                ].filter(Boolean) as string[]).map((o) => (
                   <OptionCard
                     key={o}
                     label={o}
