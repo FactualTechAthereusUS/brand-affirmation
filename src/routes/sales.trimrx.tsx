@@ -356,8 +356,9 @@ const INCLUDES = [
 
 /* ─────────  Page  ───────── */
 function SalesTrimRxPage() {
-  const [treatment, setTreatment] = useState<"sema" | "tirz">("sema");
-  const [planKey, setPlanKey] = useState<string>("three");
+  const [treatment, setTreatment] = useState<"sema" | "tirz" | null>(null);
+  const [planKey, setPlanKey] = useState<string | null>(null);
+
   const time = useCountdown(9);
 
   const plans: Plan[] = [
