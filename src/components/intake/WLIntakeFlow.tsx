@@ -114,8 +114,8 @@ const BASE_SCREENS = [
   "glp1",              // 9
   "conditions",        // 10
   "weight_symptoms",   // NEW C
-  "bp",                // NEW — blood pressure
-  "hr",                // NEW — resting heart rate
+  "bp",                // NEW - blood pressure
+  "hr",                // NEW - resting heart rate
   "projection",        // calculator clone
   "contra",            // 11
   "bariatric",         // NEW D
@@ -210,7 +210,7 @@ export function WLIntakeFlow() {
         <AnimatePresence mode="wait">
           <div key={current} className="flex flex-col">
 
-            {/* 1 — Name + Email */}
+            {/* 1 - Name + Email */}
             {current === "name" && (
               <ScreenShell
                 title="Let's get started."
@@ -257,7 +257,7 @@ export function WLIntakeFlow() {
             )}
 
 
-            {/* 2 — Primary goal */}
+            {/* 2 - Primary goal */}
             {current === "goal" && (
               <ScreenShell
                 title={`${answers.firstName || "Hey"}, what's your main goal?`}
@@ -280,7 +280,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 3 — How long */}
+            {/* 3 - How long */}
             {current === "howlong" && (
               <ScreenShell title="How long have you been struggling with your weight?">
                 {[
@@ -300,7 +300,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 4 — Sex */}
+            {/* 4 - Sex */}
             {current === "sex" && (
               <ScreenShell
                 title="What was your sex assigned at birth?"
@@ -311,7 +311,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 4A — Pregnancy (female only) */}
+            {/* 4A - Pregnancy (female only) */}
             {current === "pregnancy" && (
               <ScreenShell
                 title="A quick safety check."
@@ -353,7 +353,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 5 — DOB */}
+            {/* 5 - DOB */}
             {current === "dob" && (
               <ScreenShell
                 title="What's your date of birth?"
@@ -398,7 +398,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 6 — Height + weight */}
+            {/* 6 - Height + weight */}
             {current === "hw" && (() => {
               const categories = [
                 { key: "under", label: "Underweight", range: "<18.5", max: 18.5, color: "#7aa5c4" },
@@ -496,7 +496,7 @@ export function WLIntakeFlow() {
               );
             })()}
 
-            {/* 7 — Weight goal */}
+            {/* 7 - Weight goal */}
             {current === "weight_goal" && (
               <ScreenShell title="How much would you like to lose?" sub="This helps us estimate your timeline.">
                 {[
@@ -517,7 +517,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 8 — Tried before */}
+            {/* 8 - Tried before */}
             {current === "tried" && (
               <ScreenShell
                 title="What have you tried before?"
@@ -545,7 +545,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* NEW A — Past surgeries */}
+            {/* NEW A - Past surgeries */}
             {current === "past_surgeries" && (
               <ScreenShell
                 title="Have you had any past surgeries?"
@@ -591,7 +591,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* NEW B — Current medical conditions */}
+            {/* NEW B - Current medical conditions */}
             {current === "current_conditions" && (
               <ScreenShell
                 title="Are you currently being treated for any medical conditions?"
@@ -637,7 +637,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* NEW C — Weight-related symptoms */}
+            {/* NEW C - Weight-related symptoms */}
             {current === "weight_symptoms" && (
               <ScreenShell
                 title="Which of these do you experience?"
@@ -666,7 +666,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* NEW D — Bariatric surgery */}
+            {/* NEW D - Bariatric surgery */}
             {current === "bariatric" && (
               <ScreenShell
                 title="Have you had bariatric or gastric bypass surgery?"
@@ -690,14 +690,14 @@ export function WLIntakeFlow() {
 
 
 
-            {/* 8.5 — Social proof */}
+            {/* 8.5 - Social proof */}
             {current === "social_proof" && (
               <SocialProofScreen sex={answers.sex} onNext={next} />
             )}
 
 
 
-            {/* 9 — GLP-1 history */}
+            {/* 9 - GLP-1 history */}
             {current === "glp1" && (
               <ScreenShell
                 title="Have you taken GLP-1 medication before?"
@@ -747,7 +747,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 10 — Qualifying conditions */}
+            {/* 10 - Qualifying conditions */}
             {current === "conditions" && (
               <ScreenShell
                 title="Do any of these apply to you?"
@@ -781,17 +781,17 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* NEW — Blood pressure */}
+            {/* NEW - Blood pressure */}
             {current === "bp" && (
               <ScreenShell
                 title="What is your blood pressure range?"
                 sub="A blood pressure reading looks like 120/80. If you're not sure, choose the closest option."
               >
                 {[
-                  "Less than 120/80 — Normal",
-                  "120–129 / below 80 — Slightly elevated",
-                  "130–139 / 80–89 — Stage 1 high blood pressure",
-                  "140/90 or higher — Stage 2 high blood pressure",
+                  "Less than 120/80 - Normal",
+                  "120–129 / below 80 - Slightly elevated",
+                  "130–139 / 80–89 - Stage 1 high blood pressure",
+                  "140/90 or higher - Stage 2 high blood pressure",
                   "I don't know",
                 ].map((o) => (
                   <OptionCard
@@ -804,7 +804,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* NEW — Resting heart rate */}
+            {/* NEW - Resting heart rate */}
             {current === "hr" && (
               <ScreenShell
                 title="What is your average resting heart rate?"
@@ -812,7 +812,7 @@ export function WLIntakeFlow() {
               >
                 {[
                   "Below 60 bpm",
-                  "60 to 100 bpm — Normal",
+                  "60 to 100 bpm - Normal",
                   "101 to 110 bpm",
                   "Above 110 bpm",
                   "I don't know",
@@ -839,7 +839,7 @@ export function WLIntakeFlow() {
               />
             )}
 
-            {/* 11 — Contraindications */}
+            {/* 11 - Contraindications */}
             {current === "contra" && (
               <ScreenShell
                 title="Last safety check."
@@ -892,7 +892,7 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
-            {/* 12 — Meds + state + phone */}
+            {/* 12 - Meds + state + phone */}
             {current === "meds" && (
               <ScreenShell
                 title={`Almost done, ${answers.firstName || "there"}.`}

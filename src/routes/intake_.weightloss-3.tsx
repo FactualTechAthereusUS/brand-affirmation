@@ -4,7 +4,7 @@ import { WeightLoss3IntakeFlow } from "@/components/intake/WeightLoss3IntakeFlow
 export const Route = createFileRoute("/intake_/weightloss-3")({
   head: () => ({
     meta: [
-      { title: "Weight loss assessment — Blissley" },
+      { title: "Weight loss assessment - Blissley" },
       {
         name: "description",
         content:
