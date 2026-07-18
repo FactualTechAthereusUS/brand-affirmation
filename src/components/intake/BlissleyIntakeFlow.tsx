@@ -605,7 +605,7 @@ export function BlissleyIntakeFlow() {
                 sub={`${fname ? `${fname}, e` : "E"}very approach you've tried attacked the behavior. None of them addressed what's actually causing it.`}
                 footer={<PrimaryButton onClick={next}>Continue →</PrimaryButton>}
               >
-                <MetabolicChart />
+                <MetabolicChart start={parseFloat(answers.weightLbs || "")} goal={parseFloat(answers.goalWeight || "")} firstName={fname} />
                 <div className="mt-4 space-y-4 text-[15px] leading-[1.6] text-ink/80">
                   <p>Your metabolism has a hunger regulation system. When it's dysregulated, no amount of willpower can override it consistently.</p>
                   <p>GLP-1 medications are the first treatment that works at the source - regulating hunger signals in your brain directly. On average, patients lose over 20% of body weight, and keep it off.</p>
@@ -1079,45 +1079,95 @@ function StoryScreen({
 }
 
 /* ═════════════ Metabolic uptrend curve (belief slide) ═════════════ */
-function MetabolicChart() {
-  const months = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan"];
-  const startVal = 30;
-  const endVal = 92;
-  // Higher-highs / higher-lows wavy uptrend (values 0-100, 0 = bottom)
-  const wave = [30, 38, 46, 55, 68, 82, 92];
-  const W = 720, H = 300, padL = 64, padR = 40, padT = 40, padB = 52;
-  const xAt = (i: number) => padL + (i / (wave.length - 1)) * (W - padL - padR);
+function MetabolicChart({
+  start,
+  goal,
+  firstName,
+}: {
+  start?: number;
+  goal?: number;
+  firstName?: string;
+}) {
+  // Derive a personalized "metabolic reset" curve from the user's answers.
+  // Bigger deficit → steeper climb; small deficit → gentle rise.
+  const s = Number.isFinite(start) && (start as number) > 0 ? (start as number) : 210;
+  const g = Number.isFinite(goal) && (goal as number) > 0 && (goal as number) < s ? (goal as number) : Math.max(120, s - 25);
+  const loss = Math.max(5, s - g);
+  // Peak of curve scales 55 → 96 as loss goes 5 → 80 lbs
+  const peak = Math.round(55 + Math.min(41, (loss / 80) * 41));
+  const baseline = 22;
+
+  // Month labels — start from current month, 7 points
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const now = new Date();
+  const months = Array.from({ length: 7 }, (_, i) => monthNames[(now.getMonth() + i) % 12]);
+
+  // Higher-highs / higher-lows: base easing + wobble
+  const N = months.length;
+  const wave = Array.from({ length: N }, (_, i) => {
+    const t = i / (N - 1);
+    const eased = Math.pow(t, 0.85); // gently accelerating up
+    const wobble = Math.sin(t * Math.PI * 2.4) * 3.2 * (1 - t * 0.5);
+    return Math.max(baseline, Math.min(100, baseline + (peak - baseline) * eased + wobble));
+  });
+
+  const W = 720, H = 300, padL = 72, padR = 44, padT = 44, padB = 54;
+  const xAt = (i: number) => padL + (i / (N - 1)) * (W - padL - padR);
   const yAt = (v: number) => padT + (1 - v / 100) * (H - padT - padB);
 
-  // Smooth Catmull-Rom -> cubic Bezier
+  // Smooth Catmull-Rom → cubic Bezier
   let path = `M ${xAt(0)} ${yAt(wave[0])}`;
-  for (let i = 0; i < wave.length - 1; i++) {
+  for (let i = 0; i < N - 1; i++) {
     const p0 = wave[i - 1] ?? wave[i];
     const p1 = wave[i];
     const p2 = wave[i + 1];
     const p3 = wave[i + 2] ?? p2;
-    const x1 = xAt(i) + (xAt(i + 1) - xAt(i - 1 < 0 ? 0 : i - 1)) / 6;
+    const x1 = xAt(i) + (xAt(i + 1) - xAt(Math.max(0, i - 1))) / 6;
     const y1 = yAt(p1) + (yAt(p2) - yAt(p0)) / 6;
-    const x2 = xAt(i + 1) - (xAt(i + 2 > wave.length - 1 ? wave.length - 1 : i + 2) - xAt(i)) / 6;
+    const x2 = xAt(i + 1) - (xAt(Math.min(N - 1, i + 2)) - xAt(i)) / 6;
     const y2 = yAt(p2) - (yAt(p3) - yAt(p1)) / 6;
     path += ` C ${x1} ${y1}, ${x2} ${y2}, ${xAt(i + 1)} ${yAt(p2)}`;
   }
 
+  const areaPath = `${path} L ${xAt(N - 1)} ${H - padB} L ${xAt(0)} ${H - padB} Z`;
+  const chartKey = `${s}-${g}`; // re-run animations when inputs change
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: -14, filter: "blur(8px)" }}
+      key={chartKey}
+      initial={{ opacity: 0, y: -12, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="w-full"
     >
+      {/* Personalized caption */}
+      <div className="mb-3 flex items-baseline justify-between px-1">
+        <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink/60">
+          {firstName ? `${firstName}'s` : "Your"} metabolic reset
+        </div>
+        <div className="text-[13px] font-semibold text-[#ee7273]">
+          -{loss} lbs projected
+        </div>
+      </div>
+
       <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
-        {/* dashed baselines at start (bottom) and end (top) */}
-        <line x1={padL} x2={W - padR} y1={yAt(startVal)} y2={yAt(startVal)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="6 8" />
-        <line x1={padL} x2={W - padR} y1={yAt(endVal)} y2={yAt(endVal)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="6 8" />
+        <defs>
+          <linearGradient id="mReset" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* dashed baselines */}
+        <line x1={padL} x2={W - padR} y1={yAt(baseline)} y2={yAt(baseline)} stroke="#171717" strokeOpacity="0.16" strokeDasharray="6 8" />
+        <line x1={padL} x2={W - padR} y1={yAt(peak)} y2={yAt(peak)} stroke="#171717" strokeOpacity="0.16" strokeDasharray="6 8" />
 
         {/* y-axis labels */}
-        <text x={padL - 12} y={yAt(startVal) + 5} textAnchor="end" style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>Low</text>
-        <text x={padL - 12} y={yAt(endVal) + 5} textAnchor="end" style={{ fontSize: 15, fontWeight: 600, fill: "#171717" }}>Peak</text>
+        <text x={padL - 14} y={yAt(baseline) + 5} textAnchor="end" style={{ fontSize: 14, fontWeight: 600, fill: "#171717" }}>Today</text>
+        <text x={padL - 14} y={yAt(peak) + 5} textAnchor="end" style={{ fontSize: 14, fontWeight: 600, fill: "#171717" }}>Reset</text>
+
+        {/* filled area under curve */}
+        <motion.path d={areaPath} fill="url(#mReset)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.9 }} />
 
         {/* smooth wavy curve */}
         <motion.path
@@ -1132,18 +1182,46 @@ function MetabolicChart() {
           transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         />
 
-        {/* endpoint dots */}
-        <motion.circle cx={xAt(0)} cy={yAt(wave[0])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.25, type: "spring", stiffness: 260, damping: 18 }} />
-        <motion.circle cx={xAt(wave.length - 1)} cy={yAt(wave[wave.length - 1])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7, type: "spring", stiffness: 260, damping: 18 }} />
+        {/* endpoint dots + halo on the goal */}
+        <motion.circle cx={xAt(0)} cy={yAt(wave[0])} r={8} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.25, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(N - 1)} cy={yAt(wave[N - 1])} r={14} fill="#ee7273" fillOpacity={0.18} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }} />
+        <motion.circle cx={xAt(N - 1)} cy={yAt(wave[N - 1])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7, type: "spring", stiffness: 260, damping: 18 }} />
+
+        {/* goal weight callout above end dot */}
+        <motion.text
+          x={xAt(N - 1)}
+          y={yAt(wave[N - 1]) - 22}
+          textAnchor="end"
+          initial={{ opacity: 0, y: yAt(wave[N - 1]) - 12 }}
+          animate={{ opacity: 1, y: yAt(wave[N - 1]) - 22 }}
+          transition={{ delay: 1.85, duration: 0.5 }}
+          style={{ fontSize: 15, fontWeight: 700, fill: "#171717" }}
+        >
+          {g} lbs
+        </motion.text>
+
+        {/* start weight callout above start dot */}
+        <motion.text
+          x={xAt(0)}
+          y={yAt(wave[0]) - 18}
+          textAnchor="start"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          style={{ fontSize: 13, fontWeight: 600, fill: "#171717", opacity: 0.7 }}
+        >
+          {s} lbs
+        </motion.text>
 
         {/* month labels */}
         {months.map((m, i) => (
-          <text key={m} x={xAt(i)} y={H - 14} textAnchor="middle" style={{ fontSize: 14, fontWeight: 500, fill: "#171717", opacity: 0.7 }}>{m}</text>
+          <text key={`${m}-${i}`} x={xAt(i)} y={H - 14} textAnchor="middle" style={{ fontSize: 13, fontWeight: 500, fill: "#171717", opacity: 0.65 }}>{m}</text>
         ))}
       </svg>
     </motion.div>
   );
 }
+
 
 
 /* ═════════════ Weight-loss projection ═════════════ */
