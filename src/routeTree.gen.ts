@@ -26,6 +26,7 @@ import { Route as IntakeWeightLossTrimrx2RouteImport } from './routes/intake_.we
 import { Route as IntakeWeightLossTrimrxRouteImport } from './routes/intake_.weight-loss-trimrx'
 import { Route as IntakeWeightLossRouteImport } from './routes/intake_.weight-loss'
 import { Route as IntakeNewWeightlossOursRouteImport } from './routes/intake_.new-weightloss-ours'
+import { Route as CheckoutTrimrxRouteImport } from './routes/checkout.trimrx'
 
 const TestStateRoute = TestStateRouteImport.update({
   id: '/test-state',
@@ -112,6 +113,11 @@ const IntakeNewWeightlossOursRoute = IntakeNewWeightlossOursRouteImport.update({
   path: '/intake/new-weightloss-ours',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutTrimrxRoute = CheckoutTrimrxRouteImport.update({
+  id: '/checkout/trimrx',
+  path: '/checkout/trimrx',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/checkout/trimrx': typeof CheckoutTrimrxRoute
   '/intake/new-weightloss-ours': typeof IntakeNewWeightlossOursRoute
   '/intake/weight-loss': typeof IntakeWeightLossRoute
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/checkout/trimrx': typeof CheckoutTrimrxRoute
   '/intake/new-weightloss-ours': typeof IntakeNewWeightlossOursRoute
   '/intake/weight-loss': typeof IntakeWeightLossRoute
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/checkout/trimrx': typeof CheckoutTrimrxRoute
   '/intake_/new-weightloss-ours': typeof IntakeNewWeightlossOursRoute
   '/intake_/weight-loss': typeof IntakeWeightLossRoute
   '/intake_/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/checkout/trimrx'
     | '/intake/new-weightloss-ours'
     | '/intake/weight-loss'
     | '/intake/weight-loss-trimrx'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/checkout/trimrx'
     | '/intake/new-weightloss-ours'
     | '/intake/weight-loss'
     | '/intake/weight-loss-trimrx'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/checkout/trimrx'
     | '/intake_/new-weightloss-ours'
     | '/intake_/weight-loss'
     | '/intake_/weight-loss-trimrx'
@@ -241,6 +253,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
+  CheckoutTrimrxRoute: typeof CheckoutTrimrxRoute
   IntakeNewWeightlossOursRoute: typeof IntakeNewWeightlossOursRoute
   IntakeWeightLossRoute: typeof IntakeWeightLossRoute
   IntakeWeightLossTrimrxRoute: typeof IntakeWeightLossTrimrxRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IntakeNewWeightlossOursRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/trimrx': {
+      id: '/checkout/trimrx'
+      path: '/checkout/trimrx'
+      fullPath: '/checkout/trimrx'
+      preLoaderRoute: typeof CheckoutTrimrxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -385,6 +405,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
+  CheckoutTrimrxRoute: CheckoutTrimrxRoute,
   IntakeNewWeightlossOursRoute: IntakeNewWeightlossOursRoute,
   IntakeWeightLossRoute: IntakeWeightLossRoute,
   IntakeWeightLossTrimrxRoute: IntakeWeightLossTrimrxRoute,

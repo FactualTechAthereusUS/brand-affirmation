@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Check, ShieldCheck, PartyPopper } from "lucide-react";
@@ -223,10 +223,12 @@ function PlanCard({
   plan,
   selected,
   onSelect,
+  onCheckout,
 }: {
   plan: Plan;
   selected: boolean;
   onSelect: () => void;
+  onCheckout: () => void;
 }) {
   const isBest = plan.badge?.kind === "best";
   const isPopular = plan.badge?.kind === "popular";
@@ -318,7 +320,10 @@ function PlanCard({
 
         <button
           type="button"
-          onClick={onSelect}
+          onClick={() => {
+            onSelect();
+            onCheckout();
+          }}
           className="mt-3 flex w-full flex-col items-center justify-center rounded-xl px-4 py-3.5 text-[15px] font-semibold transition-all"
           style={{
             background: "#CFE0CC",
@@ -362,6 +367,7 @@ const INCLUDES = [
 
 /* ─────────  Page  ───────── */
 function SalesTrimRxPage() {
+  const navigate = useNavigate();
   const [treatment, setTreatment] = useState<"sema" | "tirz" | null>(null);
   const [planKey, setPlanKey] = useState<string | null>(null);
   const [semaPatients, setSemaPatients] = useState(12886);
@@ -573,6 +579,12 @@ function SalesTrimRxPage() {
                     plan={p}
                     selected={planKey === p.key}
                     onSelect={() => setPlanKey(p.key)}
+                    onCheckout={() =>
+                      navigate({
+                        to: "/checkout/trimrx",
+                        search: { tx: treatment ?? "sema", plan: p.key },
+                      })
+                    }
                   />
                 </motion.div>
               ))}

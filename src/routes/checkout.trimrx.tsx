@@ -1,0 +1,864 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "motion/react";
+import {
+  ArrowLeft,
+  Check,
+  Lock,
+  ShieldCheck,
+  Tag,
+  Truck,
+  CreditCard,
+} from "lucide-react";
+import { z } from "zod";
+
+import { TrxHeader } from "@/components/intake/TrxUI";
+import { PayIcons } from "@/components/PayIcons";
+import vialSema from "@/assets/vial-semaglutide.png.asset.json";
+import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
+import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
+import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
+import payKlarna from "@/assets/pay-klarna.png.asset.json";
+import payAffirm from "@/assets/pay-affirm.png.asset.json";
+
+/* ── Brand tokens ── */
+const NAVY = "#1D437B";
+const NAVY_SOFT = "#6B94C7";
+const PINK = "#ee7273";
+const GREEN = "#16A34A";
+const GREEN_TINT = "#EAFBEF";
+const BLUE_TINT = "#E7EEFB";
+
+const searchSchema = z.object({
+  tx: z.enum(["sema", "tirz"]).default("sema"),
+  plan: z.enum(["monthly", "three", "six", "twelve"]).default("monthly"),
+});
+
+export const Route = createFileRoute("/checkout/trimrx")({
+  component: CheckoutPage,
+  validateSearch: (s) => searchSchema.parse(s),
+  head: () => ({
+    meta: [
+      { title: "Checkout — Blissley" },
+      {
+        name: "description",
+        content:
+          "Complete your Blissley order. Secure 256-bit SSL checkout. $0 charged until your prescription is approved.",
+      },
+      { name: "robots", content: "noindex,nofollow" },
+    ],
+  }),
+});
+
+/* ── Plan catalog ── */
+type PlanDef = {
+  key: "monthly" | "three" | "six" | "twelve";
+  title: string;
+  supply: string;
+  months: number;
+  perMo: number;
+  originalPerMo: number;
+  todayPrice?: number;
+  savings: number;
+  badge?: { label: string; kind: "popular" | "best" };
+};
+
+const PLANS: Record<PlanDef["key"], PlanDef> = {
+  monthly: {
+    key: "monthly",
+    title: "Monthly Plan",
+    supply: "4 Week Supply",
+    months: 1,
+    perMo: 179,
+    originalPerMo: 299,
+    todayPrice: 179,
+    savings: 120,
+  },
+  three: {
+    key: "three",
+    title: "3-Month Plan",
+    supply: "12 Week Supply",
+    months: 3,
+    perMo: 209,
+    originalPerMo: 299,
+    savings: 149,
+    badge: { label: "Most Popular", kind: "popular" },
+  },
+  six: {
+    key: "six",
+    title: "6-Month Plan",
+    supply: "24 Week Supply",
+    months: 6,
+    perMo: 191,
+    originalPerMo: 299,
+    savings: 526,
+  },
+  twelve: {
+    key: "twelve",
+    title: "12-Month Plan",
+    supply: "48 Week Supply",
+    months: 12,
+    perMo: 174,
+    originalPerMo: 299,
+    savings: 1370,
+    badge: { label: "Best Deal", kind: "best" },
+  },
+};
+
+const TREATMENTS = {
+  sema: {
+    name: "Semaglutide",
+    subtitle: "GLP-1 Injections",
+    vial: vialSema.url,
+    vialBg: "#E4F1E6",
+  },
+  tirz: {
+    name: "Tirzepatide",
+    subtitle: "Dual-action GLP-1/GIP",
+    vial: vialTirz.url,
+    vialBg: "#BFDDEE",
+  },
+} as const;
+
+/* ── Countdown ── */
+function useCountdown(minutes: number) {
+  const [ms, setMs] = useState(minutes * 60 * 1000);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setMs((v) => (v <= 1000 ? 0 : v - 1000));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  const m = Math.floor(ms / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+/* ── Field primitives ── */
+function Field({
+  label,
+  children,
+  className = "",
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <label className={`block ${className}`}>
+      <span className="mb-1.5 block text-[13px] font-semibold text-ink/80">
+        {label}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+const inputCls =
+  "block w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-ink placeholder:text-ink/35 outline-none transition-all focus:border-[color:var(--navy)] focus:ring-4";
+
+function TextInput(
+  props: React.InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean },
+) {
+  const { className = "", invalid, style, ...rest } = props;
+  return (
+    <input
+      {...rest}
+      className={`${inputCls} ${className}`}
+      style={{
+        borderColor: invalid ? PINK : "rgba(29,67,123,0.18)",
+        // @ts-expect-error CSS var
+        "--navy": NAVY,
+        boxShadow: "none",
+        ...(style || {}),
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = NAVY;
+        e.currentTarget.style.boxShadow = `0 0 0 4px ${NAVY}18`;
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = invalid
+          ? PINK
+          : "rgba(29,67,123,0.18)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    />
+  );
+}
+
+function SelectInput(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  const { className = "", style, ...rest } = props;
+  return (
+    <select
+      {...rest}
+      className={`${inputCls} appearance-none pr-10 ${className}`}
+      style={{
+        borderColor: "rgba(29,67,123,0.18)",
+        backgroundImage:
+          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231D437B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>\")",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right 14px center",
+        ...(style || {}),
+      }}
+    />
+  );
+}
+
+/* ── Section header ── */
+function StepBadge({ n, label }: { n: number; label: string }) {
+  return (
+    <div className="mb-4 flex items-center gap-3">
+      <span
+        className="grid h-7 w-7 place-items-center rounded-full text-[13px] font-bold text-white"
+        style={{ background: "#0E1B2E" }}
+      >
+        {n}
+      </span>
+      <h2 className="text-[17px] font-semibold text-ink sm:text-[18px]">
+        {label}
+      </h2>
+    </div>
+  );
+}
+
+/* ── States list ── */
+const US_STATES = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA",
+  "KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+  "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT",
+  "VA","WA","WV","WI","WY",
+];
+
+/* ── Page ── */
+function CheckoutPage() {
+  const { tx, plan: planKey } = Route.useSearch();
+  const navigate = useNavigate();
+  const treatment = TREATMENTS[tx as keyof typeof TREATMENTS];
+  const plan = PLANS[planKey as keyof typeof PLANS];
+  const time = useCountdown(9);
+
+  const dueToday = plan.todayPrice ?? plan.perMo * plan.months;
+  const originalTotal = plan.originalPerMo * plan.months;
+  const totalSavings = plan.savings;
+  const hasInstallments = plan.months >= 3;
+
+  // Form state
+  const [form, setForm] = useState({
+    fullName: "",
+    phone: "",
+    address: "",
+    apt: "",
+    city: "",
+    state: "",
+    zip: "",
+    cardNumber: "",
+    exp: "",
+    cvc: "",
+    country: "United States",
+    billingSame: true,
+    priority: false,
+  });
+  const [payMethod, setPayMethod] = useState<"card" | "afterpay" | "klarna" | "affirm">(
+    "card",
+  );
+  const [submitting, setSubmitting] = useState(false);
+
+  const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
+    setForm((f) => ({ ...f, [k]: v }));
+
+  const canSubmit = useMemo(() => {
+    return (
+      form.fullName.trim().length > 2 &&
+      form.phone.replace(/\D/g, "").length >= 10 &&
+      form.address.trim().length > 3 &&
+      form.city.trim().length > 1 &&
+      form.state.length === 2 &&
+      /^\d{5}$/.test(form.zip) &&
+      (payMethod !== "card" ||
+        (form.cardNumber.replace(/\s/g, "").length >= 13 &&
+          /^\d{2}\s*\/\s*\d{2}$/.test(form.exp) &&
+          form.cvc.length >= 3))
+    );
+  }, [form, payMethod]);
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canSubmit) return;
+    setSubmitting(true);
+    window.setTimeout(() => setSubmitting(false), 1500);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F8FAFC]">
+      {/* Top discount strip */}
+      <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
+        <div
+          className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-2.5 text-center text-[12.5px] font-semibold sm:text-[13.5px]"
+          style={{ background: "#FEF7DA", borderColor: "#E7B94A", color: "#171717" }}
+        >
+          <Tag className="h-4 w-4" />
+          Code <span className="mx-1 font-black">JOIN120</span> applied — $120 off
+          your first shipment
+        </div>
+      </div>
+
+      <TrxHeader onBack={() => navigate({ to: "/sales/trimrx" })} showBack />
+
+      {/* MAIN GRID */}
+      <div className="mx-auto grid w-full max-w-[1080px] gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
+        {/* ── LEFT: Order summary ── */}
+        <div className="order-1 lg:order-2">
+          <motion.aside
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:sticky lg:top-6"
+          >
+            <div
+              className="overflow-hidden rounded-3xl border bg-white"
+              style={{
+                borderColor: "rgba(29,67,123,0.10)",
+                boxShadow: "0 30px 80px -40px rgba(29,67,123,0.25)",
+              }}
+            >
+              {/* Header band */}
+              <div
+                className="flex items-center justify-between gap-4 px-5 py-4 sm:px-6"
+                style={{ background: BLUE_TINT }}
+              >
+                <div>
+                  <div
+                    className="text-[11px] font-bold uppercase tracking-[0.14em]"
+                    style={{ color: NAVY }}
+                  >
+                    Your Treatment
+                  </div>
+                  <div className="mt-0.5 text-[17px] font-bold text-ink sm:text-[18px]">
+                    {treatment.name}
+                  </div>
+                  <div className="text-[13px] text-ink/60">
+                    {treatment.subtitle}
+                  </div>
+                </div>
+                <div
+                  className="grid h-[84px] w-[84px] shrink-0 place-items-center overflow-hidden rounded-2xl"
+                  style={{ background: treatment.vialBg }}
+                >
+                  <img
+                    src={treatment.vial}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Lines */}
+              <div className="divide-y divide-ink/8 px-5 py-2 sm:px-6">
+                <Row label="Plan" value={<b>{plan.title}</b>} />
+                <Row label="Supply" value={plan.supply} />
+                <Row
+                  label="Total Savings"
+                  value={
+                    <span className="font-bold" style={{ color: GREEN }}>
+                      ${totalSavings.toLocaleString()}
+                    </span>
+                  }
+                />
+                <Row
+                  label="Shipping"
+                  value={
+                    <span className="font-bold" style={{ color: GREEN }}>
+                      FREE
+                    </span>
+                  }
+                />
+                <Row
+                  label="Monthly Price"
+                  value={
+                    <span className="font-bold text-ink">
+                      <span className="mr-1 text-ink/40 line-through">
+                        ${plan.originalPerMo}
+                      </span>
+                      <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
+                    </span>
+                  }
+                />
+              </div>
+
+              {/* Total */}
+              <div
+                className="flex items-center justify-between px-5 py-4 sm:px-6"
+                style={{ background: "#F6F9FE" }}
+              >
+                <div className="text-[15px] font-bold text-ink">
+                  Total if prescribed
+                </div>
+                <div className="text-right">
+                  <span className="mr-2 text-[14px] text-ink/40 line-through">
+                    ${originalTotal.toLocaleString()}
+                  </span>
+                  <span className="text-[20px] font-black" style={{ color: NAVY }}>
+                    ${(plan.perMo * plan.months).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Code applied pill */}
+              <div className="px-5 pt-4 sm:px-6">
+                <div
+                  className="flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13.5px] font-bold text-white"
+                  style={{ background: NAVY }}
+                >
+                  <Tag className="h-4 w-4" />
+                  CODE APPLIED: <span className="ml-1">JOIN120</span>
+                </div>
+                <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
+                  Only <span className="text-ink">23 discounts left</span>. Yours
+                  is reserved for{" "}
+                  <span style={{ color: PINK }} className="font-bold">
+                    {time}
+                  </span>
+                </div>
+              </div>
+
+              {/* Feature checklist */}
+              <ul className="mx-5 my-4 space-y-2 rounded-xl bg-[#F6F9FE] p-4 text-[13.5px] sm:mx-6">
+                {[
+                  "Same Price. All Dosage Levels.",
+                  "Prescribed & shipped within 48 hours",
+                  "UNLIMITED doctor calls 7 days a week",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2 text-ink/80">
+                    <Check
+                      className="mt-0.5 h-4 w-4 shrink-0"
+                      style={{ color: GREEN }}
+                      strokeWidth={3}
+                    />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+
+              {/* $0 Due today */}
+              <div className="px-5 pb-5 sm:px-6">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.15 }}
+                  className="rounded-2xl px-4 py-4 text-center"
+                  style={{
+                    background: GREEN_TINT,
+                    border: `1px solid ${GREEN}33`,
+                  }}
+                >
+                  <div
+                    className="text-[18px] font-black"
+                    style={{ color: GREEN }}
+                  >
+                    $0 Due Today!
+                  </div>
+                  <div className="mt-0.5 text-[12.5px] text-ink/70">
+                    Only charged if your prescription is approved.
+                  </div>
+                </motion.div>
+
+                <div className="mt-3 flex items-center justify-center">
+                  <img
+                    src={hsaFsa.url}
+                    alt="HSA/FSA Eligible"
+                    className="h-8 w-auto"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.aside>
+        </div>
+
+        {/* ── RIGHT: Forms ── */}
+        <form onSubmit={onSubmit} className="order-2 lg:order-1">
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.06 } },
+            }}
+            className="flex flex-col gap-6"
+          >
+            {/* Shipping */}
+            <FormCard>
+              <StepBadge n={1} label="Shipping Address" />
+
+              <div className="mb-3 flex items-center gap-2 text-[12.5px] text-ink/60">
+                <ShieldCheck className="h-4 w-4" style={{ color: GREEN }} />
+                Your privacy guaranteed
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Full Name" className="sm:col-span-2">
+                  <TextInput
+                    autoComplete="name"
+                    placeholder="Jane Smith"
+                    value={form.fullName}
+                    onChange={(e) => set("fullName", e.target.value)}
+                  />
+                </Field>
+                <Field label="Phone" className="sm:col-span-2">
+                  <TextInput
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="(555) 123-4567"
+                    value={form.phone}
+                    onChange={(e) => set("phone", e.target.value)}
+                  />
+                </Field>
+                <Field label="Street Address" className="sm:col-span-2">
+                  <TextInput
+                    autoComplete="address-line1"
+                    placeholder="123 Main St"
+                    value={form.address}
+                    onChange={(e) => set("address", e.target.value)}
+                  />
+                </Field>
+                <Field
+                  label="Apt / Suite (optional)"
+                  className="sm:col-span-2"
+                >
+                  <TextInput
+                    autoComplete="address-line2"
+                    placeholder="Apt 4B"
+                    value={form.apt}
+                    onChange={(e) => set("apt", e.target.value)}
+                  />
+                </Field>
+                <Field label="City">
+                  <TextInput
+                    autoComplete="address-level2"
+                    placeholder="New York"
+                    value={form.city}
+                    onChange={(e) => set("city", e.target.value)}
+                  />
+                </Field>
+                <Field label="State">
+                  <SelectInput
+                    value={form.state}
+                    onChange={(e) => set("state", e.target.value)}
+                  >
+                    <option value="">Select</option>
+                    {US_STATES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </SelectInput>
+                </Field>
+                <Field label="ZIP Code" className="sm:col-span-2">
+                  <TextInput
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    placeholder="10001"
+                    maxLength={5}
+                    value={form.zip}
+                    onChange={(e) =>
+                      set("zip", e.target.value.replace(/\D/g, ""))
+                    }
+                  />
+                </Field>
+              </div>
+            </FormCard>
+
+            {/* Payment */}
+            <FormCard>
+              <StepBadge n={2} label="Payment" />
+
+              {/* Method tabs */}
+              <div
+                className="mb-5 grid gap-2 rounded-2xl p-1"
+                style={{
+                  background: "#EEF3FA",
+                  gridTemplateColumns: hasInstallments ? "1fr 1fr 1fr 1fr" : "1fr",
+                }}
+              >
+                <MethodTab
+                  active={payMethod === "card"}
+                  onClick={() => setPayMethod("card")}
+                  icon={<CreditCard className="h-4 w-4" />}
+                  label="Card"
+                />
+                {hasInstallments && (
+                  <>
+                    <MethodTab
+                      active={payMethod === "afterpay"}
+                      onClick={() => setPayMethod("afterpay")}
+                      img={payAfterpay.url}
+                    />
+                    <MethodTab
+                      active={payMethod === "klarna"}
+                      onClick={() => setPayMethod("klarna")}
+                      img={payKlarna.url}
+                    />
+                    <MethodTab
+                      active={payMethod === "affirm"}
+                      onClick={() => setPayMethod("affirm")}
+                      img={payAffirm.url}
+                    />
+                  </>
+                )}
+              </div>
+
+              {payMethod === "card" ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
+                  <Field label="Card Number" className="sm:col-span-6">
+                    <div className="relative">
+                      <TextInput
+                        inputMode="numeric"
+                        autoComplete="cc-number"
+                        placeholder="1234 1234 1234 1234"
+                        value={form.cardNumber}
+                        onChange={(e) =>
+                          set(
+                            "cardNumber",
+                            e.target.value
+                              .replace(/\D/g, "")
+                              .slice(0, 19)
+                              .replace(/(\d{4})(?=\d)/g, "$1 "),
+                          )
+                        }
+                        className="pr-24"
+                      />
+                      <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                        <PayIcons />
+                      </div>
+                    </div>
+                  </Field>
+                  <Field label="Expiration (MM/YY)" className="sm:col-span-3">
+                    <TextInput
+                      inputMode="numeric"
+                      autoComplete="cc-exp"
+                      placeholder="MM / YY"
+                      value={form.exp}
+                      onChange={(e) => {
+                        const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                        set(
+                          "exp",
+                          v.length > 2 ? `${v.slice(0, 2)} / ${v.slice(2)}` : v,
+                        );
+                      }}
+                    />
+                  </Field>
+                  <Field label="Security Code" className="sm:col-span-3">
+                    <TextInput
+                      inputMode="numeric"
+                      autoComplete="cc-csc"
+                      placeholder="CVC"
+                      maxLength={4}
+                      value={form.cvc}
+                      onChange={(e) =>
+                        set("cvc", e.target.value.replace(/\D/g, ""))
+                      }
+                    />
+                  </Field>
+                  <Field label="Country" className="sm:col-span-6">
+                    <SelectInput
+                      value={form.country}
+                      onChange={(e) => set("country", e.target.value)}
+                    >
+                      <option>United States</option>
+                      <option>Canada</option>
+                    </SelectInput>
+                  </Field>
+                </div>
+              ) : (
+                <div
+                  className="rounded-2xl border border-dashed p-5 text-[13.5px] text-ink/70"
+                  style={{ borderColor: "rgba(29,67,123,0.25)" }}
+                >
+                  You'll be redirected to complete your{" "}
+                  <b className="capitalize">{payMethod}</b> checkout after
+                  confirming your order — split into 4 interest-free payments.
+                </div>
+              )}
+
+              {/* Billing same */}
+              <label className="mt-4 flex cursor-pointer items-center gap-3 text-[13.5px] text-ink/80">
+                <CheckBox
+                  on={form.billingSame}
+                  onToggle={() => set("billingSame", !form.billingSame)}
+                />
+                Billing address same as shipping
+              </label>
+
+              {/* Priority upsell */}
+              <label
+                className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition-all"
+                style={{
+                  borderColor: form.priority ? PINK : "rgba(29,67,123,0.15)",
+                  background: form.priority ? "#fff1f1" : "#FFFFFF",
+                }}
+              >
+                <CheckBox
+                  on={form.priority}
+                  onToggle={() => set("priority", !form.priority)}
+                  color={PINK}
+                />
+                <div>
+                  <div className="text-[14.5px] font-bold text-ink">
+                    Yes, put my order at the front of the line!
+                  </div>
+                  <div className="mt-1 text-[13px] leading-snug text-ink/65">
+                    Doctors typically review within 6–24 hours.{" "}
+                    <b>Skip the wait for only $49.95</b> and get an instant
+                    telehealth review right now.
+                  </div>
+                </div>
+              </label>
+            </FormCard>
+
+            {/* Continue */}
+            <motion.button
+              type="submit"
+              disabled={!canSubmit || submitting}
+              whileTap={{ scale: 0.99 }}
+              className="w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60"
+              style={{
+                background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)`,
+                boxShadow: `0 18px 40px -12px ${NAVY}66`,
+              }}
+            >
+              {submitting
+                ? "Processing…"
+                : `Continue — $0 charged today`}
+            </motion.button>
+
+            {/* Trust footer */}
+            <div className="flex flex-col items-center gap-2 text-center">
+              <div className="flex items-center gap-2 text-[12.5px] font-semibold text-ink/70">
+                <Lock className="h-3.5 w-3.5" style={{ color: GREEN }} />
+                256-bit SSL encryption · PCI DSS compliant
+              </div>
+              <div className="flex items-center gap-2 text-[12px] text-ink/55">
+                <Truck className="h-3.5 w-3.5" />
+                Discreet, temperature-controlled shipping
+              </div>
+              <PayIcons className="mt-1 justify-center" />
+            </div>
+
+            <p className="text-center text-[11.5px] leading-relaxed text-ink/50">
+              By continuing, I confirm I have read and agree to Blissley's
+              Telehealth, Privacy, Shipping, and Terms & Conditions; consent to
+              the collection, use, and disclosure of my PHI; and authorize
+              healthcare services via telehealth. I authorize Blissley to enroll
+              me in an auto-renewing subscription and charge my saved payment
+              method at the specified intervals until I cancel. Cancellation
+              only stops future charges; refunds are governed by the Refund
+              Policy.
+            </p>
+          </motion.div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+/* ── Small sub-components ── */
+function Row({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between py-2.5 text-[14px]">
+      <span className="text-ink/60">{label}</span>
+      <span>{value}</span>
+    </div>
+  );
+}
+
+function FormCard({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
+        show: { opacity: 1, y: 0, filter: "blur(0px)" },
+      }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-3xl border bg-white p-5 sm:p-6"
+      style={{
+        borderColor: "rgba(29,67,123,0.10)",
+        boxShadow: "0 20px 60px -30px rgba(29,67,123,0.18)",
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function MethodTab({
+  active,
+  onClick,
+  icon,
+  label,
+  img,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon?: React.ReactNode;
+  label?: string;
+  img?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="grid h-10 place-items-center rounded-xl text-[12.5px] font-semibold transition-all"
+      style={{
+        background: active ? "#FFFFFF" : "transparent",
+        color: NAVY,
+        boxShadow: active ? "0 6px 18px rgba(29,67,123,0.14)" : "none",
+      }}
+    >
+      {img ? (
+        <img src={img} alt="" className="h-4 w-auto" />
+      ) : (
+        <span className="flex items-center gap-1.5">
+          {icon}
+          {label}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function CheckBox({
+  on,
+  onToggle,
+  color = NAVY,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  color?: string;
+}) {
+  return (
+    <span
+      role="checkbox"
+      aria-checked={on}
+      tabIndex={0}
+      onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
+      className="mt-0.5 grid h-5 w-5 shrink-0 cursor-pointer place-items-center rounded-md border transition-colors"
+      style={{
+        borderColor: on ? color : "rgba(29,67,123,0.35)",
+        background: on ? color : "#FFFFFF",
+      }}
+    >
+      {on && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3.4} />}
+    </span>
+  );
+}
