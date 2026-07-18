@@ -855,8 +855,8 @@ function Radio({ active }: { active: boolean }) {
       aria-hidden
       className="grid h-5 w-5 shrink-0 place-items-center rounded-full border transition-colors"
       style={{
-        borderColor: active ? "#B8763A" : "rgba(0,0,0,0.25)",
-        background: active ? "#B8763A" : "#FFFFFF",
+        borderColor: active ? NAVY : "rgba(0,0,0,0.25)",
+        background: active ? NAVY : "#FFFFFF",
       }}
     >
       {active && <span className="h-2 w-2 rounded-full bg-white" />}
