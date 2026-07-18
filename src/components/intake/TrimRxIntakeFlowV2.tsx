@@ -185,7 +185,7 @@ function YesNoWithDetail({
 
 /* ────────────  Main  ──────────── */
 export function TrimRxIntakeFlowV2() {
-  const [idx, setIdx] = useState(6);
+  const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
 
   const set = (patch: Partial<Answers>) => setAnswers((a) => ({ ...a, ...patch }));
