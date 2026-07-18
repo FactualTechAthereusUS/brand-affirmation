@@ -536,6 +536,151 @@ export function WLIntakeFlow() {
               </ScreenShell>
             )}
 
+            {/* NEW A — Past surgeries */}
+            {current === "past_surgeries" && (
+              <ScreenShell
+                title="Have you had any past surgeries?"
+                sub="This helps your physician personalize your protocol."
+                footer={
+                  <PrimaryButton
+                    onClick={next}
+                    disabled={
+                      !answers.pastSurgeries ||
+                      (answers.pastSurgeries === "yes" && !answers.pastSurgeriesDetail?.trim())
+                    }
+                  >
+                    Continue
+                  </PrimaryButton>
+                }
+              >
+                <OptionCard
+                  label="No, I have not had any surgeries"
+                  selected={answers.pastSurgeries === "no"}
+                  onClick={() => set({ pastSurgeries: "no", pastSurgeriesDetail: "" })}
+                />
+                <OptionCard
+                  label="Yes"
+                  selected={answers.pastSurgeries === "yes"}
+                  onClick={() => set({ pastSurgeries: "yes" })}
+                />
+                {answers.pastSurgeries === "yes" && (
+                  <motion.label
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="block"
+                  >
+                    <span className="mb-2 block text-[13px] font-medium text-ink/70">Please list them briefly</span>
+                    <textarea
+                      value={answers.pastSurgeriesDetail ?? ""}
+                      onChange={(e) => set({ pastSurgeriesDetail: e.target.value })}
+                      placeholder="e.g. gallbladder removal 2019, c-section 2015"
+                      rows={3}
+                      className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    />
+                  </motion.label>
+                )}
+              </ScreenShell>
+            )}
+
+            {/* NEW B — Current medical conditions */}
+            {current === "current_conditions" && (
+              <ScreenShell
+                title="Are you currently being treated for any medical conditions?"
+                sub="Your physician reviews this before writing your prescription."
+                footer={
+                  <PrimaryButton
+                    onClick={next}
+                    disabled={
+                      !answers.currentConditions ||
+                      (answers.currentConditions === "yes" && !answers.currentConditionsDetail?.trim())
+                    }
+                  >
+                    Continue
+                  </PrimaryButton>
+                }
+              >
+                <OptionCard
+                  label="No, I have no current medical conditions"
+                  selected={answers.currentConditions === "no"}
+                  onClick={() => set({ currentConditions: "no", currentConditionsDetail: "" })}
+                />
+                <OptionCard
+                  label="Yes"
+                  selected={answers.currentConditions === "yes"}
+                  onClick={() => set({ currentConditions: "yes" })}
+                />
+                {answers.currentConditions === "yes" && (
+                  <motion.label
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="block"
+                  >
+                    <span className="mb-2 block text-[13px] font-medium text-ink/70">Please list them</span>
+                    <textarea
+                      value={answers.currentConditionsDetail ?? ""}
+                      onChange={(e) => set({ currentConditionsDetail: e.target.value })}
+                      placeholder="e.g. hypothyroidism, hypertension, GERD"
+                      rows={3}
+                      className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    />
+                  </motion.label>
+                )}
+              </ScreenShell>
+            )}
+
+            {/* NEW C — Weight-related symptoms */}
+            {current === "weight_symptoms" && (
+              <ScreenShell
+                title="Which of these do you experience?"
+                sub="Select everything that applies."
+                footer={
+                  <PrimaryButton onClick={next} disabled={!(answers.weightSymptoms?.length ?? 0)}>
+                    Continue
+                  </PrimaryButton>
+                }
+              >
+                {[
+                  "Weight gain despite diet and exercise",
+                  "Increased appetite or food cravings",
+                  "Low energy or fatigue throughout the day",
+                  "Difficulty maintaining weight loss long term",
+                  "None of the above",
+                ].map((o) => (
+                  <OptionCard
+                    key={o}
+                    label={o}
+                    compact
+                    selected={answers.weightSymptoms?.includes(o) ?? false}
+                    onClick={() => toggleMulti("weightSymptoms", o)}
+                  />
+                ))}
+              </ScreenShell>
+            )}
+
+            {/* NEW D — Bariatric surgery */}
+            {current === "bariatric" && (
+              <ScreenShell
+                title="Have you had bariatric or gastric bypass surgery?"
+                sub="This helps us ensure the right medication and dosing for you."
+              >
+                {[
+                  "No",
+                  "Yes — gastric sleeve",
+                  "Yes — gastric bypass (Roux-en-Y)",
+                  "Yes — other bariatric procedure",
+                ].map((o) => (
+                  <OptionCard
+                    key={o}
+                    label={o}
+                    selected={answers.bariatric === o}
+                    onClick={() => pickThenNext("bariatric", o)}
+                  />
+                ))}
+              </ScreenShell>
+            )}
+
+
+
             {/* 8.5 — Social proof */}
             {current === "social_proof" && (
               <SocialProofScreen sex={answers.sex} onNext={next} />
