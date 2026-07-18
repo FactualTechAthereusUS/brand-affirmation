@@ -93,6 +93,45 @@ function useCountdown(minutes: number) {
   return `${m}:${s} min`;
 }
 
+/* ─────────  Inline icons for treatment cards  ───────── */
+function MoneyIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+      <path
+        fillRule="evenodd"
+        d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z"
+        clipRule="evenodd"
+      />
+      <path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z" />
+    </svg>
+  );
+}
+
+function LightningIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 /* ─────────  Treatment card  ───────── */
 function TreatmentCard({
   id,
@@ -100,6 +139,7 @@ function TreatmentCard({
   desc,
   badge,
   badgeColor,
+  badgeIcon: BadgeIcon,
   vial,
   patients,
   selected,
@@ -110,6 +150,7 @@ function TreatmentCard({
   desc: string;
   badge: string;
   badgeColor: string;
+  badgeIcon: React.ComponentType<{ className?: string }>;
   vial: string;
   patients: string;
   selected: boolean;
@@ -142,7 +183,10 @@ function TreatmentCard({
         </div>
         <div className="mt-0.5 text-[13.5px] text-ink/60 sm:text-[14px]">{desc}</div>
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <Pill color={badgeColor}>{badge}</Pill>
+          <Pill color={badgeColor}>
+            <BadgeIcon className="h-3.5 w-3.5" />
+            {badge}
+          </Pill>
           <span className="inline-flex items-center gap-1.5 text-[12px] text-ink/55">
             <span
               className="h-1.5 w-1.5 rounded-full"
