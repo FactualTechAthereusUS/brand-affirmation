@@ -259,7 +259,7 @@ export function BlissleyIntakeFlow() {
     <div className="relative min-h-[100svh] bg-white pb-24">
       {!isTerminal && (
         <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl">
-          <Header onBack={prev} showBack={idx > 0} />
+          <TrxHeader onBack={prev} showBack={idx > 0} />
           <div className="px-4 py-3 md:px-8 md:py-4">
             <TrxStepper stage={stage} />
           </div>
