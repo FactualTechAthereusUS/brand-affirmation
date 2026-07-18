@@ -589,7 +589,7 @@ function CheckoutPage() {
                   </>
                 )}
               </div>
-
+              {payMethod === "card" ? (
                 <div className="overflow-hidden rounded-2xl border border-black/10 bg-[#F3F4F6]">
                   {/* Card header band */}
                   <div className="flex items-center justify-between gap-3 border-b border-black/10 bg-white px-4 py-3.5">
