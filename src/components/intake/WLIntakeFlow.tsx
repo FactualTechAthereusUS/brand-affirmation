@@ -124,7 +124,7 @@ function buildFlow(sex?: Sex) {
 /* ────────────────────  Main flow  ──────────────────── */
 export function WLIntakeFlow() {
   const [idx, setIdx] = useState(0);
-  const [answers, setAnswers] = useState<Answers>({ firstName: "", email: "" });
+  const [answers, setAnswers] = useState<Answers>({ firstName: "", lastName: "", email: "" });
 
   const flow = useMemo(() => buildFlow(answers.sex), [answers.sex]);
   const current = flow[idx] ?? "name";
