@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TrimRxIntakeFlow } from "@/components/intake/TrimRxIntakeFlow";
 
-export const Route = createFileRoute("/intake_/weight-loss-trimxrx")({
+export const Route = createFileRoute("/intake_/weight-loss-trimrx")({
   head: () => ({
     meta: [
       { title: "Weight loss assessment — Blissley" },
