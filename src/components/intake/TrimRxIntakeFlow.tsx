@@ -1222,7 +1222,7 @@ function LoadingScreen({ firstName, state }: { firstName?: string; state?: strin
         animate={{ x: [0, -30, 0], y: [0, 40, 0] }} transition={{ duration: 14, repeat: Infinity }} />
 
       <div className="relative z-10 flex items-center justify-center pt-10 md:pt-14">
-        <img src={logo.url} alt="Blissley" className="h-9 w-auto brightness-0 invert md:h-10" />
+        <span className="font-hero text-[26px] italic tracking-tight text-white md:text-[30px]">blissley</span>
       </div>
       <div className="relative z-10 mx-auto flex min-h-[calc(100svh-120px)] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center">
         <div className="relative grid h-24 w-24 place-items-center">
