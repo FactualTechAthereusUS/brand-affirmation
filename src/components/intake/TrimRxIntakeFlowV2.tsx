@@ -1053,14 +1053,6 @@ const US_STATES = [
   "West Virginia","Wisconsin","Wyoming",
 ];
 
-function SummaryStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="text-center">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">{label}</div>
-      <div className="mt-1 text-[22px] font-bold text-ink">{value}</div>
-    </div>
-  );
-}
 
 /* ────────────  Metabolic rate rising S-curve (blended)  ──────────── */
 function MetabolicChart({ start, goal }: { start: number; goal: number }) {
