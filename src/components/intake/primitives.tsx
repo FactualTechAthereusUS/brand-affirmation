@@ -301,6 +301,62 @@ export function TextField({
   );
 }
 
+function formatUSPhone(raw: string) {
+  const digits = raw.replace(/\D/g, "").slice(0, 10);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
+export function PhoneField({
+  label,
+  value,
+  onChange,
+  placeholder = "(555) 123-4567",
+  autoFocus,
+}: {
+  label?: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  autoFocus?: boolean;
+}) {
+  return (
+    <label className="block">
+      {label && (
+        <span className="mb-2 block text-[13px] font-medium text-ink/70">{label}</span>
+      )}
+      <div className="relative">
+        <div className="pointer-events-none absolute left-5 top-1/2 flex -translate-y-1/2 items-center gap-2">
+          <span className="inline-flex h-5 w-7 items-center justify-center overflow-hidden rounded-sm shadow-sm">
+            <svg viewBox="0 0 1235 650" className="h-full w-full" aria-hidden="true">
+              <rect width="1235" height="650" fill="#fff" />
+              <g fill="#b22234">
+                <rect y="0" width="1235" height="50" />
+                <rect y="100" width="1235" height="50" />
+                <rect y="200" width="1235" height="50" />
+                <rect y="300" width="1235" height="50" />
+                <rect y="400" width="1235" height="50" />
+                <rect y="500" width="1235" height="50" />
+                <rect y="600" width="1235" height="50" />
+              </g>
+              <rect width="494" height="350" fill="#3c3b6e" />
+            </svg>
+          </span>
+        </div>
+        <input
+          type="tel"
+          value={formatUSPhone(value)}
+          onChange={(e) => onChange(formatUSPhone(e.target.value))}
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+          className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white pl-[72px] pr-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+        />
+      </div>
+    </label>
+  );
+}
+
 /* ─────────────────────────  Back button  ───────────────────────── */
 export function BackBtn({ onClick, invisible }: { onClick: () => void; invisible?: boolean }) {
   return (
