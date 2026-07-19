@@ -1073,9 +1073,9 @@ function ReviewSlider() {
             <div
               className="rounded-2xl border border-black/8 bg-white p-4 transition-all duration-500 ease-out"
               style={{
-                opacity: i === active ? 1 : 0.45,
-                transform: i === active ? "scale(1)" : "scale(0.97)",
-                filter: i === active ? "blur(0px)" : "blur(2px)",
+                opacity: i === active ? 1 : 0.35,
+                transform: i === active ? "scale(1)" : "scale(0.96)",
+                filter: i === active ? "blur(0px)" : "blur(5px)",
               }}
             >
               <div className="flex items-center gap-2.5">
