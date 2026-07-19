@@ -1197,13 +1197,14 @@ function Onboarding() {
     : { label: "Next", onClick: () => setStep((n) => n + 1) };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-40 grid place-items-center bg-black/40 backdrop-blur-md p-6">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-40 grid place-items-center bg-black/40 backdrop-blur-md px-6">
       <motion.div
         key={step}
         initial={{ y: 20, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className={`relative h-full w-full max-w-[420px] overflow-hidden rounded-[32px] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "bg-[#7DAFCE]" : "bg-white p-7 text-center"}`}
+        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "bg-[#7DAFCE]" : "bg-white p-7 text-center"}`}
+        style={s.hero ? { aspectRatio: "9 / 16" } : undefined}
       >
         {s.hero ? (
           <>
