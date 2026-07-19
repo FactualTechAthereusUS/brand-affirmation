@@ -429,12 +429,16 @@ function CheckoutPage() {
 
       <ul className="mt-5 space-y-3.5 text-[14px]">
         {[
-          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url },
+          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url, bold: true },
           { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
           { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
         ].map((item) => (
           <li key={item.t} className="flex items-start gap-3">
-            <img src={item.icon} alt="" className="mt-0.5 h-5 w-5 shrink-0 object-contain" />
+            <img
+              src={item.icon}
+              alt=""
+              className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-6 w-6 brightness-0 contrast-125" : "h-5 w-5"}`}
+            />
             <div className="leading-tight">
               <div className="font-bold text-ink">{item.t}</div>
               <div className="text-[12.5px] text-ink/55">{item.s}</div>

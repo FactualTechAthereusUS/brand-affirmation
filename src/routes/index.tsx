@@ -21,6 +21,7 @@ const Comparison = lazy(() => import("@/components/home/Comparison").then(m => (
 const FAQ = lazy(() => import("@/components/home/FAQ").then(m => ({ default: m.FAQ })));
 const FinalCTA = lazy(() => import("@/components/home/FinalCTA").then(m => ({ default: m.FinalCTA })));
 const DeferredEffects = lazy(() => import("@/components/DeferredEffects").then(m => ({ default: m.DeferredEffects })));
+const ValueStack = lazy(() => import("@/components/home/ValueStack").then(m => ({ default: m.ValueStack })));
 
 export const Route = createFileRoute("/")({
   head: () => ({
