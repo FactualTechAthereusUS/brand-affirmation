@@ -779,7 +779,7 @@ function SalesDMPage() {
             {[
               { i: <HeartPulse className="h-5 w-5" style={{ color: PINK }} />, t: "Access to GLP-1 medication", s: "Cost of medication is included — no insurance necessary." },
               { i: <Stethoscope className="h-5 w-5" style={{ color: NAVY }} />, t: "Board-certified doctor review", s: "1:1 physician guidance from U.S.-licensed clinicians." },
-              { i: <Clock className="h-5 w-5" style={{ color: "#16A34A" }} />, t: "Unlimited nursing access", s: "24/7 support whenever you need it." },
+              { i: <Clock className="h-5 w-5" style={{ color: "#16A34A" }} />, t: "Unlimited physician messaging", s: "Message your licensed clinician anytime through your portal." },
               { i: <Truck className="h-5 w-5" style={{ color: NAVY }} />, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
             ].map((row) => (
               <div key={row.t} className="flex items-start gap-3">
