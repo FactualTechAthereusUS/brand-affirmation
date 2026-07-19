@@ -1184,11 +1184,19 @@ function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange:
 function Onboarding() {
   const [step, setStep] = useState(0);
   const firstName = usePortal((s) => s.patient.firstName);
-  const steps = [
-    { title: `Welcome, ${firstName}.`, body: "Your care team is just one tap away. Let's take a quick look around.", icon: null, hero: true },
-    { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", icon: <img src={drScottNass.url} alt="Dr. Nass" className="h-16 w-16 rounded-full object-cover" />, hero: false },
-    { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", icon: <Calendar className="h-7 w-7" style={{ color: PINK }} />, hero: false },
-    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", icon: <Bell className="h-7 w-7" style={{ color: PINK }} />, hero: false },
+  const steps: Array<{
+    title: string;
+    body: string;
+    icon?: React.ReactNode;
+    hero?: boolean;
+    heroImage?: string;
+    textPos?: "top" | "bottom";
+    heroBg?: string;
+  }> = [
+    { title: `Welcome, ${firstName}.`, body: "Your care team is just one tap away. Let's take a quick look around.", hero: true, heroImage: portalWelcomeDoctor.url, textPos: "top", heroBg: "#7DAFCE" },
+    { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", hero: true, heroImage: drNassWelcome.url, textPos: "bottom", heroBg: "#8FB9D6" },
+    { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", icon: <Calendar className="h-7 w-7" style={{ color: PINK }} /> },
+    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", icon: <Bell className="h-7 w-7" style={{ color: PINK }} /> },
   ];
   const s = steps[step];
   const done = () => actions.completeOnboarding();
@@ -1204,38 +1212,70 @@ function Onboarding() {
         initial={{ y: 20, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "bg-[#7DAFCE]" : "bg-white p-7 text-center"}`}
-        style={s.hero ? { aspectRatio: "9 / 16" } : undefined}
+        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "" : "bg-white p-7 text-center"}`}
+        style={s.hero ? { aspectRatio: "9 / 16", background: s.heroBg } : undefined}
       >
         {s.hero ? (
           <>
-            <img src={portalWelcomeDoctor.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-x-0 top-0 px-6 pt-10 text-center">
-              <h3 className="text-[26px] font-semibold leading-[1.1] tracking-tight text-white drop-shadow-sm">{s.title}</h3>
-              <p className="mt-2 text-[14px] leading-relaxed text-white/90">{s.body}</p>
-            </div>
-            <div className="absolute inset-x-0 bottom-0 p-5">
-              <div className="mb-4 flex items-center justify-center gap-1.5">
-                {steps.map((_, i) => (
-                  <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? "#ffffff" : "rgba(255,255,255,0.5)" }} />
-                ))}
+            <img src={s.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            {s.textPos === "top" ? (
+              <div className="absolute inset-x-0 top-0 px-6 pt-10 text-center">
+                <h3 className="text-[26px] font-semibold leading-[1.1] tracking-tight text-white drop-shadow-sm">{s.title}</h3>
+                <p className="mt-2 text-[14px] leading-relaxed text-white/90">{s.body}</p>
               </div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={done}
-                  className="flex-1 rounded-full border border-white/40 bg-white/20 py-3.5 text-[14px] font-semibold text-white backdrop-blur-xl transition hover:bg-white/30"
-                >
-                  Skip
-                </button>
-                <button
-                  onClick={nextBtn.onClick}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/85 py-3.5 text-[14px] font-semibold text-ink backdrop-blur-xl transition hover:bg-white"
-                >
-                  {nextBtn.label}
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
+            ) : (
+              <>
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/70 via-black/35 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-6 text-center">
+                  <h3 className="text-[26px] font-semibold leading-[1.1] tracking-tight text-white drop-shadow-sm">{s.title}</h3>
+                  <p className="mt-2 text-[14px] leading-relaxed text-white/90">{s.body}</p>
+                  <div className="mt-5 mb-4 flex items-center justify-center gap-1.5">
+                    {steps.map((_, i) => (
+                      <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? "#ffffff" : "rgba(255,255,255,0.5)" }} />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={done}
+                      className="flex-1 rounded-full border border-white/40 bg-white/20 py-3.5 text-[14px] font-semibold text-white backdrop-blur-xl transition hover:bg-white/30"
+                    >
+                      Skip
+                    </button>
+                    <button
+                      onClick={nextBtn.onClick}
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/85 py-3.5 text-[14px] font-semibold text-ink backdrop-blur-xl transition hover:bg-white"
+                    >
+                      {nextBtn.label}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+            {s.textPos === "top" && (
+              <div className="absolute inset-x-0 bottom-0 p-5">
+                <div className="mb-4 flex items-center justify-center gap-1.5">
+                  {steps.map((_, i) => (
+                    <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? "#ffffff" : "rgba(255,255,255,0.5)" }} />
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={done}
+                    className="flex-1 rounded-full border border-white/40 bg-white/20 py-3.5 text-[14px] font-semibold text-white backdrop-blur-xl transition hover:bg-white/30"
+                  >
+                    Skip
+                  </button>
+                  <button
+                    onClick={nextBtn.onClick}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/85 py-3.5 text-[14px] font-semibold text-ink backdrop-blur-xl transition hover:bg-white"
+                  >
+                    {nextBtn.label}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </>
         ) : (
           <>
