@@ -1288,24 +1288,27 @@ function MobileOrderSummaryDetail({
   const [code, setCode] = useState("JOIN120");
 
   // Scarcity: dynamic discounts-left + reservation timer
-  const [discountsLeft, setDiscountsLeft] = useState(() => 18 + Math.floor(Math.random() * 11)); // 18-28
+  const [discountsLeft, setDiscountsLeft] = useState(() => 40 + Math.floor(Math.random() * 35)); // 40-74
   const [secondsLeft, setSecondsLeft] = useState(() => 6 * 60 + 30 + Math.floor(Math.random() * 90)); // 6:30-8:00
 
   useEffect(() => {
-    // Sequence: quickly drop toward 7 → 4/3 → 2 → 1
+    // Sequence of drops: big number → mid → low → 3 → 2 → 1
     const rand = (min: number, max: number) => min + Math.random() * (max - min);
     const timeouts: number[] = [];
     const schedule: { at: number; to: number }[] = [
-      { at: rand(2500, 4500), to: 7 + Math.floor(Math.random() * 2) }, // 7-8
-      { at: rand(6000, 9000), to: 3 + Math.floor(Math.random() * 2) }, // 3-4
-      { at: rand(11000, 15000), to: 2 },
-      { at: rand(17000, 22000), to: 1 },
+      { at: rand(3000, 5000), to: 20 + Math.floor(Math.random() * 10) },  // 20-29
+      { at: rand(8000, 12000), to: 10 + Math.floor(Math.random() * 6) },  // 10-15
+      { at: rand(16000, 22000), to: 5 + Math.floor(Math.random() * 3) },  // 5-7
+      { at: rand(28000, 36000), to: 3 },
+      { at: rand(45000, 55000), to: 2 },
+      { at: rand(65000, 80000), to: 1 },
     ];
     schedule.forEach(({ at, to }) => {
       timeouts.push(window.setTimeout(() => setDiscountsLeft((n) => (to < n ? to : n)), at));
     });
     return () => timeouts.forEach(clearTimeout);
   }, []);
+
 
   useEffect(() => {
     const id = window.setInterval(() => {

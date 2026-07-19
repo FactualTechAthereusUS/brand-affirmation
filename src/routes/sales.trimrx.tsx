@@ -372,8 +372,27 @@ function SalesTrimRxPage() {
   const [planKey, setPlanKey] = useState<string | null>(null);
   const [semaPatients, setSemaPatients] = useState(12886);
   const [tirzPatients, setTirzPatients] = useState(19720);
+  const [discountsLeft, setDiscountsLeft] = useState(() => 40 + Math.floor(Math.random() * 35)); // 40-74
 
   const time = useCountdown(9);
+
+  useEffect(() => {
+    const rand = (min: number, max: number) => min + Math.random() * (max - min);
+    const timeouts: number[] = [];
+    const schedule: { at: number; to: number }[] = [
+      { at: rand(3000, 5000), to: 20 + Math.floor(Math.random() * 10) },
+      { at: rand(8000, 12000), to: 10 + Math.floor(Math.random() * 6) },
+      { at: rand(16000, 22000), to: 5 + Math.floor(Math.random() * 3) },
+      { at: rand(28000, 36000), to: 3 },
+      { at: rand(45000, 55000), to: 2 },
+      { at: rand(65000, 80000), to: 1 },
+    ];
+    schedule.forEach(({ at, to }) => {
+      timeouts.push(window.setTimeout(() => setDiscountsLeft((n) => (to < n ? to : n)), at));
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
+
 
   useEffect(() => {
     const tick = () => {
@@ -496,9 +515,10 @@ function SalesTrimRxPage() {
             color: NAVY,
           }}
         >
-          Only <b>29</b> discounts left.
+          Only <b>{discountsLeft}</b> {discountsLeft === 1 ? "discount" : "discounts"} left.
           <br />
           Yours is reserved for <b style={{ color: NAVY }}>{time}</b>
+
         </motion.div>
 
         <div className="mt-6 text-center">
