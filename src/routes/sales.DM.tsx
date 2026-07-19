@@ -756,7 +756,8 @@ function SalesDMPage() {
       </section>
 
       {/* ═══════ Backed by research + stats ═══════ */}
-      <section style={{ background: CANVAS }}>
+      <section className="bg-white">
+
         <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
           <div className="text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
             Backed by research from
