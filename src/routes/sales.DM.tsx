@@ -509,9 +509,6 @@ function SalesDMPage() {
       <section className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-10 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="text-center">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
-            3,200+ patients · Pre-qualified for {primaryPatient.first}
-          </div>
           <h1 className="mt-2 font-hero text-[28px] leading-[1.05] font-black tracking-tight text-ink xs:text-[34px] sm:text-[42px]">
             Your GLP-1 prescription plan{" "}
             <span className="inline-block bg-no-repeat px-1" style={{
