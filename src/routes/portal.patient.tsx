@@ -24,6 +24,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
+import checkmarkCircle from "@/assets/checkmark-circle.png.asset.json";
 import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
@@ -236,11 +237,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         {PATIENT.approved ? (
           <Card>
             <div className="flex items-start gap-3">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full" style={{ background: "#EAF3EF" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ee7273" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
+              <img src={checkmarkCircle.url} alt="Approved" className="h-10 w-10 shrink-0 object-contain" />
               <div className="min-w-0">
                 <div className="text-[15px] font-semibold text-ink">Prescription Approved</div>
                 <div className="mt-0.5 text-[13px] text-ink/60">Your medication is being prepared.</div>
