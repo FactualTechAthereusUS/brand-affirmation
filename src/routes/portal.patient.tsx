@@ -9,7 +9,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Stethoscope,
-  Truck,
   CreditCard,
   Clock,
   CheckCircle2,
