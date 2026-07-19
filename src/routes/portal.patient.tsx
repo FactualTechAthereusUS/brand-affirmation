@@ -369,7 +369,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
               <div className="mt-3">
                 <WeightChart data={weightLog} />
               </div>
-              <button onClick={() => onGoto("plan")} className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-medium text-ink/70 hover:text-ink">
+              <button onClick={() => actions.openPlanModal("weight")} className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-medium text-ink/70 hover:text-ink">
                 Log weight <ChevronRight className="h-3 w-3" />
               </button>
             </MotionCard>
