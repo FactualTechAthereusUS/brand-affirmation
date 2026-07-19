@@ -421,15 +421,15 @@ function SalesDMPage() {
   const plans: Plan[] = useMemo(() => {
     if (treatment === "tirz") {
       return [
-        { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 399, originalMonthly: 399, todayPrice: 199, savings: 200 },
-        { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 319, savings: 240, installments: true, badge: { label: "Most Popular", kind: "popular" } },
-        { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 199, savings: 1200, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
+        { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 299, originalMonthly: 399, todayPrice: 299, savings: 100 },
+        { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 339, savings: 180, installments: true, badge: { label: "Most Popular", kind: "popular" } },
+        { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 299, savings: 600, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
       ];
     }
     return [
-      { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 297, originalMonthly: 297, todayPrice: 147, savings: 150 },
-      { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 237, savings: 180, installments: true, badge: { label: "Most Popular", kind: "popular" } },
-      { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 147, savings: 900, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
+      { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 249, originalMonthly: 299, todayPrice: 249, savings: 50 },
+      { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 237, savings: 186, installments: true, badge: { label: "Most Popular", kind: "popular" } },
+      { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 237, savings: 522, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
     ];
   }, [treatment]);
 
