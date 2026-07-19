@@ -232,7 +232,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         </div>
       </motion.div>
 
-      <div className="mt-5 space-y-2.5 pl-1 pr-4">
+      <div className="mt-5 space-y-2.5 px-4">
         {/* Approval status */}
         {PATIENT.approved ? (
           <Card>
