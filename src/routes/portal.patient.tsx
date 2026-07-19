@@ -210,7 +210,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
       </motion.h1>
       <p className="mt-1 text-[13.5px] text-ink/55">Here's the state of your program today.</p>
 
-      <div className="mt-5 space-y-3.5">
+      <div className="mt-5 space-y-2.5">
         {/* Approval status */}
         {PATIENT.approved ? (
           <Card>
@@ -239,7 +239,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           <div className="text-[13px] text-ink/60">{PATIENT.medication.replace(" Injectable", "")} · {PATIENT.dose}</div>
           <div className="mt-4 flex items-center gap-3">
             <img src={vialTirzepatide.url} alt="" className="h-16 w-auto object-contain opacity-90" />
-            <button className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-4 py-2 text-[12.5px] font-medium text-ink transition hover:bg-ink hover:text-white">
+            <button className="ml-auto inline-flex items-center gap-1 rounded-full bg-ink/[.06] px-4 py-2 text-[12.5px] font-medium text-ink transition active:scale-[.97]">
               Track order
               <ChevronRight className="h-3.5 w-3.5" />
             </button>
@@ -272,7 +272,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
               <div className="text-[14px] font-semibold text-ink">Dr. Scott Nass MD</div>
               <div className="text-[12.5px] text-ink/55">Your prescribing physician · Board-certified</div>
             </div>
-            <button onClick={() => onGoto("messages")} className="ml-auto rounded-full border border-ink/15 px-3.5 py-2 text-[12px] font-medium text-ink transition hover:bg-ink hover:text-white">
+            <button onClick={() => onGoto("messages")} className="ml-auto rounded-full bg-ink/[.06] px-3.5 py-2 text-[12px] font-medium text-ink transition active:scale-[.97]">
               Message
             </button>
           </div>
@@ -906,11 +906,10 @@ function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange:
 function Card({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={`rounded-3xl border p-5 ${accent ? "border-transparent bg-gradient-to-br from-white to-[#FFF3F1]" : "border-[color:var(--color-hairline)] bg-white"}`}
-      style={accent ? { boxShadow: "0 12px 40px -20px rgba(238,114,115,0.35)" } : undefined}
+      className={`rounded-3xl p-5 ${accent ? "bg-gradient-to-br from-white to-[#FFF3F1]" : "bg-white/70 backdrop-blur-xl"}`}
     >
       {children}
     </motion.div>
