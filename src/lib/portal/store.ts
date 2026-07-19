@@ -174,7 +174,12 @@ function load(): PortalState {
   if (typeof window === "undefined") return seed();
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (raw) return JSON.parse(raw) as PortalState;
+    if (raw) {
+      const parsed = JSON.parse(raw) as PortalState;
+      // Back-compat: add ui block if missing from older cached state
+      if (!parsed.ui) parsed.ui = { trackingId: null, receiptId: null, documentsView: null };
+      return parsed;
+    }
   } catch {}
   const s = seed();
   try { window.localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
