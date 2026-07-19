@@ -1340,10 +1340,10 @@ function MobileOrderSummaryDetail({
           {insurance && (
             <div className="mt-4 flex items-start gap-3">
               <ThumbCard
-                icon={<img src={iconDeliveryShield.url} alt="" className="h-8 w-8 object-contain" />}
+                icon={<img src={iconDeliveryShield.url} alt="" className="h-8 w-8 object-contain invert" />}
                 qty={1}
                 size={72}
-                bg="#FFFFFF"
+                bg="#171717"
               />
               <div className="min-w-0 flex-1 pt-1">
                 <div className="text-[14.5px] font-bold text-ink">Shipping insurance</div>
@@ -1356,13 +1356,13 @@ function MobileOrderSummaryDetail({
             <div className="mt-4 flex items-start gap-3">
               <ThumbCard
                 icon={
-                  <svg viewBox="0 0 24 24" fill="none" stroke={NAVY} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
                     <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
                   </svg>
                 }
                 qty={1}
                 size={72}
-                bg="#FFFFFF"
+                bg="#171717"
               />
               <div className="min-w-0 flex-1 pt-1">
                 <div className="text-[14.5px] font-bold text-ink">Front-of-the-line review</div>
