@@ -509,8 +509,8 @@ function CheckoutPage() {
 
       {/* MOBILE ONLY — collapsible order summary bar */}
       <MobileOrderBar
-        originalTotal={originalTotal + 3.95 + 49.95}
-        currentTotal={baseSubtotal + (form.insurance ? 3.95 : 0) + (form.priority ? 49.95 : 0)}
+        originalTotal={summaryOriginal}
+        currentTotal={summarySubtotal}
       >
         {treatmentSummary}
       </MobileOrderBar>
