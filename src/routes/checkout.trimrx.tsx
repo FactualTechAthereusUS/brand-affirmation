@@ -718,7 +718,7 @@ function CheckoutPage() {
                               <span className="font-bold">($49.95)</span>
                             </>
                           }
-                          desc="Skip the standard 6–24 hour medical review queue. A board-certified clinician will review your intake instantly and, if approved, your prescription ships today — so you can start your plan faster."
+                          desc="Skip the standard 6–24 hour medical review queue and jump straight to the front. A board-certified clinician will review your intake, medical history, and eligibility instantly — not hours from now. If approved, your prescription is sent to our partner pharmacy the same day and ships within 24 hours, so you can start your plan faster and never lose momentum."
                         />
                       </div>
                     </div>
