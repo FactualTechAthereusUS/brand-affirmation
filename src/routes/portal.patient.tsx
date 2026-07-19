@@ -549,7 +549,7 @@ function MessagesTab() {
             <ThreadCard
               onOpen={() => openThread("doc")}
               iconBg="#EAF0F8"
-              icon={<Stethoscope className="h-5 w-5" style={{ color: NAVY }} />}
+              icon={<img src={drScottNass.url} alt="Dr. Nass" className="h-12 w-12 rounded-full object-cover" />}
               title="Dr. Scott Nass MD" subtitle="Clinical questions · side effects · dosing"
               status="Typically replies within 24 hrs" unread={docUnread} preview={docPreview}
             />
