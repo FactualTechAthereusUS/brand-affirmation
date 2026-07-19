@@ -1620,32 +1620,27 @@ function MobileOrderSummaryDetail({
 
           {/* Total charged today — Shopify-style clean row */}
           <div className="mt-5 flex items-start justify-between gap-4">
-            <div className="text-[22px] font-black leading-[1.05] text-ink">
+            <div className="text-[18px] font-black leading-[1.1] text-ink">
               Total<br />charged today
             </div>
             <div className="text-right leading-none pt-1">
-              <div className="mb-1.5 text-[11px] font-semibold text-ink/50">USD</div>
+              <div className="mb-1.5 text-[10px] font-semibold text-ink/50">USD</div>
               <div className="flex items-baseline justify-end gap-2">
-                <span className="text-[15px] font-semibold text-ink/40 line-through">${fmt(subtotal)}</span>
-                <span className="text-[24px] font-black text-ink tracking-tight">${fmt(total)}</span>
+                <span className="text-[13px] font-semibold text-ink/40 line-through">${fmt(subtotal)}</span>
+                <span className="text-[20px] font-black text-ink tracking-tight">${fmt(total)}</span>
               </div>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1.5 text-[12.5px] font-bold uppercase tracking-[0.08em] text-ink">
-            <SavingsIcon className="h-4 w-4" color="#111111" />
+          <div className="mt-2 flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-[0.08em] text-ink">
+            <SavingsIcon className="h-3.5 w-3.5" color="#111111" />
             Total savings ${fmt(savings)}
           </div>
 
           {/* Refund guarantee */}
-          <div className="mt-5 border-t border-dashed border-ink/15 pt-4 flex items-start justify-between gap-4">
-            <div>
-              <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/55">100% refund guarantee</div>
-              <div className="mt-1.5 text-[13px] text-ink/60 leading-snug">
-                Charged today. Full refund<br />if your prescription is not approved.
-              </div>
-            </div>
-            <div className="text-right leading-none flex items-baseline gap-2">
-              <span className="text-[30px] font-black tracking-tight" style={{ color: GREEN }}>${fmt(total)}</span>
+          <div className="mt-4 border-t border-dashed border-ink/15 pt-3.5">
+            <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink/60">100% refund guarantee</div>
+            <div className="mt-1.5 text-[12.5px] text-ink/60 leading-snug">
+              Charged today. Full refund if your prescription is not approved.
             </div>
           </div>
         </div>
