@@ -5,9 +5,9 @@ import { z } from "zod";
 import {
   Check,
   Folder,
-  CreditCard,
   Lock,
 } from "lucide-react";
+
 
 /* ── Custom icons ── */
 function ShippingIcon({ className = "h-5 w-5" }: { className?: string }) {
