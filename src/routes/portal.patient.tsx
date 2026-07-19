@@ -270,7 +270,20 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
 
         {/* Next charge — THE INVARIANT */}
         <Card accent>
-          <CardHeader icon={<CreditCard className="h-4 w-4" />} title="Next Charge" pill={`in 10 days`} />
+          <CardHeader
+            icon={
+              <svg height="18" width="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className="h-[18px] w-[18px] text-ink/70">
+                <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
+                  <line x1="1.75" x2="16.25" y1="7.25" y2="7.25" />
+                  <line x1="4.25" x2="7.25" y1="11.25" y2="11.25" />
+                  <line x1="12.75" x2="13.75" y1="11.25" y2="11.25" />
+                  <rect height="10.5" width="14.5" rx="2" ry="2" transform="translate(18 18) rotate(180)" x="1.75" y="3.75" />
+                </g>
+              </svg>
+            }
+            title="Next Charge"
+            pill={`in 10 days`}
+          />
           <div className="mt-3 flex items-baseline gap-2">
             <div className="text-[26px] font-black tracking-tight text-ink">${PATIENT.nextChargeAmount.toFixed(2)}</div>
             <div className="text-[13px] text-ink/55">on {PATIENT.nextChargeDate}</div>
@@ -941,7 +954,7 @@ function Card({ children, accent }: { children: React.ReactNode; accent?: boolea
 function CardHeader({ icon, title, pill }: { icon: React.ReactNode; title: string; pill?: string }) {
   return (
     <div className="flex items-center gap-2">
-      <div className="grid h-7 w-7 place-items-center rounded-full bg-[color:var(--color-mist)]/60 text-ink/70">{icon}</div>
+      <div className="text-ink/70">{icon}</div>
       <div className="text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/60">{title}</div>
       {pill && (
         <span className="ml-auto rounded-full bg-ink/[.06] px-2.5 py-1 text-[10.5px] font-medium text-ink/70">{pill}</span>
