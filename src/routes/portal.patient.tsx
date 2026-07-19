@@ -9,7 +9,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Stethoscope,
-  Truck,
   CreditCard,
   Clock,
   CheckCircle2,
@@ -256,7 +255,21 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
 
         {/* Next shipment */}
         <Card>
-          <CardHeader icon={<Truck className="h-4 w-4" />} title="Next Shipment" pill={`In ${PATIENT.nextShipDaysAway} days`} />
+          <CardHeader
+            icon={
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+                <path d="M15 17H3.5C2.67 17 2 16.33 2 15.5V6.5C2 5.67 2.67 5 3.5 5H15C15.83 5 16.5 5.67 16.5 6.5V15.5C16.5 16.33 15.83 17 15 17Z" />
+                <path d="M16.5 12H19.5L22 14.5V17H16.5V12Z" />
+                <circle cx="6.5" cy="17.5" r="1.75" />
+                <circle cx="18" cy="17.5" r="1.75" />
+                <line x1="2" y1="9.5" x2="9" y2="9.5" />
+                <line x1="2" y1="12.5" x2="7" y2="12.5" />
+                <line x1="2" y1="15.5" x2="5" y2="15.5" />
+              </svg>
+            }
+            title="Next Shipment"
+            pill={`In ${PATIENT.nextShipDaysAway} days`}
+          />
           <div className="mt-3 text-[17px] font-semibold tracking-tight text-ink">Ships {PATIENT.nextShipDate}</div>
           <div className="text-[13px] text-ink/60">{PATIENT.medication.replace(" Injectable", "")} · {PATIENT.dose}</div>
           <div className="mt-4 flex items-center gap-3">
