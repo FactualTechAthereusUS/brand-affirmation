@@ -27,6 +27,7 @@ import {
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
+import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
