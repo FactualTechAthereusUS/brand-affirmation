@@ -331,7 +331,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           {/* Progress snapshot */}
           {(planState === "delivered_active" || planState === "check_in_due" || planState === "refill_processing") && (
             <MotionCard key="prog">
-              <CardHeader icon={<TrendingDown className="h-[18px] w-[18px]" />} title="Your Progress" />
+              <CardHeader icon={<img src={progressTarget.url} alt="" className="h-[18px] w-[18px] object-contain" />} title="Your Progress" />
               <div className="mt-3 flex items-baseline gap-2">
                 <div className="text-[28px] font-black tracking-tight text-ink">-{lost.toFixed(1)}</div>
                 <div className="text-[13px] text-ink/55">lbs since {weightLog[0]?.date ?? "start"}</div>
