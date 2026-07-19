@@ -1356,8 +1356,13 @@ function SettingsTab() {
       </SettingsGroup>
 
       <SettingsGroup title="Documents">
-        {["Prescription (PDF)", "Lab results", "Invoice history", "HIPAA notice"].map((label) => (
-          <button key={label} className="flex w-full items-center justify-between rounded-xl px-1 py-3 text-left hover:bg-[color:var(--color-mist)]/40">
+        {([
+          ["Prescription (PDF)", "prescription"],
+          ["Lab results", "labs"],
+          ["Invoice history", "invoices"],
+          ["HIPAA notice", "hipaa"],
+        ] as const).map(([label, view]) => (
+          <button key={label} onClick={() => actions.openDocuments(view)} className="flex w-full items-center justify-between rounded-xl px-1 py-3 text-left hover:bg-[color:var(--color-mist)]/40">
             <span className="text-[14px] text-ink">{label}</span>
             <ChevronRight className="h-4 w-4 text-ink/40" />
           </button>
