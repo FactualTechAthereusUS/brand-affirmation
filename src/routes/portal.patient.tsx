@@ -20,6 +20,16 @@ import portalWelcomeWoman from "@/assets/portal-welcome-woman.png.asset.json";
 import onboardingNotifications from "@/assets/onboarding-notifications.jpeg.asset.json";
 import progressTarget from "@/assets/progress-target.png.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
+import { PayVisa, PayMastercard, PayAmex, PayDiscover } from "@/components/PayIcons";
+
+// Pick a random saved-card brand + last-4 once per session so it feels personalized
+const CARD_BRANDS = [
+  { Icon: PayVisa, last4: "4242" },
+  { Icon: PayMastercard, last4: "5518" },
+  { Icon: PayAmex, last4: "1005" },
+  { Icon: PayDiscover, last4: "6011" },
+] as const;
+const SAVED_CARD = CARD_BRANDS[Math.floor(Math.random() * CARD_BRANDS.length)];
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
@@ -364,7 +374,10 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                 <div className="text-[26px] font-black tracking-tight text-ink">${nextCharge.amount.toFixed(2)}</div>
                 <div className="text-[13px] text-ink/55">on {nextCharge.date}</div>
               </div>
-              <div className="mt-1 text-[13px] text-ink/60">Card ending in 4242</div>
+              <div className="mt-1 flex items-center gap-1.5 text-[13px] text-ink/60">
+                <SAVED_CARD.Icon />
+                <span>Card ending in {SAVED_CARD.last4}</span>
+              </div>
               <button onClick={() => onGoto("plan")} className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full py-3 text-[13.5px] font-semibold text-white transition" style={{ background: INK }}>
                 Manage plan <ChevronRight className="h-4 w-4" />
               </button>
