@@ -216,7 +216,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mt-4 overflow-hidden rounded-2xl aspect-[16/10]"
+        className="relative mt-4 overflow-hidden rounded-2xl aspect-[2/1]"
       >
         <img src={heroSkyWoman.url} alt="Woman feeling confident under a bright sky" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
