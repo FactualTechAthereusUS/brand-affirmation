@@ -759,7 +759,7 @@ function SalesDMPage() {
             Start your journey today
           </h2>
           <p className="mx-auto mt-2 max-w-[520px] text-[14.5px] leading-relaxed text-ink/70">
-            You're approved. Prescriptions start at just <b>$147</b> — no insurance needed.
+            You're approved. Prescriptions start at just <b>$237</b> — no insurance needed.
           </p>
 
           <div className="mx-auto mt-6 flex max-w-[520px] flex-col gap-3 rounded-2xl border border-ink/10 bg-white p-5 text-left">
