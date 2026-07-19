@@ -370,9 +370,10 @@ const STEPS = [
 
 /* ─────────  Reviews  ───────── */
 const REVIEWS = [
-  { name: "B. Hunter", face: face1.url, title: "Nothing else out there like this", body: "It really is life changing. I take it once a week and I cannot believe how fast I am losing weight. I just don't eat like I used to — I naturally crave healthier food. Down from 245 to 220 in 3 months." },
-  { name: "Donna W.", face: face2.url, title: "Losing weight without any effort", body: "Clothes that were tight are now loose. I feel different. I feel better. I have more energy. Even putting my hands around my wrist — I can now touch. My only side effect is I have no appetite… and I love it." },
-  { name: "Deryl H.", face: face3.url, title: "90 days in and WOW", body: "I've been on it for 90 days and lost 45 pounds. My clothes are getting really big. My blood sugar is down, my blood pressure is normal, and I have more energy. It is truly a miracle." },
+  { name: "Jennifer R.", face: face1.url, title: "The food noise is finally gone", body: "I used to think about food constantly. Now I eat when I'm hungry and stop when I'm full. It's the quietest my head has been in years — and the weight is coming off without a fight." },
+  { name: "Michael T.", face: face2.url, title: "50 lbs in 7 months", body: "Blood pressure back to normal, off my sleep apnea machine, and my knees don't ache anymore. The physician actually messages me back — I've never had care like this." },
+  { name: "Sarah M.", face: face3.url, title: "Finally a program that's honest about billing", body: "Same price at every dose. No surprise charges. When I had a question about my card, someone from the team responded that day. That trust made me stay." },
+  { name: "Lisa K.", face: face4.url, title: "My doctor dismissed me for years", body: "I was told to 'just try harder.' Blissley actually listened, ran the numbers on my metabolism, and got me on a real treatment plan. Down 32 lbs and I feel like myself again." },
 ];
 
 /* ─────────  FAQ  ───────── */
