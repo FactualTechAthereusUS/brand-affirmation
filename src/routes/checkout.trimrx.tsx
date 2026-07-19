@@ -849,7 +849,7 @@ function CheckoutPage() {
                   boxShadow: `0 18px 40px -12px ${NAVY}66`,
                 }}
               >
-                {submitting ? "Processing…" : `Continue ($0 charged today)`}
+                {submitting ? "Processing…" : `Complete purchase — $${fmtMoney(summarySubtotal)}`}
               </motion.button>
 
               {/* Trustpilot */}
