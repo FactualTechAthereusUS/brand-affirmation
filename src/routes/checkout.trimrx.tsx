@@ -722,8 +722,55 @@ function CheckoutPage() {
                         )}
                       </div>
                     ))}
+
+                  {/* Upsells — apply to any payment method */}
+                  <div className="overflow-hidden rounded-2xl border border-black/10 bg-white">
+                    <UpsellRow
+                      on={form.insurance}
+                      onToggle={() => set("insurance", !form.insurance)}
+                      icon={
+                        <img
+                          src={iconDeliveryShield.url}
+                          alt=""
+                          className="h-7 w-7 object-contain invert"
+                        />
+                      }
+                      title={
+                        <>
+                          Shipping insurance <span className="font-bold">($3.95)</span>
+                        </>
+                      }
+                      desc="100% Payment guarantee & protect your order from damage, loss, or theft."
+                    />
+                    <div className="mx-4 h-px bg-black/5" />
+                    <UpsellRow
+                      on={form.priority}
+                      onToggle={() => set("priority", !form.priority)}
+                      icon={
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-7 w-7 text-white"
+                        >
+                          <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
+                        </svg>
+                      }
+                      title={
+                        <>
+                          Front-of-the-line review{" "}
+                          <span className="font-bold">($49.95)</span>
+                        </>
+                      }
+                      desc="Skip the 6–24 hour review queue. A clinician reviews your intake instantly and ships same-day if approved."
+                    />
+                  </div>
                 </div>
               </FormCard>
+
 
               {/* Continue */}
               <motion.button
