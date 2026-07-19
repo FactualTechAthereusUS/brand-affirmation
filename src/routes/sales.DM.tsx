@@ -540,17 +540,6 @@ function SalesDMPage() {
         </div>
       </section>
 
-      {/* ═══════ Your plan (transition) ═══════ */}
-      <section className="bg-white">
-        <div className="mx-auto w-full max-w-[720px] px-4 pb-4 pt-2 text-center sm:px-6">
-          <h3 className="font-hero text-[22px] font-black tracking-tight text-ink sm:text-[26px]">
-            Your plan
-          </h3>
-          <p className="mx-auto mt-2 max-w-[520px] text-[14.5px] leading-relaxed text-ink/70">
-            You'll get <b>everything you need</b> to drop {primaryPatient.startLbs - primaryPatient.goalLbs} lbs — and keep it off.
-          </p>
-        </div>
-      </section>
 
       {/* ═══════ Reservation + Same price ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 py-10 sm:px-6">
