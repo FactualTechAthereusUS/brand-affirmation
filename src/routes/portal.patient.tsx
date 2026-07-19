@@ -833,7 +833,7 @@ function SettingsTab() {
   const [email, setEmail] = useState(true);
   const [sms, setSms] = useState(true);
   return (
-    <div className="px-5 pt-5">
+    <div className="px-4 pt-5">
       <SettingsGroup title="Personal Info">
         <Field label="First name" defaultValue={PATIENT.firstName} />
         <Field label="Last name" defaultValue={PATIENT.lastName} />
