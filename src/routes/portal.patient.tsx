@@ -6,7 +6,7 @@ import {
   ChevronRight, ChevronLeft, Stethoscope, Clock, CheckCircle2, Send,
   LogOut, Pause, X, Repeat, MapPin, ShieldCheck, Bell, Loader2, Sparkles,
   CreditCard, PlayCircle, AlertCircle, TrendingDown, Activity, Truck, Calendar,
-  Plus,
+  Plus, ArrowUpRight,
 } from "lucide-react";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import checkmarkCircle from "@/assets/checkmark-circle.png.asset.json";
