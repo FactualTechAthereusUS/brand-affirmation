@@ -421,15 +421,15 @@ function SalesDMPage() {
   const plans: Plan[] = useMemo(() => {
     if (treatment === "tirz") {
       return [
-        { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 399, originalMonthly: 399, todayPrice: 199, savings: 200 },
-        { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 319, savings: 240, installments: true, badge: { label: "Most Popular", kind: "popular" } },
-        { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 199, savings: 1200, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
+        { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 299, originalMonthly: 399, todayPrice: 299, savings: 100 },
+        { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 339, savings: 180, installments: true, badge: { label: "Most Popular", kind: "popular" } },
+        { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 299, savings: 600, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
       ];
     }
     return [
-      { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 297, originalMonthly: 297, todayPrice: 147, savings: 150 },
-      { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 237, savings: 180, installments: true, badge: { label: "Most Popular", kind: "popular" } },
-      { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 147, savings: 900, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
+      { key: "monthly", title: "Monthly Plan", desc: "The new you, delivered to your door monthly", supply: "4 Week Supply", perMo: 249, originalMonthly: 299, todayPrice: 249, savings: 50 },
+      { key: "three", title: "3-Month Plan", desc: "Receive your 3-month supply in a single shipment", supply: "12 Week Supply", perMo: 237, savings: 186, installments: true, badge: { label: "Most Popular", kind: "popular" } },
+      { key: "six", title: "6-Month Plan", desc: "Your ultimate plan for guaranteed success and consistency", supply: "24 Week Supply", perMo: 237, savings: 522, installments: true, badge: { label: "Best Deal", kind: "best" }, lifetimeLock: true },
     ];
   }, [treatment]);
 
@@ -574,9 +574,9 @@ function SalesDMPage() {
             vial={vialSema.url}
             vialBg="#E4F1E6"
             reviews="29.1K"
-            price={147}
-            oldPrice={297}
-            saveLine="Save $150 instantly"
+            price={249}
+            oldPrice={299}
+            saveLine="Save $50 instantly"
             features={[
               "Prescribed and shipped free within 2 days",
               "Prescribed by U.S. board-certified clinicians",
@@ -596,9 +596,9 @@ function SalesDMPage() {
             vial={vialTirz.url}
             vialBg="#BFDDEE"
             reviews="29.1K"
-            price={199}
+            price={299}
             oldPrice={399}
-            saveLine="Save $200 instantly"
+            saveLine="Save $100 instantly"
             features={[
               "Prescribed and shipped free within 2 days",
               "Prescribed by U.S. board-certified clinicians",
@@ -759,7 +759,7 @@ function SalesDMPage() {
             Start your journey today
           </h2>
           <p className="mx-auto mt-2 max-w-[520px] text-[14.5px] leading-relaxed text-ink/70">
-            You're approved. Prescriptions start at just <b>$147</b> — no insurance needed.
+            You're approved. Prescriptions start at just <b>$237</b> — no insurance needed.
           </p>
 
           <div className="mx-auto mt-6 flex max-w-[520px] flex-col gap-3 rounded-2xl border border-ink/10 bg-white p-5 text-left">
@@ -794,7 +794,7 @@ function SalesDMPage() {
             }}
             className="mx-auto mt-8 flex w-full max-w-[420px] items-center justify-center rounded-full px-6 py-4 text-[15px] font-semibold text-white transition-all hover:brightness-110"
             style={{ background: NAVY, boxShadow: `0 18px 40px ${NAVY}33` }}>
-            Claim my approval — from $147/mo
+            Claim my approval — from $237/mo
           </button>
           <div className="mt-3 text-[11.5px] uppercase tracking-[0.14em] text-ink/40">
             Your approval is reserved for {time}
