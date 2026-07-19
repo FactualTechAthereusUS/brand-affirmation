@@ -1767,3 +1767,241 @@ function CardHeader({ icon, title, pill }: { icon: React.ReactNode; title: strin
     </div>
   );
 }
+
+/* ─────────── PlanModal root (store-driven) ─────────── */
+function PlanModalRoot() {
+  const modal = usePortal((s) => s.ui.planModal);
+  return <PlanModal modal={modal} onClose={() => actions.closePlanModal()} />;
+}
+
+/* ─────────── Payment Flow ─────────── */
+function PaymentFlow({ onClose }: { onClose: () => void }) {
+  const [number, setNumber] = useState("");
+  const [exp, setExp] = useState("");
+  const [cvc, setCvc] = useState("");
+  const [name, setName] = useState("");
+
+  const formatNumber = (v: string) => v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+  const formatExp = (v: string) => {
+    const d = v.replace(/\D/g, "").slice(0, 4);
+    return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
+  };
+  const last4 = number.replace(/\s/g, "").slice(-4);
+  const valid = last4.length === 4 && exp.length === 5 && cvc.length >= 3 && name.trim().length > 1;
+
+  const save = () => {
+    if (!valid) return;
+    actions.updateCard(last4);
+    onClose();
+  };
+
+  return (
+    <>
+      <ModalTitle title="Update payment method" sub="Your card details are handled securely." onClose={onClose} />
+      <div className="mt-4 space-y-2.5">
+        <div>
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/55">Card number</label>
+          <input inputMode="numeric" value={number} onChange={(e) => setNumber(formatNumber(e.target.value))} placeholder="1234 5678 9012 3456" className="mt-1 w-full rounded-xl border border-ink/15 bg-white px-3 py-3 text-[15px] tracking-wider text-ink focus:border-ink focus:outline-none" />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/55">Expiry</label>
+            <input inputMode="numeric" value={exp} onChange={(e) => setExp(formatExp(e.target.value))} placeholder="MM/YY" className="mt-1 w-full rounded-xl border border-ink/15 bg-white px-3 py-3 text-[15px] text-ink focus:border-ink focus:outline-none" />
+          </div>
+          <div>
+            <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/55">CVC</label>
+            <input inputMode="numeric" value={cvc} onChange={(e) => setCvc(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" className="mt-1 w-full rounded-xl border border-ink/15 bg-white px-3 py-3 text-[15px] text-ink focus:border-ink focus:outline-none" />
+          </div>
+        </div>
+        <div>
+          <label className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/55">Name on card</label>
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" className="mt-1 w-full rounded-xl border border-ink/15 bg-white px-3 py-3 text-[15px] text-ink focus:border-ink focus:outline-none" />
+        </div>
+        <div className="flex items-center gap-1.5 pt-1 text-[11px] text-ink/50">
+          <ShieldCheck className="h-3.5 w-3.5" /> 256-bit encryption · PCI compliant
+        </div>
+        <button onClick={save} disabled={!valid} className="mt-2 w-full rounded-full py-3.5 text-[14px] font-semibold text-white transition disabled:opacity-40" style={{ background: INK }}>
+          Save card
+        </button>
+      </div>
+    </>
+  );
+}
+
+/* ─────────── Tracking Modal ─────────── */
+function TrackingModal() {
+  const trackingId = usePortal((s) => s.ui.trackingId);
+  const shipment = usePortal((s) => s.shipments.find((x) => x.id === trackingId));
+  const patient = usePortal((s) => s.patient);
+  const open = !!trackingId && !!shipment;
+
+  const steps = ["Order placed", "Preparing", "Shipped", "Out for delivery", "Delivered"];
+  const idx = shipment?.status === "delivered" ? 4 : shipment?.status === "shipped" ? 2 : 1;
+
+  return (
+    <AnimatePresence>
+      {open && shipment && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeTracking()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl">
+            <ModalTitle title="Track shipment" sub={shipment.label} onClose={() => actions.closeTracking()} />
+
+            <div className="mt-4 rounded-2xl bg-[#FAFAFA] p-4">
+              <div className="flex items-center gap-2 text-[12px] text-ink/55">
+                <Truck className="h-4 w-4" /> UPS Ground
+                {shipment.eta && <span className="ml-auto text-ink/70">ETA {shipment.eta}</span>}
+              </div>
+              {shipment.tracking && (
+                <button
+                  onClick={() => navigator.clipboard?.writeText(shipment.tracking!)}
+                  className="mt-2 flex w-full items-center justify-between rounded-xl border border-[color:var(--color-hairline)] bg-white px-3 py-2.5"
+                >
+                  <span className="truncate text-[13px] font-mono tracking-tight text-ink">{shipment.tracking}</span>
+                  <Copy className="h-4 w-4 shrink-0 text-ink/50" />
+                </button>
+              )}
+            </div>
+
+            <ol className="mt-5 space-y-4">
+              {steps.map((s, i) => {
+                const done = i <= idx;
+                const current = i === idx;
+                return (
+                  <li key={s} className="flex items-start gap-3">
+                    <div className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full ${done ? "bg-ink text-white" : "border border-ink/20 bg-white text-ink/40"}`}>
+                      {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : <div className="h-1.5 w-1.5 rounded-full bg-ink/30" />}
+                    </div>
+                    <div className="flex-1">
+                      <div className={`text-[14px] ${current ? "font-semibold text-ink" : done ? "text-ink" : "text-ink/50"}`}>{s}</div>
+                      {current && <div className="text-[11.5px] text-ink/55">In progress</div>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div className="mt-5 rounded-xl bg-[#FAFAFA] p-3 text-[12px] text-ink/60">
+              Shipping to <span className="font-medium text-ink/80">{patient.address1}, {patient.city}, {patient.state} {patient.zip}</span>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ─────────── Receipt Modal ─────────── */
+function ReceiptModal() {
+  const receiptId = usePortal((s) => s.ui.receiptId);
+  const charge = usePortal((s) => s.charges.find((x) => x.id === receiptId));
+  const patient = usePortal((s) => s.patient);
+  const card = patient.card;
+  const open = !!receiptId && !!charge;
+
+  return (
+    <AnimatePresence>
+      {open && charge && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeReceipt()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl">
+            <ModalTitle title="Receipt" sub={`#${charge.id.toUpperCase()} · ${charge.date}`} onClose={() => actions.closeReceipt()} />
+
+            <div className="mt-4 rounded-2xl border border-[color:var(--color-hairline)] p-4">
+              <div className="flex items-center justify-between text-[13px] text-ink/70">
+                <span>Blissley GLP-1 Program</span>
+                <span className="font-medium text-ink">${charge.amount.toFixed(2)}</span>
+              </div>
+              <div className="my-3 h-px bg-[color:var(--color-hairline)]" />
+              <div className="flex items-center justify-between text-[13px] text-ink/60">
+                <span>Subtotal</span><span>${charge.amount.toFixed(2)}</span>
+              </div>
+              <div className="flex items-center justify-between text-[13px] text-ink/60">
+                <span>Tax</span><span>$0.00</span>
+              </div>
+              <div className="mt-2 flex items-center justify-between text-[15px] font-semibold text-ink">
+                <span>Total paid</span><span>${charge.amount.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 rounded-xl bg-[#FAFAFA] px-3 py-2.5 text-[12.5px] text-ink/60">
+              <CreditCard className="h-4 w-4" /> Card ending in {card}
+              <span className="ml-auto rounded-full bg-[#EAF3EF] px-2 py-0.5 text-[10.5px] font-semibold text-[#1f6b4f]">Paid</span>
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <button onClick={() => window.print()} className="rounded-full border border-ink/15 py-3 text-[13px] font-semibold text-ink">
+                <Download className="mr-1 inline h-3.5 w-3.5" /> PDF
+              </button>
+              <button onClick={() => actions.closeReceipt()} className="rounded-full py-3 text-[13px] font-semibold text-white" style={{ background: INK }}>Done</button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ─────────── Documents Sheet ─────────── */
+function DocumentsSheet() {
+  const view = usePortal((s) => s.ui.documentsView);
+  const patient = usePortal((s) => s.patient);
+  const medication = usePortal((s) => s.medication);
+  const charges = usePortal((s) => s.charges);
+  const open = view !== null;
+
+  const title =
+    view === "prescription" ? "Prescription" :
+    view === "labs" ? "Lab results" :
+    view === "invoices" ? "Invoice history" :
+    view === "hipaa" ? "HIPAA notice" : "Documents";
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.openDocuments(null)} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl">
+            <ModalTitle title={title} sub="Read-only preview" onClose={() => actions.openDocuments(null)} />
+
+            <div className="mt-4 max-h-[60vh] overflow-y-auto rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4 text-[13px] leading-relaxed text-ink/75">
+              {view === "prescription" && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-ink"><FileText className="h-4 w-4" /><span className="font-semibold">Rx #BL-{patient.firstName?.toUpperCase().slice(0, 3) ?? "PAT"}-2411</span></div>
+                  <div>Patient: <span className="text-ink">{patient.firstName} {patient.lastName ?? ""}</span></div>
+                  <div>Medication: <span className="text-ink">{medication.name}</span></div>
+                  <div>Dose: <span className="text-ink">{medication.dose}</span> · {medication.cadence}</div>
+                  <div>Prescriber: <span className="text-ink">Dr. Ashley Nass, MD · NPI 1234567890</span></div>
+                  <div>Refills: <span className="text-ink">5 remaining</span></div>
+                  <div className="mt-2 rounded-lg bg-[#FAFAFA] p-3 text-[11.5px] text-ink/55">Electronically signed and verified. Valid through {new Date(Date.now() + 365 * 86400000).toLocaleDateString()}.</div>
+                </div>
+              )}
+              {view === "labs" && (
+                <div className="space-y-2">
+                  <div className="text-ink/55">No labs on file yet. Your care team may request them at any time — you'll see results here as soon as they're back.</div>
+                </div>
+              )}
+              {view === "invoices" && (
+                <ul className="divide-y divide-[color:var(--color-hairline)]">
+                  {charges.map((c) => (
+                    <li key={c.id} className="flex items-center justify-between py-2.5">
+                      <div>
+                        <div className="text-[13.5px] text-ink">${c.amount.toFixed(2)}</div>
+                        <div className="text-[11.5px] text-ink/50">{c.date} · {c.status === "paid" ? "Paid" : "Upcoming"}</div>
+                      </div>
+                      {c.status === "paid" && <button onClick={() => { actions.openDocuments(null); actions.openReceipt(c.id); }} className="rounded-full border border-[color:var(--color-hairline)] px-2.5 py-1 text-[11px] font-semibold text-ink/70">View</button>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {view === "hipaa" && (
+                <div className="space-y-2 text-[12.5px]">
+                  <p>Blissley protects your personal health information in accordance with HIPAA. We share your PHI only with your treating clinicians, the licensed pharmacy fulfilling your prescription, and vendors who are contractually bound to safeguard your data.</p>
+                  <p>You have the right to access, correct, and request a copy of your records at any time. Contact <span className="text-ink">privacy@blissley.com</span> to exercise these rights.</p>
+                  <p className="text-ink/50">Effective July 2026. Full notice available on request.</p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
