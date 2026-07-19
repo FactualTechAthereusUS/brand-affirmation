@@ -88,6 +88,7 @@ export type PortalState = {
     trackingId: string | null;
     receiptId: string | null;
     documentsView: null | "menu" | "prescription" | "labs" | "invoices" | "hipaa";
+    planModal: null | "pause" | "cancel" | "switch" | "payment" | "address" | "checkin" | "weight" | "refill";
   };
   pauseDays: number | null;
   cancelled: boolean;
