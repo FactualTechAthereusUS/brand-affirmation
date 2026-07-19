@@ -536,8 +536,17 @@ function SalesDMPage() {
 
         {/* Chart */}
         <div className="mt-8">
-          <WeightLossChart start={primaryPatient.startLbs} goal={primaryPatient.goalLbs} />
+          <h2 className="text-center font-hero text-[22px] font-black tracking-tight text-ink sm:text-[26px]">
+            The goals <span className="italic font-light">you will accomplish</span> with your plan
+          </h2>
+          <div className="mt-4">
+            <WeightLossChart start={primaryPatient.startLbs} goal={primaryPatient.goalLbs} />
+          </div>
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Lose</div>
+              <div className="mt-0.5 text-[16px] font-bold text-ink">{primaryPatient.startLbs - primaryPatient.goalLbs} lbs</div>
+            </div>
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Goal</div>
               <div className="mt-0.5 text-[16px] font-bold text-ink">{primaryPatient.goalLbs} lbs</div>
@@ -545,10 +554,6 @@ function SalesDMPage() {
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Metabolism</div>
               <div className="mt-0.5 text-[16px] font-bold text-ink">Fat + Protein</div>
-            </div>
-            <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Sex</div>
-              <div className="mt-0.5 text-[16px] font-bold text-ink">Female</div>
             </div>
           </div>
         </div>
