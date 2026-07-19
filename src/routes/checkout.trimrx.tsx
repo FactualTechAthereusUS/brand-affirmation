@@ -319,6 +319,7 @@ function CheckoutPage() {
 
   const canSubmit = useMemo(() => {
     return (
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) &&
       form.fullName.trim().length > 2 &&
       form.phone.replace(/\D/g, "").length >= 10 &&
       form.address.trim().length > 3 &&
