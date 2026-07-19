@@ -1125,12 +1125,7 @@ function PlanModal({ modal, onClose }: { modal: string | null; onClose: () => vo
             {modal === "pause" && <PauseFlow onClose={onClose} />}
             {modal === "cancel" && <CancelFlow onClose={onClose} />}
             {modal === "switch" && <SwitchFlow onClose={onClose} />}
-            {modal === "payment" && (
-              <>
-                <ModalTitle title="Update payment method" sub="Your card details are handled securely." onClose={onClose} />
-                <div className="mt-4 rounded-2xl border border-dashed border-ink/20 p-6 text-center text-[13px] text-ink/60">A secure Stripe form would open here.</div>
-              </>
-            )}
+            {modal === "payment" && <PaymentFlow onClose={onClose} />}
             {modal === "address" && (
               <>
                 <ModalTitle title="Update shipping address" sub="We'll ship your next order here." onClose={onClose} />
