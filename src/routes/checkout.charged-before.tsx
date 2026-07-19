@@ -1672,19 +1672,19 @@ function MobileOrderSummaryDetail({
 
           {/* Total if prescribed — Shopify-style clean row */}
           <div className="mt-5 flex items-start justify-between gap-4">
-            <div className="text-[22px] font-black leading-[1.05] text-ink">
+            <div className="text-[19px] font-black leading-[1.05] text-ink">
               Total if<br />prescribed
             </div>
             <div className="text-right leading-none pt-1">
-              <div className="mb-1.5 text-[11px] font-semibold text-ink/50">USD</div>
+              <div className="mb-1.5 text-[10px] font-semibold text-ink/50">USD</div>
               <div className="flex items-baseline justify-end gap-2">
-                <span className="text-[15px] font-semibold text-ink/40 line-through">${fmt(subtotal)}</span>
-                <span className="text-[24px] font-black text-ink tracking-tight">${fmt(total)}</span>
+                <span className="text-[14px] font-semibold text-ink/40 line-through">${fmt(subtotal)}</span>
+                <span className="text-[22px] font-black text-ink tracking-tight">${fmt(total)}</span>
               </div>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1.5 text-[12.5px] font-bold uppercase tracking-[0.08em] text-ink">
-            <SavingsIcon className="h-4 w-4" color="#111111" />
+          <div className="mt-2.5 flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-[0.08em] text-ink">
+            <SavingsIcon className="h-3.5 w-3.5" color="#111111" />
             Total savings ${fmt(savings)}
           </div>
 
