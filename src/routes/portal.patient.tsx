@@ -1364,10 +1364,11 @@ function SettingsGroup({ title, children }: { title: string; children: React.Rea
   return (
     <section className="mt-5 first:mt-0">
       <h2 className="mb-2 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/55">{title}</h2>
-      <div className="space-y-2 rounded-2xl bg-[#FAFAFA] p-4">{children}</div>
+      <div className="space-y-2 rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4">{children}</div>
     </section>
   );
 }
+
 
 function Field({ label, defaultValue, disabled, hint }: { label: string; defaultValue: string; disabled?: boolean; hint?: string }) {
   return (
