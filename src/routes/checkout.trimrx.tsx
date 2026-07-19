@@ -486,6 +486,29 @@ function CheckoutPage() {
               }}
               className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
             >
+              {/* Contact */}
+              <FormCard>
+                <div className="mb-3 flex items-end justify-between">
+                  <StepBadge label="Contact" />
+                  <a
+                    href="/login"
+                    className="text-[13px] font-semibold underline underline-offset-4"
+                    style={{ color: NAVY }}
+                  >
+                    Sign in
+                  </a>
+                </div>
+                <Field label="Email">
+                  <TextInput
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={(e) => set("email", e.target.value)}
+                  />
+                </Field>
+              </FormCard>
+
               {/* Shipping */}
               <FormCard>
                 <StepBadge label="Shipping Address" />
