@@ -933,7 +933,7 @@ function SalesDMPage() {
             <span className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/70">LegitScript Certified</span>
           </div>
         </div>
-        <div className="mt-8 rounded-2xl border border-ink/10 p-6 sm:p-8">
+        <div className="mt-8">
           <h3 className="text-[13.5px] font-semibold text-ink">All major credit cards accepted</h3>
           <div className="mt-2.5"><PayIcons /></div>
           <hr className="my-5 border-ink/10" />
