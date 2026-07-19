@@ -24,7 +24,7 @@ const items = [
 
 export function ValueStack() {
   return (
-    <section className="w-full bg-canvas py-12 sm:py-16">
+    <section className="w-full bg-canvas py-6 sm:py-8">
       <div className="mx-auto w-full max-w-[720px] px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
@@ -40,7 +40,7 @@ export function ValueStack() {
           </p>
         </motion.div>
 
-        <ul className="mt-8 space-y-5 sm:mt-10">
+        <ul className="mt-5 space-y-4 sm:mt-6">
           {items.map((item, i) => (
             <motion.li
               key={item.title}
