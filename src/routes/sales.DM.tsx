@@ -639,7 +639,7 @@ function SalesDMPage() {
       )}
 
       {/* ═══════ What's included ═══════ */}
-      <section style={{ background: CREAM }}>
+      <section style={{ background: CANVAS }}>
         <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
           <h2 className="text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[28px]">
             What's included
