@@ -1010,54 +1010,91 @@ function ReviewSlider() {
         onPointerDown={pause}
         onWheel={pause}
         onTouchStart={pause}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[6%] pb-2 sm:px-[15%] md:px-[20%] lg:px-[24%]"
+        className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[6%] pb-4 sm:-mx-6 sm:gap-4 sm:px-[10%] md:px-[8%]"
       >
-        {reviews.map((r, i) => (
-          <div
-            key={i}
-            data-review-card
-            className="w-[88%] shrink-0 snap-center sm:w-[70%] md:w-[60%] lg:w-[52%]"
-          >
+        {reviews.map((r, i) => {
+          const isActive = i === active;
+          return (
             <div
-              className="rounded-2xl border border-black/8 bg-white p-4 transition-all duration-500 ease-out"
-              style={{
-                opacity: i === active ? 1 : 0.55,
-                transform: i === active ? "scale(1)" : "scale(0.97)",
-                filter: i === active ? "blur(0px)" : "blur(1.5px)",
-              }}
+              key={i}
+              data-review-card
+              className="w-[88%] shrink-0 snap-center sm:w-[70%] md:w-[calc(50%-0.5rem)] lg:w-[calc(50%-0.5rem)] xl:w-[calc(33.333%-0.667rem)]"
             >
-              <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
-                {Array.from({ length: 5 }).map((_, s) => (
-                  <svg
-                    key={s}
-                    viewBox="0 0 20 20"
-                    className="h-4 w-4"
-                    style={{ fill: PINK }}
-                  >
-                    <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="mt-2 text-[15px] font-semibold leading-[1.35] text-ink">
-                {r.lead}
-              </p>
-              <p className="mt-1.5 text-[14px] leading-[1.55] text-ink/70">
-                {r.body}
-              </p>
-              <div className="mt-3 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F3F2EE] text-[12px] font-bold text-ink/70">
-                  {r.name.split(" ")[0][0]}
-                </div>
-                <div>
-                  <div className="text-[13.5px] font-medium text-ink">
-                    {r.name}
+              <article
+                className="flex h-full flex-col transition-all duration-700 ease-out will-change-transform"
+                style={{
+                  opacity: isActive ? 1 : 0.4,
+                  transform: isActive ? "scale(1)" : "scale(0.95)",
+                  filter: isActive ? "blur(0px)" : "blur(4px)",
+                }}
+              >
+                {/* Image — desktop only, LP-style */}
+                <div className="hidden overflow-hidden rounded-[18px] bg-[#F3F2EE] md:block">
+                  <div className="relative aspect-[4/5] w-full">
+                    <img
+                      src={r.image}
+                      alt={r.name}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{ objectPosition: "50% 30%" }}
+                      loading="lazy"
+                    />
                   </div>
-                  <div className="text-[12px] text-ink/55">{r.meta}</div>
                 </div>
-              </div>
+
+                {/* Mobile — text-only card (unchanged) */}
+                <div className="rounded-2xl border border-black/8 bg-white p-4 md:hidden">
+                  <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <svg key={s} viewBox="0 0 20 20" className="h-4 w-4" style={{ fill: PINK }}>
+                        <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-[15px] font-semibold leading-[1.35] text-ink">{r.lead}</p>
+                  <p className="mt-1.5 text-[14px] leading-[1.55] text-ink/70">{r.body}</p>
+                  <div className="mt-3 flex items-center gap-2.5">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F3F2EE] text-[12px] font-bold text-ink/70">
+                      {r.name.split(" ")[0][0]}
+                    </div>
+                    <div>
+                      <div className="text-[13.5px] font-medium text-ink">{r.name}</div>
+                      <div className="text-[12px] text-ink/55">{r.meta}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Desktop text block, LP-style */}
+                <div className="hidden md:block">
+                  <div className="mt-4 flex items-center gap-3">
+                    <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#F3F2EE] ring-1 ring-black/5">
+                      <img
+                        src={r.image}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-full w-full object-cover"
+                        style={{ objectPosition: "50% 25%" }}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate text-[13.5px] font-medium text-ink">{r.name}</div>
+                      <div className="mt-0.5 truncate text-[12px] text-[#6B6B6B]">{r.meta}</div>
+                    </div>
+                  </div>
+                  <div className="mt-2.5 flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <svg key={s} viewBox="0 0 20 20" className="h-[13px] w-[13px]" style={{ fill: PINK }}>
+                        <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="mt-2.5 text-[14px] font-semibold leading-[1.35] text-ink">{r.lead}</p>
+                  <p className="mt-1.5 text-[13px] leading-[1.55] text-[#5A5A57]">{r.body}</p>
+                </div>
+              </article>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div className="w-4 shrink-0" />
       </div>
     </div>
