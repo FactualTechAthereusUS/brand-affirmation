@@ -591,7 +591,7 @@ function SalesDMPage() {
           </div>
           <div className="mt-5 flex flex-wrap items-center gap-2 text-[12.5px] text-ink/75 sm:text-[13.5px]">
             <img src={trustpilot.url} alt="Excellent 4.8 rating" className="h-4 w-auto sm:h-5" />
-            <span className="font-semibold text-ink">3,200+</span>
+            <span className="font-semibold text-ink">30,000+</span>
             <span>happy patients</span>
           </div>
         </div>
@@ -911,7 +911,7 @@ function SalesDMPage() {
       {/* ═══════ Featured / payments ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
         <div className="flex flex-col items-center gap-4">
-          <img src={trustpilot.url} alt="Excellent 4.8 · 3,200+ patients" className="h-6 w-auto sm:h-7" />
+          <img src={trustpilot.url} alt="Excellent 4.8 · 30,000+ patients" className="h-6 w-auto sm:h-7" />
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">As seen on</div>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {[
