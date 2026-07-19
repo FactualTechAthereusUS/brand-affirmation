@@ -1313,27 +1313,17 @@ function MobileOrderSummaryDetail({
 
           {/* Treatment line item */}
           <div className="flex items-start gap-3">
-            <div className="relative shrink-0">
-              <div
-                className="grid h-16 w-16 place-items-center overflow-hidden rounded-xl border border-black/5"
-                style={{ background: vialBg }}
-              >
-                <img src={vial} alt="" className="h-full w-full object-cover" />
-              </div>
-              <span className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-ink px-1 text-[11px] font-bold text-white">
-                {months}
-              </span>
-            </div>
-            <div className="min-w-0 flex-1">
+            <ThumbCard src={vial} bg={vialBg} qty={months} size={72} />
+            <div className="min-w-0 flex-1 pt-1">
               <div className="text-[15px] font-bold text-ink">{treatmentName}</div>
               <div className="text-[12.5px] text-ink/60">{treatmentSubtitle} · {supply}</div>
               {discountApplied && (
                 <div className="mt-1 flex items-center gap-1 text-[12px] font-semibold text-ink/70">
-                  <Tag className="h-3 w-3" /> JOIN120 (−$120.00)
+                  <SavingsIcon className="h-3 w-3" /> JOIN120 (−$120.00)
                 </div>
               )}
             </div>
-            <div className="text-right leading-tight">
+            <div className="text-right leading-tight pt-1">
               <div className="text-[13px] text-ink/40 line-through">${fmt(originalPerMo * months)}</div>
               <div className="text-[15px] font-bold text-ink">${fmt(baseSubtotal)}</div>
             </div>
@@ -1341,49 +1331,79 @@ function MobileOrderSummaryDetail({
 
           {/* Add-on line items */}
           {insurance && (
-            <AddOnLine
-              title="Shipping insurance"
-              subtitle="Lost / damaged package protection"
-              price={insurancePrice}
-              icon={<Truck className="h-6 w-6 text-ink/70" />}
-            />
+            <div className="mt-4 flex items-start gap-3">
+              <ThumbCard
+                icon={<img src={iconDeliveryShield.url} alt="" className="h-8 w-8 object-contain" />}
+                qty={1}
+                size={72}
+                bg="#FFFFFF"
+              />
+              <div className="min-w-0 flex-1 pt-1">
+                <div className="text-[14.5px] font-bold text-ink">Shipping insurance</div>
+                <div className="text-[12.5px] text-ink/60">Loss / damage / theft protection</div>
+              </div>
+              <div className="text-[14.5px] font-bold text-ink pt-1">${fmt(insurancePrice)}</div>
+            </div>
           )}
           {priority && (
-            <AddOnLine
-              title="Front-of-the-line review"
-              subtitle="Instant clinician review · same-day ship"
-              price={priorityPrice}
-              icon={<Zap className="h-6 w-6 text-ink/70" />}
-            />
+            <div className="mt-4 flex items-start gap-3">
+              <ThumbCard
+                icon={
+                  <svg viewBox="0 0 24 24" fill="none" stroke={NAVY} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
+                    <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
+                  </svg>
+                }
+                qty={1}
+                size={72}
+                bg="#FFFFFF"
+              />
+              <div className="min-w-0 flex-1 pt-1">
+                <div className="text-[14.5px] font-bold text-ink">Front-of-the-line review</div>
+                <div className="text-[12.5px] text-ink/60">Instant clinician review · same-day ship</div>
+              </div>
+              <div className="text-[14.5px] font-bold text-ink pt-1">${fmt(priorityPrice)}</div>
+            </div>
           )}
 
           {/* Discount code input */}
-          <div className="mt-5 flex items-stretch gap-2">
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="flex-1 rounded-xl border border-ink/15 bg-white px-3.5 py-3 text-[14px] text-ink outline-none focus:border-ink/40"
-              placeholder="Discount code or gift card"
-            />
-            <button
-              type="button"
-              onClick={() => setDiscountApplied(true)}
-              className="rounded-xl bg-ink/5 px-5 text-[14px] font-bold text-ink/70"
-            >
-              Apply
-            </button>
-          </div>
-          {discountApplied && (
-            <div className="mt-2">
+          {!discountApplied && (
+            <div className="mt-5 flex items-stretch gap-2">
+              <input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="flex-1 rounded-xl border border-ink/15 bg-white px-3.5 py-3 text-[14px] text-ink outline-none focus:border-ink/40"
+                placeholder="Discount code or gift card"
+              />
               <button
                 type="button"
-                onClick={() => setDiscountApplied(false)}
-                className="inline-flex items-center gap-2 rounded-lg bg-ink/5 px-2.5 py-1.5 text-[12px] font-semibold text-ink"
+                onClick={() => setDiscountApplied(true)}
+                className="rounded-xl bg-ink/5 px-5 text-[14px] font-bold text-ink/70"
               >
-                <Tag className="h-3 w-3" /> JOIN120
-                <X className="h-3 w-3" />
+                Apply
               </button>
+            </div>
+          )}
+          {discountApplied && (
+            <div className="mt-5">
+              <div
+                className="flex w-full items-center justify-between gap-3 rounded-2xl px-5 py-3.5 text-white"
+                style={{ background: NAVY }}
+              >
+                <span className="flex items-center gap-2 text-[13.5px] font-bold tracking-wider">
+                  <SavingsIcon className="h-4 w-4" color="#FFFFFF" />
+                  CODE APPLIED:
+                  <span className="ml-1">{code}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setDiscountApplied(false)}
+                  aria-label="Remove discount"
+                  className="grid h-6 w-6 place-items-center rounded-full bg-white/15 hover:bg-white/25 transition"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
           )}
 
@@ -1398,7 +1418,7 @@ function MobileOrderSummaryDetail({
                 <span className="text-ink">
                   Plan discount
                   <span className="mt-0.5 flex items-center gap-1 text-[12.5px] text-ink/60">
-                    <Tag className="h-3 w-3" /> JOIN120
+                    <SavingsIcon className="h-3 w-3" /> JOIN120
                   </span>
                 </span>
                 <span className="font-semibold text-ink">−$120.00</span>
@@ -1424,7 +1444,7 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
           <div className="mt-2 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink">
-            <Tag className="h-3.5 w-3.5" style={{ color: GREEN }} />
+            <SavingsIcon className="h-3.5 w-3.5" color={GREEN} />
             Total savings ${fmt(savings)}
           </div>
 
@@ -1443,7 +1463,7 @@ function MobileOrderSummaryDetail({
             onClick={() => setOpen(true)}
             className="inline-flex items-center gap-2 rounded-2xl border border-ink/15 bg-white px-4 py-2.5 text-[14px] font-bold text-ink shadow-sm"
           >
-            <Tag className="h-4 w-4" /> Add discount
+            <SavingsIcon className="h-4 w-4" /> Add discount
           </button>
 
           {/* Total row */}
@@ -1452,14 +1472,7 @@ function MobileOrderSummaryDetail({
             onClick={() => setOpen(true)}
             className="mt-4 flex w-full items-center gap-3 text-left"
           >
-            <div className="relative shrink-0">
-              <div
-                className="grid h-12 w-12 place-items-center overflow-hidden rounded-lg border border-black/5"
-                style={{ background: vialBg }}
-              >
-                <img src={vial} alt="" className="h-full w-full object-cover" />
-              </div>
-            </div>
+            <ThumbCard src={vial} bg={vialBg} size={56} />
             <div className="min-w-0 flex-1">
               <div className="text-[20px] font-black text-ink leading-tight">Total</div>
               <div className="text-[13px] text-ink/55">{itemCount} {itemCount === 1 ? "item" : "items"}</div>
@@ -1473,7 +1486,7 @@ function MobileOrderSummaryDetail({
                 </svg>
               </div>
               <div className="mt-0.5 flex items-center justify-end gap-1 text-[12px] text-ink/60">
-                <Tag className="h-3 w-3" />
+                <SavingsIcon className="h-3 w-3" />
                 Total savings ${fmt(savings)}
               </div>
             </div>
@@ -1484,29 +1497,51 @@ function MobileOrderSummaryDetail({
   );
 }
 
-function AddOnLine({
-  title,
-  subtitle,
-  price,
+/* Hears-style thumbnail card with qty badge */
+function ThumbCard({
+  src,
   icon,
+  bg,
+  qty,
+  size = 64,
 }: {
-  title: string;
-  subtitle: string;
-  price: number;
-  icon: React.ReactNode;
+  src?: string;
+  icon?: React.ReactNode;
+  bg: string;
+  qty?: number;
+  size?: number;
 }) {
-  const fmt = (n: number) =>
-    n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
   return (
-    <div className="mt-4 flex items-start gap-3">
-      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-black/5 bg-ink/[0.03]">
-        {icon}
+    <div className="relative shrink-0">
+      <div
+        className="grid place-items-center overflow-hidden rounded-2xl"
+        style={{
+          background: bg,
+          width: size,
+          height: size,
+          boxShadow: "0 1px 2px rgba(0,0,0,0.06), 0 4px 12px -4px rgba(0,0,0,0.10)",
+        }}
+      >
+        {src ? (
+          <img src={src} alt="" className="h-full w-full object-cover" />
+        ) : (
+          icon
+        )}
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="text-[14.5px] font-bold text-ink">{title}</div>
-        <div className="text-[12.5px] text-ink/60">{subtitle}</div>
-      </div>
-      <div className="text-[14.5px] font-bold text-ink">${fmt(price)}</div>
+      {qty !== undefined && (
+        <span className="absolute -right-1.5 -top-1.5 grid h-6 min-w-6 place-items-center rounded-full bg-ink px-1.5 text-[12px] font-bold text-white ring-2 ring-white">
+          {qty}
+        </span>
+      )}
     </div>
+  );
+}
+
+/* Shopify-style savings tag icon */
+function SavingsIcon({ className = "", color = "currentColor" }: { className?: string; color?: string }) {
+  return (
+    <svg viewBox="0 0 14 14" fill={color} className={className} aria-hidden="true">
+      <path fillRule="evenodd" clipRule="evenodd" d="M6.29.29a1 1 0 0 1 1.42 0l5.99 5.99a1 1 0 0 1 .29.71V12a1.5 1.5 0 0 1-1.5 1.5H6.99a1 1 0 0 1-.71-.29L.29 7.71a1 1 0 0 1 0-1.42L6.29.29zM10 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+    </svg>
   );
 }
