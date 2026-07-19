@@ -928,10 +928,6 @@ function SalesDMPage() {
                 className="h-6 sm:h-7 w-auto max-w-[130px] object-contain opacity-70 grayscale transition hover:opacity-100" />
             ))}
           </div>
-          <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-1.5">
-            <img src="https://static.legitscript.com/seals/183773.png" alt="LegitScript Certified" className="h-5 w-auto" />
-            <span className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/70">LegitScript Certified</span>
-          </div>
         </div>
         <div className="mt-8">
           <h3 className="text-[13.5px] font-semibold text-ink">All major credit cards accepted</h3>
@@ -943,6 +939,9 @@ function SalesDMPage() {
             <img src={payKlarna.url} alt="Klarna" className="h-6 w-auto" />
             <img src={payAffirm.url} alt="Affirm" className="h-6 w-auto" />
           </div>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <img src="https://static.legitscript.com/seals/183773.png" alt="LegitScript Certified" className="h-10 w-auto" />
         </div>
       </section>
 
