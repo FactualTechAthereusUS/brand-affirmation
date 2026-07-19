@@ -969,6 +969,7 @@ function CheckoutPage() {
               </div>
             </div>
           </div>
+        </div>
 
           {/* RIGHT — grey order summary (desktop only) */}
           <aside
