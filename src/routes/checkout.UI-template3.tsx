@@ -5,10 +5,73 @@ import { z } from "zod";
 import {
   Check,
   Folder,
-  Truck,
-  CreditCard,
   Lock,
 } from "lucide-react";
+
+
+/* ── Custom icons ── */
+function ShippingIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg height="18" width="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <g fill="currentColor">
+        <circle cx="15.25" cy="12.75" fill="none" r="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+        <path d="M16.25,8.371v-3.374c0-.64-.592-1.115-1.217-.976l-2.998,.666c-.186,.041-.38,.029-.559-.036l-4.952-1.801c-.179-.065-.373-.078-.559-.036l-3.432,.763c-.458,.102-.783,.508-.783,.976V13.003c0,.64,.592,1.115,1.217,.976l2.998-.666c.186-.041,.38-.029,.559,.036l4.926,1.791" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+        <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" x1="15.25" x2="15.25" y1="14.75" y2="17.25" />
+      </g>
+    </svg>
+  );
+}
+
+function PaymentIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg height="18" width="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <g fill="currentColor">
+        <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" x1="1.75" x2="16.25" y1="7.25" y2="7.25" />
+        <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" x1="4.25" x2="7.25" y1="11.25" y2="11.25" />
+        <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" x1="12.75" x2="13.75" y1="11.25" y2="11.25" />
+        <rect height="10.5" width="14.5" fill="none" rx="2" ry="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" transform="translate(18 18) rotate(180)" x="1.75" y="3.75" />
+      </g>
+    </svg>
+  );
+}
+
+function CardIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} role="presentation" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2H0zm0 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6H0zm3 5a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function LinkLockIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="#00d66f" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+      <path fillRule="evenodd" clipRule="evenodd" d="M3 7V5C3 2.23858 5.23858 0 8 0C10.7614 0 13 2.23858 13 5V7H13.5C14.0523 7 14.5 7.44772 14.5 8V14C14.5 15.1046 13.6046 16 12.5 16H3.5C2.39543 16 1.5 15.1046 1.5 14V8C1.5 7.44772 1.94772 7 2.5 7H3ZM8 9.5C7.44772 9.5 7 9.94771 7 10.5V12.5C7 13.0523 7.44772 13.5 8 13.5C8.55228 13.5 9 13.0523 9 12.5V10.5C9 9.94771 8.55228 9.5 8 9.5ZM11 7V5C11 3.34315 9.65685 2 8 2C6.34315 2 5 3.34315 5 5V7H11Z" />
+    </svg>
+  );
+}
+
+function CardNumberIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 16" fill="rgba(0,0,0,0)" style={{ display: "inline-block", verticalAlign: "middle" }}>
+      <rect fill="#9095AC" height="16" opacity="0.2" rx="2" width="24" />
+      <rect fill="url(#tpl3_grad)" fillOpacity="0.6" height="15.5" opacity="0.3" rx="1.75" stroke="#9095AC" strokeWidth="0.5" width="23.5" x="0.25" y="0.25" />
+      <rect fill="#9095AC" height="4" opacity="0.15" rx="0.5" width="6" x="2" y="3" />
+      <rect fill="#9095AC" height="1.5" opacity="0.25" rx="0.75" width="4" x="2" y="11.5" />
+      <rect fill="#9095AC" height="1.5" opacity="0.25" rx="0.75" width="4" x="12" y="11.5" />
+      <rect fill="#9095AC" height="1.5" opacity="0.25" rx="0.75" width="4" x="7" y="11.5" />
+      <rect fill="#9095AC" height="1.5" opacity="0.25" rx="0.75" width="4" x="17" y="11.5" />
+      <rect fill="#9095AC" height="1" opacity="0.15" rx="0.5" width="14" x="2" y="9" />
+      <defs>
+        <linearGradient gradientUnits="userSpaceOnUse" id="tpl3_grad" x1="0" x2="24" y1="0" y2="16">
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
 
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
@@ -376,7 +439,7 @@ function CheckoutTemplate3() {
 
             {/* Shipping */}
             <div className="mt-10">
-              <SectionHeader icon={<Truck className="h-5 w-5" strokeWidth={1.75} />} title="Shipping Information" />
+              <SectionHeader icon={<ShippingIcon className="h-5 w-5" />} title="Shipping Information" />
               <div className="space-y-4">
                 <Field label="Street Address">
                   <TextInput
@@ -431,21 +494,19 @@ function CheckoutTemplate3() {
             {/* Payment */}
             <div className="mt-10">
               <div className="mb-5 flex items-center gap-2.5">
-                <CreditCard className="h-5 w-5 text-ink" strokeWidth={1.75} />
+                <PaymentIcon className="h-5 w-5 text-ink" />
                 <h2 className="text-[19px] font-bold text-ink sm:text-[20px]">Payment Information</h2>
                 <Lock className="ml-1 h-4 w-4 text-ink/50" strokeWidth={2} />
               </div>
 
               <div className="rounded-2xl border border-ink/10 p-5 sm:p-6">
-                <div className="mb-4 flex items-center gap-2.5 text-ink">
-                  <CreditCard className="h-5 w-5" strokeWidth={2} />
+                <div className="mb-4 flex items-center gap-3 text-ink">
+                  <CardIcon className="h-5 w-5" />
                   <span className="text-[16px] font-bold">Card</span>
                 </div>
-                <div className="mb-5 flex items-center gap-2 text-[13.5px] text-ink/70">
-                  <span className="grid h-6 w-5 place-items-center rounded-sm bg-emerald-500 text-white">
-                    <Lock className="h-3 w-3" strokeWidth={3} />
-                  </span>
-                  Secure, fast checkout with Link
+                <div className="mb-5 flex items-center gap-2 text-[13.5px] text-ink/70 py-1">
+                  <LinkLockIcon className="h-4 w-4 shrink-0" />
+                  <span className="font-medium">Secure, fast checkout with Link</span>
                 </div>
 
                 <Field label="Card number" className="mb-4">
@@ -453,15 +514,14 @@ function CheckoutTemplate3() {
                     <TextInput
                       placeholder="1234 1234 1234 1234"
                       inputMode="numeric"
-                      className="pl-12"
+                      className="pl-14"
                       value={form.cardNumber}
                       onChange={(e) => set("cardNumber", e.target.value)}
                     />
                     <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
-                      <div className="grid h-6 w-8 place-items-center rounded-[3px] bg-ink/10">
-                        <div className="h-1 w-4 rounded-sm bg-ink/40" />
-                      </div>
+                      <CardNumberIcon />
                     </div>
+
                   </div>
                 </Field>
 
