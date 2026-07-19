@@ -6,7 +6,11 @@ import {
   useState,
   useCallback,
 } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import shippingPolicyMd from "@/content/legal/shipping-policy.md?raw";
+
 import { reviews } from "@/components/home/SocialProof";
 import {
   ArrowLeft,
