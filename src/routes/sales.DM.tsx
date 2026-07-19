@@ -38,7 +38,7 @@ export const Route = createFileRoute("/sales/DM")({
       {
         name: "description",
         content:
-          "You're pre-approved. Personalized GLP-1 care with prescribed medication, 1:1 physician guidance and 24/7 nursing support. Same price at every dose.",
+          "You're pre-approved. Personalized GLP-1 care with prescribed medication, 1:1 physician guidance and unlimited physician messaging. Same price at every dose.",
       },
     ],
   }),
