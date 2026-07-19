@@ -271,6 +271,8 @@ function CheckoutPage() {
   const originalTotal = plan.originalPerMo * plan.months;
   const totalSavings = plan.savings;
   const hasInstallments = plan.months >= 3;
+  const baseSubtotal = plan.perMo * plan.months;
+
 
   // Form state
   const [form, setForm] = useState({
@@ -475,11 +477,12 @@ function CheckoutPage() {
 
       {/* MOBILE ONLY — collapsible order summary bar */}
       <MobileOrderBar
-        originalTotal={originalTotal}
-        currentTotal={plan.perMo * plan.months}
+        originalTotal={originalTotal + 3.95 + 49.95}
+        currentTotal={baseSubtotal + (form.insurance ? 3.95 : 0) + (form.priority ? 49.95 : 0)}
       >
         {treatmentSummary}
       </MobileOrderBar>
+
 
       {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
       <form onSubmit={onSubmit} className="w-full">
@@ -779,6 +782,26 @@ function CheckoutPage() {
                   </div>
                 </div>
               </FormCard>
+
+              {/* MOBILE ONLY — expanded order summary (below payment) */}
+              <MobileOrderSummaryDetail
+                treatmentName={treatment.name}
+                treatmentSubtitle={treatment.subtitle}
+                vial={treatment.vial}
+                vialBg={treatment.vialBg}
+                planTitle={plan.title}
+                supply={plan.supply}
+                months={plan.months}
+                perMo={plan.perMo}
+                originalPerMo={plan.originalPerMo}
+                baseSubtotal={baseSubtotal}
+                originalTotal={originalTotal}
+                planSavings={plan.savings}
+                insurance={form.insurance}
+                priority={form.priority}
+              />
+
+
 
 
               {/* Continue */}
@@ -1217,6 +1240,167 @@ function MobileOrderBar({
           {children}
         </div>
       )}
+    </div>
+  );
+}
+
+/* ── Mobile-only expanded order summary (Shopify-style) ── */
+function MobileOrderSummaryDetail({
+  treatmentName,
+  treatmentSubtitle,
+  vial,
+  vialBg,
+  planTitle,
+  supply,
+  months,
+  perMo,
+  originalPerMo,
+  baseSubtotal,
+  originalTotal,
+  planSavings,
+  insurance,
+  priority,
+}: {
+  treatmentName: string;
+  treatmentSubtitle: string;
+  vial: string;
+  vialBg: string;
+  planTitle: string;
+  supply: string;
+  months: number;
+  perMo: number;
+  originalPerMo: number;
+  baseSubtotal: number;
+  originalTotal: number;
+  planSavings: number;
+  insurance: boolean;
+  priority: boolean;
+}) {
+  const shippingWas = 30 * months;
+  const insurancePrice = 3.95;
+  const priorityPrice = 49.95;
+  const addOnsTotal = (insurance ? insurancePrice : 0) + (priority ? priorityPrice : 0);
+  const subtotal = baseSubtotal + addOnsTotal;
+  const savings = planSavings + shippingWas;
+
+  const fmt = (n: number) =>
+    n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+
+  return (
+    <div className="lg:hidden -mx-4 sm:-mx-6 border-t border-b border-ink/10 px-4 sm:px-6 py-6">
+      <div className="mb-4 flex items-center justify-between">
+        <div className="text-[18px] font-black text-ink">Order summary</div>
+        <div className="text-[12px] font-semibold uppercase tracking-wider text-ink/45">
+          {months} {months === 1 ? "month" : "months"}
+        </div>
+      </div>
+
+      {/* Line item — treatment */}
+      <div className="flex items-start gap-3">
+        <div className="relative shrink-0">
+          <div
+            className="grid h-16 w-16 place-items-center overflow-hidden rounded-xl border border-black/5"
+            style={{ background: vialBg }}
+          >
+            <img src={vial} alt="" className="h-full w-full object-cover" />
+          </div>
+          <span
+            className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full px-1 text-[11px] font-bold text-white"
+            style={{ background: "#111" }}
+          >
+            {months}
+          </span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="text-[15px] font-bold text-ink">{treatmentName}</div>
+          <div className="text-[12.5px] text-ink/60">{treatmentSubtitle}</div>
+          <div className="mt-1 flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: NAVY }}>
+            <Tag className="h-3 w-3" />
+            {planTitle} · {supply}
+          </div>
+        </div>
+        <div className="text-right leading-tight">
+          <div className="text-[13px] text-ink/40 line-through">${fmt(originalPerMo * months)}</div>
+          <div className="text-[15px] font-bold text-ink">${fmt(baseSubtotal)}</div>
+        </div>
+      </div>
+
+      {/* Add-ons */}
+      {(insurance || priority) && (
+        <div className="mt-4 space-y-3 border-t border-dashed border-ink/10 pt-4">
+          {insurance && (
+            <div className="flex items-center justify-between text-[13.5px]">
+              <span className="text-ink/80">Shipping insurance</span>
+              <span className="font-semibold text-ink">${fmt(insurancePrice)}</span>
+            </div>
+          )}
+          {priority && (
+            <div className="flex items-center justify-between text-[13.5px]">
+              <span className="text-ink/80">Front-of-the-line review</span>
+              <span className="font-semibold text-ink">${fmt(priorityPrice)}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Discount */}
+      <div className="mt-5 flex items-stretch gap-2">
+        <input
+          type="text"
+          defaultValue="JOIN120"
+          className="flex-1 rounded-xl border border-ink/15 bg-white px-3.5 text-[14px] text-ink outline-none"
+          placeholder="Discount code or gift card"
+        />
+        <button
+          type="button"
+          className="rounded-xl bg-ink/5 px-4 text-[14px] font-bold text-ink/70"
+        >
+          Apply
+        </button>
+      </div>
+      <div className="mt-2">
+        <span
+          className="inline-flex items-center gap-2 rounded-lg bg-ink/5 px-2.5 py-1.5 text-[12px] font-semibold text-ink"
+        >
+          <Tag className="h-3 w-3" /> JOIN120
+        </span>
+      </div>
+
+      {/* Totals */}
+      <div className="mt-5 space-y-2 text-[14px]">
+        <div className="flex items-center justify-between">
+          <span className="font-bold text-ink">Subtotal</span>
+          <span className="font-semibold text-ink">${fmt(subtotal)}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="flex items-center gap-1.5 text-ink/70">
+            Shipping <HelpCircle className="h-3.5 w-3.5" />
+          </span>
+          <span className="font-semibold">
+            <span className="mr-1.5 text-ink/40 line-through">${fmt(shippingWas)}</span>
+            <span style={{ color: GREEN }}>FREE</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Grand total */}
+      <div className="mt-4 flex items-end justify-between border-t border-ink/10 pt-4">
+        <div>
+          <div className="text-[18px] font-black text-ink">Total</div>
+          <div className="mt-1 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink/70">
+            <Tag className="h-3 w-3" style={{ color: GREEN }} />
+            Total savings ${fmt(savings)}
+          </div>
+        </div>
+        <div className="text-right leading-none">
+          <div className="text-[11px] font-semibold text-ink/50">USD</div>
+          <div className="text-[24px] font-black text-ink">${fmt(subtotal)}</div>
+        </div>
+      </div>
+
+      <div className="mt-3 text-center text-[11.5px] text-ink/55">
+        $0 charged today · only billed if your prescription is approved.
+      </div>
     </div>
   );
 }
