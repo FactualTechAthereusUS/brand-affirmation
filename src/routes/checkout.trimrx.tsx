@@ -1008,14 +1008,13 @@ function ReviewSlider() {
           <div
             key={i}
             data-review-card
-            className="w-[92%] shrink-0 snap-center sm:w-[78%] md:w-[68%]"
+            className="w-[88%] shrink-0 snap-center sm:w-[70%] md:w-[60%] lg:w-[52%]"
           >
             <div
               className="rounded-2xl border border-black/8 bg-white p-4 transition-all duration-500 ease-out"
               style={{
-                opacity: i === active ? 1 : 0.45,
+                opacity: i === active ? 1 : 0.55,
                 transform: i === active ? "scale(1)" : "scale(0.97)",
-                filter: i === active ? "blur(0px)" : "blur(2px)",
               }}
             >
               <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
