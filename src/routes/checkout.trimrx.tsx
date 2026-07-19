@@ -966,12 +966,14 @@ function ReviewSlider() {
       });
     };
     el.addEventListener("scroll", onScroll, { passive: true });
+    // Center the first card on mount so the "active" card is truly centered
+    requestAnimationFrame(() => goTo(0, "auto"));
     onScroll();
     return () => {
       el.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [goTo]);
 
   const pause = useCallback(() => {
     pausedRef.current = true;
