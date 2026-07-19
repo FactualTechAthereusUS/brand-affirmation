@@ -1237,7 +1237,7 @@ function MobileOrderBar({
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
       >
-        <span className="flex items-center gap-1.5 text-[15px] font-semibold" style={{ color: NAVY }}>
+        <span className="flex items-center gap-1.5 text-[15px] font-semibold text-ink">
           Order summary
           <svg
             width="14"
