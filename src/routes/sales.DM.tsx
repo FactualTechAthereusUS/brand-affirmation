@@ -733,23 +733,12 @@ function SalesDMPage() {
           <p className="mx-auto mt-2 max-w-[520px] text-center text-[14.5px] leading-relaxed text-ink/70">
             You'll get <b>everything you need</b> to drop {primaryPatient.startLbs - primaryPatient.goalLbs} lbs — and keep it off.
           </p>
-          <h3 className="mt-8 text-center text-[15px] font-semibold uppercase tracking-[0.14em] text-ink/60">
-            What's included
-          </h3>
-          <p className="mx-auto mt-1.5 max-w-[520px] text-center text-[14px] text-ink/60">
-            24/7 support, unlimited doctor visits and medication — all included.
-          </p>
-          <div className="mt-6 rounded-2xl bg-white p-6 sm:p-8">
-            <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+          <h3 className="mt-8 text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
+          <div className="mt-4 rounded-2xl bg-white p-6 sm:p-8">
+            <ul className="flex flex-col gap-3.5">
               {INCLUDES.map(({ icon, label }) => (
                 <li key={label} className="flex items-center gap-3 text-[15px] text-ink">
-                  <span className="h-6 w-6 shrink-0 text-ink">
-                    {typeof icon === "string" ? (
-                      <img src={icon} alt="" className="h-6 w-6 object-contain" />
-                    ) : (
-                      icon
-                    )}
-                  </span>
+                  <img src={icon} alt="" className="h-6 w-6 shrink-0 object-contain" />
                   {label}
                 </li>
               ))}
