@@ -1028,9 +1028,24 @@ function ReviewSlider() {
                   filter: isActive ? "blur(0px)" : "blur(4px)",
                 }}
               >
-                {/* Text-only review card */}
+                {/* Review card with avatar */}
                 <div className="flex h-full flex-col rounded-2xl border border-black/8 bg-white p-5 sm:p-6">
-                  <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                  <div className="flex items-center gap-3">
+                    <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[#F3F2EE] ring-1 ring-black/5">
+                      <img
+                        src={r.image}
+                        alt={r.name}
+                        className="h-full w-full object-cover"
+                        style={{ objectPosition: "50% 25%" }}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate text-[14px] font-semibold text-ink">{r.name}</div>
+                      <div className="truncate text-[12px] text-ink/55">{r.meta}</div>
+                    </div>
+                  </div>
+                  <div className="mt-2.5 flex items-center gap-0.5" aria-label="5 out of 5 stars">
                     {Array.from({ length: 5 }).map((_, s) => (
                       <svg key={s} viewBox="0 0 20 20" className="h-4 w-4" style={{ fill: PINK }}>
                         <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
@@ -1043,10 +1058,6 @@ function ReviewSlider() {
                   <p className="mt-2 text-[14px] leading-[1.6] text-ink/70">
                     {r.body}
                   </p>
-                  <div className="mt-auto pt-4">
-                    <div className="text-[13.5px] font-medium text-ink">{r.name}</div>
-                    <div className="text-[12px] text-ink/55">{r.meta}</div>
-                  </div>
                 </div>
               </article>
             </div>
