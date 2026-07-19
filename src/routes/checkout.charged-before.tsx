@@ -1536,9 +1536,52 @@ function MobileOrderSummaryDetail({
             Total savings ${fmt(savings)}
           </div>
 
-          <div className="mt-3 text-[11.5px] text-ink/55">
-            $0 charged today · only billed if your prescription is approved.
+          {/* DUE TODAY — prominent (image 1/2 details, image 3 minimal styling) */}
+          <div className="mt-4 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-4">
+            <div>
+              <div className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink/55">
+                Due Today
+              </div>
+              <div className="mt-1 text-[11.5px] text-ink/60 leading-snug">
+                Only charged if your<br />prescription is approved.
+              </div>
+            </div>
+            <div className="text-right leading-none">
+              <span className="mr-1.5 text-[14px] text-ink/35 line-through">
+                ${fmt(total)}
+              </span>
+              <span className="text-[26px] font-black" style={{ color: GREEN }}>
+                $0
+              </span>
+            </div>
           </div>
+
+          {/* Value props (from image 1/2) */}
+          <ul className="mt-5 space-y-3 text-[13.5px]">
+            {[
+              { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url, bold: true },
+              { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
+              { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
+            ].map((item) => (
+              <li key={item.t} className="flex items-start gap-3">
+                <img
+                  src={item.icon}
+                  alt=""
+                  className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-5 w-5 brightness-0 contrast-125" : "h-[18px] w-[18px]"}`}
+                />
+                <div className="leading-tight">
+                  <div className="font-bold text-ink">{item.t}</div>
+                  <div className="mt-0.5 text-[12px] text-ink/55">{item.s}</div>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {/* HSA/FSA */}
+          <div className="mt-4 flex items-center justify-center">
+            <img src={hsaFsa.url} alt="HSA/FSA Eligible" className="h-7 w-auto" />
+          </div>
+
         </div>
       )}
 
