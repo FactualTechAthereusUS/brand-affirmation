@@ -518,7 +518,7 @@ function SalesDMPage() {
       </section>
 
       {/* ═══════ Goals ═══════ */}
-      <section style={{ background: CREAM }}>
+      <section className="bg-white">
         <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
           <h2 className="text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[30px]">
             The goals <span className="italic font-light">you will accomplish</span> with your plan
