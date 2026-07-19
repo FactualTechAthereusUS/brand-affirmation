@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
+import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
@@ -144,11 +145,10 @@ function TopBar({ tab }: { tab: Tab }) {
     tab === "home" ? "Blissley" : tab === "messages" ? "Messages" : tab === "plan" ? "My Plan" : "Settings";
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--color-hairline)]/70 bg-white/85 px-5 py-3.5 backdrop-blur-md md:rounded-t-[36px]">
-      <div className="flex items-center gap-2">
-        <div className="grid h-8 w-8 place-items-center rounded-full text-[13px] font-black text-white" style={{ background: INK }}>
-          B
-        </div>
-        <span className="text-[15px] font-semibold tracking-tight">{title}</span>
+      <div className="flex items-center gap-2.5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-6 w-auto object-contain" />
+        <span className="text-[13px] font-medium text-ink/40">·</span>
+        <span className="text-[14px] font-medium tracking-tight text-ink/70">{title}</span>
       </div>
       <button className="grid h-9 w-9 place-items-center rounded-full bg-[color:var(--color-mist)]/60 text-ink/70 transition hover:bg-[color:var(--color-mist)]" aria-label="Notifications">
         <Bell className="h-4 w-4" />
@@ -401,7 +401,7 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
   const sub = kind === "care" ? "Sarah · responds within a few hours" : "Board-Certified · responds within 24 hours";
   const avatar =
     kind === "care" ? (
-      <div className="grid h-10 w-10 place-items-center rounded-full text-[12px] font-black text-white" style={{ background: INK }}>B</div>
+      <div className="grid h-10 w-10 place-items-center rounded-full bg-[color:var(--color-mist)]/60 p-1.5"><img src={blissleyLogo.url} alt="Blissley" className="h-full w-full object-contain" /></div>
     ) : (
       <div className="grid h-10 w-10 place-items-center rounded-full text-[12px] font-black text-white" style={{ background: NAVY }}>SN</div>
     );
