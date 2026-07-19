@@ -967,7 +967,7 @@ function CheckoutPage() {
             className="hidden lg:block"
             style={{ background: "#F5F5F7", minHeight: "calc(100vh - 64px)" }}
           >
-            <div className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12">
+            <div ref={rightInnerRef} className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12 will-change-transform">
               {treatmentSummary}
             </div>
           </aside>
