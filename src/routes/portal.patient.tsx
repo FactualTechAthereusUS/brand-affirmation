@@ -1194,11 +1194,12 @@ function Onboarding() {
     heroImage?: string;
     textPos?: "top" | "bottom";
     heroBg?: string;
+    variant?: "card";
   }> = [
     { title: `Welcome, ${firstName}.`, body: "Your care team is just one tap away. Let's take a quick look around.", hero: true, heroImage: portalWelcomeDoctor.url, textPos: "top", heroBg: "#7DAFCE" },
     { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", hero: true, heroImage: drNassWelcome.url, textPos: "bottom", heroBg: "#8FB9D6" },
     { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", hero: true, heroImage: portalWelcomeWoman.url, textPos: "bottom", heroBg: "#C9B79E" },
-    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", hero: true, heroImage: onboardingNotifications.url, textPos: "bottom", heroBg: "#A9CBE3" },
+    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", heroImage: onboardingNotifications.url, variant: "card", heroBg: "#A9CBE3" },
   ];
   const s = steps[step];
   const done = () => actions.completeOnboarding();
@@ -1214,10 +1215,40 @@ function Onboarding() {
         initial={{ y: 20, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "" : "bg-white p-7 text-center"}`}
+        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.variant === "card" ? "bg-white" : s.hero ? "" : "bg-white p-7 text-center"}`}
         style={s.hero ? { aspectRatio: "9 / 16", background: s.heroBg } : undefined}
       >
-        {s.hero ? (
+        {s.variant === "card" ? (
+          <>
+            <div className="w-full" style={{ background: s.heroBg }}>
+              <img src={s.heroImage} alt="" className="block w-full h-auto object-cover" />
+            </div>
+            <div className="bg-white p-6 text-center">
+              <h3 className="text-[22px] font-semibold leading-tight tracking-tight text-ink">{s.title}</h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-ink/65">{s.body}</p>
+              <div className="mt-5 flex items-center justify-center gap-1.5">
+                {steps.map((_, i) => (
+                  <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? PINK : "#E4E0D7" }} />
+                ))}
+              </div>
+              <div className="mt-5 flex items-center gap-3">
+                <button
+                  onClick={done}
+                  className="flex-1 rounded-full border border-ink/10 bg-white py-3.5 text-[14px] font-semibold text-ink transition hover:bg-ink/5"
+                >
+                  Skip
+                </button>
+                <button
+                  onClick={nextBtn.onClick}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[14px] font-semibold text-white transition hover:bg-ink/90"
+                >
+                  {nextBtn.label}
+                  <ArrowUpRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </>
+        ) : s.hero ? (
           <>
             <img src={s.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
             {s.textPos === "top" ? (
