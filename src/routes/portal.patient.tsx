@@ -268,7 +268,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
               </svg>
             }
             title="Next Shipment"
-            pill={`In ${PATIENT.nextShipDaysUpAway} days`}
+            pill={`In ${PATIENT.nextShipDaysAway} days`}
           />
           <div className="mt-3 text-[17px] font-semibold tracking-tight text-ink">Ships {PATIENT.nextShipDate}</div>
           <div className="text-[13px] text-ink/60">{PATIENT.medication.replace(" Injectable", "")} · {PATIENT.dose}</div>
