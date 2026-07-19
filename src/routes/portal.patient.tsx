@@ -14,6 +14,7 @@ import vialSemaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
 import drScottNass from "@/assets/dr-scott-nass.png.asset.json";
+import drNassWelcome from "@/assets/dr-nass-welcome.png.asset.json";
 import portalWelcomeDoctor from "@/assets/portal-welcome-doctor.png.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
 
