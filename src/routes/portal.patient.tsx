@@ -931,7 +931,7 @@ function Card({ children, accent }: { children: React.ReactNode; accent?: boolea
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={`rounded-3xl p-5 ${accent ? "bg-gradient-to-br from-white to-[#FFF3F1]" : "bg-[#F5F5F7]"}`}
+      className={`rounded-3xl p-5 ${accent ? "bg-gradient-to-br from-white to-[#FFF3F1]" : "bg-[#FAFAFA]"}`}
     >
       {children}
     </motion.div>
