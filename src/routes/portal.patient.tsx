@@ -1215,7 +1215,7 @@ function Onboarding() {
         initial={{ y: 20, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "" : "bg-white p-7 text-center"}`}
+        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.variant === "card" ? "bg-white" : s.hero ? "" : "bg-white p-7 text-center"}`}
         style={s.hero ? { aspectRatio: "9 / 16", background: s.heroBg } : undefined}
       >
         {s.hero ? (
