@@ -833,17 +833,18 @@ function PlanTab() {
 
       {/* Manage */}
       <Section title="Manage">
-        <div className="divide-y divide-white overflow-hidden rounded-2xl bg-[#FAFAFA]">
+        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white">
           {planState !== "paused" ? (
-            <ManageRow icon={<Pause className="h-4 w-4" />} label="Pause my program" onClick={() => setModal("pause")} />
+            <ManageRow icon={<Pause className="h-5 w-5" />} label="Pause my program" onClick={() => setModal("pause")} />
           ) : (
-            <ManageRow icon={<PlayCircle className="h-4 w-4" />} label="Resume my program" onClick={() => actions.resumePlan()} />
+            <ManageRow icon={<PlayCircle className="h-5 w-5" />} label="Resume my program" onClick={() => actions.resumePlan()} />
           )}
-          <ManageRow icon={<Repeat className="h-4 w-4" />} label="Switch plan" onClick={() => setModal("switch")} />
-          <ManageRow icon={<CreditCard className="h-4 w-4" />} label="Update payment method" onClick={() => setModal("payment")} />
-          <ManageRow icon={<MapPin className="h-4 w-4" />} label="Update shipping address" onClick={() => setModal("address")} />
-          <ManageRow icon={<X className="h-4 w-4" />} label="Cancel my program" onClick={() => setModal("cancel")} destructive />
+          <ManageRow icon={<Repeat className="h-5 w-5" />} label="Switch plan" onClick={() => setModal("switch")} />
+          <ManageRow icon={<CreditCard className="h-5 w-5" />} label="Update payment method" onClick={() => setModal("payment")} />
+          <ManageRow icon={<MapPin className="h-5 w-5" />} label="Update shipping address" onClick={() => setModal("address")} />
+          <ManageRow icon={<X className="h-5 w-5" />} label="Cancel my program" onClick={() => setModal("cancel")} destructive />
         </div>
+
       </Section>
 
       {/* Billing */}
