@@ -17,6 +17,7 @@ import drScottNass from "@/assets/dr-scott-nass.png.asset.json";
 import drNassWelcome from "@/assets/dr-nass-welcome.png.asset.json";
 import portalWelcomeDoctor from "@/assets/portal-welcome-doctor.png.asset.json";
 import portalWelcomeWoman from "@/assets/portal-welcome-woman.png.asset.json";
+import onboardingNotifications from "@/assets/onboarding-notifications.jpeg.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
 
 export const Route = createFileRoute("/portal/patient")({
@@ -1197,7 +1198,7 @@ function Onboarding() {
     { title: `Welcome, ${firstName}.`, body: "Your care team is just one tap away. Let's take a quick look around.", hero: true, heroImage: portalWelcomeDoctor.url, textPos: "top", heroBg: "#7DAFCE" },
     { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", hero: true, heroImage: drNassWelcome.url, textPos: "bottom", heroBg: "#8FB9D6" },
     { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", hero: true, heroImage: portalWelcomeWoman.url, textPos: "bottom", heroBg: "#C9B79E" },
-    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", icon: <Bell className="h-7 w-7" style={{ color: PINK }} /> },
+    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", hero: true, heroImage: onboardingNotifications.url, textPos: "bottom", heroBg: "#A9CBE3" },
   ];
   const s = steps[step];
   const done = () => actions.completeOnboarding();
