@@ -1294,10 +1294,13 @@ function MobileOrderSummaryDetail({
   // Line items — one row per add-on line, treatment is the primary
   const itemCount = 1 + (insurance ? 1 : 0) + (priority ? 1 : 0);
   const addOnsTotal = (insurance ? insurancePrice : 0) + (priority ? priorityPrice : 0);
-  const subtotal = baseSubtotal + addOnsTotal;
-  const discountAmount = discountApplied ? 0 : 0; // JOIN120 is already reflected in plan pricing
-  const total = subtotal - discountAmount;
-  const savings = planSavings + shippingWas;
+  // Subtotal shown at ORIGINAL (pre-discount) plan price + add-ons, so the
+  // "Plan discount" line below reconciles cleanly to the final Total.
+  const originalPlanTotal = originalPerMo * months;
+  const subtotal = originalPlanTotal + addOnsTotal;
+  const planDiscount = discountApplied ? planSavings : 0; // JOIN120 = plan savings
+  const total = subtotal - planDiscount; // shipping is free, so not subtracted
+  const savings = planDiscount + shippingWas;
 
   const fmt = (n: number) =>
     n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
