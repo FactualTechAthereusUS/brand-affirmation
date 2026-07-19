@@ -306,6 +306,45 @@ function CheckoutPage() {
   );
   const [submitting, setSubmitting] = useState(false);
 
+  // Proportional scroll sync: right column follows left's scroll progress on desktop
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const rightInnerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let raf = 0;
+    const sync = () => {
+      const left = leftColRef.current;
+      const right = rightInnerRef.current;
+      if (!left || !right) return;
+      if (window.innerWidth < 1024) {
+        right.style.transform = "";
+        return;
+      }
+      const vh = window.innerHeight;
+      const leftScrollable = left.offsetHeight - vh;
+      const rightScrollable = right.scrollHeight - vh;
+      if (leftScrollable <= 0 || rightScrollable <= 0) {
+        right.style.transform = "";
+        return;
+      }
+      const leftTop = left.getBoundingClientRect().top;
+      const scrolled = Math.min(Math.max(-leftTop, 0), leftScrollable);
+      const progress = scrolled / leftScrollable;
+      right.style.transform = `translate3d(0, ${-progress * rightScrollable}px, 0)`;
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(sync);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    sync();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
