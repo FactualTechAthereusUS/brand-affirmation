@@ -1319,42 +1319,34 @@ function ReservationBanner() {
   const mmss = `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`;
 
   return (
-    <div
-      className="lg:hidden border-b border-ink/10 px-4 py-3"
-      style={{ background: "rgba(238, 114, 115, 0.10)" }}
-    >
-      <div className="flex items-start gap-3">
-        <div
-          className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full"
-          style={{ background: PINK }}
+    <div className="lg:hidden px-4 pt-3">
+      <div
+        className="flex items-center gap-2.5 rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5"
+        style={{ background: "rgba(238, 114, 115, 0.10)" }}
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={PINK}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="shrink-0"
+          aria-hidden="true"
         >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <div className="min-w-0 flex-1 text-[13.5px] sm:text-[14px] font-semibold text-ink leading-snug">
           {expired ? (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="15" y1="9" x2="9" y2="15" />
-              <line x1="9" y1="9" x2="15" y2="15" />
-            </svg>
-          ) : (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-          )}
-        </div>
-        <div className="min-w-0 flex-1">
-          {expired ? (
-            <div className="text-[13.5px] font-bold text-ink">
-              Your reservation has expired
-            </div>
+            <>Your reservation has expired</>
           ) : (
             <>
-              <div className="text-[13.5px] font-bold text-ink">
-                Only <span style={{ color: PINK }}>{discountsLeft} {discountsLeft === 1 ? "discount" : "discounts"}</span> left
-              </div>
-              <div className="mt-0.5 text-[12.5px] leading-snug text-ink/70">
-                Yours is reserved for{" "}
-                <span className="font-bold tabular-nums" style={{ color: PINK }}>{mmss}</span> min
-              </div>
+              Only <span style={{ color: PINK }}>{discountsLeft}</span> {discountsLeft === 1 ? "discount" : "discounts"} left · Yours is reserved for{" "}
+              <span className="font-bold tabular-nums" style={{ color: PINK }}>{mmss}</span>
             </>
           )}
         </div>
