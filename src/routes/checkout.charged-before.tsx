@@ -1354,7 +1354,7 @@ function MobileOrderSummaryDetail({
     n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 
   return (
-    <div className="lg:hidden -mx-4 sm:-mx-6 border-t border-b border-ink/10 px-4 sm:px-6 py-6 bg-white">
+    <div className="lg:hidden -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 bg-white">
       {/* EXPANDED VIEW (image 2) */}
       {open && (
         <div>
