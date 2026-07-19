@@ -115,7 +115,7 @@ function PatientPortal() {
     <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink" style={{ fontFamily: "var(--font-sans)" }}>
       {/* Phone frame on desktop, edge-to-edge on mobile */}
       <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:my-6 md:min-h-[calc(100svh-3rem)] md:rounded-[36px] md:shadow-[0_40px_120px_-40px_rgba(0,0,0,0.35)] md:ring-1 md:ring-black/5">
-        <TopBar tab={tab} />
+        <TopBar />
         <main className="relative flex-1 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
