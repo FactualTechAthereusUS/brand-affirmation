@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import checkmarkCircle from "@/assets/checkmark-circle.png.asset.json";
+import approvalCheckmark from "@/assets/approval-checkmark.png.asset.json";
 import vialSemaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
@@ -788,7 +789,13 @@ function PlanTab() {
                 <div key={wk} className={`rounded-xl p-2.5 text-center ${done ? "bg-[#EAF3EF]" : upcoming ? "bg-[#FFF3F1] ring-1 ring-[#ee7273]/40" : "bg-white"}`}>
                   <div className="text-[10px] font-semibold uppercase tracking-wide text-ink/50">Wk {wk}</div>
                   <div className="mt-1">
-                    {done ? <CheckCircle2 className="mx-auto h-4 w-4" style={{ color: "#4a7c6f" }} /> : upcoming ? <Activity className="mx-auto h-4 w-4" style={{ color: PINK }} /> : <span className="text-[10px] text-ink/40">—</span>}
+                    {done ? (
+                      <img src={approvalCheckmark.url} alt="Dose completed" className="mx-auto h-5 w-5 object-contain" />
+                    ) : upcoming ? (
+                      <Activity className="mx-auto h-4 w-4" style={{ color: PINK }} />
+                    ) : (
+                      <span className="text-[10px] text-ink/40">—</span>
+                    )}
                   </div>
                 </div>
               );
