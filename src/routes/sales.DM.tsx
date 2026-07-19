@@ -591,7 +591,7 @@ function SalesDMPage() {
           </div>
           <div className="mt-5 flex flex-wrap items-center gap-2 text-[12.5px] text-ink/75 sm:text-[13.5px]">
             <img src={trustpilot.url} alt="Excellent 4.8 rating" className="h-4 w-auto sm:h-5" />
-            <span className="font-semibold text-ink">3,200+</span>
+            <span className="font-semibold text-ink">30,000+</span>
             <span>happy patients</span>
           </div>
         </div>
