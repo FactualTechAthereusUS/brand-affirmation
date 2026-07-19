@@ -284,7 +284,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                 <div className="min-w-0">
                   <div className="text-[15px] font-semibold text-ink">Check-in required</div>
                   <div className="mt-0.5 text-[13px] text-ink/70">Your next refill is waiting on your monthly check-in.</div>
-                  <button onClick={() => onGoto("plan")} className="mt-3 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12.5px] font-semibold text-white" style={{ background: PINK }}>
+                  <button onClick={() => { onGoto("plan"); actions.openPlanModal("checkin"); }} className="mt-3 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12.5px] font-semibold text-white" style={{ background: PINK }}>
                     Complete check-in <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
