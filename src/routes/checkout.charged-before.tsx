@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Zap,
   X,
+  Package,
 } from "lucide-react";
 import { z } from "zod";
 
