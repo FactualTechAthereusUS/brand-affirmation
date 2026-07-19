@@ -3,7 +3,7 @@
  * Uses useSyncExternalStore + localStorage. No backend.
  * Drives every card, badge, and state transition in /portal/patient.
  */
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, useRef } from "react";
 
 /* ────────── Types ────────── */
 export type PlanState =
@@ -197,7 +197,20 @@ function getSnap() { return state; }
 function getServerSnap() { return state; }
 
 export function usePortal<T>(selector: (s: PortalState) => T): T {
-  return useSyncExternalStore(subscribe, () => selector(state), () => selector(state));
+  const cache = useRef<{ state: PortalState | null; value: T }>({ state: null, value: undefined as unknown as T });
+  const getSnapshot = () => {
+    if (cache.current.state === state) return cache.current.value;
+    const next = selector(state);
+    const prev = cache.current.value;
+    // Shallow-equal arrays/objects to preserve reference stability across unrelated state changes
+    const same =
+      Object.is(prev, next) ||
+      (Array.isArray(prev) && Array.isArray(next) && prev.length === next.length && prev.every((v, i) => Object.is(v, (next as unknown as unknown[])[i])));
+    const value = same ? prev : next;
+    cache.current = { state, value };
+    return value;
+  };
+  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
 
 /* ────────── Actions ────────── */
