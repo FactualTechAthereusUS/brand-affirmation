@@ -590,8 +590,8 @@ function CheckoutPage() {
                 </div>
               </FormCard>
 
-              {/* Your Treatment — mobile only (between shipping & payment) */}
-              <div className="lg:hidden">{treatmentSummary}</div>
+              {/* Treatment summary is shown in the mobile top bar (collapsible) */}
+
 
               {/* Payment */}
               <FormCard>
