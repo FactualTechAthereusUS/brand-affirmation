@@ -25,9 +25,7 @@ import icon20 from "@/assets/icon-20.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
 import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
-import iconTape from "@/assets/icon-tape.png.asset.json";
-import iconTarget from "@/assets/icon-target.png.asset.json";
-import iconTrophy from "@/assets/icon-trophy.png.asset.json";
+import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 
 import face1 from "@/assets/face-1.png.asset.json";
 import face2 from "@/assets/face-2.png.asset.json";
@@ -770,14 +768,16 @@ function SalesDMPage() {
           </h2>
           <div className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
             {[
-              { icon: iconTarget.url, k: "18%", v: "Average body weight reduction" },
-              { icon: iconTrophy.url, k: "9/10", v: "Say this is the most effective they've tried" },
-              { icon: iconTape.url, k: "6.5\"", v: "Average waist reduction" },
-              { icon: iconTrophy.url, k: "93%", v: "Kept the weight off" },
+              { k: "18%", v: "Average body weight reduction" },
+              { k: "9/10", v: "Say this is the most effective they've tried" },
+              { k: "6.5\"", v: "Average waist reduction" },
+              { k: "93%", v: "Kept the weight off" },
             ].map((s) => (
               <div key={s.v} className="grid grid-cols-[auto_1fr] items-center gap-4 py-5 sm:gap-8 sm:py-6">
                 <div className="flex items-center gap-3 sm:gap-5">
-                  <img src={s.icon} alt="" className="h-10 w-10 shrink-0 object-contain sm:h-14 sm:w-14" loading="lazy" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white sm:h-16 sm:w-16">
+                    <img src={badgeCheckPink.url} alt="" className="h-10 w-10 object-contain sm:h-14 sm:w-14" loading="lazy" />
+                  </div>
                   <div className="text-[26px] font-black leading-none text-ink sm:text-[36px]">{s.k}</div>
                 </div>
                 <div className="text-[14px] font-semibold leading-snug text-ink sm:text-[17px]">{s.v}</div>
