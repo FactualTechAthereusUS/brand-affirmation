@@ -22,6 +22,7 @@ import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
+import { Route as PortalPatientRouteImport } from './routes/portal.patient'
 import { Route as IntakeWeightloss3RouteImport } from './routes/intake_.weightloss-3'
 import { Route as IntakeWeightLossTrimrx2RouteImport } from './routes/intake_.weight-loss-trimrx-2'
 import { Route as IntakeWeightLossTrimrxRouteImport } from './routes/intake_.weight-loss-trimrx'
@@ -96,6 +97,11 @@ const SalesDMRoute = SalesDMRouteImport.update({
   path: '/sales/DM',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalPatientRoute = PortalPatientRouteImport.update({
+  id: '/portal/patient',
+  path: '/portal/patient',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IntakeWeightloss3Route = IntakeWeightloss3RouteImport.update({
   id: '/intake_/weightloss-3',
   path: '/intake/weightloss-3',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/portal/patient': typeof PortalPatientRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/portal/patient': typeof PortalPatientRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/intake_/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake_/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake_/weightloss-3': typeof IntakeWeightloss3Route
+  '/portal/patient': typeof PortalPatientRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/portal/patient'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/portal/patient'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
@@ -273,6 +284,7 @@ export interface FileRouteTypes {
     | '/intake_/weight-loss-trimrx'
     | '/intake_/weight-loss-trimrx-2'
     | '/intake_/weightloss-3'
+    | '/portal/patient'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
@@ -297,6 +309,7 @@ export interface RootRouteChildren {
   IntakeWeightLossTrimrxRoute: typeof IntakeWeightLossTrimrxRoute
   IntakeWeightLossTrimrx2Route: typeof IntakeWeightLossTrimrx2Route
   IntakeWeightloss3Route: typeof IntakeWeightloss3Route
+  PortalPatientRoute: typeof PortalPatientRoute
   SalesDMRoute: typeof SalesDMRoute
   SalesTrimrxRoute: typeof SalesTrimrxRoute
   WeightLossSalesRoute: typeof WeightLossSalesRoute
@@ -396,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SalesDMRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/patient': {
+      id: '/portal/patient'
+      path: '/portal/patient'
+      fullPath: '/portal/patient'
+      preLoaderRoute: typeof PortalPatientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/intake_/weightloss-3': {
       id: '/intake_/weightloss-3'
       path: '/intake/weightloss-3'
@@ -473,6 +493,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeWeightLossTrimrxRoute: IntakeWeightLossTrimrxRoute,
   IntakeWeightLossTrimrx2Route: IntakeWeightLossTrimrx2Route,
   IntakeWeightloss3Route: IntakeWeightloss3Route,
+  PortalPatientRoute: PortalPatientRoute,
   SalesDMRoute: SalesDMRoute,
   SalesTrimrxRoute: SalesTrimrxRoute,
   WeightLossSalesRoute: WeightLossSalesRoute,
