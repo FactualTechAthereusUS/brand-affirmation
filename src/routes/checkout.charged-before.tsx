@@ -1354,7 +1354,7 @@ function MobileOrderSummaryDetail({
     n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 
   return (
-    <div className="lg:hidden -mx-4 sm:-mx-6 border-t border-b border-ink/10 px-4 sm:px-6 py-6 bg-white">
+    <div className="lg:hidden -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 bg-white">
       {/* EXPANDED VIEW (image 2) */}
       {open && (
         <div>
@@ -1550,9 +1550,9 @@ function MobileOrderSummaryDetail({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-ink/15 bg-white px-4 py-2.5 text-[14px] font-bold text-ink shadow-sm"
+            className="inline-flex items-center gap-2 rounded-2xl border border-ink/15 bg-white px-3 py-2 text-[13px] font-bold text-ink shadow-sm"
           >
-            <SavingsIcon className="h-4 w-4" /> Add discount
+            <SavingsIcon className="h-3.5 w-3.5" /> Add discount
           </button>
 
           {/* Total row */}
