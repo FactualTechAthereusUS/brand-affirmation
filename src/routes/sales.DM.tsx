@@ -585,18 +585,15 @@ function SalesDMPage() {
             reviews="29.1K"
             price={249}
             oldPrice={299}
-            saveLine="Save $50 instantly"
+            saveLine="Save $50"
             features={[
               "Prescribed and shipped free within 2 days",
               "Prescribed by U.S. board-certified clinicians",
-              "Message your doctor 24/7",
+              "Message your physician anytime",
               `${semaPatients.toLocaleString()} patients chose this today`,
             ]}
             selected={treatment === "sema"}
             onSelect={() => setTreatment("sema")}
-            formType={semaForm}
-            onFormType={setSemaForm}
-            oralUpcharge={52}
           />
           <TreatmentCard
             id="tirz"
