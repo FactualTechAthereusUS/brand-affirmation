@@ -1601,13 +1601,14 @@ function notifBg(k: string) {
   return k === "message" ? "#FFF3F1" : k === "shipment" ? "#EAF0F8" : k === "check_in" ? "#FFF3F1" : k === "charge" ? "#F5F1E9" : "#EAF3EF";
 }
 function notifIcon(k: string) {
-  const cls = "h-4 w-4";
-  if (k === "message") return <MessageCircle className={cls} style={{ color: PINK }} />;
-  if (k === "shipment") return <Truck className={cls} style={{ color: NAVY }} />;
-  if (k === "check_in") return <AlertCircle className={cls} style={{ color: PINK }} />;
-  if (k === "charge") return <CreditCard className={cls} style={{ color: "#8a6d3b" }} />;
-  return <CheckCircle2 className={cls} style={{ color: "#4a7c6f" }} />;
+  const cls = "h-6 w-6 text-ink";
+  if (k === "message") return <MessageCircle className={cls} />;
+  if (k === "shipment") return <Truck className={cls} />;
+  if (k === "check_in") return <AlertCircle className={cls} />;
+  if (k === "charge") return <CreditCard className={cls} />;
+  return <CheckCircle2 className={cls} />;
 }
+
 
 function timeAgo(ts: number) {
   const diff = Date.now() - ts;
