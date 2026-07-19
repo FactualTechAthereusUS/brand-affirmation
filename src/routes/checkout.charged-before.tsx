@@ -561,18 +561,17 @@ function CheckoutPage() {
       <form onSubmit={onSubmit} className="w-full">
         <div className="lg:grid lg:grid-cols-2 lg:items-stretch">
           {/* LEFT — checkout form */}
-          <div ref={leftColRef} className="bg-white lg:flex lg:justify-end">
-
-
-            <motion.div
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.06 } },
-              }}
-              className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
-            >
+          <div ref={leftColRef} className="bg-white">
+            <div className="lg:flex lg:justify-end">
+              <motion.div
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: {},
+                  show: { transition: { staggerChildren: 0.06 } },
+                }}
+                className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-0 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
+              >
               {/* Contact */}
               <FormCard>
                 <div className="mb-3 flex items-end justify-between">
@@ -924,12 +923,19 @@ function CheckoutPage() {
                 charges; refunds are governed by the Refund Policy.
               </p>
 
-              <ReviewSlider />
+            </motion.div>
+          </div>
 
-              <div className="lg:hidden">
-                <ValueStack />
-              </div>
+          <div className="px-4 pt-6 sm:px-6 lg:px-0">
+            <ReviewSlider />
+          </div>
 
+          <div className="px-4 pt-6 sm:px-6 lg:hidden">
+            <ValueStack />
+          </div>
+
+          <div className="lg:flex lg:justify-end">
+            <div className="w-full max-w-[560px] px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12">
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
                 <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-ink/50">
@@ -961,8 +967,9 @@ function CheckoutPage() {
                   Blissley is a technology platform and does not provide medical advice. Physician services are provided by independent licensed practitioners. Individual results may vary.
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
+        </div>
 
           {/* RIGHT — grey order summary (desktop only) */}
           <aside
