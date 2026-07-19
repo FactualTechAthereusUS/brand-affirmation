@@ -1122,7 +1122,7 @@ function SettingsTab() {
       </SettingsGroup>
 
       <SettingsGroup title="Account">
-        <button onClick={() => { actions.completeOnboarding(); const r = { ...prefs, onboardingComplete: false }; actions.toggleNotifPref("onboardingComplete", false); }} className="flex w-full items-center justify-between rounded-xl px-1 py-3 text-left hover:bg-[color:var(--color-mist)]/40">
+        <button onClick={() => actions.toggleNotifPref("onboardingComplete", false)} className="flex w-full items-center justify-between rounded-xl px-1 py-3 text-left hover:bg-[color:var(--color-mist)]/40">
           <span className="text-[14px] text-ink">Replay welcome tour</span>
           <ChevronRight className="h-4 w-4 text-ink/40" />
         </button>
