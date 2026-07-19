@@ -927,7 +927,7 @@ function SalesDMPage() {
             ))}
           </div>
           <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-1.5">
-            <ShieldCheck className="h-4 w-4" style={{ color: "#16A34A" }} />
+            <img src="https://static.legitscript.com/seals/183773.png" alt="LegitScript Certified" className="h-5 w-auto" />
             <span className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/70">LegitScript Certified</span>
           </div>
         </div>
