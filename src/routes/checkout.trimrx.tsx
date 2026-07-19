@@ -1287,6 +1287,36 @@ function MobileOrderSummaryDetail({
   const [discountApplied, setDiscountApplied] = useState(true);
   const [code, setCode] = useState("JOIN120");
 
+  // Scarcity: dynamic discounts-left + reservation timer
+  const [discountsLeft, setDiscountsLeft] = useState(() => 18 + Math.floor(Math.random() * 11)); // 18-28
+  const [secondsLeft, setSecondsLeft] = useState(() => 6 * 60 + 30 + Math.floor(Math.random() * 90)); // 6:30-8:00
+
+  useEffect(() => {
+    // Sequence: quickly drop toward 7 → 4/3 → 2 → 1
+    const rand = (min: number, max: number) => min + Math.random() * (max - min);
+    const timeouts: number[] = [];
+    const schedule: { at: number; to: number }[] = [
+      { at: rand(2500, 4500), to: 7 + Math.floor(Math.random() * 2) }, // 7-8
+      { at: rand(6000, 9000), to: 3 + Math.floor(Math.random() * 2) }, // 3-4
+      { at: rand(11000, 15000), to: 2 },
+      { at: rand(17000, 22000), to: 1 },
+    ];
+    schedule.forEach(({ at, to }) => {
+      timeouts.push(window.setTimeout(() => setDiscountsLeft((n) => (to < n ? to : n)), at));
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const mmss = `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`;
+
+
   const shippingWas = 30 * months;
   const insurancePrice = 3.95;
   const priorityPrice = 49.95;
