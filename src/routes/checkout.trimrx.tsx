@@ -917,6 +917,10 @@ function CheckoutPage() {
           >
             <div className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12">
               {treatmentSummary}
+
+              <div className="hidden lg:block">
+                <ValueStack />
+              </div>
             </div>
           </aside>
         </div>
