@@ -319,26 +319,33 @@ function MessagesTab() {
     <AnimatePresence mode="wait">
       {view === "list" ? (
         <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-5 pt-5">
-          <p className="text-[13.5px] text-ink/55">You're in touch with the people caring for you.</p>
+          <h2 className="text-[22px] font-semibold tracking-tight text-ink" style={{ fontFamily: "var(--font-serif, var(--font-sans))" }}>Messages</h2>
+          <p className="mt-1 text-[13.5px] text-ink/55">The people caring for you — one tap away.</p>
           <div className="mt-5 space-y-3">
             <ThreadCard
               onOpen={() => setView("care")}
               iconBg="#F5F1E9"
-              icon={<MessageCircle className="h-5 w-5" style={{ color: INK }} />}
+              icon={<img src={blissleyLogo.url} alt="" className="h-6 w-6 object-contain" />}
               title="Care Team"
               subtitle="Billing, shipping, general questions"
-              status="Sarah · online"
+              status="Sarah · online now"
+              statusDot={PINK}
               unread={2}
+              preview="Absolutely — you can update it right inside My Plan..."
             />
             <ThreadCard
               onOpen={() => setView("doc")}
               iconBg="#EAF0F8"
               icon={<Stethoscope className="h-5 w-5" style={{ color: NAVY }} />}
               title="Dr. Scott Nass MD"
-              subtitle="Clinical questions, side effects, dosing"
-              status="Responds within 24 hours"
+              subtitle="Clinical questions · side effects · dosing"
+              status="Typically replies within 24 hrs"
               unread={0}
+              preview="Your nausea in weeks 1–3 is expected and typically..."
             />
+          </div>
+          <div className="mt-6 rounded-2xl bg-[color:var(--color-mist)]/50 px-4 py-3 text-[11.5px] leading-relaxed text-ink/60">
+            For medical emergencies, call <span className="font-semibold text-ink">911</span>. Messages here are reviewed during clinical hours.
           </div>
         </motion.div>
       ) : (
@@ -353,24 +360,28 @@ function MessagesTab() {
 }
 
 function ThreadCard({
-  onOpen, iconBg, icon, title, subtitle, status, unread,
-}: { onOpen: () => void; iconBg: string; icon: React.ReactNode; title: string; subtitle: string; status: string; unread: number }) {
+  onOpen, iconBg, icon, title, subtitle, status, statusDot, unread, preview,
+}: { onOpen: () => void; iconBg: string; icon: React.ReactNode; title: string; subtitle: string; status: string; statusDot?: string; unread: number; preview: string }) {
   return (
     <motion.button
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.985 }}
       onClick={onOpen}
-      className="flex w-full items-center gap-4 rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4 text-left transition hover:border-ink/20"
+      className="group flex w-full items-start gap-3.5 rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4 text-left transition hover:border-ink/25 hover:shadow-sm"
     >
-      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full" style={{ background: iconBg }}>{icon}</div>
+      <div className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full" style={{ background: iconBg }}>
+        {icon}
+        {statusDot && <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full ring-2 ring-white" style={{ background: statusDot }} />}
+      </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <div className="truncate text-[15px] font-semibold text-ink">{title}</div>
-          {unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[10.5px] font-bold text-white" style={{ background: PINK }}>{unread}</span>}
+          {unread > 0 && <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full px-1.5 text-[10px] font-bold text-white" style={{ background: PINK }}>{unread}</span>}
+          <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-ink/30 transition group-hover:translate-x-0.5 group-hover:text-ink/60" />
         </div>
-        <div className="mt-0.5 truncate text-[12.5px] text-ink/60">{subtitle}</div>
-        <div className="mt-1 text-[11.5px] text-ink/45">{status}</div>
+        <div className="mt-0.5 truncate text-[12.5px] text-ink/55">{subtitle}</div>
+        <div className={`mt-1.5 truncate text-[12.5px] ${unread > 0 ? "font-medium text-ink/85" : "text-ink/55"}`}>{preview}</div>
+        <div className="mt-1 text-[11px] text-ink/40">{status}</div>
       </div>
-      <ChevronRight className="h-4 w-4 shrink-0 text-ink/40" />
     </motion.button>
   );
 }
@@ -380,6 +391,7 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
   const [msgs, setMsgs] = useState<Msg[]>(initial);
   const [draft, setDraft] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 999999, behavior: "smooth" });
@@ -388,61 +400,187 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
   const send = () => {
     if (!draft.trim()) return;
     const now = new Date();
-    const time = `Today · ${now.getHours() % 12 || 12}:${String(now.getMinutes()).padStart(2, "0")} ${now.getHours() >= 12 ? "PM" : "AM"}`;
-    setMsgs((m) => [...m, { from: "me", text: draft.trim(), time }]);
+    const hh = now.getHours() % 12 || 12;
+    const mm = String(now.getMinutes()).padStart(2, "0");
+    const ampm = now.getHours() >= 12 ? "PM" : "AM";
+    setMsgs((m) => [...m, { from: "me", text: draft.trim(), time: `Today · ${hh}:${mm} ${ampm}` }]);
     setDraft("");
+    requestAnimationFrame(() => inputRef.current?.focus());
   };
 
-  const title = kind === "care" ? "Care Team" : "Dr. Scott Nass MD";
-  const sub = kind === "care" ? "Sarah · responds within a few hours" : "Board-Certified · responds within 24 hours";
-  const avatar =
+  const title = kind === "care" ? "Care Team" : "Dr. Scott Nass";
+  const badge = kind === "care" ? null : "MD";
+  const subline = kind === "care" ? "Sarah · Patient Care Lead" : "NPI #1043694656 · Board-Certified";
+
+  const HeroAvatar = () =>
     kind === "care" ? (
-      <div className="grid h-10 w-10 place-items-center rounded-full bg-[color:var(--color-mist)]/60 p-1.5"><img src={blissleyLogo.url} alt="Blissley" className="h-full w-full object-contain" /></div>
+      <div className="grid h-16 w-16 place-items-center rounded-full bg-[color:var(--color-mist)]/70 p-3 ring-1 ring-black/5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-full w-full object-contain" />
+      </div>
     ) : (
-      <div className="grid h-10 w-10 place-items-center rounded-full text-[12px] font-black text-white" style={{ background: NAVY }}>SN</div>
+      <div className="grid h-16 w-16 place-items-center rounded-full text-[18px] font-black text-white ring-1 ring-black/5" style={{ background: NAVY }}>SN</div>
     );
 
+  const bubbleGradient =
+    kind === "care"
+      ? `linear-gradient(135deg, ${INK} 0%, #2d2d2d 100%)`
+      : `linear-gradient(135deg, ${PINK} 0%, #d95e5f 100%)`;
+
   return (
-    <motion.div key={kind} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }} transition={{ duration: 0.2 }} className="flex h-full flex-col">
-      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-[color:var(--color-hairline)]/70 bg-white/90 px-4 py-3 backdrop-blur">
-        <button onClick={onBack} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[color:var(--color-mist)]/60" aria-label="Back">
+    <motion.div
+      key={kind}
+      initial={{ opacity: 0, x: 8 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 8 }}
+      transition={{ duration: 0.2 }}
+      className="flex h-full flex-col bg-white"
+    >
+      {/* Modular pill header */}
+      <div className="sticky top-0 z-10 flex items-center gap-2 bg-white/90 px-3 pb-2 pt-3 backdrop-blur">
+        <button onClick={onBack} className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[color:var(--color-mist)]/70 text-ink transition hover:bg-[color:var(--color-mist)]" aria-label="Back">
           <ChevronLeft className="h-4 w-4" />
         </button>
-        {avatar}
-        <div className="min-w-0">
-          <div className="truncate text-[14.5px] font-semibold text-ink">{title}</div>
-          <div className="truncate text-[11.5px] text-ink/55">{sub}</div>
+        <div className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-[color:var(--color-mist)]/70 px-3 py-1.5">
+          <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white p-0.5">
+            {kind === "care" ? (
+              <img src={blissleyLogo.url} alt="" className="h-full w-full object-contain" />
+            ) : (
+              <span className="grid h-full w-full place-items-center rounded-full text-[8px] font-black text-white" style={{ background: NAVY }}>SN</span>
+            )}
+          </div>
+          <span className="truncate text-[13px] font-semibold text-ink">{title}{badge && <span className="ml-1 rounded-md bg-white px-1.5 py-0.5 text-[9.5px] font-bold tracking-wide text-ink/70">{badge}</span>}</span>
+        </div>
+        <button className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[color:var(--color-mist)]/70 text-ink/70 transition hover:bg-[color:var(--color-mist)]" aria-label="Info">
+          <ShieldCheck className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* Scrollable body */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 pb-6 pt-4">
+        {/* Hero identity */}
+        <div className="flex flex-col items-center pb-6 pt-2 text-center">
+          <HeroAvatar />
+          <div className="mt-3 flex items-center gap-1.5">
+            <div className="text-[16px] font-semibold text-ink" style={{ fontFamily: "var(--font-serif, var(--font-sans))" }}>
+              {kind === "care" ? "Blissley Care Team" : "Dr. Scott Nass"}
+            </div>
+            {badge && <span className="rounded-md bg-[color:var(--color-mist)]/70 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-ink/70">{badge}</span>}
+          </div>
+          <div className="mt-0.5 text-[11.5px] text-ink/50">{subline}</div>
+        </div>
+
+        {/* Day divider */}
+        <DayDivider label="Today" />
+
+        <div className="mt-4 space-y-3">
+          {msgs.map((m, i) => {
+            const prev = msgs[i - 1];
+            const groupedWithPrev = prev && prev.from === m.from;
+            if (m.from === "me") {
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22 }}
+                  className="flex justify-end"
+                >
+                  <div className="flex max-w-[80%] flex-col items-end">
+                    <div
+                      className="rounded-[22px] rounded-br-md px-4 py-2.5 text-[14px] leading-relaxed text-white shadow-[0_2px_10px_-4px_rgba(238,114,115,0.6)]"
+                      style={{ background: bubbleGradient }}
+                    >
+                      {m.text}
+                    </div>
+                    <div className="mt-1 flex items-center gap-1 pr-1 text-[10.5px] text-ink/40">
+                      <CheckCircle2 className="h-3 w-3" />
+                      <span>{m.time.replace(/^Today · /, "")}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            }
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22 }}
+                className="flex items-end gap-2"
+              >
+                <div className="h-7 w-7 shrink-0">
+                  {!groupedWithPrev && (
+                    kind === "care" ? (
+                      <div className="grid h-7 w-7 place-items-center rounded-full bg-[color:var(--color-mist)]/70 p-1">
+                        <img src={blissleyLogo.url} alt="" className="h-full w-full object-contain" />
+                      </div>
+                    ) : (
+                      <div className="grid h-7 w-7 place-items-center rounded-full text-[9px] font-black text-white" style={{ background: NAVY }}>SN</div>
+                    )
+                  )}
+                </div>
+                <div className="flex max-w-[80%] flex-col">
+                  {!groupedWithPrev && m.name && (
+                    <div className="mb-1 pl-1 text-[10.5px] font-semibold uppercase tracking-wide text-ink/45">{m.name}</div>
+                  )}
+                  <div className="rounded-[22px] rounded-bl-md bg-[color:var(--color-mist)]/60 px-4 py-2.5 text-[14px] leading-relaxed text-ink">
+                    {m.text}
+                  </div>
+                  <div className="mt-1 pl-2 text-[10.5px] text-ink/40">{m.time}</div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
-      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-5">
-        {msgs.map((m, i) => (
-          <motion.div key={i} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className={`flex ${m.from === "me" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[14px] leading-snug ${m.from === "me" ? "text-white" : "bg-[color:var(--color-mist)]/50 text-ink"}`} style={m.from === "me" ? { background: INK } : undefined}>
-              {m.from === "them" && m.name && <div className="mb-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-ink/50">{m.name}</div>}
-              <div>{m.text}</div>
-              <div className={`mt-1 text-[10px] ${m.from === "me" ? "text-white/60" : "text-ink/40"}`}>{m.time}</div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="border-t border-[color:var(--color-hairline)]/70 bg-white p-3">
-        <div className="flex items-center gap-2 rounded-full bg-[color:var(--color-mist)]/45 px-4">
-          <input
+      {/* Composer */}
+      <div className="border-t border-[color:var(--color-hairline)]/70 bg-white px-3 pb-3 pt-2.5">
+        <div className="flex items-end gap-2 rounded-[28px] border border-[color:var(--color-hairline)] bg-white px-2 py-1.5 shadow-[0_2px_16px_-8px_rgba(0,0,0,0.15)] focus-within:border-ink/25">
+          <button className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-ink/50 transition hover:bg-[color:var(--color-mist)]/60 hover:text-ink" aria-label="Attach">
+            <span className="text-[20px] leading-none">+</span>
+          </button>
+          <textarea
+            ref={inputRef}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && send()}
-            placeholder={kind === "care" ? "Message your care team..." : "Ask your physician..."}
-            className="h-12 flex-1 bg-transparent text-[14px] text-ink placeholder:text-ink/40 focus:outline-none"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                send();
+              }
+            }}
+            rows={1}
+            placeholder={kind === "care" ? "Message your care team…" : "Ask Dr. Nass…"}
+            className="min-h-[36px] max-h-32 flex-1 resize-none bg-transparent py-2 text-[14px] leading-snug text-ink placeholder:text-ink/40 focus:outline-none"
           />
-          <button onClick={send} className="grid h-9 w-9 place-items-center rounded-full text-white transition disabled:opacity-40" style={{ background: PINK }} disabled={!draft.trim()} aria-label="Send">
-            <Send className="h-4 w-4" />
+          <button
+            onClick={send}
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-white transition disabled:cursor-not-allowed disabled:opacity-30"
+            style={{ background: draft.trim() ? PINK : "#171717" }}
+            disabled={!draft.trim()}
+            aria-label="Send"
+          >
+            <Send className="h-3.5 w-3.5" />
           </button>
         </div>
-        {kind === "doc" && <div className="mt-2 text-center text-[10.5px] text-ink/45">For emergencies call 911. This is not emergency care.</div>}
+        {kind === "doc" && (
+          <div className="mt-2 text-center text-[10.5px] text-ink/45">
+            For emergencies call 911 · This is not emergency care
+          </div>
+        )}
       </div>
     </motion.div>
+  );
+}
+
+function DayDivider({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+      <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/40">{label}</span>
+      <div className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+    </div>
   );
 }
 
