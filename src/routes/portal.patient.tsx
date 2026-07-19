@@ -200,16 +200,18 @@ function greeting() {
 
 function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   return (
-    <div className="pl-1 pr-4 pt-5">
-      <motion.h1
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-[24px] font-semibold tracking-tight text-ink"
-      >
-        {greeting()}, {PATIENT.firstName}.
-      </motion.h1>
-      <p className="mt-1 text-[13.5px] text-ink/55">Here's the state of your program today.</p>
+    <div className="pt-5">
+      <div className="pr-4">
+        <motion.h1
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-[24px] font-semibold tracking-tight text-ink"
+        >
+          {greeting()}, {PATIENT.firstName}.
+        </motion.h1>
+        <p className="mt-1 text-[13.5px] text-ink/55">Here's the state of your program today.</p>
+      </div>
 
       {/* Hero card */}
       <motion.div
@@ -230,7 +232,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         </div>
       </motion.div>
 
-      <div className="mt-5 space-y-2.5">
+      <div className="mt-5 space-y-2.5 pl-1 pr-4">
         {/* Approval status */}
         {PATIENT.approved ? (
           <Card>
