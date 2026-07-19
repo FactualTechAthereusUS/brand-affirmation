@@ -471,7 +471,7 @@ function SalesDMPage() {
         </motion.div>
 
         {/* Success meter */}
-        <div className="mt-6 rounded-2xl border border-ink/10 p-4 sm:p-5">
+        <div className="mt-8">
           <div className="flex items-center justify-between text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/60">
             <span>Your chance of success</span>
             <span style={{ color: "#16A34A" }}>94.6% · Very high</span>
@@ -481,8 +481,8 @@ function SalesDMPage() {
           </div>
         </div>
 
-        {/* Chart card */}
-        <div className="mt-6 rounded-2xl border border-ink/10 p-4 sm:p-6">
+        {/* Chart */}
+        <div className="mt-8">
           <WeightLossChart start={primaryPatient.startLbs} goal={primaryPatient.goalLbs} />
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
             <div>
