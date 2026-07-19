@@ -25,6 +25,9 @@ import icon20 from "@/assets/icon-20.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
 import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
+import iconTape from "@/assets/icon-tape.png.asset.json";
+import iconTarget from "@/assets/icon-target.png.asset.json";
+import iconTrophy from "@/assets/icon-trophy.png.asset.json";
 
 import face1 from "@/assets/face-1.png.asset.json";
 import face2 from "@/assets/face-2.png.asset.json";
@@ -753,7 +756,8 @@ function SalesDMPage() {
       </section>
 
       {/* ═══════ Backed by research + stats ═══════ */}
-      <section style={{ background: CANVAS }}>
+      <section className="bg-white">
+
         <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
           <div className="text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
             Backed by research from
@@ -764,16 +768,19 @@ function SalesDMPage() {
           <h2 className="mt-8 text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[30px]">
             What makes Blissley <span className="italic font-light">so much better?</span>
           </h2>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
             {[
-              { k: "18%", v: "Average body weight reduction" },
-              { k: "9/10", v: "Say this is the most effective they've tried" },
-              { k: "6.5\"", v: "Average waist reduction" },
-              { k: "93%", v: "Kept the weight off" },
+              { icon: iconTarget.url, k: "18%", v: "Average body weight reduction" },
+              { icon: iconTrophy.url, k: "9/10", v: "Say this is the most effective they've tried" },
+              { icon: iconTape.url, k: "6.5\"", v: "Average waist reduction" },
+              { icon: iconTrophy.url, k: "93%", v: "Kept the weight off" },
             ].map((s) => (
-              <div key={s.k} className="rounded-2xl bg-white p-5 text-center">
-                <div className="text-[28px] font-black text-ink sm:text-[32px]">{s.k}</div>
-                <div className="mt-1 text-[12.5px] leading-snug text-ink/65">{s.v}</div>
+              <div key={s.v} className="grid grid-cols-[auto_1fr] items-center gap-4 py-5 sm:gap-8 sm:py-6">
+                <div className="flex items-center gap-3 sm:gap-5">
+                  <img src={s.icon} alt="" className="h-10 w-10 shrink-0 object-contain sm:h-14 sm:w-14" loading="lazy" />
+                  <div className="text-[26px] font-black leading-none text-ink sm:text-[36px]">{s.k}</div>
+                </div>
+                <div className="text-[14px] font-semibold leading-snug text-ink sm:text-[17px]">{s.v}</div>
               </div>
             ))}
           </div>
