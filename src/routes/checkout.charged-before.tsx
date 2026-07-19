@@ -1509,33 +1509,35 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
-          {/* Total if prescribed */}
-          <div className="mt-4 rounded-2xl border border-ink/15 bg-ink/[0.03] px-4 py-3.5 flex items-end justify-between">
-            <div>
-              <div className="text-[20px] font-black text-ink leading-none">Total if prescribed</div>
+          {/* Total if prescribed — Shopify-style clean row */}
+          <div className="mt-5 flex items-start justify-between gap-4">
+            <div className="text-[26px] font-black leading-[1.05] text-ink">
+              Total if<br />prescribed
             </div>
-            <div className="text-right leading-none">
-              <div className="mb-1 inline-block rounded-md bg-ink/5 px-1.5 py-0.5 text-[11px] font-semibold text-ink/60 align-middle mr-1.5">USD</div>
-              <span className="mr-1.5 text-[15px] font-semibold text-ink/40 line-through align-middle">${fmt(subtotal)}</span>
-              <span className="text-[24px] font-black text-ink align-middle">${fmt(total)}</span>
+            <div className="text-right leading-none pt-1">
+              <div className="mb-1.5 text-[11px] font-semibold text-ink/50">USD</div>
+              <div className="flex items-baseline justify-end gap-2">
+                <span className="text-[16px] font-semibold text-ink/40 line-through">${fmt(subtotal)}</span>
+                <span className="text-[28px] font-black text-ink tracking-tight">${fmt(total)}</span>
+              </div>
             </div>
           </div>
-          <div className="mt-2 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink">
-            <SavingsIcon className="h-3.5 w-3.5" color="#111111" />
+          <div className="mt-2.5 flex items-center gap-1.5 text-[12.5px] font-bold uppercase tracking-[0.08em] text-ink">
+            <SavingsIcon className="h-4 w-4" color="#111111" />
             Total savings ${fmt(savings)}
           </div>
 
           {/* Due today */}
-          <div className="mt-4 border-t border-dashed border-ink/15 pt-4 flex items-start justify-between">
+          <div className="mt-5 border-t border-dashed border-ink/15 pt-4 flex items-start justify-between gap-4">
             <div>
-              <div className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink/55">Due today</div>
-              <div className="mt-1 text-[12.5px] text-ink/60 max-w-[220px] leading-snug">
+              <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/55">Due today</div>
+              <div className="mt-1.5 text-[13px] text-ink/60 leading-snug">
                 Only charged if your<br />prescription is approved.
               </div>
             </div>
-            <div className="text-right leading-none">
-              <span className="mr-1.5 text-[15px] font-semibold text-ink/40 line-through align-middle">${fmt(total)}</span>
-              <span className="text-[26px] font-black align-middle" style={{ color: GREEN }}>$0</span>
+            <div className="text-right leading-none flex items-baseline gap-2">
+              <span className="text-[16px] font-semibold text-ink/40 line-through">${fmt(total)}</span>
+              <span className="text-[30px] font-black tracking-tight" style={{ color: GREEN }}>$0</span>
             </div>
           </div>
         </div>
