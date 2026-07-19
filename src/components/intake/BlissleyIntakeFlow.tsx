@@ -44,6 +44,8 @@ import daieneBefore from "@/assets/daiene-before.png.asset.json";
 import daieneAfter from "@/assets/daiene-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
 import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
+import davidBefore from "@/assets/david-before.png.asset.json";
+import davidAfter from "@/assets/david-after.png.asset.json";
 
 
 /* ═════════════ Types ═════════════ */
@@ -747,8 +749,8 @@ export function BlissleyIntakeFlow() {
                 }
                 name={answers.sex === "male" ? "David" : "Daiene"}
                 result="38 lbs lost · 6 months"
-                before={answers.sex === "male" ? spMaleBefore.url : daieneBefore.url}
-                after={answers.sex === "male" ? spMaleAfter.url : daieneAfter.url}
+                before={answers.sex === "male" ? davidBefore.url : daieneBefore.url}
+                after={answers.sex === "male" ? davidAfter.url : daieneAfter.url}
                 onNext={next}
               />
             )}
