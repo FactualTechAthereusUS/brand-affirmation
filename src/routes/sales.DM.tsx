@@ -16,6 +16,7 @@ import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
 import icon15 from "@/assets/icon-15.png.asset.json";
+import guaranteeBadge from "@/assets/guarantee-badge.png.asset.json";
 import icon16 from "@/assets/icon-16.png.asset.json";
 import icon17 from "@/assets/icon-17.png.asset.json";
 import icon18 from "@/assets/icon-18.png.asset.json";
@@ -880,11 +881,14 @@ function SalesDMPage() {
             ))}
           </div>
 
-          <div className="mx-auto mt-6 max-w-[520px] rounded-2xl p-5 text-left" style={{ background: "#DCFCE7" }}>
-            <div className="text-[13px] font-semibold uppercase tracking-[0.12em]" style={{ color: "#166534" }}>Weight-loss guarantee</div>
-            <p className="mt-1 text-[14px] leading-relaxed text-ink/80">
-              If you don't lose weight by the end of your complete program, we give you all of your money back. It's that simple.
-            </p>
+          <div className="mx-auto mt-6 flex max-w-[520px] items-center gap-4 rounded-2xl bg-white p-5 text-left sm:gap-5">
+            <img src={guaranteeBadge.url} alt="Weight Loss Guarantee" className="h-20 w-20 shrink-0 object-contain sm:h-24 sm:w-24" />
+            <div>
+              <div className="font-hero text-[20px] font-black tracking-tight text-ink sm:text-[24px]">Weight Loss Guarantee</div>
+              <p className="mt-1 text-[14px] leading-relaxed text-ink/75 sm:text-[15px]">
+                If you do not lose weight by the end of your complete program, we give you all of your money back. It's that simple!
+              </p>
+            </div>
           </div>
 
           <button type="button"
