@@ -64,7 +64,7 @@ export const Route = createFileRoute("/checkout/trimrx")({
       {
         name: "description",
         content:
-          "Complete your Blissley order. Secure 256-bit SSL checkout. $0 charged until your prescription is approved.",
+          "Complete your Blissley order. Secure 256-bit SSL checkout. Charged today — full refund if your prescription is not approved.",
       },
       { name: "robots", content: "noindex,nofollow" },
     ],
