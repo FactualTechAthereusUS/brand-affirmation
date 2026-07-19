@@ -271,6 +271,8 @@ function CheckoutPage() {
   const originalTotal = plan.originalPerMo * plan.months;
   const totalSavings = plan.savings;
   const hasInstallments = plan.months >= 3;
+  const baseSubtotal = plan.perMo * plan.months;
+
 
   // Form state
   const [form, setForm] = useState({
