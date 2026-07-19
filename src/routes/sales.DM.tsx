@@ -741,7 +741,13 @@ function SalesDMPage() {
             <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
               {INCLUDES.map(({ icon, label }) => (
                 <li key={label} className="flex items-center gap-3 text-[15px] text-ink">
-                  <img src={icon} alt="" className="h-6 w-6 shrink-0 object-contain" />
+                  <span className="h-6 w-6 shrink-0 text-ink">
+                    {typeof icon === "string" ? (
+                      <img src={icon} alt="" className="h-6 w-6 object-contain" />
+                    ) : (
+                      icon
+                    )}
+                  </span>
                   {label}
                 </li>
               ))}
