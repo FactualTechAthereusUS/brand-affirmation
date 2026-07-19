@@ -1356,12 +1356,12 @@ function MobileOrderSummaryDetail({
             <div className="mt-4 flex items-start gap-3">
               <ThumbCard
                 icon={
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
                     <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
                   </svg>
                 }
                 qty={1}
-                size={72}
+                size={48}
                 bg="#171717"
               />
               <div className="min-w-0 flex-1 pt-1">
