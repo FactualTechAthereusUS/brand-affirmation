@@ -20,6 +20,7 @@ import icon18 from "@/assets/icon-18.png.asset.json";
 import icon19 from "@/assets/icon-19.png.asset.json";
 import icon20 from "@/assets/icon-20.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
+import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import face1 from "@/assets/face-1.png.asset.json";
 import face2 from "@/assets/face-2.png.asset.json";
 import face3 from "@/assets/face-3.png.asset.json";
@@ -709,8 +710,8 @@ function SalesDMPage() {
           <div className="text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
             Backed by research from
           </div>
-          <div className="mx-auto mt-3 flex max-w-[560px] flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] font-semibold text-ink/60">
-            <span>Mayo Clinic</span><span>Stanford Medicine</span><span>WebMD</span><span>Harvard</span><span>NIH</span>
+          <div className="mx-auto mt-5 max-w-[560px]">
+            <img src={backedByResearch.url} alt="Mayo Clinic, Stanford Medicine, WebMD, Harvard University, NIH" className="mx-auto w-full h-auto object-contain" loading="lazy" />
           </div>
           <h2 className="mt-8 text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[30px]">
             What makes Blissley <span className="italic font-light">so much better?</span>
