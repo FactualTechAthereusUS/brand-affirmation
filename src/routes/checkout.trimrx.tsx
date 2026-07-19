@@ -1673,12 +1673,12 @@ function ThumbCard({
 }
 
 /* Shopify savings tag icon */
-function SavingsIcon({ className = "", color = "#171717" }: { className?: string; color?: string }) {
+function SavingsIcon({ className = "", color = "currentColor" }: { className?: string; color?: string }) {
   return (
-    <svg viewBox="0 0 14 14" fill="none" stroke={color} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
-      <path d="M12.75 3.25v2.844a2.5 2.5 0 0 1-.708 1.743L7.75 12.25m1-10.5H6.699a2 2 0 0 0-1.414.586L1.737 5.883a1.75 1.75 0 0 0 0 2.475l2.332 2.331a1.5 1.5 0 0 0 2.121 0l3.724-3.724a2 2 0 0 0 .586-1.414V3.5a1.75 1.75 0 0 0-1.75-1.75" vectorEffect="non-scaling-stroke" />
-      <circle cx="7.75" cy="4.5" r=".563" vectorEffect="non-scaling-stroke" />
-      <path d="M7.74 4.49h.02v.02h-.02z" vectorEffect="non-scaling-stroke" />
+    <svg viewBox="0 0 14 14" fill="none" stroke={color} strokeWidth="1" className={className} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 3.25v2.844a2.5 2.5 0 0 1-.708 1.743L7.75 12.25m1-10.5H6.699a2 2 0 0 0-1.414.586L1.737 5.883a1.75 1.75 0 0 0 0 2.475l2.332 2.331a1.5 1.5 0 0 0 2.121 0l3.724-3.724a2 2 0 0 0 .586-1.414V3.5a1.75 1.75 0 0 0-1.75-1.75" vectorEffect="non-scaling-stroke" />
+      <circle cx="7.75" cy="4.5" r=".563" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      <path strokeLinejoin="round" d="M7.74 4.49h.02v.02h-.02z" vectorEffect="non-scaling-stroke" />
     </svg>
   );
 }
