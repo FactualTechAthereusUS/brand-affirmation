@@ -54,7 +54,7 @@ const searchSchema = z.object({
   plan: z.enum(["monthly", "three", "six"]).default("monthly"),
 });
 
-export const Route = createFileRoute("/checkout/trimrx")({
+export const Route = createFileRoute("/checkout/charged-before")({
   component: CheckoutPage,
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
