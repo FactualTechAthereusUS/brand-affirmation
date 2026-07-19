@@ -274,6 +274,7 @@ function CheckoutPage() {
 
   // Form state
   const [form, setForm] = useState({
+    email: "",
     fullName: "",
     phone: "",
     address: "",
@@ -297,6 +298,24 @@ function CheckoutPage() {
 
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
+
+  // Prefill from intake (sessionStorage)
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("blissley_intake_broad");
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      setForm((f) => ({
+        ...f,
+        email: f.email || data.email || "",
+        fullName:
+          f.fullName ||
+          [data.firstName, data.lastName].filter(Boolean).join(" ").trim(),
+        phone: f.phone || data.phone || "",
+        state: f.state || data.state || "",
+      }));
+    } catch {}
+  }, []);
 
   const canSubmit = useMemo(() => {
     return (
