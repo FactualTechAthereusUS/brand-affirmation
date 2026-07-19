@@ -1078,6 +1078,29 @@ function ReviewSlider() {
   );
 }
 
+/* ── Desktop sidebar review card ── */
+function SidebarReviewCard() {
+  const r = reviews[0];
+  return (
+    <div className="rounded-2xl border border-black/8 bg-white px-5 py-5">
+      <div className="flex items-center gap-2">
+        <span className="text-[15px] font-bold text-ink">Excellent</span>
+        <img src={trustpilotBadge.url} alt="Trustpilot Excellent" className="h-5 w-auto" />
+      </div>
+      <div className="mt-2 flex items-center gap-0.5" aria-label="5 out of 5 stars">
+        {Array.from({ length: 5 }).map((_, s) => (
+          <svg key={s} viewBox="0 0 20 20" className="h-4 w-4" style={{ fill: PINK }}>
+            <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
+          </svg>
+        ))}
+      </div>
+      <p className="mt-3 text-[15px] font-semibold leading-[1.35] text-ink">{r.lead}</p>
+      <p className="mt-2 text-[14px] leading-[1.6] text-ink/70">{r.body}</p>
+      <p className="mt-3 text-[13px] text-ink/55">{r.name}, {r.meta}</p>
+    </div>
+  );
+}
+
 /* ── Small sub-components ── */
 function Row({
   label,
