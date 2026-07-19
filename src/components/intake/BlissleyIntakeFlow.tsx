@@ -747,8 +747,8 @@ export function BlissleyIntakeFlow() {
                 }
                 name={answers.sex === "male" ? "David" : "Daiene"}
                 result="38 lbs lost · 6 months"
-                before={answers.sex === "male" ? spMaleBefore.url : daieneBefore.url}
-                after={answers.sex === "male" ? spMaleAfter.url : daieneAfter.url}
+                before={answers.sex === "male" ? davidBefore.url : daieneBefore.url}
+                after={answers.sex === "male" ? davidAfter.url : daieneAfter.url}
                 onNext={next}
               />
             )}
