@@ -346,7 +346,9 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                 <div className="text-[28px] font-black tracking-tight text-ink">-{lost.toFixed(1)}</div>
                 <div className="text-[13px] text-ink/55">lbs since {weightLog[0]?.date ?? "start"}</div>
               </div>
-              <MiniSparkline data={weightLog.map((w) => w.lbs)} />
+              <div className="mt-3">
+                <WeightChart data={weightLog} />
+              </div>
               <button onClick={() => onGoto("plan")} className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-medium text-ink/70 hover:text-ink">
                 Log weight <ChevronRight className="h-3 w-3" />
               </button>
