@@ -142,9 +142,9 @@ function PatientPortal() {
 /* ────────────  Chrome  ──────────── */
 function TopBar() {
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--color-hairline)]/70 bg-white/85 px-5 py-3.5 backdrop-blur-md md:rounded-t-[36px]">
+    <header className="sticky top-0 z-30 flex items-center justify-between bg-white/85 px-5 py-3.5 backdrop-blur-md md:rounded-t-[36px]">
       <div className="flex items-center gap-2.5">
-        <img src={blissleyLogo.url} alt="Blissley" className="h-6 w-auto object-contain" />
+        <img src={blissleyLogo.url} alt="Blissley" className="h-8 w-auto object-contain" />
       </div>
       <button className="grid h-9 w-9 place-items-center rounded-full bg-[color:var(--color-mist)]/60 text-ink/70 transition hover:bg-[color:var(--color-mist)]" aria-label="Notifications">
         <Bell className="h-4 w-4" />
