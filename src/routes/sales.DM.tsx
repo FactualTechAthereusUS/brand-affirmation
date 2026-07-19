@@ -820,13 +820,10 @@ function SalesDMPage() {
               initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5 }}
               className="flex flex-col rounded-2xl border border-ink/10 bg-white p-5">
-              <div className="flex items-center gap-3">
-                <img src={r.face} alt={r.name} className="h-10 w-10 rounded-full object-cover" />
-                <div>
-                  <div className="text-[14px] font-semibold text-ink">{r.name}</div>
-                  <div className="mt-0.5 flex items-center gap-1 text-[11px] text-ink/50">
-                    <Check className="h-3 w-3" style={{ color: "#16A34A" }} strokeWidth={3.4} /> Verified customer
-                  </div>
+              <div>
+                <div className="text-[14px] font-semibold text-ink">{r.name}</div>
+                <div className="mt-0.5 flex items-center gap-1 text-[11px] text-ink/50">
+                  <Check className="h-3 w-3" style={{ color: "#16A34A" }} strokeWidth={3.4} /> Verified customer
                 </div>
               </div>
               <div className="mt-3 flex" style={{ color: PINK }}>
