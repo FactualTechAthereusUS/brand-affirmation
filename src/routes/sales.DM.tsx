@@ -340,6 +340,34 @@ const STEPS = [
   { icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging — whenever you need us." },
 ];
 
+function DMStepRow({ step, n }: { step: { title: string; body: string; icon: string }; n: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 85%", "end 15%"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.25, 1, 1, 0.25]);
+  const blur = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [8, 0, 0, 8]);
+  const filter = useTransform(blur, (b) => `blur(${b}px)`);
+  const scale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.985, 1, 1, 0.985]);
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, filter, scale }}
+      className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
+    >
+      <div className="font-sans text-[44px] font-medium leading-none text-ink/15 md:text-[64px]">{n}</div>
+      <div className="min-w-0">
+        <h3 className="font-sans text-[20px] font-semibold tracking-[-0.01em] text-ink md:text-[26px]">{step.title}</h3>
+        <p className="mt-2 text-[14px] leading-[1.6] text-ink/60 md:text-[15px]">{step.body}</p>
+      </div>
+      <div className="hidden h-[104px] w-[128px] shrink-0 overflow-hidden rounded-2xl bg-white border border-ink/[0.06] md:block">
+        <img src={step.icon} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+      </div>
+      <div className="col-span-3 -mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white border border-ink/[0.06] md:hidden">
+        <img src={step.icon} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+      </div>
+    </motion.div>
+  );
+}
+
 /* ─────────  Reviews  ───────── */
 const REVIEWS = [
   { name: "Jennifer R.", face: face1.url, title: "The food noise is finally gone", body: "I used to think about food constantly. Now I eat when I'm hungry and stop when I'm full. It's the quietest my head has been in years — and the weight is coming off without a fight." },
