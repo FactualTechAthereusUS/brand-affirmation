@@ -115,7 +115,7 @@ function PatientPortal() {
     <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink" style={{ fontFamily: "var(--font-sans)" }}>
       {/* Phone frame on desktop, edge-to-edge on mobile */}
       <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:my-6 md:min-h-[calc(100svh-3rem)] md:rounded-[36px] md:shadow-[0_40px_120px_-40px_rgba(0,0,0,0.35)] md:ring-1 md:ring-black/5">
-        <TopBar tab={tab} />
+        <TopBar />
         <main className="relative flex-1 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
@@ -140,15 +140,11 @@ function PatientPortal() {
 }
 
 /* ────────────  Chrome  ──────────── */
-function TopBar({ tab }: { tab: Tab }) {
-  const title =
-    tab === "home" ? "Blissley" : tab === "messages" ? "Messages" : tab === "plan" ? "My Plan" : "Settings";
+function TopBar() {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--color-hairline)]/70 bg-white/85 px-5 py-3.5 backdrop-blur-md md:rounded-t-[36px]">
       <div className="flex items-center gap-2.5">
         <img src={blissleyLogo.url} alt="Blissley" className="h-6 w-auto object-contain" />
-        <span className="text-[13px] font-medium text-ink/40">·</span>
-        <span className="text-[14px] font-medium tracking-tight text-ink/70">{title}</span>
       </div>
       <button className="grid h-9 w-9 place-items-center rounded-full bg-[color:var(--color-mist)]/60 text-ink/70 transition hover:bg-[color:var(--color-mist)]" aria-label="Notifications">
         <Bell className="h-4 w-4" />
