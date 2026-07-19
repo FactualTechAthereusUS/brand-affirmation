@@ -407,7 +407,7 @@ function CheckoutPage() {
           <span className="text-ink/60">Monthly Price</span>
           <span className="font-bold text-ink">
             <span className="mr-1 text-ink/40 line-through">${plan.originalPerMo}</span>
-            <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
+            <span className="text-ink">${plan.perMo}/mo</span>
           </span>
         </div>
         {form.insurance && (
