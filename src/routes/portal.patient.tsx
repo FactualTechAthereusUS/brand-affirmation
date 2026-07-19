@@ -201,7 +201,7 @@ function greeting() {
 function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   return (
     <div className="pt-5">
-      <div className="pl-4 pr-4">
+      <div className="px-4">
         <motion.h1
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -232,7 +232,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         </div>
       </motion.div>
 
-      <div className="mt-5 space-y-2.5 pl-1 pr-4">
+      <div className="mt-5 space-y-2.5 px-4">
         {/* Approval status */}
         {PATIENT.approved ? (
           <Card>
@@ -340,7 +340,7 @@ function MessagesTab() {
   return (
     <AnimatePresence mode="wait">
       {view === "list" ? (
-        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-5 pt-5">
+        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-4 pt-5">
           <h2 className="text-[22px] font-semibold tracking-tight text-ink" style={{ fontFamily: "var(--font-serif, var(--font-sans))" }}>Messages</h2>
           <p className="mt-1 text-[13.5px] text-ink/55">The people caring for you — one tap away.</p>
           <div className="mt-5 space-y-3">
@@ -615,7 +615,7 @@ function PlanTab() {
   const [paused, setPaused] = useState<null | number>(null);
 
   return (
-    <div className="px-5 pt-5">
+    <div className="px-4 pt-5">
       {/* Current plan */}
       <div className="overflow-hidden rounded-3xl border border-[color:var(--color-hairline)] bg-gradient-to-br from-white to-[color:var(--color-mist)]/40 p-5">
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Your plan</div>
@@ -833,7 +833,7 @@ function SettingsTab() {
   const [email, setEmail] = useState(true);
   const [sms, setSms] = useState(true);
   return (
-    <div className="px-5 pt-5">
+    <div className="px-4 pt-5">
       <SettingsGroup title="Personal Info">
         <Field label="First name" defaultValue={PATIENT.firstName} />
         <Field label="Last name" defaultValue={PATIENT.lastName} />
