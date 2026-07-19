@@ -1573,11 +1573,12 @@ function NotificationsSheet({ open, onClose, onGoto }: { open: boolean; onClose:
                     if (n.deepLink && n.deepLink !== "home") onGoto(n.deepLink as Tab);
                     else onClose();
                   }}
-                  className={`flex w-full items-start gap-3 px-5 py-3.5 text-left transition hover:bg-[color:var(--color-mist)]/40 ${!n.read ? "bg-[#FFFBFA]" : ""}`}
+                  className={`flex w-full items-start gap-3 bg-white px-5 py-3.5 text-left transition hover:bg-[color:var(--color-mist)]/30 ${!n.read ? "" : ""}`}
                 >
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: notifBg(n.kind) }}>
+                  <div className="grid h-9 w-9 shrink-0 place-items-center">
                     {notifIcon(n.kind)}
                   </div>
+
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <div className="text-[13.5px] font-semibold text-ink">{n.title}</div>
