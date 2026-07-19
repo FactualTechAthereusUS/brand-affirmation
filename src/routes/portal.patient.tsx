@@ -272,7 +272,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
               <div className="text-[14px] font-semibold text-ink">Dr. Scott Nass MD</div>
               <div className="text-[12.5px] text-ink/55">Your prescribing physician · Board-certified</div>
             </div>
-            <button onClick={() => onGoto("messages")} className="ml-auto rounded-full border border-ink/15 px-3.5 py-2 text-[12px] font-medium text-ink transition hover:bg-ink hover:text-white">
+            <button onClick={() => onGoto("messages")} className="ml-auto rounded-full bg-ink/[.06] px-3.5 py-2 text-[12px] font-medium text-ink transition active:scale-[.97]">
               Message
             </button>
           </div>
