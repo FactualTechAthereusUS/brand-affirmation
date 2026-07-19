@@ -705,8 +705,7 @@ function SalesDMPage() {
           <p className="mx-auto mt-2 max-w-[520px] text-center text-[14.5px] leading-relaxed text-ink/70">
             You'll get <b>everything you need</b> to drop {primaryPatient.startLbs - primaryPatient.goalLbs} lbs and keep it off.
           </p>
-          <h3 className="mt-8 text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
-          <div className="mt-4 rounded-2xl bg-white p-6 sm:p-8">
+          <div className="mt-8 rounded-2xl bg-white p-6 sm:p-8">
             <ul className="flex flex-col gap-3.5">
               {INCLUDES.map(({ icon, label }) => (
                 <li key={label} className="flex items-center gap-3 text-[15px] text-ink">
