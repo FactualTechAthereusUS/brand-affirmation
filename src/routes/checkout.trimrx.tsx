@@ -1693,13 +1693,13 @@ function MobileOrderSummaryDetail({
       {/* COLLAPSED VIEW (image 1) */}
       {!open && (
         <div>
-          {/* Order details headline */}
+          {/* Treatment details headline */}
           <button
             type="button"
             onClick={() => setOpen(true)}
             className="flex items-center gap-2 text-[15px] font-bold text-ink"
           >
-            <Package className="h-4 w-4" /> Order details
+            <Package className="h-4 w-4" /> Treatment details
           </button>
 
           {/* Total row */}
