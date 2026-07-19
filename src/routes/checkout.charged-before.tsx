@@ -1387,6 +1387,20 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
+          {/* Compact Plan / Supply key-value rows (from image 1/2) */}
+          <div className="mt-4 rounded-2xl border border-ink/10 bg-ink/[0.02] px-4 py-2 text-[13.5px]">
+            <div className="flex items-center justify-between py-2">
+              <span className="text-ink/60">Plan</span>
+              <span className="font-semibold text-ink">{planTitle}</span>
+            </div>
+            <div className="border-t border-ink/10" />
+            <div className="flex items-center justify-between py-2">
+              <span className="text-ink/60">Supply</span>
+              <span className="font-semibold text-ink">{supply}</span>
+            </div>
+          </div>
+
+
           {/* Add-on line items */}
           {insurance && (
             <div className="mt-4 flex items-start gap-3">
