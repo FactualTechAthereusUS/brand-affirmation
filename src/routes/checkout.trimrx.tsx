@@ -1567,9 +1567,70 @@ function MobileOrderSummaryDetail({
           </button>
         </div>
       )}
+
+      <ShippingPolicySheet open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </div>
   );
 }
+
+function ShippingPolicySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={onClose}
+            className="fixed inset-0 z-[100] bg-black/50"
+          />
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 32, stiffness: 320 }}
+            className="fixed inset-x-0 bottom-0 z-[101] max-h-[88vh] overflow-hidden rounded-t-3xl bg-white shadow-2xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Shipping policy"
+          >
+            <div className="sticky top-0 flex items-start justify-between gap-4 border-b border-ink/10 bg-white px-6 pb-4 pt-6">
+              <h2 className="text-[26px] font-black leading-tight text-ink">Shipping</h2>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 border-ink/40 text-ink/60 hover:text-ink hover:border-ink transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="overflow-y-auto px-6 pb-10 pt-4" style={{ maxHeight: "calc(88vh - 72px)" }}>
+              <div className="prose prose-sm max-w-none text-ink [&_h1]:hidden [&_h2]:mt-6 [&_h2]:text-[16px] [&_h2]:font-bold [&_p]:text-[14.5px] [&_p]:leading-relaxed [&_p]:text-ink/75 [&_li]:text-[14.5px] [&_li]:text-ink/75 [&_table]:text-[13.5px] [&_th]:text-left [&_th]:font-bold [&_hr]:my-4 [&_hr]:border-ink/10 [&_strong]:text-ink [&_a]:text-ink [&_a]:underline">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{shippingPolicyMd}</ReactMarkdown>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 
 /* Hears-style thumbnail card with qty badge */
 function ThumbCard({
