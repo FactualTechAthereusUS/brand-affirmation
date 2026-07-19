@@ -526,7 +526,7 @@ function SalesDMPage() {
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
             {[
               { k: "Lose", v: `${primaryPatient.startLbs - primaryPatient.goalLbs} lbs` },
-              { k: "Reset your metabolic set point", v: `${primaryPatient.goalLbs} lbs` },
+              { k: "RESET YOUR METABOLIC\u00a0\nSET POINT", v: `${primaryPatient.goalLbs} lbs` },
               { k: "Look and feel", v: "healthier" },
             ].map((g) => (
               <div key={g.k} className="rounded-2xl bg-white p-5 text-center shadow-[0_1px_0_rgba(0,0,0,0.02)]">
