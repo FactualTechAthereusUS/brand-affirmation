@@ -67,6 +67,20 @@ function PatientPortal() {
     if (hydrated && !session) navigate({ to: "/login" });
   }, [hydrated, session, navigate]);
 
+  // Auto-progression: pending → approved → shipped → delivered (makes the demo feel alive)
+  const planState = usePortal((s) => s.planState);
+  useEffect(() => {
+    if (!hydrated) return;
+    const nexts: Partial<Record<PlanState, { to: PlanState; ms: number }>> = {
+      pending_review: { to: "approved_preparing", ms: 20000 },
+      approved_preparing: { to: "shipped", ms: 22000 },
+    };
+    const step = nexts[planState];
+    if (!step) return;
+    const t = setTimeout(() => actions.setPlanState(step.to), step.ms);
+    return () => clearTimeout(t);
+  }, [hydrated, planState]);
+
   if (!hydrated || !session) {
     return (
       <div className="min-h-svh grid place-items-center bg-white text-ink/60">
@@ -100,6 +114,10 @@ function PatientPortal() {
         {!onboardingDone && <Onboarding />}
         <NotificationsSheet open={notifOpen} onClose={() => setNotifOpen(false)} onGoto={(t) => { setNotifOpen(false); setTab(t); }} />
         <DevSwitcher open={devOpen} onClose={() => setDevOpen(false)} />
+        <TrackingModal />
+        <ReceiptModal />
+        <DocumentsSheet />
+        <PlanModalRoot />
         <Toaster />
       </div>
     </div>
