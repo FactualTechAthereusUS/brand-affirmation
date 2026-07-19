@@ -444,11 +444,57 @@ function MiniSparkline({ data }: { data: number[] }) {
   const w = 200, h = 44;
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
-  const pts = data.map((v, i) => `${(i / (data.length - 1)) * w},${h - ((v - min) / range) * h}`).join(" ");
+  const coords = data.map((v, i) => ({
+    x: (i / (data.length - 1)) * w,
+    y: h - ((v - min) / range) * h,
+  }));
+  const line = coords.map((p) => `${p.x},${p.y}`).join(" ");
+  const area = `${coords[0].x},${h} ${line} ${coords[coords.length - 1].x},${h}`;
+  const last = coords[coords.length - 1];
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="mt-2 h-11 w-full">
-      <polyline points={pts} fill="none" stroke={PINK} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={w} cy={h - ((data[data.length - 1] - min) / range) * h} r="3" fill={PINK} />
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="mt-2 h-11 w-full overflow-visible">
+      <defs>
+        <linearGradient id="mini-wg" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={PINK} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={PINK} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <motion.polygon
+        points={area}
+        fill="url(#mini-wg)"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      />
+      <motion.polyline
+        points={line}
+        fill="none"
+        stroke={PINK}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <motion.circle
+        cx={last.x}
+        cy={last.y}
+        r="3"
+        fill={PINK}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.9, type: "spring", stiffness: 300, damping: 18 }}
+      />
+      <motion.circle
+        cx={last.x}
+        cy={last.y}
+        r="3"
+        fill={PINK}
+        initial={{ opacity: 0.5, scale: 1 }}
+        animate={{ opacity: 0, scale: 3 }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut", delay: 1 }}
+      />
     </svg>
   );
 }
