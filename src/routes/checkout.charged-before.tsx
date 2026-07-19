@@ -515,6 +515,8 @@ function CheckoutPage() {
         {treatmentSummary}
       </MobileOrderBar>
 
+      {/* MOBILE ONLY — reservation urgency banner */}
+      <ReservationBanner />
 
       {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
       <form onSubmit={onSubmit} className="w-full">
