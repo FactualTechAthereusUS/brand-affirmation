@@ -274,6 +274,7 @@ function CheckoutPage() {
 
   // Form state
   const [form, setForm] = useState({
+    email: "",
     fullName: "",
     phone: "",
     address: "",
@@ -298,8 +299,27 @@ function CheckoutPage() {
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
+  // Prefill from intake (sessionStorage)
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("blissley_intake_broad");
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      setForm((f) => ({
+        ...f,
+        email: f.email || data.email || "",
+        fullName:
+          f.fullName ||
+          [data.firstName, data.lastName].filter(Boolean).join(" ").trim(),
+        phone: f.phone || data.phone || "",
+        state: f.state || data.state || "",
+      }));
+    } catch {}
+  }, []);
+
   const canSubmit = useMemo(() => {
     return (
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) &&
       form.fullName.trim().length > 2 &&
       form.phone.replace(/\D/g, "").length >= 10 &&
       form.address.trim().length > 3 &&
@@ -467,6 +487,29 @@ function CheckoutPage() {
               }}
               className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
             >
+              {/* Contact */}
+              <FormCard>
+                <div className="mb-3 flex items-end justify-between">
+                  <StepBadge label="Contact" />
+                  <a
+                    href="/login"
+                    className="text-[13px] font-semibold underline underline-offset-4"
+                    style={{ color: NAVY }}
+                  >
+                    Sign in
+                  </a>
+                </div>
+                <Field label="Email">
+                  <TextInput
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={(e) => set("email", e.target.value)}
+                  />
+                </Field>
+              </FormCard>
+
               {/* Shipping */}
               <FormCard>
                 <StepBadge label="Shipping Address" />
@@ -772,6 +815,32 @@ function CheckoutPage() {
               </p>
 
               <ReviewSlider />
+
+              {/* Policy footer */}
+              <div className="mt-4 border-t border-ink/10 pt-5">
+                <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px]">
+                  {[
+                    { label: "Refund policy", href: "/policies/refund" },
+                    { label: "Shipping", href: "/policies/shipping" },
+                    { label: "Privacy policy", href: "/policies/privacy" },
+                    { label: "Terms of service", href: "/policies/terms" },
+                    { label: "Telehealth consent", href: "/policies/telehealth" },
+                    { label: "Contact us", href: "/contact" },
+                  ].map((l) => (
+                    <a
+                      key={l.label}
+                      href={l.href}
+                      className="font-medium underline underline-offset-4 hover:opacity-80"
+                      style={{ color: NAVY }}
+                    >
+                      {l.label}
+                    </a>
+                  ))}
+                </nav>
+                <div className="mt-4 text-[11.5px] text-ink/45">
+                  © {new Date().getFullYear()} Blissley Health, Inc. All rights reserved.
+                </div>
+              </div>
             </motion.div>
           </div>
 
