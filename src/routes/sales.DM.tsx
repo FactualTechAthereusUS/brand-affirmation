@@ -186,7 +186,7 @@ function TreatmentCard({
             <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.06em]" style={{ background: `${badgeColor}18`, color: badgeColor }}>
               {badge}
             </span>
-            <BadgeIcon className="h-4 w-4" style={{ color: badgeColor }} />
+            <span style={{ color: badgeColor }}><BadgeIcon className="h-4 w-4" /></span>
           </div>
           <div id={`${id}-title`} className="mt-1.5 text-[19px] font-semibold text-ink sm:text-[21px]">{title}</div>
           <div className="mt-1 text-[13.5px] leading-snug text-ink/60 sm:text-[14.5px]">{desc}</div>
