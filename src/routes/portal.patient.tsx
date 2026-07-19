@@ -140,9 +140,7 @@ function PatientPortal() {
 }
 
 /* ────────────  Chrome  ──────────── */
-function TopBar({ tab }: { tab: Tab }) {
-  const title =
-    tab === "home" ? "Blissley" : tab === "messages" ? "Messages" : tab === "plan" ? "My Plan" : "Settings";
+function TopBar() {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--color-hairline)]/70 bg-white/85 px-5 py-3.5 backdrop-blur-md md:rounded-t-[36px]">
       <div className="flex items-center gap-2.5">
