@@ -347,12 +347,12 @@ function PlanCard({ plan, selected, onSelect, onCheckout }: {
 
 /* ─────────  Includes  ───────── */
 const INCLUDES = [
-  { icon: icon15.url, label: "Medication + supplies included" },
-  { icon: icon16.url, label: "Free expedited shipping" },
-  { icon: <svg className="framer-FE2Jh framer-1vzbxle" role="presentation" viewBox="0 0 24 24" style={{ opacity: 1 }}><use href="#1776682203" /></svg>, label: "Unlimited physician messaging" },
-  { icon: icon18.url, label: "24/7 patient support" },
-  { icon: <svg className="framer-DITGk framer-1vzbxle" role="presentation" viewBox="0 0 24 24" style={{ opacity: 1 }}><use href="#282897690" /></svg>, label: "Same price forever — dosage lock" },
-  { icon: <svg className="framer-ROtdE framer-1vzbxle" role="presentation" viewBox="0 0 24 24" style={{ opacity: 1 }}><use href="#3553010246" /></svg>, label: "HSA/FSA eligible · Weight-loss guarantee" },
+  { icon: icon15.url, label: "Free Dosage Increases" },
+  { icon: icon16.url, label: "Treatment changes at anytime!" },
+  { icon: icon17.url, label: "Unlimited Free Doctor Consults" },
+  { icon: icon18.url, label: "Free Expedited Shipping" },
+  { icon: icon19.url, label: "Home Injection Kit Included" },
+  { icon: icon20.url, label: "24/7 Customer Support" },
 ];
 
 /* ─────────  What Happens Next  ───────── */
