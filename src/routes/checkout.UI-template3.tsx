@@ -494,21 +494,19 @@ function CheckoutTemplate3() {
             {/* Payment */}
             <div className="mt-10">
               <div className="mb-5 flex items-center gap-2.5">
-                <CreditCard className="h-5 w-5 text-ink" strokeWidth={1.75} />
+                <PaymentIcon className="h-5 w-5 text-ink" />
                 <h2 className="text-[19px] font-bold text-ink sm:text-[20px]">Payment Information</h2>
                 <Lock className="ml-1 h-4 w-4 text-ink/50" strokeWidth={2} />
               </div>
 
               <div className="rounded-2xl border border-ink/10 p-5 sm:p-6">
-                <div className="mb-4 flex items-center gap-2.5 text-ink">
-                  <CreditCard className="h-5 w-5" strokeWidth={2} />
+                <div className="mb-4 flex items-center gap-3 text-ink">
+                  <CardIcon className="h-5 w-5" />
                   <span className="text-[16px] font-bold">Card</span>
                 </div>
-                <div className="mb-5 flex items-center gap-2 text-[13.5px] text-ink/70">
-                  <span className="grid h-6 w-5 place-items-center rounded-sm bg-emerald-500 text-white">
-                    <Lock className="h-3 w-3" strokeWidth={3} />
-                  </span>
-                  Secure, fast checkout with Link
+                <div className="mb-5 flex items-center gap-2 text-[13.5px] text-ink/70 py-1">
+                  <LinkLockIcon className="h-4 w-4 shrink-0" />
+                  <span className="font-medium">Secure, fast checkout with Link</span>
                 </div>
 
                 <Field label="Card number" className="mb-4">
@@ -516,15 +514,14 @@ function CheckoutTemplate3() {
                     <TextInput
                       placeholder="1234 1234 1234 1234"
                       inputMode="numeric"
-                      className="pl-12"
+                      className="pl-14"
                       value={form.cardNumber}
                       onChange={(e) => set("cardNumber", e.target.value)}
                     />
                     <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
-                      <div className="grid h-6 w-8 place-items-center rounded-[3px] bg-ink/10">
-                        <div className="h-1 w-4 rounded-sm bg-ink/40" />
-                      </div>
+                      <CardNumberIcon />
                     </div>
+
                   </div>
                 </Field>
 
