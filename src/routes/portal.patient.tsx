@@ -143,11 +143,11 @@ function PatientPortal() {
 /* ────────────  Chrome  ──────────── */
 function TopBar() {
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between bg-white/85 px-5 py-3.5 backdrop-blur-md md:rounded-t-[36px]">
+    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/40 bg-white/70 px-5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 md:rounded-t-[36px]">
       <div className="flex items-center gap-2.5">
         <img src={blissleyLogo.url} alt="Blissley" className="h-8 w-auto object-contain" />
       </div>
-      <button className="grid h-9 w-9 place-items-center rounded-full bg-[color:var(--color-mist)]/60 text-ink/70 transition hover:bg-[color:var(--color-mist)]" aria-label="Notifications">
+      <button className="grid h-9 w-9 place-items-center rounded-full border border-black/5 bg-white/60 text-ink/70 shadow-sm transition hover:bg-white/90" aria-label="Notifications">
         <Bell className="h-4 w-4" />
       </button>
     </header>
@@ -163,7 +163,7 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
   ];
   return (
     <nav className="pointer-events-none sticky bottom-0 z-30 px-3 pb-3 pt-2 md:rounded-b-[36px]">
-      <div className="pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-black/5 bg-white/95 px-2 py-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.25)] backdrop-blur">
+      <div className="pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-white/50 bg-white/75 px-2 py-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150">
         {items.map((it) => {
           const active = it.id === tab;
           const Icon = it.icon;
@@ -178,7 +178,7 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
                 <motion.span
                   layoutId="tabpill"
                   className="absolute inset-0 -z-10 rounded-full"
-                  style={{ background: "#F5F1E9" }}
+                  style={{ background: "rgba(238,114,115,0.12)" }}
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               )}
