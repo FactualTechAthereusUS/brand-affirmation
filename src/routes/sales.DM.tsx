@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "motion/react";
-import { Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowRight, Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star } from "lucide-react";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
 import { PayIcons } from "@/components/PayIcons";
