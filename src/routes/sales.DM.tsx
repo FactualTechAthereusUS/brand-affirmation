@@ -22,6 +22,7 @@ import icon20 from "@/assets/icon-20.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
 import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
+import dmGoalsAthlete from "@/assets/dm-goals-athlete.png.asset.json";
 import face1 from "@/assets/face-1.png.asset.json";
 import face2 from "@/assets/face-2.png.asset.json";
 import face3 from "@/assets/face-3.png.asset.json";
@@ -533,7 +534,7 @@ function SalesDMPage() {
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
             className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[2400/1350] sm:aspect-[16/10] md:aspect-[16/9]"
           >
-            <img src={dmHeroWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img src={dmGoalsAthlete.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/5" />
 
             {/* Metrics overlay — bottom */}
