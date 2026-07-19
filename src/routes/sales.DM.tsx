@@ -351,21 +351,21 @@ function PlanCard({ plan, selected, onSelect, onCheckout }: {
 
 /* ─────────  Includes  ───────── */
 const INCLUDES = [
-  { icon: icon15.url, label: "Free Dosage Increases" },
-  { icon: icon16.url, label: "Treatment changes at any time" },
-  { icon: icon17.url, label: "Unlimited Free Doctor Consults" },
-  { icon: icon18.url, label: "Free Expedited Shipping" },
-  { icon: icon19.url, label: "Home Injection Kit Included" },
-  { icon: icon20.url, label: "24/7 Nursing Support" },
+  { icon: icon15.url, label: "Medication + supplies included" },
+  { icon: icon16.url, label: "Free expedited shipping" },
+  { icon: icon17.url, label: "Unlimited physician messaging" },
+  { icon: icon18.url, label: "24/7 patient support" },
+  { icon: icon19.url, label: "Same price forever — dosage lock" },
+  { icon: icon20.url, label: "HSA/FSA eligible · Weight-loss guarantee" },
 ];
 
 /* ─────────  What Happens Next  ───────── */
 const STEPS = [
   { icon: milestoneProfile.url, title: "Physician Review", body: "You're pre-qualified. A licensed provider will review your intake and begin the approval process right after checkout." },
-  { icon: milestoneStart.url, title: "Fast Prescription Approval", body: "Most reviews are completed quickly. Same-day consultations may be available when clinically appropriate." },
+  { icon: milestoneStart.url, title: "Fast Prescription Approval", body: "Most reviews are completed quickly. Same-day approvals may be available when clinically appropriate." },
   { icon: shipBox.url, title: "Medication Preparation & Shipping", body: "Once approved, your medication is prepared and shipped in a temperature-controlled overnight box. Tracking arrives in 1–2 business days." },
   { icon: milestoneHealth.url, title: "Easy Refills", body: "When it's time to refill, a quick form in your patient portal keeps everything moving. We'll text and email tracking as it ships." },
-  { icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited 24/7 access to our nursing team and licensed clinicians — whenever you need us." },
+  { icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging — whenever you need us." },
 ];
 
 /* ─────────  Reviews  ───────── */
