@@ -794,7 +794,7 @@ function SalesDMPage() {
             }}
             className="mx-auto mt-8 flex w-full max-w-[420px] items-center justify-center rounded-full px-6 py-4 text-[15px] font-semibold text-white transition-all hover:brightness-110"
             style={{ background: NAVY, boxShadow: `0 18px 40px ${NAVY}33` }}>
-            Claim my approval — from $147/mo
+            Claim my approval — from $237/mo
           </button>
           <div className="mt-3 text-[11.5px] uppercase tracking-[0.14em] text-ink/40">
             Your approval is reserved for {time}
