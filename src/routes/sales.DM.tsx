@@ -494,6 +494,8 @@ function SalesDMPage() {
   return (
     <div className="relative min-h-screen" style={{ background: CANVAS }}>
       <IconSymbols />
+      <TrxHeader onBack={() => window.history.back()} showBack={false} />
+
       {/* Announcement / reservation banner */}
       <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
         <div className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-3 text-center text-[13px] font-semibold sm:text-[14px]"
@@ -502,8 +504,6 @@ function SalesDMPage() {
           {primaryPatient.first}, your slot is reserved · {time}
         </div>
       </div>
-
-      <TrxHeader onBack={() => window.history.back()} showBack={false} />
 
       {/* ═══════ HERO Personalized approval ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-10 sm:px-6">
