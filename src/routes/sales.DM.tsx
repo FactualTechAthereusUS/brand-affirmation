@@ -828,7 +828,7 @@ function SalesDMPage() {
       {/* ═══════ Featured / payments ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
         <div className="flex flex-col items-center gap-4">
-          <img src={trustpilot.url} alt="Excellent 4.8 · 100,000+ happy customers" className="h-6 w-auto sm:h-7" />
+          <img src={trustpilot.url} alt="Excellent 4.8 · 3,200+ patients" className="h-6 w-auto sm:h-7" />
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">As seen on</div>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13.5px] font-semibold text-ink/60">
             <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
