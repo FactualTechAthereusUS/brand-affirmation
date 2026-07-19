@@ -317,518 +317,478 @@ function CheckoutPage() {
     window.setTimeout(() => setSubmitting(false), 1500);
   };
 
+  const treatmentSummary = (
+    <FormCard>
+      <StepBadge label="Your Treatment" />
+
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <div className="text-[17px] font-bold text-ink sm:text-[18px]">
+            {treatment.name}
+          </div>
+          <div className="text-[13px] text-ink/60">{treatment.subtitle}</div>
+        </div>
+        <div
+          className="grid h-[72px] w-[72px] shrink-0 place-items-center overflow-hidden rounded-2xl"
+          style={{ background: treatment.vialBg }}
+        >
+          <img src={treatment.vial} alt="" className="h-full w-full object-cover" />
+        </div>
+      </div>
+
+      <div className="divide-y divide-ink/8 py-2">
+        <Row label="Plan" value={<b>{plan.title}</b>} />
+        <Row label="Supply" value={plan.supply} />
+        <Row
+          label="Total Savings"
+          value={
+            <span className="font-bold" style={{ color: GREEN }}>
+              ${totalSavings.toLocaleString()}
+            </span>
+          }
+        />
+        <Row
+          label="Shipping"
+          value={
+            <span className="font-bold">
+              <span className="mr-1.5 text-ink/40 line-through">
+                ${30 * plan.months}
+              </span>
+              <span style={{ color: GREEN }}>FREE</span>
+            </span>
+          }
+        />
+        <Row
+          label="Monthly Price"
+          value={
+            <span className="font-bold text-ink">
+              <span className="mr-1 text-ink/40 line-through">
+                ${plan.originalPerMo}
+              </span>
+              <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
+            </span>
+          }
+        />
+      </div>
+
+      <div
+        className="flex items-center justify-between rounded-xl px-4 py-3"
+        style={{ background: "#F6F9FE" }}
+      >
+        <div className="text-[15px] font-bold text-ink">Total if prescribed</div>
+        <div className="text-right">
+          <span className="mr-2 text-[14px] text-ink/40 line-through">
+            ${originalTotal.toLocaleString()}
+          </span>
+          <span className="text-[20px] font-black" style={{ color: NAVY }}>
+            ${(plan.perMo * plan.months).toLocaleString()}
+          </span>
+        </div>
+      </div>
+
+      <div
+        className="mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13.5px] font-bold text-white"
+        style={{ background: NAVY }}
+      >
+        <Tag className="h-4 w-4" />
+        CODE APPLIED: <span className="ml-1">JOIN120</span>
+      </div>
+      <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
+        Only <span className="text-ink">23 discounts left</span>. Yours is reserved for{" "}
+        <span style={{ color: PINK }} className="font-bold">
+          {time}
+        </span>
+      </div>
+
+      <ul className="mt-5 space-y-3.5 text-[14px]">
+        {[
+          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases." },
+          { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery." },
+          { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime." },
+        ].map((item) => (
+          <li key={item.t} className="flex items-start gap-3">
+            <span
+              className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
+              style={{ background: GREEN }}
+            >
+              <Check className="h-3 w-3 text-white" strokeWidth={4} />
+            </span>
+            <div className="leading-tight">
+              <div className="font-bold text-ink">{item.t}</div>
+              <div className="text-[12.5px] text-ink/55">{item.s}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="mt-5 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-5"
+      >
+        <div>
+          <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/50">
+            Due Today
+          </div>
+          <div className="mt-1 text-[11.5px] text-ink/60">
+            Only charged if<br />your prescription is approved.
+          </div>
+        </div>
+        <div className="text-right -translate-x-1">
+          <span className="mr-1.5 text-[15px] text-ink/35 line-through">
+            ${plan.perMo}
+          </span>
+          <span className="text-[28px] font-black leading-none" style={{ color: GREEN }}>
+            $0
+          </span>
+        </div>
+      </motion.div>
+
+      <div className="mt-4 flex items-center justify-center">
+        <img src={hsaFsa.url} alt="HSA/FSA Eligible" className="h-8 w-auto" />
+      </div>
+    </FormCard>
+  );
+
   return (
     <div className="min-h-screen bg-white">
       <TrxHeader onBack={() => navigate({ to: "/sales/trimrx" })} showBack />
 
-      {/* MAIN FLOW */}
-      <form
-        onSubmit={onSubmit}
-        className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 pb-16 sm:px-6"
-      >
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.06 } },
-          }}
-          className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-8"
-        >
-          {/* Shipping */}
-          <FormCard className="order-1 lg:order-none lg:col-start-1 lg:row-start-1">
-            <StepBadge label="Shipping Address" />
-
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="Full Name" className="sm:col-span-2">
-                  <TextInput
-                    autoComplete="name"
-                    placeholder="Jane Smith"
-                    value={form.fullName}
-                    onChange={(e) => set("fullName", e.target.value)}
-                  />
-                </Field>
-                <Field label="Phone" className="sm:col-span-2">
-                  <TextInput
-                    inputMode="tel"
-                    autoComplete="tel"
-                    placeholder="(555) 123-4567"
-                    value={form.phone}
-                    onChange={(e) => set("phone", e.target.value)}
-                  />
-                </Field>
-                <Field label="Street Address" className="sm:col-span-2">
-                  <TextInput
-                    autoComplete="address-line1"
-                    placeholder="123 Main St"
-                    value={form.address}
-                    onChange={(e) => set("address", e.target.value)}
-                  />
-                </Field>
-                <Field
-                  label="Apt / Suite (optional)"
-                  className="sm:col-span-2"
-                >
-                  <TextInput
-                    autoComplete="address-line2"
-                    placeholder="Apt 4B"
-                    value={form.apt}
-                    onChange={(e) => set("apt", e.target.value)}
-                  />
-                </Field>
-                <Field label="City">
-                  <TextInput
-                    autoComplete="address-level2"
-                    placeholder="New York"
-                    value={form.city}
-                    onChange={(e) => set("city", e.target.value)}
-                  />
-                </Field>
-                <Field label="State">
-                  <SelectInput
-                    value={form.state}
-                    onChange={(e) => set("state", e.target.value)}
-                  >
-                    <option value="">Select</option>
-                    {US_STATES.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </SelectInput>
-                </Field>
-                <Field label="ZIP Code" className="sm:col-span-2">
-                  <TextInput
-                    inputMode="numeric"
-                    autoComplete="postal-code"
-                    placeholder="10001"
-                    maxLength={5}
-                    value={form.zip}
-                    onChange={(e) =>
-                      set("zip", e.target.value.replace(/\D/g, ""))
-                    }
-                  />
-                </Field>
-              </div>
-            </FormCard>
-
-            {/* Your Treatment — middle section */}
-            <FormCard className="order-2 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-7 lg:sticky lg:top-6 lg:self-start">
-              <StepBadge label="Your Treatment" />
-
-
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <div className="text-[17px] font-bold text-ink sm:text-[18px]">
-                    {treatment.name}
-                  </div>
-                  <div className="text-[13px] text-ink/60">
-                    {treatment.subtitle}
-                  </div>
-                </div>
-                <div
-                  className="grid h-[72px] w-[72px] shrink-0 place-items-center overflow-hidden rounded-2xl"
-                  style={{ background: treatment.vialBg }}
-                >
-                  <img
-                    src={treatment.vial}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-
-              <div className="divide-y divide-ink/8 py-2">
-                <Row label="Plan" value={<b>{plan.title}</b>} />
-                <Row label="Supply" value={plan.supply} />
-                <Row
-                  label="Total Savings"
-                  value={
-                    <span className="font-bold" style={{ color: GREEN }}>
-                      ${totalSavings.toLocaleString()}
-                    </span>
-                  }
-                />
-                <Row
-                  label="Shipping"
-                  value={
-                    <span className="font-bold">
-                      <span className="mr-1.5 text-ink/40 line-through">
-                        ${30 * plan.months}
-                      </span>
-                      <span style={{ color: GREEN }}>FREE</span>
-                    </span>
-                  }
-                />
-                <Row
-                  label="Monthly Price"
-                  value={
-                    <span className="font-bold text-ink">
-                      <span className="mr-1 text-ink/40 line-through">
-                        ${plan.originalPerMo}
-                      </span>
-                      <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
-                    </span>
-                  }
-                />
-              </div>
-
-              <div
-                className="flex items-center justify-between rounded-xl px-4 py-3"
-                style={{ background: "#F6F9FE" }}
-              >
-                <div className="text-[15px] font-bold text-ink">
-                  Total if prescribed
-                </div>
-                <div className="text-right">
-                  <span className="mr-2 text-[14px] text-ink/40 line-through">
-                    ${originalTotal.toLocaleString()}
-                  </span>
-                  <span className="text-[20px] font-black" style={{ color: NAVY }}>
-                    ${(plan.perMo * plan.months).toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              <div
-                className="mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13.5px] font-bold text-white"
-                style={{ background: NAVY }}
-              >
-                <Tag className="h-4 w-4" />
-                CODE APPLIED: <span className="ml-1">JOIN120</span>
-              </div>
-              <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
-                Only <span className="text-ink">23 discounts left</span>. Yours
-                is reserved for{" "}
-                <span style={{ color: PINK }} className="font-bold">
-                  {time}
-                </span>
-              </div>
-
-              <ul className="mt-5 space-y-3.5 text-[14px]">
-                {[
-                  { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases." },
-                  { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery." },
-                  { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime." },
-                ].map((item) => (
-                  <li key={item.t} className="flex items-start gap-3">
-                    <span
-                      className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
-                      style={{ background: GREEN }}
-                    >
-                      <Check className="h-3 w-3 text-white" strokeWidth={4} />
-                    </span>
-                    <div className="leading-tight">
-                      <div className="font-bold text-ink">{item.t}</div>
-                      <div className="text-[12.5px] text-ink/55">{item.s}</div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="mt-5 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-5"
-              >
-                <div>
-                  <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/50">
-                    Due Today
-                  </div>
-                  <div className="mt-1 text-[11.5px] text-ink/60">
-                    Only charged if<br />your prescription is approved.
-                  </div>
-                </div>
-                <div className="text-right -translate-x-1">
-                  <span className="mr-1.5 text-[15px] text-ink/35 line-through">
-                    ${plan.perMo}
-                  </span>
-                  <span
-                    className="text-[28px] font-black leading-none"
-                    style={{ color: GREEN }}
-                  >
-                    $0
-                  </span>
-                </div>
-              </motion.div>
-
-              <div className="mt-4 flex items-center justify-center">
-                <img
-                  src={hsaFsa.url}
-                  alt="HSA/FSA Eligible"
-                  className="h-8 w-auto"
-                />
-              </div>
-            </FormCard>
-
-            {/* Payment */}
-            <FormCard className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
-              <StepBadge label="Payment" />
-
-
-              {/* Payment methods — accordion list */}
-              <div className="space-y-3">
-                {/* Credit card row */}
-                <div
-                  className="overflow-hidden rounded-2xl border transition-all"
-                  style={{
-                    borderColor:
-                      payMethod === "card" ? NAVY : "rgba(0,0,0,0.10)",
-                    background: "#FFFFFF",
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setPayMethod("card")}
-                    className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Radio active={payMethod === "card"} />
-                      <span className="text-[15px] font-bold text-ink">
-                        Credit card
-                      </span>
-                    </div>
-                    <PayIconsPeek />
-                  </button>
-
-
-                  {payMethod === "card" && (
-                    <div className="bg-[#F3F4F6]">
-                      {/* Fields */}
-                      <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-6 sm:gap-3 sm:p-4">
-                        <div className="sm:col-span-6">
-                          <div className="relative">
-                            <TextInput
-                              inputMode="numeric"
-                              autoComplete="cc-number"
-                              placeholder="Card number"
-                              value={form.cardNumber}
-                              onChange={(e) =>
-                                set(
-                                  "cardNumber",
-                                  e.target.value
-                                    .replace(/\D/g, "")
-                                    .slice(0, 19)
-                                    .replace(/(\d{4})(?=\d)/g, "$1 "),
-                                )
-                              }
-                              className="pr-11"
-                            />
-                            <Lock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
-                          </div>
-                        </div>
-                        <div className="sm:col-span-6">
-                          <TextInput
-                            inputMode="numeric"
-                            autoComplete="cc-exp"
-                            placeholder="Expiration date (MM / YY)"
-                            value={form.exp}
-                            onChange={(e) => {
-                              const v = e.target.value
-                                .replace(/\D/g, "")
-                                .slice(0, 4);
-                              set(
-                                "exp",
-                                v.length > 2
-                                  ? `${v.slice(0, 2)} / ${v.slice(2)}`
-                                  : v,
-                              );
-                            }}
-                          />
-                        </div>
-                        <div className="sm:col-span-6">
-                          <div className="relative">
-                            <TextInput
-                              inputMode="numeric"
-                              autoComplete="cc-csc"
-                              placeholder="Security code"
-                              maxLength={4}
-                              value={form.cvc}
-                              onChange={(e) =>
-                                set("cvc", e.target.value.replace(/\D/g, ""))
-                              }
-                              className="pr-11"
-                            />
-                            <HelpCircle className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
-                          </div>
-                        </div>
-                        <div className="sm:col-span-6">
-                          <TextInput
-                            autoComplete="cc-name"
-                            placeholder="Name on card"
-                            value={form.nameOnCard}
-                            onChange={(e) => set("nameOnCard", e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Billing same */}
-                      <label className="flex cursor-pointer items-center gap-3 px-4 py-3.5 text-[13.5px] text-ink/85">
-                        <CheckBox
-                          on={form.billingSame}
-                          onToggle={() =>
-                            set("billingSame", !form.billingSame)
-                          }
-                        />
-                        Use shipping address as billing address
-                      </label>
-
-                      {/* Upsells — part of the same flow */}
-                      <div className="border-t border-black/10 bg-white">
-                        <UpsellRow
-                          on={form.insurance}
-                          onToggle={() => set("insurance", !form.insurance)}
-                          icon={
-                            <img
-                              src={iconDeliveryShield.url}
-                              alt=""
-                              className="h-7 w-7 object-contain invert"
-                            />
-                          }
-                          title={
-                            <>
-                              Shipping insurance{" "}
-                              <span className="font-bold">($3.95)</span>
-                            </>
-                          }
-                          desc="100% Payment guarantee & protect your order from damage, loss, or theft."
-                        />
-                        <div className="mx-4 h-px bg-black/5" />
-                        <UpsellRow
-                          on={form.priority}
-                          onToggle={() => set("priority", !form.priority)}
-                          icon={
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={2.2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="h-7 w-7 text-white"
-                            >
-                              <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
-                            </svg>
-                          }
-                          title={
-                            <>
-                              Front-of-the-line review{" "}
-                              <span className="font-bold">($49.95)</span>
-                            </>
-                          }
-                          desc="Skip the standard 6–24 hour medical review queue and jump straight to the front. A board-certified clinician will review your intake, medical history, and eligibility instantly — not hours from now. If approved, your prescription is sent to our partner pharmacy the same day and ships within 24 hours, so you can start your plan faster and never lose momentum."
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* BNPL rows */}
-                {hasInstallments &&
-                  (
-                    [
-                      { key: "afterpay", img: payAfterpay.url, label: "Afterpay" },
-                      { key: "klarna", img: payKlarna.url, label: "Klarna" },
-                      { key: "affirm", img: payAffirm.url, label: "Affirm" },
-                    ] as const
-                  ).map((m) => (
-                    <div
-                      key={m.key}
-                      className="overflow-hidden rounded-2xl border"
-                      style={{
-                        borderColor:
-                          payMethod === m.key ? NAVY : "rgba(0,0,0,0.10)",
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setPayMethod(m.key)}
-                        className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
-                      >
-                        <div className="flex items-center gap-3">
-                          <Radio active={payMethod === m.key} />
-                          <span className="text-[15px] font-bold text-ink">
-                            {m.label}
-                          </span>
-                        </div>
-                        <img src={m.img} alt={m.label} className="h-5" />
-                      </button>
-
-                      {payMethod === m.key && (
-                        <div
-                          className="border-t border-black/10 bg-[#F3F4F6] p-4 text-[13.5px] text-ink/70"
-                        >
-                          You'll be redirected to complete your{" "}
-                          <b className="capitalize">{m.label}</b> checkout after
-                          confirming your order, split into 4 interest-free
-                          payments.
-                        </div>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            </FormCard>
-
-
-            {/* Continue */}
-            <motion.button
-              type="submit"
-              disabled={!canSubmit || submitting}
-              whileTap={{ scale: 0.99 }}
-              className="order-4 w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60 lg:order-none lg:col-start-1 lg:row-start-3"
-              style={{
-                background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)`,
-                boxShadow: `0 18px 40px -12px ${NAVY}66`,
+      {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
+      <form onSubmit={onSubmit} className="w-full">
+        <div className="lg:grid lg:grid-cols-2 lg:items-start">
+          {/* LEFT — checkout form */}
+          <div className="bg-white lg:flex lg:justify-end">
+            <motion.div
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.06 } },
               }}
+              className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
             >
-              {submitting
-                ? "Processing…"
-                : `Continue ($0 charged today)`}
-            </motion.button>
+              {/* Shipping */}
+              <FormCard>
+                <StepBadge label="Shipping Address" />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Field label="Full Name" className="sm:col-span-2">
+                    <TextInput
+                      autoComplete="name"
+                      placeholder="Jane Smith"
+                      value={form.fullName}
+                      onChange={(e) => set("fullName", e.target.value)}
+                    />
+                  </Field>
+                  <Field label="Phone" className="sm:col-span-2">
+                    <TextInput
+                      inputMode="tel"
+                      autoComplete="tel"
+                      placeholder="(555) 123-4567"
+                      value={form.phone}
+                      onChange={(e) => set("phone", e.target.value)}
+                    />
+                  </Field>
+                  <Field label="Street Address" className="sm:col-span-2">
+                    <TextInput
+                      autoComplete="address-line1"
+                      placeholder="123 Main St"
+                      value={form.address}
+                      onChange={(e) => set("address", e.target.value)}
+                    />
+                  </Field>
+                  <Field label="Apt / Suite (optional)" className="sm:col-span-2">
+                    <TextInput
+                      autoComplete="address-line2"
+                      placeholder="Apt 4B"
+                      value={form.apt}
+                      onChange={(e) => set("apt", e.target.value)}
+                    />
+                  </Field>
+                  <Field label="City">
+                    <TextInput
+                      autoComplete="address-level2"
+                      placeholder="New York"
+                      value={form.city}
+                      onChange={(e) => set("city", e.target.value)}
+                    />
+                  </Field>
+                  <Field label="State">
+                    <SelectInput
+                      value={form.state}
+                      onChange={(e) => set("state", e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      {US_STATES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </SelectInput>
+                  </Field>
+                  <Field label="ZIP Code" className="sm:col-span-2">
+                    <TextInput
+                      inputMode="numeric"
+                      autoComplete="postal-code"
+                      placeholder="10001"
+                      maxLength={5}
+                      value={form.zip}
+                      onChange={(e) => set("zip", e.target.value.replace(/\D/g, ""))}
+                    />
+                  </Field>
+                </div>
+              </FormCard>
 
-            {/* Trustpilot */}
-            <div className="order-5 flex items-center justify-center gap-2.5 pt-1 lg:order-none lg:col-start-1 lg:row-start-4">
-              <span className="text-[15px] font-bold text-ink">Excellent</span>
-              <img
-                src={trustpilotBadge.url}
-                alt="Trustpilot Excellent"
-                className="h-5 w-auto"
-              />
-            </div>
+              {/* Your Treatment — mobile only (between shipping & payment) */}
+              <div className="lg:hidden">{treatmentSummary}</div>
 
-            {/* Trust footer */}
-            <div className="order-6 flex flex-col items-center gap-2 text-center lg:order-none lg:col-start-1 lg:row-start-5">
-              <div className="flex items-center gap-2 text-[12.5px] font-semibold text-ink/70">
-                <Lock className="h-3.5 w-3.5" style={{ color: GREEN }} />
-                256-bit SSL encryption · PCI DSS compliant
+              {/* Payment */}
+              <FormCard>
+                <StepBadge label="Payment" />
+
+                <div className="space-y-3">
+                  {/* Credit card row */}
+                  <div
+                    className="overflow-hidden rounded-2xl border transition-all"
+                    style={{
+                      borderColor: payMethod === "card" ? NAVY : "rgba(0,0,0,0.10)",
+                      background: "#FFFFFF",
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setPayMethod("card")}
+                      className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Radio active={payMethod === "card"} />
+                        <span className="text-[15px] font-bold text-ink">Credit card</span>
+                      </div>
+                      <PayIconsPeek />
+                    </button>
+
+                    {payMethod === "card" && (
+                      <div className="bg-[#F3F4F6]">
+                        <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-6 sm:gap-3 sm:p-4">
+                          <div className="sm:col-span-6">
+                            <div className="relative">
+                              <TextInput
+                                inputMode="numeric"
+                                autoComplete="cc-number"
+                                placeholder="Card number"
+                                value={form.cardNumber}
+                                onChange={(e) =>
+                                  set(
+                                    "cardNumber",
+                                    e.target.value
+                                      .replace(/\D/g, "")
+                                      .slice(0, 19)
+                                      .replace(/(\d{4})(?=\d)/g, "$1 "),
+                                  )
+                                }
+                                className="pr-11"
+                              />
+                              <Lock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
+                            </div>
+                          </div>
+                          <div className="sm:col-span-6">
+                            <TextInput
+                              inputMode="numeric"
+                              autoComplete="cc-exp"
+                              placeholder="Expiration date (MM / YY)"
+                              value={form.exp}
+                              onChange={(e) => {
+                                const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                                set(
+                                  "exp",
+                                  v.length > 2 ? `${v.slice(0, 2)} / ${v.slice(2)}` : v,
+                                );
+                              }}
+                            />
+                          </div>
+                          <div className="sm:col-span-6">
+                            <div className="relative">
+                              <TextInput
+                                inputMode="numeric"
+                                autoComplete="cc-csc"
+                                placeholder="Security code"
+                                maxLength={4}
+                                value={form.cvc}
+                                onChange={(e) => set("cvc", e.target.value.replace(/\D/g, ""))}
+                                className="pr-11"
+                              />
+                              <HelpCircle className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
+                            </div>
+                          </div>
+                          <div className="sm:col-span-6">
+                            <TextInput
+                              autoComplete="cc-name"
+                              placeholder="Name on card"
+                              value={form.nameOnCard}
+                              onChange={(e) => set("nameOnCard", e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        <label className="flex cursor-pointer items-center gap-3 px-4 py-3.5 text-[13.5px] text-ink/85">
+                          <CheckBox
+                            on={form.billingSame}
+                            onToggle={() => set("billingSame", !form.billingSame)}
+                          />
+                          Use shipping address as billing address
+                        </label>
+
+                        <div className="border-t border-black/10 bg-white">
+                          <UpsellRow
+                            on={form.insurance}
+                            onToggle={() => set("insurance", !form.insurance)}
+                            icon={
+                              <img
+                                src={iconDeliveryShield.url}
+                                alt=""
+                                className="h-7 w-7 object-contain invert"
+                              />
+                            }
+                            title={
+                              <>
+                                Shipping insurance <span className="font-bold">($3.95)</span>
+                              </>
+                            }
+                            desc="100% Payment guarantee & protect your order from damage, loss, or theft."
+                          />
+                          <div className="mx-4 h-px bg-black/5" />
+                          <UpsellRow
+                            on={form.priority}
+                            onToggle={() => set("priority", !form.priority)}
+                            icon={
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2.2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="h-7 w-7 text-white"
+                              >
+                                <path d="M12 2 4 13h7l-1 9 8-11h-7l1-9z" />
+                              </svg>
+                            }
+                            title={
+                              <>
+                                Front-of-the-line review{" "}
+                                <span className="font-bold">($49.95)</span>
+                              </>
+                            }
+                            desc="Skip the standard 6–24 hour medical review queue and jump straight to the front. A board-certified clinician will review your intake, medical history, and eligibility instantly — not hours from now. If approved, your prescription is sent to our partner pharmacy the same day and ships within 24 hours, so you can start your plan faster and never lose momentum."
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* BNPL rows */}
+                  {hasInstallments &&
+                    (
+                      [
+                        { key: "afterpay", img: payAfterpay.url, label: "Afterpay" },
+                        { key: "klarna", img: payKlarna.url, label: "Klarna" },
+                        { key: "affirm", img: payAffirm.url, label: "Affirm" },
+                      ] as const
+                    ).map((m) => (
+                      <div
+                        key={m.key}
+                        className="overflow-hidden rounded-2xl border"
+                        style={{
+                          borderColor: payMethod === m.key ? NAVY : "rgba(0,0,0,0.10)",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setPayMethod(m.key)}
+                          className="flex w-full items-center justify-between gap-3 bg-white px-4 py-3.5 text-left"
+                        >
+                          <div className="flex items-center gap-3">
+                            <Radio active={payMethod === m.key} />
+                            <span className="text-[15px] font-bold text-ink">{m.label}</span>
+                          </div>
+                          <img src={m.img} alt={m.label} className="h-5" />
+                        </button>
+
+                        {payMethod === m.key && (
+                          <div className="border-t border-black/10 bg-[#F3F4F6] p-4 text-[13.5px] text-ink/70">
+                            You'll be redirected to complete your{" "}
+                            <b className="capitalize">{m.label}</b> checkout after confirming your
+                            order, split into 4 interest-free payments.
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              </FormCard>
+
+              {/* Continue */}
+              <motion.button
+                type="submit"
+                disabled={!canSubmit || submitting}
+                whileTap={{ scale: 0.99 }}
+                className="w-full rounded-2xl px-6 py-4 text-[16px] font-bold text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-60"
+                style={{
+                  background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)`,
+                  boxShadow: `0 18px 40px -12px ${NAVY}66`,
+                }}
+              >
+                {submitting ? "Processing…" : `Continue ($0 charged today)`}
+              </motion.button>
+
+              {/* Trustpilot */}
+              <div className="flex items-center justify-center gap-2.5 pt-1">
+                <span className="text-[15px] font-bold text-ink">Excellent</span>
+                <img
+                  src={trustpilotBadge.url}
+                  alt="Trustpilot Excellent"
+                  className="h-5 w-auto"
+                />
               </div>
-              <div className="flex items-center gap-2 text-[12px] text-ink/55">
-                <Truck className="h-3.5 w-3.5" />
-                Discreet, temperature-controlled shipping
+
+              {/* Trust footer */}
+              <div className="flex flex-col items-center gap-2 text-center">
+                <div className="flex items-center gap-2 text-[12.5px] font-semibold text-ink/70">
+                  <Lock className="h-3.5 w-3.5" style={{ color: GREEN }} />
+                  256-bit SSL encryption · PCI DSS compliant
+                </div>
+                <div className="flex items-center gap-2 text-[12px] text-ink/55">
+                  <Truck className="h-3.5 w-3.5" />
+                  Discreet, temperature-controlled shipping
+                </div>
+                <PayIcons className="mt-1 justify-center" />
               </div>
-              <PayIcons className="mt-1 justify-center" />
-            </div>
 
-            <p className="order-7 text-center text-[11.5px] leading-relaxed text-ink/50 lg:order-none lg:col-start-1 lg:row-start-6">
-              By continuing, I confirm I have read and agree to Blissley's
-              Telehealth, Privacy, Shipping, and Terms & Conditions; consent to
-              the collection, use, and disclosure of my PHI; and authorize
-              healthcare services via telehealth. I authorize Blissley to enroll
-              me in an auto-renewing subscription and charge my saved payment
-              method at the specified intervals until I cancel. Cancellation
-              only stops future charges; refunds are governed by the Refund
-              Policy.
-            </p>
+              <p className="text-center text-[11.5px] leading-relaxed text-ink/50">
+                By continuing, I confirm I have read and agree to Blissley's Telehealth, Privacy,
+                Shipping, and Terms & Conditions; consent to the collection, use, and disclosure
+                of my PHI; and authorize healthcare services via telehealth. I authorize Blissley
+                to enroll me in an auto-renewing subscription and charge my saved payment method
+                at the specified intervals until I cancel. Cancellation only stops future
+                charges; refunds are governed by the Refund Policy.
+              </p>
 
-            <div className="order-8 lg:order-none lg:col-start-1 lg:row-start-7">
               <ReviewSlider />
-            </div>
+            </motion.div>
+          </div>
 
-          </motion.div>
-        </form>
-      </div>
+          {/* RIGHT — grey order summary (desktop only) */}
+          <aside
+            className="hidden lg:block"
+            style={{ background: "#F5F5F7", minHeight: "calc(100vh - 64px)" }}
+          >
+            <div className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12">
+              {treatmentSummary}
+            </div>
+          </aside>
+        </div>
+      </form>
+    </div>
   );
 }
 
