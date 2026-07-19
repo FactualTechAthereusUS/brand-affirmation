@@ -278,20 +278,19 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-white bg-[#E8E4DC] shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
               <img src={vialSemaglutide.url} alt="Semaglutide vial" className="h-full w-full object-contain p-1.5" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="text-[15px] font-semibold tracking-tight text-ink">{PATIENT.medication.replace(" Injectable", "")}</div>
               <div className="text-[13px] text-ink/60">{PATIENT.dose}</div>
             </div>
+            <button className="flex shrink-0 items-center gap-2 rounded-full bg-white py-2 pl-3.5 pr-2 shadow-[0_2px_14px_rgba(0,0,0,0.06)] transition active:scale-[.97]">
+              <span className="text-[13px] font-semibold text-ink">Track</span>
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-white">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </span>
+            </button>
           </div>
-
-          <button className="mt-4 flex w-full items-center justify-between rounded-full bg-white py-3.5 pl-5 pr-2 shadow-[0_2px_14px_rgba(0,0,0,0.06)] transition active:scale-[.97]">
-            <span className="text-left text-[15px] font-semibold text-ink">Track order</span>
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink text-white">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </span>
-          </button>
         </Card>
 
         {/* Next charge — THE INVARIANT */}
