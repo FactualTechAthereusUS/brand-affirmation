@@ -865,11 +865,20 @@ function SalesDMPage() {
 
       {/* ═══════ Featured / payments ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-4">
           <img src={trustpilot.url} alt="Excellent 4.8 · 100,000+ happy customers" className="h-6 w-auto sm:h-7" />
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">As seen on</span>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">As seen on</div>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13.5px] font-semibold text-ink/60">
             <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
+            <span>OK!</span>
+            <span>BalancingAct</span>
+            <span>Woman's World</span>
+            <span>LA Weekly</span>
+            <span>Lifetime Health</span>
+          </div>
+          <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-1.5">
+            <ShieldCheck className="h-4 w-4" style={{ color: "#16A34A" }} />
+            <span className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/70">LegitScript Certified</span>
           </div>
         </div>
         <div className="mt-8 rounded-2xl border border-ink/10 p-6 sm:p-8">
