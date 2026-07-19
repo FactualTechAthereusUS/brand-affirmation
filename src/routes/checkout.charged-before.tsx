@@ -890,28 +890,34 @@ function CheckoutPage() {
 
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
-                <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px]">
+                <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-ink/50">
                   {[
-                    { label: "Refund policy", href: "/policies/refund" },
-                    { label: "Shipping", href: "/policies/shipping" },
-                    { label: "Privacy policy", href: "/policies/privacy" },
-                    { label: "Terms of service", href: "/policies/terms" },
-                    { label: "Telehealth consent", href: "/policies/telehealth" },
-                    { label: "Contact us", href: "/contact" },
-                  ].map((l) => (
-                    <a
-                      key={l.label}
-                      href={l.href}
-                      className="font-medium underline underline-offset-4 hover:opacity-80"
-                      style={{ color: NAVY }}
-                    >
-                      {l.label}
-                    </a>
+                    { label: "Privacy Policy", href: "/privacy" },
+                    { label: "Terms", href: "/terms" },
+                    { label: "Shipping", href: "/shipping" },
+                    { label: "Refund Policy", href: "/refund" },
+                    { label: "Medication Safety", href: "/medication-safety" },
+                  ].map((l, i, arr) => (
+                    <span key={l.label} className="inline-flex items-center gap-x-4">
+                      <a
+                        href={l.href}
+                        className="font-medium underline underline-offset-4 hover:opacity-80"
+                        style={{ color: NAVY }}
+                      >
+                        {l.label}
+                      </a>
+                      {i < arr.length - 1 && (
+                        <span className="text-ink/20">·</span>
+                      )}
+                    </span>
                   ))}
                 </nav>
                 <div className="mt-4 text-[11.5px] text-ink/45">
-                  © {new Date().getFullYear()} Blissley Health, Inc. All rights reserved.
+                  © {new Date().getFullYear()} TheFactual LLC DBA Blissley
                 </div>
+                <p className="mt-3 max-w-2xl text-[11.5px] leading-[1.6] text-ink/35">
+                  Blissley is a technology platform and does not provide medical advice. Physician services are provided by independent licensed practitioners. Individual results may vary.
+                </p>
               </div>
             </motion.div>
           </div>
