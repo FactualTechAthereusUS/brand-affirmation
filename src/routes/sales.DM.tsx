@@ -44,7 +44,7 @@ export const Route = createFileRoute("/sales/DM")({
   component: SalesDMPage,
   head: () => ({
     meta: [
-      { title: "Your GLP-1 Prescription Plan Approval — Blissley" },
+      { title: "Your GLP-1 Prescription Plan Approval Blissley" },
       {
         name: "description",
         content:
@@ -365,7 +365,7 @@ const STEPS = [
   { n: "02", icon: milestoneStart.url, title: "Fast Prescription Approval", body: "Most reviews are completed quickly. Same-day approvals may be available when clinically appropriate." },
   { n: "03", icon: shipBox.url, title: "Medication Preparation & Shipping", body: "Once approved, your medication is prepared and shipped in a temperature-controlled overnight box. Tracking arrives in 1–2 business days." },
   { n: "04", icon: milestoneHealth.url, title: "Easy Refills", body: "When it's time to refill, a quick form in your patient portal keeps everything moving. We'll text and email tracking as it ships." },
-  { n: "05", icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging — whenever you need us." },
+  { n: "05", icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging whenever you need us." },
 ];
 
 function DMStepRow({ step }: { step: (typeof STEPS)[number] }) {
@@ -395,8 +395,8 @@ function DMStepRow({ step }: { step: (typeof STEPS)[number] }) {
 
 /* ─────────  Reviews  ───────── */
 const REVIEWS = [
-  { name: "Jennifer R.", face: face1.url, title: "The food noise is finally gone", body: "I used to think about food constantly. Now I eat when I'm hungry and stop when I'm full. It's the quietest my head has been in years — and the weight is coming off without a fight." },
-  { name: "Michael T.", face: face2.url, title: "50 lbs in 7 months", body: "Blood pressure back to normal, off my sleep apnea machine, and my knees don't ache anymore. The physician actually messages me back — I've never had care like this." },
+  { name: "Jennifer R.", face: face1.url, title: "The food noise is finally gone", body: "I used to think about food constantly. Now I eat when I'm hungry and stop when I'm full. It's the quietest my head has been in years and the weight is coming off without a fight." },
+  { name: "Michael T.", face: face2.url, title: "50 lbs in 7 months", body: "Blood pressure back to normal, off my sleep apnea machine, and my knees don't ache anymore. The physician actually messages me back I've never had care like this." },
   { name: "Sarah M.", face: face3.url, title: "Finally a program that's honest about billing", body: "Same price at every dose. No surprise charges. When I had a question about my card, someone from the team responded that day. That trust made me stay." },
   { name: "Lisa K.", face: face4.url, title: "My doctor dismissed me for years", body: "I was told to 'just try harder.' Blissley actually listened, ran the numbers on my metabolism, and got me on a real treatment plan. Down 32 lbs and I feel like myself again." },
 ];
@@ -406,9 +406,9 @@ const FAQS = [
   { who: "Michelle from Texas", q: "How does Blissley work?", a: "You complete a short intake, a licensed clinician reviews your health history, and if you qualify, your GLP-1 medication ships to your door in a temperature-controlled overnight box. Your physician supports you the whole way via unlimited secure messaging." },
   { who: "Derek from Nevada", q: "Is the medication real semaglutide?", a: "Yes. Every prescription is a real GLP-1 medication (semaglutide or tirzepatide) prepared by a state-licensed U.S. compounding pharmacy under a licensed clinician's order." },
   { who: "Sarah from California", q: "What if I'm not approved?", a: "If a clinician determines GLP-1 therapy isn't appropriate for you, you are refunded in full. Your card is not charged until a physician approves your prescription." },
-  { who: "James from Florida", q: "What states are eligible?", a: "Blissley is available across most U.S. states. You'll confirm your state during intake — if we can't serve you today, you'll be refunded in full." },
-  { who: "Ashley from Georgia", q: "How do I cancel?", a: "Monthly plans can be canceled anytime in one click from your patient portal. Multi-month plans include our weight-loss guarantee — if you don't lose weight by the end, we refund your program." },
-  { who: "Nathan from Washington", q: "What dosage will I take?", a: "Your clinician starts you at a low dose and titrates upward as tolerated to your optimal therapeutic level. Your price never goes up as your dose does — that's the price lock." },
+  { who: "James from Florida", q: "What states are eligible?", a: "Blissley is available across most U.S. states. You'll confirm your state during intake if we can't serve you today, you'll be refunded in full." },
+  { who: "Ashley from Georgia", q: "How do I cancel?", a: "Monthly plans can be canceled anytime in one click from your patient portal. Multi-month plans include our weight-loss guarantee if you don't lose weight by the end, we refund your program." },
+  { who: "Nathan from Washington", q: "What dosage will I take?", a: "Your clinician starts you at a low dose and titrates upward as tolerated to your optimal therapeutic level. Your price never goes up as your dose does that's the price lock." },
   { who: "Alicia from Tennessee", q: "Where do prescriptions come from?", a: "From state-licensed U.S. pharmacies partnered with Blissley. Every shipment is prepared to your provider's exact specifications and shipped overnight in a temperature-controlled cold-pack box." },
   { who: "Chris from North Carolina", q: "How much weight will I lose?", a: "Patients on our program lose an average of 18% of their body weight, with a 6.5\" average reduction in waist size. Individual results vary based on adherence, dosage and lifestyle." },
 ];
@@ -505,7 +505,7 @@ function SalesDMPage() {
 
       <TrxHeader onBack={() => window.history.back()} showBack={false} />
 
-      {/* ═══════ HERO — Personalized approval ═══════ */}
+      {/* ═══════ HERO Personalized approval ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-10 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="text-center">
@@ -519,7 +519,7 @@ function SalesDMPage() {
             }}>approval!</span>
           </h1>
           <p className="mx-auto mt-3 max-w-[560px] text-[14.5px] leading-relaxed text-ink/70 sm:text-[15.5px]">
-            Personalized care for your unique biology — <b>prescribed medication</b>, 1:1 physician guidance and
+            Personalized care for your unique biology <b>prescribed medication</b>, 1:1 physician guidance and
             unlimited messaging with your licensed clinician.
           </p>
         </motion.div>
@@ -562,7 +562,7 @@ function SalesDMPage() {
           </div>
         </div>
 
-        {/* Recommendation — text left, vial right, white background */}
+        {/* Recommendation text left, vial right, white background */}
         <div className="mt-8 bg-white">
           <div className="grid grid-cols-[1fr_110px] items-center gap-4 sm:grid-cols-[1fr_180px] sm:gap-6 md:grid-cols-[1fr_220px]">
             <div>
@@ -650,7 +650,7 @@ function SalesDMPage() {
           <TreatmentCard
             id="tirz"
             title="Tirzepatide"
-            desc="Most potent GLP-1 weight loss medication — dual-action results."
+            desc="Most potent GLP-1 weight loss medication dual-action results."
             badge="Most Potent"
             badgeColor={NAVY}
             badgeIcon={LightningIcon}
@@ -672,7 +672,7 @@ function SalesDMPage() {
         </div>
       </section>
 
-      {/* ═══════ Step 2 — plans ═══════ */}
+      {/* ═══════ Step 2 plans ═══════ */}
       {treatment && (
         <div style={{ background: "#FFFFFF" }}>
           <section className="mx-auto w-full max-w-[720px] px-4 py-10 sm:px-6">
@@ -681,7 +681,7 @@ function SalesDMPage() {
               <h2 className="text-[19px] font-semibold text-ink sm:text-[20px]">Select Your Plan</h2>
             </div>
             <p className="mt-2 max-w-[600px] text-[14px] leading-snug text-ink/70">
-              You have selected <b>{treatment === "sema" ? "Semaglutide" : "Tirzepatide"} Injections</b>. Lock in your savings — use free financing or pay in full.
+              You have selected <b>{treatment === "sema" ? "Semaglutide" : "Tirzepatide"} Injections</b>. Lock in your savings use free financing or pay in full.
             </p>
 
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.05 }}
@@ -706,7 +706,7 @@ function SalesDMPage() {
             Your plan
           </h2>
           <p className="mx-auto mt-2 max-w-[520px] text-center text-[14.5px] leading-relaxed text-ink/70">
-            You'll get <b>everything you need</b> to drop {primaryPatient.startLbs - primaryPatient.goalLbs} lbs — and keep it off.
+            You'll get <b>everything you need</b> to drop {primaryPatient.startLbs - primaryPatient.goalLbs} lbs and keep it off.
           </p>
           <h3 className="mt-8 text-[16px] font-semibold text-ink sm:text-[17px]">All Plans Include</h3>
           <div className="mt-4 rounded-2xl bg-white p-6 sm:p-8">
@@ -841,7 +841,7 @@ function SalesDMPage() {
           {/* Blue strip + white card */}
           <div className="mx-auto mt-8 max-w-[560px] overflow-hidden rounded-2xl border border-ink/10 bg-white text-left shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]">
             <div className="px-6 py-4 text-center text-[14px] font-semibold text-white sm:text-[15.5px]" style={{ background: NAVY }}>
-              Prescriptions start at just <b>$237</b> — no insurance needed
+              Prescriptions start at just <b>$237</b> no insurance needed
             </div>
 
             <div className="px-6 py-7 sm:px-8 sm:py-8">
@@ -852,7 +852,7 @@ function SalesDMPage() {
 
               <div className="mt-4 flex flex-col gap-4">
                 {[
-                  { i: <HeartPulse className="h-5 w-5" style={{ color: PINK }} />, t: "Access to GLP-1 medication", s: "Cost of medication is included — no insurance necessary." },
+                  { i: <HeartPulse className="h-5 w-5" style={{ color: PINK }} />, t: "Access to GLP-1 medication", s: "Cost of medication is included no insurance necessary." },
                   { i: <Stethoscope className="h-5 w-5" style={{ color: NAVY }} />, t: "Board-certified doctor review", s: "1:1 physician guidance from U.S.-licensed clinicians." },
                   { i: <Clock className="h-5 w-5" style={{ color: "#16A34A" }} />, t: "Unlimited physician messaging", s: "Message your licensed clinician anytime through your portal." },
                   { i: <Truck className="h-5 w-5" style={{ color: NAVY }} />, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
@@ -888,7 +888,7 @@ function SalesDMPage() {
             }}
             className="mx-auto mt-8 flex w-full max-w-[420px] items-center justify-center rounded-full px-6 py-4 text-[15px] font-semibold text-white transition-all hover:brightness-110"
             style={{ background: NAVY, boxShadow: `0 18px 40px ${NAVY}33` }}>
-            Claim my approval — from $237/mo
+            Claim my approval from $237/mo
           </button>
           <div className="mt-3 text-[11.5px] uppercase tracking-[0.14em] text-ink/40">
             Your approval is reserved for {time}
