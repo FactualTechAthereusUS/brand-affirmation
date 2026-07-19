@@ -439,26 +439,6 @@ function CheckoutPage() {
         </span>
       </div>
 
-      <ul className="mt-4 space-y-2.5 text-[13px]">
-        {[
-          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url, bold: true },
-          { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
-          { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
-        ].map((item) => (
-          <li key={item.t} className="flex items-start gap-2.5">
-            <img
-              src={item.icon}
-              alt=""
-              className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-5 w-5 brightness-0 contrast-125" : "h-4 w-4"}`}
-            />
-            <div className="leading-tight">
-              <div className="font-bold text-ink text-[13px]">{item.t}</div>
-              <div className="text-[11.5px] text-ink/55">{item.s}</div>
-            </div>
-          </li>
-        ))}
-      </ul>
-
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
