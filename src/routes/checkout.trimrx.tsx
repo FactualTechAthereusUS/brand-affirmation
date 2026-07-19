@@ -917,6 +917,13 @@ function CheckoutPage() {
           >
             <div className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12">
               {treatmentSummary}
+
+              <SidebarReviewCard />
+
+              <div className="rounded-2xl border border-black/8 bg-white px-5 py-5">
+                <h3 className="mb-4 text-[15px] font-bold text-ink">Why buy from us?</h3>
+                <ValueStack className="!bg-transparent py-0" />
+              </div>
             </div>
           </aside>
         </div>
