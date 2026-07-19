@@ -26,6 +26,9 @@ import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
 import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
+import iconCheckBadge from "@/assets/check-badge.png.asset.json";
+import iconShipBox from "@/assets/ship-box.png.asset.json";
+import iconDocHeadset from "@/assets/doc-headset.png.asset.json";
 import trustpilotBadge from "@/assets/trustpilot.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
 import payKlarna from "@/assets/pay-klarna.png.asset.json";
@@ -402,17 +405,12 @@ function CheckoutPage() {
 
       <ul className="mt-5 space-y-3.5 text-[14px]">
         {[
-          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases." },
-          { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery." },
-          { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime." },
+          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url },
+          { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
+          { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
         ].map((item) => (
           <li key={item.t} className="flex items-start gap-3">
-            <span
-              className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
-              style={{ background: GREEN }}
-            >
-              <Check className="h-3 w-3 text-white" strokeWidth={4} />
-            </span>
+            <img src={item.icon} alt="" className="mt-0.5 h-5 w-5 shrink-0 object-contain" />
             <div className="leading-tight">
               <div className="font-bold text-ink">{item.t}</div>
               <div className="text-[12.5px] text-ink/55">{item.s}</div>
