@@ -718,7 +718,7 @@ function CheckoutPage() {
                               <span className="font-bold">($49.95)</span>
                             </>
                           }
-                          desc="Skip the 6–24 hour wait. Get an instant telehealth review right now."
+                          desc="Skip the standard 6–24 hour medical review queue. A board-certified clinician will review your intake instantly and, if approved, your prescription ships today — so you can start your plan faster."
                         />
                       </div>
                     </div>
