@@ -401,7 +401,7 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
   const sub = kind === "care" ? "Sarah · responds within a few hours" : "Board-Certified · responds within 24 hours";
   const avatar =
     kind === "care" ? (
-      <div className="grid h-10 w-10 place-items-center rounded-full text-[12px] font-black text-white" style={{ background: INK }}>B</div>
+      <div className="grid h-10 w-10 place-items-center rounded-full bg-[color:var(--color-mist)]/60 p-1.5"><img src={blissleyLogo.url} alt="Blissley" className="h-full w-full object-contain" /></div>
     ) : (
       <div className="grid h-10 w-10 place-items-center rounded-full text-[12px] font-black text-white" style={{ background: NAVY }}>SN</div>
     );
