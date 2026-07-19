@@ -1573,11 +1573,12 @@ function NotificationsSheet({ open, onClose, onGoto }: { open: boolean; onClose:
                     if (n.deepLink && n.deepLink !== "home") onGoto(n.deepLink as Tab);
                     else onClose();
                   }}
-                  className={`flex w-full items-start gap-3 px-5 py-3.5 text-left transition hover:bg-[color:var(--color-mist)]/40 ${!n.read ? "bg-[#FFFBFA]" : ""}`}
+                  className={`flex w-full items-start gap-3 bg-white px-5 py-3.5 text-left transition hover:bg-[color:var(--color-mist)]/30 ${!n.read ? "" : ""}`}
                 >
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: notifBg(n.kind) }}>
+                  <div className="grid h-9 w-9 shrink-0 place-items-center">
                     {notifIcon(n.kind)}
                   </div>
+
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <div className="text-[13.5px] font-semibold text-ink">{n.title}</div>
@@ -1600,13 +1601,14 @@ function notifBg(k: string) {
   return k === "message" ? "#FFF3F1" : k === "shipment" ? "#EAF0F8" : k === "check_in" ? "#FFF3F1" : k === "charge" ? "#F5F1E9" : "#EAF3EF";
 }
 function notifIcon(k: string) {
-  const cls = "h-4 w-4";
-  if (k === "message") return <MessageCircle className={cls} style={{ color: PINK }} />;
-  if (k === "shipment") return <Truck className={cls} style={{ color: NAVY }} />;
-  if (k === "check_in") return <AlertCircle className={cls} style={{ color: PINK }} />;
-  if (k === "charge") return <CreditCard className={cls} style={{ color: "#8a6d3b" }} />;
-  return <CheckCircle2 className={cls} style={{ color: "#4a7c6f" }} />;
+  const cls = "h-6 w-6 text-ink";
+  if (k === "message") return <MessageCircle className={cls} />;
+  if (k === "shipment") return <Truck className={cls} />;
+  if (k === "check_in") return <AlertCircle className={cls} />;
+  if (k === "charge") return <CreditCard className={cls} />;
+  return <CheckCircle2 className={cls} />;
 }
+
 
 function timeAgo(ts: number) {
   const diff = Date.now() - ts;
