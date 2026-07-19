@@ -1503,6 +1503,16 @@ function MobileOrderSummaryDetail({
                 <span className="font-semibold text-ink">−${fmt(planDiscount)}</span>
               </div>
             )}
+            {discountApplied && (
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-ink">
+                  <SavingsIcon className="h-3.5 w-3.5" color={GREEN} /> Total Savings
+                </span>
+                <span className="font-semibold" style={{ color: GREEN }}>
+                  ${fmt(planDiscount)}
+                </span>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-ink">
                 Shipping
@@ -1515,7 +1525,6 @@ function MobileOrderSummaryDetail({
                   <HelpCircle className="h-3.5 w-3.5" />
                 </button>
               </span>
-
               <span className="font-semibold">
                 <span className="mr-1.5 text-ink/40 line-through">${fmt(shippingWas)}</span>
                 <span style={{ color: GREEN }}>FREE</span>
@@ -1523,23 +1532,29 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
-          {/* Grand total */}
-          <div className="mt-4 flex items-end justify-between border-t border-ink/10 pt-4">
-            <div className="text-[22px] font-black text-ink">Total</div>
+          {/* Total if prescribed — highlighted */}
+          <div
+            className="mt-4 flex items-center justify-between rounded-2xl px-4 py-3.5"
+            style={{ background: "#F6F9FE" }}
+          >
+            <div className="text-[15px] font-bold text-ink">Total if prescribed</div>
             <div className="text-right leading-none">
-              <div className="mb-1 inline-block rounded-md bg-ink/5 px-1.5 py-0.5 text-[11px] font-semibold text-ink/60 align-middle mr-1.5">USD</div>
-              <span className="text-[24px] font-black text-ink">${fmt(total)}</span>
+              <span className="mr-2 text-[14px] text-ink/40 line-through">
+                ${fmt(subtotal)}
+              </span>
+              <span className="text-[22px] font-black" style={{ color: NAVY }}>
+                ${fmt(total)}
+              </span>
             </div>
           </div>
-          <div className="mt-2 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink">
-            <SavingsIcon className="h-3.5 w-3.5" color={GREEN} />
-            Total savings ${fmt(savings)}
-          </div>
 
-          {/* DUE TODAY — prominent (image 1/2 details, image 3 minimal styling) */}
-          <div className="mt-4 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-4">
+          {/* Due Today — highlighted */}
+          <div
+            className="mt-3 flex items-center justify-between gap-4 rounded-2xl px-4 py-3.5"
+            style={{ background: "#F1FAF4" }}
+          >
             <div>
-              <div className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink/55">
+              <div className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink/60">
                 Due Today
               </div>
               <div className="mt-1 text-[11.5px] text-ink/60 leading-snug">
@@ -1555,6 +1570,7 @@ function MobileOrderSummaryDetail({
               </span>
             </div>
           </div>
+
 
           {/* Value props (from image 1/2) */}
           <ul className="mt-5 space-y-3 text-[13.5px]">
