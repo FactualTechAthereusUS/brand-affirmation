@@ -143,8 +143,8 @@ function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }
 /* ── Page ── */
 function CheckoutTemplate3() {
   const { tx, plan: planKey } = Route.useSearch();
-  const treatment = TREATMENTS[tx];
-  const plan = PLANS[tx][planKey];
+  const treatment = TREATMENTS[tx as "sema" | "tirz"];
+  const plan = PLANS[tx as "sema" | "tirz"][planKey as PlanKey];
 
   const upfront = plan.perMo * plan.months;
   const dueToday = upfront;
