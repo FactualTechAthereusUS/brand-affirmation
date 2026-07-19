@@ -923,12 +923,19 @@ function CheckoutPage() {
                 charges; refunds are governed by the Refund Policy.
               </p>
 
-              <ReviewSlider />
+            </motion.div>
+          </div>
 
-              <div className="lg:hidden">
-                <ValueStack />
-              </div>
+          <div className="px-4 pt-6 sm:px-6 lg:px-0">
+            <ReviewSlider />
+          </div>
 
+          <div className="px-4 pt-6 sm:px-6 lg:hidden">
+            <ValueStack />
+          </div>
+
+          <div className="lg:flex lg:justify-end">
+            <div className="w-full max-w-[560px] px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12">
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
                 <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-ink/50">
@@ -960,7 +967,7 @@ function CheckoutPage() {
                   Blissley is a technology platform and does not provide medical advice. Physician services are provided by independent licensed practitioners. Individual results may vary.
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* RIGHT — grey order summary (desktop only) */}
