@@ -1444,8 +1444,15 @@ function MobileOrderSummaryDetail({
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
+              <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
+                Only <span className="text-ink">{discountsLeft} {discountsLeft === 1 ? "discount" : "discounts"} left</span>. Yours is reserved for{" "}
+                <span style={{ color: PINK }} className="font-bold tabular-nums">
+                  {mmss}
+                </span>
+              </div>
             </div>
           )}
+
 
           {/* Totals */}
           <div className="mt-5 space-y-2.5 text-[14px]">
