@@ -643,6 +643,9 @@ function SalesDMPage() {
             ]}
             selected={treatment === "tirz"}
             onSelect={() => setTreatment("tirz")}
+            formType={tirzForm}
+            onFormType={setTirzForm}
+            oralUpcharge={50}
           />
         </div>
       </section>
