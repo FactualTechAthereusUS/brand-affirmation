@@ -23,6 +23,7 @@ import {
 import { z } from "zod";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
+import { ValueStack } from "@/components/home/ValueStack";
 import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
@@ -857,6 +858,8 @@ function CheckoutPage() {
               </p>
 
               <ReviewSlider />
+
+              <ValueStack />
 
               {/* Policy footer */}
               <div className="mt-4 border-t border-ink/10 pt-5">
