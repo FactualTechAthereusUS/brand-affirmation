@@ -746,7 +746,7 @@ function SalesDMPage() {
               </div>
               <div className="mt-2 text-[15px] font-bold text-ink">"{r.title}"</div>
               <p className="mt-2 text-[13.5px] leading-relaxed text-ink/70">{r.body}</p>
-            </motion.li>
+            </motion.div>
           ))}
         </div>
       </section>
