@@ -515,9 +515,10 @@ function SalesTrimRxPage() {
             color: NAVY,
           }}
         >
-          Only <b>29</b> discounts left.
+          Only <b>{discountsLeft}</b> {discountsLeft === 1 ? "discount" : "discounts"} left.
           <br />
           Yours is reserved for <b style={{ color: NAVY }}>{time}</b>
+
         </motion.div>
 
         <div className="mt-6 text-center">
