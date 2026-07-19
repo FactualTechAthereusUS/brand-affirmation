@@ -1,76 +1,235 @@
-# Blissley Homepage — Structural Build (Pass 1)
+# Blissley Patient Portal — End-to-End Plan
 
-Goal: Ship the full homepage skeleton per your spec — every section, correct tokens, correct order, correct copy, placeholder imagery, and motion wired up. Then we iterate section-by-section against the reference PDFs (Brez, IM8, Mochi, DirectMeds, BetterMeRx, TrimRx, Mochi) to reach parity.
+Goal: turn `/portal/patient` from a static screen into a believable, demoable patient experience with a real journey starting at `/login`. All demo data driven by a client-side store (localStorage), no backend required.
 
-## Design system setup
+---
 
-Update `src/styles.css` (Tailwind v4 `@theme`) with tokens:
-- Colors: `canvas #F8F5EF`, `ink #171717`, `ever #818263`, `mist #D8D2C7`, `bluebell #8B9BB4`, `honey #C4A265`, `blush #C4998A`, `check #4A7C6F`
-- Fonts: `--font-display: "Playfair Display", serif` (italic-capable), `--font-sans: "Manrope", sans-serif`. Load via `<link>` in `src/routes/__root.tsx` (Google Fonts). No Inter.
-- Radii, shadows, section padding as spec.
+## 1. Journey Map (what actually happens)
 
-Set global body: bg `canvas`, text `ink`, `font-sans`. Headings use `font-display`.
+```text
+/login  →  magic-link sent screen  →  (auto "click" simulated)  →
+/portal/patient  →  first-visit onboarding overlay (4 steps)  →
+Home tab (populated with realistic state)
+```
 
-## Route + head
+**States a patient can be in** (drives every card/CTA on Home):
 
-Rewrite `src/routes/index.tsx` (placeholder route) with brand `head()`:
-- title: "Blissley — Personalized medicine, designed around you."
-- description matches hero sub.
-- og:title / og:description / og:type=website / twitter:card=summary_large_image.
+1. `pending_review` — just paid, doctor hasn't approved yet (0–24h simulated).
+2. `approved_preparing` — prescription approved, pharmacy prepping.
+3. `shipped` — tracking active, ETA in 2–4 days.
+4. `delivered_active` — on treatment, weekly dose cadence.
+5. `check_in_due` — 3-month check-in required before next refill ships.
+6. `refill_processing` — check-in done, next shipment queued.
 
-## Motion stack
+The demo starts in `delivered_active` (most interesting UI) but a hidden dev switcher (long-press logo) cycles states so we can show every variation.
 
-Install `motion` (Framer Motion successor) and `lenis`. Add:
-- `src/components/SmoothScroll.tsx` — Lenis provider mounted in `__root.tsx` after hydration (client-only via `useEffect`).
-- Reveal wrapper `src/components/Reveal.tsx` using `motion` + `useInView` (fade + 16px rise, 600ms ease-out) applied to section headers and cards.
-- Hero: subtle parallax on hero image via `useScroll` + `useTransform`.
-- Buttons: `whileHover` scale 1.02, `whileTap` 0.98.
+---
 
-## Component structure
+## 2. Login → Portal handoff
 
-All under `src/components/home/`:
-1. `Nav.tsx` — sticky, wordmark (logo image) + hamburger; full-screen overlay menu with categories + Start Assessment CTA.
-2. `Hero.tsx` — eyebrow pill, H1 (Playfair), sub, two CTAs, full-bleed placeholder image with rating overlay card.
-3. `PressLogos.tsx` — "AS FEATURED IN" + horizontal scroll grayscale placeholder logo strip.
-4. `CategoryGrid.tsx` — 2×2 photo cards (Weight Loss, Skin & Hair, Sexual Health, Longevity) with gradient overlay, tag pill, title, arrow circle. "View all treatments →" link below.
-5. `WhyBlissley.tsx` — 4 icon-row differentiators separated by hairlines (Lucide icons in ever-tint circle).
-6. `HowItWorks.tsx` — dark `#171717` section, 3 numbered steps in Playfair `ever` numerals, CTA button.
-7. `FeaturedPrograms.tsx` — 3 tall lifestyle cards, gradient, tag, title, "Explore →" + arrow circle.
-8. `SocialProof.tsx` — headline + rating line, edge-to-edge horizontal photo strip, review-card carousel with 3 cards + dot indicators.
-9. `Numbers.tsx` — 2×2 stat grid with hairline dividers.
-10. `Comparison.tsx` — 3-col table: feature / Blissley / Traditional. Ink header row, warm tint Blissley column, ✅/❌ per spec.
-11. `FAQ.tsx` — 8 accordion items (Radix `Accordion` restyled to spec, + rotating to ×).
-12. `FinalCTA.tsx` — `ever` background section, two centered CTAs, trust line.
-13. `Footer.tsx` — dark, wordmark, tagline, 2-col links, legal, disclaimer, payment icons.
+- `/login` already exists. Wire the "Send magic link" button to:
+  1. Show "Check your email" confirmation (2s).
+  2. Auto-advance to `/portal/patient` (simulating link click) — this makes the demo flow without email infra.
+  3. Set `blissley.session = { email, loggedInAt }` in localStorage.
+- `/portal/patient` reads session; if missing, redirect to `/login`.
+- Add "Sign out" in Settings that clears session and returns to `/login`.
 
-`index.tsx` composes them top-to-bottom.
+---
 
-## Placeholders
+## 3. First-visit Onboarding (overlay, not a route)
 
-- Logo: use uploaded `transparent_black_small_letters_logo.png` via `lovable-assets` pointer → `src/assets/blissley-logo.png.asset.json`. Used in nav and footer (invert for dark footer via CSS filter).
-- All lifestyle photography: use neutral warm placeholder divs with `bg-mist` + subtle text label indicating intended shot (e.g. "Weight Loss — hiker, warm light"). No stock images yet. Real imagery will be generated section-by-section in pass 2 so we can match Brez photography style precisely.
-- Press logos and patient avatars: gray blocks/circles as placeholders.
+Full-screen liquid-glass overlay over Home, 4 swipeable cards:
 
-## Copy
+1. **Welcome, Sarah** — "Your care team is ready."
+2. **Meet Dr. Nass** — physician photo + credentials + "he'll message you within 24h."
+3. **How your plan works** — weekly dose, monthly check-in, auto-refill.
+4. **Enable notifications** — mock iOS permission (toggle, saved to store).
 
-All copy pulled verbatim from your spec (headlines, sub-lines, card tags, steps, reviews, FAQ Q&A, footer).
+Dismissible; sets `onboardingComplete = true`. Never shown again unless reset from Settings → "Replay tour".
 
-## Responsive
+---
 
-Mobile-first, single column. Desktop breakpoints (`md:`, `lg:`) tuned per section (nav switches to horizontal, grids widen, hero centers with max-width). Every tap target ≥52px. Uses the `grid-cols-[minmax(0,1fr)_auto]` header pattern where needed.
+## 4. Home Tab — dynamic composition
 
-## Verification
+Cards appear/disappear based on `patientState`:
 
-After the build:
-1. `bun run build` passes.
-2. Playwright screenshot at 390px and 1440px widths; view each section against the spec.
-3. Confirm nav sticky, overlay menu opens, accordion expands, Lenis smooth-scroll active, motion reveals fire.
 
-## Not in this pass
+| Card                                                            | Shown when                         |
+| --------------------------------------------------------------- | ---------------------------------- |
+| Hero image + greeting                                           | always                             |
+| **Status hero** (Approved / Shipped / Delivered / Check-in due) | always, content swaps by state     |
+| **Next dose** countdown (e.g. "Dose 3 of 4 · Thursday 8:00 AM") | `delivered_active`, `check_in_due` |
+| **Check-in required** banner (coral, prominent)                 | `check_in_due` — blocks refill     |
+| **Next shipment** card (with track button)                      | `shipped`, `refill_processing`     |
+| **Next charge** card                                            | always except `paused`             |
+| **Message from Dr. Nass** preview                               | when unread message exists         |
+| **Progress snapshot** (weight -6.2 lbs, streak)                 | `delivered_active` onward          |
+| **Paused** banner + Resume CTA                                  | `paused`                           |
 
-- Real photography (pass 2, per section, matching Brez).
-- Real press logos (pass 2).
-- Quiz funnel behind CTAs (separate build).
-- Analytics wiring.
 
-Once the skeleton lands and you approve the shape, we go section-by-section: I'll re-open the relevant PDF, screenshot the reference, and refine that one section to reference parity before moving to the next.
+Every card animates in/out (framer-motion layout + AnimatePresence).
+
+---
+
+## 5. Messages Tab
+
+- Threaded chat with **Dr. Nass** (care team).
+- Seeded conversation: welcome message → user reply → doctor response about side effects → check-in reminder.
+- Composer: text input + attach (photo/lab). Sending pushes to store, doctor "types…" indicator, auto-reply after 3s from a small canned-response bank keyed on keywords (nausea, dose, refill, thanks).
+- Unread badge on tab bar reflects `messages.filter(unread).length`.
+- Tapping a message from Home deep-links here and scrolls to it.
+
+---
+
+## 6. My Plan Tab
+
+Sections:
+
+- **Current medication** card — Semaglutide 0.5mg, weekly, next dose date.
+- **Dose schedule** — 4-week calendar strip, dosed weeks checked, upcoming dose highlighted.
+- **Progress** — weight chart (reuse WeightLossChart component) with logged entries; "Log weight" button opens sheet.
+- **Check-in** — monthly form (weight, side effects 1–5, mood, notes). Submitting flips `check_in_due` → `refill_processing`, unlocks refill, triggers doctor message.
+- **Refills** — list of past shipments + upcoming; "Request early refill" button (opens confirm sheet).
+- **Pause / Cancel plan** — bottom, subdued.
+
+---
+
+## 7. Settings Tab
+
+- Profile (name, DOB, email, phone) — editable inline.
+- Shipping address — editable.
+- Payment method — masked card, "Update".
+- Notifications — toggles (Shipment, Messages, Check-in reminders).
+- Documents — Prescription PDF, Lab results, Invoices (mock links).
+- Support — contact card, FAQ link.
+- Replay tour · Sign out · Version.
+
+---
+
+## 8. Notifications system
+
+- Bell icon in TopBar (already there) opens a sheet listing notifications from store.
+- Types: `shipment_update`, `message`, `check_in_due`, `charge_upcoming`, `dose_reminder`.
+- Each has icon, title, body, timestamp, `read` flag, deep-link.
+- Unread dot on bell; badges on Messages tab and relevant Home cards.
+- Toast (bottom, glass) fires when a state transition creates a new notification during the session (e.g., dev switcher moves to `shipped` → toast "Your order shipped").
+
+---
+
+## 9. Data layer (client-only)
+
+`src/lib/portal/store.ts` — small Zustand-like store using `useSyncExternalStore` + localStorage:
+
+```ts
+type PortalState = {
+  session: { email: string } | null;
+  patient: { firstName, lastName, dob, phone, address };
+  planState: PatientState;      // enum above
+  medication: { name, dose, cadence, nextDoseAt };
+  shipments: Shipment[];
+  charges: Charge[];
+  messages: Message[];
+  notifications: Notification[];
+  weightLog: { date, lbs }[];
+  checkIns: CheckIn[];
+  prefs: { notif: {...}, onboardingComplete };
+};
+```
+
+Seed on first load. All UI reads/writes through the store; changes persist across reloads. A hidden `?reset=1` query clears it.
+
+---
+
+## 10. Dev demo switcher
+
+Long-press (600ms) on the "blissley" wordmark in TopBar opens a bottom sheet:
+
+- Radio list of the 7 patient states → applies seed for that state.
+- "Trigger new message", "Trigger shipment update", "Advance 1 week" buttons.
+- Lets you demo every UI variant without waiting.
+
+---
+
+## 11. File structure (new/updated)
+
+```text
+src/lib/portal/
+  store.ts            # state + persistence + actions
+  seed.ts             # per-state seed data
+  types.ts
+
+src/components/portal/
+  TopBar.tsx          # extracted, with bell + notifications sheet
+  TabBar.tsx          # extracted, with badges
+  Onboarding.tsx      # first-visit overlay
+  DevSwitcher.tsx     # long-press demo panel
+  Toast.tsx           # transient notifications
+  home/
+    StatusHero.tsx    # switches by planState
+    NextDose.tsx
+    CheckInBanner.tsx
+    NextShipment.tsx  # (moved from current file)
+    NextCharge.tsx
+    MessagePreview.tsx
+    ProgressSnapshot.tsx
+    PausedBanner.tsx
+  messages/
+    Thread.tsx
+    Composer.tsx
+    autoReply.ts
+  plan/
+    MedicationCard.tsx
+    DoseSchedule.tsx
+    ProgressChart.tsx
+    CheckInSheet.tsx
+    RefillsList.tsx
+  settings/
+    ProfileSection.tsx
+    AddressSection.tsx
+    PaymentSection.tsx
+    NotifPrefs.tsx
+    DocumentsList.tsx
+
+src/routes/
+  login.tsx           # wire magic-link → /portal/patient
+  portal.patient.tsx  # slim shell: session guard + tabs
+```
+
+Existing visual language (iOS glass cards, coral pink, semantic tokens) is preserved. No new colors, fonts, or hard borders introduced.
+
+---
+
+## 12. Interactions worth calling out
+
+- **Check-in gate**: when `check_in_due`, refill card shows "Complete check-in to ship" and Track button is disabled with tooltip.
+- **Refill request**: sets shipment `status: processing`, adds notification, adds charge, updates Next Charge date +28 days.
+- **Message deep link** from Home → Messages: uses TanStack Router search param `?thread=doctor#msg-<id>` with scroll-into-view.
+- **Weight log** entry immediately updates ProgressSnapshot number and appends to chart.
+- **Sign out** clears session but keeps patient data (so re-login is instant).
+
+---
+
+## 13. Out of scope (explicit)
+
+- Real auth / real magic link (simulated).
+- Real payments / tracking APIs (all mock, deterministic).
+- Push notifications (in-app only).
+- Backend persistence (localStorage only).
+
+---
+
+## 14. Build order
+
+1. Store + types + seed + session guard + login wire-up.
+2. Extract TopBar / TabBar with bell + badges + notifications sheet + toast.
+3. Onboarding overlay + Settings "Replay tour".
+4. Home refactor into state-driven cards.
+5. Messages tab (thread + composer + auto-reply).
+6. My Plan tab (medication, schedule, progress, check-in, refills, pause).
+7. Settings tab (all sections + sign out).
+8. Dev switcher (last, so we can demo every state).  
+  
+  
+we already have UI build so gotta work in it 
+
+Each step ships working UI; nothing is left stubbed.
