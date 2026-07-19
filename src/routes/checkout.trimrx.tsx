@@ -1618,10 +1618,10 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
-          {/* Total if prescribed — Shopify-style clean row */}
+          {/* Total charged today — Shopify-style clean row */}
           <div className="mt-5 flex items-start justify-between gap-4">
             <div className="text-[22px] font-black leading-[1.05] text-ink">
-              Total if<br />prescribed
+              Total<br />charged today
             </div>
             <div className="text-right leading-none pt-1">
               <div className="mb-1.5 text-[11px] font-semibold text-ink/50">USD</div>
@@ -1636,17 +1636,16 @@ function MobileOrderSummaryDetail({
             Total savings ${fmt(savings)}
           </div>
 
-          {/* Due today */}
+          {/* Refund guarantee */}
           <div className="mt-5 border-t border-dashed border-ink/15 pt-4 flex items-start justify-between gap-4">
             <div>
-              <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/55">Due today</div>
+              <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/55">100% refund guarantee</div>
               <div className="mt-1.5 text-[13px] text-ink/60 leading-snug">
-                Only charged if your<br />prescription is approved.
+                Charged today. Full refund<br />if your prescription is not approved.
               </div>
             </div>
             <div className="text-right leading-none flex items-baseline gap-2">
-              <span className="text-[16px] font-semibold text-ink/40 line-through">${fmt(total)}</span>
-              <span className="text-[30px] font-black tracking-tight" style={{ color: GREEN }}>$0</span>
+              <span className="text-[30px] font-black tracking-tight" style={{ color: GREEN }}>${fmt(total)}</span>
             </div>
           </div>
         </div>
