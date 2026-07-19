@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "motion/react";
+import { Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star } from "lucide-react";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
 import { PayIcons } from "@/components/PayIcons";
@@ -339,34 +339,6 @@ const STEPS = [
   { icon: milestoneHealth.url, title: "Easy Refills", body: "When it's time to refill, a quick form in your patient portal keeps everything moving. We'll text and email tracking as it ships." },
   { icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging — whenever you need us." },
 ];
-
-function DMStepRow({ step, n }: { step: { title: string; body: string; icon: string }; n: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 85%", "end 15%"] });
-  const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.25, 1, 1, 0.25]);
-  const blur = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [8, 0, 0, 8]);
-  const filter = useTransform(blur, (b) => `blur(${b}px)`);
-  const scale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.985, 1, 1, 0.985]);
-  return (
-    <motion.div
-      ref={ref}
-      style={{ opacity, filter, scale }}
-      className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
-    >
-      <div className="font-sans text-[44px] font-medium leading-none text-ink/15 md:text-[64px]">{n}</div>
-      <div className="min-w-0">
-        <h3 className="font-sans text-[20px] font-semibold tracking-[-0.01em] text-ink md:text-[26px]">{step.title}</h3>
-        <p className="mt-2 text-[14px] leading-[1.6] text-ink/60 md:text-[15px]">{step.body}</p>
-      </div>
-      <div className="hidden h-[104px] w-[128px] shrink-0 overflow-hidden rounded-2xl bg-white border border-ink/[0.06] md:block">
-        <img src={step.icon} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-      </div>
-      <div className="col-span-3 -mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white border border-ink/[0.06] md:hidden">
-        <img src={step.icon} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-      </div>
-    </motion.div>
-  );
-}
 
 /* ─────────  Reviews  ───────── */
 const REVIEWS = [
@@ -720,45 +692,27 @@ function SalesDMPage() {
         </div>
       </section>
 
-      {/* ═══════ What happens next (LP "Getting started" style) ═══════ */}
-      <section className="bg-white px-6 py-20 text-ink md:py-28">
-        <div className="mx-auto grid max-w-7xl gap-14 md:grid-cols-12 md:gap-10">
-          {/* Left sticky column */}
-          <div className="md:col-span-5">
-            <div className="md:sticky md:top-28">
-              <span className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-3 py-1 text-[12px] font-medium text-ink/70">
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: PINK }} />
-                The path from here
-              </span>
-              <h2 className="mt-5 font-hero text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
-                Getting started
-                <br />
-                <span className="italic font-light" style={{ color: PINK }}>should feel simple.</span>
-              </h2>
-              <p className="mt-5 max-w-md text-[15px] leading-[1.55] text-ink/60 md:text-[17px]">
-                From assessment to delivery in as little as 3 days.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 420, damping: 26 }}
-                className="group mt-8 inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-ink px-7 text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_30px_-12px_rgba(23,23,23,0.45)]"
-              >
-                Start Your Free Assessment
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Right rows */}
-          <div className="md:col-span-7">
-            <div className="border-t border-ink/10">
-              {STEPS.map((s, i) => (
-                <DMStepRow key={s.title} step={s} n={String(i + 1).padStart(2, "0")} />
-              ))}
-            </div>
-          </div>
+      {/* ═══════ What happens next ═══════ */}
+      <section className="mx-auto w-full max-w-[720px] px-4 py-14 sm:px-6">
+        <div className="text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">The path from here</div>
+          <h2 className="mt-2 font-hero text-[26px] font-black tracking-tight text-ink sm:text-[32px]">What happens next?</h2>
         </div>
+        <ol className="mt-8 flex flex-col gap-4">
+          {STEPS.map((s, i) => (
+            <motion.li key={s.title}
+              initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-white p-4 sm:p-5">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-white font-bold" style={{ background: NAVY }}>{i + 1}</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[16px] font-bold text-ink sm:text-[17px]">{s.title}</div>
+                <p className="mt-1 text-[14px] leading-relaxed text-ink/70">{s.body}</p>
+              </div>
+              <img src={s.icon} alt="" className="hidden h-14 w-14 shrink-0 object-contain sm:block" />
+            </motion.li>
+          ))}
+        </ol>
       </section>
 
       {/* ═══════ Backed by research + stats ═══════ */}
