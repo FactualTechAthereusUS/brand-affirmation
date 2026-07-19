@@ -831,13 +831,20 @@ function SalesDMPage() {
         <div className="flex flex-col items-center gap-4">
           <img src={trustpilot.url} alt="Excellent 4.8 · 3,200+ patients" className="h-6 w-auto sm:h-7" />
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">As seen on</div>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13.5px] font-semibold text-ink/60">
-            <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
-            <span>OK!</span>
-            <span>BalancingAct</span>
-            <span>Woman's World</span>
-            <span>LA Weekly</span>
-            <span>Lifetime Health</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {[
+              { name: "Forbes", src: "https://www.vectorlogo.zone/logos/forbes/forbes-wordmark.svg" },
+              { name: "Bloomberg", src: "https://www.vectorlogo.zone/logos/bloomberg/bloomberg-ar21~bgwhite.svg" },
+              { name: "Washington Post", src: "https://www.vectorlogo.zone/logos/washingtonpost/washingtonpost-wordmark.svg" },
+              { name: "WebMD", src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/WebMD_logo.svg" },
+              { name: "Today", src: "https://upload.wikimedia.org/wikipedia/commons/7/76/Today_logo.svg" },
+              { name: "Featured 1", src: "https://framerusercontent.com/images/L873MSfptJNuxu9CxFGM0yz62ws.png?scale-down-to=512&width=640&height=144" },
+              { name: "Featured 2", src: "https://framerusercontent.com/images/EdyKCuzUOhXKfrGJ5nlGuZBGlFk.png?width=403&height=125" },
+              { name: "Featured 3", src: "https://framerusercontent.com/images/2fynBufOyZQGmqKnfJSdf8sI1rs.png?width=1893&height=368" },
+            ].map((l) => (
+              <img key={l.name} src={l.src} alt={l.name} loading="lazy"
+                className="h-6 sm:h-7 w-auto max-w-[130px] object-contain opacity-70 grayscale transition hover:opacity-100" />
+            ))}
           </div>
           <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-1.5">
             <ShieldCheck className="h-4 w-4" style={{ color: "#16A34A" }} />
