@@ -26,6 +26,9 @@ import shipBox from "@/assets/ship-box.png.asset.json";
 import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
+import iconTargetBw from "@/assets/icon-target-bw.png.asset.json";
+import iconTrophyBw from "@/assets/icon-trophy-bw.png.asset.json";
+import iconTapeBw from "@/assets/icon-tape-bw.png.asset.json";
 
 import face1 from "@/assets/face-1.png.asset.json";
 import face2 from "@/assets/face-2.png.asset.json";
