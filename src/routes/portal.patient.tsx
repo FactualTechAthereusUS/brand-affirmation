@@ -340,7 +340,7 @@ function MessagesTab() {
   return (
     <AnimatePresence mode="wait">
       {view === "list" ? (
-        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-5 pt-5">
+        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-4 pt-5">
           <h2 className="text-[22px] font-semibold tracking-tight text-ink" style={{ fontFamily: "var(--font-serif, var(--font-sans))" }}>Messages</h2>
           <p className="mt-1 text-[13.5px] text-ink/55">The people caring for you — one tap away.</p>
           <div className="mt-5 space-y-3">
