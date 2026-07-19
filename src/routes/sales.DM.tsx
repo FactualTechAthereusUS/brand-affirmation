@@ -27,6 +27,10 @@ import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import iconTargetBw from "@/assets/icon-target-bw.png.asset.json";
+import iconBolt from "@/assets/icon-bolt.png.asset.json";
+import iconDoctors from "@/assets/icon-doctors.png.asset.json";
+import iconInfinity from "@/assets/icon-infinity.png.asset.json";
+import iconTruck from "@/assets/icon-truck.png.asset.json";
 import iconTrophyBw from "@/assets/icon-trophy-bw.png.asset.json";
 import iconTapeBw from "@/assets/icon-tape-bw.png.asset.json";
 
