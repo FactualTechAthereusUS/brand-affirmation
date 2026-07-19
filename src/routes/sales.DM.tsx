@@ -593,40 +593,6 @@ function SalesDMPage() {
       </section>
 
 
-      {/* ═══════ Goals ═══════ */}
-      <section className="bg-white">
-        <div className="mx-auto w-full max-w-[860px] px-4 py-12 sm:px-6">
-          {/* Heading ABOVE image */}
-          <h2 className="text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[30px]">
-            The goals <span className="italic font-light">you will accomplish</span> with your plan
-          </h2>
-
-          {/* Image hero card with white metrics overlaid */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
-            className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[2400/1350] sm:aspect-[16/10] md:aspect-[16/9]"
-          >
-            <img src={dmGoalsAthlete.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/5" />
-
-            {/* Metrics overlay — bottom */}
-            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 md:p-8">
-              <div className="grid grid-cols-3 gap-3 text-center">
-                {[
-                  { k: "Lose", v: `${primaryPatient.startLbs - primaryPatient.goalLbs} lbs` },
-                  { k: "RESET YOUR METABOLIC\u00a0\nSET POINT", v: `${primaryPatient.goalLbs} lbs` },
-                  { k: "Look and feel", v: "healthier" },
-                ].map((g, i) => (
-                  <div key={g.k} className={i === 1 ? "border-x border-white/25 px-2" : "px-2"}>
-                    <div className="whitespace-pre-line text-[10px] font-semibold uppercase tracking-[0.12em] text-white/75 sm:text-[11.5px]">{g.k}</div>
-                    <div className="mt-1 text-[18px] font-black text-white sm:text-[24px]">{g.v}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
 
       {/* ═══════ Reservation + Same price ═══════ */}
