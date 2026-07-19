@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Zap,
   X,
+  Package,
 } from "lucide-react";
 import { z } from "zod";
 
@@ -63,7 +64,7 @@ export const Route = createFileRoute("/checkout/trimrx")({
       {
         name: "description",
         content:
-          "Complete your Blissley order. Secure 256-bit SSL checkout. $0 charged until your prescription is approved.",
+          "Complete your Blissley order. Secure 256-bit SSL checkout. Charged today — full refund if your prescription is not approved.",
       },
       { name: "robots", content: "noindex,nofollow" },
     ],
@@ -349,104 +350,124 @@ function CheckoutPage() {
     window.setTimeout(() => setSubmitting(false), 1500);
   };
 
+  const insurancePrice = 3.95;
+  const priorityPrice = 49.95;
+  const addOnsTotal =
+    (form.insurance ? insurancePrice : 0) + (form.priority ? priorityPrice : 0);
+  const summaryOriginal = originalTotal + addOnsTotal;
+  const summarySubtotal = baseSubtotal + addOnsTotal;
+  const fmtMoney = (n: number) =>
+    n.toLocaleString(undefined, {
+      minimumFractionDigits: n % 1 ? 2 : 0,
+      maximumFractionDigits: 2,
+    });
+
   const treatmentSummary = (
     <FormCard>
       <StepBadge label="Your Treatment" />
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-[17px] font-bold text-ink sm:text-[18px]">
+          <div className="text-[15px] font-bold text-ink sm:text-[16px]">
             {treatment.name}
           </div>
-          <div className="text-[13px] text-ink/60">{treatment.subtitle}</div>
+          <div className="text-[12px] text-ink/60">{treatment.subtitle}</div>
         </div>
         <div
-          className="grid h-[72px] w-[72px] shrink-0 place-items-center overflow-hidden rounded-2xl"
+          className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-xl"
           style={{ background: treatment.vialBg }}
         >
           <img src={treatment.vial} alt="" className="h-full w-full object-cover" />
         </div>
       </div>
 
-      <div className="divide-y divide-ink/8 py-2">
-        <Row label="Plan" value={<b>{plan.title}</b>} />
-        <Row label="Supply" value={plan.supply} />
-        <Row
-          label="Total Savings"
-          value={
-            <span className="font-bold" style={{ color: GREEN }}>
-              ${totalSavings.toLocaleString()}
-            </span>
-          }
-        />
-        <Row
-          label="Shipping"
-          value={
-            <span className="font-bold">
-              <span className="mr-1.5 text-ink/40 line-through">
-                ${30 * plan.months}
-              </span>
-              <span style={{ color: GREEN }}>FREE</span>
-            </span>
-          }
-        />
-        <Row
-          label="Monthly Price"
-          value={
-            <span className="font-bold text-ink">
-              <span className="mr-1 text-ink/40 line-through">
-                ${plan.originalPerMo}
-              </span>
-              <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
-            </span>
-          }
-        />
+      <div className="divide-y divide-ink/8 py-1 text-[13px]">
+        <div className="flex items-center justify-between py-2">
+          <span className="text-ink/60">Plan</span>
+          <span className="font-bold">{plan.title}</span>
+        </div>
+        <div className="flex items-center justify-between py-2">
+          <span className="text-ink/60">Supply</span>
+          <span>{plan.supply}</span>
+        </div>
+        <div className="flex items-center justify-between py-2">
+          <span className="text-ink/60">Total Savings</span>
+          <span className="font-bold" style={{ color: GREEN }}>
+            ${totalSavings.toLocaleString()}
+          </span>
+        </div>
+        <div className="flex items-center justify-between py-2">
+          <span className="text-ink/60">Shipping</span>
+          <span className="font-bold">
+            <span className="mr-1.5 text-ink/40 line-through">${30 * plan.months}</span>
+            <span style={{ color: GREEN }}>FREE</span>
+          </span>
+        </div>
+        <div className="flex items-center justify-between py-2">
+          <span className="text-ink/60">Monthly Price</span>
+          <span className="font-bold text-ink">
+            <span className="mr-1 text-ink/40 line-through">${plan.originalPerMo}</span>
+            <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
+          </span>
+        </div>
+        {form.insurance && (
+          <div className="flex items-center justify-between py-2">
+            <span className="text-ink/60">Shipping insurance</span>
+            <span className="font-bold text-ink">${fmtMoney(insurancePrice)}</span>
+          </div>
+        )}
+        {form.priority && (
+          <div className="flex items-center justify-between py-2">
+            <span className="text-ink/60">Front-of-the-line</span>
+            <span className="font-bold text-ink">${fmtMoney(priorityPrice)}</span>
+          </div>
+        )}
       </div>
 
       <div
-        className="flex items-center justify-between rounded-xl px-4 py-3"
+        className="flex items-center justify-between rounded-xl px-3.5 py-2.5"
         style={{ background: "#F6F9FE" }}
       >
-        <div className="text-[15px] font-bold text-ink">Total if prescribed</div>
+        <div className="text-[13px] font-bold text-ink">Total charged today</div>
         <div className="text-right">
-          <span className="mr-2 text-[14px] text-ink/40 line-through">
-            ${originalTotal.toLocaleString()}
+          <span className="mr-1.5 text-[12.5px] text-ink/40 line-through">
+            ${fmtMoney(summaryOriginal)}
           </span>
-          <span className="text-[20px] font-black" style={{ color: NAVY }}>
-            ${(plan.perMo * plan.months).toLocaleString()}
+          <span className="text-[17px] font-black" style={{ color: NAVY }}>
+            ${fmtMoney(summarySubtotal)}
           </span>
         </div>
       </div>
 
       <div
-        className="mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13.5px] font-bold text-white"
+        className="mt-3 flex items-center justify-center gap-2 rounded-xl px-3.5 py-2.5 text-[12px] font-bold text-white"
         style={{ background: NAVY }}
       >
-        <Tag className="h-4 w-4" />
+        <Tag className="h-3.5 w-3.5" />
         CODE APPLIED: <span className="ml-1">JOIN120</span>
       </div>
-      <div className="mt-2 text-center text-[12.5px] font-semibold text-ink/70">
+      <div className="mt-1.5 text-center text-[11.5px] font-semibold text-ink/70">
         Only <span className="text-ink">23 discounts left</span>. Yours is reserved for{" "}
         <span style={{ color: PINK }} className="font-bold">
           {time}
         </span>
       </div>
 
-      <ul className="mt-5 space-y-3.5 text-[14px]">
+      <ul className="mt-4 space-y-2.5 text-[13px]">
         {[
           { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url, bold: true },
           { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
           { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
         ].map((item) => (
-          <li key={item.t} className="flex items-start gap-3">
+          <li key={item.t} className="flex items-start gap-2.5">
             <img
               src={item.icon}
               alt=""
-              className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-6 w-6 brightness-0 contrast-125" : "h-5 w-5"}`}
+              className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-5 w-5 brightness-0 contrast-125" : "h-4 w-4"}`}
             />
             <div className="leading-tight">
-              <div className="font-bold text-ink">{item.t}</div>
-              <div className="text-[12.5px] text-ink/55">{item.s}</div>
+              <div className="font-bold text-ink text-[13px]">{item.t}</div>
+              <div className="text-[11.5px] text-ink/55">{item.s}</div>
             </div>
           </li>
         ))}
@@ -456,28 +477,28 @@ function CheckoutPage() {
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15 }}
-        className="mt-5 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-5"
+        className="mt-4 flex items-center justify-between gap-4 border-t border-dashed border-ink/15 pt-4"
       >
         <div>
-          <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/50">
+          <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink/50">
             Due Today
           </div>
-          <div className="mt-1 text-[11.5px] text-ink/60">
-            Only charged if<br />your prescription is approved.
+          <div className="mt-1 text-[11px] text-ink/60">
+            Full refund if your<br />prescription is not approved.
           </div>
         </div>
         <div className="text-right -translate-x-1">
-          <span className="mr-1.5 text-[15px] text-ink/35 line-through">
-            ${plan.perMo}
+          <span className="mr-1.5 text-[13px] text-ink/35 line-through">
+            ${fmtMoney(summaryOriginal)}
           </span>
-          <span className="text-[28px] font-black leading-none" style={{ color: GREEN }}>
-            $0
+          <span className="text-[24px] font-black leading-none" style={{ color: NAVY }}>
+            ${fmtMoney(summarySubtotal)}
           </span>
         </div>
       </motion.div>
 
-      <div className="mt-4 flex items-center justify-center">
-        <img src={hsaFsa.url} alt="HSA/FSA Eligible" className="h-8 w-auto" />
+      <div className="mt-3 flex items-center justify-center">
+        <img src={hsaFsa.url} alt="HSA/FSA Eligible" className="h-7 w-auto" />
       </div>
     </FormCard>
   );
@@ -488,12 +509,14 @@ function CheckoutPage() {
 
       {/* MOBILE ONLY — collapsible order summary bar */}
       <MobileOrderBar
-        originalTotal={originalTotal + 3.95 + 49.95}
-        currentTotal={baseSubtotal + (form.insurance ? 3.95 : 0) + (form.priority ? 49.95 : 0)}
+        originalTotal={summaryOriginal}
+        currentTotal={summarySubtotal}
       >
         {treatmentSummary}
       </MobileOrderBar>
 
+      {/* MOBILE ONLY — reservation urgency banner */}
+      <ReservationBanner />
 
       {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
       <form onSubmit={onSubmit} className="w-full">
@@ -826,7 +849,7 @@ function CheckoutPage() {
                   boxShadow: `0 18px 40px -12px ${NAVY}66`,
                 }}
               >
-                {submitting ? "Processing…" : `Continue ($0 charged today)`}
+                {submitting ? "Processing…" : `Complete purchase — $${fmtMoney(summarySubtotal)}`}
               </motion.button>
 
               {/* Trustpilot */}
@@ -867,28 +890,34 @@ function CheckoutPage() {
 
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
-                <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px]">
+                <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-ink/50">
                   {[
-                    { label: "Refund policy", href: "/policies/refund" },
-                    { label: "Shipping", href: "/policies/shipping" },
-                    { label: "Privacy policy", href: "/policies/privacy" },
-                    { label: "Terms of service", href: "/policies/terms" },
-                    { label: "Telehealth consent", href: "/policies/telehealth" },
-                    { label: "Contact us", href: "/contact" },
-                  ].map((l) => (
-                    <a
-                      key={l.label}
-                      href={l.href}
-                      className="font-medium underline underline-offset-4 hover:opacity-80"
-                      style={{ color: NAVY }}
-                    >
-                      {l.label}
-                    </a>
+                    { label: "Privacy Policy", href: "/privacy" },
+                    { label: "Terms", href: "/terms" },
+                    { label: "Shipping", href: "/shipping" },
+                    { label: "Refund Policy", href: "/refund" },
+                    { label: "Medication Safety", href: "/medication-safety" },
+                  ].map((l, i, arr) => (
+                    <span key={l.label} className="inline-flex items-center gap-x-4">
+                      <a
+                        href={l.href}
+                        className="font-medium underline underline-offset-4 hover:opacity-80"
+                        style={{ color: NAVY }}
+                      >
+                        {l.label}
+                      </a>
+                      {i < arr.length - 1 && (
+                        <span className="text-ink/20">·</span>
+                      )}
+                    </span>
                   ))}
                 </nav>
                 <div className="mt-4 text-[11.5px] text-ink/45">
-                  © {new Date().getFullYear()} Blissley Health, Inc. All rights reserved.
+                  © {new Date().getFullYear()} TheFactual LLC DBA Blissley
                 </div>
+                <p className="mt-3 max-w-2xl text-[11.5px] leading-[1.6] text-ink/35">
+                  Blissley is a technology platform and does not provide medical advice. Physician services are provided by independent licensed practitioners. Individual results may vary.
+                </p>
               </div>
             </motion.div>
           </div>
@@ -1172,7 +1201,6 @@ function UpsellRow({
   return (
     <label
       className="flex cursor-pointer items-center gap-3 px-4 py-4 sm:gap-4"
-      style={{ background: on ? "#FFF7F7" : "transparent" }}
     >
       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink sm:h-12 sm:w-12">
         {icon}
@@ -1253,6 +1281,87 @@ function MobileOrderBar({
           {children}
         </div>
       )}
+    </div>
+  );
+}
+
+/* ── Mobile-only reservation urgency banner ── */
+function ReservationBanner() {
+  const [discountsLeft, setDiscountsLeft] = useState(() => 40 + Math.floor(Math.random() * 35)); // 40-74
+  const [secondsLeft, setSecondsLeft] = useState(() => 6 * 60 + 30 + Math.floor(Math.random() * 90)); // 6:30-8:00
+  const expired = secondsLeft <= 0;
+
+  useEffect(() => {
+    let cancelled = false;
+    let timer: number | undefined;
+    const tick = () => {
+      if (cancelled) return;
+      setDiscountsLeft((n) => {
+        if (n <= 1) return 1;
+        const step =
+          n > 30 ? 3 + Math.floor(Math.random() * 3) :
+          n > 15 ? 2 + Math.floor(Math.random() * 2) :
+          n > 5  ? 1 + Math.floor(Math.random() * 2) :
+                   1;
+        return Math.max(1, n - step);
+      });
+      const delay = 1500 + Math.random() * 2500;
+      timer = window.setTimeout(tick, delay);
+    };
+    timer = window.setTimeout(tick, 1200 + Math.random() * 1200);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const mmss = `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`;
+
+  return (
+    <div className="lg:hidden px-4 pt-3">
+      <div
+        className="flex items-start gap-3 rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4"
+        style={{ background: "rgba(238, 114, 115, 0.10)" }}
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={PINK}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="shrink-0 mt-0.5"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <div className="min-w-0 flex-1 text-[13.5px] sm:text-[14px] font-semibold text-ink leading-snug">
+          {expired ? (
+            <div>Your reservation has expired</div>
+          ) : (
+            <>
+              <div>
+                Only <span style={{ color: PINK }}>{discountsLeft}</span> {discountsLeft === 1 ? "discount" : "discounts"} left
+              </div>
+              <div className="mt-0.5">
+                Yours is reserved for{" "}
+                <span className="font-bold tabular-nums" style={{ color: PINK }}>{mmss}</span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1354,7 +1463,7 @@ function MobileOrderSummaryDetail({
     n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 
   return (
-    <div className="lg:hidden -mx-4 sm:-mx-6 border-t border-b border-ink/10 px-4 sm:px-6 py-6 bg-white">
+    <div className="lg:hidden -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 bg-white">
       {/* EXPANDED VIEW (image 2) */}
       {open && (
         <div>
@@ -1509,21 +1618,35 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
-          {/* Grand total */}
-          <div className="mt-4 flex items-end justify-between border-t border-ink/10 pt-4">
-            <div className="text-[22px] font-black text-ink">Total</div>
-            <div className="text-right leading-none">
-              <div className="mb-1 inline-block rounded-md bg-ink/5 px-1.5 py-0.5 text-[11px] font-semibold text-ink/60 align-middle mr-1.5">USD</div>
-              <span className="text-[24px] font-black text-ink">${fmt(total)}</span>
+          {/* Total charged today — Shopify-style clean row */}
+          <div className="mt-5 flex items-start justify-between gap-4">
+            <div className="text-[22px] font-black leading-[1.05] text-ink">
+              Total<br />charged today
+            </div>
+            <div className="text-right leading-none pt-1">
+              <div className="mb-1.5 text-[11px] font-semibold text-ink/50">USD</div>
+              <div className="flex items-baseline justify-end gap-2">
+                <span className="text-[15px] font-semibold text-ink/40 line-through">${fmt(subtotal)}</span>
+                <span className="text-[24px] font-black text-ink tracking-tight">${fmt(total)}</span>
+              </div>
             </div>
           </div>
-          <div className="mt-2 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink">
-            <SavingsIcon className="h-3.5 w-3.5" color={GREEN} />
+          <div className="mt-2.5 flex items-center gap-1.5 text-[12.5px] font-bold uppercase tracking-[0.08em] text-ink">
+            <SavingsIcon className="h-4 w-4" color="#111111" />
             Total savings ${fmt(savings)}
           </div>
 
-          <div className="mt-3 text-[11.5px] text-ink/55">
-            $0 charged today · only billed if your prescription is approved.
+          {/* Refund guarantee */}
+          <div className="mt-5 border-t border-dashed border-ink/15 pt-4 flex items-start justify-between gap-4">
+            <div>
+              <div className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink/55">100% refund guarantee</div>
+              <div className="mt-1.5 text-[13px] text-ink/60 leading-snug">
+                Charged today. Full refund<br />if your prescription is not approved.
+              </div>
+            </div>
+            <div className="text-right leading-none flex items-baseline gap-2">
+              <span className="text-[30px] font-black tracking-tight" style={{ color: GREEN }}>${fmt(total)}</span>
+            </div>
           </div>
         </div>
       )}
@@ -1531,13 +1654,13 @@ function MobileOrderSummaryDetail({
       {/* COLLAPSED VIEW (image 1) */}
       {!open && (
         <div>
-          {/* Add discount pill */}
+          {/* Order details headline */}
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-ink/15 bg-white px-4 py-2.5 text-[14px] font-bold text-ink shadow-sm"
+            className="flex items-center gap-2 text-[15px] font-bold text-ink"
           >
-            <SavingsIcon className="h-4 w-4" /> Add discount
+            <Package className="h-4 w-4" /> Order details
           </button>
 
           {/* Total row */}
