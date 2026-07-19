@@ -383,15 +383,12 @@ function DMStepRow({ step }: { step: (typeof STEPS)[number] }) {
     <motion.div
       ref={ref}
       style={{ opacity, filter, scale }}
-      className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
+      className="grid grid-cols-[auto_1fr] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
     >
       <div className="font-sans text-[44px] font-medium leading-none text-ink/15 md:text-[64px]">{step.n}</div>
       <div className="min-w-0">
         <h3 className="font-sans text-[20px] font-semibold tracking-[-0.01em] text-ink md:text-[26px]">{step.title}</h3>
         <p className="mt-2 text-[14px] leading-[1.6] text-ink/60 md:text-[15px]">{step.body}</p>
-      </div>
-      <div className="hidden h-[104px] w-[128px] shrink-0 overflow-hidden rounded-2xl bg-white border border-ink/[0.06] md:block">
-        <img src={step.icon} alt="" className="h-full w-full object-contain p-3" loading="lazy" decoding="async" />
       </div>
     </motion.div>
   );
