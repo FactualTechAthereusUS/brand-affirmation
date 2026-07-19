@@ -561,18 +561,17 @@ function CheckoutPage() {
       <form onSubmit={onSubmit} className="w-full">
         <div className="lg:grid lg:grid-cols-2 lg:items-stretch">
           {/* LEFT — checkout form */}
-          <div ref={leftColRef} className="bg-white lg:flex lg:justify-end">
-
-
-            <motion.div
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.06 } },
-              }}
-              className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-16 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
-            >
+          <div ref={leftColRef} className="bg-white">
+            <div className="lg:flex lg:justify-end">
+              <motion.div
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: {},
+                  show: { transition: { staggerChildren: 0.06 } },
+                }}
+                className="flex w-full max-w-[560px] flex-col gap-6 px-4 pb-0 pt-6 sm:px-6 lg:pl-8 lg:pr-12 lg:pt-10"
+              >
               {/* Contact */}
               <FormCard>
                 <div className="mb-3 flex items-end justify-between">
