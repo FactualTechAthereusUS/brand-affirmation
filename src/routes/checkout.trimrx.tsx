@@ -1431,7 +1431,7 @@ function MobileOrderSummaryDetail({
                     <SavingsIcon className="h-3 w-3" /> JOIN120
                   </span>
                 </span>
-                <span className="font-semibold text-ink">−$120.00</span>
+                <span className="font-semibold text-ink">−${fmt(planDiscount)}</span>
               </div>
             )}
             <div className="flex items-center justify-between">
