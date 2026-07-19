@@ -926,7 +926,9 @@ function CheckoutPage() {
 
               <ReviewSlider />
 
-              <ValueStack />
+              <div className="lg:hidden">
+                <ValueStack />
+              </div>
 
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
@@ -969,6 +971,10 @@ function CheckoutPage() {
           >
             <div ref={rightInnerRef} className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12 will-change-transform">
               {treatmentSummary}
+
+              <div className="hidden lg:block">
+                <ValueStack />
+              </div>
             </div>
           </aside>
         </div>
