@@ -44,6 +44,8 @@ import daieneBefore from "@/assets/daiene-before.png.asset.json";
 import daieneAfter from "@/assets/daiene-after.png.asset.json";
 import spMaleBefore from "@/assets/sp-male-before.png.asset.json";
 import spMaleAfter from "@/assets/sp-male-after.png.asset.json";
+import davidBefore from "@/assets/david-before.png.asset.json";
+import davidAfter from "@/assets/david-after.png.asset.json";
 
 
 /* ═════════════ Types ═════════════ */
