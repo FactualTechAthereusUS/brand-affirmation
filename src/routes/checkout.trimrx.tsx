@@ -1489,8 +1489,17 @@ function MobileOrderSummaryDetail({
             )}
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-ink">
-                Shipping <HelpCircle className="h-3.5 w-3.5 text-ink/50" />
+                Shipping
+                <button
+                  type="button"
+                  onClick={() => setShippingOpen(true)}
+                  aria-label="View shipping policy"
+                  className="grid h-4 w-4 place-items-center rounded-full text-ink/50 hover:text-ink transition"
+                >
+                  <HelpCircle className="h-3.5 w-3.5" />
+                </button>
               </span>
+
               <span className="font-semibold">
                 <span className="mr-1.5 text-ink/40 line-through">${fmt(shippingWas)}</span>
                 <span style={{ color: GREEN }}>FREE</span>
