@@ -294,54 +294,54 @@ function CheckoutTemplate3() {
   }, []);
 
   const orderSummary = (
-    <section className="rounded-2xl bg-[#F5F5F4] p-6 sm:p-7">
-      <h3 className="mb-5 text-[22px] font-bold text-ink">Order Summary</h3>
+    <section className="rounded-2xl bg-[#F5F5F4] p-4 sm:p-5">
+      <h3 className="mb-3 text-[18px] font-bold text-ink">Order Summary</h3>
 
-      <div className="flex gap-4">
+      <div className="flex gap-3">
         <div
-          className="h-[92px] w-[92px] shrink-0 overflow-hidden rounded-xl"
+          className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-lg"
           style={{ background: treatment.vialBg }}
         >
           <img src={treatment.vial} alt="" className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="mb-2 text-[18px] font-bold leading-tight text-ink">
+          <div className="text-[15px] font-bold leading-tight text-ink">
             {treatment.name}
           </div>
-          <p className="text-[14px] leading-[1.55] text-ink/60">
+          <p className="line-clamp-2 text-[12px] leading-[1.45] text-ink/60">
             {treatment.blurb}
           </p>
-          <div className="mt-3 inline-flex items-center rounded-full bg-white px-3 py-1.5 text-[12.5px] font-semibold text-ink ring-1 ring-ink/10">
+          <div className="mt-1.5 inline-flex items-center rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-ink ring-1 ring-ink/10">
             {plan.title} Plan
           </div>
         </div>
       </div>
 
-      <div className="my-6 h-px w-full bg-ink/10" />
+      <div className="my-4 h-px w-full bg-ink/10" />
 
-      <div className="flex items-center justify-between text-[15px]">
+      <div className="flex items-center justify-between text-[13px]">
         <span className="text-ink/70">{plan.title}</span>
         <span className="text-ink">
           <span className="font-bold">${upfront}</span>
-          <span className="ml-1 text-[13px] text-ink/50">billed on approval</span>
+          <span className="ml-1 text-[11px] text-ink/50">billed on approval</span>
         </span>
       </div>
 
-      <div className="my-6 h-px w-full bg-ink/10" />
+      <div className="my-4 h-px w-full bg-ink/10" />
 
       <div className="flex items-end justify-between">
         <div>
-          <div className="text-[22px] font-bold text-ink">Due Today</div>
+          <div className="text-[16px] font-bold text-ink">Due Today</div>
         </div>
-        <div className="text-[34px] font-bold leading-none text-ink">
+        <div className="text-[28px] font-bold leading-none text-ink">
           ${dueToday}
         </div>
       </div>
 
-      <p className="mt-4 text-[15px] font-semibold text-ink">
+      <p className="mt-3 text-[13px] font-semibold text-ink">
         Only charged if prescribed by a licensed physician
       </p>
-      <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/60">
+      <p className="mt-1 text-[11.5px] leading-[1.5] text-ink/60">
         We&apos;ll securely hold your payment method. You&apos;ll only be charged
         after a doctor reviews your information and prescribes your medication.
       </p>
