@@ -530,7 +530,7 @@ function SalesDMPage() {
               { k: "Look and feel", v: "healthier" },
             ].map((g) => (
               <div key={g.k} className="rounded-2xl bg-white p-5 text-center shadow-[0_1px_0_rgba(0,0,0,0.02)]">
-                <div className="text-[13px] font-semibold uppercase tracking-[0.12em] text-ink/50">{g.k}</div>
+                <div className="whitespace-pre-line text-[13px] font-semibold uppercase tracking-[0.12em] text-ink/50">{g.k}</div>
                 <div className="mt-1 text-[22px] font-black text-ink">{g.v}</div>
               </div>
             ))}
