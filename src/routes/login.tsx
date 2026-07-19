@@ -1,8 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff, ArrowLeft, Mail, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/blissley-logo.png.asset.json";
 import bg from "@/assets/login-bg.png.asset.json";
+import { actions, hydrateFromStorage } from "@/lib/portal/store";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -28,10 +30,19 @@ function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [sent, setSent] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => { hydrateFromStorage(); }, []);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Portal auth wired later.
+    if (!email) return;
+    setSent(true);
+    setTimeout(() => {
+      actions.signIn(email);
+      navigate({ to: "/portal/patient" });
+    }, 1400);
   };
 
   return (
