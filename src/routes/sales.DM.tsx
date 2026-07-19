@@ -21,6 +21,7 @@ import icon19 from "@/assets/icon-19.png.asset.json";
 import icon20 from "@/assets/icon-20.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
 import backedByResearch from "@/assets/backed-by-research.png.asset.json";
+import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
 import face1 from "@/assets/face-1.png.asset.json";
 import face2 from "@/assets/face-2.png.asset.json";
 import face3 from "@/assets/face-3.png.asset.json";
