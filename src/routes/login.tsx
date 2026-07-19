@@ -200,6 +200,33 @@ function LoginPage() {
               </a>
             </p>
           </div>
+
+          <AnimatePresence>
+            {sent && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 grid place-items-center bg-white/85 backdrop-blur-md"
+              >
+                <motion.div
+                  initial={{ scale: 0.95, y: 8, opacity: 0 }}
+                  animate={{ scale: 1, y: 0, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 26 }}
+                  className="mx-6 max-w-[380px] rounded-3xl bg-white p-8 text-center shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)] ring-1 ring-black/5"
+                >
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#FFF3F1]">
+                    <Mail className="h-6 w-6" style={{ color: "#ee7273" }} />
+                  </div>
+                  <h3 className="mt-4 text-[20px] font-semibold tracking-tight text-ink">Check your email</h3>
+                  <p className="mt-2 text-[14px] text-ink/60">We sent a secure sign-in link to <span className="font-medium text-ink">{email}</span>.</p>
+                  <div className="mt-5 flex items-center justify-center gap-1.5 text-[12px] text-ink/50">
+                    <CheckCircle2 className="h-3.5 w-3.5" style={{ color: "#4a7c6f" }} /> Opening your portal…
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </main>
       </div>
     </div>
