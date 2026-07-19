@@ -1196,7 +1196,7 @@ function Onboarding() {
   }> = [
     { title: `Welcome, ${firstName}.`, body: "Your care team is just one tap away. Let's take a quick look around.", hero: true, heroImage: portalWelcomeDoctor.url, textPos: "top", heroBg: "#7DAFCE" },
     { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", hero: true, heroImage: drNassWelcome.url, textPos: "bottom", heroBg: "#8FB9D6" },
-    { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", icon: <Calendar className="h-7 w-7" style={{ color: PINK }} /> },
+    { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", hero: true, heroImage: portalWelcomeWoman.url, textPos: "bottom", heroBg: "#C9B79E" },
     { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", icon: <Bell className="h-7 w-7" style={{ color: PINK }} /> },
   ];
   const s = steps[step];
