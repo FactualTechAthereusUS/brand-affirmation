@@ -783,6 +783,26 @@ function CheckoutPage() {
                 </div>
               </FormCard>
 
+              {/* MOBILE ONLY — expanded order summary (below payment) */}
+              <MobileOrderSummaryDetail
+                treatmentName={treatment.name}
+                treatmentSubtitle={treatment.subtitle}
+                vial={treatment.vial}
+                vialBg={treatment.vialBg}
+                planTitle={plan.title}
+                supply={plan.supply}
+                months={plan.months}
+                perMo={plan.perMo}
+                originalPerMo={plan.originalPerMo}
+                baseSubtotal={baseSubtotal}
+                originalTotal={originalTotal}
+                planSavings={plan.savings}
+                insurance={form.insurance}
+                priority={form.priority}
+              />
+
+
+
 
               {/* Continue */}
               <motion.button
