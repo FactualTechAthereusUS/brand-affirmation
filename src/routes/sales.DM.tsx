@@ -27,6 +27,10 @@ import backedByResearch from "@/assets/backed-by-research.png.asset.json";
 import dmHeroWoman from "@/assets/dm-hero-woman.png.asset.json";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import iconTargetBw from "@/assets/icon-target-bw.png.asset.json";
+import iconBolt from "@/assets/icon-bolt.png.asset.json";
+import iconDoctors from "@/assets/icon-doctors.png.asset.json";
+import iconInfinity from "@/assets/icon-infinity.png.asset.json";
+import iconTruck from "@/assets/icon-truck.png.asset.json";
 import iconTrophyBw from "@/assets/icon-trophy-bw.png.asset.json";
 import iconTapeBw from "@/assets/icon-tape-bw.png.asset.json";
 
@@ -848,13 +852,15 @@ function SalesDMPage() {
 
               <div className="mt-4 flex flex-col gap-4">
                 {[
-                  { i: <HeartPulse className="h-5 w-5" style={{ color: PINK }} />, t: "Access to GLP-1 medication", s: "Cost of medication is included no insurance necessary." },
-                  { i: <Stethoscope className="h-5 w-5" style={{ color: NAVY }} />, t: "Board-certified doctor review", s: "1:1 physician guidance from U.S.-licensed clinicians." },
-                  { i: <Clock className="h-5 w-5" style={{ color: "#16A34A" }} />, t: "Unlimited physician messaging", s: "Message your licensed clinician anytime through your portal." },
-                  { i: <Truck className="h-5 w-5" style={{ color: NAVY }} />, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
+                  { i: iconBolt.url, t: "Access to GLP-1 medication", s: "Cost of medication is included no insurance necessary." },
+                  { i: iconDoctors.url, t: "Board-certified doctor review", s: "1:1 physician guidance from U.S.-licensed clinicians." },
+                  { i: iconInfinity.url, t: "Unlimited physician messaging", s: "Message your licensed clinician anytime through your portal." },
+                  { i: iconTruck.url, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
                 ].map((row) => (
                   <div key={row.t} className="flex items-start gap-3">
-                    <div className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink/[0.04] ring-1 ring-ink/10">{row.i}</div>
+                    <div className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white ring-1 ring-ink/10">
+                      <img src={row.i} alt="" className="h-6 w-6 object-contain" />
+                    </div>
                     <div className="min-w-0">
                       <div className="text-[14.5px] font-semibold text-ink">{row.t}</div>
                       <div className="text-[13px] text-ink/60">{row.s}</div>
