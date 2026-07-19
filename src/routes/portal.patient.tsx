@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
+import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
