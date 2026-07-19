@@ -607,18 +607,15 @@ function SalesDMPage() {
             reviews="29.1K"
             price={299}
             oldPrice={399}
-            saveLine="Save $100 instantly"
+            saveLine="Save $100"
             features={[
               "Prescribed and shipped free within 2 days",
               "Prescribed by U.S. board-certified clinicians",
-              "Message your doctor 24/7",
+              "Message your physician anytime",
               `${tirzPatients.toLocaleString()} patients chose this today`,
             ]}
             selected={treatment === "tirz"}
             onSelect={() => setTreatment("tirz")}
-            formType={tirzForm}
-            onFormType={setTirzForm}
-            oralUpcharge={50}
           />
         </div>
       </section>
