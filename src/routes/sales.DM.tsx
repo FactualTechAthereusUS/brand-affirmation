@@ -858,8 +858,8 @@ function SalesDMPage() {
                   { i: iconTruck.url, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
                 ].map((row) => (
                   <div key={row.t} className="flex items-start gap-3">
-                    <div className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white ring-1 ring-ink/10">
-                      <img src={row.i} alt="" className="h-6 w-6 object-contain" />
+                    <div className="mt-0.5 shrink-0">
+                      <img src={row.i} alt="" className="h-7 w-7 object-contain" />
                     </div>
                     <div className="min-w-0">
                       <div className="text-[14.5px] font-semibold text-ink">{row.t}</div>
