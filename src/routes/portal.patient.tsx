@@ -200,7 +200,7 @@ function greeting() {
 
 function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   return (
-    <div className="pl-2 pr-4 pt-5">
+    <div className="pl-1 pr-4 pt-5">
       <motion.h1
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
