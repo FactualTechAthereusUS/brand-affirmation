@@ -381,8 +381,6 @@ function FAQItem({ who, q, a, idx }: { who: string; q: string; a: string; idx: n
 function SalesDMPage() {
   const navigate = useNavigate();
   const [treatment, setTreatment] = useState<"sema" | "tirz" | null>(null);
-  const [semaForm, setSemaForm] = useState<"inj" | "oral">("inj");
-  const [tirzForm, setTirzForm] = useState<"inj" | "oral">("inj");
   const [planKey, setPlanKey] = useState<string | null>(null);
   const [semaPatients, setSemaPatients] = useState(12886);
   const [tirzPatients, setTirzPatients] = useState(19720);
