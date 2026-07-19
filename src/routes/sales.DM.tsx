@@ -437,12 +437,12 @@ function SalesDMPage() {
 
   return (
     <div className="min-h-screen" style={{ background: CANVAS }}>
-      {/* Discount banner */}
+      {/* Announcement / reservation banner */}
       <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
         <div className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-3 text-center text-[13px] font-semibold sm:text-[14px]"
           style={{ background: "#FEF7DA", borderColor: "#E7B94A", color: "#171717" }}>
-          <PartyPopper className="h-5 w-5" />
-          Save over $200 instantly — first shipment discount applied
+          <Clock className="h-4 w-4" />
+          {primaryPatient.first}, your slot is reserved · {time}
         </div>
       </div>
 
@@ -453,7 +453,7 @@ function SalesDMPage() {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="text-center">
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
-            250,000+ customers · Pre-qualified for {primaryPatient.first}
+            3,200+ patients · Pre-qualified for {primaryPatient.first}
           </div>
           <h1 className="mt-2 font-hero text-[28px] leading-[1.05] font-black tracking-tight text-ink xs:text-[34px] sm:text-[42px]">
             Your GLP-1 prescription plan{" "}
@@ -463,7 +463,7 @@ function SalesDMPage() {
           </h1>
           <p className="mx-auto mt-3 max-w-[560px] text-[14.5px] leading-relaxed text-ink/70 sm:text-[15.5px]">
             Personalized care for your unique biology — <b>prescribed medication</b>, 1:1 physician guidance and
-            24/7 support from our own dedicated nursing team.
+            unlimited messaging with your licensed clinician.
           </p>
         </motion.div>
 
@@ -471,11 +471,14 @@ function SalesDMPage() {
         <div className="mt-8">
           <div className="flex items-center justify-between text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/60">
             <span>Your chance of success</span>
-            <span style={{ color: "#16A34A" }}>94.6% · Very high</span>
+            <span style={{ color: "#16A34A" }}>Very high</span>
           </div>
           <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-ink/10">
             <motion.div initial={{ width: 0 }} animate={{ width: "94.6%" }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }} className="h-full" style={{ background: "linear-gradient(90deg, #16A34A, #4ADE80)" }} />
           </div>
+          <p className="mt-2 text-[12.5px] text-ink/60">
+            You have a very high chance of success with physician-supervised GLP-1.
+          </p>
         </div>
 
         {/* Chart */}
@@ -508,11 +511,12 @@ function SalesDMPage() {
             You can choose whichever medication you prefer, regardless of our recommendation.
           </p>
           <div className="mt-3 flex items-center gap-2 text-[13px] text-ink/70">
-            <img src={trustpilot.url} alt="Excellent 4.6 rating" className="h-5 w-auto" />
-            <span>· 250,000+ happy customers</span>
+            <img src={trustpilot.url} alt="Excellent 4.8 rating" className="h-5 w-auto" />
+            <span>· 3,200+ patients</span>
           </div>
         </div>
       </section>
+
 
       {/* ═══════ Goals ═══════ */}
       <section className="bg-white">
