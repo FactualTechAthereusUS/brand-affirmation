@@ -901,7 +901,6 @@ function CheckoutPage() {
               <SidebarReviewCard />
 
               <div className="rounded-2xl border border-black/8 bg-white px-5 py-5">
-                <h3 className="mb-4 text-[15px] font-bold text-ink">Why buy from us?</h3>
                 <ValueStack className="!bg-transparent py-0" />
               </div>
             </div>
