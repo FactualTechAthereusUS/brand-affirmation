@@ -1068,9 +1068,9 @@ function ReviewSlider() {
               <article
                 className="flex h-full flex-col transition-all duration-700 ease-out will-change-transform"
                 style={{
-                  opacity: isActive ? 1 : 0.4,
-                  transform: isActive ? "scale(1)" : "scale(0.95)",
-                  filter: isActive ? "blur(0px)" : "blur(4px)",
+                  opacity: isActive ? 1 : 0.35,
+                  transform: isActive ? "scale(1)" : "scale(0.96)",
+                  filter: isActive ? "blur(0px)" : "blur(5px)",
                 }}
               >
                 {/* Review card with avatar */}
