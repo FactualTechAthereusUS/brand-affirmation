@@ -73,7 +73,6 @@ function Index() {
         <Suspense fallback={<Fallback />}><Comparison /></Suspense>
         <Suspense fallback={<Fallback />}><FAQ /></Suspense>
         <Suspense fallback={<Fallback />}><FinalCTA /></Suspense>
-        <Suspense fallback={<Fallback h={260} />}><ValueStack /></Suspense>
       </main>
       <Footer />
       <Suspense fallback={null}><DeferredEffects /></Suspense>
