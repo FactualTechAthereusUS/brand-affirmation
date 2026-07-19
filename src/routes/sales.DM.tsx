@@ -574,9 +574,9 @@ function SalesDMPage() {
             vial={vialSema.url}
             vialBg="#E4F1E6"
             reviews="29.1K"
-            price={147}
-            oldPrice={297}
-            saveLine="Save $150 instantly"
+            price={249}
+            oldPrice={299}
+            saveLine="Save $50 instantly"
             features={[
               "Prescribed and shipped free within 2 days",
               "Prescribed by U.S. board-certified clinicians",
