@@ -33,9 +33,11 @@ export function ValueStack() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-center font-hero text-[22px] font-black tracking-tight text-ink sm:text-[26px]">
-            Everything included. No surprises.
+            Everything included.&nbsp;
+            <br />
+            No surprises.
           </h2>
-          <p className="mt-2 text-center text-[14px] text-ink/60">
+          <p className="mt-4 text-center text-[14px] text-ink/60">
             The same transparent care that powers 30,000+ patient visits.
           </p>
         </motion.div>
