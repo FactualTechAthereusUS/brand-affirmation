@@ -826,38 +826,57 @@ function SalesDMPage() {
       {/* ═══════ Final CTA ═══════ */}
       <section style={{ background: CANVAS }}>
         <div className="mx-auto w-full max-w-[720px] px-4 py-14 text-center sm:px-6">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">Are you ready?</div>
-          <h2 className="mt-2 font-hero text-[28px] font-black tracking-tight text-ink sm:text-[36px]">
-            Start your journey today
+          {/* Liquid glass badge */}
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-ink/85 px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_10px_30px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: PINK, boxShadow: `0 0 8px ${PINK}` }} />
+            Are You Ready?
+          </div>
+          <h2 className="mt-5 font-hero text-[30px] font-black leading-[1.05] tracking-tight text-ink sm:text-[44px]">
+            Start Your Journey <span className="italic font-light">Today</span>
           </h2>
-          <p className="mx-auto mt-2 max-w-[520px] text-[14.5px] leading-relaxed text-ink/70">
-            You're approved. Prescriptions start at just <b>$237</b> — no insurance needed.
+          <p className="mx-auto mt-3 text-[15px] leading-relaxed text-ink/70 sm:text-[17px]">
+            You're approved for <span className="font-bold" style={{ color: PINK }}>{time}</span>
           </p>
 
-          <div className="mx-auto mt-6 flex max-w-[520px] flex-col gap-3 rounded-2xl border border-ink/10 bg-white p-5 text-left">
-            {[
-              { i: <HeartPulse className="h-5 w-5" style={{ color: PINK }} />, t: "Access to GLP-1 medication", s: "Cost of medication is included — no insurance necessary." },
-              { i: <Stethoscope className="h-5 w-5" style={{ color: NAVY }} />, t: "Board-certified doctor review", s: "1:1 physician guidance from U.S.-licensed clinicians." },
-              { i: <Clock className="h-5 w-5" style={{ color: "#16A34A" }} />, t: "Unlimited physician messaging", s: "Message your licensed clinician anytime through your portal." },
-              { i: <Truck className="h-5 w-5" style={{ color: NAVY }} />, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
-            ].map((row) => (
-              <div key={row.t} className="flex items-start gap-3">
-                <div className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink/5">{row.i}</div>
-                <div>
-                  <div className="text-[14.5px] font-semibold text-ink">{row.t}</div>
-                  <div className="text-[13px] text-ink/60">{row.s}</div>
+          {/* Blue strip + white card */}
+          <div className="mx-auto mt-8 max-w-[560px] overflow-hidden rounded-2xl border border-ink/10 bg-white text-left shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]">
+            <div className="px-6 py-4 text-center text-[14px] font-semibold text-white sm:text-[15.5px]" style={{ background: NAVY }}>
+              Prescriptions start at just <b>$237</b> — no insurance needed
+            </div>
+
+            <div className="px-6 py-7 sm:px-8 sm:py-8">
+              <h3 className="font-hero text-[22px] font-black leading-tight tracking-tight text-ink sm:text-[26px]">
+                The most effective weight loss program <span className="italic font-light">is right here</span>
+              </h3>
+              <div className="mt-5 text-[15px] font-black text-ink sm:text-[16px]">What is included?</div>
+
+              <div className="mt-4 flex flex-col gap-4">
+                {[
+                  { i: <HeartPulse className="h-5 w-5" style={{ color: PINK }} />, t: "Access to GLP-1 medication", s: "Cost of medication is included — no insurance necessary." },
+                  { i: <Stethoscope className="h-5 w-5" style={{ color: NAVY }} />, t: "Board-certified doctor review", s: "1:1 physician guidance from U.S.-licensed clinicians." },
+                  { i: <Clock className="h-5 w-5" style={{ color: "#16A34A" }} />, t: "Unlimited physician messaging", s: "Message your licensed clinician anytime through your portal." },
+                  { i: <Truck className="h-5 w-5" style={{ color: NAVY }} />, t: "Free overnight cold-pack shipping", s: "Discreet, temperature-controlled delivery to your door." },
+                ].map((row) => (
+                  <div key={row.t} className="flex items-start gap-3">
+                    <div className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink/[0.04] ring-1 ring-ink/10">{row.i}</div>
+                    <div className="min-w-0">
+                      <div className="text-[14.5px] font-semibold text-ink">{row.t}</div>
+                      <div className="text-[13px] text-ink/60">{row.s}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Guarantee inside the card */}
+              <div className="mt-7 flex items-center gap-4 border-t border-ink/10 pt-6 sm:gap-5">
+                <img src={guaranteeBadge.url} alt="Weight Loss Guarantee" className="h-20 w-20 shrink-0 object-contain sm:h-24 sm:w-24" />
+                <div className="min-w-0">
+                  <div className="font-hero text-[18px] font-black tracking-tight text-ink sm:text-[22px]">Weight Loss Guarantee</div>
+                  <p className="mt-1 text-[13.5px] leading-relaxed text-ink/75 sm:text-[14.5px]">
+                    If you do not lose weight by the end of your complete program, we give you all of your money back. It's that simple!
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-6 flex max-w-[520px] items-center gap-4 rounded-2xl bg-white p-5 text-left sm:gap-5">
-            <img src={guaranteeBadge.url} alt="Weight Loss Guarantee" className="h-20 w-20 shrink-0 object-contain sm:h-24 sm:w-24" />
-            <div>
-              <div className="font-hero text-[20px] font-black tracking-tight text-ink sm:text-[24px]">Weight Loss Guarantee</div>
-              <p className="mt-1 text-[14px] leading-relaxed text-ink/75 sm:text-[15px]">
-                If you do not lose weight by the end of your complete program, we give you all of your money back. It's that simple!
-              </p>
             </div>
           </div>
 
