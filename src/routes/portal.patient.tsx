@@ -18,6 +18,7 @@ import drNassWelcome from "@/assets/dr-nass-welcome.png.asset.json";
 import portalWelcomeDoctor from "@/assets/portal-welcome-doctor.png.asset.json";
 import portalWelcomeWoman from "@/assets/portal-welcome-woman.png.asset.json";
 import onboardingNotifications from "@/assets/onboarding-notifications.jpeg.asset.json";
+import progressTarget from "@/assets/progress-target.png.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
 
 export const Route = createFileRoute("/portal/patient")({
