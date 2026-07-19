@@ -815,6 +815,32 @@ function CheckoutPage() {
               </p>
 
               <ReviewSlider />
+
+              {/* Policy footer */}
+              <div className="mt-4 border-t border-ink/10 pt-5">
+                <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px]">
+                  {[
+                    { label: "Refund policy", href: "/policies/refund" },
+                    { label: "Shipping", href: "/policies/shipping" },
+                    { label: "Privacy policy", href: "/policies/privacy" },
+                    { label: "Terms of service", href: "/policies/terms" },
+                    { label: "Telehealth consent", href: "/policies/telehealth" },
+                    { label: "Contact us", href: "/contact" },
+                  ].map((l) => (
+                    <a
+                      key={l.label}
+                      href={l.href}
+                      className="font-medium underline underline-offset-4 hover:opacity-80"
+                      style={{ color: NAVY }}
+                    >
+                      {l.label}
+                    </a>
+                  ))}
+                </nav>
+                <div className="mt-4 text-[11.5px] text-ink/45">
+                  © {new Date().getFullYear()} Blissley Health, Inc. All rights reserved.
+                </div>
+              </div>
             </motion.div>
           </div>
 
