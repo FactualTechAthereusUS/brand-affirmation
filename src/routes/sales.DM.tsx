@@ -146,6 +146,7 @@ function LightningIcon({ className }: { className?: string }) {
 function TreatmentCard({
   id, title, desc, badge, badgeColor, badgeIcon: BadgeIcon, vial, vialBg,
   reviews, price, oldPrice, saveLine, features, selected, onSelect,
+  formType, onFormType, oralUpcharge,
 }: {
   id: string;
   title: string;
@@ -162,6 +163,9 @@ function TreatmentCard({
   features: string[];
   selected: boolean;
   onSelect: () => void;
+  formType: "inj" | "oral";
+  onFormType: (v: "inj" | "oral") => void;
+  oralUpcharge: number;
 }) {
   return (
     <motion.button
@@ -205,8 +209,35 @@ function TreatmentCard({
       <div>
         <div className="flex items-baseline gap-2">
           <span className="text-[13px] text-ink/60">Prescribed for only</span>
-          <span className="text-[26px] font-black text-ink">${price}</span>
+          <span className="text-[26px] font-black text-ink">${price + (formType === "oral" ? oralUpcharge : 0)}</span>
           <span className="text-[16px] font-medium text-ink/40 line-through">${oldPrice}</span>
+        </div>
+      </div>
+
+      {/* Which do you prefer? */}
+      <div onClick={(e) => e.stopPropagation()}>
+        <div className="mb-1.5 text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/55">Which do you prefer?</div>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => onFormType("inj")}
+            className="rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-all"
+            style={{
+              borderColor: formType === "inj" ? NAVY : "rgba(23,23,23,0.12)",
+              background: formType === "inj" ? "#E7EEFB" : "#fff",
+              color: formType === "inj" ? NAVY : "#171717",
+            }}
+          >Injections</button>
+          <button
+            type="button"
+            onClick={() => onFormType("oral")}
+            className="rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-all"
+            style={{
+              borderColor: formType === "oral" ? NAVY : "rgba(23,23,23,0.12)",
+              background: formType === "oral" ? "#E7EEFB" : "#fff",
+              color: formType === "oral" ? NAVY : "#171717",
+            }}
+          >Oral drops <span className="opacity-70">(+ ${oralUpcharge})</span></button>
         </div>
       </div>
 
