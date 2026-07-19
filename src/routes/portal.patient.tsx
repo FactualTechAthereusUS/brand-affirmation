@@ -1073,13 +1073,14 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function ManageRow({ icon, label, onClick, destructive }: { icon: React.ReactNode; label: string; onClick: () => void; destructive?: boolean }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-white">
-      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white" style={destructive ? { background: "#FFF3F1", color: PINK } : undefined}>{icon}</div>
+    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-[color:var(--color-mist)]/30">
+      <div className="grid h-8 w-8 shrink-0 place-items-center" style={destructive ? { color: PINK } : { color: "var(--color-ink)" }}>{icon}</div>
       <div className="flex-1 text-[14px] font-medium text-ink">{label}</div>
       <ChevronRight className="h-4 w-4 text-ink/40" />
     </button>
   );
 }
+
 
 function PlanModal({ modal, onClose }: { modal: string | null; onClose: () => void }) {
   const address = usePortal((s) => s.patient);
