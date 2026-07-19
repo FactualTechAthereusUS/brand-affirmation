@@ -338,6 +338,8 @@ export const actions = {
   openReceipt(id: string) { set((s) => ({ ui: { ...s.ui, receiptId: id } })); },
   closeReceipt() { set((s) => ({ ui: { ...s.ui, receiptId: null } })); },
   openDocuments(view: PortalState["ui"]["documentsView"]) { set((s) => ({ ui: { ...s.ui, documentsView: view } })); },
+  openPlanModal(view: PortalState["ui"]["planModal"]) { set((s) => ({ ui: { ...s.ui, planModal: view } })); },
+  closePlanModal() { set((s) => ({ ui: { ...s.ui, planModal: null } })); },
   updateCard(last4: string) { set((s) => ({ patient: { ...s.patient, card: last4 } })); },
 
   // demo helpers
