@@ -1032,7 +1032,24 @@ function ReviewSlider() {
                 filter: i === active ? "blur(0px)" : "blur(2px)",
               }}
             >
-              <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+              <div className="flex items-center gap-2.5">
+                <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[#F3F2EE] ring-1 ring-black/5">
+                  <img
+                    src={r.image}
+                    alt={r.name}
+                    className="h-full w-full object-cover"
+                    style={{ objectPosition: "50% 25%" }}
+                    loading="lazy"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <div className="truncate text-[13.5px] font-semibold text-ink">
+                    {r.name}
+                  </div>
+                  <div className="truncate text-[12px] text-ink/55">{r.meta}</div>
+                </div>
+              </div>
+              <div className="mt-2.5 flex items-center gap-0.5" aria-label="5 out of 5 stars">
                 {Array.from({ length: 5 }).map((_, s) => (
                   <svg
                     key={s}
@@ -1050,17 +1067,6 @@ function ReviewSlider() {
               <p className="mt-1.5 text-[14px] leading-[1.55] text-ink/70">
                 {r.body}
               </p>
-              <div className="mt-3 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F3F2EE] text-[12px] font-bold text-ink/70">
-                  {r.name.split(" ")[0][0]}
-                </div>
-                <div>
-                  <div className="text-[13.5px] font-medium text-ink">
-                    {r.name}
-                  </div>
-                  <div className="text-[12px] text-ink/55">{r.meta}</div>
-                </div>
-              </div>
             </div>
           </div>
         ))}
