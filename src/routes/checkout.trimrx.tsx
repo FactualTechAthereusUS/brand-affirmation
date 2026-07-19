@@ -439,6 +439,26 @@ function CheckoutPage() {
         </span>
       </div>
 
+      <ul className="mt-4 space-y-2.5 text-[13px]">
+        {[
+          { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url, bold: true },
+          { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
+          { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
+        ].map((item) => (
+          <li key={item.t} className="flex items-start gap-2.5">
+            <img
+              src={item.icon}
+              alt=""
+              className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-5 w-5 brightness-0 contrast-125" : "h-4 w-4"}`}
+            />
+            <div className="leading-tight">
+              <div className="font-bold text-ink text-[13px]">{item.t}</div>
+              <div className="text-[11.5px] text-ink/55">{item.s}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
@@ -852,9 +872,7 @@ function CheckoutPage() {
 
               <ReviewSlider />
 
-              <div className="lg:hidden">
-                <ValueStack />
-              </div>
+              <ValueStack />
 
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
@@ -897,12 +915,6 @@ function CheckoutPage() {
           >
             <div className="sticky top-0 flex w-full max-w-[460px] flex-col gap-4 px-8 pb-16 pt-10 lg:pl-12">
               {treatmentSummary}
-
-              <SidebarReviewCard />
-
-              <div className="rounded-2xl border border-black/8 bg-white px-5 py-5">
-                <ValueStack className="!bg-transparent py-0" />
-              </div>
             </div>
           </aside>
         </div>
@@ -1053,29 +1065,6 @@ function ReviewSlider() {
         })}
         <div className="w-4 shrink-0" />
       </div>
-    </div>
-  );
-}
-
-/* ── Desktop sidebar review card ── */
-function SidebarReviewCard() {
-  const r = reviews[0];
-  return (
-    <div className="rounded-2xl border border-black/8 bg-white px-5 py-5">
-      <div className="flex items-center gap-2">
-        <span className="text-[15px] font-bold text-ink">Excellent</span>
-        <img src={trustpilotBadge.url} alt="Trustpilot Excellent" className="h-5 w-auto" />
-      </div>
-      <div className="mt-2 flex items-center gap-0.5" aria-label="5 out of 5 stars">
-        {Array.from({ length: 5 }).map((_, s) => (
-          <svg key={s} viewBox="0 0 20 20" className="h-4 w-4" style={{ fill: PINK }}>
-            <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
-          </svg>
-        ))}
-      </div>
-      <p className="mt-3 text-[15px] font-semibold leading-[1.35] text-ink">{r.lead}</p>
-      <p className="mt-2 text-[14px] leading-[1.6] text-ink/70">{r.body}</p>
-      <p className="mt-3 text-[13px] text-ink/55">{r.name}, {r.meta}</p>
     </div>
   );
 }

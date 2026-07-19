@@ -22,9 +22,9 @@ const items = [
   },
 ];
 
-export function ValueStack({ className = "" }: { className?: string }) {
+export function ValueStack() {
   return (
-    <section className={`w-full bg-canvas py-6 sm:py-8 ${className}`}>
+    <section className="w-full bg-canvas py-6 sm:py-8">
       <div className="mx-auto w-full max-w-[720px] px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
