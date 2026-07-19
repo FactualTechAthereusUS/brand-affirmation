@@ -439,7 +439,7 @@ function CheckoutTemplate3() {
 
             {/* Shipping */}
             <div className="mt-10">
-              <SectionHeader icon={<Truck className="h-5 w-5" strokeWidth={1.75} />} title="Shipping Information" />
+              <SectionHeader icon={<ShippingIcon className="h-5 w-5" />} title="Shipping Information" />
               <div className="space-y-4">
                 <Field label="Street Address">
                   <TextInput
