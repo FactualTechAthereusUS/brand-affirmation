@@ -424,20 +424,6 @@ function CheckoutPage() {
         )}
       </div>
 
-      <div
-        className="flex items-center justify-between rounded-xl px-3.5 py-2.5"
-        style={{ background: "#F6F9FE" }}
-      >
-        <div className="text-[13px] font-bold text-ink">Total charged today</div>
-        <div className="text-right">
-          <span className="mr-1.5 text-[12.5px] text-ink/40 line-through">
-            ${fmtMoney(summaryOriginal)}
-          </span>
-          <span className="text-[17px] font-black" style={{ color: NAVY }}>
-            ${fmtMoney(summarySubtotal)}
-          </span>
-        </div>
-      </div>
 
       <div
         className="mt-3 flex items-center justify-center gap-2 rounded-xl px-3.5 py-2.5 text-[12px] font-bold text-white"
