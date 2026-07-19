@@ -1294,10 +1294,13 @@ function MobileOrderSummaryDetail({
   // Line items — one row per add-on line, treatment is the primary
   const itemCount = 1 + (insurance ? 1 : 0) + (priority ? 1 : 0);
   const addOnsTotal = (insurance ? insurancePrice : 0) + (priority ? priorityPrice : 0);
-  const subtotal = baseSubtotal + addOnsTotal;
-  const discountAmount = discountApplied ? 0 : 0; // JOIN120 is already reflected in plan pricing
-  const total = subtotal - discountAmount;
-  const savings = planSavings + shippingWas;
+  // Subtotal shown at ORIGINAL (pre-discount) plan price + add-ons, so the
+  // "Plan discount" line below reconciles cleanly to the final Total.
+  const originalPlanTotal = originalPerMo * months;
+  const subtotal = originalPlanTotal + addOnsTotal;
+  const planDiscount = discountApplied ? planSavings : 0; // JOIN120 = plan savings
+  const total = subtotal - planDiscount; // shipping is free, so not subtracted
+  const savings = planDiscount + shippingWas;
 
   const fmt = (n: number) =>
     n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
@@ -1326,13 +1329,13 @@ function MobileOrderSummaryDetail({
               <div className="text-[12.5px] text-ink/60">{treatmentSubtitle} · {supply}</div>
               {discountApplied && (
                 <div className="mt-1 flex items-center gap-1 text-[12px] font-semibold text-ink/70">
-                  <SavingsIcon className="h-3 w-3" /> JOIN120 (−$120.00)
+                  <SavingsIcon className="h-3 w-3" /> JOIN120 (−${fmt(planSavings)})
                 </div>
               )}
             </div>
             <div className="text-right leading-tight pt-1">
-              <div className="text-[13px] text-ink/40 line-through">${fmt(originalPerMo * months)}</div>
-              <div className="text-[15px] font-bold text-ink">${fmt(baseSubtotal)}</div>
+              <div className="text-[13px] text-ink/40 line-through">${fmt(originalPlanTotal)}</div>
+              <div className="text-[15px] font-bold text-ink">${fmt(discountApplied ? baseSubtotal : originalPlanTotal)}</div>
             </div>
           </div>
 
@@ -1428,7 +1431,7 @@ function MobileOrderSummaryDetail({
                     <SavingsIcon className="h-3 w-3" /> JOIN120
                   </span>
                 </span>
-                <span className="font-semibold text-ink">−$120.00</span>
+                <span className="font-semibold text-ink">−${fmt(planDiscount)}</span>
               </div>
             )}
             <div className="flex items-center justify-between">
