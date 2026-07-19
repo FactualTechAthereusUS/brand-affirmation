@@ -1004,7 +1004,7 @@ function ReviewSlider() {
         onPointerDown={pause}
         onWheel={pause}
         onTouchStart={pause}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-2"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[6%] pb-2 sm:px-[15%] md:px-[20%] lg:px-[24%]"
       >
         {reviews.map((r, i) => (
           <div
@@ -1017,6 +1017,7 @@ function ReviewSlider() {
               style={{
                 opacity: i === active ? 1 : 0.55,
                 transform: i === active ? "scale(1)" : "scale(0.97)",
+                filter: i === active ? "blur(0px)" : "blur(1.5px)",
               }}
             >
               <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
