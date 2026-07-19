@@ -157,7 +157,7 @@ function seed(state: PlanState = "delivered_active"): PortalState {
     },
     pauseDays: null,
     cancelled: false,
-    ui: { trackingId: null, receiptId: null, documentsView: null },
+    ui: { trackingId: null, receiptId: null, documentsView: null, planModal: null },
   };
   // per-state adjustments
   if (state === "pending_review") base.shipments[0].status = "processing";
@@ -178,7 +178,7 @@ function load(): PortalState {
     if (raw) {
       const parsed = JSON.parse(raw) as PortalState;
       // Back-compat: add ui block if missing from older cached state
-      if (!parsed.ui) parsed.ui = { trackingId: null, receiptId: null, documentsView: null };
+      if (!parsed.ui) parsed.ui = { trackingId: null, receiptId: null, documentsView: null, planModal: null };
       return parsed;
     }
   } catch {}
