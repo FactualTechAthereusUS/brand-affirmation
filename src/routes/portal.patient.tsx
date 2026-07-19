@@ -129,11 +129,11 @@ function TopBar({ onBell, onLogoLongPress }: { onBell: () => void; onLogoLongPre
       </button>
       <button
         onClick={onBell}
-        className="relative grid h-9 w-9 place-items-center rounded-full border border-black/5 bg-white/60 text-ink/70 shadow-sm transition hover:bg-white/90"
+        className="relative grid h-9 w-9 place-items-center rounded-full border border-white/60 bg-white/40 text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-xl backdrop-saturate-150 transition hover:bg-white/60"
         aria-label="Notifications"
       >
         <Bell className="h-4 w-4" />
-        {unread > 0 && <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] font-bold text-white" style={{ background: PINK }}>{unread}</span>}
+        {unread > 0 && <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full border border-white/60 px-1 text-[9px] font-bold text-white shadow-sm" style={{ background: PINK }}>{unread}</span>}
       </button>
     </header>
   );
