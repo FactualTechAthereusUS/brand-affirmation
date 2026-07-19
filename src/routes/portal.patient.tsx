@@ -273,7 +273,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           <div className="mt-3 text-[17px] font-semibold tracking-tight text-ink">Ships {PATIENT.nextShipDate}</div>
           <div className="text-[13px] text-ink/60">{PATIENT.medication.replace(" Injectable", "")} · {PATIENT.dose}</div>
           <div className="mt-4 flex items-center gap-3">
-            <img src={vialSemaglutide.url} alt="Semaglutide vial" className="h-16 w-auto rounded-xl border-2 border-white object-contain opacity-90 shadow-sm" />
+            <img src={vialSemaglutide.url} alt="Semaglutide vial" className="h-[500px] w-[500px] rounded-xl border-2 border-white object-contain opacity-90 shadow-sm" />
             <button className="ml-auto inline-flex items-center gap-1 rounded-full bg-ink/[.06] px-4 py-2 text-[12.5px] font-medium text-ink transition active:scale-[.97]">
               Track order
               <ChevronRight className="h-3.5 w-3.5" />
