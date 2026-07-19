@@ -84,6 +84,11 @@ export type PortalState = {
     notifEmail: boolean; notifSms: boolean;
     onboardingComplete: boolean;
   };
+  ui: {
+    trackingId: string | null;
+    receiptId: string | null;
+    documentsView: null | "menu" | "prescription" | "labs" | "invoices" | "hipaa";
+  };
   pauseDays: number | null;
   cancelled: boolean;
 };
