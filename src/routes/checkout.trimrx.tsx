@@ -937,7 +937,13 @@ function ReviewSlider() {
       const cards = el.querySelectorAll<HTMLElement>("[data-review-card]");
       const target = cards[index];
       if (!target) return;
-      const left = target.offsetLeft - (el.clientWidth - target.offsetWidth) / 2;
+      const trackRect = el.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const left =
+        el.scrollLeft +
+        targetRect.left -
+        trackRect.left -
+        (trackRect.width - targetRect.width) / 2;
       el.scrollTo({ left, behavior });
     },
     []
@@ -966,8 +972,8 @@ function ReviewSlider() {
       });
     };
     el.addEventListener("scroll", onScroll, { passive: true });
-    // Center the first card on mount so the "active" card is truly centered
-    requestAnimationFrame(() => goTo(0, "auto"));
+    // Center the first card on mount after layout settles so it doesn't pin left.
+    requestAnimationFrame(() => requestAnimationFrame(() => goTo(0, "auto")));
     onScroll();
     return () => {
       el.removeEventListener("scroll", onScroll);
