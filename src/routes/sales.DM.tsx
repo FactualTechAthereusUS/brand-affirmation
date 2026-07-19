@@ -451,8 +451,7 @@ function SalesDMPage() {
       <TrxHeader onBack={() => window.history.back()} showBack={false} />
 
       {/* ═══════ HERO — Personalized approval ═══════ */}
-      <section className="mx-auto w-full max-w-[860px] px-4 pt-2 pb-10 sm:px-6">
-        {/* Heading ABOVE image */}
+      <section className="mx-auto w-full max-w-[720px] px-4 pt-2 pb-10 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="text-center">
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
@@ -470,51 +469,37 @@ function SalesDMPage() {
           </p>
         </motion.div>
 
-        {/* Image hero card with white metrics overlaid */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-          className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/5] sm:aspect-[16/10] md:aspect-[16/9]"
-        >
-          <img src={dmHeroWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
-
-          {/* Metrics overlay — bottom */}
-          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 md:p-8">
-            {/* Success meter */}
-            <div>
-              <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.14em] text-white/80 sm:text-[12px]">
-                <span>Your chance of success</span>
-                <span style={{ color: "#4ADE80" }}>Very high</span>
-              </div>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/20">
-                <motion.div initial={{ width: 0 }} animate={{ width: "94.6%" }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }} className="h-full" style={{ background: "linear-gradient(90deg, #16A34A, #4ADE80)" }} />
-              </div>
-              <p className="mt-2 text-[12px] text-white/75 sm:text-[12.5px]">
-                You have a very high chance of success with physician-supervised GLP-1.
-              </p>
-            </div>
-
-            {/* 3-col metrics */}
-            <div className="mt-5 grid grid-cols-3 gap-3 border-t border-white/20 pt-4 text-center">
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70 sm:text-[11px]">Goal</div>
-                <div className="mt-0.5 text-[15px] font-bold text-white sm:text-[16px]">{primaryPatient.goalLbs} lbs</div>
-              </div>
-              <div className="border-x border-white/20">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70 sm:text-[11px]">Metabolism</div>
-                <div className="mt-0.5 text-[15px] font-bold text-white sm:text-[16px]">Fat + Protein</div>
-              </div>
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70 sm:text-[11px]">Sex</div>
-                <div className="mt-0.5 text-[15px] font-bold text-white sm:text-[16px]">Female</div>
-              </div>
-            </div>
+        {/* Success meter */}
+        <div className="mt-8">
+          <div className="flex items-center justify-between text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/60">
+            <span>Your chance of success</span>
+            <span style={{ color: "#16A34A" }}>Very high</span>
           </div>
-        </motion.div>
+          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-ink/10">
+            <motion.div initial={{ width: 0 }} animate={{ width: "94.6%" }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }} className="h-full" style={{ background: "linear-gradient(90deg, #16A34A, #4ADE80)" }} />
+          </div>
+          <p className="mt-2 text-[12.5px] text-ink/60">
+            You have a very high chance of success with physician-supervised GLP-1.
+          </p>
+        </div>
 
         {/* Chart */}
         <div className="mt-8">
           <WeightLossChart start={primaryPatient.startLbs} goal={primaryPatient.goalLbs} />
+          <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Goal</div>
+              <div className="mt-0.5 text-[16px] font-bold text-ink">{primaryPatient.goalLbs} lbs</div>
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Metabolism</div>
+              <div className="mt-0.5 text-[16px] font-bold text-ink">Fat + Protein</div>
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">Sex</div>
+              <div className="mt-0.5 text-[16px] font-bold text-ink">Female</div>
+            </div>
+          </div>
         </div>
 
         {/* Recommendation callout */}
@@ -537,22 +522,36 @@ function SalesDMPage() {
 
       {/* ═══════ Goals ═══════ */}
       <section className="bg-white">
-        <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
+        <div className="mx-auto w-full max-w-[860px] px-4 py-12 sm:px-6">
+          {/* Heading ABOVE image */}
           <h2 className="text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[30px]">
             The goals <span className="italic font-light">you will accomplish</span> with your plan
           </h2>
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {[
-              { k: "Lose", v: `${primaryPatient.startLbs - primaryPatient.goalLbs} lbs` },
-              { k: "RESET YOUR METABOLIC\u00a0\nSET POINT", v: `${primaryPatient.goalLbs} lbs` },
-              { k: "Look and feel", v: "healthier" },
-            ].map((g) => (
-              <div key={g.k} className="rounded-2xl bg-white p-5 text-center shadow-[0_1px_0_rgba(0,0,0,0.02)]">
-                <div className="whitespace-pre-line text-[13px] font-semibold uppercase tracking-[0.12em] text-ink/50">{g.k}</div>
-                <div className="mt-1 text-[22px] font-black text-ink">{g.v}</div>
+
+          {/* Image hero card with white metrics overlaid */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
+            className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/5] sm:aspect-[16/10] md:aspect-[16/9]"
+          >
+            <img src={dmHeroWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/5" />
+
+            {/* Metrics overlay — bottom */}
+            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 md:p-8">
+              <div className="grid grid-cols-3 gap-3 text-center">
+                {[
+                  { k: "Lose", v: `${primaryPatient.startLbs - primaryPatient.goalLbs} lbs` },
+                  { k: "RESET YOUR METABOLIC\u00a0\nSET POINT", v: `${primaryPatient.goalLbs} lbs` },
+                  { k: "Look and feel", v: "healthier" },
+                ].map((g, i) => (
+                  <div key={g.k} className={i === 1 ? "border-x border-white/25 px-2" : "px-2"}>
+                    <div className="whitespace-pre-line text-[10px] font-semibold uppercase tracking-[0.12em] text-white/75 sm:text-[11.5px]">{g.k}</div>
+                    <div className="mt-1 text-[18px] font-black text-white sm:text-[24px]">{g.v}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
