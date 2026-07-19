@@ -1168,3 +1168,55 @@ function UpsellRow({
     </label>
   );
 }
+
+/* ── Mobile-only collapsible order summary bar ── */
+function MobileOrderBar({
+  originalTotal,
+  currentTotal,
+  children,
+}: {
+  originalTotal: number;
+  currentTotal: number;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="lg:hidden border-b border-t border-ink/10" style={{ background: "#F5F5F7" }}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
+      >
+        <span className="flex items-center gap-1.5 text-[15px] font-semibold" style={{ color: NAVY }}>
+          Order summary
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </span>
+        <span className="text-right leading-tight">
+          <span className="mr-2 text-[13.5px] text-ink/40 line-through">
+            ${originalTotal.toLocaleString()}
+          </span>
+          <span className="text-[18px] font-black text-ink">
+            ${currentTotal.toLocaleString()}
+          </span>
+        </span>
+      </button>
+      {open && (
+        <div className="px-4 pb-4">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
