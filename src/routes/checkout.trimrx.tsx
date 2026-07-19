@@ -508,7 +508,7 @@ function CheckoutPage() {
       <form onSubmit={onSubmit} className="w-full">
         <div className="lg:grid lg:grid-cols-2 lg:items-start">
           {/* LEFT — checkout form */}
-          <div className="bg-white lg:flex lg:justify-end lg:h-screen lg:overflow-y-auto no-scrollbar">
+          <div className="bg-white lg:flex lg:justify-end">
 
             <motion.div
               initial="hidden"
