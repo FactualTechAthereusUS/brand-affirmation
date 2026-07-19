@@ -27,6 +27,7 @@ import {
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
+import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
@@ -209,6 +210,25 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         {greeting()}, {PATIENT.firstName}.
       </motion.h1>
       <p className="mt-1 text-[13.5px] text-ink/55">Here's the state of your program today.</p>
+
+      {/* Hero card */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mt-4 overflow-hidden rounded-2xl aspect-[16/10]"
+      >
+        <img src={heroSkyWoman.url} alt="Woman feeling confident under a bright sky" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <p className="text-[15px] font-semibold leading-tight text-white drop-shadow-md">
+            Your program is on track
+          </p>
+          <p className="mt-0.5 text-[12.5px] text-white/85 drop-shadow">
+            Keep showing up for yourself, {PATIENT.firstName}.
+          </p>
+        </div>
+      </motion.div>
 
       <div className="mt-5 space-y-2.5">
         {/* Approval status */}
