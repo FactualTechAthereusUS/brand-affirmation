@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
@@ -459,6 +459,74 @@ function SalesDMPage() {
   const [tirzPatients, setTirzPatients] = useState(19720);
   const [discountsLeft, setDiscountsLeft] = useState(() => 40 + Math.floor(Math.random() * 35));
   const time = useCountdown(9);
+
+  /* ─────────  Reviews slider  ───────── */
+  const reviewTrackRef = useRef<HTMLDivElement>(null);
+  const [activeReview, setActiveReview] = useState(0);
+  const pausedReviewRef = useRef(false);
+  const resumeReviewTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const goToReview = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
+    const el = reviewTrackRef.current;
+    if (!el) return;
+    const cards = el.querySelectorAll<HTMLElement>("[data-review-card]");
+    const target = cards[index];
+    if (!target) return;
+    const left = target.offsetLeft - (el.clientWidth - target.offsetWidth) / 2;
+    el.scrollTo({ left, behavior });
+  }, []);
+
+  useEffect(() => {
+    const el = reviewTrackRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const center = el.scrollLeft + el.clientWidth / 2;
+        const cards = Array.from(el.querySelectorAll<HTMLElement>("[data-review-card]"));
+        let best = 0;
+        let bestDist = Infinity;
+        cards.forEach((c, i) => {
+          const mid = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(mid - center);
+          if (d < bestDist) {
+            bestDist = d;
+            best = i;
+          }
+        });
+        setActiveReview(best);
+      });
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const pauseReview = useCallback(() => {
+    pausedReviewRef.current = true;
+    if (resumeReviewTimerRef.current) clearTimeout(resumeReviewTimerRef.current);
+    resumeReviewTimerRef.current = setTimeout(() => {
+      pausedReviewRef.current = false;
+    }, 6000);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (pausedReviewRef.current) return;
+      const el = reviewTrackRef.current;
+      if (!el) return;
+      if (document.hidden) return;
+      const cards = el.querySelectorAll<HTMLElement>("[data-review-card]");
+      if (!cards.length) return;
+      const next = (activeReview + 1) % cards.length;
+      goToReview(next);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [activeReview, goToReview]);
 
   useEffect(() => {
     let cancelled = false;
