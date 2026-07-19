@@ -56,6 +56,27 @@ const PINK = "#ee7273";
 const CANVAS = "#FFFFFF";
 const CREAM = "#F8F5EF";
 
+/* ─────────  Inline SVG symbols for included list  ───────── */
+function IconSymbols() {
+  return (
+    <svg aria-hidden="true" className="pointer-events-none absolute h-0 w-0">
+      <defs>
+        <symbol id="282897690" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="5" y="11" width="14" height="10" rx="2" />
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </symbol>
+        <symbol id="1776682203" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
+        </symbol>
+        <symbol id="3553010246" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </symbol>
+      </defs>
+    </svg>
+  );
+}
+
 /* ─────────  Countdown  ───────── */
 function useCountdown(minutes: number) {
   const [t, setT] = useState(minutes * 60);
@@ -327,10 +348,10 @@ function PlanCard({ plan, selected, onSelect, onCheckout }: {
 const INCLUDES = [
   { icon: icon15.url, label: "Medication + supplies included" },
   { icon: icon16.url, label: "Free expedited shipping" },
-  { icon: icon17.url, label: "Unlimited physician messaging" },
+  { icon: <svg className="framer-FE2Jh framer-1vzbxle" role="presentation" viewBox="0 0 24 24" style={{ opacity: 1 }}><use href="#1776682203" /></svg>, label: "Unlimited physician messaging" },
   { icon: icon18.url, label: "24/7 patient support" },
-  { icon: icon19.url, label: "Same price forever — dosage lock" },
-  { icon: icon20.url, label: "HSA/FSA eligible · Weight-loss guarantee" },
+  { icon: <svg className="framer-DITGk framer-1vzbxle" role="presentation" viewBox="0 0 24 24" style={{ opacity: 1 }}><use href="#282897690" /></svg>, label: "Same price forever — dosage lock" },
+  { icon: <svg className="framer-ROtdE framer-1vzbxle" role="presentation" viewBox="0 0 24 24" style={{ opacity: 1 }}><use href="#3553010246" /></svg>, label: "HSA/FSA eligible · Weight-loss guarantee" },
 ];
 
 /* ─────────  What Happens Next  ───────── */
@@ -466,7 +487,8 @@ function SalesDMPage() {
     navigate({ to: "/checkout/trimrx", search: { tx: treatment ?? "sema", plan: planK } });
 
   return (
-    <div className="min-h-screen" style={{ background: CANVAS }}>
+    <div className="relative min-h-screen" style={{ background: CANVAS }}>
+      <IconSymbols />
       {/* Announcement / reservation banner */}
       <div className="mx-auto w-full max-w-[720px] px-4 pt-4 sm:px-6">
         <div className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-3 text-center text-[13px] font-semibold sm:text-[14px]"
@@ -720,7 +742,13 @@ function SalesDMPage() {
             <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
               {INCLUDES.map(({ icon, label }) => (
                 <li key={label} className="flex items-center gap-3 text-[15px] text-ink">
-                  <img src={icon} alt="" className="h-6 w-6 shrink-0 object-contain" />
+                  <span className="h-6 w-6 shrink-0 text-ink">
+                    {typeof icon === "string" ? (
+                      <img src={icon} alt="" className="h-6 w-6 object-contain" />
+                    ) : (
+                      icon
+                    )}
+                  </span>
                   {label}
                 </li>
               ))}
