@@ -210,7 +210,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
       </motion.h1>
       <p className="mt-1 text-[13.5px] text-ink/55">Here's the state of your program today.</p>
 
-      <div className="mt-5 space-y-3.5">
+      <div className="mt-5 space-y-2.5">
         {/* Approval status */}
         {PATIENT.approved ? (
           <Card>
