@@ -1277,6 +1277,90 @@ function MobileOrderBar({
   );
 }
 
+/* ── Mobile-only reservation urgency banner ── */
+function ReservationBanner() {
+  const [discountsLeft, setDiscountsLeft] = useState(() => 40 + Math.floor(Math.random() * 35)); // 40-74
+  const [secondsLeft, setSecondsLeft] = useState(() => 6 * 60 + 30 + Math.floor(Math.random() * 90)); // 6:30-8:00
+  const expired = secondsLeft <= 0;
+
+  useEffect(() => {
+    let cancelled = false;
+    let timer: number | undefined;
+    const tick = () => {
+      if (cancelled) return;
+      setDiscountsLeft((n) => {
+        if (n <= 1) return 1;
+        const step =
+          n > 30 ? 3 + Math.floor(Math.random() * 3) :
+          n > 15 ? 2 + Math.floor(Math.random() * 2) :
+          n > 5  ? 1 + Math.floor(Math.random() * 2) :
+                   1;
+        return Math.max(1, n - step);
+      });
+      const delay = 1500 + Math.random() * 2500;
+      timer = window.setTimeout(tick, delay);
+    };
+    timer = window.setTimeout(tick, 1200 + Math.random() * 1200);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const mmss = `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`;
+
+  return (
+    <div
+      className="lg:hidden border-b border-ink/10 px-4 py-3"
+      style={{ background: "rgba(238, 114, 115, 0.10)" }}
+    >
+      <div className="flex items-start gap-3">
+        <div
+          className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full"
+          style={{ background: PINK }}
+        >
+          {expired ? (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="15" y1="9" x2="9" y2="15" />
+              <line x1="9" y1="9" x2="15" y2="15" />
+            </svg>
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          {expired ? (
+            <div className="text-[13.5px] font-bold text-ink">
+              Your reservation has expired
+            </div>
+          ) : (
+            <>
+              <div className="text-[13.5px] font-bold text-ink">
+                Only <span style={{ color: PINK }}>{discountsLeft} {discountsLeft === 1 ? "discount" : "discounts"}</span> left
+              </div>
+              <div className="mt-0.5 text-[12.5px] leading-snug text-ink/70">
+                Yours is reserved for{" "}
+                <span className="font-bold tabular-nums" style={{ color: PINK }}>{mmss}</span> min
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Mobile-only order summary (Shopify/Hears-style collapsible) ── */
 function MobileOrderSummaryDetail({
   treatmentName,
