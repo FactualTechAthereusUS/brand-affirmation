@@ -484,15 +484,15 @@ function CheckoutPage() {
             Due Today
           </div>
           <div className="mt-1 text-[11px] text-ink/60">
-            Only charged if<br />your prescription is approved.
+            Full refund if your<br />prescription is not approved.
           </div>
         </div>
         <div className="text-right -translate-x-1">
           <span className="mr-1.5 text-[13px] text-ink/35 line-through">
-            ${fmtMoney(summarySubtotal)}
+            ${fmtMoney(summaryOriginal)}
           </span>
-          <span className="text-[24px] font-black leading-none" style={{ color: GREEN }}>
-            $0
+          <span className="text-[24px] font-black leading-none" style={{ color: NAVY }}>
+            ${fmtMoney(summarySubtotal)}
           </span>
         </div>
       </motion.div>
