@@ -21,6 +21,7 @@ const Comparison = lazy(() => import("@/components/home/Comparison").then(m => (
 const FAQ = lazy(() => import("@/components/home/FAQ").then(m => ({ default: m.FAQ })));
 const FinalCTA = lazy(() => import("@/components/home/FinalCTA").then(m => ({ default: m.FinalCTA })));
 const DeferredEffects = lazy(() => import("@/components/DeferredEffects").then(m => ({ default: m.DeferredEffects })));
+const ValueStack = lazy(() => import("@/components/home/ValueStack").then(m => ({ default: m.ValueStack })));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -72,6 +73,7 @@ function Index() {
         <Suspense fallback={<Fallback />}><Comparison /></Suspense>
         <Suspense fallback={<Fallback />}><FAQ /></Suspense>
         <Suspense fallback={<Fallback />}><FinalCTA /></Suspense>
+        <Suspense fallback={<Fallback h={260} />}><ValueStack /></Suspense>
       </main>
       <Footer />
       <Suspense fallback={null}><DeferredEffects /></Suspense>
