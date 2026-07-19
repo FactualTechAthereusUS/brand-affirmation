@@ -146,6 +146,7 @@ function LightningIcon({ className }: { className?: string }) {
 function TreatmentCard({
   id, title, desc, badge, badgeColor, badgeIcon: BadgeIcon, vial, vialBg,
   reviews, price, oldPrice, saveLine, features, selected, onSelect,
+  formType, onFormType, oralUpcharge,
 }: {
   id: string;
   title: string;
@@ -162,6 +163,9 @@ function TreatmentCard({
   features: string[];
   selected: boolean;
   onSelect: () => void;
+  formType: "inj" | "oral";
+  onFormType: (v: "inj" | "oral") => void;
+  oralUpcharge: number;
 }) {
   return (
     <motion.button
@@ -205,8 +209,35 @@ function TreatmentCard({
       <div>
         <div className="flex items-baseline gap-2">
           <span className="text-[13px] text-ink/60">Prescribed for only</span>
-          <span className="text-[26px] font-black text-ink">${price}</span>
+          <span className="text-[26px] font-black text-ink">${price + (formType === "oral" ? oralUpcharge : 0)}</span>
           <span className="text-[16px] font-medium text-ink/40 line-through">${oldPrice}</span>
+        </div>
+      </div>
+
+      {/* Which do you prefer? */}
+      <div onClick={(e) => e.stopPropagation()}>
+        <div className="mb-1.5 text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/55">Which do you prefer?</div>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => onFormType("inj")}
+            className="rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-all"
+            style={{
+              borderColor: formType === "inj" ? NAVY : "rgba(23,23,23,0.12)",
+              background: formType === "inj" ? "#E7EEFB" : "#fff",
+              color: formType === "inj" ? NAVY : "#171717",
+            }}
+          >Injections</button>
+          <button
+            type="button"
+            onClick={() => onFormType("oral")}
+            className="rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-all"
+            style={{
+              borderColor: formType === "oral" ? NAVY : "rgba(23,23,23,0.12)",
+              background: formType === "oral" ? "#E7EEFB" : "#fff",
+              color: formType === "oral" ? NAVY : "#171717",
+            }}
+          >Oral drops <span className="opacity-70">(+ ${oralUpcharge})</span></button>
         </div>
       </div>
 
@@ -384,6 +415,8 @@ function FAQItem({ who, q, a, idx }: { who: string; q: string; a: string; idx: n
 function SalesDMPage() {
   const navigate = useNavigate();
   const [treatment, setTreatment] = useState<"sema" | "tirz" | null>(null);
+  const [semaForm, setSemaForm] = useState<"inj" | "oral">("inj");
+  const [tirzForm, setTirzForm] = useState<"inj" | "oral">("inj");
   const [planKey, setPlanKey] = useState<string | null>(null);
   const [semaPatients, setSemaPatients] = useState(12886);
   const [tirzPatients, setTirzPatients] = useState(19720);
@@ -538,6 +571,18 @@ function SalesDMPage() {
         </div>
       </section>
 
+      {/* ═══════ Your plan (transition) ═══════ */}
+      <section className="bg-white">
+        <div className="mx-auto w-full max-w-[720px] px-4 pb-4 pt-2 text-center sm:px-6">
+          <h3 className="font-hero text-[22px] font-black tracking-tight text-ink sm:text-[26px]">
+            Your plan
+          </h3>
+          <p className="mx-auto mt-2 max-w-[520px] text-[14.5px] leading-relaxed text-ink/70">
+            You'll get <b>everything you need</b> to drop {primaryPatient.startLbs - primaryPatient.goalLbs} lbs — and keep it off.
+          </p>
+        </div>
+      </section>
+
       {/* ═══════ Reservation + Same price ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 py-10 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
@@ -585,6 +630,9 @@ function SalesDMPage() {
             ]}
             selected={treatment === "sema"}
             onSelect={() => setTreatment("sema")}
+            formType={semaForm}
+            onFormType={setSemaForm}
+            oralUpcharge={52}
           />
           <TreatmentCard
             id="tirz"
@@ -607,6 +655,9 @@ function SalesDMPage() {
             ]}
             selected={treatment === "tirz"}
             onSelect={() => setTreatment("tirz")}
+            formType={tirzForm}
+            onFormType={setTirzForm}
+            oralUpcharge={50}
           />
         </div>
       </section>
@@ -814,11 +865,20 @@ function SalesDMPage() {
 
       {/* ═══════ Featured / payments ═══════ */}
       <section className="mx-auto w-full max-w-[720px] px-4 pb-14 sm:px-6">
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-4">
           <img src={trustpilot.url} alt="Excellent 4.8 · 100,000+ happy customers" className="h-6 w-auto sm:h-7" />
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">As seen on</span>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">As seen on</div>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13.5px] font-semibold text-ink/60">
             <img src={forbes.url} alt="Forbes Health" className="h-4 w-auto sm:h-5" />
+            <span>OK!</span>
+            <span>BalancingAct</span>
+            <span>Woman's World</span>
+            <span>LA Weekly</span>
+            <span>Lifetime Health</span>
+          </div>
+          <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-1.5">
+            <ShieldCheck className="h-4 w-4" style={{ color: "#16A34A" }} />
+            <span className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ink/70">LegitScript Certified</span>
           </div>
         </div>
         <div className="mt-8 rounded-2xl border border-ink/10 p-6 sm:p-8">
