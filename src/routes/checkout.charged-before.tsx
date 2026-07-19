@@ -1321,32 +1321,37 @@ function ReservationBanner() {
   return (
     <div className="lg:hidden px-4 pt-3">
       <div
-        className="flex items-center gap-2.5 rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5"
+        className="flex items-start gap-3 rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4"
         style={{ background: "rgba(238, 114, 115, 0.10)" }}
       >
         <svg
-          width="18"
-          height="18"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke={PINK}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="shrink-0"
+          className="shrink-0 mt-0.5"
           aria-hidden="true"
         >
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        <div className="min-w-0 flex-1 text-[13.5px] sm:text-[14px] font-semibold text-ink leading-snug">
+        <div className="min-w-0 flex-1 text-[13.5px] sm:text-[14px] font-semibold leading-snug" style={{ color: INK }}>
           {expired ? (
-            <>Your reservation has expired</>
+            <div>Your reservation has expired</div>
           ) : (
             <>
-              Only <span style={{ color: PINK }}>{discountsLeft}</span> {discountsLeft === 1 ? "discount" : "discounts"} left · Yours is reserved for{" "}
-              <span className="font-bold tabular-nums" style={{ color: PINK }}>{mmss}</span>
+              <div>
+                Only <span style={{ color: PINK }}>{discountsLeft}</span> {discountsLeft === 1 ? "discount" : "discounts"} left
+              </div>
+              <div className="mt-0.5">
+                Yours is reserved for{" "}
+                <span className="font-bold tabular-nums" style={{ color: PINK }}>{mmss}</span>
+              </div>
             </>
           )}
         </div>
