@@ -444,11 +444,57 @@ function MiniSparkline({ data }: { data: number[] }) {
   const w = 200, h = 44;
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
-  const pts = data.map((v, i) => `${(i / (data.length - 1)) * w},${h - ((v - min) / range) * h}`).join(" ");
+  const coords = data.map((v, i) => ({
+    x: (i / (data.length - 1)) * w,
+    y: h - ((v - min) / range) * h,
+  }));
+  const line = coords.map((p) => `${p.x},${p.y}`).join(" ");
+  const area = `${coords[0].x},${h} ${line} ${coords[coords.length - 1].x},${h}`;
+  const last = coords[coords.length - 1];
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="mt-2 h-11 w-full">
-      <polyline points={pts} fill="none" stroke={PINK} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={w} cy={h - ((data[data.length - 1] - min) / range) * h} r="3" fill={PINK} />
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="mt-2 h-11 w-full overflow-visible">
+      <defs>
+        <linearGradient id="mini-wg" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={PINK} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={PINK} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <motion.polygon
+        points={area}
+        fill="url(#mini-wg)"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      />
+      <motion.polyline
+        points={line}
+        fill="none"
+        stroke={PINK}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <motion.circle
+        cx={last.x}
+        cy={last.y}
+        r="3"
+        fill={PINK}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.9, type: "spring", stiffness: 300, damping: 18 }}
+      />
+      <motion.circle
+        cx={last.x}
+        cy={last.y}
+        r="3"
+        fill={PINK}
+        initial={{ opacity: 0.5, scale: 1 }}
+        animate={{ opacity: 0, scale: 3 }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut", delay: 1 }}
+      />
     </svg>
   );
 }
@@ -807,32 +853,175 @@ function PlanTab() {
 function statusLabel(s: string) { return s === "shipped" ? "Shipped" : s === "processing" ? "Preparing" : "Delivered"; }
 
 function WeightChart({ data }: { data: { date: string; lbs: number }[] }) {
-  if (data.length < 2) return <div className="mt-2 text-[12px] text-ink/50">Log more entries to see your trend.</div>;
-  const w = 320, h = 100, pad = 12;
+  const [hover, setHover] = useState<number | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ w: 320, h: 160 });
+
+  useEffect(() => {
+    if (!wrapRef.current) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const w = Math.max(240, entry.contentRect.width);
+      setSize({ w, h: Math.min(200, Math.max(140, w * 0.42)) });
+    });
+    ro.observe(wrapRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  if (data.length < 2) {
+    return <div className="mt-2 text-[12px] text-ink/50">Log more entries to see your trend.</div>;
+  }
+
+  const { w, h } = size;
+  const padX = 14, padTop = 22, padBot = 26;
   const min = Math.min(...data.map((d) => d.lbs)) - 1;
   const max = Math.max(...data.map((d) => d.lbs)) + 1;
   const range = max - min || 1;
-  const pts = data.map((d, i) => {
-    const x = pad + (i / (data.length - 1)) * (w - pad * 2);
-    const y = h - pad - ((d.lbs - min) / range) * (h - pad * 2);
-    return `${x},${y}`;
-  });
-  const area = `${pts[0].split(",")[0]},${h - pad} ${pts.join(" ")} ${pts[pts.length - 1].split(",")[0]},${h - pad}`;
+  const coords = data.map((d, i) => ({
+    x: padX + (i / (data.length - 1)) * (w - padX * 2),
+    y: padTop + (1 - (d.lbs - min) / range) * (h - padTop - padBot),
+    ...d,
+  }));
+  const line = coords.map((p) => `${p.x},${p.y}`).join(" ");
+  const area = `${coords[0].x},${h - padBot} ${line} ${coords[coords.length - 1].x},${h - padBot}`;
+  const active = hover != null ? coords[hover] : coords[coords.length - 1];
+
+  const onMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = ((e.clientX - rect.left) / rect.width) * w;
+    let nearest = 0, best = Infinity;
+    for (let i = 0; i < coords.length; i++) {
+      const d = Math.abs(coords[i].x - px);
+      if (d < best) { best = d; nearest = i; }
+    }
+    setHover(nearest);
+  };
+
+  // Tooltip positioning
+  const tipW = 96;
+  const tipX = Math.min(Math.max(active.x - tipW / 2, 4), w - tipW - 4);
+
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="mt-3 h-24 w-full">
-      <defs>
-        <linearGradient id="wg" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor={PINK} stopOpacity="0.25" />
-          <stop offset="100%" stopColor={PINK} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <polygon points={area} fill="url(#wg)" />
-      <polyline points={pts.join(" ")} fill="none" stroke={PINK} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-      {pts.map((p, i) => {
-        const [x, y] = p.split(",").map(Number);
-        return <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 4 : 2.5} fill={PINK} />;
-      })}
-    </svg>
+    <div ref={wrapRef} className="mt-3 w-full select-none">
+      <svg
+        viewBox={`0 0 ${w} ${h}`}
+        width="100%"
+        height={h}
+        className="overflow-visible touch-none"
+        onPointerMove={onMove}
+        onPointerDown={onMove}
+        onPointerLeave={() => setHover(null)}
+      >
+        <defs>
+          <linearGradient id="wg" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor={PINK} stopOpacity="0.28" />
+            <stop offset="100%" stopColor={PINK} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* grid */}
+        {[0.25, 0.5, 0.75].map((r) => (
+          <line
+            key={r}
+            x1={padX}
+            x2={w - padX}
+            y1={padTop + r * (h - padTop - padBot)}
+            y2={padTop + r * (h - padTop - padBot)}
+            stroke="#000"
+            strokeOpacity="0.05"
+            strokeDasharray="3 4"
+          />
+        ))}
+
+        {/* area */}
+        <motion.polygon
+          points={area}
+          fill="url(#wg)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+        />
+
+        {/* line */}
+        <motion.polyline
+          points={line}
+          fill="none"
+          stroke={PINK}
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* static dots */}
+        {coords.map((p, i) => (
+          <motion.circle
+            key={i}
+            cx={p.x}
+            cy={p.y}
+            r={hover === i ? 0 : i === coords.length - 1 ? 3.5 : 2.4}
+            fill={PINK}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 + i * 0.04 }}
+          />
+        ))}
+
+        {/* crosshair + active dot */}
+        <motion.g
+          animate={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <motion.line
+            x1={active.x}
+            x2={active.x}
+            y1={padTop - 4}
+            y2={h - padBot}
+            stroke={PINK}
+            strokeOpacity="0.35"
+            strokeWidth="1"
+            strokeDasharray="3 3"
+            animate={{ x1: active.x, x2: active.x }}
+            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+          />
+          <motion.circle
+            r="10"
+            fill={PINK}
+            fillOpacity="0.15"
+            animate={{ cx: active.x, cy: active.y }}
+            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+          />
+          <motion.circle
+            r="4.5"
+            fill="#fff"
+            stroke={PINK}
+            strokeWidth="2.4"
+            animate={{ cx: active.x, cy: active.y }}
+            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+          />
+        </motion.g>
+
+        {/* tooltip */}
+        <motion.g
+          animate={{ x: tipX, y: Math.max(active.y - 44, 2) }}
+          transition={{ type: "spring", stiffness: 400, damping: 32 }}
+        >
+          <rect width={tipW} height="34" rx="10" fill="#171717" />
+          <text x={tipW / 2} y="14" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.6)" fontWeight="500">
+            {active.date}
+          </text>
+          <text x={tipW / 2} y="27" textAnchor="middle" fontSize="13" fill="#fff" fontWeight="700">
+            {active.lbs.toFixed(1)} lbs
+          </text>
+        </motion.g>
+
+        {/* x-axis labels */}
+        <text x={padX} y={h - 6} fontSize="10" fill="rgba(0,0,0,0.4)" fontWeight="500">{coords[0].date}</text>
+        <text x={w - padX} y={h - 6} textAnchor="end" fontSize="10" fill="rgba(0,0,0,0.4)" fontWeight="500">{coords[coords.length - 1].date}</text>
+      </svg>
+    </div>
   );
 }
 
