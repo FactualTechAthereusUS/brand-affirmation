@@ -237,7 +237,9 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           <Card>
             <div className="flex items-start gap-3">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full" style={{ background: "#EAF3EF" }}>
-                <CheckCircle2 className="h-5 w-5" style={{ color: "#4a7c6f" }} />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ee7273" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
               </div>
               <div className="min-w-0">
                 <div className="text-[15px] font-semibold text-ink">Prescription Approved</div>
