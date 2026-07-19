@@ -16,6 +16,7 @@ import payKlarna from "@/assets/pay-klarna.png.asset.json";
 import payAffirm from "@/assets/pay-affirm.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
 import icon15 from "@/assets/icon-15.png.asset.json";
+import guaranteeBadge from "@/assets/guarantee-badge.png.asset.json";
 import icon16 from "@/assets/icon-16.png.asset.json";
 import icon17 from "@/assets/icon-17.png.asset.json";
 import icon18 from "@/assets/icon-18.png.asset.json";
