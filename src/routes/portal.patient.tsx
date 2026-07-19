@@ -29,6 +29,7 @@ import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.
 import vialSemaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
+import drScottNass from "@/assets/dr-scott-nass.png.asset.json";
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
@@ -319,7 +320,11 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         {/* Small provider strip */}
         <Card>
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[13px] font-black text-white" style={{ background: NAVY }}>SN</div>
+            <img
+              src={drScottNass.url}
+              alt="Dr. Scott Nass"
+              className="h-11 w-11 shrink-0 rounded-full object-cover"
+            />
             <div className="min-w-0">
               <div className="text-[14px] font-semibold text-ink">Dr. Scott Nass MD</div>
               <div className="text-[12.5px] text-ink/55">Your prescribing physician · Board-certified</div>
