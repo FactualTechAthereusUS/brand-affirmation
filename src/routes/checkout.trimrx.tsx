@@ -1010,7 +1010,7 @@ function ReviewSlider() {
         onPointerDown={pause}
         onWheel={pause}
         onTouchStart={pause}
-        className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[6%] pb-4 sm:-mx-6 sm:gap-4 sm:px-[15%] md:px-[19%] lg:px-[19%]"
+        className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[6%] pb-4 sm:-mx-6 sm:gap-4 sm:px-[calc(50%-140px)] md:px-[calc(50%-160px)] lg:px-[calc(50%-170px)]"
       >
         {reviews.map((r, i) => {
           const isActive = i === active;
@@ -1018,7 +1018,7 @@ function ReviewSlider() {
             <div
               key={i}
               data-review-card
-              className="w-[88%] shrink-0 snap-center sm:w-[70%] md:w-[62%] lg:w-[62%]"
+              className="w-[88%] shrink-0 snap-center sm:w-[280px] md:w-[320px] lg:w-[340px]"
             >
               <article
                 className="flex h-full flex-col transition-all duration-700 ease-out will-change-transform"
