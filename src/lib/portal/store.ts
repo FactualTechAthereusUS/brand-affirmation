@@ -84,6 +84,12 @@ export type PortalState = {
     notifEmail: boolean; notifSms: boolean;
     onboardingComplete: boolean;
   };
+  ui: {
+    trackingId: string | null;
+    receiptId: string | null;
+    documentsView: null | "menu" | "prescription" | "labs" | "invoices" | "hipaa";
+    planModal: null | "pause" | "cancel" | "switch" | "payment" | "address" | "checkin" | "weight" | "refill";
+  };
   pauseDays: number | null;
   cancelled: boolean;
 };
@@ -151,6 +157,7 @@ function seed(state: PlanState = "delivered_active"): PortalState {
     },
     pauseDays: null,
     cancelled: false,
+    ui: { trackingId: null, receiptId: null, documentsView: null, planModal: null },
   };
   // per-state adjustments
   if (state === "pending_review") base.shipments[0].status = "processing";
@@ -168,7 +175,12 @@ function load(): PortalState {
   if (typeof window === "undefined") return seed();
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (raw) return JSON.parse(raw) as PortalState;
+    if (raw) {
+      const parsed = JSON.parse(raw) as PortalState;
+      // Back-compat: add ui block if missing from older cached state
+      if (!parsed.ui) parsed.ui = { trackingId: null, receiptId: null, documentsView: null, planModal: null };
+      return parsed;
+    }
   } catch {}
   const s = seed();
   try { window.localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
@@ -319,6 +331,16 @@ export const actions = {
   cancelPlan() {
     set({ cancelled: true, planState: "paused" });
   },
+
+  // ui
+  openTracking(id: string) { set((s) => ({ ui: { ...s.ui, trackingId: id } })); },
+  closeTracking() { set((s) => ({ ui: { ...s.ui, trackingId: null } })); },
+  openReceipt(id: string) { set((s) => ({ ui: { ...s.ui, receiptId: id } })); },
+  closeReceipt() { set((s) => ({ ui: { ...s.ui, receiptId: null } })); },
+  openDocuments(view: PortalState["ui"]["documentsView"]) { set((s) => ({ ui: { ...s.ui, documentsView: view } })); },
+  openPlanModal(view: PortalState["ui"]["planModal"]) { set((s) => ({ ui: { ...s.ui, planModal: view } })); },
+  closePlanModal() { set((s) => ({ ui: { ...s.ui, planModal: null } })); },
+  updateCard(last4: string) { set((s) => ({ patient: { ...s.patient, card: last4 } })); },
 
   // demo helpers
   triggerMessage() {
