@@ -545,7 +545,7 @@ function CheckoutPage() {
 
       {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
       <form onSubmit={onSubmit} className="w-full">
-        <div className="lg:grid lg:grid-cols-2 lg:items-start">
+        <div className="lg:grid lg:grid-cols-2 lg:items-stretch">
           {/* LEFT — checkout form */}
           <div ref={leftColRef} className="bg-white lg:flex lg:justify-end">
 
