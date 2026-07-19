@@ -614,10 +614,10 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
   return (
     <motion.div initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }} transition={{ duration: 0.2 }} className="flex h-full flex-col bg-white">
       <div className="sticky top-0 z-10 flex items-center gap-2 bg-white/90 px-3 pb-2 pt-3 backdrop-blur">
-        <button onClick={onBack} className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[color:var(--color-mist)]/70 text-ink" aria-label="Back">
+        <button onClick={onBack} className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/50 bg-white/75 text-ink shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150" aria-label="Back">
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <div className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-[color:var(--color-mist)]/70 px-3 py-1.5">
+        <div className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/75 px-3 py-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150">
           <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white p-0.5">
             {kind === "care" ? <img src={blissleyLogo.url} alt="" className="h-full w-full object-contain" /> : <span className="grid h-full w-full place-items-center rounded-full text-[8px] font-black text-white" style={{ background: NAVY }}>SN</span>}
           </div>
