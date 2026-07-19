@@ -477,7 +477,7 @@ function CheckoutPage() {
           <span className="mr-1.5 text-[13px] text-ink/35 line-through">
             ${fmtMoney(summaryOriginal)}
           </span>
-          <span className="text-[24px] font-black leading-none" style={{ color: NAVY }}>
+          <span className="text-[24px] font-black leading-none text-ink">
             ${fmtMoney(summarySubtotal)}
           </span>
         </div>
