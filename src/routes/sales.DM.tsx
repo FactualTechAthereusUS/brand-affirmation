@@ -531,7 +531,7 @@ function SalesDMPage() {
           {/* Image hero card with white metrics overlaid */}
           <motion.div
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
-            className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/5] sm:aspect-[16/10] md:aspect-[16/9]"
+            className="relative mt-6 overflow-hidden rounded-2xl md:rounded-3xl aspect-[2400/1350] sm:aspect-[16/10] md:aspect-[16/9]"
           >
             <img src={dmHeroWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/5" />
