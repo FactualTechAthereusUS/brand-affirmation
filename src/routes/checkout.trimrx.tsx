@@ -17,6 +17,8 @@ import {
   Truck,
   CreditCard,
   HelpCircle,
+  Zap,
+  X,
 } from "lucide-react";
 import { z } from "zod";
 
@@ -1244,7 +1246,7 @@ function MobileOrderBar({
   );
 }
 
-/* ── Mobile-only expanded order summary (Shopify-style) ── */
+/* ── Mobile-only order summary (Shopify/Hears-style collapsible) ── */
 function MobileOrderSummaryDetail({
   treatmentName,
   treatmentSubtitle,
@@ -1253,10 +1255,8 @@ function MobileOrderSummaryDetail({
   planTitle,
   supply,
   months,
-  perMo,
   originalPerMo,
   baseSubtotal,
-  originalTotal,
   planSavings,
   insurance,
   priority,
@@ -1276,131 +1276,237 @@ function MobileOrderSummaryDetail({
   insurance: boolean;
   priority: boolean;
 }) {
+  const [open, setOpen] = useState(false);
+  const [discountApplied, setDiscountApplied] = useState(true);
+  const [code, setCode] = useState("JOIN120");
+
   const shippingWas = 30 * months;
   const insurancePrice = 3.95;
   const priorityPrice = 49.95;
+
+  // Line items — one row per add-on line, treatment is the primary
+  const itemCount = 1 + (insurance ? 1 : 0) + (priority ? 1 : 0);
   const addOnsTotal = (insurance ? insurancePrice : 0) + (priority ? priorityPrice : 0);
   const subtotal = baseSubtotal + addOnsTotal;
+  const discountAmount = discountApplied ? 0 : 0; // JOIN120 is already reflected in plan pricing
+  const total = subtotal - discountAmount;
   const savings = planSavings + shippingWas;
 
   const fmt = (n: number) =>
     n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 
   return (
-    <div className="lg:hidden -mx-4 sm:-mx-6 border-t border-b border-ink/10 px-4 sm:px-6 py-6">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="text-[18px] font-black text-ink">Order summary</div>
-        <div className="text-[12px] font-semibold uppercase tracking-wider text-ink/45">
-          {months} {months === 1 ? "month" : "months"}
-        </div>
-      </div>
-
-      {/* Line item — treatment */}
-      <div className="flex items-start gap-3">
-        <div className="relative shrink-0">
-          <div
-            className="grid h-16 w-16 place-items-center overflow-hidden rounded-xl border border-black/5"
-            style={{ background: vialBg }}
+    <div className="lg:hidden -mx-4 sm:-mx-6 border-t border-b border-ink/10 px-4 sm:px-6 py-6 bg-white">
+      {/* EXPANDED VIEW (image 2) */}
+      {open && (
+        <div>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="mb-4 flex w-full items-center justify-between"
           >
-            <img src={vial} alt="" className="h-full w-full object-cover" />
-          </div>
-          <span
-            className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full px-1 text-[11px] font-bold text-white"
-            style={{ background: "#111" }}
-          >
-            {months}
-          </span>
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[15px] font-bold text-ink">{treatmentName}</div>
-          <div className="text-[12.5px] text-ink/60">{treatmentSubtitle}</div>
-          <div className="mt-1 flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: NAVY }}>
-            <Tag className="h-3 w-3" />
-            {planTitle} · {supply}
-          </div>
-        </div>
-        <div className="text-right leading-tight">
-          <div className="text-[13px] text-ink/40 line-through">${fmt(originalPerMo * months)}</div>
-          <div className="text-[15px] font-bold text-ink">${fmt(baseSubtotal)}</div>
-        </div>
-      </div>
+            <span className="text-[20px] font-black text-ink">Order summary</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="18 15 12 9 6 15" />
+            </svg>
+          </button>
 
-      {/* Add-ons */}
-      {(insurance || priority) && (
-        <div className="mt-4 space-y-3 border-t border-dashed border-ink/10 pt-4">
-          {insurance && (
-            <div className="flex items-center justify-between text-[13.5px]">
-              <span className="text-ink/80">Shipping insurance</span>
-              <span className="font-semibold text-ink">${fmt(insurancePrice)}</span>
+          {/* Treatment line item */}
+          <div className="flex items-start gap-3">
+            <div className="relative shrink-0">
+              <div
+                className="grid h-16 w-16 place-items-center overflow-hidden rounded-xl border border-black/5"
+                style={{ background: vialBg }}
+              >
+                <img src={vial} alt="" className="h-full w-full object-cover" />
+              </div>
+              <span className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-ink px-1 text-[11px] font-bold text-white">
+                {months}
+              </span>
             </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[15px] font-bold text-ink">{treatmentName}</div>
+              <div className="text-[12.5px] text-ink/60">{treatmentSubtitle} · {supply}</div>
+              {discountApplied && (
+                <div className="mt-1 flex items-center gap-1 text-[12px] font-semibold text-ink/70">
+                  <Tag className="h-3 w-3" /> JOIN120 (−$120.00)
+                </div>
+              )}
+            </div>
+            <div className="text-right leading-tight">
+              <div className="text-[13px] text-ink/40 line-through">${fmt(originalPerMo * months)}</div>
+              <div className="text-[15px] font-bold text-ink">${fmt(baseSubtotal)}</div>
+            </div>
+          </div>
+
+          {/* Add-on line items */}
+          {insurance && (
+            <AddOnLine
+              title="Shipping insurance"
+              subtitle="Lost / damaged package protection"
+              price={insurancePrice}
+              icon={<Truck className="h-6 w-6 text-ink/70" />}
+            />
           )}
           {priority && (
-            <div className="flex items-center justify-between text-[13.5px]">
-              <span className="text-ink/80">Front-of-the-line review</span>
-              <span className="font-semibold text-ink">${fmt(priorityPrice)}</span>
+            <AddOnLine
+              title="Front-of-the-line review"
+              subtitle="Instant clinician review · same-day ship"
+              price={priorityPrice}
+              icon={<Zap className="h-6 w-6 text-ink/70" />}
+            />
+          )}
+
+          {/* Discount code input */}
+          <div className="mt-5 flex items-stretch gap-2">
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="flex-1 rounded-xl border border-ink/15 bg-white px-3.5 py-3 text-[14px] text-ink outline-none focus:border-ink/40"
+              placeholder="Discount code or gift card"
+            />
+            <button
+              type="button"
+              onClick={() => setDiscountApplied(true)}
+              className="rounded-xl bg-ink/5 px-5 text-[14px] font-bold text-ink/70"
+            >
+              Apply
+            </button>
+          </div>
+          {discountApplied && (
+            <div className="mt-2">
+              <button
+                type="button"
+                onClick={() => setDiscountApplied(false)}
+                className="inline-flex items-center gap-2 rounded-lg bg-ink/5 px-2.5 py-1.5 text-[12px] font-semibold text-ink"
+              >
+                <Tag className="h-3 w-3" /> JOIN120
+                <X className="h-3 w-3" />
+              </button>
             </div>
           )}
+
+          {/* Totals */}
+          <div className="mt-5 space-y-2.5 text-[14px]">
+            <div className="flex items-center justify-between">
+              <span className="text-ink">Subtotal · {itemCount} {itemCount === 1 ? "item" : "items"}</span>
+              <span className="font-semibold text-ink">${fmt(subtotal)}</span>
+            </div>
+            {discountApplied && (
+              <div className="flex items-start justify-between">
+                <span className="text-ink">
+                  Plan discount
+                  <span className="mt-0.5 flex items-center gap-1 text-[12.5px] text-ink/60">
+                    <Tag className="h-3 w-3" /> JOIN120
+                  </span>
+                </span>
+                <span className="font-semibold text-ink">−$120.00</span>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-ink">
+                Shipping <HelpCircle className="h-3.5 w-3.5 text-ink/50" />
+              </span>
+              <span className="font-semibold">
+                <span className="mr-1.5 text-ink/40 line-through">${fmt(shippingWas)}</span>
+                <span style={{ color: GREEN }}>FREE</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Grand total */}
+          <div className="mt-4 flex items-end justify-between border-t border-ink/10 pt-4">
+            <div className="text-[22px] font-black text-ink">Total</div>
+            <div className="text-right leading-none">
+              <div className="mb-1 inline-block rounded-md bg-ink/5 px-1.5 py-0.5 text-[11px] font-semibold text-ink/60 align-middle mr-1.5">USD</div>
+              <span className="text-[24px] font-black text-ink">${fmt(total)}</span>
+            </div>
+          </div>
+          <div className="mt-2 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink">
+            <Tag className="h-3.5 w-3.5" style={{ color: GREEN }} />
+            Total savings ${fmt(savings)}
+          </div>
+
+          <div className="mt-3 text-[11.5px] text-ink/55">
+            $0 charged today · only billed if your prescription is approved.
+          </div>
         </div>
       )}
 
-      {/* Discount */}
-      <div className="mt-5 flex items-stretch gap-2">
-        <input
-          type="text"
-          defaultValue="JOIN120"
-          className="flex-1 rounded-xl border border-ink/15 bg-white px-3.5 text-[14px] text-ink outline-none"
-          placeholder="Discount code or gift card"
-        />
-        <button
-          type="button"
-          className="rounded-xl bg-ink/5 px-4 text-[14px] font-bold text-ink/70"
-        >
-          Apply
-        </button>
-      </div>
-      <div className="mt-2">
-        <span
-          className="inline-flex items-center gap-2 rounded-lg bg-ink/5 px-2.5 py-1.5 text-[12px] font-semibold text-ink"
-        >
-          <Tag className="h-3 w-3" /> JOIN120
-        </span>
-      </div>
-
-      {/* Totals */}
-      <div className="mt-5 space-y-2 text-[14px]">
-        <div className="flex items-center justify-between">
-          <span className="font-bold text-ink">Subtotal</span>
-          <span className="font-semibold text-ink">${fmt(subtotal)}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 text-ink/70">
-            Shipping <HelpCircle className="h-3.5 w-3.5" />
-          </span>
-          <span className="font-semibold">
-            <span className="mr-1.5 text-ink/40 line-through">${fmt(shippingWas)}</span>
-            <span style={{ color: GREEN }}>FREE</span>
-          </span>
-        </div>
-      </div>
-
-      {/* Grand total */}
-      <div className="mt-4 flex items-end justify-between border-t border-ink/10 pt-4">
+      {/* COLLAPSED VIEW (image 1) */}
+      {!open && (
         <div>
-          <div className="text-[18px] font-black text-ink">Total</div>
-          <div className="mt-1 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink/70">
-            <Tag className="h-3 w-3" style={{ color: GREEN }} />
-            Total savings ${fmt(savings)}
-          </div>
-        </div>
-        <div className="text-right leading-none">
-          <div className="text-[11px] font-semibold text-ink/50">USD</div>
-          <div className="text-[24px] font-black text-ink">${fmt(subtotal)}</div>
-        </div>
-      </div>
+          {/* Add discount pill */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="inline-flex items-center gap-2 rounded-2xl border border-ink/15 bg-white px-4 py-2.5 text-[14px] font-bold text-ink shadow-sm"
+          >
+            <Tag className="h-4 w-4" /> Add discount
+          </button>
 
-      <div className="mt-3 text-center text-[11.5px] text-ink/55">
-        $0 charged today · only billed if your prescription is approved.
+          {/* Total row */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="mt-4 flex w-full items-center gap-3 text-left"
+          >
+            <div className="relative shrink-0">
+              <div
+                className="grid h-12 w-12 place-items-center overflow-hidden rounded-lg border border-black/5"
+                style={{ background: vialBg }}
+              >
+                <img src={vial} alt="" className="h-full w-full object-cover" />
+              </div>
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[20px] font-black text-ink leading-tight">Total</div>
+              <div className="text-[13px] text-ink/55">{itemCount} {itemCount === 1 ? "item" : "items"}</div>
+            </div>
+            <div className="text-right">
+              <div className="flex items-center justify-end gap-1.5">
+                <span className="rounded-md bg-ink/5 px-1.5 py-0.5 text-[11px] font-semibold text-ink/60">USD</span>
+                <span className="text-[22px] font-black text-ink">${fmt(total)}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+              <div className="mt-0.5 flex items-center justify-end gap-1 text-[12px] text-ink/60">
+                <Tag className="h-3 w-3" />
+                Total savings ${fmt(savings)}
+              </div>
+            </div>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AddOnLine({
+  title,
+  subtitle,
+  price,
+  icon,
+}: {
+  title: string;
+  subtitle: string;
+  price: number;
+  icon: React.ReactNode;
+}) {
+  const fmt = (n: number) =>
+    n.toLocaleString(undefined, { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  return (
+    <div className="mt-4 flex items-start gap-3">
+      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-black/5 bg-ink/[0.03]">
+        {icon}
       </div>
+      <div className="min-w-0 flex-1">
+        <div className="text-[14.5px] font-bold text-ink">{title}</div>
+        <div className="text-[12.5px] text-ink/60">{subtitle}</div>
+      </div>
+      <div className="text-[14.5px] font-bold text-ink">${fmt(price)}</div>
     </div>
   );
 }
