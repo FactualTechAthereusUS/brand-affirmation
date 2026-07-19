@@ -1196,6 +1196,54 @@ function Onboarding() {
     ? { label: "Get started", onClick: done }
     : { label: "Next", onClick: () => setStep((n) => n + 1) };
 
+  if (s.hero) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-40 overflow-hidden bg-[#7DAFCE]">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.45 }}
+          className="relative h-full w-full"
+        >
+          <img src={portalWelcomeDoctor.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#7DAFCE]/90 via-[#7DAFCE]/30 to-white/90" />
+          <div className="absolute inset-x-0 top-0 px-6 pt-14 text-center">
+            <h3 className="text-[30px] font-semibold leading-[1.05] tracking-tight text-white drop-shadow-sm">{s.title}</h3>
+            <p className="mt-3 text-[15px] leading-relaxed text-white/95">{s.body}</p>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 p-6">
+            <div className="mb-5 flex items-center justify-center gap-1.5">
+              {steps.map((_, i) => (
+                <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? "#ffffff" : "rgba(255,255,255,0.5)" }} />
+              ))}
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={done}
+                className="group flex flex-1 items-center justify-between rounded-full border border-white/50 bg-white/20 px-5 py-4 text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] backdrop-blur-xl transition hover:bg-white/30"
+              >
+                <span>Skip</span>
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-white/30 transition group-hover:bg-white/40">
+                  <ChevronRight className="h-4 w-4" />
+                </span>
+              </button>
+              <button
+                onClick={nextBtn.onClick}
+                className="group flex flex-1 items-center justify-between rounded-full border border-white/60 bg-white/90 px-5 py-4 text-[15px] font-semibold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl transition hover:bg-white"
+              >
+                <span>{nextBtn.label}</span>
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-ink text-white transition group-hover:bg-ink/90">
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-40 grid place-items-center bg-black/40 backdrop-blur-md p-6">
       <motion.div
@@ -1203,54 +1251,20 @@ function Onboarding() {
         initial={{ y: 20, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className={`relative h-full w-full max-w-[420px] overflow-hidden rounded-[32px] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "bg-[#7DAFCE]" : "bg-white p-7 text-center"}`}
+        className="relative h-full w-full max-w-[420px] overflow-hidden rounded-[32px] bg-white p-7 text-center shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)]"
       >
-        {s.hero ? (
-          <>
-            <img src={portalWelcomeDoctor.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-x-0 top-0 px-6 pt-10 text-center">
-              <h3 className="text-[26px] font-semibold leading-[1.1] tracking-tight text-white drop-shadow-sm">{s.title}</h3>
-              <p className="mt-2 text-[14px] leading-relaxed text-white/90">{s.body}</p>
-            </div>
-            <div className="absolute inset-x-0 bottom-0 p-5">
-              <div className="mb-4 flex items-center justify-center gap-1.5">
-                {steps.map((_, i) => (
-                  <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? "#ffffff" : "rgba(255,255,255,0.5)" }} />
-                ))}
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={done}
-                  className="flex-1 rounded-full border border-white/40 bg-white/20 py-3.5 text-[14px] font-semibold text-white backdrop-blur-xl transition hover:bg-white/30"
-                >
-                  Skip
-                </button>
-                <button
-                  onClick={nextBtn.onClick}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/85 py-3.5 text-[14px] font-semibold text-ink backdrop-blur-xl transition hover:bg-white"
-                >
-                  {nextBtn.label}
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-[color:var(--color-mist)]/60">{s.icon}</div>
-            <h3 className="mt-5 text-[22px] font-semibold tracking-tight text-ink">{s.title}</h3>
-            <p className="mt-2 text-[14px] leading-relaxed text-ink/65">{s.body}</p>
-            <div className="mt-6 flex items-center justify-center gap-1.5">
-              {steps.map((_, i) => (
-                <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? PINK : "#E4E0D7" }} />
-              ))}
-            </div>
-            <div className="mt-6 flex items-center gap-2">
-              <button onClick={done} className="flex-1 rounded-full py-3 text-[13px] font-medium text-ink/60">Skip</button>
-              <button onClick={nextBtn.onClick} className="flex-1 rounded-full py-3 text-[13.5px] font-semibold text-white" style={{ background: isLast ? PINK : INK }}>{nextBtn.label}</button>
-            </div>
-          </>
-        )}
+        <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-[color:var(--color-mist)]/60">{s.icon}</div>
+        <h3 className="mt-5 text-[22px] font-semibold tracking-tight text-ink">{s.title}</h3>
+        <p className="mt-2 text-[14px] leading-relaxed text-ink/65">{s.body}</p>
+        <div className="mt-6 flex items-center justify-center gap-1.5">
+          {steps.map((_, i) => (
+            <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? PINK : "#E4E0D7" }} />
+          ))}
+        </div>
+        <div className="mt-6 flex items-center gap-2">
+          <button onClick={done} className="flex-1 rounded-full py-3 text-[13px] font-medium text-ink/60">Skip</button>
+          <button onClick={nextBtn.onClick} className="flex-1 rounded-full py-3 text-[13.5px] font-semibold text-white" style={{ background: isLast ? PINK : INK }}>{nextBtn.label}</button>
+        </div>
       </motion.div>
     </motion.div>
   );
