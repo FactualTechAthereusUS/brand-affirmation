@@ -20,6 +20,16 @@ import portalWelcomeWoman from "@/assets/portal-welcome-woman.png.asset.json";
 import onboardingNotifications from "@/assets/onboarding-notifications.jpeg.asset.json";
 import progressTarget from "@/assets/progress-target.png.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
+import { PayVisa, PayMastercard, PayAmex, PayDiscover } from "@/components/PayIcons";
+
+// Pick a random saved-card brand + last-4 once per session so it feels personalized
+const CARD_BRANDS = [
+  { Icon: PayVisa, last4: "4242" },
+  { Icon: PayMastercard, last4: "5518" },
+  { Icon: PayAmex, last4: "1005" },
+  { Icon: PayDiscover, last4: "6011" },
+] as const;
+const SAVED_CARD = CARD_BRANDS[Math.floor(Math.random() * CARD_BRANDS.length)];
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
