@@ -377,21 +377,28 @@ function SalesTrimRxPage() {
   const time = useCountdown(9);
 
   useEffect(() => {
-    const rand = (min: number, max: number) => min + Math.random() * (max - min);
-    const timeouts: number[] = [];
-    const schedule: { at: number; to: number }[] = [
-      { at: rand(3000, 5000), to: 20 + Math.floor(Math.random() * 10) },
-      { at: rand(8000, 12000), to: 10 + Math.floor(Math.random() * 6) },
-      { at: rand(16000, 22000), to: 5 + Math.floor(Math.random() * 3) },
-      { at: rand(28000, 36000), to: 3 },
-      { at: rand(45000, 55000), to: 2 },
-      { at: rand(65000, 80000), to: 1 },
-    ];
-    schedule.forEach(({ at, to }) => {
-      timeouts.push(window.setTimeout(() => setDiscountsLeft((n) => (to < n ? to : n)), at));
-    });
-    return () => timeouts.forEach(clearTimeout);
+    let cancelled = false;
+    let timer: number | undefined;
+    const tick = () => {
+      if (cancelled) return;
+      setDiscountsLeft((n) => {
+        if (n <= 1) return 1;
+        const step =
+          n > 30 ? 3 + Math.floor(Math.random() * 3) :
+          n > 15 ? 2 + Math.floor(Math.random() * 2) :
+          n > 5  ? 1 + Math.floor(Math.random() * 2) :
+                   1;
+        return Math.max(1, n - step);
+      });
+      timer = window.setTimeout(tick, 1500 + Math.random() * 2500);
+    };
+    timer = window.setTimeout(tick, 1200 + Math.random() * 1200);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, []);
+
 
 
   useEffect(() => {
