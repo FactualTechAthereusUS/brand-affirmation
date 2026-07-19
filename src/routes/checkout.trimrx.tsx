@@ -407,7 +407,7 @@ function CheckoutPage() {
           <span className="text-ink/60">Monthly Price</span>
           <span className="font-bold text-ink">
             <span className="mr-1 text-ink/40 line-through">${plan.originalPerMo}</span>
-            <span style={{ color: NAVY }}>${plan.perMo}/mo</span>
+            <span className="text-ink">${plan.perMo}/mo</span>
           </span>
         </div>
         {form.insurance && (
@@ -477,7 +477,7 @@ function CheckoutPage() {
           <span className="mr-1.5 text-[13px] text-ink/35 line-through">
             ${fmtMoney(summaryOriginal)}
           </span>
-          <span className="text-[24px] font-black leading-none" style={{ color: NAVY }}>
+          <span className="text-[24px] font-black leading-none text-ink">
             ${fmtMoney(summarySubtotal)}
           </span>
         </div>
@@ -1237,7 +1237,7 @@ function MobileOrderBar({
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
       >
-        <span className="flex items-center gap-1.5 text-[15px] font-semibold" style={{ color: NAVY }}>
+        <span className="flex items-center gap-1.5 text-[15px] font-semibold text-ink">
           Order summary
           <svg
             width="14"
