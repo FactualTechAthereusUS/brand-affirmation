@@ -8,6 +8,7 @@ import { TrxHeader } from "@/components/intake/TrxUI";
 import { PayIcons } from "@/components/PayIcons";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
+import vialTirzTransparent from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import forbes from "@/assets/forbes-health.png.asset.json";
 import trustpilot from "@/assets/trustpilot-rating.png.asset.json";
 import payAfterpay from "@/assets/pay-afterpay.png.asset.json";
@@ -539,9 +540,9 @@ function SalesDMPage() {
               <p className="mt-3 text-[14px] leading-[1.55] text-ink sm:text-[16px] md:text-[18px]">
                 Based on your intake form, we recommend{" "}
                 <a href="#pricing" className="font-semibold underline underline-offset-4" style={{ color: PINK, textDecorationColor: PINK }}>
-                  Semaglutide Weekly Injections
+                  Tirzepatide Weekly Injections
                 </a>{" "}
-                for the best cost-effective results! Just a simple injection once per week.
+                for powerful, clinically-supported results! Just a simple injection once per week.
               </p>
               <p className="mt-3 text-[12.5px] leading-relaxed text-ink/70 sm:text-[14px]">
                 Note: you can choose whichever medication you prefer, regardless of our recommendation.
@@ -549,8 +550,8 @@ function SalesDMPage() {
             </div>
             <div className="w-[110px] sm:w-[180px] md:w-[220px]">
               <img
-                src={vialSema.url}
-                alt="Blissley Compounded Semaglutide vial"
+                src={vialTirzTransparent.url}
+                alt="Blissley Compounded Tirzepatide vial"
                 className="h-auto w-full object-contain"
               />
             </div>
