@@ -615,7 +615,7 @@ function PlanTab() {
   const [paused, setPaused] = useState<null | number>(null);
 
   return (
-    <div className="px-5 pt-5">
+    <div className="px-4 pt-5">
       {/* Current plan */}
       <div className="overflow-hidden rounded-3xl border border-[color:var(--color-hairline)] bg-gradient-to-br from-white to-[color:var(--color-mist)]/40 p-5">
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Your plan</div>
