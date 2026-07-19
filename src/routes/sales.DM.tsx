@@ -529,34 +529,34 @@ function SalesDMPage() {
           </div>
         </div>
 
-        {/* Recommendation — editorial 2-col with vial */}
-        <div className="mt-8 rounded-3xl p-6 sm:p-8" style={{ background: "#F6F1EA" }}>
-          <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_220px] sm:gap-6">
+        {/* Recommendation — text left, vial right, white background */}
+        <div className="mt-8 bg-white">
+          <div className="grid grid-cols-[1fr_110px] items-center gap-4 sm:grid-cols-[1fr_180px] sm:gap-6 md:grid-cols-[1fr_220px]">
             <div>
-              <h3 className="font-hero text-[26px] font-black tracking-tight text-ink sm:text-[32px]">
+              <h3 className="font-hero text-[22px] font-black tracking-tight text-ink sm:text-[28px] md:text-[32px]">
                 Our Recommendation
               </h3>
-              <p className="mt-4 text-[17px] leading-[1.55] text-ink sm:text-[18px]">
+              <p className="mt-3 text-[14px] leading-[1.55] text-ink sm:text-[16px] md:text-[18px]">
                 Based on your intake form, we recommend{" "}
                 <a href="#pricing" className="font-semibold underline underline-offset-4" style={{ color: PINK, textDecorationColor: PINK }}>
-                  Tirzepatide Weekly Injections
+                  Semaglutide Weekly Injections
                 </a>{" "}
-                for the best, most effective results — just a simple injection once per week.
+                for the best cost-effective results! Just a simple injection once per week.
               </p>
-              <p className="mt-4 text-[14.5px] leading-relaxed text-ink/70">
+              <p className="mt-3 text-[12.5px] leading-relaxed text-ink/70 sm:text-[14px]">
                 Note: you can choose whichever medication you prefer, regardless of our recommendation.
               </p>
             </div>
-            <div className="mx-auto w-[180px] sm:w-[220px]">
+            <div className="w-[110px] sm:w-[180px] md:w-[220px]">
               <img
-                src="/__l5e/assets-v1/17477c15-d240-4ef2-bfcb-4a705be5c350/blissley-tirzepatide-vial.png"
-                alt="Blissley Compounded Tirzepatide vial"
+                src={vialSema.url}
+                alt="Blissley Compounded Semaglutide vial"
                 className="h-auto w-full object-contain"
               />
             </div>
           </div>
-          <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-ink/10 pt-5 text-[13.5px] text-ink/75">
-            <img src={trustpilot.url} alt="Excellent 4.8 rating" className="h-5 w-auto" />
+          <div className="mt-5 flex flex-wrap items-center gap-2 text-[12.5px] text-ink/75 sm:text-[13.5px]">
+            <img src={trustpilot.url} alt="Excellent 4.8 rating" className="h-4 w-auto sm:h-5" />
             <span className="font-semibold text-ink">3,200+</span>
             <span>happy patients</span>
           </div>
