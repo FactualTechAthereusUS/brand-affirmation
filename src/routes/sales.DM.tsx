@@ -879,25 +879,51 @@ function SalesDMPage() {
           </h2>
           <p className="mt-2 text-[14.5px] text-ink/65">Success stories from real Blissley patients.</p>
         </div>
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {REVIEWS.map((r) => (
-            <motion.div key={r.name}
-              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col rounded-2xl border border-ink/10 bg-white p-5">
-              <div>
-                <div className="text-[14px] font-semibold text-ink">{r.name}</div>
-                <div className="mt-0.5 flex items-center gap-1 text-[11px] text-ink/50">
-                  <Check className="h-3 w-3" style={{ color: "#16A34A" }} strokeWidth={3.4} /> Verified customer
+
+        <div className="mt-8">
+          <div
+            ref={reviewTrackRef}
+            onPointerDown={pauseReview}
+            onWheel={pauseReview}
+            onTouchStart={pauseReview}
+            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-6 md:gap-5"
+          >
+            {REVIEWS.map((r, i) => {
+              const active = i === activeReview;
+              return (
+                <div
+                  key={r.name}
+                  data-review-card
+                  className="w-[78vw] max-w-[340px] shrink-0 snap-center"
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex h-full flex-col rounded-2xl border border-ink/10 bg-white p-5 transition-all duration-500"
+                    style={{
+                      filter: active ? "blur(0px)" : "blur(5px)",
+                      opacity: active ? 1 : 0.45,
+                      transform: active ? "scale(1)" : "scale(0.96)",
+                    }}
+                  >
+                    <div>
+                      <div className="text-[14px] font-semibold text-ink">{r.name}</div>
+                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-ink/50">
+                        <img src={badgeCheckPink.url} alt="" className="h-3.5 w-3.5 object-contain" />
+                        Verified customer
+                      </div>
+                    </div>
+                    <div className="mt-3 flex" style={{ color: PINK }}>
+                      {[0,1,2,3,4].map((i) => <Star key={i} className="h-4 w-4" fill={PINK} strokeWidth={0} />)}
+                    </div>
+                    <div className="mt-2 text-[15px] font-bold text-ink">"{r.title}"</div>
+                    <p className="mt-2 text-[13.5px] leading-relaxed text-ink/70">{r.body}</p>
+                  </motion.div>
                 </div>
-              </div>
-              <div className="mt-3 flex" style={{ color: PINK }}>
-                {[0,1,2,3,4].map((i) => <Star key={i} className="h-4 w-4" fill={PINK} strokeWidth={0} />)}
-              </div>
-              <div className="mt-2 text-[15px] font-bold text-ink">"{r.title}"</div>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-ink/70">{r.body}</p>
-            </motion.div>
-          ))}
+              );
+            })}
+            <div className="w-4 shrink-0 md:w-6" />
+          </div>
         </div>
       </section>
 
