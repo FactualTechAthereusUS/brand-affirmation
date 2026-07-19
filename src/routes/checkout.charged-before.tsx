@@ -926,7 +926,9 @@ function CheckoutPage() {
 
               <ReviewSlider />
 
-              <ValueStack />
+              <div className="lg:hidden">
+                <ValueStack />
+              </div>
 
               {/* Policy footer */}
               <div className="mt-0 border-t border-ink/10 pt-4">
