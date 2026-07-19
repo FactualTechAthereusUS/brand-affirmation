@@ -477,11 +477,12 @@ function CheckoutPage() {
 
       {/* MOBILE ONLY — collapsible order summary bar */}
       <MobileOrderBar
-        originalTotal={originalTotal}
-        currentTotal={plan.perMo * plan.months}
+        originalTotal={originalTotal + 3.95 + 49.95}
+        currentTotal={baseSubtotal + (form.insurance ? 3.95 : 0) + (form.priority ? 49.95 : 0)}
       >
         {treatmentSummary}
       </MobileOrderBar>
+
 
       {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
       <form onSubmit={onSubmit} className="w-full">
