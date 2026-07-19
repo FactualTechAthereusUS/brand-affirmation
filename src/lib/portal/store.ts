@@ -156,6 +156,7 @@ function seed(state: PlanState = "delivered_active"): PortalState {
     },
     pauseDays: null,
     cancelled: false,
+    ui: { trackingId: null, receiptId: null, documentsView: null },
   };
   // per-state adjustments
   if (state === "pending_review") base.shipments[0].status = "processing";
