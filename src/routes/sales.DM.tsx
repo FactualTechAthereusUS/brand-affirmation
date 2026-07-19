@@ -903,7 +903,7 @@ function SalesDMPage() {
         <h2 className="text-center font-hero text-[26px] font-black tracking-tight text-ink sm:text-[30px]">
           Frequently asked questions
         </h2>
-        <div className="mt-6 rounded-2xl border border-ink/10 bg-white px-5 sm:px-6">
+        <div className="mt-6 px-5 sm:px-6">
           {FAQS.map((f, i) => <FAQItem key={f.q} {...f} idx={i} />)}
         </div>
       </section>
