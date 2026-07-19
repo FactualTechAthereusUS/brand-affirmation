@@ -29,7 +29,6 @@ import vialTirzepatide from "@/assets/blissley-tirzepatide-vial-transparent.png.
 import vialSemaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
-import drScottNass from "@/assets/dr-scott-nass.png.asset.json";
 
 export const Route = createFileRoute("/portal/patient")({
   head: () => ({
@@ -274,7 +273,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           <div className="mt-3 text-[17px] font-semibold tracking-tight text-ink">Ships {PATIENT.nextShipDate}</div>
           <div className="text-[13px] text-ink/60">{PATIENT.medication.replace(" Injectable", "")} · {PATIENT.dose}</div>
           <div className="mt-4 flex items-center gap-3">
-            <img src={vialSemaglutide.url} alt="Semaglutide vial" className="h-[500px] w-[500px] rounded-xl border-2 border-white object-contain opacity-90 shadow-sm" />
+            <img src={vialSemaglutide.url} alt="Semaglutide vial" className="h-16 w-auto rounded-xl border-2 border-white object-contain opacity-90 shadow-sm" />
             <button className="ml-auto inline-flex items-center gap-1 rounded-full bg-ink/[.06] px-4 py-2 text-[12.5px] font-medium text-ink transition active:scale-[.97]">
               Track order
               <ChevronRight className="h-3.5 w-3.5" />
@@ -316,7 +315,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         {/* Small provider strip */}
         <Card>
           <div className="flex items-center gap-3">
-            <img src={drScottNass.url} alt="Dr. Scott Nass" className="h-11 w-11 shrink-0 rounded-full object-cover" />
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[13px] font-black text-white" style={{ background: NAVY }}>SN</div>
             <div className="min-w-0">
               <div className="text-[14px] font-semibold text-ink">Dr. Scott Nass MD</div>
               <div className="text-[12.5px] text-ink/55">Your prescribing physician · Board-certified</div>
