@@ -529,19 +529,36 @@ function SalesDMPage() {
           </div>
         </div>
 
-        {/* Recommendation callout */}
-        <div className="mt-6 rounded-2xl p-5 sm:p-6" style={{ background: "#E7EEFB" }}>
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: NAVY }}>Our Recommendation</div>
-          <div className="mt-1 text-[18px] font-bold text-ink sm:text-[20px]">
-            Semaglutide Weekly Injections
+        {/* Recommendation — editorial 2-col with vial */}
+        <div className="mt-8 rounded-3xl p-6 sm:p-8" style={{ background: "#F6F1EA" }}>
+          <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_220px] sm:gap-6">
+            <div>
+              <h3 className="font-hero text-[26px] font-black tracking-tight text-ink sm:text-[32px]">
+                Our Recommendation
+              </h3>
+              <p className="mt-4 text-[17px] leading-[1.55] text-ink sm:text-[18px]">
+                Based on your intake form, we recommend{" "}
+                <a href="#pricing" className="font-semibold underline underline-offset-4" style={{ color: PINK, textDecorationColor: PINK }}>
+                  Tirzepatide Weekly Injections
+                </a>{" "}
+                for the best, most effective results — just a simple injection once per week.
+              </p>
+              <p className="mt-4 text-[14.5px] leading-relaxed text-ink/70">
+                Note: you can choose whichever medication you prefer, regardless of our recommendation.
+              </p>
+            </div>
+            <div className="mx-auto w-[180px] sm:w-[220px]">
+              <img
+                src="/__l5e/assets-v1/17477c15-d240-4ef2-bfcb-4a705be5c350/blissley-tirzepatide-vial.png"
+                alt="Blissley Compounded Tirzepatide vial"
+                className="h-auto w-full object-contain"
+              />
+            </div>
           </div>
-          <p className="mt-2 text-[14px] leading-relaxed text-ink/70">
-            Based on your intake, this is the most cost-effective path to your goal — one simple injection per week.
-            You can choose whichever medication you prefer, regardless of our recommendation.
-          </p>
-          <div className="mt-3 flex items-center gap-2 text-[13px] text-ink/70">
+          <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-ink/10 pt-5 text-[13.5px] text-ink/75">
             <img src={trustpilot.url} alt="Excellent 4.8 rating" className="h-5 w-auto" />
-            <span>· 3,200+ patients</span>
+            <span className="font-semibold text-ink">3,200+</span>
+            <span>happy patients</span>
           </div>
         </div>
       </section>
