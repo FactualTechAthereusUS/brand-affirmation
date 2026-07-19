@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star, ArrowRight } from "lucide-react";
+import { Check, ShieldCheck, PartyPopper, ChevronDown, Truck, HeartPulse, Stethoscope, Clock, Star } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 
 import { TrxHeader } from "@/components/intake/TrxUI";
@@ -742,34 +742,11 @@ function SalesDMPage() {
           <div className="md:col-span-5">
             <div className="md:sticky md:top-28">
               <Reveal>
-                <span className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-3 py-1 text-[12px] font-medium text-ink/70">
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: PINK }} />
-                  The path from here
-                </span>
-              </Reveal>
-              <Reveal delay={0.05}>
-                <h2 className="mt-5 font-hero text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
-                  What happens
+                <h2 className="font-hero text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
+                  WHAT HAPPENS
                   <br />
-                  <span className="italic font-light" style={{ color: PINK }}>next?</span>
+                  <span className="italic font-light" style={{ color: PINK }}>NEXT?</span>
                 </h2>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="mt-5 max-w-md text-[15px] leading-[1.55] text-ink/60 md:text-[17px]">
-                  From physician review to your door — with unlimited support the entire way.
-                </p>
-              </Reveal>
-              <Reveal delay={0.15}>
-                <motion.button
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: "spring", stiffness: 420, damping: 26 }}
-                  onClick={() => document.getElementById("plans")?.scrollIntoView({ behavior: "smooth" })}
-                  className="group mt-8 inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-ink px-7 text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_30px_-12px_rgba(23,23,23,0.45)]"
-                >
-                  Claim my approval
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </motion.button>
               </Reveal>
             </div>
           </div>
