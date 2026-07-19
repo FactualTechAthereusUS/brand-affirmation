@@ -324,6 +324,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                   <div className="text-[13px] text-ink/60">Tracking {shipment.tracking?.slice(-8) ?? "—"}</div>
                 </div>
                 <button
+                  onClick={() => actions.openTracking(shipment.id)}
                   disabled={planState === "check_in_due"}
                   className="flex shrink-0 items-center gap-2 rounded-full bg-white py-2 pl-3.5 pr-2 shadow-[0_2px_14px_rgba(0,0,0,0.06)] transition active:scale-[.97] disabled:opacity-40"
                   title={planState === "check_in_due" ? "Complete check-in to ship" : undefined}
