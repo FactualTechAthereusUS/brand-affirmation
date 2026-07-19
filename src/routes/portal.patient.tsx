@@ -374,7 +374,10 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                 <div className="text-[26px] font-black tracking-tight text-ink">${nextCharge.amount.toFixed(2)}</div>
                 <div className="text-[13px] text-ink/55">on {nextCharge.date}</div>
               </div>
-              <div className="mt-1 text-[13px] text-ink/60">Card ending in 4242</div>
+              <div className="mt-1 flex items-center gap-1.5 text-[13px] text-ink/60">
+                <SAVED_CARD.Icon />
+                <span>Card ending in {SAVED_CARD.last4}</span>
+              </div>
               <button onClick={() => onGoto("plan")} className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full py-3 text-[13.5px] font-semibold text-white transition" style={{ background: INK }}>
                 Manage plan <ChevronRight className="h-4 w-4" />
               </button>
