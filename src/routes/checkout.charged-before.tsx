@@ -1387,20 +1387,6 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
-          {/* Compact Plan / Supply key-value rows (from image 1/2) */}
-          <div className="mt-4 rounded-2xl border border-ink/10 bg-ink/[0.02] px-4 py-2 text-[13.5px]">
-            <div className="flex items-center justify-between py-2">
-              <span className="text-ink/60">Plan</span>
-              <span className="font-semibold text-ink">{planTitle}</span>
-            </div>
-            <div className="border-t border-ink/10" />
-            <div className="flex items-center justify-between py-2">
-              <span className="text-ink/60">Supply</span>
-              <span className="font-semibold text-ink">{supply}</span>
-            </div>
-          </div>
-
-
           {/* Add-on line items */}
           {insurance && (
             <div className="mt-4 flex items-start gap-3">
@@ -1503,16 +1489,6 @@ function MobileOrderSummaryDetail({
                 <span className="font-semibold text-ink">−${fmt(planDiscount)}</span>
               </div>
             )}
-            {discountApplied && (
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-ink">
-                  <SavingsIcon className="h-3.5 w-3.5" color={GREEN} /> Total Savings
-                </span>
-                <span className="font-semibold" style={{ color: GREEN }}>
-                  ${fmt(planDiscount)}
-                </span>
-              </div>
-            )}
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-ink">
                 Shipping
@@ -1525,6 +1501,7 @@ function MobileOrderSummaryDetail({
                   <HelpCircle className="h-3.5 w-3.5" />
                 </button>
               </span>
+
               <span className="font-semibold">
                 <span className="mr-1.5 text-ink/40 line-through">${fmt(shippingWas)}</span>
                 <span style={{ color: GREEN }}>FREE</span>
@@ -1532,72 +1509,22 @@ function MobileOrderSummaryDetail({
             </div>
           </div>
 
-          {/* Total if prescribed — highlighted */}
-          <div
-            className="mt-4 flex items-center justify-between rounded-2xl px-4 py-3.5"
-            style={{ background: "#F6F9FE" }}
-          >
-            <div className="text-[15px] font-bold text-ink">Total if prescribed</div>
+          {/* Grand total */}
+          <div className="mt-4 flex items-end justify-between border-t border-ink/10 pt-4">
+            <div className="text-[22px] font-black text-ink">Total</div>
             <div className="text-right leading-none">
-              <span className="mr-2 text-[14px] text-ink/40 line-through">
-                ${fmt(subtotal)}
-              </span>
-              <span className="text-[22px] font-black" style={{ color: NAVY }}>
-                ${fmt(total)}
-              </span>
+              <div className="mb-1 inline-block rounded-md bg-ink/5 px-1.5 py-0.5 text-[11px] font-semibold text-ink/60 align-middle mr-1.5">USD</div>
+              <span className="text-[24px] font-black text-ink">${fmt(total)}</span>
             </div>
           </div>
-
-          {/* Due Today — highlighted */}
-          <div
-            className="mt-3 flex items-center justify-between gap-4 rounded-2xl px-4 py-3.5"
-            style={{ background: "#F1FAF4" }}
-          >
-            <div>
-              <div className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink/60">
-                Due Today
-              </div>
-              <div className="mt-1 text-[11.5px] text-ink/60 leading-snug">
-                Only charged if your<br />prescription is approved.
-              </div>
-            </div>
-            <div className="text-right leading-none">
-              <span className="mr-1.5 text-[14px] text-ink/35 line-through">
-                ${fmt(total)}
-              </span>
-              <span className="text-[26px] font-black" style={{ color: GREEN }}>
-                $0
-              </span>
-            </div>
+          <div className="mt-2 flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-ink">
+            <SavingsIcon className="h-3.5 w-3.5" color={GREEN} />
+            Total savings ${fmt(savings)}
           </div>
 
-
-          {/* Value props (from image 1/2) */}
-          <ul className="mt-5 space-y-3 text-[13.5px]">
-            {[
-              { t: "Same Price. All Dosage Levels.", s: "No surprise fees as your dose increases.", icon: iconCheckBadge.url, bold: true },
-              { t: "Prescribed & shipped within 48 hours", s: "Discreet, temperature-controlled delivery.", icon: iconShipBox.url },
-              { t: "UNLIMITED doctor calls 7 days a week", s: "Talk to a licensed provider anytime.", icon: iconDocHeadset.url },
-            ].map((item) => (
-              <li key={item.t} className="flex items-start gap-3">
-                <img
-                  src={item.icon}
-                  alt=""
-                  className={`mt-0.5 shrink-0 object-contain ${item.bold ? "h-5 w-5 brightness-0 contrast-125" : "h-[18px] w-[18px]"}`}
-                />
-                <div className="leading-tight">
-                  <div className="font-bold text-ink">{item.t}</div>
-                  <div className="mt-0.5 text-[12px] text-ink/55">{item.s}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          {/* HSA/FSA */}
-          <div className="mt-4 flex items-center justify-center">
-            <img src={hsaFsa.url} alt="HSA/FSA Eligible" className="h-7 w-auto" />
+          <div className="mt-3 text-[11.5px] text-ink/55">
+            $0 charged today · only billed if your prescription is approved.
           </div>
-
         </div>
       )}
 
