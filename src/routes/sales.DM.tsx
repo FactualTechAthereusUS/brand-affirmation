@@ -639,7 +639,7 @@ function SalesDMPage() {
       )}
 
       {/* ═══════ What's included ═══════ */}
-      <section style={{ background: CREAM }}>
+      <section style={{ background: CANVAS }}>
         <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
           <h2 className="text-center font-hero text-[24px] font-black tracking-tight text-ink sm:text-[28px]">
             What's included
@@ -691,7 +691,7 @@ function SalesDMPage() {
       </section>
 
       {/* ═══════ Backed by research + stats ═══════ */}
-      <section style={{ background: CREAM }}>
+      <section style={{ background: CANVAS }}>
         <div className="mx-auto w-full max-w-[720px] px-4 py-12 sm:px-6">
           <div className="text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
             Backed by research from
@@ -752,7 +752,7 @@ function SalesDMPage() {
       </section>
 
       {/* ═══════ Final CTA ═══════ */}
-      <section style={{ background: CREAM }}>
+      <section style={{ background: CANVAS }}>
         <div className="mx-auto w-full max-w-[720px] px-4 py-14 text-center sm:px-6">
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">Are you ready?</div>
           <h2 className="mt-2 font-hero text-[28px] font-black tracking-tight text-ink sm:text-[36px]">
