@@ -16,6 +16,7 @@ import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
 import drScottNass from "@/assets/dr-scott-nass.png.asset.json";
 import drNassWelcome from "@/assets/dr-nass-welcome.png.asset.json";
 import portalWelcomeDoctor from "@/assets/portal-welcome-doctor.png.asset.json";
+import portalWelcomeWoman from "@/assets/portal-welcome-woman.png.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
 
 export const Route = createFileRoute("/portal/patient")({
