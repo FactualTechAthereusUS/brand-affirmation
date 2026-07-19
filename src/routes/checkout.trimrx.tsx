@@ -17,6 +17,8 @@ import {
   Truck,
   CreditCard,
   HelpCircle,
+  Zap,
+  X,
 } from "lucide-react";
 import { z } from "zod";
 
