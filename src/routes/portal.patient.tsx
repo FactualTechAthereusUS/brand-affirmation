@@ -6,7 +6,7 @@ import {
   ChevronRight, ChevronLeft, Stethoscope, Clock, CheckCircle2, Send,
   LogOut, Pause, X, Repeat, MapPin, ShieldCheck, Bell, Loader2, Sparkles,
   CreditCard, PlayCircle, AlertCircle, TrendingDown, Activity, Truck, Calendar,
-  Plus,
+  Plus, ArrowUpRight,
 } from "lucide-react";
 import badgeCheckPink from "@/assets/badge-check-pink.png.asset.json";
 import checkmarkCircle from "@/assets/checkmark-circle.png.asset.json";
@@ -14,6 +14,7 @@ import vialSemaglutide from "@/assets/vial-semaglutide.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import heroSkyWoman from "@/assets/hero-sky-woman.png.asset.json";
 import drScottNass from "@/assets/dr-scott-nass.png.asset.json";
+import portalWelcomeDoctor from "@/assets/portal-welcome-doctor.png.asset.json";
 import { usePortal, actions, hydrateFromStorage, type PlanState } from "@/lib/portal/store";
 
 export const Route = createFileRoute("/portal/patient")({
@@ -1183,13 +1184,17 @@ function Onboarding() {
   const [step, setStep] = useState(0);
   const firstName = usePortal((s) => s.patient.firstName);
   const steps = [
-    { title: `Welcome, ${firstName}.`, body: "Your care team is ready. Let's take a quick look around.", icon: <Sparkles className="h-7 w-7" style={{ color: PINK }} /> },
-    { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", icon: <img src={drScottNass.url} alt="Dr. Nass" className="h-16 w-16 rounded-full object-cover" /> },
-    { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", icon: <Calendar className="h-7 w-7" style={{ color: PINK }} /> },
-    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", icon: <Bell className="h-7 w-7" style={{ color: PINK }} /> },
+    { title: `Welcome, ${firstName}.`, body: "Your care team is just one tap away. Let's take a quick look around.", icon: null, hero: true },
+    { title: "Meet Dr. Nass", body: "Your prescribing physician. He'll message you within 24 hours of your first order.", icon: <img src={drScottNass.url} alt="Dr. Nass" className="h-16 w-16 rounded-full object-cover" />, hero: false },
+    { title: "How your plan works", body: "Weekly dose. Monthly check-in. Auto-refill every 28 days as long as you check in.", icon: <Calendar className="h-7 w-7" style={{ color: PINK }} />, hero: false },
+    { title: "Stay in the loop", body: "We'll notify you about shipments, messages, and check-ins. Toggle any anytime.", icon: <Bell className="h-7 w-7" style={{ color: PINK }} />, hero: false },
   ];
   const s = steps[step];
   const done = () => actions.completeOnboarding();
+  const isLast = step === steps.length - 1;
+  const nextBtn = isLast
+    ? { label: "Get started", onClick: done }
+    : { label: "Next", onClick: () => setStep((n) => n + 1) };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-40 grid place-items-center bg-black/40 backdrop-blur-md px-6">
@@ -1198,24 +1203,55 @@ function Onboarding() {
         initial={{ y: 20, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className="w-full max-w-[380px] rounded-3xl bg-white p-7 text-center shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]"
+        className={`relative w-full max-w-[380px] overflow-hidden rounded-3xl shadow-[0_30px_80px_-30px_rgba(0,0,0,0.45)] ${s.hero ? "bg-[#7DAFCE]" : "bg-white p-7 text-center"}`}
+        style={s.hero ? { aspectRatio: "9 / 16" } : undefined}
       >
-        <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-[color:var(--color-mist)]/60">{s.icon}</div>
-        <h3 className="mt-5 text-[22px] font-semibold tracking-tight text-ink">{s.title}</h3>
-        <p className="mt-2 text-[14px] leading-relaxed text-ink/65">{s.body}</p>
-        <div className="mt-6 flex items-center justify-center gap-1.5">
-          {steps.map((_, i) => (
-            <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? PINK : "#E4E0D7" }} />
-          ))}
-        </div>
-        <div className="mt-6 flex items-center gap-2">
-          <button onClick={done} className="flex-1 rounded-full py-3 text-[13px] font-medium text-ink/60">Skip</button>
-          {step < steps.length - 1 ? (
-            <button onClick={() => setStep((n) => n + 1)} className="flex-1 rounded-full py-3 text-[13.5px] font-semibold text-white" style={{ background: INK }}>Next</button>
-          ) : (
-            <button onClick={done} className="flex-1 rounded-full py-3 text-[13.5px] font-semibold text-white" style={{ background: PINK }}>Get started</button>
-          )}
-        </div>
+        {s.hero ? (
+          <>
+            <img src={portalWelcomeDoctor.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-x-0 top-0 px-6 pt-10 text-center">
+              <h3 className="text-[26px] font-semibold leading-[1.1] tracking-tight text-white drop-shadow-sm">{s.title}</h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-white/90">{s.body}</p>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 p-5">
+              <div className="mb-4 flex items-center justify-center gap-1.5">
+                {steps.map((_, i) => (
+                  <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? "#ffffff" : "rgba(255,255,255,0.5)" }} />
+                ))}
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={done}
+                  className="flex-1 rounded-full border border-white/40 bg-white/20 py-3.5 text-[14px] font-semibold text-white backdrop-blur-xl transition hover:bg-white/30"
+                >
+                  Skip
+                </button>
+                <button
+                  onClick={nextBtn.onClick}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/85 py-3.5 text-[14px] font-semibold text-ink backdrop-blur-xl transition hover:bg-white"
+                >
+                  {nextBtn.label}
+                  <ArrowUpRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-[color:var(--color-mist)]/60">{s.icon}</div>
+            <h3 className="mt-5 text-[22px] font-semibold tracking-tight text-ink">{s.title}</h3>
+            <p className="mt-2 text-[14px] leading-relaxed text-ink/65">{s.body}</p>
+            <div className="mt-6 flex items-center justify-center gap-1.5">
+              {steps.map((_, i) => (
+                <span key={i} className="h-1.5 rounded-full transition-all" style={{ width: i === step ? 20 : 6, background: i === step ? PINK : "#E4E0D7" }} />
+              ))}
+            </div>
+            <div className="mt-6 flex items-center gap-2">
+              <button onClick={done} className="flex-1 rounded-full py-3 text-[13px] font-medium text-ink/60">Skip</button>
+              <button onClick={nextBtn.onClick} className="flex-1 rounded-full py-3 text-[13.5px] font-semibold text-white" style={{ background: isLast ? PINK : INK }}>{nextBtn.label}</button>
+            </div>
+          </>
+        )}
       </motion.div>
     </motion.div>
   );
