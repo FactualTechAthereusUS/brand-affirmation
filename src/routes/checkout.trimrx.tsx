@@ -473,11 +473,20 @@ function CheckoutPage() {
     <div className="min-h-screen bg-white">
       <TrxHeader onBack={() => navigate({ to: "/sales/trimrx" })} showBack />
 
+      {/* MOBILE ONLY — collapsible order summary bar */}
+      <MobileOrderBar
+        originalTotal={originalTotal}
+        currentTotal={plan.perMo * plan.months}
+      >
+        {treatmentSummary}
+      </MobileOrderBar>
+
       {/* MAIN FLOW — Shopify-style split: form left, grey summary right */}
       <form onSubmit={onSubmit} className="w-full">
         <div className="lg:grid lg:grid-cols-2 lg:items-start">
           {/* LEFT — checkout form */}
           <div className="bg-white lg:flex lg:justify-end lg:h-screen lg:overflow-y-auto no-scrollbar">
+
             <motion.div
               initial="hidden"
               animate="show"
