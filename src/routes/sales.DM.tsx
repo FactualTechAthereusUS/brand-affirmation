@@ -596,9 +596,9 @@ function SalesDMPage() {
             vial={vialTirz.url}
             vialBg="#BFDDEE"
             reviews="29.1K"
-            price={199}
+            price={299}
             oldPrice={399}
-            saveLine="Save $200 instantly"
+            saveLine="Save $100 instantly"
             features={[
               "Prescribed and shipped free within 2 days",
               "Prescribed by U.S. board-certified clinicians",
