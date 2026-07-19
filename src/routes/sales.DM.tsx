@@ -378,18 +378,14 @@ const REVIEWS = [
 
 /* ─────────  FAQ  ───────── */
 const FAQS = [
-  { who: "Michelle from Texas", q: "How does Blissley work?", a: "You complete a short intake, a licensed clinician reviews your health history, and if you qualify, your GLP-1 medication ships to your door in a temperature-controlled overnight box. Our nurses and clinicians support you the whole way." },
-  { who: "Sarah from Florida", q: "How do I know this is safe?", a: "Every prescription is written by a U.S. board-certified provider. Medication is dispensed by state-licensed pharmacies and shipped with an included home injection kit and clear instructions." },
-  { who: "Diana from Ohio", q: "How does the signup process work?", a: "Choose your treatment and plan, complete checkout, and a provider begins your review. Most approvals happen quickly; some are same-day when clinically appropriate." },
-  { who: "Eric from Virginia", q: "What states are eligible?", a: "Blissley is available across most U.S. states. You'll confirm your state during intake — if we can't serve you today, you'll be refunded in full." },
-  { who: "Jasmine from Arizona", q: "What if I need to cancel?", a: "Monthly plans can be canceled anytime with one click in your portal. Multi-month plans include a weight-loss guarantee: if you don't lose weight by the end, we refund your program." },
-  { who: "Ashley from Georgia", q: "Is the medication real semaglutide & tirzepatide?", a: "Yes. Every prescription is a real GLP-1 medication prepared by a state-licensed compounding pharmacy under a licensed clinician's order." },
-  { who: "Nathan from Washington", q: "What is the dosage I'll be taking?", a: "Your clinician starts you at a low dose and titrates upward as tolerated to your optimal therapeutic level. Your price never goes up as your dose does." },
-  { who: "Allison from Tennessee", q: "Where do my prescriptions come from?", a: "From state-licensed U.S. pharmacies partnered with Blissley. Every shipment is prepared to your provider's exact specifications." },
-  { who: "Karen from Oregon", q: "How is it shipped?", a: "Overnight, in a discreet, temperature-controlled cold-pack box. You'll receive tracking information as soon as it leaves the pharmacy." },
-  { who: "Danielle from Minnesota", q: "How do I take my medication?", a: "Injectable GLP-1s are once-weekly subcutaneous injections. Your kit and step-by-step guide walk you through it — the nursing team is on call if you have questions." },
-  { who: "Christina from N.C.", q: "How much weight will I lose?", a: "Patients on our program lose an average of 18% of their body weight, with a 6.5\" average reduction in waist size — individual results vary based on adherence and lifestyle." },
-  { who: "Megan from Nevada", q: "How do I contact support?", a: "Message our clinical team 24/7 through your patient portal, or reach the nursing team by phone and text anytime." },
+  { who: "Michelle from Texas", q: "How does Blissley work?", a: "You complete a short intake, a licensed clinician reviews your health history, and if you qualify, your GLP-1 medication ships to your door in a temperature-controlled overnight box. Your physician supports you the whole way via unlimited secure messaging." },
+  { who: "Derek from Nevada", q: "Is the medication real semaglutide?", a: "Yes. Every prescription is a real GLP-1 medication (semaglutide or tirzepatide) prepared by a state-licensed U.S. compounding pharmacy under a licensed clinician's order." },
+  { who: "Sarah from California", q: "What if I'm not approved?", a: "If a clinician determines GLP-1 therapy isn't appropriate for you, you are refunded in full. Your card is not charged until a physician approves your prescription." },
+  { who: "James from Florida", q: "What states are eligible?", a: "Blissley is available across most U.S. states. You'll confirm your state during intake — if we can't serve you today, you'll be refunded in full." },
+  { who: "Ashley from Georgia", q: "How do I cancel?", a: "Monthly plans can be canceled anytime in one click from your patient portal. Multi-month plans include our weight-loss guarantee — if you don't lose weight by the end, we refund your program." },
+  { who: "Nathan from Washington", q: "What dosage will I take?", a: "Your clinician starts you at a low dose and titrates upward as tolerated to your optimal therapeutic level. Your price never goes up as your dose does — that's the price lock." },
+  { who: "Alicia from Tennessee", q: "Where do prescriptions come from?", a: "From state-licensed U.S. pharmacies partnered with Blissley. Every shipment is prepared to your provider's exact specifications and shipped overnight in a temperature-controlled cold-pack box." },
+  { who: "Chris from North Carolina", q: "How much weight will I lose?", a: "Patients on our program lose an average of 18% of their body weight, with a 6.5\" average reduction in waist size. Individual results vary based on adherence, dosage and lifestyle." },
 ];
 
 function FAQItem({ who, q, a, idx }: { who: string; q: string; a: string; idx: number }) {
