@@ -862,7 +862,7 @@ function CheckoutPage() {
               <ValueStack />
 
               {/* Policy footer */}
-              <div className="mt-4 border-t border-ink/10 pt-5">
+              <div className="mt-0 border-t border-ink/10 pt-4">
                 <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px]">
                   {[
                     { label: "Refund policy", href: "/policies/refund" },
@@ -977,7 +977,7 @@ function ReviewSlider() {
   }, [active, goTo]);
 
   return (
-    <div className="pt-2">
+    <div className="pt-0">
       <div
         ref={trackRef}
         onPointerDown={pause}
