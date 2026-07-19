@@ -334,12 +334,37 @@ const INCLUDES = [
 
 /* ─────────  What Happens Next  ───────── */
 const STEPS = [
-  { icon: milestoneProfile.url, title: "Physician Review", body: "You're pre-qualified. A licensed provider will review your intake and begin the approval process right after checkout." },
-  { icon: milestoneStart.url, title: "Fast Prescription Approval", body: "Most reviews are completed quickly. Same-day approvals may be available when clinically appropriate." },
-  { icon: shipBox.url, title: "Medication Preparation & Shipping", body: "Once approved, your medication is prepared and shipped in a temperature-controlled overnight box. Tracking arrives in 1–2 business days." },
-  { icon: milestoneHealth.url, title: "Easy Refills", body: "When it's time to refill, a quick form in your patient portal keeps everything moving. We'll text and email tracking as it ships." },
-  { icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging — whenever you need us." },
+  { n: "01", icon: milestoneProfile.url, title: "Physician Review", body: "You're pre-qualified. A licensed provider will review your intake and begin the approval process right after checkout." },
+  { n: "02", icon: milestoneStart.url, title: "Fast Prescription Approval", body: "Most reviews are completed quickly. Same-day approvals may be available when clinically appropriate." },
+  { n: "03", icon: shipBox.url, title: "Medication Preparation & Shipping", body: "Once approved, your medication is prepared and shipped in a temperature-controlled overnight box. Tracking arrives in 1–2 business days." },
+  { n: "04", icon: milestoneHealth.url, title: "Easy Refills", body: "When it's time to refill, a quick form in your patient portal keeps everything moving. We'll text and email tracking as it ships." },
+  { n: "05", icon: milestoneResults.url, title: "Unlimited Support", body: "Questions on progress, side effects or dosage? Unlimited access to your licensed clinicians via secure messaging — whenever you need us." },
 ];
+
+function DMStepRow({ step }: { step: (typeof STEPS)[number] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 85%", "end 15%"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.25, 1, 1, 0.25]);
+  const blur = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [8, 0, 0, 8]);
+  const filter = useTransform(blur, (b) => `blur(${b}px)`);
+  const scale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.985, 1, 1, 0.985]);
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, filter, scale }}
+      className="grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-ink/10 py-8 md:gap-8 md:py-14"
+    >
+      <div className="font-sans text-[44px] font-medium leading-none text-ink/15 md:text-[64px]">{step.n}</div>
+      <div className="min-w-0">
+        <h3 className="font-sans text-[20px] font-semibold tracking-[-0.01em] text-ink md:text-[26px]">{step.title}</h3>
+        <p className="mt-2 text-[14px] leading-[1.6] text-ink/60 md:text-[15px]">{step.body}</p>
+      </div>
+      <div className="hidden h-[104px] w-[128px] shrink-0 overflow-hidden rounded-2xl bg-white border border-ink/[0.06] md:block">
+        <img src={step.icon} alt="" className="h-full w-full object-contain p-3" loading="lazy" decoding="async" />
+      </div>
+    </motion.div>
+  );
+}
 
 /* ─────────  Reviews  ───────── */
 const REVIEWS = [
