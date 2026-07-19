@@ -806,18 +806,19 @@ function PlanTab() {
 
       {/* Order history */}
       <Section title="Order History">
-        <div className="divide-y divide-white overflow-hidden rounded-2xl bg-[#FAFAFA]">
+        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white">
           {(ordersOpen ? shipments : shipments.slice(0, 3)).map((o) => (
             <div key={o.id} className="flex items-center gap-3 px-4 py-3">
-              <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white"><Package className="h-4 w-4 text-ink/60" /></div>
+              <div className="grid h-8 w-8 shrink-0 place-items-center"><Package className="h-5 w-5 text-ink" /></div>
               <div className="min-w-0 flex-1">
                 <div className="text-[13.5px] font-medium text-ink">{o.label}</div>
                 <div className="text-[11.5px] text-ink/50">{o.shipDate} · {statusLabel(o.status)}</div>
               </div>
-              {o.status === "shipped" && <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-ink/70">Tracking</span>}
+              {o.status === "shipped" && <span className="rounded-full border border-[color:var(--color-hairline)] bg-white px-2 py-0.5 text-[10px] font-semibold text-ink/70">Tracking</span>}
             </div>
           ))}
         </div>
+
         {shipments.length > 3 && (
           <button onClick={() => setOrdersOpen((v) => !v)} className="mt-2 w-full text-center text-[12px] font-medium text-ink/60 hover:text-ink">
             {ordersOpen ? "Show less" : "View all"}
@@ -832,35 +833,37 @@ function PlanTab() {
 
       {/* Manage */}
       <Section title="Manage">
-        <div className="divide-y divide-white overflow-hidden rounded-2xl bg-[#FAFAFA]">
+        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white">
           {planState !== "paused" ? (
-            <ManageRow icon={<Pause className="h-4 w-4" />} label="Pause my program" onClick={() => setModal("pause")} />
+            <ManageRow icon={<Pause className="h-5 w-5" />} label="Pause my program" onClick={() => setModal("pause")} />
           ) : (
-            <ManageRow icon={<PlayCircle className="h-4 w-4" />} label="Resume my program" onClick={() => actions.resumePlan()} />
+            <ManageRow icon={<PlayCircle className="h-5 w-5" />} label="Resume my program" onClick={() => actions.resumePlan()} />
           )}
-          <ManageRow icon={<Repeat className="h-4 w-4" />} label="Switch plan" onClick={() => setModal("switch")} />
-          <ManageRow icon={<CreditCard className="h-4 w-4" />} label="Update payment method" onClick={() => setModal("payment")} />
-          <ManageRow icon={<MapPin className="h-4 w-4" />} label="Update shipping address" onClick={() => setModal("address")} />
-          <ManageRow icon={<X className="h-4 w-4" />} label="Cancel my program" onClick={() => setModal("cancel")} destructive />
+          <ManageRow icon={<Repeat className="h-5 w-5" />} label="Switch plan" onClick={() => setModal("switch")} />
+          <ManageRow icon={<CreditCard className="h-5 w-5" />} label="Update payment method" onClick={() => setModal("payment")} />
+          <ManageRow icon={<MapPin className="h-5 w-5" />} label="Update shipping address" onClick={() => setModal("address")} />
+          <ManageRow icon={<X className="h-5 w-5" />} label="Cancel my program" onClick={() => setModal("cancel")} destructive />
         </div>
+
       </Section>
 
       {/* Billing */}
       <Section title="Billing History">
-        <div className="divide-y divide-white overflow-hidden rounded-2xl bg-[#FAFAFA]">
+        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white">
           {(billingOpen ? charges : charges.slice(0, 3)).map((b) => (
             <div key={b.id} className="flex items-center gap-3 px-4 py-3">
-              <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white">
-                {b.status === "paid" ? <CheckCircle2 className="h-4 w-4" style={{ color: "#4a7c6f" }} /> : <Clock className="h-4 w-4 text-ink/50" />}
+              <div className="grid h-8 w-8 shrink-0 place-items-center">
+                {b.status === "paid" ? <CheckCircle2 className="h-5 w-5 text-ink" /> : <Clock className="h-5 w-5 text-ink/60" />}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-[13.5px] font-medium text-ink">${b.amount.toFixed(2)}</div>
                 <div className="text-[11.5px] text-ink/50">{b.date} · {b.status === "paid" ? "Paid" : "Upcoming"}</div>
               </div>
-              {b.status === "paid" && <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-ink/70">Receipt</span>}
+              {b.status === "paid" && <span className="rounded-full border border-[color:var(--color-hairline)] bg-white px-2 py-0.5 text-[10px] font-semibold text-ink/70">Receipt</span>}
             </div>
           ))}
         </div>
+
         {charges.length > 3 && (
           <button onClick={() => setBillingOpen((v) => !v)} className="mt-2 w-full text-center text-[12px] font-medium text-ink/60 hover:text-ink">
             {billingOpen ? "Show less" : "View all"}
@@ -1070,13 +1073,14 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function ManageRow({ icon, label, onClick, destructive }: { icon: React.ReactNode; label: string; onClick: () => void; destructive?: boolean }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-white">
-      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white" style={destructive ? { background: "#FFF3F1", color: PINK } : undefined}>{icon}</div>
+    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-[color:var(--color-mist)]/30">
+      <div className="grid h-8 w-8 shrink-0 place-items-center" style={destructive ? { color: PINK } : { color: "var(--color-ink)" }}>{icon}</div>
       <div className="flex-1 text-[14px] font-medium text-ink">{label}</div>
       <ChevronRight className="h-4 w-4 text-ink/40" />
     </button>
   );
 }
+
 
 function PlanModal({ modal, onClose }: { modal: string | null; onClose: () => void }) {
   const address = usePortal((s) => s.patient);
@@ -1364,10 +1368,11 @@ function SettingsGroup({ title, children }: { title: string; children: React.Rea
   return (
     <section className="mt-5 first:mt-0">
       <h2 className="mb-2 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/55">{title}</h2>
-      <div className="space-y-2 rounded-2xl bg-[#FAFAFA] p-4">{children}</div>
+      <div className="space-y-2 rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4">{children}</div>
     </section>
   );
 }
+
 
 function Field({ label, defaultValue, disabled, hint }: { label: string; defaultValue: string; disabled?: boolean; hint?: string }) {
   return (
