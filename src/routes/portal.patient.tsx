@@ -441,8 +441,8 @@ function doseCountdown(iso: string): string {
 function PendingApproval() {
   return (
     <div className="flex items-start gap-3">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full" style={{ background: "#FFF3F1" }}>
-        <Loader2 className="h-5 w-5 animate-spin" style={{ color: PINK }} />
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white border border-ink/10">
+        <Loader2 className="h-5 w-5 animate-spin text-ink stroke-[2.5px]" />
       </div>
       <div>
         <div className="text-[15px] font-semibold text-ink">Physician Review In Progress</div>
