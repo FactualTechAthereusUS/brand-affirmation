@@ -1547,13 +1547,13 @@ function MobileOrderSummaryDetail({
       {/* COLLAPSED VIEW (image 1) */}
       {!open && (
         <div>
-          {/* Add discount pill */}
+          {/* Order details pill */}
           <button
             type="button"
             onClick={() => setOpen(true)}
             className="inline-flex items-center gap-2 rounded-2xl border border-ink/15 bg-white px-3 py-2 text-[13px] font-bold text-ink shadow-sm"
           >
-            <SavingsIcon className="h-3.5 w-3.5" /> Add discount
+            <Package className="h-3.5 w-3.5" /> Order details
           </button>
 
           {/* Total row */}
