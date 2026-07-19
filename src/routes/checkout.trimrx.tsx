@@ -1329,13 +1329,13 @@ function MobileOrderSummaryDetail({
               <div className="text-[12.5px] text-ink/60">{treatmentSubtitle} · {supply}</div>
               {discountApplied && (
                 <div className="mt-1 flex items-center gap-1 text-[12px] font-semibold text-ink/70">
-                  <SavingsIcon className="h-3 w-3" /> JOIN120 (−$120.00)
+                  <SavingsIcon className="h-3 w-3" /> JOIN120 (−${fmt(planSavings)})
                 </div>
               )}
             </div>
             <div className="text-right leading-tight pt-1">
-              <div className="text-[13px] text-ink/40 line-through">${fmt(originalPerMo * months)}</div>
-              <div className="text-[15px] font-bold text-ink">${fmt(baseSubtotal)}</div>
+              <div className="text-[13px] text-ink/40 line-through">${fmt(originalPlanTotal)}</div>
+              <div className="text-[15px] font-bold text-ink">${fmt(discountApplied ? baseSubtotal : originalPlanTotal)}</div>
             </div>
           </div>
 
