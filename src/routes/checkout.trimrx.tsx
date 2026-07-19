@@ -1290,6 +1290,8 @@ function MobileOrderSummaryDetail({
   const [open, setOpen] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(true);
   const [code, setCode] = useState("JOIN120");
+  const [shippingOpen, setShippingOpen] = useState(false);
+
 
   // Scarcity: dynamic discounts-left + reservation timer
   const [discountsLeft, setDiscountsLeft] = useState(() => 40 + Math.floor(Math.random() * 35)); // 40-74
