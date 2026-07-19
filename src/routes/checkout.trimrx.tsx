@@ -1340,9 +1340,9 @@ function MobileOrderSummaryDetail({
           {insurance && (
             <div className="mt-4 flex items-start gap-3">
               <ThumbCard
-                icon={<img src={iconDeliveryShield.url} alt="" className="h-8 w-8 object-contain invert" />}
+                icon={<img src={iconDeliveryShield.url} alt="" className="h-6 w-6 object-contain invert" />}
                 qty={1}
-                size={72}
+                size={48}
                 bg="#171717"
               />
               <div className="min-w-0 flex-1 pt-1">
