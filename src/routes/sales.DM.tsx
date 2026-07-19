@@ -574,7 +574,7 @@ function SalesDMPage() {
   const primaryPatient = { first: "Sarah", startLbs: 230, goalLbs: 172 };
 
   const goToCheckout = (planK: string) =>
-    navigate({ to: "/checkout/trimrx", search: { tx: treatment ?? "sema", plan: planK } });
+    navigate({ to: "/checkout/charged-before", search: { tx: treatment ?? "sema", plan: planK } });
 
   return (
     <div className="relative min-h-screen" style={{ background: CANVAS }}>
