@@ -618,6 +618,9 @@ function SalesDMPage() {
             ]}
             selected={treatment === "sema"}
             onSelect={() => setTreatment("sema")}
+            formType={semaForm}
+            onFormType={setSemaForm}
+            oralUpcharge={52}
           />
           <TreatmentCard
             id="tirz"
