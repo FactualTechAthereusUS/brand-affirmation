@@ -32,6 +32,9 @@ import {
 
 } from "./TrxUI";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+import qBg1 from "@/assets/intake-q1-redhead.png.asset.json";
+import qBg2 from "@/assets/intake-q2-sunflower.jpg.asset.json";
+import qBg3 from "@/assets/intake-q3-mountain.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman2-desktop.png.asset.json";
 import trxHeroWoman2Mobile from "@/assets/trx-hero-woman2-mobile.png.asset.json";
