@@ -707,7 +707,7 @@ function PanelRx({ c }: { c: Case }) {
         />
       </div>
       <div className="mt-3 flex items-center gap-2 text-xs text-ink/50">
-        <Package className="h-3.5 w-3.5" /> Pharmacy: <span className="font-medium text-ink/70">{rx.pharmacy}</span>
+        <Package className="h-3.5 w-3.5" /> Pharmacy: <span className="whitespace-pre-line font-medium text-ink/70">{rx.pharmacy}</span>
       </div>
     </Panel>
   );
