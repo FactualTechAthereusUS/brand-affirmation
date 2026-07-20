@@ -9,19 +9,29 @@ import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 
 /* ── Search params ── */
-const searchSchema = z.object({
-  model: z.enum(["auth", "charged"]).catch("auth").default("auth"),
-  tx: z.enum(["sema", "tirz"]).catch("sema").default("sema"),
-  plan: z.enum(["monthly", "three", "six"]).catch("three").default("three"),
-  total: z.coerce.number().catch(711).default(711),
-  first: z.string().catch("").default(""),
-  email: z.string().catch("").default(""),
-  order: z.string().catch("").default(""),
-});
+type Model = "auth" | "charged";
+type Tx = "sema" | "tirz";
+type Plan = "monthly" | "three" | "six";
+
+type ConfirmationSearch = {
+  model: Model; tx: Tx; plan: Plan;
+  total: number; first: string; email: string; order: string;
+};
+
+const pick = <T extends string>(v: unknown, opts: readonly T[], d: T): T =>
+  (typeof v === "string" && (opts as readonly string[]).includes(v) ? (v as T) : d);
 
 export const Route = createFileRoute("/confirmation")({
   component: ConfirmationPage,
-  validateSearch: (s) => searchSchema.parse(s),
+  validateSearch: (s: Record<string, unknown>): ConfirmationSearch => ({
+    model: pick(s.model, ["auth", "charged"] as const, "auth"),
+    tx: pick(s.tx, ["sema", "tirz"] as const, "sema"),
+    plan: pick(s.plan, ["monthly", "three", "six"] as const, "three"),
+    total: Number(s.total) || 711,
+    first: typeof s.first === "string" ? s.first : "",
+    email: typeof s.email === "string" ? s.email : "",
+    order: typeof s.order === "string" ? s.order : "",
+  }),
   head: () => ({
     meta: [
       { title: "You're in · Blissley" },
