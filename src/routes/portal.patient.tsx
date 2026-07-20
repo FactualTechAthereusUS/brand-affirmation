@@ -216,7 +216,7 @@ function DesktopHeader({ tab, onBell }: { tab: Tab; onBell: () => void }) {
   const unread = usePortal((s) => s.notifications.filter((n) => !n.read).length);
   const title = tab === "home" ? "Home" : tab === "messages" ? "Messages" : tab === "plan" ? "My Plan" : "Settings";
   return (
-    <header className="sticky top-0 z-20 hidden items-center justify-between border-b border-black/5 bg-white/80 px-10 py-5 backdrop-blur-xl md:flex">
+    <header className="sticky top-0 z-20 hidden items-center justify-between border-b border-black/5 bg-white/80 px-10 py-5 backdrop-blur-xl lg:flex">
       <div>
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45">Patient portal</div>
         <h1 className="mt-0.5 text-[22px] font-semibold tracking-tight text-ink">{title}</h1>
