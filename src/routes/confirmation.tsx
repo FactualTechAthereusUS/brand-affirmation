@@ -198,7 +198,7 @@ function LiquidHeader() {
           <img
             src={blissleyLogo.url}
             alt="Blissley"
-            className="h-8 w-auto sm:h-10"
+            className="h-10 w-auto sm:h-14"
           />
         </Link>
         <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/40 px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-md">
