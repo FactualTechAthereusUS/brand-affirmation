@@ -30,6 +30,7 @@ import { z } from "zod";
 import { TrxHeader } from "@/components/intake/TrxUI";
 import { ValueStack } from "@/components/home/ValueStack";
 import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
+import { PaymentFailedInline } from "@/components/checkout/PaymentFailedInline";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
