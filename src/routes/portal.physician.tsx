@@ -71,7 +71,7 @@ function PhysicianPortal() {
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-[#faf9f6] text-ink" style={{ paddingBottom: demoBarOpen ? 96 : 0 }}>
+    <div className="min-h-screen bg-white text-ink" style={{ paddingBottom: demoBarOpen ? 96 : 0 }}>
       <div className="lg:flex">
         <Sidebar />
         <div className="flex-1 lg:pl-0">
