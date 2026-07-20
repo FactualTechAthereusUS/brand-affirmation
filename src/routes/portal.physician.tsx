@@ -499,7 +499,7 @@ function CaseReviewSheet() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-[#faf9f6]"
+          className="fixed inset-0 z-50 bg-white"
         >
           <motion.div
             initial={{ y: 24, opacity: 0 }}
