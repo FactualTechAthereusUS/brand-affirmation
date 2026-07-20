@@ -791,9 +791,7 @@ function SupportBlock() {
         href="mailto:care@blissley.com"
         className="group flex items-center gap-3 rounded-2xl border border-black/6 bg-white p-4 transition hover:border-black/15 hover:shadow-[0_6px_20px_-10px_rgba(0,0,0,0.15)]"
       >
-        <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#F6F4EF]">
-          <Mail className="h-4.5 w-4.5 text-ink/70" />
-        </div>
+        <Mail className="h-5 w-5 text-ink/70" />
         <div className="min-w-0 flex-1">
           <div className="text-[13px] font-bold">Need help?</div>
           <div className="text-[12px] text-ink/55">care@blissley.com · Reply within 2 hours</div>
