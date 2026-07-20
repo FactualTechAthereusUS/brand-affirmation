@@ -326,21 +326,21 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   const lost = Math.max(0, startWeight - currentWeight);
 
   return (
-    <div className="pt-5 md:mx-auto md:w-full md:max-w-6xl md:px-8 md:pt-8">
-      <div className="pl-4 pr-4 md:hidden">
-        <motion.h1 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-[24px] font-semibold tracking-tight text-ink">
+    <div className="pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
+      <div className="pl-4 pr-4 md:px-0 lg:hidden">
+        <motion.h1 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-[24px] font-semibold tracking-tight text-ink md:text-[28px]">
           {greeting()}, {firstName}.
         </motion.h1>
-        <p className="mt-1 text-[13.5px] text-ink/55">{planStateSubline(planState)}</p>
+        <p className="mt-1 text-[13.5px] text-ink/55 md:text-[14.5px]">{planStateSubline(planState)}</p>
       </div>
 
       {/* Hero */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }} className="relative mx-4 mt-4 overflow-hidden rounded-2xl aspect-[2/1] md:mx-0 md:mt-0 md:aspect-[16/5] md:rounded-3xl">
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }} className="relative mx-4 mt-4 overflow-hidden rounded-2xl aspect-[2/1] md:mx-0 md:mt-5 md:aspect-[21/9] md:rounded-3xl lg:mt-0 lg:aspect-[16/5]">
         <img src={heroSkyWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <p className="text-[15px] font-semibold leading-tight text-white drop-shadow-md">{heroLine(planState)}</p>
-          <p className="mt-0.5 text-[12.5px] text-white/85 drop-shadow">Keep showing up for yourself, {firstName}.</p>
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+          <p className="text-[15px] font-semibold leading-tight text-white drop-shadow-md md:text-[17px]">{heroLine(planState)}</p>
+          <p className="mt-0.5 text-[12.5px] text-white/85 drop-shadow md:text-[13.5px]">Keep showing up for yourself, {firstName}.</p>
         </div>
       </motion.div>
 
