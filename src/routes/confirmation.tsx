@@ -77,7 +77,7 @@ function todayPlus(days: number) {
 }
 
 function ConfirmationPage() {
-  const { model, tx, plan, total, first, email, order } = Route.useSearch();
+  const { model, tx, plan, total, first, email, order } = Route.useSearch() as ConfirmationSearch;
   const navigate = useNavigate();
   const treatment = TX[tx];
   const planDef = PLANS[plan];
