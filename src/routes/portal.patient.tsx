@@ -729,6 +729,9 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
     if (!draft.trim()) return;
     actions.sendMessage(kind, draft.trim());
     setDraft("");
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
     setTyping(true);
     setTimeout(() => setTyping(false), 2200);
     requestAnimationFrame(() => inputRef.current?.focus());
