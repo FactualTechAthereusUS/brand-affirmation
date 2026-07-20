@@ -178,9 +178,12 @@ function ConfirmationPage() {
         {/* Support */}
         <SupportBlock />
 
-        <p className="mx-auto mt-10 max-w-md text-center text-[11.5px] leading-relaxed text-ink/45">
-          Blissley Health · Discreet packaging · HIPAA-secure · US-licensed physicians.
-        </p>
+        <div className="mx-auto mt-10 flex max-w-2xl flex-col items-center gap-2 text-center">
+          <p className="text-[12px] text-ink/50">© 2026 TheFactual LLC DBA Blissley</p>
+          <p className="text-[11.5px] leading-[1.65] text-ink/45">
+            Blissley is a technology platform and does not provide medical advice. Physician services are provided by independent licensed practitioners. Individual results may vary.
+          </p>
+        </div>
       </main>
     </div>
   );
