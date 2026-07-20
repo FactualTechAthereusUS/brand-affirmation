@@ -9,18 +9,19 @@ import { physicianActions } from "@/lib/physician/store";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Patient Login — Blissley" },
+      { title: "Physician Login — Blissley" },
       {
         name: "description",
         content:
-          "Sign in to your Blissley patient portal to manage your treatment, message your care team, and track your progress.",
+          "Secure physician sign in for the Blissley clinical portal. Review cases, prescribe, and message patients.",
       },
-      { property: "og:title", content: "Patient Login — Blissley" },
+      { property: "og:title", content: "Physician Login — Blissley" },
       {
         property: "og:description",
         content:
-          "Sign in to your Blissley patient portal to manage your treatment and care.",
+          "Secure physician sign in for the Blissley clinical portal.",
       },
+      { name: "robots", content: "noindex,nofollow" },
     ],
   }),
   component: LoginPage,
@@ -28,20 +29,18 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const [showPw, setShowPw] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("scott.nass@blissley.md");
   const [password, setPassword] = useState("");
   const [sent, setSent] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => { hydrateFromStorage(); }, []);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setSent(true);
     setTimeout(() => {
-      actions.signIn(email);
-      navigate({ to: "/portal/patient" });
+      physicianActions.signIn(email);
+      navigate({ to: "/portal/physician" });
     }, 1400);
   };
 
