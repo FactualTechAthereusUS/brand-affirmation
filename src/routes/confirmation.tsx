@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "motion/react";
 import {
   ArrowRight,
   Check,
@@ -480,7 +480,7 @@ function DeliveryDetails({ firstName }: { firstName: string }) {
   );
 }
 
-/* ────────── TIMELINE ────────── */
+/* ────────── TIMELINE (flat, scroll-animated progress line) ────────── */
 function NextStepsTimeline({ model }: { model: Model }) {
   const steps = [
     { title: "Order confirmed", meta: "Just now", done: true, icon: iconDeliveryShield.url },
@@ -490,20 +490,55 @@ function NextStepsTimeline({ model }: { model: Model }) {
     { title: "Shipped discreetly to your door", meta: "3–5 business days", icon: iconTruck.url },
   ];
 
+  const listRef = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 85%", "end 60%"],
+  });
+  const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.4 });
+  const lineHeight = useTransform(smooth, [0, 1], ["0%", "100%"]);
+
   return (
-    <Card eyebrow="What happens next" title="Your timeline" delay={0.1}>
-      <ol className="space-y-4">
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-white py-1"
+    >
+      <div className="mb-5">
+        <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">
+          What happens next
+        </div>
+        <h3 className="mt-0.5 text-[16px] font-bold tracking-tight sm:text-[17px]">
+          Your timeline
+        </h3>
+      </div>
+
+      <ol ref={listRef} className="relative space-y-6">
+        {/* Rail (base) */}
+        <span
+          aria-hidden
+          className="absolute left-5 top-2 bottom-2 w-px bg-black/8"
+        />
+        {/* Rail (progress) — grows with scroll */}
+        <motion.span
+          aria-hidden
+          style={{ height: lineHeight, background: CORAL }}
+          className="absolute left-5 top-2 w-px origin-top"
+        />
+
         {steps.map((s, i) => (
           <motion.li
             key={i}
             initial={{ opacity: 0, x: -6 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.25 + i * 0.08, duration: 0.4 }}
-            className="relative flex items-start gap-3"
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="relative flex items-start gap-4"
           >
-            <div className="relative">
+            <div className="relative z-10">
               <div
-                className={`grid h-10 w-10 place-items-center rounded-full ${
+                className={`grid h-10 w-10 place-items-center rounded-full ring-4 ring-white ${
                   s.done
                     ? "bg-[#EAFBEF] text-[#0F6E3A]"
                     : s.active
@@ -524,9 +559,6 @@ function NextStepsTimeline({ model }: { model: Model }) {
                   <img src={s.icon} alt="" className="h-5 w-5 object-contain opacity-60" />
                 )}
               </div>
-              {i < steps.length - 1 && (
-                <span className="absolute left-1/2 top-11 h-[calc(100%-4px)] w-px -translate-x-1/2 bg-black/8" />
-              )}
             </div>
             <div className="min-w-0 flex-1 pb-1">
               <div className={`text-[14px] font-semibold ${
@@ -542,7 +574,7 @@ function NextStepsTimeline({ model }: { model: Model }) {
           </motion.li>
         ))}
       </ol>
-    </Card>
+    </motion.section>
   );
 }
 
