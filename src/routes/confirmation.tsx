@@ -701,7 +701,7 @@ function NauseaOTO({
               <img
                 src="/assets/blissley-ondansetron-odt.png"
                 alt="Blissley Ondansetron ODT anti-nausea"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
               <div
                 className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur"
