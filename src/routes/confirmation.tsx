@@ -521,39 +521,68 @@ function NextStepsTimeline({ model }: { model: Model }) {
   );
 }
 
-/* ────────── PORTAL CTA (liquid, matches main LP) ────────── */
+/* ────────── PORTAL CTA (white card, doctor image on top) ────────── */
 function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void }) {
   return (
     <motion.section
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-      className="relative overflow-hidden rounded-3xl bg-ink p-6 text-white sm:p-7"
+      className="relative overflow-hidden rounded-3xl border border-black/8 bg-white shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)]"
     >
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full opacity-70 blur-3xl"
-        style={{ background: `radial-gradient(circle, ${CORAL} 0%, transparent 60%)` }}
-        animate={{ x: [0, 20, -10, 0], y: [0, 10, -5, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full opacity-50 blur-3xl"
-        style={{ background: `radial-gradient(circle, ${CORAL} 0%, transparent 60%)` }}
-        animate={{ x: [0, -15, 5, 0], y: [0, -8, 10, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Image on top */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10]">
+        <img
+          src={drNassPortal.url}
+          alt="Dr. Scott Nass, MD"
+          className="absolute inset-0 h-full w-full object-cover object-top"
+          loading="lazy"
+        />
+        {/* Bottom blur/gradient for legibility */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0) 100%)",
+            backdropFilter: "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
+          }}
+        />
 
-      <div className="relative">
-        <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white/50">
+        {/* Availability chip — top-left */}
+        <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold text-ink shadow-[0_4px_14px_-6px_rgba(0,0,0,0.3)] backdrop-blur">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inset-0 animate-ping rounded-full" style={{ background: CORAL, opacity: 0.6 }} />
+            <span className="relative h-2 w-2 rounded-full" style={{ background: CORAL }} />
+          </span>
+          Online now
+        </div>
+
+        {/* Text over blurred bottom */}
+        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+          <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white/85">
+            Your care team
+          </div>
+          <div className="mt-1 text-[18px] font-bold leading-tight text-white sm:text-[20px]">
+            Dr. Scott Nass, MD
+          </div>
+          <div className="text-[12px] text-white/80">
+            Board-certified · Reviewing your intake
+          </div>
+        </div>
+      </div>
+
+      {/* White area — copy + CTA */}
+      <div className="p-6 sm:p-7">
+        <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink/50">
           Your patient portal
         </div>
-        <h3 className="mt-2 text-[22px] font-black leading-tight sm:text-[24px]">
+        <h3 className="mt-2 text-[20px] font-black leading-tight text-ink sm:text-[24px]">
           Track approval, message Dr. Nass, see your plan live.
         </h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-white/60">
-          A magic link is on its way. You can open it right now — no password.
+        <p className="mt-2 text-[13px] leading-relaxed text-ink/60 sm:text-[14px]">
+          A magic link is on its way to your inbox. You can open your portal right now — no password needed.
         </p>
 
         <button
@@ -567,9 +596,10 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
           <ArrowRight className="relative h-4 w-4 transition group-hover:translate-x-0.5" strokeWidth={2.5} />
         </button>
 
-        <p className="mt-3 text-center text-[11px] text-white/40">
-          Signed in as {firstName}. No password required.
-        </p>
+        <div className="mt-4 flex items-center justify-center gap-2 text-[11px] text-ink/50">
+          <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2} />
+          Signed in as {firstName} · No password required
+        </div>
       </div>
     </motion.section>
   );
