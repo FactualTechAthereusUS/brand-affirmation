@@ -275,7 +275,7 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
   return (
-    <nav className="pointer-events-none sticky bottom-0 z-30 px-3 pb-3 pt-2 md:rounded-b-[36px]">
+    <nav className="pointer-events-none sticky bottom-0 z-30 px-3 pb-3 pt-2 md:hidden">
       <div className="pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-white/50 bg-white/75 px-2 py-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150">
         {items.map((it) => {
           const active = it.id === tab;
