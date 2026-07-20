@@ -156,7 +156,7 @@ function SideNav({
   const cancel = () => { if (pressTimer.current) clearTimeout(pressTimer.current); };
 
   return (
-    <aside className="sticky top-0 hidden h-svh w-[260px] shrink-0 flex-col border-r border-black/5 bg-white/80 px-5 py-6 backdrop-blur-xl md:flex">
+    <aside className="sticky top-0 hidden h-svh w-[260px] shrink-0 flex-col border-r border-black/5 bg-white/80 px-5 py-6 backdrop-blur-xl lg:flex">
       <button
         onPointerDown={start} onPointerUp={cancel} onPointerLeave={cancel} onPointerCancel={cancel}
         className="flex items-center gap-2 select-none" aria-label="Blissley"
