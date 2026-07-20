@@ -1436,7 +1436,7 @@ function SettingsTab() {
   };
 
   return (
-    <div className="px-4 pt-5">
+    <div className="px-4 pt-5 md:mx-auto md:w-full md:max-w-4xl md:px-8 md:pt-8">
       <SettingsGroup title="Personal Info">
         <Field label="First name" defaultValue={patient.firstName} />
         <Field label="Last name" defaultValue={patient.lastName} />
