@@ -888,6 +888,13 @@ function CheckoutPage() {
 
 
 
+              <PaymentFailedInline
+                open={payFailed}
+                onDismiss={() => setPayFailed(false)}
+                onTryAgain={() => { setPayFailed(false); set("cardNumber", ""); set("cvc", ""); }}
+                onAlt={(m) => { setPayFailed(false); setPayMethod(m); }}
+              />
+
               {/* Continue */}
               <motion.button
                 type="submit"
