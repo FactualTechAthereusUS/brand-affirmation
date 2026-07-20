@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { z } from "zod";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
+
 import { ArrowRight, Check, Shield, Sparkles, X } from "lucide-react";
 import blissleyLogo from "@/assets/blissley-white.png.asset.json";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
@@ -10,18 +10,18 @@ import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 
 /* ── Search params ── */
 const searchSchema = z.object({
-  model: fallback(z.enum(["auth", "charged"]), "auth").default("auth"),
-  tx: fallback(z.enum(["sema", "tirz"]), "sema").default("sema"),
-  plan: fallback(z.enum(["monthly", "three", "six"]), "three").default("three"),
-  total: fallback(z.number(), 711).default(711),
-  first: fallback(z.string(), "").default(""),
-  email: fallback(z.string(), "").default(""),
-  order: fallback(z.string(), "").default(""),
+  model: z.enum(["auth", "charged"]).catch("auth").default("auth"),
+  tx: z.enum(["sema", "tirz"]).catch("sema").default("sema"),
+  plan: z.enum(["monthly", "three", "six"]).catch("three").default("three"),
+  total: z.coerce.number().catch(711).default(711),
+  first: z.string().catch("").default(""),
+  email: z.string().catch("").default(""),
+  order: z.string().catch("").default(""),
 });
 
 export const Route = createFileRoute("/confirmation")({
   component: ConfirmationPage,
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
     meta: [
       { title: "You're in · Blissley" },
