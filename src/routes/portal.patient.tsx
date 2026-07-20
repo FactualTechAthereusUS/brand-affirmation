@@ -92,7 +92,7 @@ function PatientPortal() {
   return (
     <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#F4F2ED] lg:bg-[#FAFAF8]" style={{ fontFamily: "var(--font-sans)" }}>
       {/* Mobile: phone shell · Tablet: wider centered shell · Desktop: sidebar + main */}
-      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-[720px] md:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.15)] lg:max-w-none lg:flex-row lg:bg-transparent lg:shadow-none">
+      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-none md:rounded-none lg:max-w-none lg:flex-row lg:bg-transparent">
         <SideNav
           tab={tab}
           onChange={setTab}
@@ -326,7 +326,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   const lost = Math.max(0, startWeight - currentWeight);
 
   return (
-    <div className="pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
+    <div className="pt-5 md:px-8 md:pt-8 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
       <div className="pl-4 pr-4 md:px-0 lg:hidden">
         <motion.h1 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-[24px] font-semibold tracking-tight text-ink md:text-[28px]">
           {greeting()}, {firstName}.
@@ -663,7 +663,7 @@ function MessagesTab() {
   return (
     <AnimatePresence mode="wait">
       {view === "list" ? (
-        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-4 pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-4xl lg:px-8 lg:pt-8">
+        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-4 pt-5 md:px-8 md:pt-8 lg:mx-auto lg:w-full lg:max-w-4xl lg:px-8 lg:pt-8">
           <h2 className="text-[22px] font-semibold tracking-tight text-ink">Messages</h2>
           <p className="mt-1 text-[13.5px] text-ink/55">The people caring for you — one tap away.</p>
           <div className="mt-5 space-y-3">
@@ -782,7 +782,7 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
             if (m.from === "me") {
               return (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex justify-end">
-                  <div className="flex max-w-[80%] flex-col items-end">
+                  <div className="flex max-w-[80%] flex-col items-end md:max-w-[70%]">
                     <div className="rounded-[22px] rounded-br-md px-4 py-2.5 text-[14px] leading-relaxed text-white" style={{ background: bubbleGradient }}>{m.text}</div>
                     <div className="mt-1 flex items-center gap-1 pr-1 text-[10.5px] text-ink/40"><CheckCircle2 className="h-3 w-3" /><span>{time}</span></div>
                   </div>
@@ -798,7 +798,7 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
                     <img src={drScottNass.url} alt="" className="h-7 w-7 rounded-full object-cover" />
                   )}
                 </div>
-                <div className="flex max-w-[80%] flex-col">
+                <div className="flex max-w-[80%] flex-col md:max-w-[70%]">
                   <div className="rounded-[22px] rounded-bl-md bg-[color:var(--color-mist)]/60 px-4 py-2.5 text-[14px] leading-relaxed text-ink">{m.text}</div>
                   <div className="mt-1 pl-2 text-[10.5px] text-ink/40">{time}</div>
                 </div>
@@ -820,7 +820,7 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
         </div>
       </div>
 
-      <div className="border-t border-[color:var(--color-hairline)]/70 bg-white px-3 pb-3 pt-2.5">
+      <div className="border-t border-[color:var(--color-hairline)]/70 bg-white px-3 pb-3 pt-2.5 md:px-8 md:pb-5 md:pt-4 lg:px-3 lg:pb-3 lg:pt-2.5">
         <div className="flex items-end gap-2 rounded-[28px] border border-[color:var(--color-hairline)] bg-white px-2 py-1.5 focus-within:border-ink/25">
           <button className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-ink/50" aria-label="Attach"><span className="text-[20px] leading-none">+</span></button>
           <textarea
@@ -858,7 +858,7 @@ function PlanTab() {
   const [billingOpen, setBillingOpen] = useState(false);
 
   return (
-    <div className="px-4 pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
+    <div className="px-4 pt-5 md:px-8 md:pt-8 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
 
       <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-white to-[color:var(--color-mist)]/40 p-5">
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Your plan</div>
@@ -935,12 +935,12 @@ function PlanTab() {
 
       {/* Order history */}
       <Section title="Order History">
-        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white">
+        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white md:grid md:grid-cols-2 md:gap-3 md:divide-y-0 md:overflow-visible md:border-0 md:bg-transparent lg:grid-cols-1 lg:gap-0 lg:divide-y lg:overflow-hidden lg:border lg:bg-white">
           {(ordersOpen ? shipments : shipments.slice(0, 3)).map((o) => (
             <button
               key={o.id}
               onClick={() => actions.openTracking(o.id)}
-              className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-ink/[.03]"
+              className="flex w-full items-center gap-3 bg-white px-4 py-3 text-left transition hover:bg-ink/[.03] md:rounded-2xl md:border md:border-[color:var(--color-hairline)] lg:rounded-none lg:border-0"
             >
               <div className="grid h-8 w-8 shrink-0 place-items-center"><Package className="h-5 w-5 text-ink" /></div>
               <div className="min-w-0 flex-1">
@@ -966,7 +966,7 @@ function PlanTab() {
 
       {/* Manage */}
       <Section title="Manage">
-        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white">
+        <div className="divide-y divide-[color:var(--color-hairline)] overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-white md:grid md:grid-cols-2 md:gap-3 md:divide-y-0 md:overflow-visible md:border-0 md:bg-transparent lg:grid-cols-1 lg:gap-0 lg:divide-y lg:overflow-hidden lg:border lg:bg-white">
           {planState !== "paused" ? (
             <ManageRow icon={<Pause className="h-5 w-5" />} label="Pause my program" onClick={() => setModal("pause")} />
           ) : (
@@ -988,7 +988,7 @@ function PlanTab() {
               key={b.id}
               onClick={() => b.status === "paid" && actions.openReceipt(b.id)}
               disabled={b.status !== "paid"}
-              className="flex w-full items-center gap-3 px-4 py-3 text-left transition enabled:hover:bg-ink/[.03] disabled:cursor-default"
+              className="flex w-full items-center gap-3 bg-white px-4 py-3 text-left transition enabled:hover:bg-ink/[.03] disabled:cursor-default md:rounded-2xl md:border md:border-[color:var(--color-hairline)] lg:rounded-none lg:border-0"
             >
               <div className="grid h-8 w-8 shrink-0 place-items-center">
                 {b.status === "paid" ? <CheckCircle2 className="h-5 w-5 text-ink" /> : <Clock className="h-5 w-5 text-ink/60" />}
@@ -1230,7 +1230,7 @@ function PlanModal({ modal, onClose }: { modal: string | null; onClose: () => vo
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl"
+            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:max-w-[680px] md:p-6 lg:rounded-3xl"
           >
             {modal === "pause" && <PauseFlow onClose={onClose} />}
             {modal === "cancel" && <CancelFlow onClose={onClose} />}
@@ -1436,7 +1436,7 @@ function SettingsTab() {
   };
 
   return (
-    <div className="px-4 pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-4xl lg:px-8 lg:pt-8">
+    <div className="px-4 pt-5 md:grid md:grid-cols-2 md:items-start md:gap-5 md:px-8 md:pt-8 lg:mx-auto lg:w-full lg:max-w-4xl lg:px-8 lg:pt-8">
       <SettingsGroup title="Personal Info">
         <Field label="First name" defaultValue={patient.firstName} />
         <Field label="Last name" defaultValue={patient.lastName} />
@@ -1504,7 +1504,7 @@ function SettingsTab() {
 
 function SettingsGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-5 first:mt-0">
+    <section className="mt-5 first:mt-0 md:mt-0">
       <h2 className="mb-2 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/55">{title}</h2>
       <div className="space-y-2 rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4">{children}</div>
     </section>
@@ -1697,7 +1697,7 @@ function NotificationsSheet({ open, onClose, onGoto }: { open: boolean; onClose:
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onClick={(e) => e.stopPropagation()}
-            className="max-h-[80vh] w-full max-w-[440px] overflow-hidden rounded-t-3xl bg-white lg:rounded-3xl"
+            className="max-h-[80vh] w-full max-w-[440px] overflow-hidden rounded-t-3xl bg-white md:max-w-[680px] lg:rounded-3xl"
           >
             <div className="flex items-center justify-between border-b border-[color:var(--color-hairline)] px-5 py-4">
               <div className="text-[16px] font-semibold text-ink">Notifications</div>
@@ -1784,7 +1784,7 @@ function DevSwitcher({ open, onClose }: { open: boolean; onClose: () => void }) 
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl"
+            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:max-w-[680px] md:p-6 lg:rounded-3xl"
           >
             <ModalTitle title="Demo controls" sub="Switch patient state to preview every UI variant." onClose={onClose} />
             <div className="mt-4 space-y-1.5">
@@ -1952,7 +1952,7 @@ function TrackingModal() {
     <AnimatePresence>
       {open && shipment && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeTracking()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center">
-          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:max-w-[680px] md:p-6 lg:rounded-3xl">
             <ModalTitle title="Track shipment" sub={shipment.label} onClose={() => actions.closeTracking()} />
 
             <div className="mt-4 rounded-2xl bg-[#FAFAFA] p-4">
@@ -2011,7 +2011,7 @@ function ReceiptModal() {
     <AnimatePresence>
       {open && charge && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeReceipt()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center">
-          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:max-w-[680px] md:p-6 lg:rounded-3xl">
             <ModalTitle title="Receipt" sub={`#${charge.id.toUpperCase()} · ${charge.date}`} onClose={() => actions.closeReceipt()} />
 
             <div className="mt-4 rounded-2xl border border-[color:var(--color-hairline)] p-4">
@@ -2067,7 +2067,7 @@ function DocumentsSheet() {
     <AnimatePresence>
       {open && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.openDocuments(null)} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center">
-          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:max-w-[680px] md:p-6 lg:rounded-3xl">
             <ModalTitle title={title} sub="Read-only preview" onClose={() => actions.openDocuments(null)} />
 
             <div className="mt-4 max-h-[60vh] overflow-y-auto rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4 text-[13px] leading-relaxed text-ink/75">
