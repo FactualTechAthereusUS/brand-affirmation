@@ -1204,7 +1204,7 @@ function ChatThread({ t }: { t: Thread }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 8 }}
       transition={{ duration: 0.2 }}
-      className="flex h-[calc(100vh-3.5rem-4rem)] flex-col bg-white lg:h-[calc(100vh-3.5rem)] lg:mx-auto lg:w-full lg:max-w-3xl"
+      className="flex h-[calc(100vh-3.5rem-4rem)] w-full flex-col bg-white lg:h-[calc(100vh-3.5rem)]"
     >
       {/* Sticky liquid-glass header */}
       <div className="sticky top-0 z-10 flex items-center gap-2 bg-white/90 px-3 pb-2 pt-3 backdrop-blur">
