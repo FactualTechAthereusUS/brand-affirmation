@@ -1,9 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { z } from "zod";
-
-import { ArrowRight, Check, Shield, Sparkles, X } from "lucide-react";
+import { ArrowRight, Check, Shield, Sparkles } from "lucide-react";
 import blissleyLogo from "@/assets/blissley-white.png.asset.json";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
