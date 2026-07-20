@@ -335,7 +335,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
       </div>
 
       {/* Hero */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }} className="relative mx-4 mt-4 overflow-hidden rounded-2xl aspect-[2/1]">
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }} className="relative mx-4 mt-4 overflow-hidden rounded-2xl aspect-[2/1] md:mx-0 md:mt-0 md:aspect-[16/5] md:rounded-3xl">
         <img src={heroSkyWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-4">
