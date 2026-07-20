@@ -531,12 +531,34 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
       className="relative overflow-hidden bg-white"
     >
       {/* Image on top — square, shown at native size, no extra blur */}
-      <div className="relative mx-auto w-full max-w-[500px]">
+      <div className="relative mx-auto w-full max-w-[500px] overflow-hidden rounded-3xl">
         <img
           src={drNassPortal.url}
           alt="Dr. Scott Nass, MD"
           className="block h-auto w-full"
           loading="lazy"
+        />
+
+        {/* Soft blended blur over bottom ~40% — feathered, no hard line */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%]"
+          style={{
+            backdropFilter: "blur(14px)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 22%, rgba(0,0,0,0.85) 55%, #000 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 22%, rgba(0,0,0,0.85) 55%, #000 100%)",
+          }}
+        />
+        {/* Tint for text legibility, same feather */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%]"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%)",
+          }}
         />
 
         {/* Availability chip — top-left */}
@@ -548,7 +570,7 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
           Online now
         </div>
 
-        {/* Text over the image's existing blurred bottom */}
+        {/* Text over the feathered blur */}
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
           <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white/85">
             Your care team
@@ -561,6 +583,7 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
           </div>
         </div>
       </div>
+
 
       {/* White area — copy + CTA */}
       <div className="px-1 pt-6 sm:pt-7">
