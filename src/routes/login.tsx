@@ -101,13 +101,15 @@ function LoginPage() {
 
           <div className="w-full max-w-[420px] pt-16 lg:pt-0">
             <div className="mb-10">
-              <p className="mb-3 font-sans italic text-[15px] text-ever">welcome back.</p>
+              <div className="mb-3 inline-flex items-center gap-2 font-sans text-[13px] font-medium text-ever">
+                <Stethoscope className="h-4 w-4" />
+                Physician portal
+              </div>
               <h1 className="font-sans text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink sm:text-[46px]">
-                Sign in to your care.
+                Sign in to your practice.
               </h1>
               <p className="mt-4 text-[15px] leading-relaxed text-ink/60">
-                Access your patient portal to message your clinician, manage prescriptions, and
-                track progress.
+                Access your case queue, review patient intakes, write prescriptions, and message your panel securely.
               </p>
             </div>
 
