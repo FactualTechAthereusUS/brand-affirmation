@@ -90,9 +90,9 @@ function PatientPortal() {
   }
 
   return (
-    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#FAFAF8]" style={{ fontFamily: "var(--font-sans)" }}>
-      {/* Mobile: phone-style column · Desktop: sidebar + main */}
-      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-none md:flex-row md:bg-transparent">
+    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#F4F2ED] lg:bg-[#FAFAF8]" style={{ fontFamily: "var(--font-sans)" }}>
+      {/* Mobile: phone shell · Tablet: wider centered shell · Desktop: sidebar + main */}
+      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-[720px] md:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.15)] lg:max-w-none lg:flex-row lg:bg-transparent lg:shadow-none">
         <SideNav
           tab={tab}
           onChange={setTab}
@@ -100,10 +100,10 @@ function PatientPortal() {
           onLogoLongPress={() => setDevOpen(true)}
           onSignOut={() => { actions.signOut(); navigate({ to: "/login" }); }}
         />
-        <div className="flex min-h-svh flex-1 flex-col md:min-h-svh">
+        <div className="flex min-h-svh flex-1 flex-col lg:min-h-svh">
           <TopBar onBell={() => setNotifOpen(true)} onLogoLongPress={() => setDevOpen(true)} />
           <DesktopHeader tab={tab} onBell={() => setNotifOpen(true)} />
-          <main className="relative flex-1 overflow-hidden md:overflow-visible">
+          <main className="relative flex-1 overflow-hidden lg:overflow-visible">
             <AnimatePresence mode="wait">
               <motion.div
                 key={tab}
@@ -111,7 +111,7 @@ function PatientPortal() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full overflow-y-auto bg-white pb-28 md:pb-16"
+                className="h-full overflow-y-auto bg-white pb-28 lg:pb-16"
               >
                 {tab === "home" && <HomeTab onGoto={setTab} />}
                 {tab === "messages" && <MessagesTab />}
@@ -156,7 +156,7 @@ function SideNav({
   const cancel = () => { if (pressTimer.current) clearTimeout(pressTimer.current); };
 
   return (
-    <aside className="sticky top-0 hidden h-svh w-[260px] shrink-0 flex-col border-r border-black/5 bg-white/80 px-5 py-6 backdrop-blur-xl md:flex">
+    <aside className="sticky top-0 hidden h-svh w-[260px] shrink-0 flex-col border-r border-black/5 bg-white/80 px-5 py-6 backdrop-blur-xl lg:flex">
       <button
         onPointerDown={start} onPointerUp={cancel} onPointerLeave={cancel} onPointerCancel={cancel}
         className="flex items-center gap-2 select-none" aria-label="Blissley"
@@ -216,7 +216,7 @@ function DesktopHeader({ tab, onBell }: { tab: Tab; onBell: () => void }) {
   const unread = usePortal((s) => s.notifications.filter((n) => !n.read).length);
   const title = tab === "home" ? "Home" : tab === "messages" ? "Messages" : tab === "plan" ? "My Plan" : "Settings";
   return (
-    <header className="sticky top-0 z-20 hidden items-center justify-between border-b border-black/5 bg-white/80 px-10 py-5 backdrop-blur-xl md:flex">
+    <header className="sticky top-0 z-20 hidden items-center justify-between border-b border-black/5 bg-white/80 px-10 py-5 backdrop-blur-xl lg:flex">
       <div>
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45">Patient portal</div>
         <h1 className="mt-0.5 text-[22px] font-semibold tracking-tight text-ink">{title}</h1>
@@ -247,7 +247,7 @@ function TopBar({ onBell, onLogoLongPress }: { onBell: () => void; onLogoLongPre
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/40 bg-white/70 px-5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 md:hidden">
+    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/40 bg-white/70 px-5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 md:px-7 md:py-4 lg:hidden">
       <button
         onPointerDown={start} onPointerUp={cancel} onPointerLeave={cancel} onPointerCancel={cancel}
         className="flex items-center gap-2.5 select-none" aria-label="Blissley — long-press to open demo controls"
@@ -275,7 +275,7 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
   return (
-    <nav className="pointer-events-none sticky bottom-0 z-30 px-3 pb-3 pt-2 md:hidden">
+    <nav className="pointer-events-none sticky bottom-0 z-30 px-3 pb-3 pt-2 md:px-6 md:pb-4 lg:hidden">
       <div className="pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-white/50 bg-white/75 px-2 py-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150">
         {items.map((it) => {
           const active = it.id === tab;
@@ -326,21 +326,21 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   const lost = Math.max(0, startWeight - currentWeight);
 
   return (
-    <div className="pt-5 md:mx-auto md:w-full md:max-w-6xl md:px-8 md:pt-8">
-      <div className="pl-4 pr-4 md:hidden">
-        <motion.h1 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-[24px] font-semibold tracking-tight text-ink">
+    <div className="pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
+      <div className="pl-4 pr-4 md:px-0 lg:hidden">
+        <motion.h1 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-[24px] font-semibold tracking-tight text-ink md:text-[28px]">
           {greeting()}, {firstName}.
         </motion.h1>
-        <p className="mt-1 text-[13.5px] text-ink/55">{planStateSubline(planState)}</p>
+        <p className="mt-1 text-[13.5px] text-ink/55 md:text-[14.5px]">{planStateSubline(planState)}</p>
       </div>
 
       {/* Hero */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }} className="relative mx-4 mt-4 overflow-hidden rounded-2xl aspect-[2/1] md:mx-0 md:mt-0 md:aspect-[16/5] md:rounded-3xl">
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }} className="relative mx-4 mt-4 overflow-hidden rounded-2xl aspect-[2/1] md:mx-0 md:mt-5 md:aspect-[21/9] lg:rounded-3xl lg:mt-0 lg:aspect-[16/5]">
         <img src={heroSkyWoman.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <p className="text-[15px] font-semibold leading-tight text-white drop-shadow-md">{heroLine(planState)}</p>
-          <p className="mt-0.5 text-[12.5px] text-white/85 drop-shadow">Keep showing up for yourself, {firstName}.</p>
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+          <p className="text-[15px] font-semibold leading-tight text-white drop-shadow-md md:text-[17px]">{heroLine(planState)}</p>
+          <p className="mt-0.5 text-[12.5px] text-white/85 drop-shadow md:text-[13.5px]">Keep showing up for yourself, {firstName}.</p>
         </div>
       </motion.div>
 
@@ -663,7 +663,7 @@ function MessagesTab() {
   return (
     <AnimatePresence mode="wait">
       {view === "list" ? (
-        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-4 pt-5 md:mx-auto md:w-full md:max-w-4xl md:px-8 md:pt-8">
+        <motion.div key="list" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }} className="px-4 pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-4xl lg:px-8 lg:pt-8">
           <h2 className="text-[22px] font-semibold tracking-tight text-ink">Messages</h2>
           <p className="mt-1 text-[13.5px] text-ink/55">The people caring for you — one tap away.</p>
           <div className="mt-5 space-y-3">
@@ -858,7 +858,7 @@ function PlanTab() {
   const [billingOpen, setBillingOpen] = useState(false);
 
   return (
-    <div className="px-4 pt-5 md:mx-auto md:w-full md:max-w-6xl md:px-8 md:pt-8">
+    <div className="px-4 pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8 lg:pt-8">
 
       <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-white to-[color:var(--color-mist)]/40 p-5">
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Your plan</div>
@@ -1225,12 +1225,12 @@ function PlanModal({ modal, onClose }: { modal: string | null; onClose: () => vo
   return (
     <AnimatePresence>
       {modal && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center" onClick={onClose}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center" onClick={onClose}>
           <motion.div
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl"
+            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl"
           >
             {modal === "pause" && <PauseFlow onClose={onClose} />}
             {modal === "cancel" && <CancelFlow onClose={onClose} />}
@@ -1436,7 +1436,7 @@ function SettingsTab() {
   };
 
   return (
-    <div className="px-4 pt-5 md:mx-auto md:w-full md:max-w-4xl md:px-8 md:pt-8">
+    <div className="px-4 pt-5 md:px-6 md:pt-7 lg:mx-auto lg:w-full lg:max-w-4xl lg:px-8 lg:pt-8">
       <SettingsGroup title="Personal Info">
         <Field label="First name" defaultValue={patient.firstName} />
         <Field label="Last name" defaultValue={patient.lastName} />
@@ -1692,12 +1692,12 @@ function NotificationsSheet({ open, onClose, onGoto }: { open: boolean; onClose:
   return (
     <AnimatePresence>
       {open && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center" onClick={onClose}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center" onClick={onClose}>
           <motion.div
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onClick={(e) => e.stopPropagation()}
-            className="max-h-[80vh] w-full max-w-[440px] overflow-hidden rounded-t-3xl bg-white md:rounded-3xl"
+            className="max-h-[80vh] w-full max-w-[440px] overflow-hidden rounded-t-3xl bg-white lg:rounded-3xl"
           >
             <div className="flex items-center justify-between border-b border-[color:var(--color-hairline)] px-5 py-4">
               <div className="text-[16px] font-semibold text-ink">Notifications</div>
@@ -1779,12 +1779,12 @@ function DevSwitcher({ open, onClose }: { open: boolean; onClose: () => void }) 
   return (
     <AnimatePresence>
       {open && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center" onClick={onClose}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center" onClick={onClose}>
           <motion.div
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl"
+            className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl"
           >
             <ModalTitle title="Demo controls" sub="Switch patient state to preview every UI variant." onClose={onClose} />
             <div className="mt-4 space-y-1.5">
@@ -1837,7 +1837,7 @@ function Toaster() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 60, opacity: 0 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 md:bottom-14"
+          className="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 lg:bottom-14"
         >
           <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-white/90 px-4 py-2.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] ring-1 ring-black/5 backdrop-blur-xl">
             <div className="grid h-8 w-8 place-items-center rounded-full" style={{ background: notifBg(toShow.kind) }}>{notifIcon(toShow.kind)}</div>
@@ -1951,8 +1951,8 @@ function TrackingModal() {
   return (
     <AnimatePresence>
       {open && shipment && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeTracking()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center">
-          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeTracking()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl">
             <ModalTitle title="Track shipment" sub={shipment.label} onClose={() => actions.closeTracking()} />
 
             <div className="mt-4 rounded-2xl bg-[#FAFAFA] p-4">
@@ -2010,8 +2010,8 @@ function ReceiptModal() {
   return (
     <AnimatePresence>
       {open && charge && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeReceipt()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center">
-          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.closeReceipt()} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl">
             <ModalTitle title="Receipt" sub={`#${charge.id.toUpperCase()} · ${charge.date}`} onClose={() => actions.closeReceipt()} />
 
             <div className="mt-4 rounded-2xl border border-[color:var(--color-hairline)] p-4">
@@ -2066,8 +2066,8 @@ function DocumentsSheet() {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.openDocuments(null)} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm md:place-items-center">
-          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 md:rounded-3xl">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => actions.openDocuments(null)} className="fixed inset-0 z-50 grid place-items-end bg-black/40 backdrop-blur-sm lg:place-items-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 32 }} onClick={(e) => e.stopPropagation()} className="w-full max-w-[440px] rounded-t-3xl bg-white p-5 lg:rounded-3xl">
             <ModalTitle title={title} sub="Read-only preview" onClose={() => actions.openDocuments(null)} />
 
             <div className="mt-4 max-h-[60vh] overflow-y-auto rounded-2xl border border-[color:var(--color-hairline)] bg-white p-4 text-[13px] leading-relaxed text-ink/75">
