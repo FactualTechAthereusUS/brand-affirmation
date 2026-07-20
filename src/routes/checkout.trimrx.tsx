@@ -401,9 +401,9 @@ function CheckoutPage() {
       navigate({
         to: "/confirmation",
         search: {
-          model: "auth",
-          tx: (search.tx as "sema" | "tirz") ?? "sema",
-          plan: (search.plan as "monthly" | "three" | "six") ?? "monthly",
+          model: "auth" as const,
+          tx,
+          plan: planKey,
           total: Math.round(summarySubtotal),
           first: firstName || "",
           email: form.email,
