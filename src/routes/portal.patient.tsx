@@ -90,9 +90,9 @@ function PatientPortal() {
   }
 
   return (
-    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#FAFAF8]" style={{ fontFamily: "var(--font-sans)" }}>
-      {/* Mobile: phone-style column · Desktop: sidebar + main */}
-      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-none md:flex-row md:bg-transparent">
+    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#F4F2ED] lg:bg-[#FAFAF8]" style={{ fontFamily: "var(--font-sans)" }}>
+      {/* Mobile: phone shell · Tablet: wider centered shell · Desktop: sidebar + main */}
+      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-[720px] md:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.15)] lg:max-w-none lg:flex-row lg:bg-transparent lg:shadow-none">
         <SideNav
           tab={tab}
           onChange={setTab}
@@ -100,10 +100,10 @@ function PatientPortal() {
           onLogoLongPress={() => setDevOpen(true)}
           onSignOut={() => { actions.signOut(); navigate({ to: "/login" }); }}
         />
-        <div className="flex min-h-svh flex-1 flex-col md:min-h-svh">
+        <div className="flex min-h-svh flex-1 flex-col lg:min-h-svh">
           <TopBar onBell={() => setNotifOpen(true)} onLogoLongPress={() => setDevOpen(true)} />
           <DesktopHeader tab={tab} onBell={() => setNotifOpen(true)} />
-          <main className="relative flex-1 overflow-hidden md:overflow-visible">
+          <main className="relative flex-1 overflow-hidden lg:overflow-visible">
             <AnimatePresence mode="wait">
               <motion.div
                 key={tab}
@@ -111,7 +111,7 @@ function PatientPortal() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full overflow-y-auto bg-white pb-28 md:pb-16"
+                className="h-full overflow-y-auto bg-white pb-28 lg:pb-16"
               >
                 {tab === "home" && <HomeTab onGoto={setTab} />}
                 {tab === "messages" && <MessagesTab />}
