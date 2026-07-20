@@ -568,6 +568,10 @@ function Panel({ title, icon: Icon, children, tone = "default" }: { title: strin
   );
 }
 
+function DoctorsIcon({ className }: { className?: string }) {
+  return <img src="/assets/doctors-icon.png" alt="" className={`${className ?? ""} object-contain`} />;
+}
+
 function PanelSnapshot({ c }: { c: Case }) {
   const rows: [string, string][] = [
     ["Age / sex", `${c.patient.age}${c.patient.sex}`],
@@ -580,7 +584,7 @@ function PanelSnapshot({ c }: { c: Case }) {
     ["Email", c.patient.email],
   ];
   return (
-    <Panel title="Patient snapshot" icon={User2}>
+    <Panel title="Patient snapshot" icon={DoctorsIcon}>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
         {rows.map(([k, v]) => (
           <div key={k}>
