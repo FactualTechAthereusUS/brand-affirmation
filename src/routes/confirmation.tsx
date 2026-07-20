@@ -663,8 +663,7 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
         <button
           type="button"
           onClick={onGo}
-          className="group relative mt-5 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3.5 text-[15px] font-bold text-white shadow-[0_10px_30px_-8px_rgba(238,114,115,0.6)] transition"
-          style={{ background: CORAL }}
+          className="group relative mt-5 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-ink px-6 py-3.5 text-[15px] font-bold text-white shadow-[0_10px_30px_-8px_rgba(23,23,23,0.35)] transition"
         >
           <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
           <span className="relative">Open my patient portal</span>
