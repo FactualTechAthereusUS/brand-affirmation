@@ -24,7 +24,9 @@ import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
+import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
+import { Route as LoginPhysicianRouteImport } from './routes/login.physician'
 import { Route as IntakeWeightloss3RouteImport } from './routes/intake_.weightloss-3'
 import { Route as IntakeWeightLossTrimrx2RouteImport } from './routes/intake_.weight-loss-trimrx-2'
 import { Route as IntakeWeightLossTrimrxRouteImport } from './routes/intake_.weight-loss-trimrx'
@@ -109,10 +111,20 @@ const SalesDMRoute = SalesDMRouteImport.update({
   path: '/sales/DM',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalPhysicianRoute = PortalPhysicianRouteImport.update({
+  id: '/portal/physician',
+  path: '/portal/physician',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalPatientRoute = PortalPatientRouteImport.update({
   id: '/portal/patient',
   path: '/portal/patient',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LoginPhysicianRoute = LoginPhysicianRouteImport.update({
+  id: '/physician',
+  path: '/physician',
+  getParentRoute: () => LoginRoute,
 } as any)
 const IntakeWeightloss3Route = IntakeWeightloss3RouteImport.update({
   id: '/intake_/weightloss-3',
@@ -160,7 +172,7 @@ export interface FileRoutesByFullPath {
   '/confirmation': typeof ConfirmationRoute
   '/confirmation-charged': typeof ConfirmationChargedRoute
   '/intake': typeof IntakeRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
@@ -175,7 +187,9 @@ export interface FileRoutesByFullPath {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
+  '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
@@ -186,7 +200,7 @@ export interface FileRoutesByTo {
   '/confirmation': typeof ConfirmationRoute
   '/confirmation-charged': typeof ConfirmationChargedRoute
   '/intake': typeof IntakeRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
@@ -201,7 +215,9 @@ export interface FileRoutesByTo {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
+  '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
@@ -213,7 +229,7 @@ export interface FileRoutesById {
   '/confirmation': typeof ConfirmationRoute
   '/confirmation-charged': typeof ConfirmationChargedRoute
   '/intake': typeof IntakeRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
@@ -228,7 +244,9 @@ export interface FileRoutesById {
   '/intake_/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake_/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake_/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
+  '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
@@ -256,7 +274,9 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/login/physician'
     | '/portal/patient'
+    | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
@@ -282,7 +302,9 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/login/physician'
     | '/portal/patient'
+    | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
@@ -308,7 +330,9 @@ export interface FileRouteTypes {
     | '/intake_/weight-loss-trimrx'
     | '/intake_/weight-loss-trimrx-2'
     | '/intake_/weightloss-3'
+    | '/login/physician'
     | '/portal/patient'
+    | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
@@ -320,7 +344,7 @@ export interface RootRouteChildren {
   ConfirmationRoute: typeof ConfirmationRoute
   ConfirmationChargedRoute: typeof ConfirmationChargedRoute
   IntakeRoute: typeof IntakeRoute
-  LoginRoute: typeof LoginRoute
+  LoginRoute: typeof LoginRouteWithChildren
   MedicationSafetyRoute: typeof MedicationSafetyRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundRoute: typeof RefundRoute
@@ -336,6 +360,7 @@ export interface RootRouteChildren {
   IntakeWeightLossTrimrx2Route: typeof IntakeWeightLossTrimrx2Route
   IntakeWeightloss3Route: typeof IntakeWeightloss3Route
   PortalPatientRoute: typeof PortalPatientRoute
+  PortalPhysicianRoute: typeof PortalPhysicianRoute
   SalesDMRoute: typeof SalesDMRoute
   SalesTrimrxRoute: typeof SalesTrimrxRoute
   WeightLossSalesRoute: typeof WeightLossSalesRoute
@@ -449,12 +474,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SalesDMRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/physician': {
+      id: '/portal/physician'
+      path: '/portal/physician'
+      fullPath: '/portal/physician'
+      preLoaderRoute: typeof PortalPhysicianRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal/patient': {
       id: '/portal/patient'
       path: '/portal/patient'
       fullPath: '/portal/patient'
       preLoaderRoute: typeof PortalPatientRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/login/physician': {
+      id: '/login/physician'
+      path: '/physician'
+      fullPath: '/login/physician'
+      preLoaderRoute: typeof LoginPhysicianRouteImport
+      parentRoute: typeof LoginRoute
     }
     '/intake_/weightloss-3': {
       id: '/intake_/weightloss-3'
@@ -515,12 +554,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LoginRouteChildren {
+  LoginPhysicianRoute: typeof LoginPhysicianRoute
+}
+
+const LoginRouteChildren: LoginRouteChildren = {
+  LoginPhysicianRoute: LoginPhysicianRoute,
+}
+
+const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
   ConfirmationChargedRoute: ConfirmationChargedRoute,
   IntakeRoute: IntakeRoute,
-  LoginRoute: LoginRoute,
+  LoginRoute: LoginRouteWithChildren,
   MedicationSafetyRoute: MedicationSafetyRoute,
   PrivacyRoute: PrivacyRoute,
   RefundRoute: RefundRoute,
@@ -536,6 +585,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeWeightLossTrimrx2Route: IntakeWeightLossTrimrx2Route,
   IntakeWeightloss3Route: IntakeWeightloss3Route,
   PortalPatientRoute: PortalPatientRoute,
+  PortalPhysicianRoute: PortalPhysicianRoute,
   SalesDMRoute: SalesDMRoute,
   SalesTrimrxRoute: SalesTrimrxRoute,
   WeightLossSalesRoute: WeightLossSalesRoute,
@@ -544,13 +594,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
