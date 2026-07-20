@@ -6,7 +6,6 @@ import {
   Check,
   Copy,
   Mail,
-  MapPin,
   MessageCircle,
   ShieldCheck,
   Sparkles,
