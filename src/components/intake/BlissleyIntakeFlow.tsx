@@ -32,6 +32,9 @@ import {
 
 } from "./TrxUI";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+import qBg1 from "@/assets/intake-q1-redhead.png.asset.json";
+import qBg2 from "@/assets/intake-q2-sunflower.jpg.asset.json";
+import qBg3 from "@/assets/intake-q3-mountain.png.asset.json";
 import trxHeroImg from "@/assets/trx-hero-woman.png.asset.json";
 import trxHeroWoman2 from "@/assets/trx-hero-woman2-desktop.png.asset.json";
 import trxHeroWoman2Mobile from "@/assets/trx-hero-woman2-mobile.png.asset.json";
@@ -1381,9 +1384,11 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
 }
 
 
-/* ═════════════ Loading with 3 qualifying questions ═════════════ */
+/* ═════════════ Loading with 3 qualifying questions — iOS full-bleed ═════════════ */
+type YN = "yes" | "no" | string;
+
 function LoadingScreen({
-  firstName, state, goalWeight, onDone, answers, setQ,
+  firstName, state, goalWeight, onDone, setQ,
 }: {
   firstName?: string;
   state?: string;
@@ -1392,13 +1397,15 @@ function LoadingScreen({
   answers: { q1?: YesNo; q2?: string; q3?: string };
   setQ: (k: "q1" | "q2" | "q3", v: string) => void;
 }) {
-  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0); // 0=steps, 1=q1, 2=q2, 3=q3, 4=finalizing
+  // 0 = calc steps, 1..3 = questions, 4 = finalizing
+  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [step, setStep] = useState(0);
+
   const initialSteps = useMemo(
     () => [
-      "Calculating your weight loss timeline...",
-      "Analyzing your metabolic profile...",
-      `Checking physician availability in ${state || "your state"}...`,
+      "Calculating your weight loss timeline…",
+      "Analyzing your metabolic profile…",
+      `Checking physician availability in ${state || "your state"}…`,
     ],
     [state],
   );
@@ -1406,107 +1413,283 @@ function LoadingScreen({
   useEffect(() => {
     if (phase !== 0) return;
     if (step >= initialSteps.length) {
-      const t = setTimeout(() => setPhase(1), 500);
+      const t = setTimeout(() => setPhase(1), 450);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setStep((s) => s + 1), 1200);
+    const t = setTimeout(() => setStep((s) => s + 1), 1100);
     return () => clearTimeout(t);
   }, [phase, step, initialSteps.length]);
 
   useEffect(() => {
     if (phase !== 4) return;
-    const t = setTimeout(onDone, 1500);
+    const t = setTimeout(onDone, 1400);
     return () => clearTimeout(t);
   }, [phase, onDone]);
 
-  const barPct = phase === 0 ? Math.min(60, ((step + 1) / initialSteps.length) * 60) : phase === 1 ? 70 : phase === 2 ? 82 : phase === 3 ? 94 : 100;
+  const questions: Array<{
+    kicker: string;
+    title: string;
+    options: string[];
+    key: "q1" | "q2" | "q3";
+    bg: string;
+    align: "bottom" | "bottom";
+  }> = [
+    {
+      kicker: "While we finalize your plan",
+      title: `Are you determined to finally reach ${goalWeight || "your goal"} lbs?`,
+      options: ["Yes, I'm ready", "Not sure yet"],
+      key: "q1",
+      bg: qBg1.url,
+      align: "bottom",
+    },
+    {
+      kicker: "Almost there",
+      title: "Did you know metabolism — not willpower — is behind most weight struggles?",
+      options: ["I do now", "That's surprising"],
+      key: "q2",
+      bg: qBg2.url,
+      align: "bottom",
+    },
+    {
+      kicker: "Last one",
+      title: "Would a physician-supervised program that works with your body feel right?",
+      options: ["Yes, that's me", "Tell me more"],
+      key: "q3",
+      bg: qBg3.url,
+      align: "bottom",
+    },
+  ];
 
-  const pickQ = (k: "q1" | "q2" | "q3", v: string) => {
+  const pick = (k: "q1" | "q2" | "q3", v: string) => {
     setQ(k, v);
-    setTimeout(() => setPhase((p) => (p + 1) as 1 | 2 | 3 | 4), 350);
+    setTimeout(() => setPhase((p) => (p + 1) as 1 | 2 | 3 | 4), 320);
   };
 
+  const totalPhases = 5;
+  const barPct =
+    phase === 0
+      ? Math.min(28, ((step + 1) / initialSteps.length) * 28)
+      : phase === 4
+        ? 100
+        : 28 + ((phase) / 3) * 68;
+
+  const activeQ = phase >= 1 && phase <= 3 ? questions[phase - 1] : null;
+
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
-      <motion.div className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
-        animate={{ x: [0, 40, 0], y: [0, -30, 0] }} transition={{ duration: 12, repeat: Infinity }} />
-      <motion.div className="absolute -right-40 bottom-1/4 h-[560px] w-[560px] rounded-full bg-[#ffd7c0]/25 blur-[130px]"
-        animate={{ x: [0, -30, 0], y: [0, 40, 0] }} transition={{ duration: 14, repeat: Infinity }} />
-
-      <div className="relative z-10 flex items-center justify-center pt-10">
-        <img src={blissleyWhite.url} alt="Blissley" className="h-8 w-auto" />
-      </div>
-
-      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-100px)] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center">
-        <h2 className="font-hero text-[24px] font-bold tracking-[-0.02em] text-white md:text-[30px]">
-          Building {firstName ? `${firstName}'s` : "your"} personalized protocol...
-        </h2>
-
-        <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-white/20">
-          <motion.div
-            className="h-full rounded-full bg-white"
-            initial={{ width: 0 }}
-            animate={{ width: `${barPct}%` }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          />
-        </div>
-
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 z-50 overflow-hidden bg-black"
+    >
+      {/* Phase 0 — gradient calc screen */}
+      <AnimatePresence>
         {phase === 0 && (
-          <div className="mt-6 w-full space-y-2 text-left">
-            {initialSteps.slice(0, step + 1).map((s, i) => (
-              <motion.div key={s} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-[14.5px] text-white/95">
-                <Check className="h-4 w-4 shrink-0" /> {s}
+          <motion.div
+            key="calc"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
+            <motion.div
+              className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
+              animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
+              transition={{ duration: 12, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute -right-40 bottom-1/4 h-[560px] w-[560px] rounded-full bg-[#ffd7c0]/25 blur-[130px]"
+              animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
+              transition={{ duration: 14, repeat: Infinity }}
+            />
+            <div className="relative z-10 flex items-center justify-center pt-10">
+              <img src={blissleyWhite.url} alt="Blissley" className="h-8 w-auto" />
+            </div>
+            <div className="relative z-10 mx-auto flex min-h-[calc(100svh-100px)] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center">
+              <h2 className="font-hero text-[26px] font-bold tracking-[-0.02em] text-white md:text-[32px]">
+                Building {firstName ? `${firstName}'s` : "your"} personalized protocol…
+              </h2>
+              <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
+                <motion.div
+                  className="h-full rounded-full bg-white"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${barPct}%` }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </div>
+              <div className="mt-8 w-full space-y-2.5 text-left">
+                {initialSteps.slice(0, step + 1).map((s) => (
+                  <motion.div
+                    key={s}
+                    initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex items-center gap-2.5 text-[14.5px] text-white/95"
+                  >
+                    <Check className="h-4 w-4 shrink-0" /> {s}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Phases 1–3 — full-bleed portrait with iOS card at bottom */}
+      <AnimatePresence mode="wait">
+        {activeQ && (
+          <motion.div
+            key={`q-${phase}`}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0"
+          >
+            {/* Full background image with slow Ken-Burns */}
+            <motion.img
+              src={activeQ.bg}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+              initial={{ scale: 1.08 }}
+              animate={{ scale: 1.14 }}
+              transition={{ duration: 9, ease: "linear" }}
+            />
+            {/* Bottom fade for card legibility (images already carry blur, this is extra safety) */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
+
+            {/* Top: logo + progress */}
+            <div className="absolute inset-x-0 top-0 z-10 px-6 pt-8">
+              <div className="mx-auto flex max-w-[520px] flex-col items-center gap-4">
+                <img src={blissleyWhite.url} alt="Blissley" className="h-7 w-auto drop-shadow" />
+                <div className="flex w-full items-center gap-1.5">
+                  {Array.from({ length: totalPhases - 1 }).map((_, i) => {
+                    const done = i < phase;
+                    return (
+                      <div
+                        key={i}
+                        className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-white/25"
+                      >
+                        <motion.div
+                          className="absolute inset-y-0 left-0 bg-white"
+                          initial={{ width: done ? "100%" : "0%" }}
+                          animate={{ width: done ? "100%" : i === phase - 1 ? "100%" : "0%" }}
+                          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom: iOS card */}
+            <div className="absolute inset-x-0 bottom-0 z-10 px-4 pb-6 md:pb-10">
+              <motion.div
+                key={`card-${phase}`}
+                initial={{ y: 40, opacity: 0, filter: "blur(8px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                exit={{ y: -20, opacity: 0, filter: "blur(6px)" }}
+                transition={{ type: "spring", stiffness: 260, damping: 28, mass: 0.9 }}
+                className="mx-auto w-full max-w-[440px] text-center"
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.5 }}
+                  className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/85 drop-shadow"
+                >
+                  {activeQ.kicker}
+                </motion.div>
+                <motion.h3
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.22, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-2.5 font-hero text-[22px] font-semibold leading-[1.2] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)] md:text-[26px]"
+                >
+                  {activeQ.title}
+                </motion.h3>
+
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  {activeQ.options.map((v, i) => (
+                    <motion.button
+                      key={v}
+                      onClick={() => pick(activeQ.key, v)}
+                      initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      whileTap={{ scale: 0.96 }}
+                      whileHover={{ y: -2 }}
+                      className="group relative h-[54px] overflow-hidden rounded-full border border-white/40 bg-white/15 text-[14.5px] font-semibold text-white backdrop-blur-2xl transition-all hover:bg-white/25"
+                      style={{ WebkitBackdropFilter: "blur(24px)" }}
+                    >
+                      <span className="relative z-10">{v}</span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* dots */}
+                <div className="mt-5 flex items-center justify-center gap-1.5">
+                  {[1, 2, 3].map((n) => (
+                    <span
+                      key={n}
+                      className="h-1.5 rounded-full transition-all duration-500"
+                      style={{
+                        width: n === phase ? 22 : 6,
+                        background: n <= phase ? "#ffffff" : "rgba(255,255,255,0.45)",
+                      }}
+                    />
+                  ))}
+                </div>
               </motion.div>
-            ))}
-          </div>
-        )}
-
-        {phase >= 1 && phase <= 3 && (
-          <motion.div key={phase} initial={{ opacity: 0, y: 10, filter: "blur(6px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 0.4 }} className="mt-8 w-full">
-            {phase === 1 && (
-              <>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">While we finalize your plan</div>
-                <div className="mt-2 font-hero text-[20px] font-semibold text-white md:text-[24px]">Are you determined to finally reach {goalWeight || "your goal"} lbs?</div>
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  {["Yes", "No"].map((v) => (
-                    <button key={v} onClick={() => pickQ("q1", v.toLowerCase())} className="h-[52px] rounded-full bg-white/15 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/25">{v}</button>
-                  ))}
-                </div>
-              </>
-            )}
-            {phase === 2 && (
-              <>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">Almost there</div>
-                <div className="mt-2 font-hero text-[20px] font-semibold text-white md:text-[24px]">Did you know metabolism - not willpower - is the root cause of weight struggles for most people?</div>
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  {["Yes", "Not sure"].map((v) => (
-                    <button key={v} onClick={() => pickQ("q2", v)} className="h-[52px] rounded-full bg-white/15 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/25">{v}</button>
-                  ))}
-                </div>
-              </>
-            )}
-            {phase === 3 && (
-              <>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">Last one</div>
-                <div className="mt-2 font-hero text-[20px] font-semibold text-white md:text-[24px]">Would a physician-supervised program that works with your metabolism sound right for you?</div>
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  {["Yes", "Maybe"].map((v) => (
-                    <button key={v} onClick={() => pickQ("q3", v)} className="h-[52px] rounded-full bg-white/15 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/25">{v}</button>
-                  ))}
-                </div>
-              </>
-            )}
+            </div>
           </motion.div>
         )}
+      </AnimatePresence>
 
+      {/* Phase 4 — final handoff */}
+      <AnimatePresence>
         {phase === 4 && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-8 text-white">
-            <div className="flex items-center justify-center gap-2 text-[14.5px]"><Check className="h-4 w-4" /> Personalizing your program...</div>
-            <div className="mt-4 font-hero text-[22px] font-bold md:text-[26px]">Your program is ready{firstName ? `, ${firstName}` : ""}.</div>
+          <motion.div
+            key="done"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
+            <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 text-center">
+              <motion.div
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                className="grid h-16 w-16 place-items-center rounded-full bg-white/20 backdrop-blur-xl"
+              >
+                <Check className="h-8 w-8 text-white" strokeWidth={3} />
+              </motion.div>
+              <motion.h2
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.5 }}
+                className="mt-5 font-hero text-[24px] font-bold text-white md:text-[30px]"
+              >
+                Your program is ready{firstName ? `, ${firstName}` : ""}.
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.35 }}
+                className="mt-2 text-[14.5px] text-white/80"
+              >
+                Taking you to your plan…
+              </motion.p>
+            </div>
           </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </motion.div>
   );
 }
+
