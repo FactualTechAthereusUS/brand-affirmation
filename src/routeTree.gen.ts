@@ -17,6 +17,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as MedicationSafetyRouteImport } from './routes/medication-safety'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-charged'
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
@@ -71,6 +72,11 @@ const LoginRoute = LoginRouteImport.update({
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationChargedRoute = ConfirmationChargedRouteImport.update({
+  id: '/confirmation-charged',
+  path: '/confirmation-charged',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfirmationRoute = ConfirmationRouteImport.update({
@@ -152,6 +158,7 @@ const CheckoutUITemplate3Route = CheckoutUITemplate3RouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/confirmation': typeof ConfirmationRoute
+  '/confirmation-charged': typeof ConfirmationChargedRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/confirmation': typeof ConfirmationRoute
+  '/confirmation-charged': typeof ConfirmationChargedRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/confirmation': typeof ConfirmationRoute
+  '/confirmation-charged': typeof ConfirmationChargedRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/medication-safety': typeof MedicationSafetyRoute
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/confirmation'
+    | '/confirmation-charged'
     | '/intake'
     | '/login'
     | '/medication-safety'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/confirmation'
+    | '/confirmation-charged'
     | '/intake'
     | '/login'
     | '/medication-safety'
@@ -280,6 +291,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/confirmation'
+    | '/confirmation-charged'
     | '/intake'
     | '/login'
     | '/medication-safety'
@@ -306,6 +318,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConfirmationRoute: typeof ConfirmationRoute
+  ConfirmationChargedRoute: typeof ConfirmationChargedRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
   MedicationSafetyRoute: typeof MedicationSafetyRoute
@@ -385,6 +398,13 @@ declare module '@tanstack/react-router' {
       path: '/intake'
       fullPath: '/intake'
       preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmation-charged': {
+      id: '/confirmation-charged'
+      path: '/confirmation-charged'
+      fullPath: '/confirmation-charged'
+      preLoaderRoute: typeof ConfirmationChargedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/confirmation': {
@@ -498,6 +518,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
+  ConfirmationChargedRoute: ConfirmationChargedRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
   MedicationSafetyRoute: MedicationSafetyRoute,
