@@ -6,7 +6,6 @@ import {
   Check,
   Copy,
   Mail,
-  MessageCircle,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
@@ -18,7 +17,6 @@ import iconTruck from "@/assets/icon-truck.png.asset.json";
 import iconDoctor from "@/assets/icon-doctor.png.asset.json";
 import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
-import drNass from "@/assets/dr-scott-nass.png.asset.json";
 import drNassPortal from "@/assets/dr-nass-portal.png.asset.json";
 import guaranteeBadge from "@/assets/guarantee-badge.png.asset.json";
 import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
@@ -165,7 +163,6 @@ function ConfirmationPage() {
           <div className="space-y-6">
             <NextStepsTimeline model={model} />
             <PortalCTA firstName={firstName} onGo={() => navigate({ to: "/portal/patient" })} />
-            <DoctorCard />
           </div>
         </div>
 
@@ -633,26 +630,6 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
   );
 }
 
-/* ────────── DOCTOR CARD ────────── */
-function DoctorCard() {
-  return (
-    <Card delay={0.24} className="!p-4 sm:!p-5">
-      <div className="flex items-center gap-4">
-        <div className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full ring-2 ring-white shadow-[0_4px_18px_-6px_rgba(0,0,0,0.15)]">
-          <img src={drNass.url} alt="Dr. Scott Nass" className="h-full w-full object-cover" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[13px] font-bold">Dr. Scott Nass, MD</div>
-          <div className="text-[11.5px] text-ink/55">Your reviewing physician · Board-certified</div>
-        </div>
-        <div className="hidden shrink-0 items-center gap-1 rounded-full bg-[#F6F4EF] px-2.5 py-1 text-[10.5px] font-semibold text-ink/65 sm:flex">
-          <MessageCircle className="h-3 w-3" />
-          Direct
-        </div>
-      </div>
-    </Card>
-  );
-}
 
 /* ────────── REFUND GUARANTEE ────────── */
 function RefundGuarantee({ model, total }: { model: Model; total: number }) {
