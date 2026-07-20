@@ -1460,12 +1460,8 @@ function LoadingScreen({
   };
 
   const totalPhases = 5;
-  const barPct =
-    phase === 0
-      ? Math.min(28, ((step + 1) / initialSteps.length) * 28)
-      : phase === 4
-        ? 100
-        : 28 + ((phase) / 3) * 68;
+  const barPct = phase === 4 ? 100 : (phase / 3) * 96;
+
 
   const activeQ = phase >= 1 && phase <= 3 ? questions[phase - 1] : null;
 
