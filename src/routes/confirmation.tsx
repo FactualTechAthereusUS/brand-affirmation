@@ -19,7 +19,7 @@ import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
 import drNassPortal from "@/assets/dr-nass-portal.png.asset.json";
 import guaranteeBadge from "@/assets/guarantee-badge.png.asset.json";
-import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
+
 
 /* ── Search params ── */
 type Model = "auth" | "charged";
@@ -798,13 +798,11 @@ function SupportBlock() {
         </div>
         <ArrowRight className="h-4 w-4 text-ink/30 transition group-hover:translate-x-0.5 group-hover:text-ink/60" />
       </a>
-      <div className="flex items-center gap-3 rounded-2xl border border-black/6 bg-white p-4">
-        <img src={trustpilotLogo.url} alt="Trustpilot" className="h-10 w-10 object-contain" />
-        <div className="min-w-0 flex-1">
-          <div className="text-[13px] font-bold">Rated Excellent</div>
-          <div className="text-[12px] text-ink/55">30,000+ patients treated · 4.9 avg rating</div>
-        </div>
-      </div>
+      <img
+        src="/assets/trustpilot-badge.png"
+        alt="Trustpilot Excellent rating"
+        className="h-auto w-full max-w-[280px] object-contain"
+      />
     </motion.section>
   );
 }
