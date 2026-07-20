@@ -1410,15 +1410,9 @@ function LoadingScreen({
     [state],
   );
 
-  useEffect(() => {
-    if (phase !== 0) return;
-    if (step >= initialSteps.length) {
-      const t = setTimeout(() => setPhase(1), 450);
-      return () => clearTimeout(t);
-    }
-    const t = setTimeout(() => setStep((s) => s + 1), 1100);
-    return () => clearTimeout(t);
-  }, [phase, step, initialSteps.length]);
+  // initial steps kept for potential future intro; currently unused
+  void initialSteps;
+
 
   useEffect(() => {
     if (phase !== 4) return;
