@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft, Mail, CheckCircle2, Stethoscope } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/blissley-logo.png.asset.json";
