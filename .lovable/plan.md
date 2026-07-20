@@ -1,49 +1,57 @@
-## Audit summary
+# Desktop optimization for /portal/patient
 
-Working end-to-end today: auth gate, onboarding tour, tab nav, notifications sheet (open/read/deep-link), messages (send + simulated reply, per-thread unread), plan state machine, check-in flow (unlocks refill), log weight, request early refill, pause / resume / cancel, switch plan (UI only), address edit, weight chart with hover, dev switcher.
+Right now the portal is a single 440px-wide phone frame centered on a huge desktop canvas. We'll transform it into a proper desktop web app at `md:` breakpoints while leaving the mobile UI untouched.
 
-Not finished / inconsistent — this plan fixes each one.
+## Layout shell (src/routes/portal.patient.tsx)
 
-## Fixes
+Replace the centered "phone card" wrapper with a responsive shell:
 
-### 1. Dead buttons on Home & Plan
-- **Track order** button on Home shipment card → open a new `TrackingModal` (timeline: Ordered → Packed → In transit → Out for delivery → Delivered, driven by `shipment.status`, with tracking number, carrier, ETA, copy-to-clipboard).
-- **Order History "Tracking" pill** on Plan → opens the same `TrackingModal`.
-- **Billing History "Receipt" pill** → opens a `ReceiptModal` (line items, card used, date, Blissley logo, download-stub button).
-- **Physician "Message" strip** on Home already navigates — verify and keep.
+- **Mobile (<768px)**: unchanged — full-width app with bottom `TabBar`.
+- **Desktop (≥768px)**: full-viewport app with:
+  - Left **sidebar nav** (240px, sticky, full-height): Blissley logo, greeting, 4 primary tabs (Home / Messages / My Plan / Settings) as vertical rail items with icon + label + active pill, plus a bottom block with notifications bell, dev switcher trigger, and log-out.
+  - **Top bar** (desktop only): page title for current tab, right-aligned search-less header with saved-card chip and notifications bell (hidden on desktop since it's in sidebar) — keep minimal.
+  - **Main content area**: max-width ~1200px, generous padding (`px-10 py-8`), no phone frame, no rounded card shadow.
+  - Hide the mobile `TabBar` on `md:` (`md:hidden`), hide the sidebar on mobile (`hidden md:flex`).
 
-### 2. Payment method modal is a placeholder
-Replace the "A secure Stripe form would open here" block with a real-looking card form: cardholder name, number (formatted with brand detection reusing `PayIcons`), expiry, CVC, billing ZIP, "Save card" button that updates `patient.card` in the store and shows a toast. Same white/black aesthetic as the other modals.
+```text
+┌─────────┬──────────────────────────────────┐
+│  LOGO   │  Page title                       │
+│         ├──────────────────────────────────┤
+│ ▸ Home  │                                   │
+│  Msgs   │  Tab content (2-col where useful) │
+│  Plan   │                                   │
+│  Setts  │                                   │
+│         │                                   │
+│ 🔔 Log  │                                   │
+└─────────┴──────────────────────────────────┘
+```
 
-### 3. Documents section is fake
-Turn the 4 static rows into a real `DocumentsSheet`:
-- Prescription (PDF) → opens a modal showing a styled prescription preview (patient, medication, dose, prescriber Dr. Nass, date, signature image) with "Download PDF" stub.
-- Lab results → "No results on file yet" empty state with explanation.
-- Invoice history → list of `charges` with per-row "View" → opens the `ReceiptModal` from #1.
-- HIPAA notice → scrollable text sheet with the standard notice.
+## Per-tab desktop layouts
 
-### 4. Settings visual inconsistency (the "not same color scheme" point)
-Match the white/black/hairline system used in Order History / Manage / Billing:
-- `SettingsGroup` already white — keep, but drop the beige `bg-[color:var(--color-mist)]/60` used by Toggle off-state and Log out button; use `bg-white` + hairline border and `bg-ink/5` for hover.
-- Toggle off state → neutral `#E5E5E5` (not beige `#E4E0D7`) so it reads on white.
-- Log out button → white with hairline border and black text (matches other secondary buttons), destructive-red only on hover.
-- Field label chips → drop the uppercase mist styling, use the same 11px ink/50 label used in Manage rows.
-- Documents rows use the same white/hairline row style as Order History.
+Content components already exist and render fine — we add responsive grids around their internal cards so they use the wider canvas instead of stacking.
 
-### 5. Auto state progression (feels alive without dev switcher)
-On mount, if `planState === "pending_review"` and >20s elapsed since load, auto-advance to `approved_preparing`, then `shipped` after another 20s, then `delivered_active`. Timers cleared on unmount. This makes the "just signed up" demo path visibly move.
+- **HomeTab**: 12-col grid on `lg:`.
+  - Left column (8): Plan state hero card (approval/shipment/active), Progress + Weight chart card.
+  - Right column (4): Next check-in card, Care team card, Quick actions (Track / Log weight / Message).
+- **MessagesTab**: two-pane layout on `md:` — thread list left (320px), open conversation right. Mobile keeps the current push-navigation.
+- **PlanTab**: 2-col on `lg:` — plan summary + shipments left, billing + address + pause/cancel right.
+- **SettingsTab**: 2-col on `lg:` — account/notifications left, documents/legal/log-out right; keep hairline white cards.
 
-### 6. Small polish
-- Notification bell: when sheet opens, mark visible ones as read after 800ms (matches iOS behavior) — optional toggle behind a check.
-- Home "Progress" card: "Log weight →" link should open the log-weight modal directly instead of just navigating to Plan.
-- Check-in CTA on Home should also be tappable to jump straight into the check-in modal (currently just goes to Plan tab).
-- Messages tab: mark thread read when opened (already partially there — verify `markThreadRead` fires on thread open).
+## Modals & sheets
 
-## Out of scope
-Real backend, real Stripe, real PDF generation, real tracking API. Everything stays client-side on the existing `usePortal` store — the goal is "feels fully functional end-to-end in the demo."
+- `NotificationsSheet`, `DocumentsSheet`, `TrackingModal`, `ReceiptModal`, `PlanModalRoot`: on desktop render as centered modal dialogs (max-w-lg, rounded-2xl, backdrop) instead of bottom sheets. Mobile keeps sheet behavior. Single conditional via `useMobile` hook already in project (`src/hooks/use-mobile.tsx`).
+
+## Onboarding
+
+Full-bleed on mobile; on desktop render inside a centered `max-w-2xl` card so the full-screen tour doesn't feel awkward on a 27" display.
+
+## Scope guardrails
+
+- No business-logic changes — store, state machine, auto-progression, and content stay identical.
+- No new routes, no new assets.
+- Purely responsive presentation: Tailwind `md:`/`lg:` classes, conditional wrappers, and a new `SideNav` component inside the same file.
+- Mobile pixels remain byte-identical where possible.
 
 ## Files touched
-- `src/routes/portal.patient.tsx` — all UI wiring, new modals (`TrackingModal`, `ReceiptModal`, `DocumentsSheet`, real `PaymentMethodForm`), Settings restyle, auto-progression effect.
-- `src/lib/portal/store.ts` — small additions: `updateCard(last4, brand)` action, `markShipmentDelivered` helper if needed for auto-progression.
 
-No new dependencies.
+- `src/routes/portal.patient.tsx` — shell refactor, add `SideNav` + `DesktopHeader`, add responsive grids inside each tab, `md:`-gate the mobile `TabBar`, adapt sheet/modal wrappers.
