@@ -344,7 +344,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
         </div>
       </motion.div>
 
-      <div className="mt-5 space-y-2.5 px-4">
+      <div className="mt-5 space-y-2.5 px-4 md:mt-6 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 md:px-0 lg:grid-cols-3">
         <AnimatePresence initial={false}>
           {planState === "paused" && (
             <MotionCard key="paused">
