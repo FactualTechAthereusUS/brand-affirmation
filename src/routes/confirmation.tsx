@@ -269,33 +269,25 @@ function Hero({ firstName, model }: { firstName: string; model: Model }) {
 function AnimatedCheckmark() {
   return (
     <div className="relative mx-auto grid h-24 w-24 place-items-center sm:h-28 sm:w-28">
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 rounded-full"
-        style={{ background: `radial-gradient(circle, ${CORAL}22 0%, transparent 70%)` }}
-        animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.3, 0.6] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <div className="relative grid h-full w-full place-items-center rounded-full bg-white shadow-[0_12px_36px_-12px_rgba(238,114,115,0.55)] ring-1 ring-[#ee7273]/25">
-        <motion.svg viewBox="0 0 60 60" className="h-14 w-14 sm:h-16 sm:w-16" initial="hidden" animate="visible">
-          <motion.circle
-            cx="30" cy="30" r="26"
-            fill="none" stroke={CORAL} strokeWidth="3" strokeLinecap="round"
-            variants={{
-              hidden: { pathLength: 0, opacity: 0 },
-              visible: { pathLength: 1, opacity: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
-            }}
-          />
-          <motion.path
-            d="M18 31 L27 40 L43 22"
-            fill="none" stroke={CORAL} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"
-            variants={{
-              hidden: { pathLength: 0 },
-              visible: { pathLength: 1, transition: { delay: 0.25, duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
-            }}
-          />
-        </motion.svg>
-      </div>
+      <motion.svg
+        viewBox="0 0 60 60"
+        className="h-16 w-16 sm:h-20 sm:w-20"
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.path
+          d="M18 31 L27 40 L43 22"
+          fill="none"
+          stroke="#171717"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          variants={{
+            hidden: { pathLength: 0 },
+            visible: { pathLength: 1, transition: { delay: 0.25, duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+          }}
+        />
+      </motion.svg>
     </div>
   );
 }
