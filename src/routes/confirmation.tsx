@@ -499,7 +499,9 @@ function NextStepsTimeline({ model }: { model: Model }) {
     offset: ["start 85%", "end 60%"],
   });
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.4 });
-  const lineHeight = useTransform(smooth, [0, 1], ["0%", "100%"]);
+  // Progress only reaches the 2nd step (index 1) since that's the live state
+  const lineHeight = useTransform(smooth, [0, 1], ["0%", "28%"]);
+
 
   return (
     <motion.section
