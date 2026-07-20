@@ -20,6 +20,7 @@ import iconDoctor from "@/assets/icon-doctor.png.asset.json";
 import iconDeliveryShield from "@/assets/icon-delivery-shield.png.asset.json";
 import shipBox from "@/assets/ship-box.png.asset.json";
 import drNass from "@/assets/dr-scott-nass.png.asset.json";
+import drNassPortal from "@/assets/dr-nass-portal.png.asset.json";
 import guaranteeBadge from "@/assets/guarantee-badge.png.asset.json";
 import trustpilotLogo from "@/assets/trustpilot-logo.png.asset.json";
 
