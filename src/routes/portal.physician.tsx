@@ -1060,6 +1060,29 @@ function MiniKv({ k, v, tone = "default" }: { k: string; v: string; tone?: "defa
 /* ============================================================
    Messages tab
    ============================================================ */
+const PINK = "#ee7273";
+const INK_HEX = "#171717";
+
+function initialsOf(f: string, l: string) {
+  return `${f[0] ?? ""}${l[0] ?? ""}`.toUpperCase();
+}
+
+function PatientAvatar({ first, last, size = 48 }: { first: string; last: string; size?: number }) {
+  // Deterministic soft background from initials
+  const palette = ["#EAF0F8", "#F5F1E9", "#F0EBE3", "#EFE7DD", "#E8EEE9", "#F3E9E9"];
+  const idx = (first.charCodeAt(0) + (last.charCodeAt(0) || 0)) % palette.length;
+  return (
+    <div
+      className="grid shrink-0 place-items-center rounded-full ring-1 ring-black/5"
+      style={{ background: palette[idx], width: size, height: size }}
+    >
+      <span className="text-[13px] font-semibold text-ink/70" style={{ fontSize: size * 0.32 }}>
+        {initialsOf(first, last)}
+      </span>
+    </div>
+  );
+}
+
 function MessagesTab() {
   const scenario = usePhysician((s) => s.demo.messages);
   const threads = usePhysician((s) => s.threads);
@@ -1075,58 +1098,72 @@ function MessagesTab() {
   const activeThread = threads.find((t) => t.id === activeId) ?? null;
 
   return (
-    <div className="pt-6 sm:pt-8">
-      <div className="mb-5">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Messages</div>
-        <h1 className="mt-1 font-hero text-2xl tracking-tight text-ink sm:text-3xl">Patient conversations</h1>
-      </div>
-      <div className="grid gap-4 md:grid-cols-[320px_1fr]">
-        <div className={`space-y-2 ${activeThread ? "hidden md:block" : ""}`}>
-          {list.length === 0 && <EmptyState title="Inbox zero" body="No open threads waiting. Nice work." />}
-          {list.map((t) => (<ThreadRow key={t.id} t={t} />))}
-        </div>
-        <div className={`min-h-[500px] rounded-3xl border border-ink/8 bg-white ${activeThread ? "" : "hidden md:block"}`}>
-          {activeThread ? <ThreadPanel t={activeThread} /> : (
-            <div className="grid h-full min-h-[500px] place-items-center text-center text-ink/50">
-              <div>
-                <MessageSquare className="mx-auto mb-2 h-8 w-8" />
-                Select a conversation to reply.
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <AnimatePresence mode="wait">
+      {!activeThread ? (
+        <motion.div
+          key="list"
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -8 }}
+          transition={{ duration: 0.2 }}
+          className="px-1 pt-5 md:pt-8 lg:mx-auto lg:w-full lg:max-w-3xl"
+        >
+          <div className="mt-1 space-y-3">
+            {list.length === 0 && <EmptyState title="Inbox zero" body="No open threads waiting. Nice work." />}
+            {list.map((t) => (<ThreadCard key={t.id} t={t} />))}
+          </div>
+          <div className="mt-6 rounded-2xl bg-[#F0EBE3]/50 px-4 py-3 text-[11.5px] leading-relaxed text-ink/60">
+            Messages here are reviewed during clinical hours. For life-threatening emergencies, patients must call <span className="font-semibold text-ink">911</span>.
+          </div>
+        </motion.div>
+      ) : (
+        <ChatThread key={activeThread.id} t={activeThread} />
+      )}
+    </AnimatePresence>
   );
 }
 
-function ThreadRow({ t }: { t: Thread }) {
-  const activeId = usePhysician((s) => s.ui.activeThreadId);
+function ThreadCard({ t }: { t: Thread }) {
   const last = usePhysician((s) => [...s.messages].filter((m) => m.threadId === t.id).sort((a, b) => b.ts - a.ts)[0]);
-  const unread = usePhysician((s) => s.messages.some((m) => m.threadId === t.id && m.from === "patient" && !m.read));
-  const active = activeId === t.id;
+  const unread = usePhysician((s) => s.messages.filter((m) => m.threadId === t.id && m.from === "patient" && !m.read).length);
   return (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.985 }}
       onClick={() => physicianActions.openThread(t.id)}
-      className={`w-full rounded-2xl border p-3.5 text-left transition ${active ? "border-ink/40 bg-white shadow-sm" : "border-ink/8 bg-white hover:border-ink/20"}`}
+      className="group flex w-full items-start gap-3.5 rounded-2xl bg-[#FAFAFA] p-4 text-left transition hover:bg-[#F5F5F7]"
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="truncate font-semibold text-ink">{t.patientFirst} {t.patientLast}</span>
-            {unread && <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />}
-          </div>
-          <div className="text-[10px] uppercase tracking-[0.1em] text-ink/45">{t.product} · Month {t.monthNumber}</div>
-        </div>
-        <div className="shrink-0 text-[10px] text-ink/45">{humanTime(t.lastActivity)}</div>
+      <div className="relative">
+        <PatientAvatar first={t.patientFirst} last={t.patientLast} size={48} />
+        {unread > 0 && (
+          <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full ring-2 ring-white" style={{ background: PINK }} />
+        )}
       </div>
-      <p className="mt-2 line-clamp-2 text-xs text-ink/60">{last?.text}</p>
-      {t.waitingHours > 12 && (
-        <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#fff5e5] px-2 py-0.5 text-[10px] font-semibold text-[#8a6a10]">
-          <Clock className="h-3 w-3" /> Waiting {t.waitingHours}h
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <div className="truncate text-[15px] font-semibold text-ink">{t.patientFirst} {t.patientLast}</div>
+          {unread > 0 && (
+            <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full px-1.5 text-[10px] font-bold text-white" style={{ background: PINK }}>
+              {unread}
+            </span>
+          )}
+          <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-ink/30" />
         </div>
-      )}
-    </button>
+        <div className="mt-0.5 truncate text-[12.5px] text-ink/55">
+          {t.product} · Month {t.monthNumber} · {t.currentDose}
+        </div>
+        <div className={`mt-1.5 truncate text-[12.5px] ${unread > 0 ? "font-medium text-ink/85" : "text-ink/55"}`}>
+          {last?.text ?? ""}
+        </div>
+        <div className="mt-1 flex items-center gap-2 text-[11px] text-ink/40">
+          <span>{humanTime(t.lastActivity)} ago</span>
+          {t.waitingHours > 12 && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#fff5e5] px-1.5 py-0.5 text-[10px] font-semibold text-[#8a6a10]">
+              <Clock className="h-2.5 w-2.5" /> Waiting {t.waitingHours}h
+            </span>
+          )}
+        </div>
+      </div>
+    </motion.button>
   );
 }
 
@@ -1138,51 +1175,132 @@ function humanTime(ts: number) {
   return `${Math.round(hrs / 24)}d`;
 }
 
-function ThreadPanel({ t }: { t: Thread }) {
+function ChatThread({ t }: { t: Thread }) {
   const messages = usePhysician((s) => s.messages.filter((m) => m.threadId === t.id).sort((a, b) => a.ts - b.ts));
   const quickOpen = usePhysician((s) => s.ui.quickRepliesOpen);
-  const [text, setText] = useState("");
-  const bodyRef = useRef<HTMLDivElement>(null);
-  useEffect(() => { bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight }); }, [messages.length]);
+  const [draft, setDraft] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 999999, behavior: "smooth" });
+  }, [messages.length]);
 
   const send = () => {
-    if (!text.trim()) return;
-    physicianActions.sendMessage(t.id, text.trim());
-    setText("");
+    if (!draft.trim()) return;
+    physicianActions.sendMessage(t.id, draft.trim());
+    setDraft("");
+    requestAnimationFrame(() => inputRef.current?.focus());
   };
 
+  const meGradient = `linear-gradient(135deg, ${INK_HEX} 0%, #2d2d2d 100%)`;
+
   return (
-    <div className="flex h-[600px] flex-col">
-      <header className="flex items-center justify-between border-b border-ink/8 p-4">
-        <div className="flex items-center gap-3">
-          <button onClick={() => physicianActions.openThread("")} className="rounded-full p-1.5 text-ink/50 hover:bg-ink/5 md:hidden">
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <div>
-            <div className="font-semibold text-ink">{t.patientFirst} {t.patientLast}</div>
-            <div className="text-[11px] text-ink/50">{t.product} · Month {t.monthNumber} · {t.currentDose} · Allergies: {t.allergies}</div>
+    <motion.div
+      initial={{ opacity: 0, x: 8 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 8 }}
+      transition={{ duration: 0.2 }}
+      className="flex h-[calc(100vh-3.5rem-4rem)] flex-col bg-white lg:h-[calc(100vh-3.5rem)] lg:mx-auto lg:w-full lg:max-w-3xl"
+    >
+      {/* Sticky liquid-glass header */}
+      <div className="sticky top-0 z-10 flex items-center gap-2 bg-white/90 px-3 pb-2 pt-3 backdrop-blur">
+        <button
+          onClick={() => physicianActions.openThread("")}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/50 bg-white/75 text-ink shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150"
+          aria-label="Back"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+        <div className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border border-white/50 bg-white/75 px-3 py-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150">
+          <PatientAvatar first={t.patientFirst} last={t.patientLast} size={24} />
+          <span className="truncate text-[13px] font-semibold text-ink">
+            {t.patientFirst} {t.patientLast}
+          </span>
+          <span className="rounded-md bg-white px-1.5 py-0.5 text-[9.5px] font-bold tracking-wide text-ink/70">
+            {t.product === "semaglutide" ? "SEMA" : "TIRZ"}
+          </span>
+        </div>
+        <button
+          onClick={physicianActions.toggleQuickReplies}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/50 bg-white/75 text-ink shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-xl backdrop-saturate-150"
+          aria-label="Templates"
+        >
+          <Sparkles className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* Chat body */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 pb-6 pt-4">
+        <div className="flex flex-col items-center pb-6 pt-2 text-center">
+          <PatientAvatar first={t.patientFirst} last={t.patientLast} size={64} />
+          <div className="mt-3 text-[16px] font-semibold text-ink">
+            {t.patientFirst} {t.patientLast}
+          </div>
+          <div className="mt-0.5 text-[11.5px] text-ink/50">
+            {t.product} · Month {t.monthNumber} · {t.currentDose} · Allergies: {t.allergies}
           </div>
         </div>
-        <button onClick={physicianActions.toggleQuickReplies} className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink/70 hover:text-ink">
-          <Sparkles className="h-3.5 w-3.5" /> Templates
-        </button>
-      </header>
-      <div ref={bodyRef} className="flex-1 space-y-3 overflow-y-auto bg-[#faf9f6] p-4">
-        {messages.map((m) => (
-          <div key={m.id} className={`flex ${m.from === "me" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm ${m.from === "me" ? "rounded-br-md bg-ink text-white" : "rounded-bl-md bg-white text-ink shadow-sm"}`}>
-              {m.text}
-              <div className={`mt-1 text-[10px] ${m.from === "me" ? "text-white/60" : "text-ink/40"}`}>{new Date(m.ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</div>
-            </div>
-          </div>
-        ))}
+
+        <div className="flex items-center gap-3">
+          <div className="h-px flex-1 bg-ink/10" />
+          <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/40">Conversation</span>
+          <div className="h-px flex-1 bg-ink/10" />
+        </div>
+
+        <div className="mt-4 space-y-3">
+          {messages.map((m) => {
+            const time = new Date(m.ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+            if (m.from === "me") {
+              return (
+                <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex justify-end">
+                  <div className="flex max-w-[80%] flex-col items-end md:max-w-[70%]">
+                    <div
+                      className="rounded-[22px] rounded-br-md px-4 py-2.5 text-[14px] leading-relaxed text-white"
+                      style={{ background: meGradient }}
+                    >
+                      {m.text}
+                    </div>
+                    <div className="mt-1 flex items-center gap-1 pr-1 text-[10.5px] text-ink/40">
+                      <CheckCircle2 className="h-3 w-3" />
+                      <span>{time}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            }
+            return (
+              <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex items-end gap-2">
+                <PatientAvatar first={t.patientFirst} last={t.patientLast} size={28} />
+                <div className="flex max-w-[80%] flex-col md:max-w-[70%]">
+                  <div className="rounded-[22px] rounded-bl-md bg-[#F0EBE3]/60 px-4 py-2.5 text-[14px] leading-relaxed text-ink">
+                    {m.text}
+                  </div>
+                  <div className="mt-1 pl-2 text-[10.5px] text-ink/40">{time}</div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Quick reply templates */}
       <AnimatePresence>
         {quickOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden border-t border-ink/8 bg-white">
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden border-t border-ink/8 bg-white"
+          >
             <div className="space-y-1.5 p-3">
+              <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">Reply templates</div>
               {QUICK_REPLIES.map((q, i) => (
-                <button key={i} onClick={() => { setText(q); physicianActions.toggleQuickReplies(); }} className="block w-full rounded-xl border border-ink/8 bg-[#faf9f6] p-2.5 text-left text-xs text-ink/70 hover:bg-white">
+                <button
+                  key={i}
+                  onClick={() => { setDraft(q); physicianActions.toggleQuickReplies(); requestAnimationFrame(() => inputRef.current?.focus()); }}
+                  className="block w-full rounded-xl border border-ink/8 bg-[#faf9f6] p-2.5 text-left text-xs text-ink/70 hover:bg-white"
+                >
                   {q}
                 </button>
               ))}
@@ -1190,22 +1308,37 @@ function ThreadPanel({ t }: { t: Thread }) {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="border-t border-ink/8 bg-white p-3">
-        <div className="flex items-end gap-2">
+
+      {/* Composer */}
+      <div className="border-t border-ink/10 bg-white px-3 pb-3 pt-2.5 md:px-8 md:pb-5 md:pt-4 lg:px-3 lg:pb-3 lg:pt-2.5">
+        <div className="flex items-end gap-2 rounded-[28px] border border-ink/10 bg-white px-2 py-1.5 focus-within:border-ink/25">
+          <button className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-ink/50" aria-label="Attach">
+            <span className="text-[20px] leading-none">+</span>
+          </button>
           <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) send(); }}
-            rows={2}
-            placeholder="Type your reply… (⌘+Enter to send)"
-            className="flex-1 resize-none rounded-2xl border border-ink/10 bg-white p-3 text-sm focus:border-ink/40 focus:outline-none"
+            ref={inputRef}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
+            rows={1}
+            placeholder={`Reply to ${t.patientFirst}…`}
+            className="min-h-[36px] max-h-32 flex-1 resize-none bg-transparent py-2 text-[14px] leading-snug text-ink placeholder:text-ink/40 focus:outline-none"
           />
-          <button onClick={send} disabled={!text.trim()} className="grid h-11 w-11 place-items-center rounded-full bg-ink text-white disabled:opacity-30">
-            <Send className="h-4 w-4" />
+          <button
+            onClick={send}
+            disabled={!draft.trim()}
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-white transition disabled:opacity-30"
+            style={{ background: draft.trim() ? PINK : INK_HEX }}
+            aria-label="Send"
+          >
+            <Send className="h-3.5 w-3.5" />
           </button>
         </div>
+        <div className="mt-2 text-center text-[10.5px] text-ink/45">
+          Signing as Dr. Scott Nass, MD · NPI 1568588839 · For emergencies patients call 911
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
