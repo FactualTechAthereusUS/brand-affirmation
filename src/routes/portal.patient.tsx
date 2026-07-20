@@ -247,7 +247,7 @@ function TopBar({ onBell, onLogoLongPress }: { onBell: () => void; onLogoLongPre
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/40 bg-white/70 px-5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 md:rounded-t-[36px]">
+    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/40 bg-white/70 px-5 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 md:hidden">
       <button
         onPointerDown={start} onPointerUp={cancel} onPointerLeave={cancel} onPointerCancel={cancel}
         className="flex items-center gap-2.5 select-none" aria-label="Blissley — long-press to open demo controls"
