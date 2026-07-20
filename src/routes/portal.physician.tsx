@@ -692,38 +692,118 @@ function PanelRx({ c }: { c: Case }) {
   const rx = c.rx;
   return (
     <Panel title="Prescription" icon={Sparkles}>
-      <div className="rounded-2xl border border-ink/10 bg-[#faf9f6] p-4">
-        <div className="text-lg font-semibold text-ink">{rx.drug}</div>
-        <div className="mt-0.5 text-sm text-ink/60">{rx.strength} · {rx.dose} · {rx.frequency}</div>
+      {/* Live prescription preview */}
+      <div className="relative overflow-hidden rounded-2xl border border-ink/10 bg-gradient-to-br from-[#1D437B] to-[#0f2a52] p-5 text-white">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">Rx preview</div>
+            <div className="mt-1 font-hero text-2xl leading-tight">{rx.drug}</div>
+            <div className="mt-1 text-sm text-white/75">{rx.strength} · {rx.dose} · {rx.frequency}</div>
+          </div>
+          <span className="rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/90">
+            {rx.refills} refill{rx.refills === 1 ? "" : "s"}
+          </span>
+        </div>
       </div>
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <RxField label="Strength" value={rx.strength} options={["2mg/mL", "5mg/mL", "10mg/mL", "15mg/mL"]} onChange={(v) => physicianActions.updateRx(c.id, { strength: v })} />
-        <RxField label="Dose" value={rx.dose} options={["0.25mg", "0.5mg", "1.0mg", "2.5mg", "5mg", "7.5mg", "10mg"]} onChange={(v) => physicianActions.updateRx(c.id, { dose: v })} />
-        <RxField label="Refills" value={String(rx.refills)} options={["0", "1", "2", "3"]} onChange={(v) => physicianActions.updateRx(c.id, { refills: parseInt(v, 10) })} />
+
+      {/* Segmented selectors */}
+      <div className="mt-5 space-y-4">
+        <RxChipGroup
+          label="Strength"
+          hint="Vial concentration"
+          value={rx.strength}
+          options={["2mg/mL", "5mg/mL", "10mg/mL", "15mg/mL"]}
+          onChange={(v) => physicianActions.updateRx(c.id, { strength: v })}
+        />
+        <RxChipGroup
+          label="Dose"
+          hint="Per weekly injection"
+          value={rx.dose}
+          options={["0.25mg", "0.5mg", "1.0mg", "2.5mg", "5mg", "7.5mg", "10mg"]}
+          onChange={(v) => physicianActions.updateRx(c.id, { dose: v })}
+          accent="pink"
+        />
+        <RxChipGroup
+          label="Refills"
+          hint="Auto-fills before depletion"
+          value={String(rx.refills)}
+          options={["0", "1", "2", "3"]}
+          onChange={(v) => physicianActions.updateRx(c.id, { refills: parseInt(v, 10) })}
+        />
       </div>
-      <div className="mt-4">
-        <label className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">SIG (patient instructions)</label>
+
+      {/* SIG */}
+      <div className="mt-5">
+        <div className="mb-1.5 flex items-center justify-between">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">SIG · Patient instructions</label>
+          <span className="text-[10px] text-ink/40">{rx.sig.length} chars</span>
+        </div>
         <textarea
           value={rx.sig}
           onChange={(e) => physicianActions.updateRx(c.id, { sig: e.target.value })}
           rows={3}
-          className="mt-1 w-full rounded-xl border border-ink/10 bg-white p-3 text-sm focus:border-ink/40 focus:outline-none"
+          className="w-full rounded-xl border border-ink/10 bg-white p-3 text-sm leading-relaxed focus:border-[#1D437B]/40 focus:outline-none focus:ring-4 focus:ring-[#1D437B]/8"
         />
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {[
+            "Inject subcutaneously once weekly. Rotate injection sites.",
+            "Titrate per protocol. Contact care team with side effects.",
+            "Store refrigerated. Take at the same time each week.",
+          ].map((t, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => physicianActions.updateRx(c.id, { sig: t })}
+              className="rounded-full border border-ink/10 bg-white px-2.5 py-1 text-[11px] text-ink/60 hover:border-[#1D437B]/30 hover:text-ink"
+            >
+              + Insert {i === 0 ? "administration" : i === 1 ? "titration" : "storage"}
+            </button>
+          ))}
+        </div>
       </div>
-      <div className="mt-3 flex items-center gap-2 text-xs text-ink/50">
-        <Package className="h-3.5 w-3.5" /> Pharmacy: <span className="whitespace-pre-line font-medium text-ink/70">{rx.pharmacy}</span>
+
+      {/* Pharmacy pill */}
+      <div className="mt-4 flex items-center gap-3 rounded-2xl border border-ink/8 bg-[#faf9f6] p-3">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-[#1D437B] ring-1 ring-ink/8">
+          <Package className="h-4 w-4" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">Fulfilling pharmacy</div>
+          <div className="mt-0.5 whitespace-pre-line text-sm font-medium text-ink">{rx.pharmacy}</div>
+        </div>
+        <span className="hidden shrink-0 items-center gap-1 rounded-full bg-[#4a7c6f]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#3a6459] sm:inline-flex">
+          <CheckCircle2 className="h-3 w-3" /> Verified
+        </span>
       </div>
     </Panel>
   );
 }
-function RxField({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (v: string) => void }) {
+function RxChipGroup({ label, hint, value, options, onChange, accent = "blue" }: { label: string; hint?: string; value: string; options: string[]; onChange: (v: string) => void; accent?: "blue" | "pink" }) {
+  const active = accent === "pink"
+    ? "bg-[#ee7273] text-white border-[#ee7273] shadow-sm shadow-[#ee7273]/25"
+    : "bg-[#1D437B] text-white border-[#1D437B] shadow-sm shadow-[#1D437B]/20";
   return (
-    <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">{label}</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm focus:border-ink/40 focus:outline-none">
-        {options.map((o) => (<option key={o}>{o}</option>))}
-      </select>
-    </label>
+    <div>
+      <div className="mb-1.5 flex items-baseline justify-between gap-3">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">{label}</span>
+        {hint && <span className="text-[10px] text-ink/40">{hint}</span>}
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((o) => {
+          const isActive = o === value;
+          return (
+            <button
+              key={o}
+              type="button"
+              onClick={() => onChange(o)}
+              className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition ${isActive ? active : "border-ink/10 bg-white text-ink/70 hover:border-ink/25 hover:text-ink"}`}
+            >
+              {o}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
