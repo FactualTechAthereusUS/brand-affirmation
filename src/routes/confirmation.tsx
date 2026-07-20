@@ -846,7 +846,7 @@ function SupportBlock() {
       <img
         src="/assets/trustpilot-badge.png"
         alt="Trustpilot Excellent rating"
-        className="h-auto w-full max-w-[280px] object-contain"
+        className="mx-auto h-auto w-full max-w-[280px] object-contain"
       />
     </motion.section>
   );
