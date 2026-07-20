@@ -1190,6 +1190,9 @@ function ChatThread({ t }: { t: Thread }) {
     if (!draft.trim()) return;
     physicianActions.sendMessage(t.id, draft.trim());
     setDraft("");
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
     requestAnimationFrame(() => inputRef.current?.focus());
   };
 
