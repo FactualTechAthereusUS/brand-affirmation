@@ -178,7 +178,7 @@ function newRx(product: Product, step: "step1" | "step2" | "step3"): Rx {
     quantity: "1 vial (4-week supply)",
     refills: 2,
     sig: `Inject ${s.dose} subcutaneously once weekly. Rotate injection sites. Titrate per protocol.`,
-    pharmacy: "South End Compounding ·\nCharlotte, NC",
+    pharmacy: "South End Compounding·\nCharlotte, NC",
   };
 }
 
