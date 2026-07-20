@@ -689,7 +689,7 @@ function NauseaOTO({
             exit={{ opacity: 0 }}
             className="grid gap-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]"
           >
-            <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#FFF0F0] via-white to-[#FFE9EA] md:aspect-auto">
+            <div className="relative flex aspect-square w-full max-w-[500px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#FFF0F0] via-white to-[#FFE9EA]">
               <img
                 src="/assets/blissley-ondansetron-odt.png"
                 alt="Blissley Ondansetron ODT anti-nausea"
