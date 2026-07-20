@@ -858,7 +858,8 @@ function PlanTab() {
   const [billingOpen, setBillingOpen] = useState(false);
 
   return (
-    <div className="px-4 pt-5">
+    <div className="px-4 pt-5 md:mx-auto md:w-full md:max-w-6xl md:px-8 md:pt-8">
+
       <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-white to-[color:var(--color-mist)]/40 p-5">
         <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Your plan</div>
         <div className="mt-1 text-[22px] font-semibold tracking-tight text-ink">{medication.name}</div>
