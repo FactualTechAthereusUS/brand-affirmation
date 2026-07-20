@@ -264,17 +264,27 @@ function Hero({ firstName, model }: { firstName: string; model: Model }) {
 
 function AnimatedCheckmark() {
   return (
-    <div className="relative mx-auto grid h-24 w-24 place-items-center sm:h-28 sm:w-28">
+    <div className="relative mx-auto grid h-28 w-28 place-items-center sm:h-32 sm:w-32">
       <motion.svg
         viewBox="0 0 60 60"
-        className="h-16 w-16 sm:h-20 sm:w-20"
+        className="h-20 w-20 sm:h-24 sm:w-24"
         initial="hidden"
         animate="visible"
       >
+        <motion.circle
+          cx="30"
+          cy="30"
+          r="28"
+          fill="#171717"
+          variants={{
+            hidden: { scale: 0.8, opacity: 0 },
+            visible: { scale: 1, opacity: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+          }}
+        />
         <motion.path
           d="M18 31 L27 40 L43 22"
           fill="none"
-          stroke="#171717"
+          stroke="#FFFFFF"
           strokeWidth="4"
           strokeLinecap="round"
           strokeLinejoin="round"
