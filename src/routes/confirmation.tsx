@@ -220,11 +220,8 @@ function Hero({ firstName, model }: { firstName: string; model: Model }) {
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="relative overflow-hidden pt-4 text-center sm:pt-8"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-12 mx-auto h-72 w-72 rounded-full opacity-40 blur-3xl"
-        style={{ background: `radial-gradient(circle, ${CORAL} 0%, transparent 70%)` }}
-      />
+      {/* pink gradient glow removed */}
+
       <div className="relative">
         <AnimatedCheckmark />
         <motion.h1
