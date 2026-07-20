@@ -67,11 +67,15 @@ function LoginPage() {
 
               {/* Editorial copy bottom-left */}
               <div className="absolute inset-x-0 bottom-0 z-10 p-10">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: "#ee7273" }} />
+                  For licensed physicians only
+                </div>
                 <h2 className="max-w-[440px] font-sans text-[44px] font-semibold leading-[1.02] tracking-[-0.02em] text-white">
-                  Welcome back to the version of you that always was.
+                  Clinical decisions, made calm.
                 </h2>
                 <p className="mt-5 max-w-[380px] text-[15px] leading-relaxed text-white/85">
-                  Your care team, your progress, your prescriptions — all in one place.
+                  Review intakes, build prescriptions, and stay in sync with your patients — all in one secure workspace.
                 </p>
               </div>
             </div>
