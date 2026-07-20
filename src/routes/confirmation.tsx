@@ -528,26 +528,15 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-      className="relative overflow-hidden rounded-3xl border border-black/8 bg-white shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)]"
+      className="relative overflow-hidden bg-white"
     >
-      {/* Image on top */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10]">
+      {/* Image on top — square, shown at native size, no extra blur */}
+      <div className="relative mx-auto w-full max-w-[500px]">
         <img
           src={drNassPortal.url}
           alt="Dr. Scott Nass, MD"
-          className="absolute inset-0 h-full w-full object-cover object-top"
+          className="block h-auto w-full"
           loading="lazy"
-        />
-        {/* Bottom blur/gradient for legibility */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5"
-          style={{
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0) 100%)",
-            backdropFilter: "blur(2px)",
-            WebkitBackdropFilter: "blur(2px)",
-          }}
         />
 
         {/* Availability chip — top-left */}
@@ -559,7 +548,7 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
           Online now
         </div>
 
-        {/* Text over blurred bottom */}
+        {/* Text over the image's existing blurred bottom */}
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
           <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white/85">
             Your care team
@@ -574,7 +563,8 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
       </div>
 
       {/* White area — copy + CTA */}
-      <div className="p-6 sm:p-7">
+      <div className="px-1 pt-6 sm:pt-7">
+
         <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink/50">
           Your patient portal
         </div>
