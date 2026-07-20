@@ -1471,60 +1471,8 @@ function LoadingScreen({
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-50 overflow-hidden bg-black"
     >
-      {/* Phase 0 — gradient calc screen */}
-      <AnimatePresence>
-        {phase === 0 && (
-          <motion.div
-            key="calc"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
-            <motion.div
-              className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
-              animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
-              transition={{ duration: 12, repeat: Infinity }}
-            />
-            <motion.div
-              className="absolute -right-40 bottom-1/4 h-[560px] w-[560px] rounded-full bg-[#ffd7c0]/25 blur-[130px]"
-              animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
-              transition={{ duration: 14, repeat: Infinity }}
-            />
-            <div className="relative z-10 flex items-center justify-center pt-10">
-              <img src={blissleyWhite.url} alt="Blissley" className="h-8 w-auto" />
-            </div>
-            <div className="relative z-10 mx-auto flex min-h-[calc(100svh-100px)] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center">
-              <h2 className="font-hero text-[26px] font-bold tracking-[-0.02em] text-white md:text-[32px]">
-                Building {firstName ? `${firstName}'s` : "your"} personalized protocol…
-              </h2>
-              <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
-                <motion.div
-                  className="h-full rounded-full bg-white"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${barPct}%` }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </div>
-              <div className="mt-8 w-full space-y-2.5 text-left">
-                {initialSteps.slice(0, step + 1).map((s) => (
-                  <motion.div
-                    key={s}
-                    initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-center gap-2.5 text-[14.5px] text-white/95"
-                  >
-                    <Check className="h-4 w-4 shrink-0" /> {s}
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Calc intro removed — jump straight to full-bleed questions */}
+
 
       {/* Phases 1–3 — full-bleed portrait with iOS card at bottom */}
       <AnimatePresence mode="wait">
