@@ -762,19 +762,44 @@ function PanelRx({ c }: { c: Case }) {
         </div>
       </div>
 
-      {/* Pharmacy pill */}
-      <div className="mt-4 flex items-center gap-3 rounded-2xl border border-ink/8 bg-[#faf9f6] p-3">
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-[#1D437B] ring-1 ring-ink/8">
-          <Package className="h-4 w-4" />
+      {/* Pharmacy selector */}
+      <div className="mt-4 rounded-2xl border border-ink/8 bg-[#faf9f6] p-3">
+        <div className="flex items-center gap-3">
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-[#1D437B] ring-1 ring-ink/8">
+            <Package className="h-4 w-4" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">Pharmacy</div>
+            <div className="mt-0.5 whitespace-pre-line text-sm font-medium text-ink">{rx.pharmacy}</div>
+          </div>
+          <span className="hidden shrink-0 items-center gap-1 rounded-full bg-[#4a7c6f]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#3a6459] sm:inline-flex">
+            <CheckCircle2 className="h-3 w-3" /> Verified
+          </span>
         </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">Fulfilling pharmacy</div>
-          <div className="mt-0.5 whitespace-pre-line text-sm font-medium text-ink">{rx.pharmacy}</div>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {[
+            { name: "Wells RX", loc: "Dallas, TX" },
+            { name: "Epiq Scripts", loc: "Plano, TX" },
+            { name: "Main Southend Compounding", loc: "Charlotte, NC" },
+            { name: "Truemeds RX", loc: "Phoenix, AZ" },
+            { name: "Striker RX", loc: "Tampa, FL" },
+          ].map((p) => {
+            const label = `${p.name}·\n${p.loc}`;
+            const isActive = rx.pharmacy === label;
+            return (
+              <button
+                key={p.name}
+                type="button"
+                onClick={() => physicianActions.updateRx(c.id, { pharmacy: label })}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${isActive ? "border-[#1D437B] bg-[#1D437B] text-white shadow-sm shadow-[#1D437B]/20" : "border-ink/10 bg-white text-ink/70 hover:border-ink/25 hover:text-ink"}`}
+              >
+                {p.name}
+              </button>
+            );
+          })}
         </div>
-        <span className="hidden shrink-0 items-center gap-1 rounded-full bg-[#4a7c6f]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#3a6459] sm:inline-flex">
-          <CheckCircle2 className="h-3 w-3" /> Verified
-        </span>
       </div>
+
     </Panel>
   );
 }
