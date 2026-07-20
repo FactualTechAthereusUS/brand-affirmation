@@ -70,9 +70,9 @@ export function PaymentFailedInline({ open, onDismiss, onTryAgain, onAlt }: Prop
                         type="button"
                         key={m.k}
                         onClick={() => onAlt(m.k)}
-                        className="grid h-10 place-items-center rounded-xl border border-black/10 bg-white transition hover:border-black/20"
+                        className="grid h-14 place-items-center rounded-xl border border-black/10 bg-white px-3 transition hover:border-black/20"
                       >
-                        <img src={m.src} alt={m.label} className="h-4 object-contain" />
+                        <img src={m.src} alt={m.label} className="max-h-8 w-full object-contain" />
                       </button>
                     ))}
                   </div>
