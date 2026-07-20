@@ -246,12 +246,20 @@ function Hero({ firstName, model }: { firstName: string; model: Model }) {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className={`mx-auto mt-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-semibold ${
-            model === "charged"
-              ? "bg-[#EAFBEF] text-[#0F6E3A]"
-              : "bg-[#FFF6EB] text-[#8A5A00]"
-          }`}
+          className="mx-auto mt-5 inline-flex items-center gap-2.5 rounded-full border border-white/15 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_30px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)]"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(30,22,22,0.78) 0%, rgba(18,14,14,0.72) 100%)",
+            backdropFilter: "blur(14px) saturate(140%)",
+          }}
         >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inset-0 animate-ping rounded-full" style={{ background: CORAL, opacity: 0.55 }} />
+            <span className="relative h-2 w-2 rounded-full" style={{ background: CORAL }} />
+          </span>
+          {model === "charged" ? "Payment received" : "Card authorized"}
+        </motion.div>
+
           <Sparkles className="h-3.5 w-3.5" />
           {model === "charged" ? "Payment received" : "Card authorized · not charged yet"}
         </motion.div>
