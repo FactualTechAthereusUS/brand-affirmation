@@ -199,9 +199,9 @@ function LoginPage() {
             </form>
 
             <p className="mt-8 text-center text-[14px] text-ink/60">
-              Don't have an account?{" "}
-              <a href="#" className="font-medium text-ink hover:underline">
-                Start your assessment
+              Need access?{" "}
+              <a href="mailto:physicians@blissley.md" className="font-medium text-ink hover:underline">
+                Request physician credentials
               </a>
             </p>
           </div>
