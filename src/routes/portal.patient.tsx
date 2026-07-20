@@ -111,7 +111,7 @@ function PatientPortal() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full overflow-y-auto pb-28 md:pb-16"
+                className="h-full overflow-y-auto bg-white pb-28 md:pb-16"
               >
                 {tab === "home" && <HomeTab onGoto={setTab} />}
                 {tab === "messages" && <MessagesTab />}
