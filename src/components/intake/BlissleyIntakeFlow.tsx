@@ -1397,9 +1397,9 @@ function LoadingScreen({
   answers: { q1?: YesNo; q2?: string; q3?: string };
   setQ: (k: "q1" | "q2" | "q3", v: string) => void;
 }) {
-  // 0 = calc steps, 1..3 = questions, 4 = finalizing
-  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0);
-  const [step, setStep] = useState(0);
+  // 1..3 = questions, 4 = finalizing (calc intro removed)
+  const [phase, setPhase] = useState<1 | 2 | 3 | 4>(1);
+
 
   const initialSteps = useMemo(
     () => [
