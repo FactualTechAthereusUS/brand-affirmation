@@ -260,9 +260,7 @@ function Hero({ firstName, model }: { firstName: string; model: Model }) {
           {model === "charged" ? "Payment received" : "Card authorized"}
         </motion.div>
 
-          <Sparkles className="h-3.5 w-3.5" />
-          {model === "charged" ? "Payment received" : "Card authorized · not charged yet"}
-        </motion.div>
+
       </div>
     </motion.section>
   );
