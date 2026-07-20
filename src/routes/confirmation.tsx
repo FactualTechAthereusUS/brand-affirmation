@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "motion/react";
 import {
   ArrowRight,
   Check,
