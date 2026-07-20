@@ -1,26 +1,27 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Eye, EyeOff, ArrowLeft, Mail, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { Eye, EyeOff, ArrowLeft, Mail, CheckCircle2, Stethoscope } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/blissley-logo.png.asset.json";
 import bg from "@/assets/login-bg.png.asset.json";
-import { actions, hydrateFromStorage } from "@/lib/portal/store";
+import { physicianActions } from "@/lib/physician/store";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Patient Login — Blissley" },
+      { title: "Physician Login — Blissley" },
       {
         name: "description",
         content:
-          "Sign in to your Blissley patient portal to manage your treatment, message your care team, and track your progress.",
+          "Secure physician sign in for the Blissley clinical portal. Review cases, prescribe, and message patients.",
       },
-      { property: "og:title", content: "Patient Login — Blissley" },
+      { property: "og:title", content: "Physician Login — Blissley" },
       {
         property: "og:description",
         content:
-          "Sign in to your Blissley patient portal to manage your treatment and care.",
+          "Secure physician sign in for the Blissley clinical portal.",
       },
+      { name: "robots", content: "noindex,nofollow" },
     ],
   }),
   component: LoginPage,
@@ -28,20 +29,18 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const [showPw, setShowPw] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("scott.nass@blissley.md");
   const [password, setPassword] = useState("");
   const [sent, setSent] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => { hydrateFromStorage(); }, []);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setSent(true);
     setTimeout(() => {
-      actions.signIn(email);
-      navigate({ to: "/portal/patient" });
+      physicianActions.signIn(email);
+      navigate({ to: "/portal/physician" });
     }, 1400);
   };
 
@@ -68,11 +67,15 @@ function LoginPage() {
 
               {/* Editorial copy bottom-left */}
               <div className="absolute inset-x-0 bottom-0 z-10 p-10">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: "#ee7273" }} />
+                  For licensed physicians only
+                </div>
                 <h2 className="max-w-[440px] font-sans text-[44px] font-semibold leading-[1.02] tracking-[-0.02em] text-white">
-                  Welcome back to the version of you that always was.
+                  Clinical decisions, made calm.
                 </h2>
                 <p className="mt-5 max-w-[380px] text-[15px] leading-relaxed text-white/85">
-                  Your care team, your progress, your prescriptions — all in one place.
+                  Review intakes, build prescriptions, and stay in sync with your patients — all in one secure workspace.
                 </p>
               </div>
             </div>
@@ -98,13 +101,15 @@ function LoginPage() {
 
           <div className="w-full max-w-[420px] pt-16 lg:pt-0">
             <div className="mb-10">
-              <p className="mb-3 font-sans italic text-[15px] text-ever">welcome back.</p>
+              <div className="mb-3 inline-flex items-center gap-2 font-sans text-[13px] font-medium text-ever">
+                <Stethoscope className="h-4 w-4" />
+                Physician portal
+              </div>
               <h1 className="font-sans text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink sm:text-[46px]">
-                Sign in to your care.
+                Sign in to your practice.
               </h1>
               <p className="mt-4 text-[15px] leading-relaxed text-ink/60">
-                Access your patient portal to message your clinician, manage prescriptions, and
-                track progress.
+                Access your case queue, review patient intakes, write prescriptions, and message your panel securely.
               </p>
             </div>
 
@@ -194,9 +199,9 @@ function LoginPage() {
             </form>
 
             <p className="mt-8 text-center text-[14px] text-ink/60">
-              Don't have an account?{" "}
-              <a href="#" className="font-medium text-ink hover:underline">
-                Start your assessment
+              Need access?{" "}
+              <a href="mailto:physicians@blissley.md" className="font-medium text-ink hover:underline">
+                Request physician credentials
               </a>
             </p>
           </div>
@@ -221,7 +226,7 @@ function LoginPage() {
                   <h3 className="mt-4 text-[20px] font-semibold tracking-tight text-ink">Check your email</h3>
                   <p className="mt-2 text-[14px] text-ink/60">We sent a secure sign-in link to <span className="font-medium text-ink">{email}</span>.</p>
                   <div className="mt-5 flex items-center justify-center gap-1.5 text-[12px] text-ink/50">
-                    <CheckCircle2 className="h-3.5 w-3.5" style={{ color: "#4a7c6f" }} /> Opening your portal…
+                    <CheckCircle2 className="h-3.5 w-3.5" style={{ color: "#4a7c6f" }} /> Opening physician portal…
                   </div>
                 </motion.div>
               </motion.div>
