@@ -647,7 +647,12 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
 /* ────────── REFUND GUARANTEE ────────── */
 function RefundGuarantee({ model, total }: { model: Model; total: number }) {
   return (
-    <Card delay={0.16} className="!p-4 sm:!p-5">
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-white py-5 sm:py-6"
+    >
       <div className="flex items-start gap-3">
         <img src={guaranteeBadge.url} alt="" className="h-12 w-12 shrink-0 object-contain" />
         <div className="min-w-0">
@@ -661,7 +666,7 @@ function RefundGuarantee({ model, total }: { model: Model; total: number }) {
           </p>
         </div>
       </div>
-    </Card>
+    </motion.section>
   );
 }
 
