@@ -226,7 +226,7 @@ function LoginPage() {
                   <h3 className="mt-4 text-[20px] font-semibold tracking-tight text-ink">Check your email</h3>
                   <p className="mt-2 text-[14px] text-ink/60">We sent a secure sign-in link to <span className="font-medium text-ink">{email}</span>.</p>
                   <div className="mt-5 flex items-center justify-center gap-1.5 text-[12px] text-ink/50">
-                    <CheckCircle2 className="h-3.5 w-3.5" style={{ color: "#4a7c6f" }} /> Opening your portal…
+                    <CheckCircle2 className="h-3.5 w-3.5" style={{ color: "#4a7c6f" }} /> Opening physician portal…
                   </div>
                 </motion.div>
               </motion.div>
