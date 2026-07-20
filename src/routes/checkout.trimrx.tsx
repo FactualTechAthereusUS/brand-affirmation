@@ -30,6 +30,7 @@ import { z } from "zod";
 import { TrxHeader } from "@/components/intake/TrxUI";
 import { ValueStack } from "@/components/home/ValueStack";
 import { PayIcons, PayIconsPeek } from "@/components/PayIcons";
+import { PaymentFailedInline } from "@/components/checkout/PaymentFailedInline";
 import vialSema from "@/assets/vial-semaglutide.png.asset.json";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import hsaFsa from "@/assets/hsa-fsa.png.asset.json";
@@ -382,11 +383,35 @@ function CheckoutPage() {
     );
   }, [form, payMethod]);
 
+  const [payFailed, setPayFailed] = useState(false);
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
     setSubmitting(true);
-    window.setTimeout(() => setSubmitting(false), 1500);
+    setPayFailed(false);
+    window.setTimeout(() => {
+      setSubmitting(false);
+      // Demo: card ending 0002 simulates a decline (Stripe test-decline convention)
+      const digits = form.cardNumber.replace(/\D/g, "");
+      if (payMethod === "card" && digits.endsWith("0002")) {
+        setPayFailed(true);
+        // TODO: fire Klaviyo payment_failed event
+        return;
+      }
+      const [firstName] = form.fullName.trim().split(/\s+/);
+      navigate({
+        to: "/confirmation",
+        search: {
+          model: "auth" as const,
+          tx,
+          plan: planKey,
+          total: Math.round(summarySubtotal),
+          first: firstName || "",
+          email: form.email,
+          order: "",
+        },
+      });
+    }, 1400);
   };
 
   const insurancePrice = 3.95;
@@ -862,6 +887,13 @@ function CheckoutPage() {
 
 
 
+
+              <PaymentFailedInline
+                open={payFailed}
+                onDismiss={() => setPayFailed(false)}
+                onTryAgain={() => { setPayFailed(false); set("cardNumber", ""); set("cvc", ""); }}
+                onAlt={(m) => { setPayFailed(false); setPayMethod(m); }}
+              />
 
               {/* Continue */}
               <motion.button
