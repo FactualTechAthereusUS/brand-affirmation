@@ -693,9 +693,9 @@ function NauseaOTO({
                 className="h-full w-full object-contain"
               />
               <div
-                className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur"
-                style={{ color: CORAL }}
+                className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full border border-white/20 bg-ink/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg backdrop-blur-md"
               >
+                <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
                 One-time add-on
               </div>
             </div>
