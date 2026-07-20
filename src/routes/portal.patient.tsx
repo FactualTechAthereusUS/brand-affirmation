@@ -90,27 +90,38 @@ function PatientPortal() {
   }
 
   return (
-    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink" style={{ fontFamily: "var(--font-sans)" }}>
-      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:my-6 md:min-h-[calc(100svh-3rem)] md:rounded-[36px] md:shadow-[0_40px_120px_-40px_rgba(0,0,0,0.35)] md:ring-1 md:ring-black/5">
-        <TopBar onBell={() => setNotifOpen(true)} onLogoLongPress={() => setDevOpen(true)} />
-        <main className="relative flex-1 overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="h-full overflow-y-auto pb-28"
-            >
-              {tab === "home" && <HomeTab onGoto={setTab} />}
-              {tab === "messages" && <MessagesTab />}
-              {tab === "plan" && <PlanTab />}
-              {tab === "settings" && <SettingsTab />}
-            </motion.div>
-          </AnimatePresence>
-        </main>
-        <TabBar tab={tab} onChange={setTab} />
+    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#F7F5F0]" style={{ fontFamily: "var(--font-sans)" }}>
+      {/* Mobile: phone-style column · Desktop: sidebar + main */}
+      <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-none md:flex-row md:bg-transparent">
+        <SideNav
+          tab={tab}
+          onChange={setTab}
+          onBell={() => setNotifOpen(true)}
+          onLogoLongPress={() => setDevOpen(true)}
+          onSignOut={() => { actions.signOut(); navigate({ to: "/login" }); }}
+        />
+        <div className="flex min-h-svh flex-1 flex-col md:min-h-svh">
+          <TopBar onBell={() => setNotifOpen(true)} onLogoLongPress={() => setDevOpen(true)} />
+          <DesktopHeader tab={tab} onBell={() => setNotifOpen(true)} />
+          <main className="relative flex-1 overflow-hidden md:overflow-visible">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="h-full overflow-y-auto pb-28 md:pb-16"
+              >
+                {tab === "home" && <HomeTab onGoto={setTab} />}
+                {tab === "messages" && <MessagesTab />}
+                {tab === "plan" && <PlanTab />}
+                {tab === "settings" && <SettingsTab />}
+              </motion.div>
+            </AnimatePresence>
+          </main>
+          <TabBar tab={tab} onChange={setTab} />
+        </div>
         {!onboardingDone && <Onboarding />}
         <NotificationsSheet open={notifOpen} onClose={() => setNotifOpen(false)} onGoto={(t) => { setNotifOpen(false); setTab(t); }} />
         <DevSwitcher open={devOpen} onClose={() => setDevOpen(false)} />
@@ -121,6 +132,104 @@ function PatientPortal() {
         <Toaster />
       </div>
     </div>
+  );
+}
+
+/* ─────────── Desktop chrome ─────────── */
+
+function SideNav({
+  tab, onChange, onBell, onLogoLongPress, onSignOut,
+}: {
+  tab: Tab; onChange: (t: Tab) => void; onBell: () => void; onLogoLongPress: () => void; onSignOut: () => void;
+}) {
+  const unreadMsgs = usePortal((s) => s.messages.filter((m) => m.from === "them" && !m.read).length);
+  const unreadNotif = usePortal((s) => s.notifications.filter((n) => !n.read).length);
+  const firstName = usePortal((s) => s.patient.firstName);
+  const items: { id: Tab; label: string; icon: any; badge?: number }[] = [
+    { id: "home", label: "Home", icon: HomeIcon },
+    { id: "messages", label: "Messages", icon: MessageCircle, badge: unreadMsgs },
+    { id: "plan", label: "My Plan", icon: Package },
+    { id: "settings", label: "Settings", icon: SettingsIcon },
+  ];
+  const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const start = () => { pressTimer.current = setTimeout(() => onLogoLongPress(), 600); };
+  const cancel = () => { if (pressTimer.current) clearTimeout(pressTimer.current); };
+
+  return (
+    <aside className="sticky top-0 hidden h-svh w-[260px] shrink-0 flex-col border-r border-black/5 bg-white/80 px-5 py-6 backdrop-blur-xl md:flex">
+      <button
+        onPointerDown={start} onPointerUp={cancel} onPointerLeave={cancel} onPointerCancel={cancel}
+        className="flex items-center gap-2 select-none" aria-label="Blissley"
+      >
+        <img src={blissleyLogo.url} alt="Blissley" className="h-9 w-auto object-contain" />
+      </button>
+      <div className="mt-8 px-2">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45">Signed in</div>
+        <div className="mt-1 text-[15px] font-semibold text-ink">{firstName}</div>
+      </div>
+      <nav className="mt-6 flex flex-col gap-1">
+        {items.map((it) => {
+          const active = it.id === tab;
+          const Icon = it.icon;
+          return (
+            <button
+              key={it.id}
+              onClick={() => onChange(it.id)}
+              className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium transition ${active ? "bg-ink text-white" : "text-ink/70 hover:bg-ink/5 hover:text-ink"}`}
+            >
+              <Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.2 : 1.8} />
+              <span>{it.label}</span>
+              {it.badge && it.badge > 0 && (
+                <span className="ml-auto grid h-[18px] min-w-[18px] place-items-center rounded-full px-1.5 text-[10px] font-bold text-white" style={{ background: PINK }}>{it.badge}</span>
+              )}
+            </button>
+          );
+        })}
+      </nav>
+      <div className="mt-auto flex flex-col gap-1">
+        <button
+          onClick={onBell}
+          className="relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-ink/70 transition hover:bg-ink/5 hover:text-ink"
+        >
+          <Bell className="h-[18px] w-[18px]" />
+          <span>Notifications</span>
+          {unreadNotif > 0 && (
+            <span className="ml-auto grid h-[18px] min-w-[18px] place-items-center rounded-full px-1.5 text-[10px] font-bold text-white" style={{ background: PINK }}>{unreadNotif}</span>
+          )}
+        </button>
+        <button
+          onClick={onSignOut}
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-ink/60 transition hover:bg-ink/5 hover:text-ink"
+        >
+          <LogOut className="h-[18px] w-[18px]" />
+          <span>Log out</span>
+        </button>
+        <div className="mt-3 flex items-center gap-1.5 px-3 text-[10.5px] text-ink/40">
+          <ShieldCheck className="h-3 w-3" /> Secured · 256-bit
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function DesktopHeader({ tab, onBell }: { tab: Tab; onBell: () => void }) {
+  const unread = usePortal((s) => s.notifications.filter((n) => !n.read).length);
+  const title = tab === "home" ? "Home" : tab === "messages" ? "Messages" : tab === "plan" ? "My Plan" : "Settings";
+  return (
+    <header className="sticky top-0 z-20 hidden items-center justify-between border-b border-black/5 bg-white/80 px-10 py-5 backdrop-blur-xl md:flex">
+      <div>
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45">Patient portal</div>
+        <h1 className="mt-0.5 text-[22px] font-semibold tracking-tight text-ink">{title}</h1>
+      </div>
+      <button
+        onClick={onBell}
+        className="relative grid h-10 w-10 place-items-center rounded-full border border-black/5 bg-white text-ink shadow-sm transition hover:bg-ink/5"
+        aria-label="Notifications"
+      >
+        <Bell className="h-4 w-4" />
+        {unread > 0 && <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-white px-1 text-[9px] font-bold text-white" style={{ background: PINK }}>{unread}</span>}
+      </button>
+    </header>
   );
 }
 
