@@ -1204,7 +1204,7 @@ function ChatThread({ t }: { t: Thread }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 8 }}
       transition={{ duration: 0.2 }}
-      className="flex h-[calc(100vh-3.5rem-4rem)] flex-col bg-white lg:h-[calc(100vh-3.5rem)] lg:mx-auto lg:w-full lg:max-w-3xl"
+      className="flex h-[calc(100vh-3.5rem-4rem)] w-full flex-col bg-white lg:h-[calc(100vh-3.5rem)]"
     >
       {/* Sticky liquid-glass header */}
       <div className="sticky top-0 z-10 flex items-center gap-2 bg-white/90 px-3 pb-2 pt-3 backdrop-blur">
@@ -1325,12 +1325,12 @@ function ChatThread({ t }: { t: Thread }) {
               setDraft(e.target.value);
               const ta = e.target;
               ta.style.height = "auto";
-              ta.style.height = `${Math.min(ta.scrollHeight, 140)}px`;
+              ta.style.height = `${Math.min(ta.scrollHeight, 172)}px`;
             }}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
             rows={1}
             placeholder={`Reply to ${t.patientFirst}…`}
-            className="min-h-[48px] max-h-[140px] flex-1 resize-none bg-transparent py-3 text-[15px] leading-relaxed text-ink placeholder:text-ink/40 focus:outline-none md:min-h-[44px] md:py-2.5 md:text-[14px]"
+            className="min-h-[48px] max-h-[172px] flex-1 resize-none overflow-y-auto bg-transparent py-3 text-[15px] leading-relaxed text-ink placeholder:text-ink/40 focus:outline-none md:min-h-[44px] md:py-2.5 md:text-[14px]"
           />
           <button
             onClick={send}
