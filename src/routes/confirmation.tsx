@@ -201,8 +201,11 @@ function LiquidHeader() {
             className="h-6 w-auto sm:h-7"
           />
         </Link>
-        <div className="flex items-center gap-2 rounded-full bg-[#EAFBEF] px-3 py-1.5 text-[11.5px] font-semibold text-[#0F6E3A]">
-          <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.4} />
+        <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/40 px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-md">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inset-0 animate-ping rounded-full opacity-70" style={{ background: CORAL }} />
+            <span className="relative h-1.5 w-1.5 rounded-full" style={{ background: CORAL }} />
+          </span>
           Secure order
         </div>
       </div>
