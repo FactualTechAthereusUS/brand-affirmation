@@ -1325,12 +1325,12 @@ function ChatThread({ t }: { t: Thread }) {
               setDraft(e.target.value);
               const ta = e.target;
               ta.style.height = "auto";
-              ta.style.height = `${Math.min(ta.scrollHeight, 140)}px`;
+              ta.style.height = `${Math.min(ta.scrollHeight, 172)}px`;
             }}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
             rows={1}
             placeholder={`Reply to ${t.patientFirst}…`}
-            className="min-h-[48px] max-h-[140px] flex-1 resize-none bg-transparent py-3 text-[15px] leading-relaxed text-ink placeholder:text-ink/40 focus:outline-none md:min-h-[44px] md:py-2.5 md:text-[14px]"
+            className="min-h-[48px] max-h-[172px] flex-1 resize-none overflow-y-auto bg-transparent py-3 text-[15px] leading-relaxed text-ink placeholder:text-ink/40 focus:outline-none md:min-h-[44px] md:py-2.5 md:text-[14px]"
           />
           <button
             onClick={send}
