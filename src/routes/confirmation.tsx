@@ -192,13 +192,13 @@ function ConfirmationPage() {
 /* ────────── LIQUID HEADER (matches main LP) ────────── */
 function LiquidHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-black/5 bg-white/75 backdrop-blur-xl backdrop-saturate-150">
-      <div className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4 sm:h-16 sm:px-6">
+    <header className="sticky top-0 z-30 bg-white/75 backdrop-blur-xl backdrop-saturate-150">
+      <div className="mx-auto flex h-16 max-w-[1120px] items-center justify-between px-4 sm:h-18 sm:px-6">
         <Link to="/" className="flex items-center gap-2">
           <img
             src={blissleyLogo.url}
             alt="Blissley"
-            className="h-6 w-auto sm:h-7"
+            className="h-8 w-auto sm:h-10"
           />
         </Link>
         <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/40 px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-md">
