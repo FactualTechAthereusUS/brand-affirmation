@@ -6,7 +6,6 @@ import {
   Check,
   Copy,
   Mail,
-  MapPin,
   MessageCircle,
   ShieldCheck,
   Sparkles,
@@ -398,12 +397,36 @@ function OrderSummary({
 /* ────────── DELIVERY DETAILS ────────── */
 function DeliveryDetails({ firstName }: { firstName: string }) {
   return (
-    <Card eyebrow="Delivery details" title="Where it ships" delay={0.12}>
-      <div className="space-y-4">
-        <div className="flex items-start gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#F6F4EF]">
-            <MapPin className="h-4.5 w-4.5 text-ink/70" />
-          </div>
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-white py-1"
+    >
+      <div className="mb-5">
+        <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">
+          Delivery details
+        </div>
+        <h3 className="mt-0.5 text-[16px] font-bold tracking-tight sm:text-[17px]">
+          Where it ships
+        </h3>
+      </div>
+
+      <div className="space-y-5">
+        <div className="flex items-start gap-4">
+          <svg
+            height="24"
+            width="24"
+            viewBox="0 0 18 18"
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7 shrink-0 text-ink/70"
+          >
+            <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
+              <circle cx="15.25" cy="12.75" r="2" />
+              <path d="M16.25,8.371v-3.374c0-.64-.592-1.115-1.217-.976l-2.998,.666c-.186,.041-.38,.029-.559-.036l-4.952-1.801c-.179-.065-.373-.078-.559-.036l-3.432,.763c-.458,.102-.783,.508-.783,.976V13.003c0,.64,.592,1.115,1.217,.976l2.998-.666c.186-.041,.38-.029,.559,.036l4.926,1.791" />
+              <line x1="15.25" x2="15.25" y1="14.75" y2="17.25" />
+            </g>
+          </svg>
           <div className="min-w-0 flex-1">
             <div className="text-[13px] font-bold text-ink">Shipping to</div>
             <p className="mt-0.5 text-[13px] leading-relaxed text-ink/60">
@@ -414,10 +437,12 @@ function DeliveryDetails({ firstName }: { firstName: string }) {
           </div>
         </div>
 
-        <div className="flex items-start gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#F6F4EF]">
-            <img src={iconTruck.url} alt="" className="h-6 w-6 object-contain" />
-          </div>
+        <div className="flex items-start gap-4">
+          <img
+            src="/assets/icon-shipping-truck.png"
+            alt=""
+            className="h-8 w-8 shrink-0 object-contain"
+          />
           <div className="min-w-0 flex-1">
             <div className="text-[13px] font-bold text-ink">Shipping method</div>
             <p className="mt-0.5 text-[13px] text-ink/60">
@@ -426,13 +451,8 @@ function DeliveryDetails({ firstName }: { firstName: string }) {
           </div>
         </div>
 
-        <div
-          className="flex items-start gap-3 rounded-2xl border p-4"
-          style={{ borderColor: `${CORAL}55`, background: `${CORAL}0D` }}
-        >
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white">
-            <img src={shipBox.url} alt="" className="h-6 w-6 object-contain" />
-          </div>
+        <div className="flex items-start gap-4">
+          <img src={shipBox.url} alt="" className="h-8 w-8 shrink-0 object-contain" />
           <div className="min-w-0 flex-1">
             <div className="text-[13px] font-bold" style={{ color: CORAL }}>
               Estimated delivery
@@ -446,7 +466,7 @@ function DeliveryDetails({ firstName }: { firstName: string }) {
           </div>
         </div>
       </div>
-    </Card>
+    </motion.section>
   );
 }
 
