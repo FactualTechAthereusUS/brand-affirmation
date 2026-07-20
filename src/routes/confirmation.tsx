@@ -54,12 +54,14 @@ const TX = {
 } as const;
 
 function ConfirmationPage() {
-  const { model, tx, plan, total, first, email, order } = Route.useSearch();
+  const search = Route.useSearch() as ConfirmationSearch;
+  const { model, tx, plan, total, first, email, order } = search;
   const navigate = useNavigate();
   const treatment = TX[tx];
   const planDef = PLANS[plan];
   const firstName = first || "friend";
-  const orderId = order || useMemo(() => `BLS-${Math.random().toString(36).slice(2, 8).toUpperCase()}`, []);
+  const fallbackId = useMemo(() => `BLS-${Math.random().toString(36).slice(2, 8).toUpperCase()}`, []);
+  const orderId = order || fallbackId;
 
   // OTO state
   const [otoState, setOtoState] = useState<"idle" | "added" | "declined">("idle");
