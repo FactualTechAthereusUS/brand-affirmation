@@ -90,7 +90,7 @@ function PatientPortal() {
   }
 
   return (
-    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#F7F5F0]" style={{ fontFamily: "var(--font-sans)" }}>
+    <div className="min-h-svh bg-[color:var(--color-mist)]/40 text-ink md:bg-[#FAFAF8]" style={{ fontFamily: "var(--font-sans)" }}>
       {/* Mobile: phone-style column · Desktop: sidebar + main */}
       <div className="mx-auto flex min-h-svh w-full max-w-[440px] flex-col bg-white shadow-none md:max-w-none md:flex-row md:bg-transparent">
         <SideNav
@@ -111,7 +111,7 @@ function PatientPortal() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full overflow-y-auto pb-28 md:pb-16"
+                className="h-full overflow-y-auto bg-white pb-28 md:pb-16"
               >
                 {tab === "home" && <HomeTab onGoto={setTab} />}
                 {tab === "messages" && <MessagesTab />}
