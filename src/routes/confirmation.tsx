@@ -547,10 +547,9 @@ function NextStepsTimeline({ model }: { model: Model }) {
                   s.done
                     ? "bg-[#EAFBEF] text-[#0F6E3A]"
                     : s.active
-                      ? "text-white"
+                      ? "bg-ink text-white"
                       : "bg-[#F6F4EF] text-ink/40"
                 }`}
-                style={s.active ? { background: CORAL } : undefined}
               >
                 {s.done ? (
                   <Check className="h-4.5 w-4.5" strokeWidth={2.8} />
