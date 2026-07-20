@@ -827,11 +827,17 @@ function ChatThread({ kind, onBack }: { kind: "care" | "doc"; onBack: () => void
         <div className="flex items-end gap-2 rounded-[28px] border border-[color:var(--color-hairline)] bg-white px-2 py-1.5 focus-within:border-ink/25">
           <button className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-ink/50" aria-label="Attach"><span className="text-[20px] leading-none">+</span></button>
           <textarea
-            ref={inputRef} value={draft} onChange={(e) => setDraft(e.target.value)}
+            ref={inputRef} value={draft}
+            onChange={(e) => {
+              setDraft(e.target.value);
+              const ta = e.target;
+              ta.style.height = "auto";
+              ta.style.height = `${Math.min(ta.scrollHeight, 140)}px`;
+            }}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
             rows={1}
             placeholder={kind === "care" ? "Message your care team…" : "Ask Dr. Nass…"}
-            className="min-h-[36px] max-h-32 flex-1 resize-none bg-transparent py-2 text-[14px] leading-snug text-ink placeholder:text-ink/40 focus:outline-none"
+            className="min-h-[48px] max-h-[140px] flex-1 resize-none bg-transparent py-3 text-[15px] leading-relaxed text-ink placeholder:text-ink/40 focus:outline-none md:min-h-[44px] md:py-2.5 md:text-[14px]"
           />
           <button onClick={send} disabled={!draft.trim()} className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-white transition disabled:opacity-30" style={{ background: draft.trim() ? PINK : INK }}>
             <Send className="h-3.5 w-3.5" />
