@@ -326,7 +326,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
   const lost = Math.max(0, startWeight - currentWeight);
 
   return (
-    <div className="pt-5">
+    <div className="pt-5 md:mx-auto md:w-full md:max-w-6xl md:px-8 md:pt-8">
       <div className="pl-4 pr-4">
         <motion.h1 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-[24px] font-semibold tracking-tight text-ink">
           {greeting()}, {firstName}.
