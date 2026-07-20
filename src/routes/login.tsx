@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Eye, EyeOff, ArrowLeft, Mail, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, Mail, CheckCircle2, Stethoscope } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/blissley-logo.png.asset.json";
 import bg from "@/assets/login-bg.png.asset.json";
-import { actions, hydrateFromStorage } from "@/lib/portal/store";
+import { physicianActions } from "@/lib/physician/store";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
