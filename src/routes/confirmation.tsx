@@ -657,7 +657,7 @@ function PortalCTA({ firstName, onGo }: { firstName: string; onGo: () => void })
           Track approval, message Dr. Nass, see your plan live.
         </h3>
         <p className="mt-2 text-[13px] leading-relaxed text-ink/60 sm:text-[14px]">
-          A magic link is on its way to your inbox. You can open your portal right now — no password needed.
+          A magic link is on its way to your inbox. You can open your portal right now, no password needed.
         </p>
 
         <button
