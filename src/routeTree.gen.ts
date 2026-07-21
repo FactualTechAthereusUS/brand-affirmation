@@ -17,6 +17,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as MedicationSafetyRouteImport } from './routes/medication-safety'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as EmailsRouteImport } from './routes/emails'
 import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-charged'
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
@@ -74,6 +75,11 @@ const LoginRoute = LoginRouteImport.update({
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailsRoute = EmailsRouteImport.update({
+  id: '/emails',
+  path: '/emails',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfirmationChargedRoute = ConfirmationChargedRouteImport.update({
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/confirmation': typeof ConfirmationRoute
   '/confirmation-charged': typeof ConfirmationChargedRoute
+  '/emails': typeof EmailsRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/confirmation': typeof ConfirmationRoute
   '/confirmation-charged': typeof ConfirmationChargedRoute
+  '/emails': typeof EmailsRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/confirmation': typeof ConfirmationRoute
   '/confirmation-charged': typeof ConfirmationChargedRoute
+  '/emails': typeof EmailsRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
@@ -258,6 +267,7 @@ export interface FileRouteTypes {
     | '/'
     | '/confirmation'
     | '/confirmation-charged'
+    | '/emails'
     | '/intake'
     | '/login'
     | '/medication-safety'
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/'
     | '/confirmation'
     | '/confirmation-charged'
+    | '/emails'
     | '/intake'
     | '/login'
     | '/medication-safety'
@@ -314,6 +325,7 @@ export interface FileRouteTypes {
     | '/'
     | '/confirmation'
     | '/confirmation-charged'
+    | '/emails'
     | '/intake'
     | '/login'
     | '/medication-safety'
@@ -343,6 +355,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConfirmationRoute: typeof ConfirmationRoute
   ConfirmationChargedRoute: typeof ConfirmationChargedRoute
+  EmailsRoute: typeof EmailsRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRouteWithChildren
   MedicationSafetyRoute: typeof MedicationSafetyRoute
@@ -423,6 +436,13 @@ declare module '@tanstack/react-router' {
       path: '/intake'
       fullPath: '/intake'
       preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emails': {
+      id: '/emails'
+      path: '/emails'
+      fullPath: '/emails'
+      preLoaderRoute: typeof EmailsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/confirmation-charged': {
@@ -568,6 +588,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
   ConfirmationChargedRoute: ConfirmationChargedRoute,
+  EmailsRoute: EmailsRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRouteWithChildren,
   MedicationSafetyRoute: MedicationSafetyRoute,
