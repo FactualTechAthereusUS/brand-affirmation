@@ -44,10 +44,26 @@ function NextDaysSection() {
         </p>
       </header>
 
-      <div className="relative mt-8 grid grid-cols-[1fr_auto] gap-4 md:gap-6">
-        {/* Timeline column */}
-        <ol className="relative pl-1">
-          {/* dashed vertical line */}
+      <div className="relative mt-8">
+        {/* Vial background */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-end">
+          <div className="relative -mr-6 md:-mr-2">
+            <div
+              className="absolute inset-0 rounded-full blur-3xl"
+              style={{ background: "radial-gradient(closest-side, rgba(238,114,115,0.4), transparent 70%)" }}
+            />
+            <img
+              src={vialBlissley.url}
+              alt=""
+              className="relative h-[340px] w-auto object-contain opacity-70 md:h-[420px]"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        {/* Timeline column on top */}
+        <ol className="relative pl-1 pr-[38%] md:pr-[42%]">
           <span
             aria-hidden
             className="absolute left-[6px] top-3 bottom-3 w-px"
@@ -59,30 +75,14 @@ function NextDaysSection() {
           {TIMELINE.map((step, i) => (
             <li key={step.label} className={`relative pl-6 ${i === TIMELINE.length - 1 ? "" : "pb-6"}`}>
               <span className="absolute left-0 top-[6px] h-3 w-3 rounded-full bg-ink ring-4 ring-[#f4c8c4]" />
-              <span className="inline-flex items-center rounded-full bg-white px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink shadow-sm">
+              <span className="inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink shadow-sm backdrop-blur">
                 {step.label}
               </span>
-              <p className="mt-2.5 text-[13.5px] font-medium leading-snug text-ink">{step.title}</p>
-              <p className="mt-1 text-[12.5px] leading-[1.55] text-ink/65">{step.body}</p>
+              <p className="mt-2.5 text-[13.5px] font-semibold leading-snug text-ink">{step.title}</p>
+              <p className="mt-1 text-[12.5px] leading-[1.55] text-ink/70">{step.body}</p>
             </li>
           ))}
         </ol>
-
-        {/* Product image */}
-        <div className="relative flex items-center justify-center self-center">
-          <div
-            aria-hidden
-            className="absolute inset-0 -z-0 rounded-full blur-2xl"
-            style={{ background: "radial-gradient(closest-side, rgba(238,114,115,0.35), transparent 70%)" }}
-          />
-          <img
-            src={vialBlissley.url}
-            alt="Blissley Compounded Tirzepatide vial"
-            className="relative z-10 h-[220px] w-auto object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.18)] md:h-[280px]"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
       </div>
 
       <p className="mt-10 text-center font-hero text-[16px] font-semibold italic text-ink md:text-[18px]">
