@@ -1,7 +1,96 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
+import vialBlissley from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
+
+const TIMELINE = [
+  {
+    label: "Within 24 hours",
+    title: "Physician review complete.",
+    body: "Dr. Nass reviews your full intake and writes your prescription if approved.",
+  },
+  {
+    label: "Within 48 hours",
+    title: "Your medication ships.",
+    body: "Prepared at a licensed US pharmacy. Temperature-controlled. Discreet packaging.",
+  },
+  {
+    label: "Days 3–5",
+    title: "Arrives at your door.",
+    body: "Tracking number sent the moment it leaves the facility.",
+  },
+  {
+    label: "Night of arrival",
+    title: "Your first injection.",
+    body: "Take it at bedtime. You'll sleep through the adjustment period. This is the beginning.",
+  },
+];
+
+function NextDaysSection() {
+  return (
+    <section className="relative mt-4 overflow-hidden rounded-[22px] bg-gradient-to-b from-[#f8dcd7] via-[#f4c8c4] to-[#eec9cc] px-5 py-10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5 md:px-8 md:py-12">
+      {/* sparkles */}
+      <svg className="pointer-events-none absolute right-6 top-24 h-5 w-5 text-white/70" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z"/></svg>
+      <svg className="pointer-events-none absolute right-20 top-[46%] h-3 w-3 text-white/60" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z"/></svg>
+      <svg className="pointer-events-none absolute right-10 bottom-24 h-4 w-4 text-white/60" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z"/></svg>
+
+      <header className="text-center">
+        <h2 className="font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.015em] text-ink md:text-[36px]">
+          Here's what the<br className="hidden sm:block" /> next few days look like.
+        </h2>
+        <p className="mt-3 text-[13.5px] leading-relaxed text-ink/65 md:text-[14.5px]">
+          What to expect after you place your order
+        </p>
+      </header>
+
+      <div className="relative mt-8 grid grid-cols-[1fr_auto] gap-4 md:gap-6">
+        {/* Timeline column */}
+        <ol className="relative pl-1">
+          {/* dashed vertical line */}
+          <span
+            aria-hidden
+            className="absolute left-[6px] top-3 bottom-3 w-px"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to bottom, rgba(23,23,23,0.55) 0 3px, transparent 3px 8px)",
+            }}
+          />
+          {TIMELINE.map((step, i) => (
+            <li key={step.label} className={`relative pl-6 ${i === TIMELINE.length - 1 ? "" : "pb-6"}`}>
+              <span className="absolute left-0 top-[6px] h-3 w-3 rounded-full bg-ink ring-4 ring-[#f4c8c4]" />
+              <span className="inline-flex items-center rounded-full bg-white px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink shadow-sm">
+                {step.label}
+              </span>
+              <p className="mt-2.5 text-[13.5px] font-medium leading-snug text-ink">{step.title}</p>
+              <p className="mt-1 text-[12.5px] leading-[1.55] text-ink/65">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+
+        {/* Product image */}
+        <div className="relative flex items-center justify-center self-center">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-0 rounded-full blur-2xl"
+            style={{ background: "radial-gradient(closest-side, rgba(238,114,115,0.35), transparent 70%)" }}
+          />
+          <img
+            src={vialBlissley.url}
+            alt="Blissley Compounded Tirzepatide vial"
+            className="relative z-10 h-[220px] w-auto object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.18)] md:h-[280px]"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      <p className="mt-10 text-center font-hero text-[16px] font-semibold italic text-ink md:text-[18px]">
+        Same price at every dose. Forever.
+      </p>
+    </section>
+  );
+}
 
 export const Route = createFileRoute("/emails")({
   component: EmailPreview,
@@ -223,6 +312,8 @@ United States`}
             </p>
           </div>
         </div>
+
+        <NextDaysSection />
 
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
