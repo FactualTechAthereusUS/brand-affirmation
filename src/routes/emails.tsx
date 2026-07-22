@@ -708,6 +708,8 @@ United States`}
 
         <PlansEmail />
 
+        <RefundEmail />
+
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
         </p>
