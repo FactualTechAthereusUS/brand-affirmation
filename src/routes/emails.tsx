@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse, Package, AlertCircle, PauseCircle, Clock } from "lucide-react";
+import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse, Package, AlertCircle, PauseCircle, Clock, UserCog, KeyRound, ShieldCheck, Mail, MapPin, Smartphone } from "lucide-react";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import vialBlissley from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
@@ -1349,6 +1349,265 @@ function DeliveryEmail() {
   );
 }
 
+function AccountShell({
+  subject,
+  preview,
+  accentIcon: Icon,
+  title,
+  titleAccent,
+  ctaLabel,
+  ctaHref = "/portal/patient",
+  ctaTone = "ink",
+  footNote,
+  children,
+}: {
+  subject: string;
+  preview: string;
+  accentIcon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  title: string;
+  titleAccent: string;
+  ctaLabel: string;
+  ctaHref?: string;
+  ctaTone?: "ink" | "coral";
+  footNote?: string;
+  children?: React.ReactNode;
+}) {
+  const btn =
+    ctaTone === "coral"
+      ? "bg-[#ee7273] text-white"
+      : "bg-ink text-white";
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Subject strip */}
+      <div className="border-b border-ink/5 bg-canvas/60 px-5 py-3 md:px-8">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          From care@blissley.com
+        </p>
+        <p className="mt-1 text-[13px] font-semibold text-ink">{subject}</p>
+        <p className="mt-0.5 text-[12px] text-ink/55">{preview}</p>
+      </div>
+
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-6 text-center md:px-8">
+        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
+          <Icon className="h-6 w-6 text-[#ee7273]" strokeWidth={2.2} />
+        </span>
+        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[34px]">
+          {title}
+          <br />
+          <span className="text-[#ee7273]">{titleAccent}</span>
+        </h1>
+      </div>
+
+      {children}
+
+      {/* CTA */}
+      <div className="px-5 pt-2 pb-8 md:px-8">
+        <a
+          href={ctaHref}
+          className={`flex h-[52px] w-full items-center justify-center gap-2 rounded-full px-8 text-[14.5px] font-medium transition-transform hover:-translate-y-0.5 ${btn}`}
+        >
+          {ctaLabel}
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        {footNote && (
+          <p className="mt-4 text-center text-[12.5px] leading-[1.55] text-ink/55">{footNote}</p>
+        )}
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley account.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function MetaRow({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-start gap-3 py-3">
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
+        <Icon className="h-4 w-4 text-[#ee7273]" strokeWidth={2.2} />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink/55">{label}</p>
+        <p className="mt-0.5 text-[13.5px] leading-[1.5] text-ink">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function SecurityNote({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mx-3 mb-2 mt-2 flex items-start gap-3 rounded-[16px] bg-canvas p-4 ring-1 ring-ink/5 md:mx-5 md:p-5">
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink/[0.06] ring-1 ring-ink/10">
+        <ShieldCheck className="h-4 w-4 text-ink/70" strokeWidth={2.2} />
+      </span>
+      <p className="text-[13px] leading-[1.55] text-ink/70">{children}</p>
+    </div>
+  );
+}
+
+function PasswordResetEmail() {
+  return (
+    <AccountShell
+      subject="Reset your Blissley password"
+      preview="Use this secure link to set a new password."
+      accentIcon={KeyRound}
+      title="Let's get you"
+      titleAccent="back in."
+      ctaLabel="Reset my password"
+      ctaTone="coral"
+      footNote="This link expires in 30 minutes and can only be used once."
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[14.5px] leading-[1.65] text-ink/70">
+          Someone requested a password reset for the account tied to{" "}
+          <span className="font-medium text-ink">sarah@example.com</span>. Tap the button below to
+          choose a new one.
+        </p>
+      </div>
+
+      <SecurityNote>
+        Didn't request this? You can safely ignore this email — your password won't change until
+        you open the link and confirm.
+      </SecurityNote>
+    </AccountShell>
+  );
+}
+
+function PasswordChangedEmail() {
+  return (
+    <AccountShell
+      subject="Your Blissley password was changed"
+      preview="Confirming a recent change to your account."
+      accentIcon={ShieldCheck}
+      title="Password"
+      titleAccent="updated."
+      ctaLabel="Review account activity"
+      ctaTone="ink"
+      footNote="If this wasn't you, secure your account right away."
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[14.5px] leading-[1.65] text-ink/70">
+          Your Blissley password was successfully changed. Here's a quick summary of the change:
+        </p>
+      </div>
+
+      <div className="mx-3 mt-6 rounded-[20px] bg-canvas p-4 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-6">
+        <div className="divide-y divide-ink/5">
+          <MetaRow icon={Clock} label="When" value="Jul 22, 2026 · 6:18 PM PT" />
+          <MetaRow icon={Smartphone} label="Device" value="iPhone · Safari" />
+          <MetaRow icon={MapPin} label="Approx. location" value="Los Angeles, CA" />
+        </div>
+      </div>
+
+      <SecurityNote>
+        Didn't make this change? Reset your password immediately and reply to this email so our
+        care team can secure the account.
+      </SecurityNote>
+    </AccountShell>
+  );
+}
+
+function ProfileChangeEmail() {
+  return (
+    <AccountShell
+      subject="Your Blissley profile was updated"
+      preview="A quick heads-up about a recent change to your account."
+      accentIcon={UserCog}
+      title="Profile"
+      titleAccent="updated."
+      ctaLabel="Go to my profile"
+      ctaTone="ink"
+      footNote="Didn't make this change? Reply and we'll help you sort it out."
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[14.5px] leading-[1.65] text-ink/70">
+          Your account was just updated. Here's what changed:
+        </p>
+      </div>
+
+      <div className="mx-3 mt-6 rounded-[20px] bg-canvas p-4 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-6">
+        <div className="divide-y divide-ink/5">
+          <MetaRow icon={UserCog} label="Preferred name" value="Sarah Johnson" />
+          <MetaRow icon={Smartphone} label="Phone number" value="(•••) •••-4242" />
+          <MetaRow
+            icon={MapPin}
+            label="Shipping address"
+            value="1247 Sunset Blvd, Apt 4B · Los Angeles, CA 90026"
+          />
+        </div>
+      </div>
+
+      <SecurityNote>
+        For your safety, we'll always email you when important profile details change.
+      </SecurityNote>
+    </AccountShell>
+  );
+}
+
+function EmailChangedEmail() {
+  return (
+    <AccountShell
+      subject="Your Blissley login email was changed"
+      preview="Confirming your new sign-in address."
+      accentIcon={Mail}
+      title="New email"
+      titleAccent="on file."
+      ctaLabel="Open my account"
+      ctaTone="ink"
+      footNote="Going forward, use your new email address to sign in."
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[14.5px] leading-[1.65] text-ink/70">
+          The email address on your Blissley account was just changed.
+        </p>
+      </div>
+
+      <div className="mx-3 mt-6 rounded-[20px] bg-canvas p-4 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-6">
+        <div className="divide-y divide-ink/5">
+          <MetaRow icon={Mail} label="Previous email" value="sarah.old@example.com" />
+          <MetaRow icon={Mail} label="New email" value="sarah@example.com" />
+          <MetaRow icon={Clock} label="Changed" value="Jul 22, 2026 · 6:22 PM PT" />
+        </div>
+      </div>
+
+      <SecurityNote>
+        Didn't request this? Reply to this email from your previous address and we'll roll it back
+        immediately.
+      </SecurityNote>
+    </AccountShell>
+  );
+}
+
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
@@ -1534,9 +1793,18 @@ Los Angeles, CA 90026`}
 
         <CheckInEmail2 />
 
+        <PasswordResetEmail />
+
+        <PasswordChangedEmail />
+
+        <ProfileChangeEmail />
+
+        <EmailChangedEmail />
+
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
         </p>
+
       </div>
     </div>
   );
