@@ -544,6 +544,164 @@ function RefundEmail() {
   );
 }
 
+const SHIPPING_STEPS = [
+  { label: "Order Placed", date: "Jul 21" },
+  { label: "Physician Review", date: "Jul 22" },] 
+  { label: "Shipping", date: "Jul 23" },
+  { label: "Delivery", date: "" },
+];
+
+function ShippingTracker() {
+  const activeIndex = 2;
+  return (
+    <div className="relative">
+      <div className="absolute left-[14px] right-[14px] top-[14px] h-px bg-ink/15" />
+      <div
+        className="absolute left-[14px] top-[14px] h-px bg-ink transition-all"
+        style={{ width: `calc((100% - 28px) * ${activeIndex / (SHIPPING_STEPS.length - 1)})` }}
+      />
+      <ol className="relative grid grid-cols-4 gap-1">
+        {SHIPPING_STEPS.map((step, i) => {
+          const done = i < activeIndex;
+          const active = i === activeIndex;
+          return (
+            <li key={step.label} className="flex flex-col items-center text-center">
+              <span
+                className={`grid h-7 w-7 place-items-center rounded-full border-2 transition-colors ${
+                  done || active ? "border-ink bg-ink text-white" : "border-ink/25 bg-canvas text-ink/40"
+                }`}
+              >
+                {done || active ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : null}
+              </span>
+              <span
+                className={`mt-2 text-[10px] font-semibold uppercase leading-tight tracking-[0.06em] ${
+                  active || done ? "text-ink" : "text-ink/45"
+                }`}
+              >
+                {step.label}
+              </span>
+              {step.date && (
+                <span className="mt-0.5 text-[10px] font-normal text-ink/50">{step.date}</span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
+function ShippingEmail() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Hero card */}
+      <div className="px-5 pt-6 md:px-8">
+        <div className="rounded-[20px] bg-canvas p-6 text-center shadow-[0_1px_0_rgba(0,0,0,0.03)] ring-1 ring-ink/5 md:p-8">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
+            <Package className="h-8 w-8 text-[#ee7273]" strokeWidth={1.75} />
+          </div>
+          <h1 className="mt-5 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
+            It's on its way, Sarah.
+          </h1>
+          <p className="mt-2 text-[14.5px] leading-[1.55] text-ink/65">
+            Your box just left the pharmacy.
+          </p>
+        </div>
+      </div>
+
+      {/* Tracker */}
+      <div className="px-5 pb-2 pt-7 md:px-8">
+        <ShippingTracker />
+      </div>
+
+      {/* Tracking details */}
+      <div className="px-5 pt-4 md:px-8">
+        <div className="rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] ring-1 ring-ink/5 md:p-7">
+          <h2 className="font-hero text-[18px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[20px]">
+            Tracking
+          </h2>
+          <dl className="mt-5 space-y-3 text-[14px]">
+            <div className="flex justify-between">
+              <dt className="text-ink/60">Carrier</dt>
+              <dd className="font-medium text-ink">UPS Next Day Air</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-ink/60">Tracking #</dt>
+              <dd className="font-medium text-ink">1Z999AA10123456784</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-ink/60">Est. delivery</dt>
+              <dd className="font-medium text-ink">Jul 24 – Jul 25</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-ink/60">Order #</dt>
+              <dd className="font-medium text-ink">BLS-00421</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="px-5 pt-5 md:px-8">
+        <a
+          href="#"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          Track my package
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Body copy */}
+      <div className="px-5 pt-8 pb-6 text-center md:px-8">
+        <p className="text-[14.5px] leading-[1.6] text-ink/70">
+          Shipped temperature-controlled, in discreet packaging. Nothing identifying on the outside.
+        </p>
+        <p className="mt-5 font-hero text-[18px] font-semibold leading-[1.25] tracking-[-0.01em] text-ink md:text-[20px]">
+          The box arriving at your door is the beginning.
+        </p>
+      </div>
+
+      {/* Questions */}
+      <div className="px-5 pb-10 md:px-8">
+        <div className="rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] ring-1 ring-ink/5 md:p-7">
+          <h2 className="font-hero text-[18px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[20px]">
+            Questions before it arrives?
+          </h2>
+          <p className="mt-3 text-[14px] leading-[1.6] text-ink/70">
+            Reply to this email or message us in your portal. A real person responds within a few hours.
+          </p>
+          <p className="mt-5 text-[14px] font-medium text-ink">The Blissley Team</p>
+        </div>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Manage preferences</a>
+          <span className="mx-2 text-white/25">·</span>
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Unsubscribe</a>
+        </p>
+        <p className="mt-4 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley order.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
