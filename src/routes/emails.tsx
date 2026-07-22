@@ -1,8 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Activity, MessageSquare, Truck, CreditCard } from "lucide-react";
+import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse } from "lucide-react";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import vialBlissley from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
+import blissleyWhite from "@/assets/blissley-white.png.asset.json";
+import drNassPortal from "@/assets/dr-nass-portal.png.asset.json";
+import emailMeal from "@/assets/email-meal.jpg.asset.json";
+import emailSupport from "@/assets/email-support.jpg.asset.json";
 
 const TIMELINE = [
   {
