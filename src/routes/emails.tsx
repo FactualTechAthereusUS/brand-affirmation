@@ -436,6 +436,114 @@ function PlansEmail() {
   );
 }
 
+function RefundEmail() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-6 text-center md:px-8">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          From care@blissley.com
+        </p>
+        <h1 className="mt-3 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[36px]">
+          An update on your
+          <br />
+          <span className="text-[#ee7273]">Blissley review</span>
+        </h1>
+      </div>
+
+      {/* Message body */}
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">
+          Hi Sarah,
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          Dr. Nass reviewed your profile and determined that our GLP-1 program isn't the right fit
+          based on your medical history at this time.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          This decision was made carefully and with your safety as the only priority.
+        </p>
+      </div>
+
+      {/* Refund confirmed card */}
+      <div className="mx-3 mb-2 mt-8 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
+        <div className="flex items-center gap-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
+            <Check className="h-5 w-5 text-[#ee7273]" strokeWidth={2.5} />
+          </span>
+          <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
+            Refund confirmed
+          </h2>
+        </div>
+
+        <dl className="mt-6 space-y-3 text-[14px]">
+          <div className="flex justify-between">
+            <dt className="text-ink/60">Amount refunded</dt>
+            <dd className="font-semibold text-ink">$711.00</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-ink/60">Card</dt>
+            <dd className="flex items-center gap-2 text-ink">
+              <VisaIcon />
+              <span>Visa ending 4242</span>
+            </dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-ink/60">Order #</dt>
+            <dd className="font-medium text-ink">BLS-00421</dd>
+          </div>
+        </dl>
+
+        <div className="my-5 h-px bg-ink/8" />
+
+        <p className="text-[13.5px] leading-[1.6] text-ink/70">
+          Your refund has been issued in full. It will appear in your account within 3-5 business
+          days, depending on your bank.
+        </p>
+      </div>
+
+      {/* What happens next */}
+      <div className="px-5 pb-4 pt-6 md:px-8">
+        <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
+          What happens <span className="text-[#ee7273]">next</span>
+        </h2>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          A member of our care team will reach out within 24 hours to talk through your options —
+          including whether there's another path that might be a fit for you.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          If you have questions right now, just reply to this email. A real person reads every reply.
+        </p>
+
+        <p className="mt-8 text-[15px] font-medium text-ink">
+          The Blissley Care Team
+        </p>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Manage preferences</a>
+          <span className="mx-2 text-white/25">·</span>
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Unsubscribe</a>
+        </p>
+        <p className="mt-4 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley order.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
