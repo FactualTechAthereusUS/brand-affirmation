@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse, Package } from "lucide-react";
+import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse, Package, AlertCircle, PauseCircle, Clock } from "lucide-react";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import vialBlissley from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
