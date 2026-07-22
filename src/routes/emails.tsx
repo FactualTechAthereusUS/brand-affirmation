@@ -184,72 +184,77 @@ const PORTAL_FEATURES = [
 
 function PortalEmail() {
   return (
-    <div className="mt-4 overflow-hidden rounded-[22px] bg-canvas shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
-      {/* Header */}
-      <div className="flex flex-col items-center border-b border-ink/8 px-5 py-5 text-center md:px-7">
-        <img src={blissleyLogo.url} alt="Blissley" className="h-6 w-auto" />
-        <span className="mt-2 text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">
-          Your Portal Is Ready
-        </span>
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
       </div>
 
-      <div className="px-5 pt-6 md:px-7">
-        <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-ink/45">From care@blissley.com</p>
-        <h1 className="mt-1 font-hero text-[24px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[28px]">
-          Your Blissley portal is ready.
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-8 text-center md:px-8">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          From care@blissley.com
+        </p>
+        <h1 className="mt-3 font-hero text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[40px]">
+          Your Blissley portal
+          <br />
+          <span className="text-[#ee7273]">is ready.</span>
         </h1>
-        <p className="mt-3 text-[14px] leading-[1.55] text-ink/65">
-          This is where everything lives — your physician review status, your care team, your shipments, and your subscription.
+        <p className="mx-auto mt-4 max-w-[340px] text-[14.5px] leading-[1.55] text-ink/65">
+          This is where everything lives — your physician review status, your care team, your
+          shipments, and your subscription.
         </p>
-      </div>
-
-      {/* CTA */}
-      <div className="px-5 pt-6 md:px-7">
-        <a
-          href="/portal/patient"
-          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
-        >
-          Open My Portal
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </a>
-        <p className="mt-3 text-center text-[12px] leading-relaxed text-ink/50">
-          This link is private to you. It expires in 24 hours.
-        </p>
-      </div>
-
-      {/* Inside your portal */}
-      <div className="mx-5 mt-6 rounded-2xl bg-white p-1 ring-1 ring-ink/8 md:mx-7">
-        <div className="px-4 py-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink/60">Inside Your Portal</h2>
+        <div className="mt-6 flex items-center justify-center">
+          <a
+            href="/portal/patient"
+            className="inline-flex h-[48px] items-center justify-center gap-2 rounded-full bg-ink px-8 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+          >
+            Open my portal
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
         </div>
-        <ol className="px-4 pb-4">
-          {PORTAL_FEATURES.map((feature, i) => {
-            const Icon = feature.icon;
+        <p className="mt-3 text-[12px] text-ink/50">Private link · expires in 24 hours</p>
+      </div>
+
+      {/* Inside your portal card */}
+      <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
+        <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
+          Inside <span className="text-[#ee7273]">your portal</span>
+        </h2>
+
+        <ul className="mt-6 space-y-5">
+          {PORTAL_FEATURES.map((f) => {
+            const Icon = f.icon;
             return (
               <li
-                key={feature.title}
-                className={`flex items-start gap-3 py-3.5 ${i !== PORTAL_FEATURES.length - 1 ? "border-b border-ink/8" : ""}`}
+                key={f.title}
+                className="grid grid-cols-[64px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[76px_minmax(0,1fr)] md:gap-5"
               >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 text-[#ee7273]">
-                  <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[14px] font-semibold text-ink">{feature.title}</p>
-                  <p className="mt-0.5 text-[13px] leading-[1.45] text-ink/65">{feature.body}</p>
+                <div className="grid aspect-square place-items-center rounded-2xl bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
+                  <Icon className="h-7 w-7 text-[#ee7273]" strokeWidth={1.75} />
+                </div>
+                <div className="min-w-0 pt-1">
+                  <h3 className="text-[15.5px] font-semibold leading-tight text-ink md:text-[16.5px]">
+                    {f.title}
+                  </h3>
+                  <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/65">{f.body}</p>
                 </div>
               </li>
             );
           })}
-        </ol>
+        </ul>
       </div>
 
-      {/* Login link helper */}
-      <div className="px-5 py-6 text-center md:px-7">
-        <p className="text-[13px] leading-relaxed text-ink/60">
-          Need a new login link? Visit{" "}
+      {/* Closer */}
+      <div className="px-5 pb-10 pt-4 text-center md:px-8">
+        <h2 className="font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
+          Need a <span className="text-[#ee7273]">new login link?</span>
+        </h2>
+        <p className="mt-2 text-[13.5px] text-ink/60">
+          Visit{" "}
           <a href="https://portal.blissley.com" className="font-medium text-ink underline underline-offset-4 hover:text-ink/70">
             portal.blissley.com
           </a>{" "}
@@ -257,13 +262,13 @@ function PortalEmail() {
         </p>
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-ink/8 bg-ink/[0.02] px-5 py-5 text-center md:px-7">
-        <img src={blissleyLogo.url} alt="Blissley" className="mx-auto h-4 w-auto opacity-70" />
-        <p className="mt-3 text-[11px] leading-[1.6] text-ink/45">
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
           TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
         </p>
-        <p className="mt-2 text-[10px] leading-[1.5] text-ink/40">
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
           This is a transactional email. For medical emergencies call 911.
         </p>
       </div>
