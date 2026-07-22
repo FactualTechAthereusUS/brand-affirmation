@@ -1198,6 +1198,157 @@ function CheckInEmail2() {
   );
 }
 
+const DELIVERY_STEPS = [
+  { label: "Order Placed", date: "Jul 21" },
+  { label: "Physician Review", date: "Jul 22" },
+  { label: "Shipping", date: "Jul 23" },
+  { label: "Delivery", date: "Jul 24" },
+];
+
+function DeliveryTracker() {
+  const activeIndex = 3;
+  return (
+    <div className="relative">
+      <div className="absolute left-[14px] right-[14px] top-[14px] h-px bg-ink/15" />
+      <div
+        className="absolute left-[14px] top-[14px] h-px bg-ink transition-all"
+        style={{ width: "calc(100% - 28px)" }}
+      />
+      <ol className="relative grid grid-cols-4 gap-1">
+        {DELIVERY_STEPS.map((step, i) => {
+          const done = i < activeIndex;
+          const active = i === activeIndex;
+          return (
+            <li key={step.label} className="flex flex-col items-center text-center">
+              <span
+                className={`grid h-7 w-7 place-items-center rounded-full border-2 transition-colors ${
+                  done || active ? "border-ink bg-ink text-white" : "border-ink/25 bg-canvas text-ink/40"
+                }`}
+              >
+                <Check className="h-3.5 w-3.5" strokeWidth={3} />
+              </span>
+              <span
+                className={`mt-2 text-[10px] font-semibold uppercase leading-tight tracking-[0.06em] ${
+                  active || done ? "text-ink" : "text-ink/45"
+                }`}
+              >
+                {step.label}
+              </span>
+              {step.date && (
+                <span className="mt-0.5 text-[10px] font-normal text-ink/50">{step.date}</span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
+function DeliveryEmail() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Coral hero */}
+      <div className="relative overflow-hidden bg-[#ee7273] px-5 py-12 text-center md:px-8 md:py-14">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/30 blur-3xl" />
+          <div className="absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
+        </div>
+        <div className="relative">
+          <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-white/20 text-white ring-1 ring-white/30 backdrop-blur-sm">
+            <Check className="h-7 w-7" strokeWidth={3} />
+          </span>
+          <h1 className="mt-5 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[36px]">
+            It's here, Sarah.
+          </h1>
+          <p className="mx-auto mt-3 max-w-[320px] text-[18px] font-medium leading-[1.35] text-white/95 md:text-[20px]">
+            Tonight's the night.
+          </p>
+        </div>
+      </div>
+
+      {/* Tracker */}
+      <div className="px-5 pb-2 pt-7 md:px-8">
+        <DeliveryTracker />
+      </div>
+
+      {/* First injection guidance */}
+      <div className="px-5 pt-6 pb-2 md:px-8">
+        <h2 className="font-hero text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[26px]">
+          Your first injection is everything.
+        </h2>
+
+        <p className="mt-4 text-[14.5px] leading-[1.6] text-ink/80">
+          A quick reminder before you start:
+        </p>
+        <ul className="mt-4 space-y-3 text-[14.5px] leading-[1.55] text-ink/80">
+          <li className="flex items-start gap-3">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>Inject at night, before bed — you'll sleep through the first adjustment.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>Rotate injection sites each week.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>Discard your vial 28 days after first puncture.</span>
+          </li>
+        </ul>
+        <p className="mt-5 text-[14px] leading-[1.6] text-ink/70">
+          Your full step-by-step guide is waiting in your portal.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div className="px-5 pt-6 pb-2 md:px-8">
+        <a
+          href="/portal/patient"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          Open My Injection Guide
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Closer */}
+      <div className="px-5 pb-10 pt-8 text-center md:px-8">
+        <p className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
+          This is the beginning.
+        </p>
+        <p className="mx-auto mt-4 max-w-[340px] text-[14px] leading-[1.6] text-ink/65">
+          Questions before tonight? Reply to this email or message us in your portal. A real person responds within a few hours.
+        </p>
+        <p className="mt-6 text-[14px] font-medium text-ink">The Blissley Team</p>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Manage preferences</a>
+          <span className="mx-2 text-white/25">·</span>
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Unsubscribe</a>
+        </p>
+        <p className="mt-4 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley order.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
@@ -1368,6 +1519,8 @@ Los Angeles, CA 90026`}
         <RefundEmail />
 
         <ShippingEmail />
+
+        <DeliveryEmail />
 
         <PaymentFailedEmail1 />
 
