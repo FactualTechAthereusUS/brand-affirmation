@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check } from "lucide-react";
+import { Check, Activity, MessageSquare, Truck, CreditCard } from "lucide-react";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import vialBlissley from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
@@ -152,6 +152,118 @@ function VisaIcon() {
     <span className="grid h-6 w-9 place-items-center rounded-[3px] bg-white ring-1 ring-ink/15">
       <span className="text-[10px] font-black italic tracking-tight text-[#1A1F71]">VISA</span>
     </span>
+  );
+}
+
+const PORTAL_FEATURES = [
+  {
+    icon: Activity,
+    title: "Physician status",
+    body: "Track Dr. Nass's review in real time",
+  },
+  {
+    icon: MessageSquare,
+    title: "Messages",
+    body: "Message Dr. Nass or your care team directly",
+  },
+  {
+    icon: Truck,
+    title: "Shipments",
+    body: "Track your order the moment it ships",
+  },
+  {
+    icon: CreditCard,
+    title: "My Plan",
+    body: "Manage your subscription, pause, cancel, update card",
+  },
+];
+
+function PortalEmail() {
+  return (
+    <div className="mt-4 overflow-hidden rounded-[22px] bg-canvas shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Header */}
+      <div className="flex flex-col items-center border-b border-ink/8 px-5 py-5 text-center md:px-7">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-6 w-auto" />
+        <span className="mt-2 text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">
+          Your Portal Is Ready
+        </span>
+      </div>
+
+      <div className="px-5 pt-6 md:px-7">
+        <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-ink/45">From care@blissley.com</p>
+        <h1 className="mt-1 font-hero text-[24px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[28px]">
+          Your Blissley portal is ready.
+        </h1>
+        <p className="mt-3 text-[14px] leading-[1.55] text-ink/65">
+          This is where everything lives — your physician review status, your care team, your shipments, and your subscription.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div className="px-5 pt-6 md:px-7">
+        <a
+          href="/portal/patient"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          Open My Portal
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        <p className="mt-3 text-center text-[12px] leading-relaxed text-ink/50">
+          This link is private to you. It expires in 24 hours.
+        </p>
+      </div>
+
+      {/* Inside your portal */}
+      <div className="mx-5 mt-6 rounded-2xl bg-white p-1 ring-1 ring-ink/8 md:mx-7">
+        <div className="px-4 py-3">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink/60">Inside Your Portal</h2>
+        </div>
+        <ol className="px-4 pb-4">
+          {PORTAL_FEATURES.map((feature, i) => {
+            const Icon = feature.icon;
+            return (
+              <li
+                key={feature.title}
+                className={`flex items-start gap-3 py-3.5 ${i !== PORTAL_FEATURES.length - 1 ? "border-b border-ink/8" : ""}`}
+              >
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 text-[#ee7273]">
+                  <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-semibold text-ink">{feature.title}</p>
+                  <p className="mt-0.5 text-[13px] leading-[1.45] text-ink/65">{feature.body}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
+      {/* Login link helper */}
+      <div className="px-5 py-6 text-center md:px-7">
+        <p className="text-[13px] leading-relaxed text-ink/60">
+          Need a new login link? Visit{" "}
+          <a href="https://portal.blissley.com" className="font-medium text-ink underline underline-offset-4 hover:text-ink/70">
+            portal.blissley.com
+          </a>{" "}
+          to request one anytime.
+        </p>
+      </div>
+
+      {/* Footer */}
+      <div className="border-t border-ink/8 bg-ink/[0.02] px-5 py-5 text-center md:px-7">
+        <img src={blissleyLogo.url} alt="Blissley" className="mx-auto h-4 w-auto opacity-70" />
+        <p className="mt-3 text-[11px] leading-[1.6] text-ink/45">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[10px] leading-[1.5] text-ink/40">
+          This is a transactional email. For medical emergencies call 911.
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -314,6 +426,8 @@ United States`}
         </div>
 
         <NextDaysSection />
+
+        <PortalEmail />
 
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
