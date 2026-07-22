@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse, Package } from "lucide-react";
+import { Check, Activity, MessageSquare, Truck, CreditCard, Pill, Stethoscope, Salad, HeartPulse, Package, AlertCircle, PauseCircle, Clock } from "lucide-react";
 import vialTirz from "@/assets/vial-tirzepatide.png.asset.json";
 import vialBlissley from "@/assets/blissley-tirzepatide-vial-transparent.png.asset.json";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
@@ -702,6 +702,273 @@ function ShippingEmail() {
   );
 }
 
+function PaymentShell({
+  subject,
+  preview,
+  accentIcon: Icon,
+  accentTone,
+  title,
+  titleAccent,
+  children,
+}: {
+  subject: string;
+  preview: string;
+  accentIcon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  accentTone: "coral" | "amber" | "ink";
+  title: string;
+  titleAccent: string;
+  children: React.ReactNode;
+}) {
+  const toneMap = {
+    coral: { bg: "bg-[#ee7273]/10", ring: "ring-[#ee7273]/15", text: "text-[#ee7273]" },
+    amber: { bg: "bg-amber-500/10", ring: "ring-amber-500/20", text: "text-amber-600" },
+    ink: { bg: "bg-ink/10", ring: "ring-ink/15", text: "text-ink" },
+  }[accentTone];
+
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Subject strip */}
+      <div className="border-b border-ink/5 bg-canvas/60 px-5 py-3 md:px-8">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          From care@blissley.com
+        </p>
+        <p className="mt-1 text-[13px] font-semibold text-ink">{subject}</p>
+        <p className="mt-0.5 text-[12px] text-ink/55">{preview}</p>
+      </div>
+
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-6 text-center md:px-8">
+        <span className={`mx-auto grid h-12 w-12 place-items-center rounded-full ${toneMap.bg} ring-1 ${toneMap.ring}`}>
+          <Icon className={`h-6 w-6 ${toneMap.text}`} strokeWidth={2.2} />
+        </span>
+        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[34px]">
+          {title}
+          <br />
+          <span className={toneMap.text}>{titleAccent}</span>
+        </h1>
+      </div>
+
+      {children}
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Manage preferences</a>
+          <span className="mx-2 text-white/25">·</span>
+          <a href="#" className="underline underline-offset-2 hover:text-white/70">Unsubscribe</a>
+        </p>
+        <p className="mt-4 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley account.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function UpdatePaymentButton({ label = "Update payment method" }: { label?: string }) {
+  return (
+    <a
+      href="/portal/patient"
+      className="inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+    >
+      {label}
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14" />
+        <path d="m12 5 7 7-7 7" />
+      </svg>
+    </a>
+  );
+}
+
+function CareUnaffectedNote() {
+  return (
+    <div className="mx-3 mb-2 mt-6 flex items-start gap-3 rounded-[16px] bg-canvas p-4 ring-1 ring-ink/5 md:mx-5 md:p-5">
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
+        <HeartPulse className="h-4 w-4 text-[#ee7273]" strokeWidth={2.2} />
+      </span>
+      <p className="text-[13.5px] leading-[1.55] text-ink/70">
+        Your care and physician relationship are unaffected. We just need a valid card on file to
+        prepare your next shipment.
+      </p>
+    </div>
+  );
+}
+
+function PaymentDetailsCard({
+  amountLabel = "Amount",
+  amount = "$399.00",
+  attempted,
+}: {
+  amountLabel?: string;
+  amount?: string;
+  attempted?: string;
+}) {
+  return (
+    <div className="mx-3 mt-8 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
+      <h2 className="font-hero text-[18px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[20px]">
+        Payment details
+      </h2>
+      <dl className="mt-5 space-y-3 text-[14px]">
+        <div className="flex justify-between">
+          <dt className="text-ink/60">{amountLabel}</dt>
+          <dd className="font-semibold text-ink">{amount}</dd>
+        </div>
+        <div className="flex justify-between">
+          <dt className="text-ink/60">Card on file</dt>
+          <dd className="flex items-center gap-2 text-ink">
+            <VisaIcon />
+            <span>Visa ending 4242</span>
+          </dd>
+        </div>
+        {attempted && (
+          <div className="flex justify-between">
+            <dt className="text-ink/60">Attempted</dt>
+            <dd className="font-medium text-ink">{attempted}</dd>
+          </div>
+        )}
+      </dl>
+    </div>
+  );
+}
+
+function PaymentFailedEmail1() {
+  return (
+    <PaymentShell
+      subject="We couldn't process your payment"
+      preview="Quick fix — update your card to keep your shipment on track."
+      accentIcon={AlertCircle}
+      accentTone="coral"
+      title="We couldn't process"
+      titleAccent="your payment"
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          We tried to charge your card for your next order and it didn't go through.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          This happens — usually an expired card or a bank flag. Nothing to worry about, just needs
+          a quick fix.
+        </p>
+      </div>
+
+      <PaymentDetailsCard attempted="July 22, 2026" />
+
+      <div className="px-5 pb-2 pt-6 md:px-8">
+        <UpdatePaymentButton />
+      </div>
+
+      <CareUnaffectedNote />
+
+      <div className="px-5 pb-8 pt-6 md:px-8">
+        <p className="text-[14.5px] leading-[1.65] text-ink/70">
+          Questions? Reply to this email — a real person responds within a few hours.
+        </p>
+        <p className="mt-6 text-[15px] font-medium text-ink">The Blissley Team</p>
+      </div>
+    </PaymentShell>
+  );
+}
+
+function PaymentFailedEmail2() {
+  return (
+    <PaymentShell
+      subject="Your shipment is on hold"
+      preview="Update your card to release your next order."
+      accentIcon={PauseCircle}
+      accentTone="amber"
+      title="Your shipment"
+      titleAccent="is on hold"
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          Your card still hasn't gone through, and your next shipment is on hold until it's updated.
+        </p>
+      </div>
+
+      <PaymentDetailsCard amountLabel="Amount due" />
+
+      <div className="px-5 pb-2 pt-6 md:px-8">
+        <UpdatePaymentButton />
+        <p className="mt-4 text-center text-[13px] text-ink/55">
+          Takes about 30 seconds. Once updated, your order ships automatically —
+          no need to place a new one.
+        </p>
+      </div>
+
+      <CareUnaffectedNote />
+
+      <div className="px-5 pb-8 pt-6 md:px-8">
+        <p className="text-[15px] font-medium text-ink">The Blissley Team</p>
+      </div>
+    </PaymentShell>
+  );
+}
+
+function PaymentFailedEmail3() {
+  return (
+    <PaymentShell
+      subject="Action needed — your subscription will pause"
+      preview="Last step before your next order is affected."
+      accentIcon={Clock}
+      accentTone="coral"
+      title="Action needed to keep"
+      titleAccent="your subscription active"
+    >
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          We still don't have a working card on file. If this isn't resolved in the next{" "}
+          <span className="font-semibold text-ink">48 hours</span>, your subscription will be paused
+          and your next shipment won't go out.
+        </p>
+      </div>
+
+      <div className="mx-3 mt-8 rounded-[20px] bg-[#ee7273]/8 p-5 ring-1 ring-[#ee7273]/15 md:mx-5 md:p-6">
+        <div className="flex items-center gap-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/15 ring-1 ring-[#ee7273]/20">
+            <Clock className="h-4.5 w-4.5 text-[#ee7273]" strokeWidth={2.2} />
+          </span>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#ee7273]">
+              48 hours remaining
+            </p>
+            <p className="mt-0.5 text-[13.5px] text-ink/75">
+              Before your next shipment is affected.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <PaymentDetailsCard amountLabel="Amount due" />
+
+      <div className="px-5 pb-2 pt-6 md:px-8">
+        <UpdatePaymentButton />
+      </div>
+
+      <CareUnaffectedNote />
+
+      <div className="px-5 pb-8 pt-6 md:px-8">
+        <p className="text-[15px] leading-[1.65] text-ink/70">
+          If you'd rather cancel or need help, just reply — a real person will get back to you today.
+        </p>
+        <p className="mt-6 text-[15px] font-medium text-ink">The Blissley Team</p>
+      </div>
+    </PaymentShell>
+  );
+}
+
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
@@ -872,6 +1139,13 @@ Los Angeles, CA 90026`}
         <RefundEmail />
 
         <ShippingEmail />
+
+        <PaymentFailedEmail1 />
+
+        <PaymentFailedEmail2 />
+
+        <PaymentFailedEmail3 />
+
 
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
