@@ -968,6 +968,79 @@ function PaymentFailedEmail3() {
   );
 }
 
+function PhysicianMessageEmail() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-6 text-center md:px-8">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          From care@blissley.com
+        </p>
+        <h1 className="mt-3 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[36px]">
+          You have a new message
+          <br />
+          <span className="text-[#ee7273]">from Dr. Nass</span>
+        </h1>
+      </div>
+
+      {/* Body */}
+      <div className="px-5 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">Hi Sarah,</p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          Dr. Nass sent you a message.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
+          For your privacy, we don't include message content in email. Log in to your secure portal
+          to read and reply.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div className="px-5 pt-8 pb-2 md:px-8">
+        <a
+          href="/portal/patient"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          View my message
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Login link helper */}
+      <div className="px-5 pb-10 pt-6 text-center md:px-8">
+        <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
+          Need a <span className="text-[#ee7273]">new login link?</span>
+        </h2>
+        <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/60">
+          Visit{" "}
+          <a href="https://portal.blissley.com" className="font-medium text-ink underline underline-offset-4 hover:text-ink/70">
+            portal.blissley.com
+          </a>{" "}
+          to request one anytime.
+        </p>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email. For medical emergencies call 911.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 function EmailPreview() {
   return (
