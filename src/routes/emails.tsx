@@ -340,34 +340,26 @@ function PlansEmail() {
         </h2>
 
         <ul className="mt-6 space-y-6">
-          {PLAN_FEATURES.map((f) => {
-            const Icon = f.icon;
-            return (
-              <li key={f.title} className="grid grid-cols-[110px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[130px_minmax(0,1fr)] md:gap-5">
-                <div className="relative aspect-square overflow-hidden rounded-2xl bg-ink/5 ring-1 ring-ink/5">
-                  <img
-                    src={f.image}
-                    alt=""
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="min-w-0 pt-1">
-                  <div className="flex items-start gap-2">
-                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#ee7273]/12">
-                      <Icon className="h-3.5 w-3.5 text-[#ee7273]" strokeWidth={2.4} />
-                    </span>
-                    <h3 className="text-[15.5px] font-semibold leading-tight text-ink md:text-[16.5px]">
-                      {f.title}
-                    </h3>
-                  </div>
-                  <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/65">
-                    {f.copy}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
+          {PLAN_FEATURES.map((f) => (
+            <li key={f.title} className="grid grid-cols-[110px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[130px_minmax(0,1fr)] md:gap-5">
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-ink/5 ring-1 ring-ink/5">
+                <img
+                  src={f.image}
+                  alt=""
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="min-w-0 pt-1">
+                <h3 className="text-[15.5px] font-semibold leading-tight text-ink md:text-[16.5px]">
+                  {f.title}
+                </h3>
+                <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/65">
+                  {f.copy}
+                </p>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
 
