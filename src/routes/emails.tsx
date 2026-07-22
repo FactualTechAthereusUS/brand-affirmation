@@ -546,7 +546,7 @@ function RefundEmail() {
 
 const SHIPPING_STEPS = [
   { label: "Order Placed", date: "Jul 21" },
-  { label: "Physician Review", date: "Jul 22" },] 
+  { label: "Physician Review", date: "Jul 22" },
   { label: "Shipping", date: "Jul 23" },
   { label: "Delivery", date: "" },
 ];
