@@ -1042,6 +1042,162 @@ function PhysicianMessageEmail() {
   );
 }
 
+function CheckInEmail1() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Coral hero */}
+      <div className="relative overflow-hidden bg-[#ee7273] px-5 py-12 text-center md:px-8 md:py-14">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/30 blur-3xl" />
+          <div className="absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
+        </div>
+        <div className="relative">
+          <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-white/20 text-white ring-1 ring-white/30 backdrop-blur-sm">
+            <Check className="h-7 w-7" strokeWidth={3} />
+          </span>
+          <h1 className="mt-5 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[36px]">
+            Quick check-in, Sarah.
+          </h1>
+          <p className="mx-auto mt-3 max-w-[320px] text-[15px] leading-[1.5] text-white/90">
+            You're 90 days in — let's make sure we're on track.
+          </p>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="px-5 pt-8 pb-2 md:px-8">
+        <p className="text-[14.5px] leading-[1.6] text-ink/80">
+          Before your next shipment goes out, Dr. Nass needs a quick update:
+        </p>
+        <ul className="mt-4 space-y-2.5 text-[14.5px] leading-[1.55] text-ink/80">
+          <li className="flex items-start gap-3">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>Your current weight</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>Any side effects you've noticed</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>How things are going overall</span>
+          </li>
+        </ul>
+        <p className="mt-5 text-[14px] leading-[1.6] text-ink/70">
+          This takes about 2 minutes, and it's exactly why we're able to give you a 6-month prescription instead of a new consult every few weeks.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div className="px-5 pt-6 pb-2 md:px-8">
+        <a
+          href="/portal/patient"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          Complete My Check-In
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Closer */}
+      <div className="px-5 pb-10 pt-6 text-center md:px-8">
+        <p className="text-[13.5px] leading-[1.55] text-ink/60">
+          Questions? Reply to this email or message us in your portal.
+        </p>
+        <p className="mt-2 text-[13.5px] font-medium text-ink">The Blissley Team</p>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley account.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function CheckInEmail2() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-6 text-center md:px-8">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          Reminder · 90-Day Check-In
+        </p>
+        <h1 className="mt-3 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[36px]">
+          Your next box is waiting
+          <br />
+          <span className="text-[#ee7273]">on this.</span>
+        </h1>
+      </div>
+
+      {/* Body */}
+      <div className="px-5 pb-2 md:px-8">
+        <p className="text-[15px] leading-[1.6] text-ink/80">
+          Hi Sarah,
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.6] text-ink/80">
+          Just a reminder — your next shipment is ready to go, but Dr. Nass needs your 90-day check-in first.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div className="px-5 pt-6 pb-2 md:px-8">
+        <a
+          href="/portal/patient"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          Complete My Check-In
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Closer */}
+      <div className="px-5 pb-10 pt-6 text-center md:px-8">
+        <p className="text-[14px] leading-[1.55] text-ink/70">
+          Takes about 2 minutes. Once it's submitted, your next box ships automatically.
+        </p>
+        <p className="mt-5 text-[13.5px] leading-[1.55] text-ink/60">
+          Need help? Reply to this email — a real person responds within a few hours.
+        </p>
+        <p className="mt-4 text-[13.5px] font-medium text-ink">The Blissley Team</p>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+        <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+        <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
+          TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+        </p>
+        <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+          This is a transactional email related to your Blissley account.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
@@ -1220,6 +1376,10 @@ Los Angeles, CA 90026`}
         <PaymentFailedEmail3 />
 
         <PhysicianMessageEmail />
+
+        <CheckInEmail1 />
+
+        <CheckInEmail2 />
 
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
