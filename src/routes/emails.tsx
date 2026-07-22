@@ -707,48 +707,44 @@ function EmailPreview() {
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
       <div className="mx-auto w-full max-w-[480px] px-3 md:max-w-[560px]">
         {/* Email envelope */}
-        <div className="overflow-hidden rounded-[22px] bg-canvas shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
-          {/* Header */}
-          <div className="flex items-center justify-between border-b border-ink/8 px-5 py-4">
-            <img src={blissleyLogo.url} alt="Blissley" className="h-6 w-auto" />
-            <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/50">
-              Order Confirmation
-            </span>
+        <div className="overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+          {/* Wordmark header */}
+          <div className="flex items-center justify-center bg-canvas py-5">
+            <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
           </div>
 
-          <div className="px-5 pt-6 md:px-7">
-            {/* Thank you headline */}
-            <h1 className="font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
+          {/* Hero */}
+          <div className="px-5 pt-10 pb-8 text-center md:px-8">
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+              Order Confirmation · #BLS-00421
+            </p>
+            <h1 className="mt-3 font-hero text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[40px]">
               Thanks, Sarah.
+              <br />
+              <span className="text-[#ee7273]">Your order is in.</span>
             </h1>
-            <p className="mt-2 text-[14px] leading-[1.55] text-ink/65">
-              Your order is in. We'll email you the moment your physician review is complete.
+            <p className="mx-auto mt-4 max-w-[340px] text-[14.5px] leading-[1.55] text-ink/65">
+              We'll email you the moment Dr. Nass completes your physician review.
             </p>
           </div>
 
-          {/* Tracker */}
-          <div className="px-5 pb-6 pt-7 md:px-7">
+          {/* Tracker card */}
+          <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
             <Tracker activeIndex={0} />
           </div>
 
-          <div className="h-px bg-ink/8" />
+          {/* Product + totals card */}
+          <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
+            <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
+              Your <span className="text-[#ee7273]">order</span>
+            </h2>
 
-          {/* Order # */}
-          <div className="flex items-center justify-between px-5 py-4 md:px-7">
-            <span className="text-[13.5px] text-ink">Order #BLS-00421</span>
-            <button className="text-[13.5px] font-medium text-ink underline underline-offset-4 hover:text-ink/70">
-              View Your Order
-            </button>
-          </div>
-
-          {/* Product card */}
-          <div className="mx-5 rounded-2xl bg-white p-4 ring-1 ring-ink/8 md:mx-7">
-            <div className="flex gap-4">
-              <div className="grid h-[92px] w-[92px] shrink-0 place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-[#f8e0e2] to-[#eec9cc]">
-                <img src={vialTirz.url} alt="Tirzepatide vial" className="h-[80px] w-auto object-contain" />
+            <div className="mt-5 flex gap-4">
+              <div className="grid h-[96px] w-[96px] shrink-0 place-items-center overflow-hidden rounded-2xl bg-gradient-to-br from-[#f8e0e2] to-[#eec9cc]">
+                <img src={vialTirz.url} alt="Tirzepatide vial" className="h-[82px] w-auto object-contain" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-[16px] font-semibold leading-tight text-ink">
+                <h3 className="text-[16px] font-semibold leading-tight text-ink md:text-[16.5px]">
                   Tirzepatide — 3 Month Plan
                 </h3>
                 <div className="mt-2 flex items-center gap-1.5 text-[12.5px] text-ink/70">
@@ -764,9 +760,8 @@ function EmailPreview() {
               </div>
             </div>
 
-            <div className="my-4 h-px bg-ink/10" />
+            <div className="my-5 h-px bg-ink/10" />
 
-            {/* Totals */}
             <dl className="space-y-2 text-[14px]">
               <div className="flex justify-between">
                 <dt className="text-ink/70">Subtotal</dt>
@@ -781,81 +776,89 @@ function EmailPreview() {
                 <dd className="text-ink">$0.00</dd>
               </div>
               <div className="mt-3 flex justify-between border-t border-ink/10 pt-3">
-                <dt className="text-[15px] font-semibold text-ink">Total</dt>
+                <dt className="text-[15px] font-semibold text-ink">Total charged today</dt>
                 <dd className="text-[16px] font-semibold text-ink">$711.00</dd>
               </div>
             </dl>
-          </div>
 
-          {/* Addresses */}
-          <div className="grid grid-cols-2 gap-5 px-5 py-6 md:px-7">
-            <div>
-              <h4 className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink">
-                Shipping Address
-              </h4>
-              <address className="mt-2 whitespace-pre-line text-[13px] not-italic leading-[1.5] text-ink/75">
-                {`Sarah Johnson
-1247 Sunset Blvd
-Apt 4B
-Los Angeles, CA 90026
-United States`}
-              </address>
-            </div>
-            <div>
-              <h4 className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink">
-                Payment Method
-              </h4>
-              <div className="mt-2 flex items-center gap-2">
-                <VisaIcon />
-                <span className="text-[13px] text-ink/75">ending 4242</span>
-              </div>
-
-              <h4 className="mt-5 text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink">
-                Billing Address
-              </h4>
-              <address className="mt-2 whitespace-pre-line text-[13px] not-italic leading-[1.5] text-ink/75">
-                {`Sarah Johnson
-1247 Sunset Blvd
-Los Angeles, CA 90026
-United States`}
-              </address>
-            </div>
-          </div>
-
-          {/* Guarantee callout */}
-          <div className="mx-5 mb-6 rounded-2xl bg-ink/[0.04] p-4 md:mx-7">
-            <div className="flex gap-3">
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white ring-1 ring-ink/10">
+            {/* Guarantee */}
+            <div className="mt-5 flex gap-3 rounded-2xl bg-[#ee7273]/8 p-4 ring-1 ring-[#ee7273]/15">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white ring-1 ring-[#ee7273]/20">
                 <Check className="h-4 w-4 text-[#ee7273]" strokeWidth={3} />
               </span>
               <p className="text-[13px] leading-[1.55] text-ink/75">
-                Your card has been charged. If your physician doesn't approve your prescription,
-                you'll get a <span className="font-semibold text-ink">full refund</span>. No questions asked.
+                If your physician doesn't approve your prescription, you'll get a{" "}
+                <span className="font-semibold text-ink">full refund</span>. No questions asked.
               </p>
             </div>
           </div>
 
+          {/* Shipping + Payment card */}
+          <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
+            <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
+              Shipping <span className="text-[#ee7273]">& payment</span>
+            </h2>
+
+            <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <h4 className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink/60">
+                  Shipping Address
+                </h4>
+                <address className="mt-2 whitespace-pre-line text-[13.5px] not-italic leading-[1.55] text-ink">
+                  {`Sarah Johnson
+1247 Sunset Blvd, Apt 4B
+Los Angeles, CA 90026
+United States`}
+                </address>
+              </div>
+              <div>
+                <h4 className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink/60">
+                  Payment Method
+                </h4>
+                <div className="mt-2 flex items-center gap-2">
+                  <VisaIcon />
+                  <span className="text-[13.5px] text-ink">ending 4242</span>
+                </div>
+                <h4 className="mt-5 text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink/60">
+                  Billing Address
+                </h4>
+                <address className="mt-2 whitespace-pre-line text-[13.5px] not-italic leading-[1.55] text-ink">
+                  {`Sarah Johnson
+1247 Sunset Blvd
+Los Angeles, CA 90026`}
+                </address>
+              </div>
+            </div>
+          </div>
+
           {/* CTA */}
-          <div className="px-5 pb-7 md:px-7">
+          <div className="px-5 pb-8 pt-2 text-center md:px-8">
             <a
               href="/portal/patient"
-              className="flex h-[52px] w-full items-center justify-center rounded-full bg-ink text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+              className="inline-flex h-[48px] items-center justify-center gap-2 rounded-full bg-ink px-8 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
             >
               Track your order
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </a>
-            <p className="mt-4 text-center text-[12px] leading-relaxed text-ink/50">
+            <p className="mt-4 text-[12.5px] text-ink/55">
               Questions? Reply to this email or reach us at{" "}
-              <a href="mailto:support@blissley.com" className="text-ink underline underline-offset-2">
+              <a href="mailto:support@blissley.com" className="font-medium text-ink underline underline-offset-2">
                 support@blissley.com
               </a>
             </p>
           </div>
 
-          {/* Footer */}
-          <div className="border-t border-ink/8 bg-ink/[0.02] px-5 py-5 text-center md:px-7">
-            <img src={blissleyLogo.url} alt="Blissley" className="mx-auto h-4 w-auto opacity-70" />
-            <p className="mt-3 text-[11px] leading-[1.6] text-ink/45">
+          {/* Dark footer */}
+          <div className="relative overflow-hidden bg-ink px-5 py-8 md:px-8">
+            <img src={blissleyWhite.url} alt="Blissley" className="h-4 w-auto opacity-80" />
+            <p className="mt-4 text-[11.5px] leading-[1.6] text-white/55">
               TheFactual LLC DBA Blissley · 131 Continental Dr, Suite 305, Newark, DE 19713
+            </p>
+            <p className="mt-2 text-[11px] leading-[1.6] text-white/45">
+              This is a transactional email related to your Blissley order.
             </p>
           </div>
         </div>
