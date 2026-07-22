@@ -1520,6 +1520,8 @@ Los Angeles, CA 90026`}
 
         <ShippingEmail />
 
+        <DeliveryEmail />
+
         <PaymentFailedEmail1 />
 
         <PaymentFailedEmail2 />
