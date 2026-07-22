@@ -271,6 +271,174 @@ function PortalEmail() {
   );
 }
 
+const PLAN_FEATURES = [
+  {
+    image: drNassPortal.url,
+    icon: Pill,
+    title: "Dosage or medication adjustments",
+    copy: "Ensure your treatment plan is personalized to your changing needs — reviewed by your physician every month.",
+  },
+  {
+    image: emailSupport.url,
+    icon: Stethoscope,
+    title: "Care team support",
+    copy: "Message licensed providers 7 days a week directly inside your Blissley portal.",
+  },
+  {
+    image: emailMeal.url,
+    icon: Salad,
+    title: "Tailored lifestyle resources",
+    copy: "Get daily protein recommendations, movement goals, and habit nudges that fit your life.",
+  },
+  {
+    image: vialBlissley.url,
+    icon: HeartPulse,
+    title: "Anti-nausea support",
+    copy: "If eligible, get medication to help manage potential side effects — shipped alongside your plan.",
+  },
+];
+
+function PlansEmail() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      {/* Wordmark header */}
+      <div className="flex items-center justify-center bg-canvas py-5">
+        <img src={blissleyLogo.url} alt="Blissley" className="h-5 w-auto" />
+      </div>
+
+      {/* Hero */}
+      <div className="px-5 pt-10 pb-8 text-center md:px-8">
+        <h1 className="font-hero text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[40px]">
+          Weight loss plans
+          <br />
+          <span className="text-[#ee7273]">that put you first</span>
+        </h1>
+        <p className="mx-auto mt-4 max-w-[340px] text-[14.5px] leading-[1.55] text-ink/65">
+          If prescribed, you'll get a comprehensive treatment plan designed to help you lose weight,
+          build healthy habits, and reach your goals.
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <a
+            href="/intake/weight-loss"
+            className="inline-flex h-[46px] items-center justify-center rounded-full bg-ink px-7 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+          >
+            Get started
+          </a>
+          <a
+            href="/weight-loss"
+            className="inline-flex h-[46px] items-center justify-center rounded-full bg-canvas px-6 text-[14px] font-medium text-ink ring-1 ring-ink/15 transition hover:bg-white"
+          >
+            Learn more
+          </a>
+        </div>
+      </div>
+
+      {/* Set up for success card */}
+      <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
+        <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
+          How you'll be <span className="text-[#ee7273]">set up for success</span>
+        </h2>
+
+        <ul className="mt-6 space-y-6">
+          {PLAN_FEATURES.map((f) => {
+            const Icon = f.icon;
+            return (
+              <li key={f.title} className="grid grid-cols-[110px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[130px_minmax(0,1fr)] md:gap-5">
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-ink/5 ring-1 ring-ink/5">
+                  <img
+                    src={f.image}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="min-w-0 pt-1">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#ee7273]/12">
+                      <Icon className="h-3.5 w-3.5 text-[#ee7273]" strokeWidth={2.4} />
+                    </span>
+                    <h3 className="text-[15.5px] font-semibold leading-tight text-ink md:text-[16.5px]">
+                      {f.title}
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/65">
+                    {f.copy}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* Closer CTA */}
+      <div className="px-5 pb-10 pt-4 text-center md:px-8">
+        <h2 className="font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
+          Start your <span className="text-[#ee7273]">weight loss journey</span>
+        </h2>
+        <p className="mt-2 text-[13.5px] text-ink/60">
+          100% online. No insurance required.
+        </p>
+        <a
+          href="/intake/weight-loss"
+          className="mt-5 inline-flex h-[48px] items-center justify-center rounded-full bg-ink px-8 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+        >
+          Get started
+        </a>
+      </div>
+
+      {/* Dark footer */}
+      <div className="relative overflow-hidden bg-ink px-5 pt-8 md:px-8">
+        <p className="text-[11.5px] leading-[1.6] text-white/55">
+          Not available in all 50 states. Blissley Weight Loss is a physician-supervised program
+          that includes clinical review, lifestyle guidance, and compounded medications prescribed
+          based on what your provider determines is medically appropriate. See website for full
+          details, important safety information, and restrictions.
+        </p>
+
+        <div className="mt-6 rounded-2xl bg-white/[0.04] p-5 ring-1 ring-white/8">
+          <p className="text-center text-[12px] text-white/60">Your Blissley portal</p>
+          <h3 className="mt-1 text-center font-hero text-[22px] font-semibold leading-tight tracking-[-0.01em] text-white">
+            Total care.
+            <br />
+            Totally different.
+          </h3>
+          <a
+            href="/portal/patient"
+            className="mx-auto mt-4 flex h-[42px] w-fit items-center justify-center rounded-full bg-white px-6 text-[13px] font-medium text-ink transition-transform hover:-translate-y-0.5"
+          >
+            Open my portal →
+          </a>
+          <p className="mt-3 text-center text-[11px] text-white/45">Private link · expires in 24h</p>
+        </div>
+
+        <div className="mt-8 flex flex-col items-start gap-3 pb-4 text-[11px] leading-[1.6] text-white/50 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p>© 2026 TheFactual LLC DBA Blissley.</p>
+            <p>131 Continental Dr, Suite 305, Newark, DE 19713</p>
+            <p className="mt-1">
+              <a href="#" className="underline underline-offset-2 hover:text-white/70">Privacy</a>
+              <span className="mx-2 text-white/25">|</span>
+              <a href="#" className="underline underline-offset-2 hover:text-white/70">Terms</a>
+              <span className="mx-2 text-white/25">|</span>
+              <a href="#" className="underline underline-offset-2 hover:text-white/70">Unsubscribe</a>
+            </p>
+          </div>
+        </div>
+
+        {/* Giant wordmark */}
+        <div className="-mx-5 mt-2 md:-mx-8">
+          <img
+            src={blissleyWhite.url}
+            alt=""
+            className="block w-full opacity-[0.06]"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function EmailPreview() {
   return (
     <div className="min-h-screen bg-ink/5 py-6 md:py-12">
