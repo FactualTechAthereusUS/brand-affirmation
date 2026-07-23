@@ -427,7 +427,13 @@ export function BlissleyIntakeFlow() {
                   title={`"Let's see if you qualify {{for medical weight loss.}}"`}
                   sub="Enter your height and weight - we'll check your BMI instantly."
                   footer={
-                    <PrimaryButton onClick={next} disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}>
+                    <PrimaryButton
+                      onClick={() => {
+                        if (bmi !== null && bmi < 18.5) { goTo("blocked_bmi_low"); return; }
+                        next();
+                      }}
+                      disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}
+                    >
                       Next →
                     </PrimaryButton>
                   }
