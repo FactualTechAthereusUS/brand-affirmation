@@ -307,12 +307,25 @@ function Flow2_Email1() {
     >
       <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 2 · Send 1 · 30 minutes</SendTag>
-        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+      </div>
+
+      {/* Minimal coral hero band — quiet confirmation, not celebration */}
+      <div className="mx-3 mt-4 rounded-[20px] bg-[#ee7273] md:mx-5">
+        <div className="px-6 py-16 text-center md:py-20">
+          <p className="font-hero text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-white md:text-[30px]">
+            Your program is ready.
+          </p>
+        </div>
+      </div>
+
+      <div className="px-5 pt-8 md:px-8">
+        <h1 className="font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           I already know
           <br />
           <span className="text-[#ee7273]">what you're going to ask me.</span>
         </h1>
       </div>
+
 
       <Body>
         <p>
@@ -405,22 +418,18 @@ function Flow2_Sensory() {
         <SendTag>Flow 2 · Sensory · 18 hours</SendTag>
       </div>
 
-      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-b from-[#1a1613] via-[#2a1f1a] to-[#1a1613] md:mx-5">
-        <div className="absolute inset-0 opacity-70">
-          <div className="absolute -left-16 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-[#ee7273]/25 blur-3xl" />
-          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-amber-200/10 blur-2xl" />
-        </div>
-        <div className="relative px-6 py-14 md:px-10 md:py-20">
-          <p className="text-[10.5px] font-bold uppercase tracking-[0.24em] text-white/50">
-            11:04 PM
-          </p>
-          <p className="mt-4 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[32px]">
-            The fridge light.
-            <br />
-            <span className="text-[#f4a9a3]">Again.</span>
-          </p>
-        </div>
+      {/* Mood-setting hero — real late-night kitchen photograph, no text overlay */}
+      <div className="mx-3 mt-4 overflow-hidden rounded-[20px] md:mx-5">
+        <img
+          src="/assets/email-kitchen-11pm.jpg"
+          alt=""
+          loading="lazy"
+          width={1600}
+          height={1008}
+          className="block h-auto w-full"
+        />
       </div>
+
 
       <Body>
         <p>It's not hunger. You know that. You ate two hours ago.</p>
