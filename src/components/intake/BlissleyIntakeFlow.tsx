@@ -1089,6 +1089,37 @@ export function BlissleyIntakeFlow() {
                 <div className="mt-8"><PrimaryButton onClick={() => (window.location.href = "/")}>Notify me when I'm eligible →</PrimaryButton></div>
               </div>
             )}
+
+            {/* Terminal - BMI below 18.5 */}
+            {current === "blocked_bmi_low" && (
+              <div className="mx-auto max-w-[560px] py-10 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-ink/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink">Not a clinical fit</div>
+                <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">GLP-1 therapy isn't the right fit.</h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">Your BMI is below the range where GLP-1 medications are clinically appropriate. These are prescribed for weight loss - not for people at or below a healthy weight. If you're concerned about your relationship with food, please speak with your primary care provider.</p>
+                <div className="mt-8 flex flex-wrap justify-center gap-3">
+                  <PrimaryButton onClick={() => (window.location.href = "/")}>Return home</PrimaryButton>
+                  <a href="mailto:care@blissley.com" className="inline-flex items-center rounded-full border border-ink/15 px-5 py-3 text-[14px] font-semibold text-ink hover:bg-ink/5">Contact support</a>
+                </div>
+              </div>
+            )}
+
+            {/* Terminal - Absolute contraindication */}
+            {current === "blocked_contra" && (() => {
+              const picks = answers.contra ?? [];
+              const hit = picks.find((p) => HARD_CONTRA[p]);
+              const c = hit ? HARD_CONTRA[hit] : { chip: "Safety first", title: "GLP-1 therapy isn't safe for you.", body: "Based on your responses, GLP-1 medications aren't clinically appropriate. Please speak with your primary care physician." };
+              return (
+                <div className="mx-auto max-w-[560px] py-10 text-center">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">{c.chip}</div>
+                  <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">{c.title}</h1>
+                  <p className="mt-4 text-[15px] leading-relaxed text-ink/70">{c.body}</p>
+                  <div className="mt-8 flex flex-wrap justify-center gap-3">
+                    <PrimaryButton onClick={() => (window.location.href = "/")}>Return home</PrimaryButton>
+                    <a href="mailto:care@blissley.com" className="inline-flex items-center rounded-full border border-ink/15 px-5 py-3 text-[14px] font-semibold text-ink hover:bg-ink/5">Contact support</a>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </AnimatePresence>
       </div>
