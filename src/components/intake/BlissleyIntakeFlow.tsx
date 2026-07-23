@@ -130,6 +130,8 @@ const SCREENS = [
   "loading",
   "blocked_minor",
   "blocked_pregnancy",
+  "blocked_bmi_low",
+  "blocked_contra",
 ] as const;
 type ScreenId = (typeof SCREENS)[number];
 
@@ -142,6 +144,31 @@ const STAGE_MAP: Record<ScreenId, number> = {
   contra: 3, health: 3, prior_glp1: 3, med_history: 3,
   phone_state: 4, loading: 4,
   blocked_minor: 4, blocked_pregnancy: 4,
+  blocked_bmi_low: 4, blocked_contra: 4,
+};
+
+/* Hard contraindications that auto-reject in the quiz (FDA-boxed / absolute) */
+const HARD_CONTRA: Record<string, { chip: string; title: string; body: string }> = {
+  "Personal/family history of MTC or MEN2": {
+    chip: "Safety first",
+    title: "GLP-1s aren't safe with your thyroid history.",
+    body: "A personal or family history of medullary thyroid carcinoma (MTC) or MEN2 is an FDA boxed-warning contraindication for GLP-1 medications. This isn't a Blissley policy - no clinician can safely prescribe these to you.",
+  },
+  "History of pancreatitis": {
+    chip: "Safety first",
+    title: "A history of pancreatitis rules out GLP-1 therapy.",
+    body: "GLP-1 medications can trigger pancreatitis, and a prior episode significantly raises that risk. We recommend speaking with your primary care physician about alternative approaches.",
+  },
+  "Active cancer": {
+    chip: "Not the right time",
+    title: "GLP-1s aren't appropriate during active cancer treatment.",
+    body: "While you're in active treatment, weight-loss medication isn't clinically appropriate. You're welcome back after treatment ends - we'll be here.",
+  },
+  "Known allergy to semaglutide or tirzepatide": {
+    chip: "Safety first",
+    title: "A prior reaction rules out this medication class.",
+    body: "A known allergy to semaglutide or tirzepatide means we can't safely prescribe any GLP-1 medication. Please speak with your doctor about non-GLP-1 options.",
+  },
 };
 
 
