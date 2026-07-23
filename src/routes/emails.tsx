@@ -7,6 +7,8 @@ import blissleyWhite from "@/assets/blissley-white.png.asset.json";
 import drNassPortal from "@/assets/dr-nass-portal.png.asset.json";
 import emailMeal from "@/assets/email-meal.jpg.asset.json";
 import emailSupport from "@/assets/email-support.jpg.asset.json";
+import { NurtureFlows } from "@/components/emails/NurtureFlows";
+
 
 const TIMELINE = [
   {
@@ -1800,6 +1802,10 @@ Los Angeles, CA 90026`}
         <ProfileChangeEmail />
 
         <EmailChangedEmail />
+
+        <NurtureFlows />
+
+
 
         <p className="mt-4 text-center text-[11px] text-ink/40">
           Email preview · <code className="font-mono">/emails</code>
