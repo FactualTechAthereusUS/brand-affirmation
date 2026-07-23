@@ -7,6 +7,8 @@ import blissleyWhite from "@/assets/blissley-white.png.asset.json";
 import drNassPortal from "@/assets/dr-nass-portal.png.asset.json";
 import emailMeal from "@/assets/email-meal.jpg.asset.json";
 import emailSupport from "@/assets/email-support.jpg.asset.json";
+import { NurtureFlows } from "@/components/emails/NurtureFlows";
+
 
 const TIMELINE = [
   {
