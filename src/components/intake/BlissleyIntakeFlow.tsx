@@ -894,10 +894,23 @@ export function BlissleyIntakeFlow() {
               <ScreenShell
                 title="A few {{safety checks.}}"
                 sub="Do any of these apply to you? Reviewed only by your physician."
-                footer={<PrimaryButton onClick={next} disabled={!(answers.contra && answers.contra.length)}>Next →</PrimaryButton>}
+                footer={
+                  <PrimaryButton
+                    onClick={() => {
+                      const picks = answers.contra ?? [];
+                      const hit = picks.find((p) => HARD_CONTRA[p]);
+                      if (hit) { goTo("blocked_contra"); return; }
+                      next();
+                    }}
+                    disabled={!(answers.contra && answers.contra.length)}
+                  >
+                    Next →
+                  </PrimaryButton>
+                }
               >
                 {[
                   "Personal/family history of MTC or MEN2",
+                  "History of pancreatitis",
                   "Known allergy to semaglutide or tirzepatide",
                   "Active cancer",
                   "End-stage kidney or liver disease",
