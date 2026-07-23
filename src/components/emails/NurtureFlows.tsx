@@ -398,74 +398,118 @@ function Flow1B_Email3() {
 function Flow2_Email1() {
   return (
     <NurtureShell
-      subject="Your program is ready, Sarah"
-      preview="$249 first month. Physician review starts today."
+      subject="I already know what you're going to ask me"
+      preview="Will I actually get charged if I'm not approved. No."
     >
       <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 2 · Send 1 · 30 minutes</SendTag>
       </div>
 
-      {/* Personalized data card */}
-      <div className="mx-3 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-b from-[#f8dcd7] via-[#f4c8c4] to-[#eec9cc] p-6 md:mx-5 md:p-8">
-        <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-ink/60">
-          Your personalized plan
-        </p>
-        <h2 className="mt-2 font-hero text-[26px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[30px]">
-          Your assessment
-          <br />
-          <span className="text-[#ee7273]">is complete.</span>
-        </h2>
-
-        <div className="mt-6 grid grid-cols-2 gap-3">
-          <div className="rounded-[14px] bg-white/70 p-4 ring-1 ring-white/60 backdrop-blur-sm">
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink/55">
-              Goal weight
-            </p>
-            <p className="mt-1.5 font-hero text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">
-              155 <span className="text-[13px] font-normal text-ink/60">lbs</span>
-            </p>
-          </div>
-          <div className="rounded-[14px] bg-white/70 p-4 ring-1 ring-white/60 backdrop-blur-sm">
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink/55">
-              Est. timeline
-            </p>
-            <p className="mt-1.5 font-hero text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">
-              7 <span className="text-[13px] font-normal text-ink/60">months</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-3 rounded-[14px] bg-white p-4 ring-1 ring-[#ee7273]/20">
-          <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#ee7273]">
-            First month
-          </p>
-          <div className="mt-1.5 flex items-baseline gap-3">
-            <div>
-              <span className="font-hero text-[24px] font-semibold leading-none text-ink">$249</span>
-              <span className="ml-1 text-[12px] text-ink/60">sema</span>
-            </div>
-            <span className="text-ink/25">/</span>
-            <div>
-              <span className="font-hero text-[24px] font-semibold leading-none text-ink">$299</span>
-              <span className="ml-1 text-[12px] text-ink/60">tirz</span>
-            </div>
-          </div>
-          <p className="mt-1 text-[12px] text-ink/60">Already discounted. Never changes with dose.</p>
-        </div>
-      </div>
-
       <div className="px-5 pt-6 md:px-8">
-        <p className="text-[15px] leading-[1.65] text-ink/80">
-          <span className="font-semibold text-ink">Sarah,</span> a physician is ready to review your case.
-        </p>
+        <h1 className="font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+          I already know
+          <br />
+          <span className="text-[#ee7273]">what you're going to ask me.</span>
+        </h1>
+
+        <div className="mt-7 space-y-5 text-[15.5px] leading-[1.7] text-ink/80">
+          <p>
+            You just finished answering eighteen screens of questions about your body, your history,
+            your weight. Things you maybe haven't told anyone else this year.
+          </p>
+          <p>That takes something. Most people don't make it that far.</p>
+          <p>
+            Here's what happens now. A physician looks at everything you just told us, today, not
+            next week. If they approve you, your first month is{" "}
+            <span className="font-semibold text-ink">$249 for semaglutide</span> or{" "}
+            <span className="font-semibold text-ink">$299 for tirzepatide</span>. That's already the
+            real price. Nothing gets added at checkout.
+          </p>
+          <p>
+            If they don't approve you, you pay nothing. Not "we'll refund it later." Nothing gets
+            charged in the first place.
+          </p>
+          <p className="text-ink">
+            Your spot is open right now. It won't stay that way.
+          </p>
+        </div>
       </div>
 
       <div className="px-5 py-8 md:px-8">
-        <CoralCTA>Select My Program</CoralCTA>
+        <CoralCTA>Start My Program</CoralCTA>
       </div>
     </NurtureShell>
   );
 }
+
+function Flow2_Sensory() {
+  return (
+    <NurtureShell
+      subject="11pm, and you're standing in the kitchen again"
+      preview="You already ate dinner two hours ago."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 2 · Sensory · 18 hours</SendTag>
+      </div>
+
+      {/* Ambient kitchen scene */}
+      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-b from-[#1a1613] via-[#2a1f1a] to-[#1a1613] md:mx-5">
+        <div className="absolute inset-0 opacity-70">
+          <div className="absolute -left-16 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-[#ee7273]/25 blur-3xl" />
+          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-amber-200/10 blur-2xl" />
+        </div>
+        <div className="relative px-6 py-14 md:px-10 md:py-20">
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.24em] text-white/50">
+            11:04 PM
+          </p>
+          <p className="mt-4 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[32px]">
+            The fridge light.
+            <br />
+            <span className="text-[#f4a9a3]">Again.</span>
+          </p>
+        </div>
+      </div>
+
+      <div className="px-5 pt-8 md:px-8">
+        <div className="space-y-5 text-[15.5px] leading-[1.7] text-ink/80">
+          <p>It's not hunger. You know that. You ate two hours ago.</p>
+          <p>
+            But you're standing in front of the open fridge anyway, and some part of your brain is
+            running through options like it's your job. Something salty. Something sweet. Just a
+            bite, just to make it stop.
+          </p>
+          <p>You close the fridge. You open it again four minutes later.</p>
+          <p>
+            This is the part almost nobody talks about when they talk about weight. Not the number
+            on the scale. The voice. The one that never actually shuts off.
+          </p>
+          <p>
+            GLP-1 treatment doesn't argue with that voice. It turns the volume down at the source,
+            the part of your brain that generates it in the first place. Patients don't describe it
+            as trying harder. They describe it as the noise finally going quiet.
+          </p>
+          <p className="text-ink">
+            You already answered the questions. A physician's ready to look at your case.
+          </p>
+        </div>
+      </div>
+
+      {/* Quiet stat, sourced, no bullet list */}
+      <div className="mx-3 mt-8 rounded-[16px] bg-canvas p-5 ring-1 ring-ink/5 md:mx-5 md:p-6">
+        <p className="text-[13.5px] leading-[1.6] text-ink/70">
+          <span className="font-semibold text-ink">57% of people with obesity</span> report
+          near-constant intrusive thoughts about food. It isn't willpower. It's neurology, and it's
+          the exact mechanism GLP-1s act on.
+        </p>
+      </div>
+
+      <div className="px-5 py-8 md:px-8">
+        <CoralCTA>Start My Program</CoralCTA>
+      </div>
+    </NurtureShell>
+  );
+}
+
 
 function Flow2_Email2() {
   const rows = [
