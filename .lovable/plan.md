@@ -1,125 +1,44 @@
-# Post-Purchase Flow — Order Confirmation, OTO, Approval/Denial States, Payment Failed
+## Recommendation: Hybrid model (stricter than today, but not overreaching)
 
-Build one unified post-purchase UI that serves BOTH billing models (authorization hold vs charge-upfront). Same layout, images, motion, and iOS-style patient-portal aesthetic — only copy and Stripe logic differ per model. Mobile-first, tablet + desktop responsive, existing brand assets, Framer Motion.
+Pure "physician decides" wastes physician time and gives ineligible users false hope after they've invested 12 screens. Pure "quiz rejects everything" over-blocks borderline cases that a doctor could actually approve. The right line is: **auto-block only what a physician would reject 100% of the time**, and let the physician handle everything judgment-based.
 
----
+### What auto-blocks in the quiz (hard stops → `blocked_*` screen)
 
-## New routes to create
+Keep existing:
+1. Age < 18 → `blocked_minor`
+2. Pregnancy / trying / breastfeeding / postpartum <6mo → `blocked_pregnancy`
 
-```
-/confirmation                    → order confirmation + OTO (model-agnostic shell)
-/order/approved                  → optional deep-link landing after physician approval email
-/order/denied                    → optional deep-link landing after physician denial email
-/checkout/error                  → NOT a route — inline error state on both checkouts
-```
+Add these absolute contraindications on the `contra` screen (any one selected → block):
+3. Personal or family history of medullary thyroid carcinoma (MTC)
+4. Multiple Endocrine Neoplasia syndrome type 2 (MEN2)
+5. History of pancreatitis
+6. Active cancer (currently in treatment)
+7. Prior serious allergic reaction to GLP-1 medication
 
-The `/confirmation` page reads `?model=auth|charged` and `?order=<id>` from the URL. Same component, copy swaps by prop. No duplicate files.  
-  
-anything related to email that's not your work to do that's outside of coding
+Add BMI floor:
+8. BMI < 18.5 → `blocked_bmi_low` (underweight — GLP-1 not clinically appropriate, no physician would prescribe)
 
-Redirect on successful checkout:
+### What stays soft (physician reviews in Case Review)
 
-- `checkout/trimrx` → `/confirmation?model=auth&order=…`
-- `checkout/charged-before` → `/confirmation?model=charged&order=…`
+- BMI 18.5–24.9 without comorbidity → continue, physician decides (some approve with qualifying comorbidity like PCOS, prediabetes)
+- Organ transplant, gallbladder disease, kidney/liver disease, eating disorder history, gastroparesis → flag for physician, do not block
+- Current medications, other conditions → physician review
 
----
+### Implementation in `src/components/intake/BlissleyIntakeFlow.tsx`
 
-## Screens & behavior
+1. Add block reasons to the phase/state union: `blocked_mtc`, `blocked_men2`, `blocked_pancreatitis`, `blocked_cancer`, `blocked_glp1_allergy`, `blocked_bmi_low`.
+2. In the `contra` screen's onChange/next handler, check selected options against the hard-block set; if any match, route to the appropriate blocked screen instead of advancing.
+3. In the `bmi` screen's next handler, if BMI < 18.5, route to `blocked_bmi_low`.
+4. Add a single reusable `BlockedScreen` variant that takes `{ title, body, supportCta }` so we don't duplicate 6 near-identical screens. Copy per reason:
+   - MTC/MEN2: "Because of your thyroid history, GLP-1 medications aren't safe for you. This is an FDA boxed warning, not a Blissley policy."
+   - Pancreatitis: "A history of pancreatitis makes GLP-1s unsafe. We recommend speaking with your primary care physician about alternatives."
+   - Active cancer: "While you're in active treatment, GLP-1s aren't appropriate. You're welcome back after treatment ends."
+   - GLP-1 allergy: "A prior serious reaction rules out this medication class entirely."
+   - BMI low: "Your BMI is below the range where GLP-1s are clinically appropriate. These medications are for weight loss, not for people at or below a healthy weight."
+5. Every blocked screen: no "Next", no way to bypass. Offer "Contact support" and "Return home" only.
+6. Keep the existing `contra` multi-select UI — just intercept on advance. Soft-flag conditions (transplant, gallbladder, kidney/liver, eating disorder, gastroparesis) still record to the store for physician review.
 
-### 1. `/confirmation` — Order Confirmation
+### Files touched
+- `src/components/intake/BlissleyIntakeFlow.tsx` — phase union, contra/bmi handlers, `BlockedScreen` component, 4 new blocked variants.
 
-- iOS-style hero: animated SVG checkmark (0.6s draw), "You're in, {firstName}."
-- Order summary card (product, plan, price) — white card, black text, subtle shadow, matches portal cards.
-- "What happens next" — 5-step vertical timeline with filled/hollow dots and micro-animations.
-- Primary CTA: **Open My Patient Portal →** (full-width, brand pink).
-- Trust footer copy — swaps by model:
-  - **auth:** "Your card will only be charged once your physician approves…"
-  - **charged:** "You've been charged today. If our physician does not approve — full refund issued automatically within 24 hours."
-- Fires analytics events: `purchase_initiated` (auth) or `purchase_completed` (charged), Meta Pixel Purchase.
-
-### 2. OTO section (below confirmation, same page, scroll — NOT a modal)
-
-- Product card uses the uploaded **Ondansetron ODT** image (saved to `public/assets/blissley-ondansetron-odt.png`).
-- Strikethrough $45 → $29, "Add for $29" primary button, "No thanks" text link.
-- Countdown micro-copy: "This offer disappears when you leave."
-- On accept: separate Stripe charge $29, toast confirmation, card flips to "Added to your order ✓".
-- On decline: fades out gracefully.
-
-### 3. Patient portal magic-link email trigger
-
-- Confirmation page dispatches a `sendMagicLink` event stub (backend hook — placeholder function; devs wire to Klaviyo).
-- Portal onboarding already exists at `/portal/patient`.  
-  
-make the button really cool either liquid or like track order button in patient portal simiarl for this 
-
-### 4. Portal state variants (already scaffolded in `src/lib/portal/store.ts`)
-
-- Verify existing plan states cover: `pending_review`, `approved`, `denied`. Add copy/UI blocks for the denied state warm-tone card if missing.
-- Approved: existing "Prescription Approved" card is fine.
-- Denied: warm card "Your physician review is complete. A team member will reach out." + (for charged model) refund confirmation line.
-
-### 5. Payment failed — inline (both checkouts)
-
-- Update `src/routes/checkout.trimrx.tsx` and `src/routes/checkout.charged-before.tsx`.
-- On Stripe error: inline red-tinted card above pay button with reasons list + alt-payment buttons (PayPal, Klarna, "Try another card").
-- No redirect. Fires `payment_failed` analytics.
-
----
-
-## Copy matrix (auth vs charged)
-
-
-| Location               | Auth model                                                                      | Charged model                                                                 |
-| ---------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Confirmation subheader | "Card authorized .not charged yet."                                             | "Payment received ✓"                                                          |
-| Trust footer           | "Card only charged after physician approval. If not approved. no charge, ever." | "Charged today. Full refund within 24hrs if not approved."                    |
-| Denial email/portal    | "Authorization released. Never charged."                                        | "Full refund of $X issued to card ending XXXX. Arrives in 3–5 business days." |
-| Approval action        | Stripe capture fires                                                            | No Stripe action; ship rx                                                     |
-| Denial action          | Stripe cancel authorization                                                     | Stripe automatic refund                                                       |
-
-
----
-
-## Design system (matches `/portal/patient`)
-
-- White cards, black ink text, brand pink `#ee7273` accents.
-- Rounded 2xl, soft shadows, generous white space.
-- Framer Motion: fade + slide up (0.4s, ease [0.22,1,0.36,1]), staggered timeline dots.
-- Mobile-first: single column, 440px max shell. Tablet (md): 720px centered. Desktop (lg): 960px with two-column split (order summary left, timeline + CTA right).
-- Uses existing assets: `blissley-logo`, `checkmark-circle`, `approval-checkmark`, `badge-check-pink`, `guarantee-badge`.
-- New asset: upload the Ondansetron ODT image to `public/assets/` per local-assets rule.
-
----
-
-## Files to create / edit
-
-**Create**
-
-- `src/routes/confirmation.tsx` — route with search param parsing (`model`, `order`, `first`).
-- `src/components/confirmation/ConfirmationHero.tsx` — animated checkmark + headline.
-- `src/components/confirmation/OrderSummary.tsx` — order card.
-- `src/components/confirmation/NextStepsTimeline.tsx` — 5-step timeline.
-- `src/components/confirmation/NauseaOTO.tsx` — OTO card with accept/decline states.
-- `src/components/confirmation/TrustFooter.tsx` — copy swaps by model.
-- `src/components/checkout/PaymentFailedInline.tsx` — reusable inline error.
-- `public/assets/blissley-ondansetron-odt.png` — via `lovable-assets` from uploaded image.
-
-**Edit**
-
-- `src/routes/checkout.trimrx.tsx` — on success redirect to `/confirmation?model=auth`, integrate `PaymentFailedInline`.
-- `src/routes/checkout.charged-before.tsx` — same, redirect with `?model=charged`.
-- `src/lib/portal/store.ts` — ensure `denied` state supports refund copy field (charged model).
-- `src/routes/portal.patient.tsx` — add denied-state warm card + optional refund line.
-
-**No changes to** business logic beyond client-side stubs (Stripe/Klaviyo wiring left as marked TODO comments for devs).
-
----
-
-## Technical notes (for devs)
-
-- All Stripe/Klaviyo hooks are placeholder client functions (`onPurchaseComplete`, `onOTOAccept`, `sendMagicLink`) with `// TODO: wire to backend` comments — no server functions added.
-- URL search params validated with a small parser; unknown model falls back to `auth`.
-- Mobile bottom safe-area padding on CTAs.
-- Route naming follows TanStack file convention: `src/routes/confirmation.tsx`.  
-  
-don't use any "—" em dashes 
+No store, route, or physician portal changes needed — the physician portal already handles soft flags in Case Review.

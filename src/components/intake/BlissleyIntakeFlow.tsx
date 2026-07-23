@@ -130,6 +130,8 @@ const SCREENS = [
   "loading",
   "blocked_minor",
   "blocked_pregnancy",
+  "blocked_bmi_low",
+  "blocked_contra",
 ] as const;
 type ScreenId = (typeof SCREENS)[number];
 
@@ -142,6 +144,31 @@ const STAGE_MAP: Record<ScreenId, number> = {
   contra: 3, health: 3, prior_glp1: 3, med_history: 3,
   phone_state: 4, loading: 4,
   blocked_minor: 4, blocked_pregnancy: 4,
+  blocked_bmi_low: 4, blocked_contra: 4,
+};
+
+/* Hard contraindications that auto-reject in the quiz (FDA-boxed / absolute) */
+const HARD_CONTRA: Record<string, { chip: string; title: string; body: string }> = {
+  "Personal/family history of MTC or MEN2": {
+    chip: "Safety first",
+    title: "GLP-1s aren't safe with your thyroid history.",
+    body: "A personal or family history of medullary thyroid carcinoma (MTC) or MEN2 is an FDA boxed-warning contraindication for GLP-1 medications. This isn't a Blissley policy - no clinician can safely prescribe these to you.",
+  },
+  "History of pancreatitis": {
+    chip: "Safety first",
+    title: "A history of pancreatitis rules out GLP-1 therapy.",
+    body: "GLP-1 medications can trigger pancreatitis, and a prior episode significantly raises that risk. We recommend speaking with your primary care physician about alternative approaches.",
+  },
+  "Active cancer": {
+    chip: "Not the right time",
+    title: "GLP-1s aren't appropriate during active cancer treatment.",
+    body: "While you're in active treatment, weight-loss medication isn't clinically appropriate. You're welcome back after treatment ends - we'll be here.",
+  },
+  "Known allergy to semaglutide or tirzepatide": {
+    chip: "Safety first",
+    title: "A prior reaction rules out this medication class.",
+    body: "A known allergy to semaglutide or tirzepatide means we can't safely prescribe any GLP-1 medication. Please speak with your doctor about non-GLP-1 options.",
+  },
 };
 
 
@@ -363,7 +390,7 @@ export function BlissleyIntakeFlow() {
 
   const current: ScreenId = SCREENS[idx];
   const stage = STAGE_MAP[current];
-  const isTerminal = current === "loading" || current === "blocked_minor" || current === "blocked_pregnancy";
+  const isTerminal = current === "loading" || current === "blocked_minor" || current === "blocked_pregnancy" || current === "blocked_bmi_low" || current === "blocked_contra";
   const fname = answers.firstName || "";
 
   useEffect(() => {
@@ -400,7 +427,13 @@ export function BlissleyIntakeFlow() {
                   title={`"Let's see if you qualify {{for medical weight loss.}}"`}
                   sub="Enter your height and weight - we'll check your BMI instantly."
                   footer={
-                    <PrimaryButton onClick={next} disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}>
+                    <PrimaryButton
+                      onClick={() => {
+                        if (bmi !== null && bmi < 18.5) { goTo("blocked_bmi_low"); return; }
+                        next();
+                      }}
+                      disabled={!answers.heightFt || !answers.heightIn || !answers.weightLbs}
+                    >
                       Next →
                     </PrimaryButton>
                   }
@@ -861,10 +894,23 @@ export function BlissleyIntakeFlow() {
               <ScreenShell
                 title="A few {{safety checks.}}"
                 sub="Do any of these apply to you? Reviewed only by your physician."
-                footer={<PrimaryButton onClick={next} disabled={!(answers.contra && answers.contra.length)}>Next →</PrimaryButton>}
+                footer={
+                  <PrimaryButton
+                    onClick={() => {
+                      const picks = answers.contra ?? [];
+                      const hit = picks.find((p) => HARD_CONTRA[p]);
+                      if (hit) { goTo("blocked_contra"); return; }
+                      next();
+                    }}
+                    disabled={!(answers.contra && answers.contra.length)}
+                  >
+                    Next →
+                  </PrimaryButton>
+                }
               >
                 {[
                   "Personal/family history of MTC or MEN2",
+                  "History of pancreatitis",
                   "Known allergy to semaglutide or tirzepatide",
                   "Active cancer",
                   "End-stage kidney or liver disease",
@@ -1043,6 +1089,37 @@ export function BlissleyIntakeFlow() {
                 <div className="mt-8"><PrimaryButton onClick={() => (window.location.href = "/")}>Notify me when I'm eligible →</PrimaryButton></div>
               </div>
             )}
+
+            {/* Terminal - BMI below 18.5 */}
+            {current === "blocked_bmi_low" && (
+              <div className="mx-auto max-w-[560px] py-10 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-ink/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink">Not a clinical fit</div>
+                <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">GLP-1 therapy isn't the right fit.</h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-ink/70">Your BMI is below the range where GLP-1 medications are clinically appropriate. These are prescribed for weight loss - not for people at or below a healthy weight. If you're concerned about your relationship with food, please speak with your primary care provider.</p>
+                <div className="mt-8 flex flex-wrap justify-center gap-3">
+                  <PrimaryButton onClick={() => (window.location.href = "/")}>Return home</PrimaryButton>
+                  <a href="mailto:care@blissley.com" className="inline-flex items-center rounded-full border border-ink/15 px-5 py-3 text-[14px] font-semibold text-ink hover:bg-ink/5">Contact support</a>
+                </div>
+              </div>
+            )}
+
+            {/* Terminal - Absolute contraindication */}
+            {current === "blocked_contra" && (() => {
+              const picks = answers.contra ?? [];
+              const hit = picks.find((p) => HARD_CONTRA[p]);
+              const c = hit ? HARD_CONTRA[hit] : { chip: "Safety first", title: "GLP-1 therapy isn't safe for you.", body: "Based on your responses, GLP-1 medications aren't clinically appropriate. Please speak with your primary care physician." };
+              return (
+                <div className="mx-auto max-w-[560px] py-10 text-center">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">{c.chip}</div>
+                  <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">{c.title}</h1>
+                  <p className="mt-4 text-[15px] leading-relaxed text-ink/70">{c.body}</p>
+                  <div className="mt-8 flex flex-wrap justify-center gap-3">
+                    <PrimaryButton onClick={() => (window.location.href = "/")}>Return home</PrimaryButton>
+                    <a href="mailto:care@blissley.com" className="inline-flex items-center rounded-full border border-ink/15 px-5 py-3 text-[14px] font-semibold text-ink hover:bg-ink/5">Contact support</a>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </AnimatePresence>
       </div>
