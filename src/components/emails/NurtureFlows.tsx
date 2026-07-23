@@ -1,9 +1,8 @@
-import { ArrowRight, Sparkles, Brain, Clock, TrendingDown, MessageCircle } from "lucide-react";
+import { ArrowRight, Clock, TrendingDown } from "lucide-react";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
-import r23 from "@/assets/review-23.png.asset.json";
-import r24 from "@/assets/review-24.png.asset.json";
 import r20 from "@/assets/review-20.png.asset.json";
+import r24 from "@/assets/review-24.png.asset.json";
 import r27 from "@/assets/review-27.png.asset.json";
 
 /* ---------- Shared shell ---------- */
@@ -90,6 +89,14 @@ function SendTag({ children }: { children: React.ReactNode }) {
   );
 }
 
+function Body({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="px-5 pt-6 md:px-8">
+      <div className="space-y-5 text-[15.5px] leading-[1.75] text-ink/80">{children}</div>
+    </div>
+  );
+}
+
 /* ============================================================
    FLOW 1A — QUIZ ABANDONED, EARLY DROP (TOF)
    ============================================================ */
@@ -97,28 +104,28 @@ function SendTag({ children }: { children: React.ReactNode }) {
 function Flow1A_Email1() {
   return (
     <NurtureShell
-      subject="Your results are waiting, Sarah"
-      preview="4 minutes left. Nothing's been charged."
+      subject="You got two screens in"
+      preview="Whatever it was, come back when you're ready."
     >
-      <div className="px-5 pt-8 pb-2 md:px-8">
+      <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 1A · Send 1 · 1 hour</SendTag>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          Your results are waiting,
-          <br />
-          <span className="text-[#ee7273]">Sarah.</span>
+          You got two screens in.
         </h1>
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/80">Hey Sarah,</p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          You started your assessment but didn't get far.
-        </p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          No pressure. Take <span className="font-semibold text-ink">4 minutes</span> when you're
-          ready. A physician reviews your profile within 24 hours of you finishing.
-        </p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          Nothing's charged. It's free to find out if you qualify.
-        </p>
       </div>
+
+      <Body>
+        <p>
+          You started answering questions about your weight, your history, maybe things you don't
+          usually type into a form.
+        </p>
+        <p>Then you stopped.</p>
+        <p>
+          Could be you got busy. Could be it felt like a lot all at once. Either way, nothing
+          happened because of it. No charge, no commitment, nothing on your account.
+        </p>
+        <p className="text-ink">If you want to pick it up again, it's right here.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CTA>Continue My Assessment</CTA>
@@ -130,103 +137,31 @@ function Flow1A_Email1() {
 function Flow1A_Email2() {
   return (
     <NurtureShell
-      subject="What GLP-1 actually does"
-      preview="It's not willpower. It's biology."
+      subject="The thing nobody tells you about hunger"
+      preview="It's not the food. It's the voice."
     >
-      <div className="px-5 pt-8 pb-2 md:px-8">
+      <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 1A · Send 2 · 24 hours</SendTag>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          It's not willpower.
+          It's not the food.
           <br />
-          <span className="text-[#ee7273]">It's biology.</span>
+          <span className="text-[#ee7273]">It's the voice.</span>
         </h1>
       </div>
 
-      {/* Food noise mechanism visual */}
-      <div className="mx-3 mt-6 overflow-hidden rounded-[20px] bg-gradient-to-br from-[#f8dcd7] via-[#f4c8c4] to-[#eec9cc] p-6 md:mx-5 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="grid h-11 w-11 place-items-center rounded-full bg-white/70 ring-1 ring-white/60 backdrop-blur-sm">
-            <Brain className="h-5 w-5 text-ink" strokeWidth={2} />
-          </span>
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink/70">
-            The food noise loop
-          </p>
-        </div>
-
-        {/* Before / After split */}
-        <div className="mt-6 grid grid-cols-2 gap-3">
-          <div className="rounded-[16px] bg-white/60 p-4 ring-1 ring-white/70 backdrop-blur-sm">
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink/50">Before</p>
-            <div className="mt-3 space-y-1.5">
-              {["What did I eat", "I'll start Monday", "Just one more", "I already ruined today"].map(
-                (t) => (
-                  <div
-                    key={t}
-                    className="rounded-full bg-ink/5 px-3 py-1 text-[11.5px] leading-tight text-ink/70"
-                  >
-                    {t}
-                  </div>
-                ),
-              )}
-            </div>
-            <div className="mt-3 flex items-end gap-0.5">
-              {[10, 14, 8, 18, 12, 16, 20, 14, 22, 18].map((h, i) => (
-                <span
-                  key={i}
-                  className="w-1.5 rounded-t bg-ink/40"
-                  style={{ height: `${h}px` }}
-                />
-              ))}
-            </div>
-            <p className="mt-2 text-[10.5px] text-ink/50">Constant noise</p>
-          </div>
-
-          <div className="rounded-[16px] bg-white p-4 ring-1 ring-[#ee7273]/25">
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#ee7273]">
-              On GLP-1
-            </p>
-            <div className="mt-3 space-y-1.5">
-              {["Ate. Done.", "Not hungry", "Full sooner", "Quiet mind"].map((t) => (
-                <div
-                  key={t}
-                  className="rounded-full bg-[#ee7273]/10 px-3 py-1 text-[11.5px] leading-tight text-ink/80 ring-1 ring-[#ee7273]/20"
-                >
-                  {t}
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 flex items-end gap-0.5">
-              {[3, 4, 2, 3, 4, 3, 5, 3, 4, 3].map((h, i) => (
-                <span
-                  key={i}
-                  className="w-1.5 rounded-t bg-[#ee7273]"
-                  style={{ height: `${h}px` }}
-                />
-              ))}
-            </div>
-            <p className="mt-2 text-[10.5px] text-ink/50">Signal, then silence</p>
-          </div>
-        </div>
-
-        <p className="mt-6 font-hero text-[16px] font-semibold italic leading-tight text-ink md:text-[18px]">
-          "I didn't know everyone's head wasn't like mine."
+      <Body>
+        <p>Most people think weight loss is a food problem. It isn't.</p>
+        <p>
+          It's a signal problem. Your brain has a switch that tells you when you're full, and for a
+          lot of people, that switch is broken. Not from lack of willpower. From biology. So you eat
+          the meal, and twenty minutes later you're thinking about food again anyway.
         </p>
-        <p className="mt-1 text-[12px] text-ink/60">— Jennifer R., 3 months in</p>
-      </div>
-
-      <div className="px-5 pt-6 md:px-8">
-        <p className="text-[15px] leading-[1.65] text-ink/80">Sarah,</p>
-        <p className="mt-3 text-[15px] leading-[1.65] text-ink/75">
-          If you're on the fence, here's the short version.
+        <p>
+          GLP-1 medication fixes the switch, not the person. Patients don't describe it as trying
+          harder. They describe the voice finally going quiet.
         </p>
-        <p className="mt-3 text-[15px] leading-[1.65] text-ink/75">
-          GLP-1 medication quiets the part of your brain that keeps you thinking about food.
-          Patients call it <span className="font-semibold text-ink">food noise going quiet</span>.
-        </p>
-        <p className="mt-3 text-[15px] leading-[1.65] text-ink/75">
-          It's not about trying harder. It's about your body finally working with you.
-        </p>
-      </div>
+        <p className="text-ink">You don't have to decide anything today. Just see if you'd qualify.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CoralCTA>Finish My Assessment</CoralCTA>
@@ -238,23 +173,26 @@ function Flow1A_Email2() {
 function Flow1A_Email3() {
   return (
     <NurtureShell
-      subject="One last thing, Sarah"
-      preview="I don't want to keep reaching out."
+      subject="I'll stop after this one"
+      preview="Genuinely, no more emails after this."
     >
-      <div className="px-5 pt-8 pb-2 md:px-8">
+      <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 1A · Send 3 · 72 hours</SendTag>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          One last thing,
+          I'll stop after
           <br />
-          <span className="text-[#ee7273]">Sarah.</span>
+          <span className="text-[#ee7273]">this one.</span>
         </h1>
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/75">
-          I don't want to keep reaching out if this isn't the right time.
-        </p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          But if you're even a little curious, it costs nothing to find out.
-        </p>
       </div>
+
+      <Body>
+        <p>I don't want to be another brand that won't leave your inbox alone.</p>
+        <p>
+          So this is the last one. If you're curious whether this could work for you, it takes
+          about four minutes to find out, and nothing's charged either way.
+        </p>
+        <p className="text-ink">If not, no hard feelings.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CTA>Complete My Assessment</CTA>
@@ -270,25 +208,27 @@ function Flow1A_Email3() {
 function Flow1B_Email1() {
   return (
     <NurtureShell
-      subject="You were almost done, Sarah"
-      preview="Pick up where you left off. 2 minutes left."
+      subject="You were two minutes from done"
+      preview="Pick up exactly where you left off."
     >
-      <div className="px-5 pt-8 pb-2 md:px-8">
+      <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 1B · Send 1 · 1 hour</SendTag>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          You were almost done,
+          You were two minutes
           <br />
-          <span className="text-[#ee7273]">Sarah.</span>
+          <span className="text-[#ee7273]">from done.</span>
         </h1>
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/80">Hey Sarah,</p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          You were most of the way through your assessment when you left.
-        </p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          Pick up exactly where you stopped. Takes about{" "}
-          <span className="font-semibold text-ink">2 more minutes</span>.
-        </p>
       </div>
+
+      <Body>
+        <p>
+          Something pulled you away right near the end. Phone rang, kid needed something, browser
+          closed, who knows.
+        </p>
+        <p className="text-ink">
+          You were most of the way through. Come finish it, it's short from here.
+        </p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CTA>Finish Where I Left Off</CTA>
@@ -300,60 +240,26 @@ function Flow1B_Email1() {
 function Flow1B_Email2() {
   return (
     <NurtureShell
-      subject="Almost there"
-      preview="90% done. First month is $249 / $299, already discounted."
+      subject="90% done, still sitting there"
+      preview="Two minutes left, and the price doesn't change."
     >
       <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 1B · Send 2 · 12 hours</SendTag>
+        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+          90% done, still
+          <br />
+          <span className="text-[#ee7273]">sitting there.</span>
+        </h1>
       </div>
 
-      {/* Coral progress hero */}
-      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-[#ee7273] p-6 text-white md:mx-5 md:p-8">
-        <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/15 blur-3xl" />
-        <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-        <div className="relative">
-          <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-white/75">
-            Your assessment
-          </p>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-hero text-[54px] font-semibold leading-none tracking-[-0.02em]">
-              90%
-            </span>
-            <span className="text-[14px] text-white/80">complete</span>
-          </div>
-
-          {/* Progress bar */}
-          <div className="mt-5 h-2.5 w-full overflow-hidden rounded-full bg-white/25">
-            <div className="h-full rounded-full bg-white" style={{ width: "90%" }} />
-          </div>
-
-          {/* Price card */}
-          <div className="mt-6 rounded-[14px] bg-white/15 p-4 ring-1 ring-white/25 backdrop-blur-sm">
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-white/80">
-              First month
-            </p>
-            <div className="mt-1.5 flex items-baseline gap-3">
-              <div>
-                <span className="font-hero text-[26px] font-semibold leading-none">$249</span>
-                <span className="ml-1 text-[12px] text-white/75">semaglutide</span>
-              </div>
-              <span className="text-white/40">/</span>
-              <div>
-                <span className="font-hero text-[26px] font-semibold leading-none">$299</span>
-                <span className="ml-1 text-[12px] text-white/75">tirzepatide</span>
-              </div>
-            </div>
-            <p className="mt-2 text-[12px] text-white/80">Already the discounted price.</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="px-5 pt-6 md:px-8">
-        <p className="text-[15px] leading-[1.65] text-ink/80">
-          <span className="font-semibold text-ink">Sarah,</span> you're nearly finished. A physician
-          reviews your case within 24 hours of completion.
+      <Body>
+        <p>Your assessment is one section away from a physician actually reviewing it.</p>
+        <p>
+          First month is $249 for semaglutide or $299 for tirzepatide, whichever you're matched to.
+          That's already the real price. Nothing added when you check out.
         </p>
-      </div>
+        <p className="text-ink">You were almost done. Finish it.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CoralCTA>Finish My Assessment</CoralCTA>
@@ -365,24 +271,22 @@ function Flow1B_Email2() {
 function Flow1B_Email3() {
   return (
     <NurtureShell
-      subject="Your assessment is about to expire"
-      preview="90% done. Don't lose your progress."
+      subject="Still at 90%"
+      preview="Don't lose the four minutes you already put in."
     >
-      <div className="px-5 pt-8 pb-2 md:px-8">
+      <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 1B · Send 3 · 48 hours</SendTag>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          Your assessment is
+          Still at
           <br />
-          <span className="text-[#ee7273]">about to expire.</span>
+          <span className="text-[#ee7273]">90%.</span>
         </h1>
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/75">
-          Sarah, your assessment is still sitting at{" "}
-          <span className="font-semibold text-ink">90% done</span>.
-        </p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          Don't lose your progress over two minutes.
-        </p>
       </div>
+
+      <Body>
+        <p>You already answered the hard questions. What's left takes about two minutes.</p>
+        <p className="text-ink">Don't let the part you already did go to waste.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CTA>Finish Now</CTA>
@@ -403,37 +307,32 @@ function Flow2_Email1() {
     >
       <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 2 · Send 1 · 30 minutes</SendTag>
-      </div>
-
-      <div className="px-5 pt-6 md:px-8">
-        <h1 className="font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           I already know
           <br />
           <span className="text-[#ee7273]">what you're going to ask me.</span>
         </h1>
-
-        <div className="mt-7 space-y-5 text-[15.5px] leading-[1.7] text-ink/80">
-          <p>
-            You just finished answering eighteen screens of questions about your body, your history,
-            your weight. Things you maybe haven't told anyone else this year.
-          </p>
-          <p>That takes something. Most people don't make it that far.</p>
-          <p>
-            Here's what happens now. A physician looks at everything you just told us, today, not
-            next week. If they approve you, your first month is{" "}
-            <span className="font-semibold text-ink">$249 for semaglutide</span> or{" "}
-            <span className="font-semibold text-ink">$299 for tirzepatide</span>. That's already the
-            real price. Nothing gets added at checkout.
-          </p>
-          <p>
-            If they don't approve you, you pay nothing. Not "we'll refund it later." Nothing gets
-            charged in the first place.
-          </p>
-          <p className="text-ink">
-            Your spot is open right now. It won't stay that way.
-          </p>
-        </div>
       </div>
+
+      <Body>
+        <p>
+          You just finished answering eighteen screens of questions about your body, your history,
+          your weight. Things you maybe haven't told anyone else this year.
+        </p>
+        <p>That takes something. Most people don't make it that far.</p>
+        <p>
+          Here's what happens now. A physician looks at everything you just told us, today, not next
+          week. If they approve you, your first month is{" "}
+          <span className="font-semibold text-ink">$249 for semaglutide</span> or{" "}
+          <span className="font-semibold text-ink">$299 for tirzepatide</span>. That's already the
+          real price. Nothing gets added at checkout.
+        </p>
+        <p>
+          If they don't approve you, you pay nothing. Not "we'll refund it later." Nothing gets
+          charged in the first place.
+        </p>
+        <p className="text-ink">Your spot is open right now. It won't stay that way.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CoralCTA>Start My Program</CoralCTA>
@@ -441,6 +340,60 @@ function Flow2_Email1() {
     </NurtureShell>
   );
 }
+
+function Flow2_Email2() {
+  return (
+    <NurtureShell
+      subject="You're probably wondering about the money"
+      preview="Same question everyone asks first."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 2 · Send 2 · 3 hours</SendTag>
+        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+          You're probably wondering
+          <br />
+          <span className="text-[#ee7273]">about the money.</span>
+        </h1>
+      </div>
+
+      <Body>
+        <p>
+          Almost everyone who gets this far asks the same three things, so I'll just answer them
+          straight.
+        </p>
+
+        <div>
+          <p className="font-semibold text-ink">Will you charge me before I'm approved?</p>
+          <p className="mt-2">
+            No. The card gets held, not charged. If a physician says no, you're not out anything.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-semibold text-ink">Does the price go up once my dose does?</p>
+          <p className="mt-2">
+            No. Whatever you start at is what you pay in month six, month twelve, whenever.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-semibold text-ink">Can I actually cancel, or is this one of those things?</p>
+          <p className="mt-2">
+            One click. No call, no retention rep trying to talk you out of it.
+          </p>
+        </div>
+
+        <p className="text-ink">That's the whole deal. No fine print underneath it.</p>
+      </Body>
+
+      <div className="px-5 py-8 md:px-8">
+        <CTA>Start My Program</CTA>
+      </div>
+    </NurtureShell>
+  );
+}
+
+/* -- Flow 2 Sensory (already rewritten in previous pass) -------- */
 
 function Flow2_Sensory() {
   return (
@@ -452,7 +405,6 @@ function Flow2_Sensory() {
         <SendTag>Flow 2 · Sensory · 18 hours</SendTag>
       </div>
 
-      {/* Ambient kitchen scene */}
       <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-b from-[#1a1613] via-[#2a1f1a] to-[#1a1613] md:mx-5">
         <div className="absolute inset-0 opacity-70">
           <div className="absolute -left-16 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-[#ee7273]/25 blur-3xl" />
@@ -470,31 +422,28 @@ function Flow2_Sensory() {
         </div>
       </div>
 
-      <div className="px-5 pt-8 md:px-8">
-        <div className="space-y-5 text-[15.5px] leading-[1.7] text-ink/80">
-          <p>It's not hunger. You know that. You ate two hours ago.</p>
-          <p>
-            But you're standing in front of the open fridge anyway, and some part of your brain is
-            running through options like it's your job. Something salty. Something sweet. Just a
-            bite, just to make it stop.
-          </p>
-          <p>You close the fridge. You open it again four minutes later.</p>
-          <p>
-            This is the part almost nobody talks about when they talk about weight. Not the number
-            on the scale. The voice. The one that never actually shuts off.
-          </p>
-          <p>
-            GLP-1 treatment doesn't argue with that voice. It turns the volume down at the source,
-            the part of your brain that generates it in the first place. Patients don't describe it
-            as trying harder. They describe it as the noise finally going quiet.
-          </p>
-          <p className="text-ink">
-            You already answered the questions. A physician's ready to look at your case.
-          </p>
-        </div>
-      </div>
+      <Body>
+        <p>It's not hunger. You know that. You ate two hours ago.</p>
+        <p>
+          But you're standing in front of the open fridge anyway, and some part of your brain is
+          running through options like it's your job. Something salty. Something sweet. Just a
+          bite, just to make it stop.
+        </p>
+        <p>You close the fridge. You open it again four minutes later.</p>
+        <p>
+          This is the part almost nobody talks about when they talk about weight. Not the number on
+          the scale. The voice. The one that never actually shuts off.
+        </p>
+        <p>
+          GLP-1 treatment doesn't argue with that voice. It turns the volume down at the source, the
+          part of your brain that generates it in the first place. Patients don't describe it as
+          trying harder. They describe it as the noise finally going quiet.
+        </p>
+        <p className="text-ink">
+          You already answered the questions. A physician's ready to look at your case.
+        </p>
+      </Body>
 
-      {/* Quiet stat, sourced, no bullet list */}
       <div className="mx-3 mt-8 rounded-[16px] bg-canvas p-5 ring-1 ring-ink/5 md:mx-5 md:p-6">
         <p className="text-[13.5px] leading-[1.6] text-ink/70">
           <span className="font-semibold text-ink">57% of people with obesity</span> report
@@ -510,49 +459,7 @@ function Flow2_Sensory() {
   );
 }
 
-
-function Flow2_Email2() {
-  const rows = [
-    "Card charged only if a physician approves you. Full refund if not.",
-    "Price never goes up when your dose increases. Ever.",
-    "A real person responds to every message, not a chatbot.",
-    "Same price, same doctor, no surprises.",
-  ];
-  return (
-    <NurtureShell
-      subject="If you're comparing your options"
-      preview="Here's what actually sets us apart."
-    >
-      <div className="px-5 pt-8 pb-2 md:px-8">
-        <SendTag>Flow 2 · Send 2 · 3 hours</SendTag>
-        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          If you're comparing
-          <br />
-          <span className="text-[#ee7273]">your options.</span>
-        </h1>
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/75">
-          Maybe you're deciding between us and another option. Fair. Here's what to actually compare.
-        </p>
-
-        <ul className="mt-6 space-y-3">
-          {rows.map((row) => (
-            <li key={row} className="flex gap-3 rounded-[14px] bg-canvas p-4 ring-1 ring-ink/5">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
-              <p className="text-[14px] leading-[1.55] text-ink/80">{row}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="px-5 py-8 md:px-8">
-        <CTA>Start My Program</CTA>
-      </div>
-    </NurtureShell>
-  );
-}
-
-/* -- Flow 2 Email 3: UPGRADED reviews section (bigger, better,
-      handles objections, shows desire) --------------------------- */
+/* -- Flow 2 Email 3: Reviews (kept from prior pass) ------------- */
 
 type BigReview = {
   image: string;
@@ -620,7 +527,6 @@ function BigReviewCard({ r }: { r: BigReview }) {
           style={{ objectPosition: "50% 28%" }}
           loading="lazy"
         />
-        {/* Objection tag over image */}
         <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[10.5px] font-semibold text-ink shadow-sm backdrop-blur">
           "{r.objection}"
         </div>
@@ -666,7 +572,6 @@ function Flow2_Email3() {
           Real patients. Real objections. Real outcomes. No filters.
         </p>
 
-        {/* Aggregate proof strip */}
         <div className="mt-5 flex items-center justify-between rounded-[14px] bg-canvas p-4 ring-1 ring-ink/5">
           <div>
             <div className="flex items-center gap-1.5">
@@ -683,34 +588,10 @@ function Flow2_Email3() {
         </div>
       </div>
 
-      {/* Review cards */}
       <div className="mt-6 space-y-4 px-3 md:px-5">
         {BIG_REVIEWS.map((r) => (
           <BigReviewCard key={r.name} r={r} />
         ))}
-      </div>
-
-      {/* Price reassurance */}
-      <div className="mx-3 mt-6 rounded-[16px] bg-ink px-5 py-5 text-white md:mx-5 md:px-7">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#ee7273]">
-              First month still
-            </p>
-            <p className="mt-1 font-hero text-[22px] font-semibold leading-none tracking-[-0.01em]">
-              $249 <span className="text-white/50">/</span> $299
-            </p>
-          </div>
-          <p className="max-w-[160px] text-right text-[11.5px] leading-[1.4] text-white/60">
-            Same price at every dose. Never changes.
-          </p>
-        </div>
-      </div>
-
-      <div className="px-5 pt-6 md:px-8">
-        <p className="text-[15px] leading-[1.65] text-ink/80">
-          <span className="font-semibold text-ink">Sarah,</span> this is what's on the other side.
-        </p>
       </div>
 
       <div className="px-5 py-8 md:px-8">
@@ -722,34 +603,25 @@ function Flow2_Email3() {
 
 function Flow2_Email4() {
   return (
-    <NurtureShell subject="What's stopping you?" preview="Comparing options? Not sure yet? Just tell me.">
-      <div className="px-5 pt-8 pb-2 md:px-8">
+    <NurtureShell subject="Can I ask you something" preview="Genuinely, just hit reply.">
+      <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 2 · Send 4 · 48 hours</SendTag>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
-          What's stopping
+          Can I ask you
           <br />
-          <span className="text-[#ee7273]">you?</span>
+          <span className="text-[#ee7273]">something?</span>
         </h1>
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/80">Sarah,</p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          Still comparing a couple options? Not sure this is right for you? Something else entirely?
-        </p>
-        <p className="mt-4 text-[15px] leading-[1.65] text-ink/75">
-          Hit reply. A real person reads this inbox and can actually answer.
-        </p>
-
-        <div className="mt-6 flex items-start gap-3 rounded-[14px] bg-canvas p-4 ring-1 ring-ink/5">
-          <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-            <MessageCircle className="h-4 w-4 text-[#ee7273]" strokeWidth={2.2} />
-          </span>
-          <p className="text-[13.5px] leading-[1.55] text-ink/70">
-            Reply directly to this email. Average response time is under 2 hours during business
-            hours.
-          </p>
-        </div>
-
-        <p className="mt-6 text-[15px] leading-[1.65] text-ink/75">Or if you've already decided:</p>
       </div>
+
+      <Body>
+        <p>What's actually stopping you.</p>
+        <p>
+          Not in a pushy way, I mean it. Is it the money. Is it that you've tried things before and
+          they didn't stick. Is it that you're not totally sure this is real.
+        </p>
+        <p>Hit reply and tell me. I read these myself.</p>
+        <p className="text-ink">Or if you already know, here's the door.</p>
+      </Body>
 
       <div className="px-5 py-8 md:px-8">
         <CTA>Start My Program</CTA>
@@ -760,58 +632,40 @@ function Flow2_Email4() {
 
 function Flow2_Email5() {
   return (
-    <NurtureShell subject="Your spot closes tonight" preview="Physician slots rotate every 48 hours.">
+    <NurtureShell
+      subject="Your spot's about to go to someone else"
+      preview="Physician slots rotate every 48 hours."
+    >
       <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 2 · Send 5 · 72 hours</SendTag>
       </div>
 
-      {/* Urgency hero */}
-      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-br from-[#171717] via-[#1f1f1f] to-[#171717] p-6 text-white md:mx-5 md:p-8">
-        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#ee7273]/40 blur-3xl" />
-        <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-[#ee7273]/25 blur-3xl" />
+      {/* Coral loss-aversion hero */}
+      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-[#ee7273] p-6 text-white md:mx-5 md:p-10">
+        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/15 blur-3xl" />
+        <div className="absolute -bottom-16 -left-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
         <div className="relative">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ee7273]/20 px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#ee7273] ring-1 ring-[#ee7273]/30">
-            <Sparkles className="h-3 w-3" /> Final notice
-          </span>
-
-          <h2 className="mt-4 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[36px]">
-            Your spot closes
-            <br />
-            <span className="text-[#ee7273]">tonight.</span>
-          </h2>
-
-          {/* Countdown row */}
-          <div className="mt-6 grid grid-cols-3 gap-2">
-            {[
-              { v: "07", l: "Hours" },
-              { v: "42", l: "Minutes" },
-              { v: "18", l: "Seconds" },
-            ].map((t) => (
-              <div
-                key={t.l}
-                className="rounded-[14px] bg-white/8 p-3 text-center ring-1 ring-white/10 backdrop-blur-sm"
-              >
-                <p className="font-hero text-[28px] font-semibold leading-none tracking-[-0.02em]">
-                  {t.v}
-                </p>
-                <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/60">
-                  {t.l}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <p className="mt-6 text-[14px] leading-[1.55] text-white/75">
-            Sarah, physician slots rotate every 48 hours, and yours is about to lapse.
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.18em] text-white/80">
+            Physician review · Rotates every 48 hrs
           </p>
+          <h2 className="mt-3 font-hero text-[32px] font-semibold leading-[1.02] tracking-[-0.02em] md:text-[40px]">
+            Your slot expires
+            <br />
+            tonight.
+          </h2>
         </div>
       </div>
 
+      <Body>
+        <p>
+          Physician review slots rotate every 48 hours. Yours has been open since you finished your
+          assessment, and it closes tonight.
+        </p>
+        <p className="text-ink">After that, you'd start over.</p>
+      </Body>
+
       <div className="px-5 py-8 md:px-8">
         <CoralCTA>Claim My Spot</CoralCTA>
-        <p className="mt-3 text-center text-[12px] text-ink/50">
-          Same $249 / $299 first month. Nothing charges until a physician approves you.
-        </p>
       </div>
     </NurtureShell>
   );
@@ -848,9 +702,8 @@ export function NurtureFlows() {
         subtitle="5 emails alternating text and graphic sends."
       />
       <Flow2_Email1 />
-      <Flow2_Sensory />
       <Flow2_Email2 />
-
+      <Flow2_Sensory />
       <Flow2_Email3 />
       <Flow2_Email4 />
       <Flow2_Email5 />
