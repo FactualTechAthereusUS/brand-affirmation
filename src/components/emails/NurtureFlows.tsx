@@ -307,12 +307,25 @@ function Flow2_Email1() {
     >
       <div className="px-5 pt-8 md:px-8">
         <SendTag>Flow 2 · Send 1 · 30 minutes</SendTag>
-        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+      </div>
+
+      {/* Minimal coral hero band — quiet confirmation, not celebration */}
+      <div className="mx-3 mt-4 rounded-[20px] bg-[#ee7273] md:mx-5">
+        <div className="px-6 py-16 text-center md:py-20">
+          <p className="font-hero text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-white md:text-[30px]">
+            Your program is ready.
+          </p>
+        </div>
+      </div>
+
+      <div className="px-5 pt-8 md:px-8">
+        <h1 className="font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           I already know
           <br />
           <span className="text-[#ee7273]">what you're going to ask me.</span>
         </h1>
       </div>
+
 
       <Body>
         <p>
