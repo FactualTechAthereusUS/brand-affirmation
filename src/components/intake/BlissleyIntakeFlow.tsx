@@ -390,7 +390,7 @@ export function BlissleyIntakeFlow() {
 
   const current: ScreenId = SCREENS[idx];
   const stage = STAGE_MAP[current];
-  const isTerminal = current === "loading" || current === "blocked_minor" || current === "blocked_pregnancy";
+  const isTerminal = current === "loading" || current === "blocked_minor" || current === "blocked_pregnancy" || current === "blocked_bmi_low" || current === "blocked_contra";
   const fname = answers.firstName || "";
 
   useEffect(() => {
