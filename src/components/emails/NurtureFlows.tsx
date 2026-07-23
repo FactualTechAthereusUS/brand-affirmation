@@ -848,7 +848,9 @@ export function NurtureFlows() {
         subtitle="5 emails alternating text and graphic sends."
       />
       <Flow2_Email1 />
+      <Flow2_Sensory />
       <Flow2_Email2 />
+
       <Flow2_Email3 />
       <Flow2_Email4 />
       <Flow2_Email5 />
