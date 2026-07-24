@@ -141,3 +141,19 @@ function ReportsPage() {
 function Legend({ color, label }: { color: string; label: string }) {
   return <div className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: color }} /> {label}</div>;
 }
+
+function RowFragment({ day, row, maxHM, rIdx }: { day: string; row: number[]; maxHM: number; rIdx: number }) {
+  return (
+    <>
+      <div className="pr-2 text-right text-[10.5px] font-semibold uppercase tracking-[0.1em] text-ink/40">{day}</div>
+      {row.map((v, c) => {
+        const intensity = v / maxHM;
+        return (
+          <div key={`${rIdx}-${c}`} className="aspect-square rounded-md" title={`${v} signups`} style={{
+            background: `color-mix(in oklab, #ee7273 ${Math.round(intensity * 100)}%, #f0ebe3)`,
+          }} />
+        );
+      })}
+    </>
+  );
+}
