@@ -1,4 +1,4 @@
-import { ArrowRight, Clock, TrendingDown } from "lucide-react";
+import { ArrowRight, Clock, MessageSquare, TrendingDown } from "lucide-react";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import blissleyWhite from "@/assets/blissley-white.png.asset.json";
 import r20 from "@/assets/review-20.png.asset.json";
@@ -7,6 +7,7 @@ import r27 from "@/assets/review-27.png.asset.json";
 import vialTirz from "@/assets/blissley-tirzepatide-vial.png.asset.json";
 import heroSky from "@/assets/hero-sky-woman.png.asset.json";
 import heroTrx from "@/assets/trx-hero-woman.png.asset.json";
+import drNass from "@/assets/dr-scott-nass.png.asset.json";
 
 /* ---------- Shared shell ---------- */
 
