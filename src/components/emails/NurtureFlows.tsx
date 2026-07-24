@@ -684,6 +684,327 @@ function Flow2_Email5() {
 }
 
 /* ============================================================
+   FLOW 3 — CHECKOUT ABANDONED
+   ============================================================ */
+
+function Flow3_Email1() {
+  return (
+    <NurtureShell
+      subject="Sarah, your physician slot is still held"
+      preview="It expires tonight. One step left."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 3 · Send 1 · 30 minutes</SendTag>
+      </div>
+
+      {/* Hero — vial on marble, headline burned into the bottom overlay */}
+      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] md:mx-5">
+        <div className="relative aspect-[4/5] w-full bg-gradient-to-b from-[#efe9df] via-[#e8dfd0] to-[#c9bda9] md:aspect-[16/11]">
+          <img
+            src={vialTirz.url}
+            alt=""
+            loading="lazy"
+            className="absolute left-1/2 top-1/2 h-[74%] w-auto -translate-x-1/2 -translate-y-[54%] object-contain drop-shadow-[0_28px_28px_rgba(60,42,20,0.28)]"
+          />
+          {/* soft shadow puddle under vial */}
+          <div className="absolute bottom-[26%] left-1/2 h-3 w-40 -translate-x-1/2 rounded-full bg-black/25 blur-xl" />
+
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent px-6 py-8 md:py-10">
+            <p className="font-hero text-[26px] font-semibold leading-[1.08] tracking-[-0.02em] text-white md:text-[32px]">
+              Sarah, your program
+              <br />
+              is one step away.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Body>
+        <p>You were 30 seconds from starting.</p>
+        <p>
+          Your intake is complete. Your physician is assigned. Your plan is selected.
+        </p>
+        <p>The only thing that didn't happen was the last tap.</p>
+        <p>
+          Physician slots rotate every 24 hours. Yours is still held right now. It won't be by
+          tomorrow morning.
+        </p>
+      </Body>
+
+      <div className="px-5 pt-8 md:px-8">
+        <CoralCTA>Complete my order — $249</CoralCTA>
+      </div>
+
+      <Body>
+        <p className="pt-6">
+          If you have a question before completing, reply to this email. A real person responds
+          within the hour.
+        </p>
+        <p className="pb-8 text-ink">The Blissley Team</p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+function Flow3_Email2() {
+  return (
+    <NurtureShell
+      subject="What $249 vs $1,300 actually means"
+      preview="Same molecule. One is accessible. One isn't."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 3 · Send 2 · 4 hours</SendTag>
+        <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
+          Same molecule.
+          <br />
+          <span className="text-[#ee7273]">Different entry point.</span>
+        </h1>
+      </div>
+
+      {/* Split panel */}
+      <div className="mx-3 mt-6 grid grid-cols-1 gap-3 md:mx-5 md:grid-cols-2">
+        <div className="rounded-[18px] bg-[#fdecec] p-5 ring-1 ring-[#ee7273]/15 md:p-6">
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#c05252]">
+            At the pharmacy
+          </p>
+          <p className="mt-2 font-hero text-[20px] font-semibold text-ink">Ozempic</p>
+          <p className="mt-3 font-hero text-[28px] font-semibold text-ink">$1,300</p>
+          <p className="text-[12px] text-ink/55">per month</p>
+          <div className="mt-4 space-y-1.5 text-[13px] leading-[1.55] text-ink/70">
+            <p>Most insurance won't cover it.</p>
+            <p>GoodRx won't touch it.</p>
+            <p>Waitlists run months long.</p>
+          </div>
+        </div>
+
+        <div className="rounded-[18px] bg-canvas p-5 ring-1 ring-ink/10 md:p-6">
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-ink/50">
+            Blissley
+          </p>
+          <p className="mt-2 font-hero text-[20px] font-semibold text-ink">Compounded semaglutide</p>
+          <p className="mt-3 font-hero text-[28px] font-semibold text-ink">$249</p>
+          <p className="text-[12px] text-ink/55">your first month</p>
+          <div className="mt-4 space-y-1.5 text-[13px] leading-[1.55] text-ink/70">
+            <p>Same active ingredient.</p>
+            <p>Physician-prescribed.</p>
+            <p>Ships to your door in 5 days.</p>
+          </div>
+        </div>
+      </div>
+
+      <Body>
+        <p className="pt-2">
+          The reason most people can't access GLP-1 is not clinical. It's financial.
+        </p>
+        <p>
+          Ozempic costs $1,300 a month at the pharmacy. Tirzepatide costs more. Insurance covers
+          almost none of it for weight loss. The waiting lists at clinics run months long.
+        </p>
+        <p>
+          Blissley uses compounded semaglutide from a licensed US pharmacy. The active molecule is
+          identical. The access is what's different.
+        </p>
+        <p className="text-ink">
+          Your first month: <span className="font-semibold">$249.</span>
+        </p>
+        <p>A few things worth knowing before you decide.</p>
+        <p>
+          Your card is not charged until our physician approves your prescription. If they
+          determine you're not a candidate, your card is never charged. Not once.
+        </p>
+        <p>
+          Your price does not increase when your dose does. Every other GLP-1 platform charges more
+          as your dose goes up. Blissley does not. The price you start at is the price you keep.
+        </p>
+        <p>You can cancel in one click from your portal. No phone call. No hold music. No form.</p>
+      </Body>
+
+      <div className="px-5 pt-8 md:px-8">
+        <CTA>Complete my order — $249</CTA>
+      </div>
+
+      <Body>
+        <p className="py-8">Reply to this email if you have a question. I read every one.</p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+function Flow3_Email3_FoodNoise() {
+  return (
+    <NurtureShell
+      subject="Another year of this, or not"
+      preview="Six years is long enough."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 3 · Send 3 · 24 hours · Food-noise variant</SendTag>
+      </div>
+
+      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] md:mx-5">
+        <div className="relative aspect-[4/5] w-full md:aspect-[16/10]">
+          <img
+            src={heroSky.url}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "50% 30%" }}
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent px-6 py-8 md:py-10">
+            <p className="font-hero text-[24px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[30px]">
+              The noise doesn't have
+              <br />
+              to be this loud.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Body>
+        <p>Sarah,</p>
+        <p>That voice that negotiates with you at every meal has a name.</p>
+        <p className="text-ink">Food noise.</p>
+        <p>
+          It's the thing that's running in the background from the moment you wake up until you go
+          to sleep. What can I eat. What shouldn't I. Why did I eat that. When can I eat again.
+        </p>
+        <p>
+          It's not a character flaw. It's a hunger regulation signal that hasn't been addressed at
+          its source.
+        </p>
+        <p className="text-ink">GLP-1 addresses it at the source.</p>
+        <p>
+          Not by making you restrict. Not by making you track. By changing the signal itself.
+        </p>
+        <p>
+          Six years is a long time to be at war with something that was never about discipline.
+        </p>
+        <p className="text-ink">Your physician slot expires at midnight.</p>
+      </Body>
+
+      <div className="px-5 py-8 md:px-8">
+        <CoralCTA>Start my program — $249</CoralCTA>
+      </div>
+    </NurtureShell>
+  );
+}
+
+function Flow3_Email3_TriedEverything() {
+  return (
+    <NurtureShell
+      subject="Another year of this, or not"
+      preview="Six years is long enough."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 3 · Send 3 · 24 hours · Tried-everything variant</SendTag>
+      </div>
+
+      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] md:mx-5">
+        <div className="relative aspect-[4/5] w-full md:aspect-[16/10]">
+          <img
+            src={heroTrx.url}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "50% 28%" }}
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent px-6 py-8 md:py-10">
+            <p className="font-hero text-[24px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[30px]">
+              What if this is the one
+              <br />
+              that actually works.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Body>
+        <p>Sarah,</p>
+        <p>Calorie counting taught you to be obsessive, not to lose weight.</p>
+        <p>
+          Keto worked until it didn't. Intermittent fasting worked until you had a hard week.
+        </p>
+        <p>
+          Weight loss programs gave you community and took your money and eventually you stopped
+          going.
+        </p>
+        <p>None of them addressed why it kept coming back.</p>
+        <p>
+          When you restrict calories your brain interprets it as a threat and increases hunger
+          hormones for months after. The weight comes back because your biology is doing exactly
+          what it's designed to do.
+        </p>
+        <p className="text-ink">
+          GLP-1 is the first approach that changes what your brain signals, not what you resist.
+        </p>
+        <p className="font-hero text-[26px] font-semibold text-ink">42 lbs.</p>
+        <p>
+          That's what you came here for. That number is not different from what most of our
+          patients started with.
+        </p>
+        <p className="text-ink">Your physician is still waiting. Your slot closes tonight.</p>
+      </Body>
+
+      <div className="px-5 py-8 md:px-8">
+        <CoralCTA>Get my physician's review — $249</CoralCTA>
+      </div>
+    </NurtureShell>
+  );
+}
+
+function Flow3_Email4() {
+  return (
+    <NurtureShell
+      subject="A quick note before I let this go"
+      preview="From the founder."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 3 · Send 4 · 48 hours · Plain text</SendTag>
+        <h1 className="mt-5 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink md:text-[30px]">
+          A quick note before
+          <br />
+          <span className="text-[#ee7273]">I let this go.</span>
+        </h1>
+      </div>
+
+      <Body>
+        <p>Sarah,</p>
+        <p>This is the last email I'm sending about this.</p>
+        <p>
+          I don't want to keep reaching out if the timing isn't right. But before I close your
+          file, I want to make sure you know one thing.
+        </p>
+        <p>
+          If our physician reviews your profile and doesn't approve you, you pay nothing. The slot
+          expires and that's it.
+        </p>
+        <p className="text-ink">
+          The only way you find out whether this works for you is to start.
+        </p>
+        <p>
+          Your first month is $249. Physician review included. Same price when your dose increases.
+        </p>
+      </Body>
+
+      <div className="px-5 pt-8 md:px-8">
+        <CTA>Complete my order</CTA>
+      </div>
+
+      <Body>
+        <p className="pt-6">
+          If something is stopping you that I haven't addressed, reply to this email. I actually
+          read these.
+        </p>
+        <p className="pb-8 text-ink">
+          Anmol
+          <br />
+          <span className="text-ink/55">Founder, Blissley</span>
+        </p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+/* ============================================================
    Exported bundle
    ============================================================ */
 
@@ -719,6 +1040,17 @@ export function NurtureFlows() {
       <Flow2_Email3 />
       <Flow2_Email4 />
       <Flow2_Email5 />
+
+      <FlowDivider
+        label="Flow 3 · Checkout abandoned"
+        title="Cart abandoned before purchase"
+        subtitle="4 emails over 48 hours. Exits on purchase_completed."
+      />
+      <Flow3_Email1 />
+      <Flow3_Email2 />
+      <Flow3_Email3_FoodNoise />
+      <Flow3_Email3_TriedEverything />
+      <Flow3_Email4 />
     </>
   );
 }
