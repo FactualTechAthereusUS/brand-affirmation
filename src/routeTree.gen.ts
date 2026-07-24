@@ -28,6 +28,7 @@ import { Route as SalesDMRouteImport } from './routes/sales.DM'
 import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
 import { Route as LoginPhysicianRouteImport } from './routes/login.physician'
+import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as IntakeWeightloss3RouteImport } from './routes/intake_.weightloss-3'
 import { Route as IntakeWeightLossTrimrx2RouteImport } from './routes/intake_.weight-loss-trimrx-2'
 import { Route as IntakeWeightLossTrimrxRouteImport } from './routes/intake_.weight-loss-trimrx'
@@ -132,6 +133,11 @@ const LoginPhysicianRoute = LoginPhysicianRouteImport.update({
   path: '/physician',
   getParentRoute: () => LoginRoute,
 } as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => LoginRoute,
+} as any)
 const IntakeWeightloss3Route = IntakeWeightloss3RouteImport.update({
   id: '/intake_/weightloss-3',
   path: '/intake/weightloss-3',
@@ -194,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
@@ -223,6 +230,7 @@ export interface FileRoutesByTo {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
@@ -253,6 +261,7 @@ export interface FileRoutesById {
   '/intake_/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake_/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake_/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/login/admin'
     | '/login/physician'
     | '/portal/patient'
     | '/portal/physician'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/login/admin'
     | '/login/physician'
     | '/portal/patient'
     | '/portal/physician'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/intake_/weight-loss-trimrx'
     | '/intake_/weight-loss-trimrx-2'
     | '/intake_/weightloss-3'
+    | '/login/admin'
     | '/login/physician'
     | '/portal/patient'
     | '/portal/physician'
@@ -515,6 +527,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginPhysicianRouteImport
       parentRoute: typeof LoginRoute
     }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof LoginRoute
+    }
     '/intake_/weightloss-3': {
       id: '/intake_/weightloss-3'
       path: '/intake/weightloss-3'
@@ -575,10 +594,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface LoginRouteChildren {
+  LoginAdminRoute: typeof LoginAdminRoute
   LoginPhysicianRoute: typeof LoginPhysicianRoute
 }
 
 const LoginRouteChildren: LoginRouteChildren = {
+  LoginAdminRoute: LoginAdminRoute,
   LoginPhysicianRoute: LoginPhysicianRoute,
 }
 

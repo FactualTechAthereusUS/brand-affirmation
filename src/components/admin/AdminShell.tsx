@@ -22,7 +22,8 @@ import {
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import { adminActions, hydrateAdmin, useAdmin } from "@/lib/admin/store";
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/command", label: "Command", icon: Activity },
   { to: "/admin/patients", label: "Patients", icon: Users },
@@ -32,7 +33,7 @@ const NAV = [
   { to: "/admin/messages", label: "Messages", icon: MessageSquare },
   { to: "/admin/reports", label: "Reports", icon: BarChart3 },
   { to: "/admin/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 export function AdminShell({ title, children }: { title: string; children: ReactNode }) {
   const nav = useNavigate();
