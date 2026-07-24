@@ -1579,6 +1579,17 @@ export function NurtureFlows() {
       <Flow4_Month2 />
       <Flow4_Steady />
       <Flow4_DoseIncrease />
+
+      <FlowDivider
+        label="Flow 5 · 90-day check-in"
+        title="Quarterly check-in required before renewal"
+        subtitle="Main email (day 84), text reminder (day 87), SMS (day 89), submitted + approved confirmations."
+      />
+      <Flow5_CheckIn />
+      <Flow5_Day87 />
+      <Flow5_SMS />
+      <Flow5_Submitted />
+      <Flow5_Approved />
     </>
   );
 }
