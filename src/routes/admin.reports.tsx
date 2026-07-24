@@ -99,17 +99,7 @@ function ReportsPage() {
               <div key={h} className="text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-ink/40">{h}</div>
             ))}
             {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, r) => (
-              <>
-                <div key={day} className="pr-2 text-right text-[10.5px] font-semibold uppercase tracking-[0.1em] text-ink/40">{day}</div>
-                {heatmap[r].map((v, c) => {
-                  const intensity = v / maxHM;
-                  return (
-                    <div key={`${r}-${c}`} className="aspect-square rounded-md" title={`${v} signups`} style={{
-                      background: `color-mix(in oklab, #ee7273 ${Math.round(intensity * 100)}%, #f0ebe3)`,
-                    }} />
-                  );
-                })}
-              </>
+              <RowFragment key={day} day={day} row={heatmap[r]} maxHM={maxHM} rIdx={r} />
             ))}
           </div>
         </div>
