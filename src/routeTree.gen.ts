@@ -22,12 +22,14 @@ import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-c
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
 import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
 import { Route as LoginPhysicianRouteImport } from './routes/login.physician'
+import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as IntakeWeightloss3RouteImport } from './routes/intake_.weightloss-3'
 import { Route as IntakeWeightLossTrimrx2RouteImport } from './routes/intake_.weight-loss-trimrx-2'
 import { Route as IntakeWeightLossTrimrxRouteImport } from './routes/intake_.weight-loss-trimrx'
@@ -36,6 +38,14 @@ import { Route as IntakeNewWeightlossOursRouteImport } from './routes/intake_.ne
 import { Route as CheckoutTrimrxRouteImport } from './routes/checkout.trimrx'
 import { Route as CheckoutChargedBeforeRouteImport } from './routes/checkout.charged-before'
 import { Route as CheckoutUITemplate3RouteImport } from './routes/checkout.UI-template3'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminCommandRouteImport } from './routes/admin.command'
 
 const TestStateRoute = TestStateRouteImport.update({
   id: '/test-state',
@@ -102,6 +112,11 @@ const WeightLossIndexRoute = WeightLossIndexRouteImport.update({
   path: '/weight-loss/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WeightLossSalesRoute = WeightLossSalesRouteImport.update({
   id: '/weight-loss/sales',
   path: '/weight-loss/sales',
@@ -130,6 +145,11 @@ const PortalPatientRoute = PortalPatientRouteImport.update({
 const LoginPhysicianRoute = LoginPhysicianRouteImport.update({
   id: '/physician',
   path: '/physician',
+  getParentRoute: () => LoginRoute,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => LoginRoute,
 } as any)
 const IntakeWeightloss3Route = IntakeWeightloss3RouteImport.update({
@@ -172,6 +192,46 @@ const CheckoutUITemplate3Route = CheckoutUITemplate3RouteImport.update({
   path: '/checkout/UI-template3',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/admin/settings',
+  path: '/admin/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/admin/reports',
+  path: '/admin/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/admin/payments',
+  path: '/admin/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPatientsRoute = AdminPatientsRouteImport.update({
+  id: '/admin/patients',
+  path: '/admin/patients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/admin/orders',
+  path: '/admin/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMessagesRoute = AdminMessagesRouteImport.update({
+  id: '/admin/messages',
+  path: '/admin/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/admin/leads',
+  path: '/admin/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCommandRoute = AdminCommandRouteImport.update({
+  id: '/admin/command',
+  path: '/admin/command',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -186,6 +246,14 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/admin/command': typeof AdminCommandRoute
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -194,12 +262,14 @@ export interface FileRoutesByFullPath {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
+  '/admin/': typeof AdminIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
 }
 export interface FileRoutesByTo {
@@ -215,6 +285,14 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/admin/command': typeof AdminCommandRoute
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -223,12 +301,14 @@ export interface FileRoutesByTo {
   '/intake/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
+  '/admin': typeof AdminIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
 }
 export interface FileRoutesById {
@@ -245,6 +325,14 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/admin/command': typeof AdminCommandRoute
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -253,12 +341,14 @@ export interface FileRoutesById {
   '/intake_/weight-loss-trimrx': typeof IntakeWeightLossTrimrxRoute
   '/intake_/weight-loss-trimrx-2': typeof IntakeWeightLossTrimrx2Route
   '/intake_/weightloss-3': typeof IntakeWeightloss3Route
+  '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
+  '/admin/': typeof AdminIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
 }
 export interface FileRouteTypes {
@@ -276,6 +366,14 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/admin/command'
+    | '/admin/leads'
+    | '/admin/messages'
+    | '/admin/orders'
+    | '/admin/patients'
+    | '/admin/payments'
+    | '/admin/reports'
+    | '/admin/settings'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -284,12 +382,14 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/login/admin'
     | '/login/physician'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
+    | '/admin/'
     | '/weight-loss/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -305,6 +405,14 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/admin/command'
+    | '/admin/leads'
+    | '/admin/messages'
+    | '/admin/orders'
+    | '/admin/patients'
+    | '/admin/payments'
+    | '/admin/reports'
+    | '/admin/settings'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -313,12 +421,14 @@ export interface FileRouteTypes {
     | '/intake/weight-loss-trimrx'
     | '/intake/weight-loss-trimrx-2'
     | '/intake/weightloss-3'
+    | '/login/admin'
     | '/login/physician'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
+    | '/admin'
     | '/weight-loss'
   id:
     | '__root__'
@@ -334,6 +444,14 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/admin/command'
+    | '/admin/leads'
+    | '/admin/messages'
+    | '/admin/orders'
+    | '/admin/patients'
+    | '/admin/payments'
+    | '/admin/reports'
+    | '/admin/settings'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -342,12 +460,14 @@ export interface FileRouteTypes {
     | '/intake_/weight-loss-trimrx'
     | '/intake_/weight-loss-trimrx-2'
     | '/intake_/weightloss-3'
+    | '/login/admin'
     | '/login/physician'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
+    | '/admin/'
     | '/weight-loss/'
   fileRoutesById: FileRoutesById
 }
@@ -364,6 +484,14 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
+  AdminCommandRoute: typeof AdminCommandRoute
+  AdminLeadsRoute: typeof AdminLeadsRoute
+  AdminMessagesRoute: typeof AdminMessagesRoute
+  AdminOrdersRoute: typeof AdminOrdersRoute
+  AdminPatientsRoute: typeof AdminPatientsRoute
+  AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminReportsRoute: typeof AdminReportsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   CheckoutUITemplate3Route: typeof CheckoutUITemplate3Route
   CheckoutChargedBeforeRoute: typeof CheckoutChargedBeforeRoute
   CheckoutTrimrxRoute: typeof CheckoutTrimrxRoute
@@ -377,6 +505,7 @@ export interface RootRouteChildren {
   SalesDMRoute: typeof SalesDMRoute
   SalesTrimrxRoute: typeof SalesTrimrxRoute
   WeightLossSalesRoute: typeof WeightLossSalesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
 }
 
@@ -473,6 +602,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightLossIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/weight-loss/sales': {
       id: '/weight-loss/sales'
       path: '/weight-loss/sales'
@@ -513,6 +649,13 @@ declare module '@tanstack/react-router' {
       path: '/physician'
       fullPath: '/login/physician'
       preLoaderRoute: typeof LoginPhysicianRouteImport
+      parentRoute: typeof LoginRoute
+    }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
       parentRoute: typeof LoginRoute
     }
     '/intake_/weightloss-3': {
@@ -571,14 +714,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutUITemplate3RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/admin/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/payments': {
+      id: '/admin/payments'
+      path: '/admin/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/patients': {
+      id: '/admin/patients'
+      path: '/admin/patients'
+      fullPath: '/admin/patients'
+      preLoaderRoute: typeof AdminPatientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/admin/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/messages': {
+      id: '/admin/messages'
+      path: '/admin/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AdminMessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/admin/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/command': {
+      id: '/admin/command'
+      path: '/admin/command'
+      fullPath: '/admin/command'
+      preLoaderRoute: typeof AdminCommandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface LoginRouteChildren {
+  LoginAdminRoute: typeof LoginAdminRoute
   LoginPhysicianRoute: typeof LoginPhysicianRoute
 }
 
 const LoginRouteChildren: LoginRouteChildren = {
+  LoginAdminRoute: LoginAdminRoute,
   LoginPhysicianRoute: LoginPhysicianRoute,
 }
 
@@ -597,6 +798,14 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
+  AdminCommandRoute: AdminCommandRoute,
+  AdminLeadsRoute: AdminLeadsRoute,
+  AdminMessagesRoute: AdminMessagesRoute,
+  AdminOrdersRoute: AdminOrdersRoute,
+  AdminPatientsRoute: AdminPatientsRoute,
+  AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminReportsRoute: AdminReportsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   CheckoutUITemplate3Route: CheckoutUITemplate3Route,
   CheckoutChargedBeforeRoute: CheckoutChargedBeforeRoute,
   CheckoutTrimrxRoute: CheckoutTrimrxRoute,
@@ -610,18 +819,9 @@ const rootRouteChildren: RootRouteChildren = {
   SalesDMRoute: SalesDMRoute,
   SalesTrimrxRoute: SalesTrimrxRoute,
   WeightLossSalesRoute: WeightLossSalesRoute,
+  AdminIndexRoute: AdminIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
