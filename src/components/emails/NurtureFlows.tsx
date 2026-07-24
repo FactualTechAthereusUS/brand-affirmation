@@ -1301,8 +1301,230 @@ function Flow4_DoseIncrease() {
 }
 
 /* ============================================================
+   FLOW 5 — 90-DAY CHECK-IN
+   ============================================================ */
+
+function CheckinHero() {
+  return (
+    <div className="mx-3 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-br from-[#efe9df] via-[#e8dfd0] to-[#d6c8b2] md:mx-5">
+      <div className="grid grid-cols-[auto,1fr] items-center gap-4 px-5 py-6 md:gap-6 md:px-7 md:py-8">
+        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full ring-4 ring-white/70 md:h-28 md:w-28">
+          <img src={drNass.url} alt="Dr. Nass" className="h-full w-full object-cover" />
+        </div>
+        <div>
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-ink/55">
+            From your physician
+          </p>
+          <p className="mt-1.5 font-hero text-[20px] font-semibold leading-[1.12] tracking-[-0.02em] text-ink md:text-[24px]">
+            Dr. Nass needs a quick update before your next prescription.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CheckinCTA({ label = "Complete my check-in" }: { label?: string }) {
+  return (
+    <div className="mx-3 mt-6 md:mx-5">
+      <CoralCTA href="#">{label}</CoralCTA>
+    </div>
+  );
+}
+
+function AskingList() {
+  const items = [
+    "Your current weight",
+    "Any side effects since your last shipment",
+    "Any new medications or health changes",
+    "How you're feeling overall",
+  ];
+  return (
+    <div className="mx-3 mt-8 rounded-2xl border border-ink/8 bg-white px-6 py-6 md:mx-5 md:px-7 md:py-7">
+      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink/55">
+        What Dr. Nass is asking
+      </p>
+      <ul className="mt-4 space-y-3">
+        {items.map((it) => (
+          <li key={it} className="flex items-start gap-3 text-[14.5px] leading-relaxed text-ink">
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-5 text-[13px] text-ink/55">That's it.</p>
+    </div>
+  );
+}
+
+function Flow5_CheckIn() {
+  return (
+    <NurtureShell
+      subject="Quick update needed before your next shipment"
+      preview="2 minutes. 8 questions. Required to continue."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 5 · Day 84 · Check-in required</SendTag>
+      </div>
+
+      <CheckinHero />
+
+      <Body>
+        <p>Hi Sarah,</p>
+        <p>
+          Before we release your next shipment, your physician needs a quick update on how
+          things are going.
+        </p>
+        <p>
+          This takes 2 minutes. 8 questions. Done inside your portal.
+        </p>
+      </Body>
+
+      <CheckinCTA />
+
+      <AskingList />
+
+      <Body>
+        <p className="pt-2">
+          Your next shipment processes on <span className="font-semibold text-ink">Oct 12</span>.
+        </p>
+        <p>
+          Complete your check-in before then and everything releases automatically. No extra
+          steps. No delays.
+        </p>
+      </Body>
+
+      <CheckinCTA />
+
+      <Body>
+        <p className="pt-2">
+          Questions? Reply to this email or message Dr. Nass directly in your portal.
+        </p>
+        <p className="pb-8 pt-4 text-ink">The Blissley Team</p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+function Flow5_Day87() {
+  return (
+    <NurtureShell
+      subject="Sarah, your shipment is on hold"
+      preview="Check-in takes 2 minutes. Complete it to release your order."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 5 · Day 87 · Text-only reminder</SendTag>
+      </div>
+
+      <Body>
+        <p>Hi Sarah,</p>
+        <p>Your next shipment is on hold until your check-in is complete.</p>
+        <p>This is the only thing standing between you and your next order.</p>
+      </Body>
+
+      <CheckinCTA label="Complete my check-in — 2 minutes" />
+
+      <Body>
+        <p className="pt-2">
+          Your billing date is <span className="font-semibold text-ink">Oct 12</span>. Complete
+          before then to avoid any delay.
+        </p>
+        <p className="pb-8 pt-4 text-ink">The Blissley Team</p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+function Flow5_SMS() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+      <div className="border-b border-ink/5 bg-canvas/60 px-5 py-3 md:px-8">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-ink/45">
+          SMS · From Blissley
+        </p>
+        <p className="mt-1 text-[13px] font-semibold text-ink">Day 89 · Final reminder</p>
+      </div>
+      <div className="bg-canvas px-5 py-10 md:px-8">
+        <div className="mx-auto flex max-w-[340px] items-start gap-3">
+          <div className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-white">
+            <MessageSquare className="h-4 w-4" />
+          </div>
+          <div className="rounded-[22px] rounded-tl-md bg-white px-4 py-3.5 text-[14.5px] leading-[1.55] text-ink shadow-[0_6px_20px_-8px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
+            <p>
+              Blissley: Your 90-day check-in is still pending. Your next shipment is on hold.
+              Takes 2 min:{" "}
+              <a href="#" className="text-[#ee7273] underline underline-offset-2">
+                blissley.co/ci
+              </a>
+            </p>
+            <p className="mt-2 text-[12px] text-ink/45">Reply STOP to opt out.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Flow5_Submitted() {
+  return (
+    <NurtureShell
+      subject="Check-in received"
+      preview="Dr. Nass is reviewing. Your shipment releases within 24 hours."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 5 · Confirmation</SendTag>
+      </div>
+
+      <Body>
+        <p>Got it, Sarah.</p>
+        <p>Dr. Nass received your check-in and will review it within 24 hours.</p>
+        <p>Once approved, your next shipment releases automatically.</p>
+        <p>No action needed on your end.</p>
+      </Body>
+
+      <div className="mx-3 mt-6 md:mx-5">
+        <CTA href="#">View in portal</CTA>
+      </div>
+
+      <Body>
+        <p className="pb-8 pt-6 text-ink">The Blissley Team</p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+function Flow5_Approved() {
+  return (
+    <NurtureShell
+      subject="Dr. Nass renewed your prescription"
+      preview="Your next shipment is being prepared."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 5 · Approved</SendTag>
+      </div>
+
+      <Body>
+        <p>Hi Sarah,</p>
+        <p>Dr. Nass reviewed your check-in and renewed your prescription.</p>
+        <p>Your next shipment is being prepared and will ship within 48 hours.</p>
+        <p>Tracking number coming as soon as it leaves the facility.</p>
+      </Body>
+
+      <div className="mx-3 mt-6 md:mx-5">
+        <CTA href="#">Track in portal</CTA>
+      </div>
+
+      <Body>
+        <p className="pb-8 pt-6 text-ink">The Blissley Team</p>
+      </Body>
+    </NurtureShell>
+  );
+}
+
+/* ============================================================
    Exported bundle
    ============================================================ */
+
 
 export function NurtureFlows() {
 
