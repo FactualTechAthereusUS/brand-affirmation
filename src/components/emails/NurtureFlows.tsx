@@ -1343,6 +1343,15 @@ export function NurtureFlows() {
       <Flow3_Email3_FoodNoise />
       <Flow3_Email3_TriedEverything />
       <Flow3_Email4 />
+
+      <FlowDivider
+        label="Flow 4 · Billing reminder"
+        title="5 days before next renewal"
+        subtitle="Month 2, standard (M4+), and dose-increase variants. Month 3 = separate check-in email."
+      />
+      <Flow4_Month2 />
+      <Flow4_Steady />
+      <Flow4_DoseIncrease />
     </>
   );
 }
