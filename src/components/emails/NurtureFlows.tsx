@@ -1077,20 +1077,24 @@ function ChargeCard({
   date?: string;
   last4?: string;
 }) {
+  const rows: Array<[string, string]> = [
+    ["Amount", amount],
+    ["Charge date", date],
+    ["Payment", `Card ending ${last4}`],
+  ];
   return (
-    <div className="mx-3 mt-6 rounded-2xl border border-ink/8 bg-[#f7f4ef] px-5 py-5 md:mx-5">
-      <div className="flex items-baseline justify-between gap-4">
-        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink/55">
-          Next charge
-        </span>
-        <span className="font-hero text-[26px] font-semibold tracking-[-0.02em] text-ink md:text-[30px]">
-          {amount}
-        </span>
-      </div>
-      <div className="mt-2 flex items-center justify-between text-[13px] text-ink/70">
-        <span>{date}</span>
-        <span>Card ending {last4}</span>
-      </div>
+    <div className="mx-3 mt-6 rounded-2xl border border-ink/8 bg-white px-6 py-6 md:mx-5 md:px-7 md:py-7">
+      <h3 className="font-hero text-[22px] font-semibold tracking-[-0.02em] text-ink md:text-[26px]">
+        Next charge
+      </h3>
+      <dl className="mt-4 space-y-3 md:mt-5">
+        {rows.map(([label, value]) => (
+          <div key={label} className="flex items-center justify-between gap-4">
+            <dt className="text-[14px] text-ink/55">{label}</dt>
+            <dd className="text-[14px] font-medium text-ink">{value}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   );
 }
