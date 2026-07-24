@@ -1035,10 +1035,272 @@ function Flow3_Email4() {
 }
 
 /* ============================================================
+   FLOW 4 — BILLING REMINDER (5 days before renewal)
+   ============================================================ */
+
+function BillingHero({
+  headline,
+  sub,
+}: {
+  headline: React.ReactNode;
+  sub?: React.ReactNode;
+}) {
+  return (
+    <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] md:mx-5">
+      <div className="relative aspect-[4/5] w-full bg-gradient-to-b from-[#efe9df] via-[#e8dfd0] to-[#c9bda9] md:aspect-[16/11]">
+        <img
+          src={vialTirz.url}
+          alt=""
+          loading="lazy"
+          className="absolute left-1/2 top-1/2 h-[72%] w-auto -translate-x-1/2 -translate-y-[54%] object-contain drop-shadow-[0_28px_28px_rgba(60,42,20,0.28)]"
+        />
+        <div className="absolute bottom-[26%] left-1/2 h-3 w-40 -translate-x-1/2 rounded-full bg-black/25 blur-xl" />
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent px-6 py-8 md:py-10">
+          <p className="font-hero text-[24px] font-semibold leading-[1.08] tracking-[-0.02em] text-white md:text-[30px]">
+            {headline}
+          </p>
+          {sub ? (
+            <p className="mt-2 text-[13px] font-medium text-white/85 md:text-sm">{sub}</p>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChargeCard({
+  amount = "$299",
+  date = "Aug 12",
+  last4 = "4242",
+}: {
+  amount?: string;
+  date?: string;
+  last4?: string;
+}) {
+  return (
+    <div className="mx-3 mt-6 rounded-2xl border border-ink/8 bg-[#f7f4ef] px-5 py-5 md:mx-5">
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink/55">
+          Next charge
+        </span>
+        <span className="font-hero text-[26px] font-semibold tracking-[-0.02em] text-ink md:text-[30px]">
+          {amount}
+        </span>
+      </div>
+      <div className="mt-2 flex items-center justify-between text-[13px] text-ink/70">
+        <span>{date}</span>
+        <span>Card ending {last4}</span>
+      </div>
+    </div>
+  );
+}
+
+function InBoxList({
+  dose = "5mg",
+  doseIncreasing = false,
+}: {
+  dose?: string;
+  doseIncreasing?: boolean;
+}) {
+  return (
+    <div className="mx-3 mt-5 md:mx-5">
+      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink/55">
+        In your next box
+      </p>
+      <ul className="mt-3 divide-y divide-ink/8 rounded-2xl border border-ink/8 bg-white">
+        <li className="flex items-center justify-between px-4 py-3.5 text-[14px] text-ink">
+          <span>Tirzepatide {dose}</span>
+          <span className="text-[12px] text-ink/50">Current dose</span>
+        </li>
+        <li className="px-4 py-3.5 text-[14px] text-ink">Injection supply kit</li>
+        <li className="px-4 py-3.5 text-[14px] text-ink">
+          Temperature-controlled shipping · free
+        </li>
+      </ul>
+      {doseIncreasing ? (
+        <p className="mt-4 rounded-xl bg-[#fdece9] px-4 py-3 text-[13px] leading-relaxed text-ink">
+          Your dose increases this month. This is exactly where you're supposed to be.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function DelayButtons() {
+  return (
+    <div className="mx-3 mt-6 grid grid-cols-2 gap-3 md:mx-5">
+      <a
+        href="#"
+        className="flex h-12 items-center justify-center rounded-full border border-ink/15 bg-white text-[13px] font-semibold text-ink"
+      >
+        Delay 2 weeks
+      </a>
+      <a
+        href="#"
+        className="flex h-12 items-center justify-center rounded-full border border-ink/15 bg-white text-[13px] font-semibold text-ink"
+      >
+        Delay 1 month
+      </a>
+    </div>
+  );
+}
+
+function BillingClose() {
+  return (
+    <Body>
+      <p>Your price stays at $299.</p>
+      <p>
+        Same dose, same price, same physician. Nothing changes unless you want it to.
+      </p>
+      <p className="pt-4">
+        <a
+          href="#"
+          className="text-[13px] font-semibold text-ink underline decoration-ink/25 underline-offset-4"
+        >
+          Manage my subscription →
+        </a>
+      </p>
+      <p className="pb-8 pt-6 text-ink">The Blissley Team</p>
+    </Body>
+  );
+}
+
+function Flow4_Month2() {
+  return (
+    <NurtureShell
+      subject="Month 2 starts in 5 days, Sarah"
+      preview="$299 processes in 5 days. Here's what's in your box."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 4 · Month 2 · 5 days before renewal</SendTag>
+      </div>
+
+      <BillingHero
+        headline={<>Month 2 is on its way.</>}
+        sub="The month things start to shift."
+      />
+
+      <Body>
+        <p>Hi Sarah,</p>
+        <p>Your next order processes in 5 days.</p>
+      </Body>
+
+      <ChargeCard amount="$299" date="Aug 12" last4="4242" />
+      <InBoxList dose="0.5mg" />
+
+      <Body>
+        <p className="pt-6 text-ink">
+          Month 2 is when most patients notice the real shift starting.
+        </p>
+        <p>
+          Food thoughts quieter. Appetite pulling back. This is the month things change.
+        </p>
+        <p className="pt-4">
+          Need more time before your next shipment? One click is all it takes.
+        </p>
+      </Body>
+
+      <DelayButtons />
+      <BillingClose />
+    </NurtureShell>
+  );
+}
+
+function Flow4_Steady() {
+  return (
+    <NurtureShell
+      subject="Your next shipment is coming, Sarah"
+      preview="$299 processes in 5 days. Here's what's in your box."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 4 · Month 4+ · 5 days before renewal</SendTag>
+      </div>
+
+      <BillingHero headline={<>Month 4 is on its way.</>} />
+
+      <Body>
+        <p>Hi Sarah,</p>
+        <p>Your next order processes in 5 days.</p>
+      </Body>
+
+      <ChargeCard amount="$299" date="Oct 12" last4="4242" />
+      <InBoxList dose="1.0mg" />
+
+      <Body>
+        <p className="pt-6">
+          Need more time before your next shipment? One click is all it takes.
+        </p>
+      </Body>
+
+      <DelayButtons />
+      <BillingClose />
+    </NurtureShell>
+  );
+}
+
+function Flow4_DoseIncrease() {
+  return (
+    <NurtureShell
+      subject="Your dose increases this month, Sarah"
+      preview="Stronger appetite regulation. Same $299."
+    >
+      <div className="px-5 pt-8 md:px-8">
+        <SendTag>Flow 4 · Dose increase · 5 days before renewal</SendTag>
+      </div>
+
+      <BillingHero
+        headline={
+          <>
+            Month 3.
+            <br />
+            Your dose is going up.
+            <br />
+            Your price isn't.
+          </>
+        }
+      />
+
+      <Body>
+        <p>Hi Sarah,</p>
+        <p>Your next order processes in 5 days.</p>
+      </Body>
+
+      <ChargeCard amount="$299" date="Sep 12" last4="4242" />
+      <InBoxList dose="7.5mg" doseIncreasing />
+
+      <div className="mx-3 mt-5 rounded-2xl bg-gradient-to-br from-[#fdece9] to-[#f7dfd8] px-5 py-5 md:mx-5">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink/60">
+          What this means
+        </p>
+        <p className="mt-2 text-[15px] leading-relaxed text-ink">
+          This month your dose increases to{" "}
+          <span className="font-semibold">7.5mg</span>. Stronger appetite regulation. Faster
+          progress.
+        </p>
+        <p className="mt-3 text-[15px] leading-relaxed text-ink">
+          Your price stays exactly the same.{" "}
+          <span className="font-semibold">Forever.</span>
+        </p>
+      </div>
+
+      <Body>
+        <p className="pt-6">
+          Need more time before your next shipment? One click is all it takes.
+        </p>
+      </Body>
+
+      <DelayButtons />
+      <BillingClose />
+    </NurtureShell>
+  );
+}
+
+/* ============================================================
    Exported bundle
    ============================================================ */
 
 export function NurtureFlows() {
+
   return (
     <>
       <FlowDivider
