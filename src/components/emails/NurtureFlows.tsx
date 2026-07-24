@@ -762,32 +762,70 @@ function Flow3_Email2() {
         </h1>
       </div>
 
-      {/* Split panel */}
-      <div className="mx-3 mt-6 grid grid-cols-1 gap-3 md:mx-5 md:grid-cols-2">
-        <div className="rounded-[18px] bg-[#fdecec] p-5 ring-1 ring-[#ee7273]/15 md:p-6">
-          <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#c05252]">
-            At the pharmacy
-          </p>
-          <p className="mt-2 font-hero text-[20px] font-semibold text-ink">Tirzepatide</p>
-          <p className="mt-3 font-hero text-[28px] font-semibold text-ink">$1,300+</p>
-          <p className="text-[12px] text-ink/55">per month</p>
-          <div className="mt-4 space-y-1.5 text-[13px] leading-[1.55] text-ink/70">
-            <p>Insurance rarely covers it for weight loss.</p>
-            <p>Waitlists run months long.</p>
-          </div>
-        </div>
-
-        <div className="rounded-[18px] bg-canvas p-5 ring-1 ring-ink/10 md:p-6">
-          <p className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-ink/50">
+      {/* Comparison table — coral highlighted center column */}
+      <div className="mx-3 mt-6 md:mx-5">
+        <div className="relative grid grid-cols-[1.1fr_1fr_1fr] items-stretch">
+          {/* Header row */}
+          <div />
+          <div className="z-10 mx-0 flex h-14 items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#f28a86] to-[#ee7273] px-2 text-center text-[12px] font-bold uppercase tracking-[0.14em] text-white">
             Blissley
-          </p>
-          <p className="mt-2 font-hero text-[20px] font-semibold text-ink">Tirzepatide</p>
-          <p className="mt-3 font-hero text-[28px] font-semibold text-ink">$299</p>
-          <p className="text-[12px] text-ink/55">your first month</p>
-          <div className="mt-4 space-y-1.5 text-[13px] leading-[1.55] text-ink/70">
-            <p>Same active ingredient.</p>
-            <p>Physician-prescribed.</p>
-            <p>Ships to your door in 5 days.</p>
+          </div>
+          <div className="flex h-14 items-end justify-center pb-2 text-center text-[12px] font-bold uppercase tracking-[0.14em] text-ink/60">
+            Pharmacy
+          </div>
+
+          {/* Label column bg */}
+          <div className="col-start-1 row-start-2 rounded-2xl bg-[#f4f2ee]">
+            {[
+              { l: "Medication", b: "Tirzepatide", p: "Tirzepatide" },
+              { l: "Price / month", b: "$299", p: "$1,300+" },
+              { l: "Insurance needed", b: "No", p: "Often denied" },
+              { l: "Physician review", b: "24 hrs", p: "Weeks" },
+              { l: "Waitlist", b: "None", p: "Months" },
+              { l: "Price when dose ↑", b: "Same", p: "Goes up" },
+              { l: "Cancel anytime", b: "One click", p: "Call required" },
+            ].map((r) => (
+              <div
+                key={`l-${r.l}`}
+                className="flex h-14 items-center px-4 text-[13px] font-medium leading-tight text-ink"
+              >
+                {r.l}
+              </div>
+            ))}
+          </div>
+
+          {/* Blissley column */}
+          <div className="col-start-2 row-start-2 -mt-px rounded-b-2xl bg-gradient-to-b from-[#ee7273] to-[#f2a08f]">
+            {[
+              "Tirzepatide",
+              "$299",
+              "No",
+              "24 hrs",
+              "None",
+              "Same",
+              "One click",
+            ].map((v, i) => (
+              <div
+                key={`b-${i}`}
+                className="flex h-14 items-center justify-center px-2 text-center text-[13px] font-semibold text-white"
+              >
+                {v}
+              </div>
+            ))}
+          </div>
+
+          {/* Pharmacy column */}
+          <div className="col-start-3 row-start-2">
+            {["Tirzepatide", "$1,300+", "Often denied", "Weeks", "Months", "Goes up", "Call required"].map(
+              (v, i) => (
+                <div
+                  key={`p-${i}`}
+                  className="flex h-14 items-center justify-center px-2 text-center text-[13px] font-medium text-ink/60"
+                >
+                  {v}
+                </div>
+              ),
+            )}
           </div>
         </div>
       </div>
