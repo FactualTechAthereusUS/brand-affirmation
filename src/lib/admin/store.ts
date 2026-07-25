@@ -1442,6 +1442,9 @@ function load(): AdminState {
         settings: mergeSettings(parsed.settings, fresh.settings),
         auditLog: Array.isArray(parsed.auditLog) ? parsed.auditLog as AuditEntry[] : fresh.auditLog,
         ui: { ...fresh.ui, ...(parsed.ui ?? {}) },
+        tenant: parsed.tenant ?? fresh.tenant,
+        tenants: Array.isArray(parsed.tenants) && parsed.tenants.length > 0 ? parsed.tenants : fresh.tenants,
+        build: parsed.build ?? fresh.build,
       } as AdminState;
     }
   } catch {}
