@@ -186,8 +186,8 @@ function AnalyticsOverview() {
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Churn reasons</div>
             <HBar
-              color="#ee7273"
               formatValue={(v) => `${v}%`}
+              palette={["#ee7273", "#f59e0b", "#0ea5e9", "#7c3aed", "#94a3b8"]}
               rows={[
                 { label: "Side effects", value: 32 },
                 { label: "Cost", value: 22 },
