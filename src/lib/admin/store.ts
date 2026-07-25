@@ -1117,11 +1117,11 @@ export const adminActions = {
           if (!convo) return {};
           const reply: ConvoMessage = {
             id: `cm_${Date.now()}r`, from: "them", authorName: convo.patientName,
-            text: pickReply(opts.text), ts: Date.now(), state: "delivered", channel: convo.channel,
+            text: pickAutoReply(opts.text), ts: Date.now(), state: "delivered" as const, channel: convo.channel,
           };
           return {
             conversations: s.conversations.map((c) => c.id === convoId
-              ? { ...c, typing: false, messages: [...c.messages.map((m) => m.id === id ? { ...m, state: "seen" } : m), reply], preview: reply.text.slice(0, 120), updatedAt: Date.now(), unread: true, unreadCount: (c.unreadCount ?? 0) + 1 }
+              ? { ...c, typing: false, messages: [...c.messages.map((m) => m.id === id ? { ...m, state: "seen" as const } : m), reply], preview: reply.text.slice(0, 120), updatedAt: Date.now(), unread: true, unreadCount: (c.unreadCount ?? 0) + 1 }
               : c),
           };
         });
