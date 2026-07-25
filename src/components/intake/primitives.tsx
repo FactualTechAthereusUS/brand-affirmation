@@ -80,7 +80,7 @@ export function ProgressBar({ value }: { value: number }) {
               {i < MILESTONES.length - 1 && (
                 <div className="relative mx-1.5 h-[8px] flex-1 overflow-hidden rounded-full bg-ink/[0.08] md:h-[10px] md:mx-2">
                   <motion.div
-                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo to-[#f38a8b]"
+                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo to-[#7c3aed]"
                     initial={false}
                     animate={{
                       width: `${Math.max(0, Math.min(1, scaled - i)) * 100}%`,

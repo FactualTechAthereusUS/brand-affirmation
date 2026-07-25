@@ -84,7 +84,7 @@ function SlimBar({ value }: { value: number }) {
     <div className="relative h-[10px] w-full overflow-hidden rounded-full bg-ink/[0.08]">
       <motion.div
         style={{ width: w }}
-        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo to-[#f38a8b]"
+        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo to-[#7c3aed]"
       />
       {/* shimmer */}
       <motion.div
@@ -1115,7 +1115,7 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
       className="fixed inset-0 z-50 overflow-hidden"
     >
       {/* Base brand gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f6a5a5] via-indigo to-[#d95758]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#2563eb] via-[#4f46e5] to-[#7c3aed]" />
       {/* Ambient orbs */}
       <motion.div
         className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
