@@ -279,6 +279,7 @@ function AnalyticsOverview() {
         <Link to="/admin/analytics/retention" className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Retention →</Link>
         <Link to="/admin/analytics/finances" className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Finances →</Link>
       </div>
+      </div>
     </AdminShell>
   );
 }
