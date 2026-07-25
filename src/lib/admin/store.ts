@@ -9,6 +9,100 @@ export type PatientStatus = "active" | "pending" | "paused" | "failed" | "cancel
 export type ChurnRisk = "low" | "medium" | "high" | "critical";
 export type ProgramCode = "tirz_mo" | "tirz_3mo" | "tirz_6mo" | "sema_mo" | "sema_3mo" | "sema_6mo";
 
+export type DemoScenario = "healthy" | "crisis" | "churn" | "launch" | "empty";
+export type Role = "owner" | "ops" | "clinical" | "support";
+
+export type Physician = {
+  id: string;
+  name: string;
+  avatar: string;
+  casesReviewed: number;
+  avgResponseHrs: number;
+  denialRate: number;
+};
+
+export type Pharmacy = {
+  id: string;
+  name: string;
+  role: "primary" | "backup";
+  apiStatus: "connected" | "degraded" | "down";
+  queue: number;
+  avgPrepHrs: number;
+  onTimeRate: number;
+  drugs: string[];
+};
+
+export type PhysicianCase = {
+  id: string;
+  patientId: string;
+  patientName: string;
+  product: string;
+  submittedAt: number;
+  slaHrs: number;
+  priority: "urgent" | "normal";
+  flags: string[];
+  assignedTo: string;
+  status: "new" | "flagged" | "awaitingReply" | "approved" | "denied" | "refill";
+  decision?: string;
+  note?: string;
+};
+
+export type CheckIn = {
+  id: string;
+  patientId: string;
+  patientName: string;
+  day: number;
+  submittedAt?: number;
+  weight?: number;
+  delta?: number;
+  sideEffects?: string[];
+  decision: "clear" | "hold" | "review";
+};
+
+export type NotificationTone = "info" | "success" | "warn" | "critical";
+export type Notification = {
+  id: string;
+  ts: number;
+  tone: NotificationTone;
+  title: string;
+  detail: string;
+  deepLink: string;
+  unread: boolean;
+};
+
+export type Integration = {
+  id: string;
+  name: string;
+  category: "Critical" | "Clinical" | "Analytics" | "Banking";
+  status: "connected" | "degraded" | "down";
+  lastSync: number;
+  lastError?: string;
+};
+
+export type Campaign = {
+  id: string;
+  name: string;
+  channel: "Meta" | "Google" | "Email" | "Affiliate" | "Organic";
+  spend: number;
+  roas: number;
+  cac: number;
+  leads: number;
+  purchases: number;
+};
+
+export type FunnelDay = {
+  ts: number;
+  sessions: number;
+  intakeStarted: number;
+  intakeCompleted: number;
+  approved: number;
+  paid: number;
+  shipped: number;
+  revenue: number;
+  newMrr: number;
+  churnedMrr: number;
+};
+
 export type Patient = {
   id: string;
   firstName: string;
