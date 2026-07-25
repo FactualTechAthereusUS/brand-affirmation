@@ -224,7 +224,7 @@ function LiveViewPage() {
               </div>
               {!fs && (
                 <div className="mt-3 space-y-3">
-                  <div className="rounded-xl border border-ink/[0.06] bg-white/95 p-3.5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur">
+                  <div className={`rounded-xl border border-ink/[0.06] p-3.5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur ${view === "map" ? "bg-white/60" : "bg-white/95"}`}>
                     <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Live activity</div>
                     <div className="text-[11.5px] text-ink/45">Intake, physician approvals & payment signals</div>
                     <div className="mt-2">
