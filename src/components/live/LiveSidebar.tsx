@@ -82,7 +82,7 @@ export function LiveSidebar({
   };
 
   return (
-    <div className="flex h-full flex-col gap-3 overflow-y-auto pr-1">
+    <div className="flex flex-col gap-3">
       {/* Search */}
       <div className="relative">
         <div className="flex h-9 items-center gap-2 rounded-lg border border-ink/10 bg-white px-3 text-[12.5px] text-ink/70 focus-within:border-ink/25">

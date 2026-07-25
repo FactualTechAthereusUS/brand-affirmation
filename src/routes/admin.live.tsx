@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ClientOnly } from "@tanstack/react-router";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+
 import { Eye, EyeOff, Globe2, Map as MapIcon, Maximize2, Minimize2 } from "lucide-react";
 import { AdminShell, Card } from "@/components/admin/AdminShell";
 import { ActivityFeed } from "@/components/admin/ActivityFeed";
