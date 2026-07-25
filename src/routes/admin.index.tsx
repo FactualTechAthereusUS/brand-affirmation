@@ -216,14 +216,20 @@ function KpiTile({
       </div>
       <div className="mt-1 text-[10.5px] text-ink/45">{sub}</div>
       <div className="mt-2 h-7 w-full">
-        <Sparkline data={spark} stroke={sparkColor} fill="transparent" height={28} className="h-7 w-full" />
+        <Sparkline
+          data={spark}
+          stroke={sparkColor}
+          fill={`${sparkColor}1f`}
+          height={28}
+          className="h-7 w-full"
+        />
       </div>
     </motion.div>
   );
 }
 
 /* ───────────────────────── Today's revenue ───────────────────────── */
-function TodayRevenueCard({ value, spark, prior, dates }: { value: number; spark: number[]; prior: number[]; dates: number[] }) {
+function TodayRevenueCard({ value, spark, prior, dates, stroke = "#2563eb" }: { value: number; spark: number[]; prior: number[]; dates: number[]; stroke?: string }) {
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
@@ -242,7 +248,7 @@ function TodayRevenueCard({ value, spark, prior, dates }: { value: number; spark
           dates={dates}
           label="Revenue"
           priorLabel="Prior 30d"
-          stroke="#171717"
+          stroke={stroke}
           height={180}
           formatValue={(v) => `$${Math.round(v).toLocaleString()}`}
           formatYTick={(v) => `$${Math.round(v / 1000)}K`}
