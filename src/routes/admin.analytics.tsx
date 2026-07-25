@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { AdminShell, Card } from "@/components/admin/AdminShell";
 import { MetricCard, AnalyticsSection } from "@/components/admin/analytics/MetricCard";
 import { LineChartMini, BarsMini } from "@/components/admin/analytics/LineChartMini";
+import { AreaChart } from "@/components/admin/analytics/AreaChart";
 import { Donut } from "@/components/admin/analytics/Donut";
 import { HBar } from "@/components/admin/analytics/HBar";
 import { BreakdownBars } from "@/components/admin/analytics/BreakdownBars";
