@@ -6,8 +6,10 @@ import type { LiveSession, PurchaseEvent } from "@/hooks/useLiveSessions";
 type Props = {
   sessions: LiveSession[];
   purchaseEvents: PurchaseEvent[];
+  streamer?: boolean;
   className?: string;
 };
+
 
 // Global loader promise so we only inject the <script> once even with hot reloads.
 declare global {
@@ -58,13 +60,25 @@ const MAP_STYLE: google.maps.MapTypeStyle[] = [
   { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#9ca3af" }] },
 ];
 
-export default function LiveMap({ sessions, purchaseEvents, className }: Props) {
+const EVENT_LABEL: Record<LiveSession["stage"], string> = {
+  browsing: "Browsing",
+  cart: "In intake",
+  checkout: "Awaiting physician",
+  purchased: "Approved · Rx signed",
+};
+
+export default function LiveMap({ sessions, purchaseEvents, streamer, className }: Props) {
+
   const wrapRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<Map<string, google.maps.Marker>>(new Map());
   const pulseRef = useRef<google.maps.Marker[]>([]);
+  const infoRef = useRef<google.maps.InfoWindow | null>(null);
   const [ready, setReady] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const streamerRef = useRef(streamer);
+  streamerRef.current = streamer;
+
 
   // Init map
   useEffect(() => {
@@ -89,6 +103,7 @@ export default function LiveMap({ sessions, purchaseEvents, className }: Props) 
           },
         });
         mapRef.current = map;
+        infoRef.current = new window.google.maps.InfoWindow({ disableAutoPan: true, pixelOffset: new window.google.maps.Size(0, -6) });
         setReady(true);
       })
       .catch((e) => setErr(e.message ?? "Map failed to load"));
@@ -96,6 +111,36 @@ export default function LiveMap({ sessions, purchaseEvents, className }: Props) 
       cancelled = true;
     };
   }, []);
+
+  // Streamer style — mask city/neighborhood labels
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const extra: google.maps.MapTypeStyle[] = streamer
+      ? [
+          { featureType: "administrative.locality", elementType: "labels", stylers: [{ visibility: "off" }] },
+          { featureType: "administrative.neighborhood", elementType: "labels", stylers: [{ visibility: "off" }] },
+        ]
+      : [];
+    mapRef.current.setOptions({ styles: [...MAP_STYLE, ...extra] });
+  }, [streamer]);
+
+  // Keyboard bus — zoom + pan
+  useEffect(() => {
+    const onCmd = (e: Event) => {
+      const map = mapRef.current;
+      if (!map) return;
+      const cmd = (e as CustomEvent).detail as { type: string; delta?: number; dx?: number; dy?: number };
+      if (cmd.type === "zoom") {
+        const cur = map.getZoom() ?? 2;
+        map.setZoom(Math.max(2, Math.min(16, cur - (cmd.delta ?? 0))));
+      } else if (cmd.type === "pan") {
+        map.panBy(cmd.dx ?? 0, cmd.dy ?? 0);
+      }
+    };
+    window.addEventListener("blissley:live:cmd", onCmd as EventListener);
+    return () => window.removeEventListener("blissley:live:cmd", onCmd as EventListener);
+  }, []);
+
 
   // Sync session markers — small colored dots per stage.
   useEffect(() => {
@@ -130,12 +175,33 @@ export default function LiveMap({ sessions, purchaseEvents, className }: Props) 
           map,
           position: { lat: s.lat, lng: s.lng },
           icon,
-          title: `${rule.label} · ${s.label}`,
           optimized: true,
           zIndex: s.stage === "purchased" ? 1000 : s.stage === "checkout" ? 500 : 100,
         });
+        m.addListener("mouseover", () => {
+          const info = infoRef.current;
+          if (!info) return;
+          const sm = streamerRef.current;
+          const city = sm ? "••••••" : s.city;
+          const region = sm ? "••" : s.region;
+          const time = new Date(s.seenAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+          info.setContent(`
+            <div style="font-family:inherit;font-size:11px;color:#111827;padding:2px 4px;min-width:160px;">
+              <div style="display:flex;align-items:center;gap:6px;font-weight:600;">
+                <span style="display:inline-block;width:6px;height:6px;border-radius:9999px;background:${rule.hex};"></span>
+                <span>${s.country} · ${region} · ${city}</span>
+              </div>
+              <div style="margin-top:2px;font-size:10px;color:#6b7280;font-weight:400;">
+                ${EVENT_LABEL[s.stage]} · <span style="font-variant-numeric:tabular-nums;">${time}</span>
+              </div>
+            </div>
+          `);
+          info.open({ map, anchor: m });
+        });
+        m.addListener("mouseout", () => infoRef.current?.close());
         markersRef.current.set(s.id, m);
       }
+
     }
   }, [sessions, ready]);
 

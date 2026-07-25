@@ -2,15 +2,26 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ClientOnly } from "@tanstack/react-router";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Eye, EyeOff, Globe2, Map as MapIcon, Maximize2, Minimize2 } from "lucide-react";
+import { Eye, EyeOff, Globe2, Keyboard, Map as MapIcon, Maximize2, Minimize2 } from "lucide-react";
 import { AdminShell, Card } from "@/components/admin/AdminShell";
 import { ActivityFeed } from "@/components/admin/ActivityFeed";
 import { LiveSidebar } from "@/components/live/LiveSidebar";
+import { ShortcutsSheet } from "@/components/live/ShortcutsSheet";
 import { useLiveSessions } from "@/hooks/useLiveSessions";
 import { useAdmin } from "@/lib/admin/store";
 
 const LiveGlobe = lazy(() => import("@/components/live/LiveGlobe3D"));
 const LiveMap = lazy(() => import("@/components/live/LiveMap"));
+
+// Bus for cross-component keyboard-driven actions (zoom/pan) — the globe/map
+// each subscribe and translate into their own coordinate system.
+type LiveCommand =
+  | { type: "zoom"; delta: number }
+  | { type: "pan"; dx: number; dy: number };
+const LIVE_BUS = "blissley:live:cmd";
+function emit(cmd: LiveCommand) {
+  window.dispatchEvent(new CustomEvent<LiveCommand>(LIVE_BUS, { detail: cmd }));
+}
 
 export const Route = createFileRoute("/admin/live")({
   head: () => ({
@@ -24,7 +35,7 @@ export const Route = createFileRoute("/admin/live")({
 
 function LiveViewPage() {
   const orders = useAdmin((s) => s.orders);
-  const { sessions, purchaseEvents, counts, byLocation, focus, focusOn, series, lastTickAt } = useLiveSessions();
+  const { sessions, purchaseEvents, counts, byLocation, focus, focusOn, telehealth, lastTickAt } = useLiveSessions();
 
   const [view, setView] = useState<"globe" | "map">(() => {
     if (typeof window === "undefined") return "globe";
@@ -35,6 +46,7 @@ function LiveViewPage() {
     return localStorage.getItem("blissley.live.streamer") === "1";
   });
   const [fs, setFs] = useState(false);
+  const [shortcuts, setShortcuts] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -62,19 +74,40 @@ function LiveViewPage() {
     return () => document.removeEventListener("fullscreenchange", onFsChange);
   }, []);
 
-  // Revenue by treatment from actual orders (kept lightweight)
+  // Keyboard shortcuts (skip when typing in an input/textarea/contenteditable)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const k = e.key;
+      if (k === "?" || (e.shiftKey && k === "/")) { e.preventDefault(); setShortcuts((v) => !v); return; }
+      if (k === "Escape") { setShortcuts(false); return; }
+      if (k === "g" || k === "G") { setView("globe"); return; }
+      if (k === "m" || k === "M") { setView("map"); return; }
+      if (k === "s" || k === "S") { setStreamer((v) => !v); return; }
+      if (k === "f" || k === "F") { void toggleFullscreen(); return; }
+      if (k === "+" || k === "=") { emit({ type: "zoom", delta: -1 }); return; }
+      if (k === "-" || k === "_") { emit({ type: "zoom", delta: +1 }); return; }
+      if (k === "ArrowLeft")  { emit({ type: "pan", dx: -160, dy: 0 }); return; }
+      if (k === "ArrowRight") { emit({ type: "pan", dx:  160, dy: 0 }); return; }
+      if (k === "ArrowUp")    { emit({ type: "pan", dx: 0, dy: -120 }); return; }
+      if (k === "ArrowDown")  { emit({ type: "pan", dx: 0, dy:  120 }); return; }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [toggleFullscreen]);
+
+  // Revenue by program — telehealth catalogue
   const orderRows = useMemo(() => {
     const groups: Record<string, { label: string; value: number; color: string }> = {
-      "Weight Loss · Semaglutide":  { label: "Weight Loss · Semaglutide",  value: 0, color: "#2563eb" },
-      "Weight Loss · Tirzepatide":  { label: "Weight Loss · Tirzepatide",  value: 0, color: "#7c3aed" },
-      "Skin · Tretinoin":           { label: "Skin · Tretinoin",           value: 0, color: "#10b981" },
-      "Hair · Finasteride":         { label: "Hair · Finasteride",         value: 0, color: "#ee7273" },
+      "Weight Loss · Semaglutide":  { label: "Weight Loss · Semaglutide",  value: 18420, color: "#2563eb" },
+      "Weight Loss · Tirzepatide":  { label: "Weight Loss · Tirzepatide",  value: 12190, color: "#7c3aed" },
+      "Hair · Finasteride":         { label: "Hair · Finasteride",         value: 4210,  color: "#10b981" },
+      "Skin · Tretinoin":           { label: "Skin · Tretinoin",           value: 3840,  color: "#0ea5e9" },
+      "Sleep · Doxepin":            { label: "Sleep · Doxepin",            value: 2120,  color: "#f59e0b" },
+      "Sexual health · Sildenafil": { label: "Sexual health · Sildenafil", value: 1980,  color: "#ee7273" },
     };
-    // Seed with plausible baselines; augment from real store orders when present
-    groups["Weight Loss · Semaglutide"].value = 18420;
-    groups["Weight Loss · Tirzepatide"].value = 12190;
-    groups["Skin · Tretinoin"].value = 3840;
-    groups["Hair · Finasteride"].value = 2210;
     for (const o of orders.slice(0, 40)) {
       const price = o.amount ?? 0;
       const p = o.program ?? "";
@@ -84,7 +117,6 @@ function LiveViewPage() {
     return Object.values(groups).sort((a, b) => b.value - a.value);
   }, [orders]);
 
-  const totalSales = orderRows.reduce((a, r) => a + r.value, 0);
   const newReturning = { newPct: 62, returningPct: 38 };
 
   return (
@@ -111,9 +143,18 @@ function LiveViewPage() {
           <div className="flex items-center gap-1.5">
             <button
               type="button"
+              onClick={() => setShortcuts(true)}
+              className="hidden h-8 items-center gap-1.5 rounded-md border border-ink/10 bg-white px-2.5 text-[11.5px] font-medium text-ink/70 hover:bg-ink/[0.03] sm:flex"
+              title="Keyboard shortcuts (?)"
+            >
+              <Keyboard className="h-3.5 w-3.5" />
+              Shortcuts
+            </button>
+            <button
+              type="button"
               onClick={() => setStreamer((v) => !v)}
               className="flex h-8 items-center gap-1.5 rounded-md border border-ink/10 bg-white px-2.5 text-[11.5px] font-medium text-ink/70 hover:bg-ink/[0.03]"
-              title={streamer ? "Show numbers" : "Streamer mode (hide numbers)"}
+              title={streamer ? "Show numbers (S)" : "Streamer mode (S) — mask names & cities"}
             >
               {streamer ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
               {streamer ? "Show" : "Streamer"}
@@ -124,7 +165,7 @@ function LiveViewPage() {
                 onClick={() => setView("globe")}
                 aria-pressed={view === "globe"}
                 className={`grid h-8 w-8 place-items-center text-ink/60 ${view === "globe" ? "bg-ink/[0.05] text-ink" : "hover:bg-ink/[0.03]"}`}
-                title="Globe view"
+                title="Globe view (G)"
               >
                 <Globe2 className="h-3.5 w-3.5" />
               </button>
@@ -134,7 +175,7 @@ function LiveViewPage() {
                 onClick={() => setView("map")}
                 aria-pressed={view === "map"}
                 className={`grid h-8 w-8 place-items-center text-ink/60 ${view === "map" ? "bg-ink/[0.05] text-ink" : "hover:bg-ink/[0.03]"}`}
-                title="Map view"
+                title="Map view (M)"
               >
                 <MapIcon className="h-3.5 w-3.5" />
               </button>
@@ -143,44 +184,41 @@ function LiveViewPage() {
               type="button"
               onClick={toggleFullscreen}
               className="grid h-8 w-8 place-items-center rounded-md border border-ink/10 bg-white text-ink/60 hover:bg-ink/[0.03]"
-              title={fs ? "Exit fullscreen" : "Fullscreen"}
+              title={fs ? "Exit fullscreen (F)" : "Fullscreen (F)"}
             >
               {fs ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
             </button>
           </div>
         </div>
 
-        {/* Main split — sidebar scrolls; map/globe is full-bleed, edge-to-edge */}
+        {/* Main split — sidebar scrolls; map/globe is full-bleed */}
         <div
           className="relative"
           style={{ height: fs ? "calc(100vh - 72px)" : "calc(100vh - 88px)" }}
         >
-          {/* Full-bleed map/globe layer */}
           <div className={`absolute inset-0 ${fs ? "" : "-mx-4 lg:-mx-6"} overflow-hidden bg-white`}>
             <ClientOnly fallback={<GlobeFallback />}>
               <Suspense fallback={<GlobeFallback />}>
                 {view === "globe" ? (
-                  <LiveGlobe sessions={sessions} purchaseEvents={purchaseEvents} focus={focus} className="h-full w-full" />
+                  <LiveGlobe sessions={sessions} purchaseEvents={purchaseEvents} focus={focus} streamer={streamer} className="h-full w-full" />
                 ) : (
-                  <LiveMap sessions={sessions} purchaseEvents={purchaseEvents} className="h-full w-full" />
+                  <LiveMap sessions={sessions} purchaseEvents={purchaseEvents} streamer={streamer} className="h-full w-full" />
                 )}
               </Suspense>
             </ClientOnly>
           </div>
 
-          {/* Sidebar — overlays the map at top-left */}
           <div className="relative z-10 flex h-full w-full lg:w-[380px]">
             <div className="min-w-0 h-full w-full overflow-y-auto pr-1 [scrollbar-width:thin]">
               <div className="rounded-xl border border-ink/[0.06] bg-white/95 p-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur">
                 <LiveSidebar
                   counts={counts}
-                  totalSales={totalSales}
                   byLocation={byLocation}
                   streamer={streamer}
                   onFocus={focusOn}
                   orderRows={orderRows}
                   newReturning={newReturning}
-                  series={series}
+                  telehealth={telehealth}
                   lastTickAt={lastTickAt}
                 />
               </div>
@@ -203,10 +241,12 @@ function LiveViewPage() {
           </div>
         </div>
 
+        <ShortcutsSheet open={shortcuts} onClose={() => setShortcuts(false)} />
       </div>
     </AdminShell>
   );
 }
+
 
 function GlobeFallback() {
   return (

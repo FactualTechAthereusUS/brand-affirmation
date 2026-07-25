@@ -10,8 +10,10 @@ type Props = {
   sessions: LiveSession[];
   purchaseEvents: PurchaseEvent[];
   focus?: { lat: number; lng: number } | null;
+  streamer?: boolean;
   className?: string;
 };
+
 
 type Tooltip = { x: number; y: number; session: LiveSession } | null;
 
@@ -35,7 +37,7 @@ function latLngToPhiTheta(lat: number, lng: number) {
   return { phi, theta };
 }
 
-export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className }: Props) {
+export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer, className }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasHolderRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<HTMLDivElement>(null);
@@ -54,13 +56,15 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
   const targetTheta = useRef<number | null>(null);
   const targetDist = useRef<number | null>(null);
 
-  const drag = useRef<{ x: number; y: number; phi: number; theta: number } | null>(null);
+  const drag = useRef<{ x: number; y: number; phi: number; theta: number; t: number; vTheta: number; vPhi: number; lastX: number; lastY: number; lastT: number } | null>(null);
+  const momentum = useRef<{ vTheta: number; vPhi: number } | null>(null);
   const lastInteract = useRef(Date.now());
   const pointer = useRef<{ x: number; y: number } | null>(null);
   const sessionsRef = useRef(sessions);
   sessionsRef.current = sessions;
   const purchaseRef = useRef(purchaseEvents);
   purchaseRef.current = purchaseEvents;
+
 
   const [tooltip, setTooltip] = useState<Tooltip>(null);
   const [ready, setReady] = useState(false);
@@ -168,10 +172,20 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
           targetTheta.current = null;
           targetDist.current = null;
         }
+      } else if (!drag.current && momentum.current) {
+        // Momentum decay after release
+        camTheta.current += momentum.current.vTheta;
+        camPhi.current   += momentum.current.vPhi;
+        momentum.current.vTheta *= 0.94;
+        momentum.current.vPhi   *= 0.94;
+        if (Math.abs(momentum.current.vTheta) < 0.0002 && Math.abs(momentum.current.vPhi) < 0.0002) {
+          momentum.current = null;
+          lastInteract.current = Date.now();
+        }
       } else if (!drag.current && idleFor > 2500) {
-        // Auto-rotate gently
         camTheta.current += 0.0015;
       }
+
 
       // Clamp phi so we don't flip upside down
       if (camPhi.current < 0.25) camPhi.current = 0.25;
@@ -332,7 +346,14 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
   // Pointer / wheel handlers
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-    drag.current = { x: e.clientX, y: e.clientY, phi: camPhi.current, theta: camTheta.current };
+    const now = performance.now();
+    drag.current = {
+      x: e.clientX, y: e.clientY,
+      phi: camPhi.current, theta: camTheta.current,
+      t: now, vTheta: 0, vPhi: 0,
+      lastX: e.clientX, lastY: e.clientY, lastT: now,
+    };
+    momentum.current = null;
     targetPhi.current = null;
     targetTheta.current = null;
     lastInteract.current = Date.now();
@@ -365,6 +386,14 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
     if (drag.current) {
       const dx = e.clientX - drag.current.x;
       const dy = e.clientY - drag.current.y;
+      const nowT = performance.now();
+      const dt = Math.max(1, nowT - drag.current.lastT);
+      // Track instantaneous velocity for release momentum
+      drag.current.vTheta = -((e.clientX - drag.current.lastX) / 180) / dt * 16;
+      drag.current.vPhi   = -((e.clientY - drag.current.lastY) / 180) / dt * 16;
+      drag.current.lastX = e.clientX;
+      drag.current.lastY = e.clientY;
+      drag.current.lastT = nowT;
       camTheta.current = drag.current.theta - dx / 180;
       camPhi.current = drag.current.phi - dy / 180;
       lastInteract.current = Date.now();
@@ -373,6 +402,14 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
+    if (drag.current) {
+      // Only apply momentum if the pointer was still moving on release
+      const vt = drag.current.vTheta;
+      const vp = drag.current.vPhi;
+      if (Math.abs(vt) > 0.0005 || Math.abs(vp) > 0.0005) {
+        momentum.current = { vTheta: vt, vPhi: vp };
+      }
+    }
     drag.current = null;
     lastInteract.current = Date.now();
   }, []);
@@ -392,6 +429,28 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
     lastInteract.current = Date.now();
   }, []);
 
+  // Double-click → zoom-in step (no lat/lng inverse needed; feels good in practice)
+  const onDoubleClick = useCallback(() => {
+    targetDist.current = Math.max(MIN_DIST, camDist.current - 60);
+    lastInteract.current = Date.now();
+  }, []);
+
+  // Keyboard bus — zoom / pan (pan translates to yaw/pitch on the globe)
+  useEffect(() => {
+    const onCmd = (e: Event) => {
+      const cmd = (e as CustomEvent).detail as { type: string; delta?: number; dx?: number; dy?: number };
+      if (cmd.type === "zoom") zoom((cmd.delta ?? 0) * 30);
+      else if (cmd.type === "pan") {
+        camTheta.current -= (cmd.dx ?? 0) / 400;
+        camPhi.current   -= (cmd.dy ?? 0) / 400;
+        lastInteract.current = Date.now();
+      }
+    };
+    window.addEventListener("blissley:live:cmd", onCmd as EventListener);
+    return () => window.removeEventListener("blissley:live:cmd", onCmd as EventListener);
+  }, [zoom]);
+
+
   const tooltipHex = useMemo(
     () => (tooltip ? DOT_RULES[tooltip.session.stage].hex : "#000"),
     [tooltip]
@@ -410,7 +469,9 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerLeave}
       onWheel={onWheel}
+      onDoubleClick={onDoubleClick}
     >
+
       <div ref={canvasHolderRef} className="absolute inset-0" style={{ cursor: drag.current ? "grabbing" : "grab" }} />
       <div ref={markersRef} className="pointer-events-none absolute inset-0" />
 
@@ -420,20 +481,26 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
         </div>
       )}
 
-      {tooltip && (
-        <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-ink/10 bg-white px-2.5 py-1.5 text-[11px] font-medium text-ink shadow-[0_8px_24px_-8px_rgba(0,0,0,0.25)]"
-          style={{ left: tooltip.x, top: tooltip.y - 12 }}
-        >
-          <div className="flex items-center gap-1.5">
-            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: tooltipHex }} />
-            <span>{tooltip.session.country} · {tooltip.session.region} · {tooltip.session.city}</span>
+      {tooltip && (() => {
+        const s = tooltip.session;
+        const city = streamer ? "••••••" : s.city;
+        const region = streamer ? "••" : s.region;
+        return (
+          <div
+            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-ink/10 bg-white px-2.5 py-1.5 text-[11px] font-medium text-ink shadow-[0_10px_28px_-8px_rgba(15,23,42,0.30)]"
+            style={{ left: tooltip.x, top: tooltip.y - 12 }}
+          >
+            <div className="flex items-center gap-1.5">
+              <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: tooltipHex }} />
+              <span>{s.country} · {region} · {city}</span>
+            </div>
+            <div className="mt-0.5 text-[10px] font-normal text-ink/45">
+              {DOT_RULES[s.stage].label} · {new Date(s.seenAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+            </div>
           </div>
-          <div className="mt-0.5 text-[10px] font-normal text-ink/45">
-            {DOT_RULES[tooltip.session.stage].label} · {new Date(tooltip.session.seenAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
-          </div>
-        </div>
-      )}
+        );
+      })()}
+
 
       {/* Zoom controls */}
       <div className="absolute bottom-3 right-3 flex flex-col overflow-hidden rounded-md border border-ink/10 bg-white/95 shadow-sm backdrop-blur">

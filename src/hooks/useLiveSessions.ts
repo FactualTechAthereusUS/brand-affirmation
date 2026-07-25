@@ -188,15 +188,18 @@ export function useLiveSessions() {
   }, []);
 
   const counts = useMemo(() => {
-    const c = { visitors: 0, sessions: sessions.length, cartsActive: 0, checkingOut: 0, purchased: 0 };
+    const c = { visitors: 0, sessions: sessions.length, cartsActive: 0, checkingOut: 0, purchased: 0, shipped: 0 };
+    const now = Date.now();
     for (const s of sessions) {
       if (s.stage !== "purchased") c.visitors++;
       if (s.stage === "cart") c.cartsActive++;
       if (s.stage === "checkout") c.checkingOut++;
       if (s.stage === "purchased") c.purchased++;
     }
+    // Shipped = purchases older than 45s (they roll from Approved → Shipped visually)
+    for (const p of purchaseEvents) if (now - p.at > 45_000) c.shipped++;
     return c;
-  }, [sessions]);
+  }, [sessions, purchaseEvents]);
 
   const byLocation = useMemo<ByLocationRow[]>(() => {
     const map = new Map<string, ByLocationRow>();
@@ -219,28 +222,24 @@ export function useLiveSessions() {
     return Array.from(map.values()).sort((a, b) => b.n - a.n);
   }, [sessions]);
 
-  // ── Shopify-parity 24-slot hourly series (today + previous period) ──────────
-  // We generate deterministically per hook instance and refresh every 20s so
-  // the "just now" tick + the small delta chip animate realistically.
+  // ── Blissley telehealth series — 24-slot hourly today + previous period ─────
   const [lastTickAt, setLastTickAt] = useState<number>(() => Date.now());
   useEffect(() => {
     const id = setInterval(() => setLastTickAt(Date.now()), 20_000);
     return () => clearInterval(id);
   }, []);
 
-  const series = useMemo(() => {
+  const telehealth = useMemo(() => {
     const rnd = mulberry32(0x51_ED_A7 ^ Math.floor(lastTickAt / 20_000));
     const hourNow = new Date().getHours() + new Date().getMinutes() / 60;
     const mk = (base: number, peakMult: number, jitterAmp: number) => {
       const today: number[] = [];
       const prev: number[] = [];
       for (let h = 0; h < 24; h++) {
-        // bell-ish curve peaking around 13–17
         const bell = Math.exp(-Math.pow((h - 14) / 5, 2));
         const growth = base * (0.35 + bell * peakMult);
         const jitterToday = (rnd() - 0.5) * jitterAmp;
         const jitterPrev = (rnd() - 0.5) * jitterAmp;
-        // Only fill "today" up to the current hour, gently ramping the final slot
         if (h < hourNow) today.push(Math.max(0, growth + jitterToday));
         else if (h === Math.floor(hourNow)) today.push(Math.max(0, growth * (hourNow - h) + jitterToday * 0.4));
         else today.push(0);
@@ -248,20 +247,33 @@ export function useLiveSessions() {
       }
       return { today, prev };
     };
-    const sales = mk(320, 2.4, 90);
-    const visits = mk(38, 2.0, 12);
-    const orders = mk(1.4, 2.2, 0.9);
     const sum = (a: number[]) => a.reduce((x, y) => x + y, 0);
     const pct = (a: number[], b: number[]) => {
       const A = sum(a); const B = sum(b) || 1;
       return ((A - B) / B) * 100;
     };
+    const consults    = mk(6.5, 2.2, 2.4);   // intake forms started per hour
+    const rxApproved  = mk(3.2, 2.1, 1.4);   // physician sign-offs per hour
+    const revenue     = mk(310, 2.5, 90);    // $ paid per hour
+    const build = (m: { today: number[]; prev: number[] }, round: (n: number) => number) => ({
+      today: m.today,
+      prev:  m.prev,
+      total: round(sum(m.today)),
+      delta: pct(m.today, m.prev),
+    });
+    // Rolling scalar KPIs — deterministic per 20s tick
+    const avgResponseMin = Math.round((8 + rnd() * 9) * 10) / 10;    // 8–17 min
+    const approvalRate   = Math.round((88 + rnd() * 9) * 10) / 10;   // 88–97 %
+    const refillsDue     = 12 + Math.floor(rnd() * 18);              // 12–29
     return {
-      sales:    { today: sales.today,   prev: sales.prev,   total: Math.round(sum(sales.today)),   delta: pct(sales.today, sales.prev) },
-      sessions: { today: visits.today,  prev: visits.prev,  total: Math.round(sum(visits.today)),  delta: pct(visits.today, visits.prev) },
-      orders:   { today: orders.today,  prev: orders.prev,  total: Math.round(sum(orders.today)),  delta: pct(orders.today, orders.prev) },
+      consults:    build(consults,    Math.round),
+      rxApproved:  build(rxApproved,  Math.round),
+      revenue:     build(revenue,     Math.round),
+      avgResponseMin,
+      approvalRate,
+      refillsDue,
     };
   }, [lastTickAt]);
 
-  return { sessions, purchaseEvents, counts, byLocation, focus, focusOn, series, lastTickAt };
+  return { sessions, purchaseEvents, counts, byLocation, focus, focusOn, telehealth, lastTickAt };
 }
