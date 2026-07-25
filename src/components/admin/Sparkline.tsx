@@ -1,7 +1,7 @@
 export function Sparkline({
   data, stroke = "#171717", fill = "rgba(23,23,23,0.06)", height = 28, className = "",
 }: { data: number[]; stroke?: string; fill?: string; height?: number; className?: string }) {
-  if (data.length < 2) return <svg className={className} viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" />;
+  if (data.length < 2) return <svg className={`block h-full w-full ${className}`} viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" />;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
