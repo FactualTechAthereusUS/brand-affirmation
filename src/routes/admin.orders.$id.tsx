@@ -27,6 +27,9 @@ function OrderDetailPage() {
   const patientOrders = useAdmin((s) => s.orders.filter((o) => o.patientId === order?.patientId));
   const orderNotes = useAdmin((s) => s.orderNotes[id] ?? []);
   const nav = useNavigate();
+  const [editingAddr, setEditingAddr] = useState(false);
+  const [addTagOpen, setAddTagOpen] = useState(false);
+  const [newTag, setNewTag] = useState("");
 
   const o: EnrichedOrder | null = useMemo(() => (order ? enrichOrder(order, patient) : null), [order, patient]);
 
