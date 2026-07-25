@@ -5,6 +5,7 @@ import {
   Activity, BarChart3, CreditCard, ChevronDown, HelpCircle, LayoutGrid, MessageSquare,
   Package, PanelLeft, Plus, Search, Settings, Stethoscope, UserCircle2, Users, X,
   Building2, ClipboardCheck, Plug, Radio, PieChart, Target, TrendingUp, DollarSign, ArrowRightLeft,
+  Filter, ClipboardList, ShoppingBag, Mail, FileText,
 } from "lucide-react";
 import { adminActions, hydrateAdmin, useAdmin, type Role } from "@/lib/admin/store";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
