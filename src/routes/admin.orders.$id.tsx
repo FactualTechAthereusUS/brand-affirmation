@@ -23,6 +23,8 @@ function OrderDetailPage() {
   const { id } = useParams({ from: "/admin/orders/$id" });
   const order = useAdmin((s) => s.orders.find((o) => o.id === id));
   const patient = useAdmin((s) => s.patients.find((p) => p.id === order?.patientId));
+  const patientOrders = useAdmin((s) => s.orders.filter((o) => o.patientId === order?.patientId));
+  const orderNotes = useAdmin((s) => s.orderNotes[id] ?? []);
   const nav = useNavigate();
 
   const o: EnrichedOrder | null = useMemo(() => (order ? enrichOrder(order, patient) : null), [order, patient]);
