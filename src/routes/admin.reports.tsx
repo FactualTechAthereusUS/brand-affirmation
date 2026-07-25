@@ -69,9 +69,9 @@ function ReportsPage() {
               <div className="flex h-40 items-end gap-1.5">
                 {[
                   { key: "paid", color: "#ee7273", val: t.paid },
-                  { key: "organic", color: "#1D437B", val: t.organic },
-                  { key: "direct", color: "#4a7c6f", val: t.direct },
-                  { key: "referral", color: "#c4a265", val: t.referral },
+                  { key: "organic", color: "#2563eb", val: t.organic },
+                  { key: "direct", color: "#10b981", val: t.direct },
+                  { key: "referral", color: "#f59e0b", val: t.referral },
                 ].map((b) => (
                   <motion.div key={b.key} initial={{ height: 0 }} animate={{ height: `${(b.val / maxTraffic) * 100}%` }} transition={{ duration: 0.6, delay: i * 0.06 }}
                     className="flex-1 rounded-t-md" style={{ background: b.color }} />
@@ -83,9 +83,9 @@ function ReportsPage() {
         </div>
         <div className="mt-3 flex flex-wrap gap-3 text-[11.5px] text-ink/70">
           <Legend color="#ee7273" label="Paid" />
-          <Legend color="#1D437B" label="Organic" />
-          <Legend color="#4a7c6f" label="Direct" />
-          <Legend color="#c4a265" label="Referral" />
+          <Legend color="#2563eb" label="Organic" />
+          <Legend color="#10b981" label="Direct" />
+          <Legend color="#f59e0b" label="Referral" />
         </div>
       </Card>
 
@@ -124,7 +124,7 @@ function ReportsPage() {
                   <td className="text-[12px] text-ink/60">{c.started}</td>
                   {c.values.map((v, i) => (
                     <td key={i} className="rounded-md p-2 font-semibold" style={{
-                      background: v == null ? "transparent" : `color-mix(in oklab, #4a7c6f ${Math.round((v / 100) * 60) + 15}%, #ffffff)`,
+                      background: v == null ? "transparent" : `color-mix(in oklab, #10b981 ${Math.round((v / 100) * 60) + 15}%, #ffffff)`,
                       color: v == null ? "transparent" : v > 60 ? "#fff" : "#171717",
                     }}>{v == null ? "—" : `${v.toFixed(0)}%`}</td>
                   ))}
