@@ -283,7 +283,7 @@ function OrderDetailPage() {
               <MetaRow label="LTV" value={formatMoney((patient?.ltv ?? 0) * 100)} />
               <MetaRow label="Started" value={patient?.startedAt ?? "—"} />
             </div>
-            <Link to="/admin/patients" className="mt-3 inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">View patient <ExternalLink className="h-3 w-3" /></Link>
+            <Link to="/admin/patients/$id" params={{ id: order!.patientId }} className="mt-3 inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">View patient <ExternalLink className="h-3 w-3" /></Link>
           </Card>
 
           {/* Subscription */}
