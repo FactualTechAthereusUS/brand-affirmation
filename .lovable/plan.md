@@ -1,117 +1,99 @@
-# Leads Revamp — Shopify-parity Telehealth Workspace
 
-Mirror the density and clarity we shipped for `/admin/patients`, borrowing structure from Shopify's Customers/Segments screen (uploaded ref). Leads = pre-conversion humans (abandoned intakes, unpaid checkouts, MQL from ads). This becomes the recovery + acquisition control tower.
+# /admin/analytics — logic optimization (no UI revamp)
 
-## Scope
+Goal: make every number, delta, chart overlay, and control on `/admin/analytics` (and its 4 sub-pages) computed from `AdminState`, not hardcoded strings. Keep the current Shopify-inspired layout. Borrow only three behaviours from the reference dump: date-range + compare picker, prior-period overlay everywhere, and computed "Increase/Decrease of X%" deltas.
 
-1. Rebuild `/admin/leads` (list) with KPI strip, saved segments, tabs, filters, dense table, bulk actions.
-2. New `/admin/leads/$id` detail page — full lead workspace (timeline, intake replay, outreach console, conversion attribution).
-3. Extend the seed data model so leads carry telehealth-grade signal (score, intent, funnel step, LTV projection, consent, attribution).
-4. Do NOT fold this into `/patients` — keep them separate (leads ≠ patients). Add a "Convert to patient" action that promotes a lead into the patients store.
+## What's broken today
 
-## Data model additions (`src/lib/admin/store.ts`)
+Inspected `admin.analytics.tsx` + `lib/admin/selectors.ts`:
 
-Extend `Lead`:
-- `phone`, `state`, `city`, `dob?`, `sex?`
-- `score` 0–100 (composite: funnel depth + recency + channel quality)
-- `intent`: `hot | warm | cold`
-- `funnelStep`: `landing | intake_start | intake_mid | intake_complete | checkout | payment_fail | abandoned_cart`
-- `progressPct` (0–100, derived from step)
-- `program`: existing + `hair | ed | skin | trt | general`
-- `stateEligible`: boolean (Rx state gating)
-- `bmi?`, `goalWeight?`, `currentWeight?` (WL leads)
-- `consent`: `{ sms: boolean; email: boolean; marketing: boolean }`
-- `attribution`: `{ source, medium, campaign, adset?, creative?, landingUrl, firstTouch, lastTouch }`
-- `deviceType`: `mobile | desktop | tablet`
-- `projectedLTV`, `projectedFirstOrder` (USD)
-- `outreach`: array of `{ ts, channel: 'email'|'sms'|'call'|'note', by, subject, outcome }`
-- `tags`: string[]
-- `assignee?`, `status`: `new | working | nurturing | won | lost | do_not_contact`
-- `lossReason?`, `wonPatientId?`
-- `intakeSnapshot`: array of `{ q, a, ts }` (their partial answers)
+- Date-range / Compare / Currency / Export / New report buttons — inert.
+- Deltas on `MetricCard`s ("+8.1%", "−63%", "+38%") are hardcoded strings.
+- "Prior period" line is `priorPeriodShift` — just current × ~0.92 with noise, not the real prior window.
+- `sessionsByState` multiplies patient share × magic `12480`.
+- `programMovers.refillPct = 62 + ((i*7)%22)` — placeholder.
+- `physicianSLATrend` / `approvalRateTrend` / `refillAdherenceTrend` — sinusoidal fakes, don't read `cases` or `checkIns`.
+- `paymentsHealth.failed/recovered` — synthesized from `paid`, not from `payments[]`.
+- Auto-refresh / Expand / Customize / Hide insights — not present or not wired.
+- Sub-pages (`acquisition|funnel|retention|finances`) are 30–107 line stubs; don't share date state with the parent.
+- Insight card tone is scenario-only; not derived from the actual biggest mover.
 
-Add `LeadSegment` type (id, name, definition string, count, pinned).
+## Plan
 
-Enrich seed to ~40 leads across programs/states with realistic funnel distributions.
+### 1. Range + compare state via URL search
 
-## Store actions
+- Add `validateSearch` on `/admin/analytics` for `{ range: "7d"|"30d"|"90d"|"ytd"|"custom", compare: "prior"|"yoy"|"none", from?: string, to?: string }`.
+- Read via `Route.useSearch()`; write via `useNavigate({ search: prev => ... })`.
+- Two popovers on the existing buttons (Radix `Popover` already used elsewhere) with the Shopify set: Today / Yesterday / Last 7 / Last 30 / Last 90 / YTD / Custom; and No comparison / Prior period / Previous year.
+- Propagate to `/admin/analytics/{acquisition,funnel,retention,finances}` via `<Link search>`.
 
-`updateLeadStatus`, `assignLead`, `addLeadOutreach`, `addLeadTag`, `removeLeadTag`, `setLeadConsent`, `convertLeadToPatient`, `markLeadLost(reason)`, `bulkLeadAction`.
+### 2. Real selectors (in `src/lib/admin/selectors.ts`)
 
-## List page `/admin/leads`
+Add a window helper `slice(s, days)` returning `{ current: FunnelDay[], prior: FunnelDay[] }` using `funnelDays.slice(-2*days,-days)` for prior. Refactor every trend selector to accept this:
 
-Structure top-to-bottom:
+- `revenueTrend / sessionsTrend / aovTrend / newPatientsTrend` → return `{ current, prior, dates, sum, priorSum, deltaPct }`.
+- `activeTrend` → keep smooth growth curve but derive base from `patients.length`; delta = `patients.filter(active this window) − prior`.
+- `physicianSLATrend` → per-day median of `(case.decidedAt − case.submittedAt)/60000` for cases decided that day; `p90` from the same array. Falls back to seed medians if a day has 0 decisions.
+- `approvalRateTrend` → `approved/(approved+denied)` per day from `cases`.
+- `refillAdherenceTrend` → per-day `clear / (clear+hold+review)` from `checkIns` bucketed by `submittedAt`.
+- `paymentsHealth` → count `payments[]` bucketed by day and `status ∈ {succeeded, failed, recovered}`; recoveryRate = recovered / failed.
+- `sessionsByState` → real `funnelDays[].sessions * (statePop / totalPatients)` — no magic 12480; add per-state delta from prior window.
+- `programMovers` → real `refillPct` from `checkIns` filtered to patients in that program; real `churnPct` from `patients.status==="cancelled"`; real `spark` from that program's daily revenue.
 
-1. **Page header** — "Leads" + right-side buttons: Export, Import, Create segment, New lead.
-2. **KPI strip (6 cards)**:
-   - Open leads
-   - Hot (score ≥ 70)
-   - Abandoned checkouts · 30d
-   - Recovery rate · 30d
-   - Avg time-to-contact
-   - Projected recoverable revenue (Σ projectedFirstOrder for open)
-3. **Saved segments rail** (Shopify Segments pattern from ref image) — horizontal chip row + "All segments" link that expands into a table:
-   - Name · % of leads · Last activity · Created by
-   - Seeded segments: All leads, Hot · last 24h, Abandoned checkout · 30d, Intake started · not finished, Payment failed, State-eligible only, Meta paid, Google paid, DNC list, Won this month.
-4. **Tabs** (status): All · New · Working · Nurturing · Payment failed · Do not contact · Lost · Won.
-5. **Filter bar** — search (name/email/phone), Program, State, Source, Score range, Funnel step, Assignee, Date range. Save-as-segment button.
-6. **Table (dense)** columns:
-   - checkbox · Lead (name + email + phone) · Score (pill with color) · Intent · Program · Funnel step (mini progress bar) · State (with eligibility dot) · Source/Campaign · Age · Last touch · Assignee · Status · Actions (Email/SMS/Call/Open)
-7. **Bulk action bar** appears on selection: Email, SMS, Assign, Tag, Change status, Add to segment, Export, Delete.
-8. **Pagination** + rows-per-page.
+### 3. Deltas from data, not strings
 
-## Detail page `/admin/leads/$id`
+- New `pctDelta(cur, prior)` + `formatDelta({ pct, positiveIsGood })`.
+- Remove every hardcoded delta prop on `MetricCard`; pass computed strings + tone (`positive|critical|neutral`).
+- Insight banner: `pickTopMover(selectors)` returns the metric whose |ΔPct| is largest, respecting scenario override. `See why →` deep-links to the matching sub-page.
 
-Full-width workspace, one scroll, mirrors `/admin/patients/$id` architecture.
+### 4. Auto-refresh
 
-**Top status banner (conditional)**:
-- Payment failed → "Retry payment / Send new checkout link"
-- Intake abandoned mid → "Resume intake link"
-- Hot + not contacted in 2h → "Contact now"
-- DNC → red banner, disables outreach
+- `useAutoRefresh(intervalMs, enabled)` hook: `setInterval` that calls `store.tick()` (append one new `FunnelDay` shifted forward, cull head). Toggle exposed on the "Turn on auto-refresh" button; shows a live "Last refreshed Xs ago".
 
-**Header block** — avatar/initials, name, email, phone, state, score gauge, intent badge, assignee, status dropdown, quick actions (Email, SMS, Call, Convert to patient, Mark lost).
+### 5. Export CSV
 
-**Left column (main)**:
-- **Lead score breakdown** — component bars (funnel depth, recency, channel, engagement) totalling score.
-- **Funnel progress** — horizontal stepper: Landing → Intake start → Intake mid → Intake complete → Checkout → Paid. Current step highlighted, drop-off arrow shown.
-- **Intake snapshot** — Q&A list from `intakeSnapshot` (what they answered before dropping) + "Resume intake" deep link.
-- **Attribution** — source/medium/campaign/creative, landing URL, first touch, last touch, device, sessions count.
-- **Outreach timeline** — chronological feed of email/sms/call/note events with outcomes. Inline composer at top (channel tabs: Email / SMS / Call log / Internal note).
-- **Related activity** — page views, form fields touched, cart contents if any, coupon codes.
+- `exportCsv(name, rows)` helper. Wire the Export button to a small menu: Program movers, Funnel, Cohort retention, Payments health. Downloads a `.csv` blob — no backend.
 
-**Right sidebar**:
-- **Quick info** — email/phone (click to copy), state, DOB, consent toggles (SMS/Email/Marketing), timezone, best time to contact.
-- **Projected value** — projected first order, projected LTV, program preference.
-- **Manage** — Assign to teammate, Change status, Add tag, Add to segment, Merge duplicates.
-- **Danger zone** — Mark do-not-contact, Mark lost (with reason dropdown: price, competitor, ineligible state, unresponsive, medical, other), Delete lead.
-- **Tags** — chips with add/remove.
+### 6. Prior-period overlay on charts
 
-## Components to add (`src/components/admin/leads/`)
+- `AreaChart` / `LineChartMini` / `BarsMini` already accept a `prior` array. Pass the **real** prior slice from the selector, not `priorPeriodShift(current)`.
+- Add a small legend row under each chart showing "Current / Prior" swatches.
 
-- `LeadKpis.tsx`
-- `SegmentsRail.tsx` (chips + expandable segments table matching ref image)
-- `LeadsFilters.tsx`
-- `LeadsTable.tsx` (with column primitives: `ScorePill`, `IntentBadge`, `FunnelBar`, `EligibilityDot`)
-- `BulkActionBar.tsx`
-- `LeadStatusBanner.tsx`
-- `LeadScoreBreakdown.tsx`
-- `FunnelStepper.tsx`
-- `IntakeSnapshot.tsx`
-- `AttributionCard.tsx`
-- `OutreachTimeline.tsx` + `OutreachComposer.tsx`
-- `LeadManagePanel.tsx`, `LeadDangerZone.tsx`
+### 7. Sub-pages made real
 
-## Styling
+- `admin.analytics.acquisition.tsx` — Campaigns table sorted by spend, real CAC/ROAS/leads from `campaigns[]`, channel mix donut from `acquisitionSpendMix`, landing-page top list from `funnelDays.sessions` split by seeded referrer weight.
+- `admin.analytics.funnel.tsx` — 6-step funnel from `funnelDays`: Sessions → Intake started → Intake completed → Approved → Paid → Shipped; step-to-step conv + drop counts.
+- `admin.analytics.retention.tsx` — Cohort heatmap + churn reasons (already there) + returning-customer rate line + LTV by cohort computed from `patients[].mrr * tenureMonths`.
+- `admin.analytics.finances.tsx` — MRR waterfall (already exists) + Net revenue vs Refunds bar + Gross-vs-net breakdown table from `payments[]`.
 
-Stay inside `.admin-scope` tokens (indigo/violet/sky + emerald/amber/coral semantics). No icon background circles. Same table/card density we established in `/admin/patients` and `/admin/orders`.
+All sub-pages read `useSearch()` from the parent route (same `range/compare`) via `Route.useSearch()` on their own routes with the same `validateSearch`, or via `getRouteApi("/admin/analytics").useSearch()` if we lift it to a shared search schema.
 
-## Out of scope for this pass
+### 8. Insight card
 
-- Real ESP/SMS integration (all outreach is local store simulation).
-- Real ad-platform attribution ingestion (attribution is deterministic seed).
-- Segment builder UI (segments are pre-seeded; "Create segment" saves current filter set only).
+- Replace the scenario-only headline with `pickInsight(state, window)`:
+  - Compute WoW % change for each of: netRevenue, activePatients, approvalRate, refillAdherence, failedPayments, sessions.
+  - Return the biggest |Δ|, tone `critical` if it's a "bad-direction" metric (failedPayments up, adherence down, approvalRate down), else `positive`.
+  - Scenario override retained for demo screenshots.
 
-## Deliverable
+### 9. Cleanup
 
-Dense Shopify-grade Leads workspace at `/admin/leads` + `/admin/leads/$id`, wired to the extended store, matching the visual language of the rest of the admin.
+- Delete `priorPeriodShift` (replaced by real prior slice).
+- Remove hardcoded delta strings from `admin.analytics.tsx`.
+- Add a tiny `useAnalyticsWindow(search)` hook that returns `{ days, currentDates, priorDates, currentRange, priorRange }` and pass it to every selector — single source of truth for the window.
+
+## Files touched
+
+- `src/lib/admin/selectors.ts` — refactor + add window helper, real telehealth selectors.
+- `src/lib/admin/store.ts` — add `tick()` for auto-refresh; no schema change.
+- `src/lib/admin/csv.ts` (new) — CSV export helper.
+- `src/routes/admin.analytics.tsx` — wire search state, popovers, auto-refresh, real deltas, real prior overlays, export menu. Keep JSX/layout intact.
+- `src/routes/admin.analytics.{acquisition,funnel,retention,finances}.tsx` — replace stub content with real selector-driven blocks; share `validateSearch`.
+- `src/components/admin/analytics/MetricCard.tsx` — accept `{ deltaPct?: number; positiveIsGood?: boolean }` and render the pill from that (keeps existing string prop as fallback).
+
+No changes to `AdminShell`, admin theme, or other admin routes.
+
+## Non-goals
+
+- No visual redesign, no new chart types, no new pages.
+- No backend / real data source — this stays fully client-side over `AdminState`.
+- No changes to `/admin/live` or other admin scopes.
