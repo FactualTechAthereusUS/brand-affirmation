@@ -277,21 +277,22 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
       {/* Mobile bottom tabs */}
       <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-around border-t border-ink/[0.06] bg-white py-1.5 lg:hidden">
         {[
-          { to: "/admin", icon: LayoutGrid, label: "Home", exact: true },
-          { to: "/admin/live", icon: Radio, label: "Live" },
-          { to: "/admin/patients", icon: Users, label: "Patients" },
-          { to: "/admin/messages", icon: MessageSquare, label: "Msgs" },
-          { to: "/admin/settings", icon: Settings, label: "More" },
+          { to: `${prefix}`, icon: LayoutGrid, label: "Home", exact: true },
+          { to: `${prefix}/live`, icon: Radio, label: "Live" },
+          { to: `${prefix}/patients`, icon: Users, label: "Patients" },
+          { to: `${prefix}/messages`, icon: MessageSquare, label: "Msgs" },
+          { to: `${prefix}/settings`, icon: Settings, label: "More" },
         ].map((t) => {
           const active = t.exact ? pathname === t.to : pathname === t.to || pathname.startsWith(t.to + "/");
           const Icon = t.icon;
           return (
-            <Link key={t.to} to={t.to} className={`flex flex-col items-center gap-0.5 rounded-md px-3 py-1 ${active ? "text-ink" : "text-ink/45"}`}>
+            <Link key={t.to} to={t.to as string} className={`flex flex-col items-center gap-0.5 rounded-md px-3 py-1 ${active ? "text-ink" : "text-ink/45"}`}>
               <Icon className="h-4 w-4" strokeWidth={1.75} />
               <span className="text-[10px]">{t.label}</span>
             </Link>
           );
         })}
+
       </div>
 
       <DemoVariantSheet />
