@@ -1,0 +1,314 @@
+import createGlobe from "cobe";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { DOT_RULES } from "./dotRules";
+import type { LiveSession } from "@/hooks/useLiveSessions";
+
+type Props = {
+  sessions: LiveSession[];
+  focus?: { lat: number; lng: number } | null;
+  className?: string;
+};
+
+type Tooltip = { x: number; y: number; session: LiveSession } | null;
+
+// COBE convention: [phi, theta] = [longitude-derived, latitude-derived] radians.
+function locationToAngles(lat: number, lng: number): [number, number] {
+  return [Math.PI - ((lng * Math.PI) / 180 - Math.PI / 2), (lat * Math.PI) / 180];
+}
+
+export default function LiveGlobe({ sessions, focus, className }: Props) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null);
+
+  const phi = useRef(4.3);
+  const theta = useRef(0.3);
+  const targetPhi = useRef<number | null>(null);
+  const targetTheta = useRef<number | null>(null);
+  const scale = useRef(1.05);
+  const drag = useRef<{ x: number; y: number; phi: number; theta: number } | null>(null);
+  const lastInteract = useRef(0);
+  const pointer = useRef<{ x: number; y: number } | null>(null);
+  const sessionsRef = useRef(sessions);
+  sessionsRef.current = sessions;
+
+  const [tooltip, setTooltip] = useState<Tooltip>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+
+  // Focus interp
+  useEffect(() => {
+    if (!focus) return;
+    const [tp, tt] = locationToAngles(focus.lat, focus.lng);
+    targetPhi.current = tp;
+    targetTheta.current = tt;
+    lastInteract.current = Date.now();
+  }, [focus]);
+
+  // Build/resize globe
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const wrap = wrapperRef.current;
+    if (!canvas || !wrap) return;
+
+    let disposed = false;
+
+    const rebuild = () => {
+      const rect = wrap.getBoundingClientRect();
+      const w = Math.max(320, rect.width);
+      const h = Math.max(320, rect.height);
+      setSize({ w, h });
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+
+      globeRef.current?.destroy();
+      globeRef.current = createGlobe(canvas, {
+        devicePixelRatio: dpr,
+        width: w * dpr,
+        height: h * dpr,
+        phi: phi.current,
+        theta: theta.current,
+        dark: 0,
+        diffuse: 1.15,
+        scale: scale.current,
+        mapSamples: 16000,
+        mapBrightness: 5.6,
+        baseColor: [0.98, 0.99, 1.0],
+        markerColor: [0.145, 0.388, 0.921],
+        glowColor: [0.86, 0.9, 0.98],
+        markers: [],
+        opacity: 0.98,
+        onRender: (state) => {
+          const now = Date.now();
+          const idleFor = now - lastInteract.current;
+
+          // Focus interp (~800ms ease)
+          if (targetPhi.current != null && targetTheta.current != null) {
+            phi.current += (targetPhi.current - phi.current) * 0.08;
+            theta.current += (targetTheta.current - theta.current) * 0.08;
+            if (
+              Math.abs(targetPhi.current - phi.current) < 0.002 &&
+              Math.abs(targetTheta.current - theta.current) < 0.002
+            ) {
+              targetPhi.current = null;
+              targetTheta.current = null;
+            }
+          } else if (!drag.current && idleFor > 2000) {
+            // idle auto-rotate
+            phi.current += 0.0022;
+          }
+
+          // Clamp theta
+          if (theta.current > 0.9) theta.current = 0.9;
+          if (theta.current < -0.9) theta.current = -0.9;
+
+          state.phi = phi.current;
+          state.theta = theta.current;
+          state.scale = scale.current;
+
+          state.markers = sessionsRef.current.map((s) => {
+            const rule = DOT_RULES[s.stage];
+            const sz = rule.pulse
+              ? rule.size * (1 + 0.35 * Math.sin(now / 300))
+              : rule.size;
+            return { location: [s.lat, s.lng] as [number, number], size: sz };
+          });
+        },
+      });
+    };
+
+    rebuild();
+    const ro = new ResizeObserver(() => {
+      if (disposed) return;
+      rebuild();
+    });
+    ro.observe(wrap);
+
+    return () => {
+      disposed = true;
+      ro.disconnect();
+      globeRef.current?.destroy();
+      globeRef.current = null;
+    };
+  }, []);
+
+  // Pointer interactions
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    drag.current = { x: e.clientX, y: e.clientY, phi: phi.current, theta: theta.current };
+    targetPhi.current = null;
+    targetTheta.current = null;
+    lastInteract.current = Date.now();
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    const wrap = wrapperRef.current;
+    if (wrap) {
+      const r = wrap.getBoundingClientRect();
+      pointer.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+      hitTest();
+    }
+    if (drag.current) {
+      const dx = e.clientX - drag.current.x;
+      const dy = e.clientY - drag.current.y;
+      phi.current = drag.current.phi + dx / 200;
+      theta.current = drag.current.theta - dy / 200;
+      lastInteract.current = Date.now();
+    }
+  }, []);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
+    drag.current = null;
+    lastInteract.current = Date.now();
+  }, []);
+
+  const onPointerLeave = useCallback(() => {
+    pointer.current = null;
+    setTooltip(null);
+  }, []);
+
+  const onWheel = useCallback((e: React.WheelEvent) => {
+    scale.current = Math.min(2.2, Math.max(0.9, scale.current - e.deltaY * 0.002));
+    lastInteract.current = Date.now();
+  }, []);
+
+  const zoom = useCallback((delta: number) => {
+    scale.current = Math.min(2.2, Math.max(0.9, scale.current + delta));
+    lastInteract.current = Date.now();
+  }, []);
+
+  // Project [lat,lng] to screen for hover hit test
+  const hitTest = useCallback(() => {
+    const wrap = wrapperRef.current;
+    const p = pointer.current;
+    if (!wrap || !p) return;
+    const { width, height } = wrap.getBoundingClientRect();
+    const cx = width / 2;
+    const cy = height / 2;
+    const r = (Math.min(width, height) / 2) * scale.current * 0.92;
+
+    // Camera basis derived from current phi/theta (COBE-style)
+    const phiC = phi.current;
+    const thC = theta.current;
+
+    // Convert each session to camera-space [x, y, z]
+    let best: { d: number; sx: number; sy: number; session: LiveSession } | null = null;
+    for (const s of sessionsRef.current) {
+      const latR = (s.lat * Math.PI) / 180;
+      const lngR = (s.lng * Math.PI) / 180;
+
+      // World unit vector on sphere
+      const wx = Math.cos(latR) * Math.cos(lngR);
+      const wy = Math.sin(latR);
+      const wz = Math.cos(latR) * Math.sin(lngR);
+
+      // Rotate around Y (phi) then around X (theta)
+      const cosP = Math.cos(phiC);
+      const sinP = Math.sin(phiC);
+      const x1 = wx * cosP - wz * sinP;
+      const z1 = wx * sinP + wz * cosP;
+      const y1 = wy;
+
+      const cosT = Math.cos(thC);
+      const sinT = Math.sin(thC);
+      const y2 = y1 * cosT - z1 * sinT;
+      const z2 = y1 * sinT + z1 * cosT;
+      const x2 = x1;
+
+      // Front-facing? z2 > 0 means towards camera in this convention
+      if (z2 < 0.02) continue;
+
+      const sx = cx + x2 * r;
+      const sy = cy - y2 * r;
+      const dx = sx - p.x;
+      const dy = sy - p.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      const hit = DOT_RULES[s.stage].size * 220; // in px, approx
+      if (d < Math.max(10, hit)) {
+        if (!best || d < best.d) best = { d, sx, sy, session: s };
+      }
+    }
+    if (best) {
+      setTooltip({ x: best.sx, y: best.sy, session: best.session });
+    } else {
+      setTooltip((prev) => (prev ? null : prev));
+    }
+  }, []);
+
+  return (
+    <div
+      ref={wrapperRef}
+      className={`relative select-none ${className ?? ""}`}
+      style={{ touchAction: "none" }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerLeave={onPointerLeave}
+      onWheel={onWheel}
+    >
+      <canvas ref={canvasRef} style={{ cursor: drag.current ? "grabbing" : "grab" }} />
+
+      {/* Tooltip */}
+      {tooltip && (
+        <div
+          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-ink/10 bg-white px-2 py-1 text-[11px] font-medium text-ink shadow-[0_8px_24px_-8px_rgba(0,0,0,0.25)]"
+          style={{ left: tooltip.x, top: tooltip.y - 10 }}
+        >
+          <span
+            className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            style={{ background: DOT_RULES[tooltip.session.stage].hex }}
+          />
+          <span className="align-middle">{tooltip.session.city}</span>
+          <span className="ml-1.5 align-middle text-ink/45">
+            · {DOT_RULES[tooltip.session.stage].label}
+          </span>
+        </div>
+      )}
+
+      {/* Zoom controls */}
+      <div className="absolute bottom-3 right-3 flex flex-col overflow-hidden rounded-md border border-ink/10 bg-white/90 shadow-sm backdrop-blur">
+        <button
+          type="button"
+          onClick={() => zoom(0.2)}
+          aria-label="Zoom in"
+          className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]"
+        >
+          <span className="text-sm leading-none">+</span>
+        </button>
+        <div className="h-px w-full bg-ink/10" />
+        <button
+          type="button"
+          onClick={() => zoom(-0.2)}
+          aria-label="Zoom out"
+          className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]"
+        >
+          <span className="text-sm leading-none">−</span>
+        </button>
+      </div>
+
+      {/* Legend */}
+      <div className="absolute bottom-3 left-3 flex items-center gap-3 rounded-md border border-ink/10 bg-white/85 px-2.5 py-1 text-[10.5px] font-medium text-ink/70 shadow-sm backdrop-blur">
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.browsing.hex }} />
+          Visitors
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.checkout.hex }} />
+          Checkout
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.purchased.hex }} />
+          Orders
+        </span>
+      </div>
+
+      {/* size sentinel for a11y (unused but avoids TS complaint) */}
+      <span className="sr-only">
+        Globe {size.w}x{size.h}
+      </span>
+    </div>
+  );
+}
