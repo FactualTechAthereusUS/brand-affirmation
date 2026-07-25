@@ -153,15 +153,79 @@ export type Payment = {
   failureReason?: string;
 };
 
+export type LeadStatus = "new" | "working" | "nurturing" | "won" | "lost" | "do_not_contact";
+export type LeadIntent = "hot" | "warm" | "cold";
+export type LeadFunnelStep =
+  | "landing" | "intake_start" | "intake_mid" | "intake_complete"
+  | "checkout" | "payment_fail" | "abandoned_cart";
+export type LeadOutreachChannel = "email" | "sms" | "call" | "note";
+export type LeadOutreach = {
+  id: string;
+  ts: number;
+  channel: LeadOutreachChannel;
+  by: string;
+  subject: string;
+  outcome: string;
+};
+export type LeadIntakeAnswer = { q: string; a: string; ts: number };
+export type LeadAttribution = {
+  source: string;
+  medium: string;
+  campaign: string;
+  adset?: string;
+  creative?: string;
+  landingUrl: string;
+  firstTouch: number;
+  lastTouch: number;
+  sessions: number;
+  deviceType: "mobile" | "desktop" | "tablet";
+};
+
 export type Lead = {
   id: string;
   name: string;
   email: string;
-  lastStep: string;
+  phone: string;
+  state: string;
+  city: string;
+  dob?: string;
+  sex?: "M" | "F" | "X";
   program: string;
+  score: number;
+  intent: LeadIntent;
+  funnelStep: LeadFunnelStep;
+  progressPct: number;
+  stateEligible: boolean;
+  bmi?: number;
+  currentWeight?: number;
+  goalWeight?: number;
+  consent: { sms: boolean; email: boolean; marketing: boolean };
+  attribution: LeadAttribution;
+  projectedFirstOrder: number;
+  projectedLTV: number;
+  outreach: LeadOutreach[];
+  tags: string[];
+  assignee?: string;
+  status: LeadStatus;
+  lossReason?: string;
+  wonPatientId?: string;
+  intakeSnapshot: LeadIntakeAnswer[];
+  cartItems?: string[];
+  coupon?: string;
+  createdAt: number;
+  lastTouchAt: number;
+  // legacy — kept for back-compat with prior UI
   source: string;
+  lastStep: string;
   ageHrs: number;
   contacted: boolean;
+};
+
+export type LeadSegment = {
+  key: string;
+  label: string;
+  definition: string;
+  pinned?: boolean;
 };
 
 export type TaskCategory = "billing" | "care_ops" | "fulfillment" | "compliance" | "admin";
