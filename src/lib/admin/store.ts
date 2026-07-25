@@ -1335,7 +1335,7 @@ export const adminActions = {
       patientPhone: p.phone,
       channel: "in_app",
       status: "support",
-      tags: ["general"],
+      tag: "general",
       assignedTo: "You",
       unread: false,
       preview: "New conversation",
