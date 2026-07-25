@@ -5,7 +5,6 @@ import {
   Activity, BarChart3, CreditCard, ChevronDown, HelpCircle, LayoutGrid, MessageSquare,
   Package, PanelLeft, Plus, Search, Settings, Stethoscope, UserCircle2, Users, X,
   Building2, ClipboardCheck, Plug, Radio, PieChart, Target, TrendingUp, DollarSign, ArrowRightLeft,
-  Filter, ClipboardList, ShoppingBag, Mail, FileText,
 } from "lucide-react";
 import { adminActions, hydrateAdmin, useAdmin, type Role } from "@/lib/admin/store";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
@@ -16,7 +15,7 @@ import { Toaster } from "@/components/ui/sonner";
 type NavItem = { to?: string; label: string; icon: typeof LayoutGrid; exact?: boolean; roles?: Role[] };
 type NavGroup = { title: string; items: NavItem[] };
 
-const RAW_NAV: NavGroup[] = [
+const NAV: NavGroup[] = [
   {
     title: "",
     items: [
@@ -62,28 +61,6 @@ const RAW_NAV: NavGroup[] = [
   },
 ];
 
-const PHARMABRO_BUILD: NavGroup = {
-  title: "Build",
-  items: [
-    { to: "/pharmabro-admin/build/funnel",   label: "Funnel builder",  icon: Filter,        roles: ["owner", "ops"] },
-    { to: "/pharmabro-admin/build/intake",   label: "Intake builder",  icon: ClipboardList, roles: ["owner", "ops"] },
-    { to: "/pharmabro-admin/build/products", label: "Products & pricing", icon: ShoppingBag, roles: ["owner", "ops"] },
-    { to: "/pharmabro-admin/build/emails",   label: "Email flows",     icon: Mail,          roles: ["owner", "ops"] },
-    { to: "/pharmabro-admin/build/pages",    label: "Pages",           icon: FileText,      roles: ["owner", "ops"] },
-  ],
-};
-
-function remapNav(prefix: string): NavGroup[] {
-  if (prefix === "/admin") return RAW_NAV;
-  const remapped = RAW_NAV.map((g) => ({
-    ...g,
-    items: g.items.map((it) => ({ ...it, to: it.to?.replace(/^\/admin/, prefix) })),
-  }));
-  // Insert BUILD group right after the top group (Home / Live view)
-  return [remapped[0], PHARMABRO_BUILD, ...remapped.slice(1)];
-}
-
-
 const ONBOARDING_STEPS = [
   "Connect Stripe", "Connect South End", "Invite physician", "Add first product",
   "Enable Klaviyo", "Add domain", "Publish site",
@@ -105,27 +82,14 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const startHold = () => { holdRef.current = setTimeout(() => adminActions.toggleLogoMenu(true), 600); };
   const endHold = () => { if (holdRef.current) clearTimeout(holdRef.current); };
 
-  const prefix = pathname.startsWith("/pharmabro-admin") ? "/pharmabro-admin" : "/admin";
-  const isPharmabro = prefix === "/pharmabro-admin";
-  const navGroups = remapNav(prefix);
-  const Wordmark = ({ className = "" }: { className?: string }) =>
-    isPharmabro ? (
-      <span className={`font-serif italic tracking-tight text-ink ${className}`} style={{ fontFamily: "'Instrument Serif', 'Cormorant Garamond', serif" }}>
-        pharmabro<span className="text-marine">.</span>
-      </span>
-    ) : (
-      <img src={blissleyLogo.url} alt="Blissley" className={className} />
-    );
-
   const canSee = (n: NavItem) => !n.roles || n.roles.includes(role);
   const isActive = (n: NavItem) => n.to && (n.exact ? pathname === n.to : pathname === n.to || pathname.startsWith(n.to + "/") || pathname.startsWith(n.to + "?"));
-
 
   const NavRow = ({ n }: { n: NavItem }) => {
     const active = isActive(n);
     const Icon = n.icon;
     return (
-      <Link to={n.to! as string} className={`group relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ${
+      <Link to={n.to!} className={`group relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ${
         active ? "bg-marine/[0.08] font-semibold text-marine" : "text-ink/65 hover:bg-ink/[0.04] hover:text-ink"
       }`}>
         {active && <span className="absolute inset-y-1 left-0 w-[3px] rounded-full bg-marine" />}
@@ -164,7 +128,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           className="flex items-center px-4 pt-5 text-left"
           title="Long-press for demo controls"
         >
-          <Wordmark className={collapsed ? "h-6 w-auto text-[18px] leading-none" : "h-7 w-auto text-[22px] leading-none"} />
+          <img src={blissleyLogo.url} alt="Blissley" className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
         </button>
 
         {!collapsed && (
@@ -184,7 +148,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
         )}
 
         <nav className="mt-3 flex-1 overflow-y-auto px-2 pb-3">
-          {navGroups.map((g, gi) => (
+          {NAV.map((g, gi) => (
             <div key={gi} className="mb-3">
               {g.title && !collapsed && (
                 <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink/40">{g.title}</div>
@@ -211,11 +175,11 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               transition={{ type: "spring", damping: 28, stiffness: 260 }}
               className="fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-ink/[0.06] bg-white lg:hidden">
               <div className="flex items-center justify-between px-5 py-5">
-                <Wordmark className="h-7 w-auto text-[22px] leading-none" />
+                <img src={blissleyLogo.url} alt="Blissley" className="h-7 w-auto" />
                 <button onClick={() => setMobileNav(false)} className="rounded-lg p-1.5 text-ink/60"><X className="h-4 w-4" /></button>
               </div>
               <nav className="flex-1 overflow-y-auto px-2 pb-3">
-                {navGroups.map((g, gi) => (
+                {NAV.map((g, gi) => (
                   <div key={gi} className="mb-3">
                     {g.title && <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink/40">{g.title}</div>}
                     {g.items.filter(canSee).map((n) => (
@@ -232,7 +196,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
       {/* Main column */}
       <div className={collapsed ? "lg:pl-[64px]" : "lg:pl-[220px]"}>
-        <header className={`sticky top-0 z-20 ${pathname === `${prefix}/live` ? "bg-transparent" : "border-b border-ink/[0.06] bg-white"}`}>
+        <header className={`sticky top-0 z-20 ${pathname.startsWith("/admin/live") ? "bg-transparent" : "border-b border-ink/[0.06] bg-white"}`}>
           <div className="flex h-14 items-center gap-3 px-4 lg:px-6">
             <button
               onClick={() => setCollapsed((v) => !v)}
@@ -246,7 +210,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             </button>
 
             <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] bg-white/70 px-2.5 py-1 backdrop-blur sm:flex">
-              <Wordmark className="h-4 w-auto text-[13px] leading-none" />
+              <img src={blissleyLogo.url} alt="Blissley" className="h-4 w-auto" />
               <span className="mx-1 h-3 w-px bg-ink/10" />
               <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
                 <span className="relative flex h-1.5 w-1.5">
@@ -300,22 +264,21 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
       {/* Mobile bottom tabs */}
       <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-around border-t border-ink/[0.06] bg-white py-1.5 lg:hidden">
         {[
-          { to: `${prefix}`, icon: LayoutGrid, label: "Home", exact: true },
-          { to: `${prefix}/live`, icon: Radio, label: "Live" },
-          { to: `${prefix}/patients`, icon: Users, label: "Patients" },
-          { to: `${prefix}/messages`, icon: MessageSquare, label: "Msgs" },
-          { to: `${prefix}/settings`, icon: Settings, label: "More" },
+          { to: "/admin", icon: LayoutGrid, label: "Home", exact: true },
+          { to: "/admin/live", icon: Radio, label: "Live" },
+          { to: "/admin/patients", icon: Users, label: "Patients" },
+          { to: "/admin/messages", icon: MessageSquare, label: "Msgs" },
+          { to: "/admin/settings", icon: Settings, label: "More" },
         ].map((t) => {
           const active = t.exact ? pathname === t.to : pathname === t.to || pathname.startsWith(t.to + "/");
           const Icon = t.icon;
           return (
-            <Link key={t.to} to={t.to as string} className={`flex flex-col items-center gap-0.5 rounded-md px-3 py-1 ${active ? "text-ink" : "text-ink/45"}`}>
+            <Link key={t.to} to={t.to} className={`flex flex-col items-center gap-0.5 rounded-md px-3 py-1 ${active ? "text-ink" : "text-ink/45"}`}>
               <Icon className="h-4 w-4" strokeWidth={1.75} />
               <span className="text-[10px]">{t.label}</span>
             </Link>
           );
         })}
-
       </div>
 
       <DemoVariantSheet />
