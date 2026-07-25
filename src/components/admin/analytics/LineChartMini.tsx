@@ -213,11 +213,7 @@ export function BarsMini({
   const [w, setW] = useState(0);
   const [hover, setHover] = useState<{ i: number; px: number; py: number } | null>(null);
 
-  // Measure to render in pixel space so bars stay crisp and rounded caps stay round
-  const measureRef = (el: HTMLDivElement | null) => {
-    wrap.current = el;
-    if (el && w === 0) setW(el.clientWidth);
-  };
+
   useEffect(() => {
     const el = wrap.current;
     if (!el) return;
