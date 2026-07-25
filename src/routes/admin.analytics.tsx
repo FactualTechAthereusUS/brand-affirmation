@@ -114,13 +114,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Revenue">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Net revenue" value={`$${kpi.netRevenue.toLocaleString()}`} delta="+8.1%" sub="Compared to prior 30d">
-            <div className="h-24"><LineChartMini data={rev} prior={priorPeriodShift(rev, 8)} stroke="#171717" /></div>
+            <div className="h-24 pb-4"><LineChartMini data={rev} prior={priorPeriodShift(rev, 8)} dates={dts} label="Net revenue" formatValue={usd} stroke="#171717" /></div>
           </MetricCard>
           <MetricCard label="MRR" value={`$${kpi.mrr.toLocaleString()}`} delta="+4.6%" sub="Recurring monthly">
             <div className="px-3"><Donut segments={mrrSegments} centerValue={`$${(kpi.mrr / 1000).toFixed(1)}k`} centerLabel="MRR" size={132} thickness={16} /></div>
           </MetricCard>
           <MetricCard label="Active patients" value={kpi.activeCount.toLocaleString()} delta="+3.2%" sub="Patients on refill">
-            <div className="h-24"><LineChartMini data={active} prior={priorPeriodShift(active, 6)} stroke="#1D437B" fill="rgba(29,67,123,0.06)" /></div>
+            <div className="h-24 pb-4"><LineChartMini data={active} prior={priorPeriodShift(active, 6)} dates={dts} label="Active patients" stroke="#1D437B" fill="rgba(29,67,123,0.06)" /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
