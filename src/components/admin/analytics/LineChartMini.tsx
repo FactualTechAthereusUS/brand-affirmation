@@ -256,7 +256,7 @@ export function BarsMini({
 
   return (
     <div
-      ref={measureRef}
+      ref={wrap}
       className="relative w-full select-none"
       style={{ height: H + 12 }}
       onPointerMove={onMove}
