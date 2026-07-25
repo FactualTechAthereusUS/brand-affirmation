@@ -22,13 +22,14 @@ const MIN_DIST = 180;
 const MAX_DIST = 380;
 const INIT_DIST = 260;
 
-// Shopify palette (from HTML dump)
-const HEX_COLOR = "#6ECDB8";           // mint hex continents
-const OCEAN_COLOR = "#F2F6FA";         // off-white sphere
-const ATMO_COLOR = "#C9E7F0";          // light-cyan halo
-const ORDER_FILL = "#8F71EF";
-const ORDER_RING = "#7F4AFA";
-const VISITOR_COLOR = "#13ACF0";
+// Blissley admin palette — matches /admin and /analytics
+const HEX_COLOR = "#C7D2FE";           // indigo-200 continents
+const OCEAN_COLOR = "#FAFAFC";         // off-white sphere
+const ATMO_COLOR = "#DBEAFE";          // soft sky halo
+const ORDER_FILL = "#7C3AED";          // violet-600 pin
+const ORDER_RING = "#6D28D9";          // violet-700 ring
+const VISITOR_COLOR = "#2563EB";       // indigo-600 visitor dot
+
 
 // Convert lat/lng to spherical [phi, theta] for camera.
 function latLngToPhiTheta(lat: number, lng: number) {
@@ -182,9 +183,10 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
           momentum.current = null;
           lastInteract.current = Date.now();
         }
-      } else if (!drag.current && idleFor > 2500) {
-        camTheta.current += 0.0015;
+      } else if (!drag.current && !pointer.current && idleFor > 3000) {
+        camTheta.current += 0.0012;
       }
+
 
 
       // Clamp phi so we don't flip upside down
@@ -278,11 +280,12 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
       let el = markerElsRef.current.get(s.id);
       if (!el) {
         el = document.createElement("div");
-        el.className = "absolute pointer-events-auto -translate-x-1/2 -translate-y-1/2";
+        el.className = "absolute pointer-events-none -translate-x-1/2 -translate-y-1/2";
         el.style.willChange = "transform, opacity";
         markerElsRef.current.set(s.id, el);
         holder.appendChild(el);
       }
+
       const rule = DOT_RULES[s.stage];
       const proj = projectFrame(s.lat, s.lng);
       if (!proj) continue;
@@ -388,16 +391,18 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
       const dy = e.clientY - drag.current.y;
       const nowT = performance.now();
       const dt = Math.max(1, nowT - drag.current.lastT);
-      // Track instantaneous velocity for release momentum
-      drag.current.vTheta = -((e.clientX - drag.current.lastX) / 180) / dt * 16;
-      drag.current.vPhi   = -((e.clientY - drag.current.lastY) / 180) / dt * 16;
+      // Sensitivity: distance-aware so close-up drag feels 1:1
+      const sens = 130 * (camDist.current / INIT_DIST);
+      drag.current.vTheta = -((e.clientX - drag.current.lastX) / sens) / dt * 16;
+      drag.current.vPhi   = -((e.clientY - drag.current.lastY) / sens) / dt * 16;
       drag.current.lastX = e.clientX;
       drag.current.lastY = e.clientY;
       drag.current.lastT = nowT;
-      camTheta.current = drag.current.theta - dx / 180;
-      camPhi.current = drag.current.phi - dy / 180;
+      camTheta.current = drag.current.theta - dx / sens;
+      camPhi.current = drag.current.phi - dy / sens;
       lastInteract.current = Date.now();
     }
+
   }, [hitTest]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
@@ -462,7 +467,7 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
       className={`relative select-none ${className ?? ""}`}
       style={{
         touchAction: "none",
-        background: "radial-gradient(circle at 50% 45%, #ffffff 0%, #f4f7fb 55%, #eef2f7 100%)",
+        background: "radial-gradient(circle at 50% 45%, #ffffff 0%, #f6f6f7 60%, #eef1f6 100%)",
       }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
