@@ -145,7 +145,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           className="flex items-center px-4 pt-5 text-left"
           title="Long-press for demo controls"
         >
-          <img src={blissleyLogo.url} alt="Blissley" className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
+          {tenant.id === "blissley"
+            ? <img src={blissleyLogo.url} alt={tenant.name} className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
+            : <span className={`font-hero font-bold tracking-tight ${collapsed ? "text-[15px]" : "text-[18px]"}`} style={{ color: tenant.primary }}>{tenant.logoText}</span>}
         </button>
 
         {!collapsed && (
