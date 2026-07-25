@@ -92,7 +92,16 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const endHold = () => { if (holdRef.current) clearTimeout(holdRef.current); };
 
   const prefix = pathname.startsWith("/pharmabro-admin") ? "/pharmabro-admin" : "/admin";
+  const isPharmabro = prefix === "/pharmabro-admin";
   const navGroups = remapNav(prefix);
+  const Wordmark = ({ className = "" }: { className?: string }) =>
+    isPharmabro ? (
+      <span className={`font-serif italic tracking-tight text-ink ${className}`} style={{ fontFamily: "'Instrument Serif', 'Cormorant Garamond', serif" }}>
+        pharmabro<span className="text-marine">.</span>
+      </span>
+    ) : (
+      <img src={blissleyLogo.url} alt="Blissley" className={className} />
+    );
 
   const canSee = (n: NavItem) => !n.roles || n.roles.includes(role);
   const isActive = (n: NavItem) => n.to && (n.exact ? pathname === n.to : pathname === n.to || pathname.startsWith(n.to + "/") || pathname.startsWith(n.to + "?"));
