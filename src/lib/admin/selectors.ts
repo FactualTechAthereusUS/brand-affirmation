@@ -13,6 +13,10 @@ export function revenueTrend(s: AdminState, days = 30): number[] {
   return s.funnelDays.slice(-days).map((d) => d.revenue);
 }
 
+export function datesTrend(s: AdminState, days = 30): number[] {
+  return s.funnelDays.slice(-days).map((d) => d.ts);
+}
+
 export function newPatientsTrend(s: AdminState, days = 30): number[] {
   return s.funnelDays.slice(-days).map((d) => d.paid);
 }
