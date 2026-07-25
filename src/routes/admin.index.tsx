@@ -47,12 +47,15 @@ function AdminHome() {
   const refills = useAdmin(refillsDue);
   const dts = useAdmin((s) => datesTrend(s, 30));
   const revPrior = priorPeriodShift(revTrend, 8);
+  const tenant = useAdmin((s) => s.tenant);
 
   const waterfall = mrrMovement();
   const programs = revenueByProgram();
   const acq = acquisitionMix();
 
   const mrrDelta = waterfall.reduce((a, i) => a + i.value, 0);
+
+  if (tenant.stage === "zero") return <ZeroStateHome tenant={tenant} />;
 
   // Intuitive palette (matches /admin/analytics)
   const C = {
