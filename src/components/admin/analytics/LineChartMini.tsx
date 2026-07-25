@@ -21,24 +21,25 @@ function Tooltip({
   x: number; y: number; containerW: number;
   label?: string; dateText: string; valueText: string; priorText?: string; color: string;
 }) {
-  const boxW = 148;
+  const boxW = 156;
   const left = Math.max(4, Math.min(containerW - boxW - 4, x - boxW / 2));
   return (
     <motion.div
-      initial={{ opacity: 0, y: -2, scale: 0.98 }}
+      initial={{ opacity: 0, y: 4, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -2, scale: 0.98 }}
+      exit={{ opacity: 0, y: 4, scale: 0.96 }}
       transition={{ duration: 0.14, ease: [0.2, 0.8, 0.2, 1] }}
-      style={{ left, top: Math.max(4, y - 62), width: boxW }}
-      className="pointer-events-none absolute z-20 rounded-lg border border-ink/10 bg-white/95 px-2.5 py-1.5 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] backdrop-blur"
+      style={{ left, top: Math.max(4, y - 74), width: boxW }}
+      className="pointer-events-none absolute z-20 rounded-xl bg-ink px-3 py-2 shadow-[0_10px_28px_-8px_rgba(0,0,0,0.35)]"
     >
-      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.06em] text-ink/45">
+      <div className="text-[9.5px] font-medium uppercase tracking-[0.08em] text-white/55">{dateText}</div>
+      <div className="mt-0.5 flex items-center gap-1.5">
         <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: color }} />
-        {label ?? "Value"}
+        <span className="text-[10.5px] text-white/70">{label ?? "Value"}</span>
+        <span className="ml-auto font-hero text-[13px] font-semibold tabular-nums text-white">{valueText}</span>
       </div>
-      <div className="mt-0.5 font-hero text-[14px] font-semibold tabular-nums text-ink">{valueText}</div>
-      <div className="mt-0.5 text-[10.5px] text-ink/55">{dateText}</div>
-      {priorText && <div className="text-[10.5px] text-ink/40">Prior · {priorText}</div>}
+      {priorText && <div className="mt-0.5 text-[10.5px] text-white/45">Prior · {priorText}</div>}
+      <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" />
     </motion.div>
   );
 }
