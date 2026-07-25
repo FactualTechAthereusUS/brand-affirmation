@@ -9,7 +9,7 @@ import {
 } from "@/lib/admin/leads-enrich";
 import { ScorePill, IntentBadge, LeadStatusPill, EligibilityDot, FunnelBar, ChannelIcon, LeadInitials } from "@/components/admin/leads/LeadPills";
 
-export const Route = createFileRoute("/admin/leads")({
+export const Route = createFileRoute("/admin/leads/")({
   ssr: false,
   head: () => ({ meta: [
     { title: "Leads — Blissley HQ" },
