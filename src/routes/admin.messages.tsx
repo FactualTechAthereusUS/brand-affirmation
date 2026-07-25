@@ -110,7 +110,7 @@ function Thread({ convo }: { convo: Conversation }) {
     if (ta.current) ta.current.style.height = "auto";
   };
   return (
-    <div className="flex min-h-[520px] flex-col overflow-hidden rounded-2xl border border-ink/8 bg-white">
+    <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-ink/8 bg-white">
       <div className="flex items-center justify-between border-b border-ink/8 p-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
