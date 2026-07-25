@@ -208,7 +208,8 @@ function LiveViewPage() {
           </div>
 
           <div className="relative z-10 flex h-full w-full lg:w-[380px]">
-            <div className="min-w-0 h-full w-full overflow-y-auto pr-1 [scrollbar-width:thin]">
+            <div className="min-w-0 h-full w-full overflow-y-auto pr-1 pt-14 [scrollbar-width:thin]">
+
               <div className={view === "map" ? "" : "rounded-xl border border-ink/[0.06] bg-white/95 p-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur"}>
                 <LiveSidebar
                   counts={counts}
