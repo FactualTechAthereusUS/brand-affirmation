@@ -350,7 +350,7 @@ function OrderDetailPage() {
           <Card className="p-4">
             <SectionHead icon={<MessageSquare className="h-4 w-4 text-indigo-600" />} title="Assigned" />
             <div className="mt-3 space-y-1.5 text-[12px]">
-              <MetaRow label="Ops owner" value="Andre F." />
+              <MetaRow label="Ops owner" value={order!.opsOwner ?? "Andre F."} />
               <MetaRow label="Physician" value={o.physicianName} />
               <MetaRow label="Pharmacy" value={o.pharmacy.name} />
             </div>
