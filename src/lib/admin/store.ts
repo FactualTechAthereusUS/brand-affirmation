@@ -1011,6 +1011,113 @@ function seed(): AdminState {
       patientSearch: "",
       showLogoMenu: false,
     },
+    tenant: SEEDED_TENANTS[0],
+    tenants: SEEDED_TENANTS,
+    build: seedBuild(),
+  };
+}
+
+/* ────────── PharmaBro tenant + build seeds ────────── */
+export const SEEDED_TENANTS: BrandTenant[] = [
+  { id: "blissley", name: "Blissley", logoText: "Blissley", primary: "#2563eb", accent: "#7c3aed", supportEmail: "care@blissley.com", website: "blissley.com", stage: "live", onboardingStep: 6 },
+  { id: "nova",     name: "Nova Health", logoText: "Nova", primary: "#0ea5e9", accent: "#10b981", supportEmail: "hello@novahealth.co", website: "novahealth.co", stage: "ramping", onboardingStep: 6 },
+  { id: "zeroco",   name: "ZeroCo", logoText: "ZeroCo", primary: "#ee7273", accent: "#f59e0b", supportEmail: "founder@zeroco.io", website: "zeroco.io", stage: "zero", onboardingStep: 0 },
+];
+
+function seedBuild(): BuildSlice {
+  return {
+    funnelVersion: 1,
+    funnel: [
+      { id: "n_quiz", type: "quiz", title: "Quiz / Intake", blocks: [
+        { id: "b_qs1", kind: "quiz-screen", title: "BMI Entry",     props: { question: "What's your current height and weight?" } },
+        { id: "b_qs2", kind: "quiz-screen", title: "Name + Email",  props: { question: "Where should we send your program?" } },
+        { id: "b_qs3", kind: "quiz-screen", title: "Goal Weight",   props: { question: "What's your goal weight?" } },
+        { id: "b_qs4", kind: "quiz-screen", title: "Sex + DOB",     props: { question: "A few last details for your physician" } },
+      ]},
+      { id: "n_loading", type: "loading", title: "Loading Screen", blocks: [
+        { id: "b_ld1", kind: "hero", title: "Building your plan", props: { headline: "Analyzing your answers…" } },
+      ]},
+      { id: "n_sales", type: "sales", title: "Plan Page / Sales", blocks: [
+        { id: "b_hero", kind: "hero", title: "Hero",   props: { headline: "You qualify. Here's your plan.", cta: "Choose plan" } },
+        { id: "b_s1",   kind: "step", title: "Step 1 — Treatment", props: { copy: "Pick medication" } },
+        { id: "b_s2",   kind: "step", title: "Step 2 — Plan",      props: { copy: "Pick duration" } },
+        { id: "b_s3",   kind: "step", title: "Step 3 — Checkout",  props: { copy: "Enter payment" } },
+      ]},
+      { id: "n_conf", type: "confirmation", title: "Order Confirmation", blocks: [
+        { id: "b_cf1", kind: "hero", title: "Thanks", props: { headline: "You're in. Here's what's next." } },
+      ]},
+      { id: "n_portal", type: "portal", title: "Patient Portal", blocks: [] },
+    ],
+    intakeScreens: [
+      { id: "is_1",  order: 1,  name: "BMI Entry",        type: "number", question: "What's your current height and weight?", answers: [], storeAs: "bmi", klaviyoEvent: "quiz_bmi_entered", required: true,  locked: false, active: true },
+      { id: "is_2",  order: 2,  name: "Name + Email",     type: "text",   question: "Where should we send your program?",     answers: [], storeAs: "identity", klaviyoEvent: "lead_captured", required: true,  locked: false, active: true },
+      { id: "is_3",  order: 3,  name: "Goal Weight",      type: "number", question: "What's your goal weight?",               answers: [], storeAs: "goal_weight", klaviyoEvent: "goal_entered", required: true,  locked: false, active: true },
+      { id: "is_4",  order: 4,  name: "Sex + DOB",        type: "single", question: "Your sex assigned at birth?",             answers: [{id:"m",label:"Male"},{id:"f",label:"Female"}], storeAs: "sex", klaviyoEvent: "sex_entered", required: true,  locked: false, active: true },
+      { id: "is_4a", order: 5,  name: "Pregnancy",        type: "single", question: "Are you pregnant or breastfeeding?",      answers: [{id:"y",label:"Yes"},{id:"n",label:"No"}], storeAs: "pregnancy", klaviyoEvent: "pregnancy_answered", required: true,  locked: false, active: true },
+      { id: "is_5",  order: 6,  name: "Pain Situation",   type: "single", question: "{{first_name}}, which best describes your situation?", answers: [
+        { id: "yoyo", label: "🔄 I keep losing and regaining the same weight" },
+        { id: "crv",  label: "🧠 I eat well sometimes but can't control cravings" },
+        { id: "tried",label: "😔 I've tried everything and nothing works" },
+        { id: "med",  label: "💊 I know medication could help me finally" },
+      ], storeAs: "pain_situation", klaviyoEvent: "pain_situation_selected", required: false, locked: false, active: true },
+      { id: "is_6",  order: 7,  name: "Pain Severity",    type: "single", question: "How intense is your struggle right now?", answers: [{id:"lo",label:"Manageable"},{id:"md",label:"Frustrating"},{id:"hi",label:"Consuming"}], storeAs: "pain_severity", klaviyoEvent: "pain_severity_selected", required: false, locked: false, active: true },
+      { id: "is_8",  order: 8,  name: "Failed Solutions", type: "multi",  question: "What have you already tried?", answers: [{id:"diet",label:"Dieting"},{id:"gym",label:"Gym / trainer"},{id:"app",label:"Nutrition apps"},{id:"otc",label:"OTC pills"}], storeAs: "failed_solutions", klaviyoEvent: "failed_solutions_selected", required: false, locked: false, active: true },
+      { id: "is_11", order: 9,  name: "Motivation",       type: "single", question: "Why now?", answers: [{id:"h",label:"Health scare"},{id:"e",label:"Event coming up"},{id:"m",label:"Just tired of it"}], storeAs: "motivation", klaviyoEvent: "motivation_selected", required: false, locked: false, active: true },
+      { id: "is_14", order: 10, name: "Contraindications",type: "multi",  question: "Do any of the following apply to you?", answers: [{id:"none",label:"None of these"},{id:"canc",label:"History of thyroid cancer (MTC)"},{id:"men2",label:"MEN 2 syndrome"},{id:"panc",label:"Pancreatitis"}], storeAs: "contraindications", klaviyoEvent: "contraindications_answered", required: true, locked: true, active: true },
+      { id: "is_15", order: 11, name: "Health Conditions",type: "multi",  question: "Do you have any of the following conditions?", answers: [{id:"dia",label:"Diabetes T1/T2"},{id:"kid",label:"Kidney disease"},{id:"hrt",label:"Heart condition"},{id:"non",label:"None"}], storeAs: "conditions", klaviyoEvent: "conditions_answered", required: true, locked: true, active: true },
+      { id: "is_16", order: 12, name: "GLP-1 History",    type: "single", question: "Have you taken a GLP-1 before?", answers: [{id:"y",label:"Yes"},{id:"n",label:"No"}], storeAs: "glp1_history", klaviyoEvent: "glp1_history_answered", required: true, locked: true, active: true },
+      { id: "is_18", order: 13, name: "Phone + State",    type: "text",   question: "Last step — phone and your state.", answers: [], storeAs: "contact", klaviyoEvent: "contact_captured", required: true, locked: false, active: true },
+    ],
+    products: [
+      { id: "p_sema_inj", name: "Semaglutide Injectable", internalName: "sema_injectable", molecule: "Semaglutide", form: "Injectable", pharmacy: "South End", pharmacyBackup: "Strive",  description: "Proven, effective, more affordable", badge: "More Affordable", status: "live" },
+      { id: "p_tirz_inj", name: "Tirzepatide Injectable", internalName: "tirz_injectable", molecule: "Tirzepatide", form: "Injectable", pharmacy: "South End", pharmacyBackup: "WellsRx", description: "Fastest, most powerful results",     badge: "Most Powerful",  status: "live" },
+      { id: "p_sema_ora", name: "Semaglutide Oral (ODT)", internalName: "sema_oral",       molecule: "Semaglutide", form: "Oral ODT",   pharmacy: "Valiant",   pharmacyBackup: "Epiq",    description: "No needles, dissolves under tongue", badge: "Needle-free",  status: "live" },
+      { id: "p_tirz_ora", name: "Tirzepatide Oral (ODT)", internalName: "tirz_oral",       molecule: "Tirzepatide", form: "Oral ODT",   pharmacy: "Valiant",   pharmacyBackup: "Epiq",    description: "Powerful, no needles",                badge: "New",          status: "draft" },
+    ],
+    plans: [
+      { id: "pl_sema_mo", displayName: "Semaglutide Monthly", internalName: "sema_monthly", productId: "p_sema_inj", duration: "Monthly", firstPrice: 249, ongoingPrice: 299, badge: "",                savings: "",                 weeksSupply: "4 Week Supply",  preselected: false, status: "live" },
+      { id: "pl_sema_3", displayName: "3-Month Reset",       internalName: "sema_3month", productId: "p_sema_inj", duration: "3-Month", firstPrice: 711, ongoingPrice: 711, badge: "⭐ Most Popular", savings: "You are saving $186", weeksSupply: "12 Week Supply", preselected: true,  status: "live" },
+      { id: "pl_sema_6", displayName: "6-Month Transform",   internalName: "sema_6month", productId: "p_sema_inj", duration: "6-Month", firstPrice: 1422,ongoingPrice: 1422, badge: "Best Value",     savings: "You are saving $372", weeksSupply: "24 Week Supply", preselected: false, status: "live" },
+      { id: "pl_tirz_mo", displayName: "Tirzepatide Monthly", internalName: "tirz_monthly", productId: "p_tirz_inj", duration: "Monthly", firstPrice: 299, ongoingPrice: 399, badge: "",                savings: "",                 weeksSupply: "4 Week Supply",  preselected: false, status: "live" },
+      { id: "pl_tirz_3",  displayName: "3-Month Reset — Tirz",internalName: "tirz_3month", productId: "p_tirz_inj", duration: "3-Month", firstPrice: 1017,ongoingPrice: 1017, badge: "⭐ Most Popular", savings: "You are saving $180", weeksSupply: "12 Week Supply", preselected: false, status: "live" },
+      { id: "pl_tirz_6",  displayName: "6-Month Transform — Tirz", internalName: "tirz_6month", productId: "p_tirz_inj", duration: "6-Month", firstPrice: 1794,ongoingPrice: 1794, badge: "Best Value",     savings: "You are saving $600", weeksSupply: "24 Week Supply", preselected: false, status: "live" },
+    ],
+    upsells: [
+      { id: "u_prio",  displayName: "⚡ Priority Physician Review", internalName: "priority_review", description: "Standard: within 24 hours. Priority: within 6 hours.", price: 49.95, type: "one-time", position: "checkout", order: 1, scarcityText: "⚠️ Limited slots available today", status: "live" },
+      { id: "u_ship",  displayName: "Shipping Insurance",           internalName: "ship_insurance",  description: "Lost or damaged shipments replaced free.",             price: 3.94,  type: "recurring", position: "checkout", order: 2, scarcityText: "", status: "live" },
+      { id: "u_nausea",displayName: "Anti-Nausea Pack",             internalName: "nausea_pack",      description: "Prescription anti-nausea for first 30 days.",         price: 29.00, type: "one-time",  position: "post-buy", order: 1, scarcityText: "", status: "draft" },
+    ],
+    discounts: [
+      { id: "d_b50",  code: "BLISS50",  type: "fixed",   amount: 50,  appliesTo: "Sema monthly",    usageLimit: 0, uses: 284, autoApply: true,  status: "live" },
+      { id: "d_b100", code: "BLISS100", type: "fixed",   amount: 100, appliesTo: "Tirz monthly",    usageLimit: 0, uses: 128, autoApply: true,  status: "live" },
+      { id: "d_ref",  code: "REFER20",  type: "fixed",   amount: 20,  appliesTo: "Any first order", usageLimit: 0, uses: 0,   autoApply: false, status: "draft" },
+      { id: "d_s30",  code: "SAVE30",   type: "percent", amount: 30,  appliesTo: "Win-back",        usageLimit: 0, uses: 41,  autoApply: false, status: "live" },
+    ],
+    emailFlows: [
+      { id: "ef_qa",   name: "Quiz Abandoned",              emails: 3, status: "live",  lastEditedAt: now - 5*DAY,  klaviyoSynced: true,  klaviyoLastSyncAt: now - 4*60_000 },
+      { id: "ef_prn",  name: "Pre-Purchase Nurture",        emails: 4, status: "live",  lastEditedAt: now - 7*DAY,  klaviyoSynced: true },
+      { id: "ef_ppa",  name: "Post-Purchase Pre-Approval",  emails: 3, status: "live",  lastEditedAt: now - 10*DAY, klaviyoSynced: true },
+      { id: "ef_app",  name: "Physician Approved",          emails: 4, status: "live",  lastEditedAt: now - 10*DAY, klaviyoSynced: true },
+      { id: "ef_den",  name: "Physician Denied",            emails: 1, status: "live",  lastEditedAt: now - 10*DAY, klaviyoSynced: true },
+      { id: "ef_ons",  name: "Active Subscriber Onboarding",emails: 5, status: "live",  lastEditedAt: now - 15*DAY, klaviyoSynced: true },
+      { id: "ef_bil",  name: "Billing Reminder",            emails: 1, status: "live",  lastEditedAt: now - 15*DAY, klaviyoSynced: true },
+      { id: "ef_90d",  name: "90-Day Check-In",             emails: 2, status: "live",  lastEditedAt: now - 15*DAY, klaviyoSynced: true },
+      { id: "ef_win",  name: "Win-Back",                    emails: 4, status: "live",  lastEditedAt: now - 17*DAY, klaviyoSynced: true },
+      { id: "ef_ref",  name: "Refill / Renewal",            emails: 3, status: "live",  lastEditedAt: now - 17*DAY, klaviyoSynced: true },
+      { id: "ef_ord",  name: "Order Confirmation",          emails: 1, status: "live",  lastEditedAt: now - 24*DAY, klaviyoSynced: true },
+      { id: "ef_ml",   name: "Magic Link (Portal)",         emails: 2, status: "live",  lastEditedAt: now - 24*DAY, klaviyoSynced: true },
+      { id: "ef_ca",   name: "Checkout Abandoned",          emails: 4, status: "draft", lastEditedAt: now - 2*DAY,  klaviyoSynced: false },
+    ],
+    pages: [
+      { id: "pg_sales",   name: "Sales Page",         url: "/weight-loss",        status: "live", lastPublishedAt: now - 5*DAY },
+      { id: "pg_intake",  name: "Intake Quiz",        url: "/intake/weight-loss", status: "live", lastPublishedAt: now - 7*DAY },
+      { id: "pg_plan",    name: "Plan Page",          url: "/weight-loss/sales",  status: "live", lastPublishedAt: now - 10*DAY },
+      { id: "pg_checkout",name: "Checkout",           url: "/checkout",           status: "live", lastPublishedAt: now - 10*DAY },
+      { id: "pg_conf",    name: "Order Confirmation", url: "/confirmation",       status: "live", lastPublishedAt: now - 15*DAY },
+      { id: "pg_portal",  name: "Patient Portal",     url: "/portal",             status: "live", lastPublishedAt: now - 15*DAY },
+      { id: "pg_wait",    name: "Waitlist",           url: "/waitlist",           status: "live", lastPublishedAt: now - 24*DAY },
+      { id: "pg_review",  name: "Physician Review",   url: "/pending-review",     status: "live", lastPublishedAt: now - 24*DAY },
+    ],
   };
 }
 
