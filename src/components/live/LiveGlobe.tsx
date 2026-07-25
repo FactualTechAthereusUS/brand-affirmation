@@ -244,7 +244,7 @@ export default function LiveGlobe({ sessions, purchaseEvents, focus, className }
     <div
       ref={wrapperRef}
       className={`relative select-none ${className ?? ""}`}
-      style={{ touchAction: "none", background: "linear-gradient(180deg,#fafbff 0%,#f5f7fb 100%)" }}
+      style={{ touchAction: "none", background: "#f6f8fc" }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
