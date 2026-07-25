@@ -92,7 +92,7 @@ function AdminHome() {
               sub="Monthly recurring revenue"
               icon={<DollarSign className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={revTrend}
-              sparkColor="#171717"
+              sparkColor={C.mrr}
             />
             <KpiTile
               label="Net Revenue"
@@ -102,7 +102,7 @@ function AdminHome() {
               sub="Last 30 days"
               icon={<TrendingUp className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={revTrend}
-              sparkColor="#171717"
+              sparkColor={C.revenue}
             />
             <KpiTile
               label="Active Subscriptions"
@@ -112,7 +112,7 @@ function AdminHome() {
               sub="2.1% churn this month"
               icon={<Users className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={patientsTrend}
-              sparkColor="#171717"
+              sparkColor={C.active}
             />
             <KpiTile
               label="Avg Order Value"
@@ -122,7 +122,7 @@ function AdminHome() {
               sub="Per completed order"
               icon={<ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={shipTrend}
-              sparkColor="#ee7273"
+              sparkColor={C.aov}
             />
             <KpiTile
               label="Retention Rate"
@@ -132,13 +132,13 @@ function AdminHome() {
               sub={`${18 - refills}/18 refilled this month`}
               icon={<RefreshCw className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={patientsTrend}
-              sparkColor="#171717"
+              sparkColor={C.retention}
             />
           </div>
 
           {/* Row 2 — Today's revenue · MRR movement · Revenue by program */}
           <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-3">
-            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} />
+            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} stroke={C.revenue} />
             <MrrMovementCard items={waterfall} delta={mrrDelta} />
             <RevenueByProgramCard programs={programs} />
           </div>
