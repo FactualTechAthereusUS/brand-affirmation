@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { ArrowLeft, ChevronDown, ChevronUp, MessageSquare, DollarSign, MoreHorizontal, ExternalLink } from "lucide-react";
 import { AdminShell, Card, SectionTitle } from "@/components/admin/AdminShell";
 import { PROGRAMS, adminActions, useAdmin } from "@/lib/admin/store";
