@@ -6,6 +6,16 @@ import type {
   Physician, Pharmacy, PhysicianCase, CheckIn, Notification, Integration,
   Campaign, FunnelDay,
 } from "./store";
+import logoStripe from "@/assets/logo-stripe.png.asset.json";
+import logoPaddle from "@/assets/logo-paddle.png.asset.json";
+import logoKlarna from "@/assets/logo-klarna.png.asset.json";
+import logoAffirm from "@/assets/logo-affirm.png.asset.json";
+import logoDoseSpot from "@/assets/logo-dosespot.png.asset.json";
+import logoMeta from "@/assets/logo-meta.png.asset.json";
+import logoGoogleAds from "@/assets/logo-google-ads.png.asset.json";
+import logoGoogleAnalytics from "@/assets/logo-google-analytics.png.asset.json";
+import logoTikTokAds from "@/assets/logo-tiktok-ads.png.asset.json";
+import logoUps from "@/assets/logo-ups.png.asset.json";
 
 const now = Date.now();
 const HR = 3600_000;
