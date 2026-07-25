@@ -119,11 +119,11 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
 
   const shipTo = {
     name: order.patientName,
-    line1: `${100 + (h % 8900)} ${pick(STREETS, h >> 1)}`,
-    line2: h % 4 === 0 ? `Apt ${(h % 40) + 1}` : undefined,
-    city: CITIES[state] ?? "Springfield",
-    state,
-    zip: String(10000 + (h % 89999)).padStart(5, "0"),
+    line1: order.shipToOverride?.line1 ?? `${100 + (h % 8900)} ${pick(STREETS, h >> 1)}`,
+    line2: order.shipToOverride?.line2 ?? (h % 4 === 0 ? `Apt ${(h % 40) + 1}` : undefined),
+    city: order.shipToOverride?.city ?? (CITIES[state] ?? "Springfield"),
+    state: order.shipToOverride?.state ?? state,
+    zip: order.shipToOverride?.zip ?? String(10000 + (h % 89999)).padStart(5, "0"),
   };
 
   const items: OrderItem[] = [
