@@ -314,6 +314,9 @@ function OrderDetailPage() {
             </div>
             <button className="mt-3 w-full rounded-lg border border-ink/10 bg-white py-1.5 text-[12px] font-semibold text-ink hover:bg-ink/[0.03]">Reassign</button>
           </Card>
+
+          {/* Internal notes */}
+          <OrderInternalNotes orderId={id} notes={orderNotes} />
         </div>
       </div>
     </AdminShell>
