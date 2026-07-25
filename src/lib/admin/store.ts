@@ -38,6 +38,13 @@ export type Pharmacy = {
   drugs: string[];
 };
 
+export type CaseTimelineEvent = {
+  ts: number;
+  kind: "submitted" | "assigned" | "approved" | "denied" | "info_requested" | "reply_received" | "reassigned" | "priority_set" | "note";
+  by?: string;
+  detail?: string;
+};
+
 export type PhysicianCase = {
   id: string;
   patientId: string;
@@ -51,7 +58,17 @@ export type PhysicianCase = {
   status: "new" | "flagged" | "awaitingReply" | "approved" | "denied" | "refill";
   decision?: string;
   note?: string;
+  /** overrides applied by admin actions */
+  patientNote?: string;
+  internalNote?: string;
+  rxDraft?: { drug?: string; sig?: string; qty?: string; daysSupply?: number; refills?: number; pharmacyId?: string };
+  timeline?: CaseTimelineEvent[];
+  decisionAt?: number;
+  decidedBy?: string;
+  priorityPaid?: boolean;
 };
+
+export type CheckInDecision = "clear" | "hold" | "review" | "approved" | "adjusted" | "held" | "awaiting_reply";
 
 export type CheckIn = {
   id: string;
@@ -62,7 +79,18 @@ export type CheckIn = {
   weight?: number;
   delta?: number;
   sideEffects?: string[];
-  decision: "clear" | "hold" | "review";
+  decision: CheckInDecision;
+  /** overrides applied by admin actions */
+  patientNote?: string;
+  internalNote?: string;
+  adjustment?: { doseChange?: string; note?: string };
+  holdReason?: string;
+  reminderSentAt?: number;
+  reminderCount?: number;
+  decisionAt?: number;
+  decidedBy?: string;
+  refillOrderId?: string;
+  kind?: "day90" | "sixMonth";
 };
 
 export type NotificationTone = "info" | "success" | "warn" | "critical";
@@ -976,7 +1004,10 @@ export const adminActions = {
   },
   setActiveCase(id: string | null) { set((s) => ({ ui: { ...s.ui, activeCaseId: id } })); },
   sendCheckInReminder(id: string) {
-    set((s) => ({ activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Check-in reminder sent — ${s.checkIns.find(c => c.id === id)?.patientName ?? "patient"}`, tone: "info" as const }, ...s.activity] }));
+    set((s) => ({
+      checkIns: s.checkIns.map((c) => (c.id === id ? { ...c, reminderSentAt: Date.now(), reminderCount: (c.reminderCount ?? 0) + 1 } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Check-in reminder sent — ${s.checkIns.find(c => c.id === id)?.patientName ?? "patient"}`, tone: "info" as const }, ...s.activity],
+    }));
   },
 
   resolveTask(id: string) {
@@ -1348,6 +1379,148 @@ export const adminActions = {
     };
     set((s) => ({ conversations: [convo, ...s.conversations] }));
     return id;
+  },
+
+  /* ── Physician case mutations ── */
+  updateCasePatientNote(caseId: string, text: string) {
+    set((s) => ({ cases: s.cases.map((c) => (c.id === caseId ? { ...c, patientNote: text } : c)) }));
+  },
+  updateCaseInternalNote(caseId: string, text: string) {
+    set((s) => ({ cases: s.cases.map((c) => (c.id === caseId ? { ...c, internalNote: text } : c)) }));
+  },
+  updateCaseRxDraft(caseId: string, patch: NonNullable<PhysicianCase["rxDraft"]>) {
+    set((s) => ({ cases: s.cases.map((c) => (c.id === caseId ? { ...c, rxDraft: { ...(c.rxDraft ?? {}), ...patch } } : c)) }));
+  },
+  approveCaseWithRx(caseId: string, opts?: { patientNote?: string; internalNote?: string; decidedBy?: string }) {
+    const c0 = state.cases.find((c) => c.id === caseId);
+    if (!c0) return;
+    const ev: CaseTimelineEvent = { ts: Date.now(), kind: "approved", by: opts?.decidedBy ?? "You", detail: "Rx transmitted to South End Pharmacy" };
+    set((s) => ({
+      cases: s.cases.map((c) => (c.id === caseId ? {
+        ...c,
+        status: "approved" as const,
+        decision: "Approved",
+        decisionAt: Date.now(),
+        decidedBy: opts?.decidedBy ?? "You",
+        patientNote: opts?.patientNote ?? c.patientNote,
+        internalNote: opts?.internalNote ?? c.internalNote,
+        timeline: [...(c.timeline ?? []), ev],
+      } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Case ${caseId} approved — Rx sent`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  requestInfoOnCase(caseId: string, message: string) {
+    const c0 = state.cases.find((c) => c.id === caseId);
+    if (!c0) return;
+    const ev: CaseTimelineEvent = { ts: Date.now(), kind: "info_requested", by: "You", detail: message };
+    // Ensure a convo exists and drop a physician message in it
+    const convoId = adminActions.ensureConversationFor(c0.patientId);
+    if (convoId) adminActions.sendReply(convoId, message, false);
+    set((s) => ({
+      cases: s.cases.map((c) => (c.id === caseId ? { ...c, status: "awaitingReply" as const, timeline: [...(c.timeline ?? []), ev] } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Info requested on case ${caseId}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  denyCaseWithReason(caseId: string, reason: string, freeText?: string) {
+    const detail = freeText ? `${reason} — ${freeText}` : reason;
+    const ev: CaseTimelineEvent = { ts: Date.now(), kind: "denied", by: "You", detail };
+    set((s) => ({
+      cases: s.cases.map((c) => (c.id === caseId ? {
+        ...c,
+        status: "denied" as const,
+        decision: detail,
+        decisionAt: Date.now(),
+        decidedBy: "You",
+        timeline: [...(c.timeline ?? []), ev],
+      } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Case ${caseId} denied — ${reason}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  reassignCase(caseId: string, physicianId: string) {
+    const phy = state.physicians.find((p) => p.id === physicianId);
+    const ev: CaseTimelineEvent = { ts: Date.now(), kind: "reassigned", by: "You", detail: phy?.name };
+    set((s) => ({
+      cases: s.cases.map((c) => (c.id === caseId ? { ...c, assignedTo: physicianId, timeline: [...(c.timeline ?? []), ev] } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Case ${caseId} reassigned to ${phy?.name ?? physicianId}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  setCasePriority(caseId: string, priority: "urgent" | "normal") {
+    const ev: CaseTimelineEvent = { ts: Date.now(), kind: "priority_set", by: "You", detail: priority };
+    set((s) => ({
+      cases: s.cases.map((c) => (c.id === caseId ? { ...c, priority, timeline: [...(c.timeline ?? []), ev] } : c)),
+    }));
+  },
+
+  /* ── Check-in mutations ── */
+  updateCheckInPatientNote(id: string, text: string) {
+    set((s) => ({ checkIns: s.checkIns.map((c) => (c.id === id ? { ...c, patientNote: text } : c)) }));
+  },
+  updateCheckInInternalNote(id: string, text: string) {
+    set((s) => ({ checkIns: s.checkIns.map((c) => (c.id === id ? { ...c, internalNote: text } : c)) }));
+  },
+  approveCheckInRefill(id: string, opts?: { patientNote?: string; internalNote?: string }) {
+    const ci = state.checkIns.find((c) => c.id === id);
+    if (!ci) return;
+    const orderId = adminActions.createManualOrder(ci.patientId);
+    set((s) => ({
+      checkIns: s.checkIns.map((c) => (c.id === id ? {
+        ...c,
+        decision: "approved" as const,
+        decisionAt: Date.now(),
+        decidedBy: "You",
+        patientNote: opts?.patientNote ?? c.patientNote,
+        internalNote: opts?.internalNote ?? c.internalNote,
+        refillOrderId: orderId ?? c.refillOrderId,
+      } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refill approved — ${ci.patientName}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  approveCheckInWithAdjustment(id: string, opts: { doseChange?: string; note?: string; patientNote?: string; internalNote?: string }) {
+    const ci = state.checkIns.find((c) => c.id === id);
+    if (!ci) return;
+    const orderId = adminActions.createManualOrder(ci.patientId);
+    if (opts.note) {
+      const convoId = adminActions.ensureConversationFor(ci.patientId);
+      if (convoId) adminActions.sendReply(convoId, opts.note, false);
+    }
+    set((s) => ({
+      checkIns: s.checkIns.map((c) => (c.id === id ? {
+        ...c,
+        decision: "adjusted" as const,
+        decisionAt: Date.now(),
+        decidedBy: "You",
+        adjustment: { doseChange: opts.doseChange, note: opts.note },
+        patientNote: opts.patientNote ?? c.patientNote,
+        internalNote: opts.internalNote ?? c.internalNote,
+        refillOrderId: orderId ?? c.refillOrderId,
+      } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refill approved with adjustment — ${ci.patientName}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  messagePatientFromCheckIn(id: string, message: string) {
+    const ci = state.checkIns.find((c) => c.id === id);
+    if (!ci) return;
+    const convoId = adminActions.ensureConversationFor(ci.patientId);
+    if (convoId) adminActions.sendReply(convoId, message, false);
+    set((s) => ({
+      checkIns: s.checkIns.map((c) => (c.id === id ? { ...c, decision: "awaiting_reply" as const } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Message sent to ${ci.patientName} from check-in`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  holdCheckInRefill(id: string, reason: string, freeText?: string) {
+    const ci = state.checkIns.find((c) => c.id === id);
+    if (!ci) return;
+    set((s) => ({
+      checkIns: s.checkIns.map((c) => (c.id === id ? {
+        ...c,
+        decision: "held" as const,
+        holdReason: freeText ? `${reason} — ${freeText}` : reason,
+        decisionAt: Date.now(),
+        decidedBy: "You",
+      } : c)),
+      patients: s.patients.map((p) => (p.id === ci.patientId ? { ...p, churn: "high" as const } : p)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refill held — ${ci.patientName} · ${reason}`, tone: "warn" as const }, ...s.activity],
+    }));
   },
 
   resetAll() {
