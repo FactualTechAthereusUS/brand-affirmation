@@ -291,13 +291,27 @@ export type MessageChannel = "in_app" | "sms" | "email" | "whatsapp";
 export type ConvoStatus = "unassigned" | "support" | "physician" | "closed";
 export type ConvoTag = "clinical" | "intake" | "shipping" | "billing" | "refund" | "general";
 
+export type ConvoMsgState = "sending" | "sent" | "delivered" | "seen" | "failed";
+
+export type ConvoAttachment = {
+  id: string;
+  kind: "image" | "file" | "audio";
+  name: string;
+  size?: string;
+  url?: string;
+};
+
 export type ConvoMessage = {
   id: string;
-  from: "me" | "them";
+  from: "me" | "them" | "system";
   authorName?: string;
   text: string;
   ts: number;
   internal?: boolean;
+  state?: ConvoMsgState;
+  channel?: MessageChannel;
+  attachments?: ConvoAttachment[];
+  systemKind?: "assignment" | "status" | "tag" | "note" | "info";
 };
 
 export type Conversation = {
@@ -310,14 +324,20 @@ export type Conversation = {
   channel: MessageChannel;
   status: ConvoStatus;
   tag: ConvoTag;
+  tags?: string[];
   assignedTo: string;
   updatedAt: number;
   unread: boolean;
+  unreadCount?: number;
   messages: ConvoMessage[];
   program: ProgramCode;
   ltv: number;
   startedAt: string;
   internalNote: string;
+  snoozedUntil?: number;
+  priority?: "normal" | "high";
+  starred?: boolean;
+  typing?: boolean;
 };
 
 export type ActivityEvent = {
