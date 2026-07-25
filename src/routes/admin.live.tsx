@@ -150,10 +150,13 @@ function LiveViewPage() {
           </div>
         </div>
 
-        {/* Main split */}
-        <div className="grid gap-3 lg:grid-cols-[380px_1fr]">
-          {/* Sidebar */}
-          <div className="min-w-0" style={{ maxHeight: fs ? "calc(100vh - 88px)" : "calc(100vh - 140px)" }}>
+        {/* Main split — sidebar scrolls, globe stays fixed */}
+        <div
+          className="grid gap-3 lg:grid-cols-[380px_1fr]"
+          style={{ height: fs ? "calc(100vh - 88px)" : "calc(100vh - 96px)" }}
+        >
+          {/* Sidebar (internal scroll) */}
+          <div className="min-w-0 h-full overflow-y-auto pr-0.5 [scrollbar-width:thin]">
             <LiveSidebar
               counts={counts}
               totalSales={totalSales}
@@ -163,16 +166,23 @@ function LiveViewPage() {
               orderRows={orderRows}
               newReturning={newReturning}
             />
+            {/* Activity + recent orders live inside the scroll area */}
+            {!fs && (
+              <div className="mt-3 space-y-3">
+                <Card className="p-3.5">
+                  <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Live activity</div>
+                  <div className="text-[11.5px] text-ink/45">Intake, physician approvals & payment signals</div>
+                  <div className="mt-2">
+                    <ActivityFeed limit={6} title="" />
+                  </div>
+                </Card>
+                <RecentOrders streamer={streamer} />
+              </div>
+            )}
           </div>
 
-          {/* Globe / Map */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.35 }}
-            className="relative min-h-[520px] overflow-hidden rounded-xl border border-ink/[0.06] bg-white"
-            style={{ height: fs ? "calc(100vh - 88px)" : "calc(100vh - 140px)" }}
-          >
+          {/* Globe / Map — fixed within its cell, no scroll re-triggers */}
+          <div className="relative h-full overflow-hidden rounded-xl border border-ink/[0.06] bg-white">
             <ClientOnly fallback={<GlobeFallback />}>
               <Suspense fallback={<GlobeFallback />}>
                 {view === "globe" ? (
@@ -182,22 +192,9 @@ function LiveViewPage() {
                 )}
               </Suspense>
             </ClientOnly>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Activity feed */}
-        {!fs && (
-          <div className="mt-3 grid gap-3 lg:grid-cols-[380px_1fr]">
-            <Card className="p-3.5">
-              <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Live activity</div>
-              <div className="text-[11.5px] text-ink/45">Intake, physician approvals & payment signals</div>
-              <div className="mt-2">
-                <ActivityFeed limit={6} title="" />
-              </div>
-            </Card>
-            <RecentOrders streamer={streamer} />
-          </div>
-        )}
       </div>
     </AdminShell>
   );
