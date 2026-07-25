@@ -175,7 +175,8 @@ export function AreaChart({
           <svg width={w} height={H} className="block">
             <defs>
               <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor={stroke} stopOpacity="0.20" />
+                <stop offset="0%" stopColor={stroke} stopOpacity="0.32" />
+                <stop offset="55%" stopColor={stroke} stopOpacity="0.10" />
                 <stop offset="100%" stopColor={stroke} stopOpacity="0" />
               </linearGradient>
               <clipPath id={clipId}>
