@@ -41,7 +41,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function AdminDashboard() {
-  const state = useAdmin((s: ReturnType<typeof useAdmin>) => s);
+  const state = useAdmin<AdminState>((s) => s);
   const kpis = computeKpis(state);
   const revenue = revenueByProgram();
   const acquisition = acquisitionMix();
