@@ -628,3 +628,35 @@ function OrderInternalNotes({ orderId, notes }: { orderId: string; notes: Intern
     </Card>
   );
 }
+
+function AddressEditor({ initial, onClose, onSave }: { initial: { line1: string; line2?: string; city: string; state: string; zip: string }; onClose: () => void; onSave: (patch: { line1: string; line2?: string; city: string; state: string; zip: string }) => void }) {
+  const [f, setF] = useState({ line1: initial.line1, line2: initial.line2 ?? "", city: initial.city, state: initial.state, zip: initial.zip });
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/40 p-4" onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
+        <div className="mb-3 text-[15px] font-bold text-ink">Edit shipping address</div>
+        <div className="space-y-2">
+          <Field label="Street" value={f.line1} onChange={(v) => setF({ ...f, line1: v })} />
+          <Field label="Apt / Suite" value={f.line2} onChange={(v) => setF({ ...f, line2: v })} />
+          <div className="grid grid-cols-3 gap-2">
+            <Field label="City" value={f.city} onChange={(v) => setF({ ...f, city: v })} />
+            <Field label="State" value={f.state} onChange={(v) => setF({ ...f, state: v.toUpperCase().slice(0, 2) })} />
+            <Field label="ZIP" value={f.zip} onChange={(v) => setF({ ...f, zip: v })} />
+          </div>
+        </div>
+        <div className="mt-4 flex justify-end gap-2">
+          <button onClick={onClose} className="rounded-lg border border-ink/10 px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:bg-ink/[0.03]">Cancel</button>
+          <button onClick={() => onSave({ line1: f.line1, line2: f.line2 || undefined, city: f.city, state: f.state, zip: f.zip })} className="rounded-lg bg-indigo-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-indigo-700">Save</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <label className="block">
+      <span className="text-[10.5px] font-semibold uppercase tracking-wider text-ink/50">{label}</span>
+      <input value={value} onChange={(e) => onChange(e.target.value)} className="mt-0.5 w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1.5 text-[12.5px] outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
+    </label>
+  );
+}
