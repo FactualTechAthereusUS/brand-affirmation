@@ -5,6 +5,7 @@ import {
   Activity, BarChart3, CreditCard, ChevronDown, HelpCircle, LayoutGrid, MessageSquare,
   Package, PanelLeft, Plus, Search, Settings, Stethoscope, UserCircle2, Users, X,
   Building2, ClipboardCheck, Plug, Radio, PieChart, Target, TrendingUp, DollarSign, ArrowRightLeft,
+  Filter, ClipboardList, ShoppingBag, Mail, FileText,
 } from "lucide-react";
 import { adminActions, hydrateAdmin, useAdmin, type Role } from "@/lib/admin/store";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
@@ -61,12 +62,25 @@ const RAW_NAV: NavGroup[] = [
   },
 ];
 
+const PHARMABRO_BUILD: NavGroup = {
+  title: "Build",
+  items: [
+    { to: "/pharmabro-admin/build/funnel",   label: "Funnel builder",  icon: Filter,        roles: ["owner", "ops"] },
+    { to: "/pharmabro-admin/build/intake",   label: "Intake builder",  icon: ClipboardList, roles: ["owner", "ops"] },
+    { to: "/pharmabro-admin/build/products", label: "Products & pricing", icon: ShoppingBag, roles: ["owner", "ops"] },
+    { to: "/pharmabro-admin/build/emails",   label: "Email flows",     icon: Mail,          roles: ["owner", "ops"] },
+    { to: "/pharmabro-admin/build/pages",    label: "Pages",           icon: FileText,      roles: ["owner", "ops"] },
+  ],
+};
+
 function remapNav(prefix: string): NavGroup[] {
   if (prefix === "/admin") return RAW_NAV;
-  return RAW_NAV.map((g) => ({
+  const remapped = RAW_NAV.map((g) => ({
     ...g,
     items: g.items.map((it) => ({ ...it, to: it.to?.replace(/^\/admin/, prefix) })),
   }));
+  // Insert BUILD group right after the top group (Home / Live view)
+  return [remapped[0], PHARMABRO_BUILD, ...remapped.slice(1)];
 }
 
 
