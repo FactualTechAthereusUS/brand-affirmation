@@ -309,6 +309,7 @@ export type AdminState = {
   integrations: Integration[];
   campaigns: Campaign[];
   funnelDays: FunnelDay[];
+  orderNotes: Record<string, InternalNote[]>;
   ui: {
     patientDrawerId: string | null;
     orderDrawerId: string | null;
