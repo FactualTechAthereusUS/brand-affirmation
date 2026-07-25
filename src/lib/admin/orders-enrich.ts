@@ -202,6 +202,15 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
     ? new Date(rxTs + 2 * DAY).toISOString().slice(0, 10)
     : order.eta;
 
+  // COGS (internal) — deterministic, in cents. Reflects compounded GLP-1 economics.
+  const drugPerMonth = drug === "Tirzepatide" ? 5500 : 3800; // ~$55 / $38 wholesale per month
+  const drugCost = drugPerMonth * months + (h % 800);
+  const packagingCost = 1200 + (h % 400); // cold-chain box + gel packs + insert
+  const shippingCost = carrier === "FedEx" ? 2400 : carrier === "UPS" ? 2200 : 1600;
+  const cogsTotal = drugCost + packagingCost + shippingCost;
+  const gpCents = payment.total - cogsTotal;
+  const gpPct = payment.total > 0 ? Math.round((gpCents / payment.total) * 1000) / 10 : 0;
+
   return {
     ...order,
     rxStatus,
@@ -231,6 +240,7 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
     deliveredAt,
     dose,
     cadence,
+    cogs: { drug: drugCost, packaging: packagingCost, shipping: shippingCost, gp: gpCents, gpPct },
   };
 }
 
