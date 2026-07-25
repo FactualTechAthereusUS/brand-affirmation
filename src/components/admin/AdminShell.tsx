@@ -155,13 +155,15 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             <div className="relative grid h-7 w-7 shrink-0 place-items-center">
               <svg viewBox="0 0 32 32" className="h-7 w-7 -rotate-90">
                 <circle cx="16" cy="16" r="12" fill="none" stroke="#e5e7eb" strokeWidth="3" />
-                <circle cx="16" cy="16" r="12" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray={`${(0/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
-
+                <circle cx="16" cy="16" r="12" fill="none" stroke={tenant.primary} strokeWidth="3" strokeDasharray={`${(tenant.onboardingStep/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
               </svg>
+              {tenant.onboardingStep >= ONBOARDING_STEPS.length && (
+                <Check className="absolute inset-0 m-auto h-3 w-3" style={{ color: tenant.primary }} strokeWidth={3} />
+              )}
             </div>
             <div className="min-w-0 flex-1 leading-tight">
               <div className="text-[12px] font-semibold text-ink">Get Started</div>
-              <div className="text-[10.5px] text-ink/50">0 of {ONBOARDING_STEPS.length} complete</div>
+              <div className="text-[10.5px] text-ink/50">{tenant.onboardingStep} of {ONBOARDING_STEPS.length} complete</div>
             </div>
           </div>
         )}
