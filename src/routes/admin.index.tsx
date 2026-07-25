@@ -130,8 +130,8 @@ function AdminHome() {
 
           {/* Row 3 — Pipeline strip */}
           <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 xl:grid-cols-5">
-            {pipeline.map((p, i) => (
-              <PipelineTile key={p.key} {...p} idx={i} />
+            {pipeline.map(({ key, ...p }, i) => (
+              <PipelineTile key={key} {...p} idx={i} />
             ))}
           </div>
 
