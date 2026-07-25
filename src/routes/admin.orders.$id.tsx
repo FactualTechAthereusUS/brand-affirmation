@@ -351,12 +351,13 @@ function buildSteps(o: EnrichedOrder): StepperStep[] {
   });
 }
 
-function ToolbarBtn({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
-  return <button className="inline-flex items-center gap-1.5 rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-[12.5px] font-medium text-ink hover:bg-ink/[0.03]">{icon}{children}</button>;
-}
-function MiniBtn({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "critical" }) {
+function ToolbarBtn({ icon, children, onClick, tone = "neutral" }: { icon: React.ReactNode; children: React.ReactNode; onClick?: () => void; tone?: "neutral" | "critical" }) {
   const cls = tone === "critical" ? "border-rose-200 bg-white text-rose-700 hover:bg-rose-50" : "border-ink/10 bg-white text-ink hover:bg-ink/[0.03]";
-  return <button className={`rounded-md border px-2 py-1 text-[11.5px] font-semibold ${cls}`}>{children}</button>;
+  return <button onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12.5px] font-medium ${cls}`}>{icon}{children}</button>;
+}
+function MiniBtn({ children, tone = "neutral", onClick, disabled }: { children: React.ReactNode; tone?: "neutral" | "critical"; onClick?: () => void; disabled?: boolean }) {
+  const cls = tone === "critical" ? "border-rose-200 bg-white text-rose-700 hover:bg-rose-50" : "border-ink/10 bg-white text-ink hover:bg-ink/[0.03]";
+  return <button onClick={onClick} disabled={disabled} className={`rounded-md border px-2 py-1 text-[11.5px] font-semibold disabled:opacity-40 ${cls}`}>{children}</button>;
 }
 function SectionHead({ icon, title, right }: { icon: React.ReactNode; title: string; right?: React.ReactNode }) {
   return (
