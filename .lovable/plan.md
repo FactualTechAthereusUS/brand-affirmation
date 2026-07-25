@@ -1,168 +1,69 @@
-# Blissley Admin Dashboard — MVP1
 
-A complete end-to-end operator console for Blissley, styled to match the Cuvo reference PDF and the uploaded dashboard inspiration images, but rendered in **our brand system** (Canvas `#F8F5EF`, Ink `#171717`, Coral `#ee7273`, font  Google Sans Serif +  lexenda or manrepo never use Inter — same tokens as `/portal/patient` and `/portal/physician`). Fully client-side (no backend), driven by a seeded store like the other portals so every number, chart, list, and interaction is live and consistent.
+# Analytics Redesign — Telehealth MVP v1
 
-## Routes
+The current `/admin/analytics` is 4 KPI cards + a waterfall + funnel — too sparse, generic e-com. Shopify's analytics reference (uploaded) shows dense 3-col grids, mini charts with dashed prior-period overlays, cohort heatmaps, breakdown tables, geo/device donuts. We want that density but reframed for telehealth-as-DTC: patients not customers, MRR not GMV, refills not repeat orders, physician review not fulfillment.
 
-```text
-/login/admin              Magic-link style login (matches /login/physician pattern)
-/admin                    Shell + Dashboard (home)
-/admin/command            Command Center (live ops)
-/admin/patients           Patients list + detail drawer
-/admin/leads              Quiz-started, no-purchase list
-/admin/orders             Orders + tracking
-/admin/payments           Stripe-style charges / refunds / failed
-/admin/messages           3-panel unified inbox
-/admin/reports/acquisition
-/admin/reports/revenue
-/admin/reports/funnel
-/admin/reports/retention
-/admin/settings           Integrations, team, states, pharmacies
-```
+## What clear looks like
 
-All admin routes sit under a shared shell (`AdminShell`) with sidebar + top bar, gated by an admin session flag in the store. First visit after login runs a 3-step onboarding overlay (Welcome → Tour the sidebar → Live pipeline explainer), matching the patient/physician portal onboarding style.
+Every card = one metric, big number top-left, delta chip, tiny "vs prior 30d" label, chart underneath filling the card. Everything animates in on scroll. Everything is responsive: 3-col desktop, 2-col tablet, 1-col mobile. Same rounded-xl white cards, ink borders at 0.06 opacity, tabular-nums, `font-hero` for the big numbers.
 
-## Design system (reusing existing tokens)
+## Structure of the new `/admin/analytics` overview
 
-- Canvas background, white cards with `rounded-2xl` + subtle border, coral for primary CTAs and highlight bars, black for numbers, muted grey for context lines — same visual language as `/portal/physician`.
-- No new fonts, no new palette. Cuvo layout structure, Blissley skin.
-- Sidebar: white, ink text, coral pill for active item, small section labels (`ANALYTICS`, `BUILDERS`) exactly like the spec.
-- Mobile: sidebar collapses to a bottom tab bar (5 primary: Dashboard, Command, Patients, Messages, Reports) with a "More" sheet for the rest — same pattern as `/portal/patient`.  
-  
-without making a copy of cuvo make it exactly like that but much better   
-make it mobile responsive and desktop and tabet both   
-check all these images and cuvo too and create a better UI 
+Top bar (sticky within main scroll):
+- Title "Analytics" + last-refreshed timestamp
+- Date range chip (Last 30 days · custom picker), Compare chip (vs prior period), Currency (USD)
+- Right side: "Export" + "New report" ghost buttons
 
-## Screens (what ships in MVP1)
+Insight strip (Shopify's "Insight" pattern):
+- One highlighted card: "Refill conversion on tirzepatide 3-mo dropped 12% vs 3 weeks ago" · sparkline · "See why" — pulled from selectors, deterministic per scenario.
 
-**1. Dashboard (`/admin`)**
+Section 1 — Revenue (3-col grid):
+1. Net revenue over time — line + dashed prior period, big number + delta
+2. MRR breakdown — donut (New/Expansion/Reactivated/Contraction/Churn) centered total
+3. Active patients over time — line
 
-- Top bar: logo + "All systems operational" pill + search + date range dropdown + Add Patient + notifications + profile.
-- Row 1 — 5 KPI cards: Current MRR, Net Revenue, Active Patients, AOV, Retention Rate (number, delta chip, context line).
-- Row 2 — 3 columns: Today's Revenue + sparkline & MRR Movement bar chart; Revenue by Program horizontal bars + Acquisition donut; Patient Funnel waterfall (8 stages, each row clickable → filtered patients).
-- Row 3 — Live pipeline strip (5 clickable counts).
-- Row 4 — Task Center table (tabs: All / Billing / Patient ops / Admin / Unassigned) + Quick Actions panel (New order, Update billing, Quick lookup search).
+Section 2 — Acquisition & funnel (3-col):
+4. Sessions over time
+5. Conversion rate breakdown — 4 stacked bars (Sessions → Intake → Approved → Paid), each with % and delta
+6. AOV over time — line
 
-**2. Command Center (`/admin/command`)**
+Section 3 — Clinical operations (3-col, telehealth-native, replaces Shopify's cohort row):
+7. Physician review SLA — bar chart median minutes per day + p90 dashed
+8. Approval rate — line, target band shaded
+9. Refill adherence — line, % on Rx at day 60
 
-- Large live pipeline tiles.
-- Physician queue table (flagged / new / refills) linking through to `/portal/physician` case IDs.
-- Today's activity log (timeline).
-- Alerts requiring action (failed payments, delayed shipments, overdue check-ins, pending refunds) — each with a resolve action.
+Section 4 — Retention (2-col):
+10. Cohort heatmap — 6×6 retention (reuse `cohortRetention`), rows animate in staggered
+11. Churn reasons — horizontal bars
 
-**3. Patients (`/admin/patients`)**
+Section 5 — Geography & devices (3-col):
+12. Sessions by state — horizontal bars top 6 US states with delta
+13. Device mix — donut mobile/desktop/tablet
+14. Traffic sources — horizontal bars (Meta / Google / Email / Organic / Affiliate)
 
-- Search + status filters + CSV export button.
-- Table: Patient, Status, Program, LTV, MRR, Since, Churn risk (Low/Med/High/Critical badge computed from seed), Actions.
-- Row click → right-side drawer with patient summary, order history, message thread link, quick actions (assign to Dr. Nass, send magic link, flag, view full record). No separate detail route in MVP1 — the drawer covers it.
+Section 6 — Top movers table (full width):
+- Programs by net revenue, columns: Program, Patients, New MRR, AOV, Refill %, Churn %, sparkline. Sortable.
 
-**4. Leads (`/admin/leads`)**
+Section 7 — Payments health (3-col):
+- Failed payments over time · Recovery rate · Chargebacks
 
-- Quiz-started-but-didn't-purchase list. Columns: Name/email, Last step reached, Program interest, Source, Age of lead, Actions (send nurture, mark contacted).
+Footer strip: sub-page pills (Acquisition, Funnel, Retention, Finances) — keep existing sub-routes untouched.
 
-**5. Orders (`/admin/orders`)**
+## Technical
 
-- List with status pills (Processing / At pharmacy / Shipped / Delivered / Exception), tracking column, filters. Row → drawer with shipping timeline (reuse the confirmation-page timeline component) and Reship / Refund actions.
+- New primitives in `src/components/admin/analytics/`:
+  - `MetricCard.tsx` — big-number + delta + optional chart, replaces sparse `KpiCard` for this page only
+  - `LineChartMini.tsx` — SVG line with dashed prior-period overlay, viewBox-scaled, no libs
+  - `Donut.tsx` — SVG donut with centered total
+  - `HBar.tsx` — horizontal bar row (label / bar / value / delta)
+  - `BreakdownBars.tsx` — vertical stacked funnel bars (Shopify conversion-rate style)
+  - `Heatmap.tsx` — cohort grid (extract from retention route)
+- Framer Motion: each card wrapped in `motion.div` with `whileInView` fade+rise (y:12, opacity:0 → y:0,1), viewport once, stagger via container. Number rolls via existing `CountUp`.
+- Selectors: extend `src/lib/admin/selectors.ts` with `physicianSLATrend`, `approvalRateTrend`, `refillAdherenceTrend`, `sessionsByState`, `deviceMix`, `paymentsHealth`, `programMovers`, `insightHeadline`. All pure over `AdminState`, so scenario switch reflows.
+- Responsive: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`. Charts use `viewBox` + `preserveAspectRatio="none"` so they fill any width; height fixed per card row.
+- Preserve sub-routes at `/admin/analytics/{acquisition,funnel,retention,finances}` — only overview page changes. Keep `mrrWaterfall` and `funnelData` selectors used elsewhere.
+- No new deps. Motion is already in the project.
 
-**6. Payments (`/admin/payments`)**
+## Out of scope
 
-- Stripe-style ledger: charges, refunds, failed. Filters + status pills. Row → drawer with retry / refund actions. Failed-payments count wired to Dashboard alerts.
-
-**7. Messages (`/admin/messages`)** — Cuvo's inbox model
-
-- 3-panel layout: conversation list (Your inbox / Mentions / All + status dots), active thread (with internal Note toggle), patient sidebar (LTV, program, orders, notes, quick actions).
-- Reuses the message bubble styling from `/portal/physician` for consistency.
-- Mobile: single-panel with back navigation between the three.
-
-**8. Reports**
-
-- **Acquisition**: 6 KPI cards, Traffic Over Time line chart, New vs Returning, Session Flow sankey-ish drop-off diagram, Traffic Rhythm heatmap (7×6 grid), Channel Mix donut, Conversion by Channel bars, Top Landing Pages list.
-- **Revenue & P&L**: Revenue KPIs, MRR Waterfall, Revenue by Program table, full P&L statement, Unit Economics (CAC / LTV / LTV:CAC / payback / churn breakdowns).
-- **Funnel**: 8-row conversion waterfall with drop-off column, each row clickable to Patients filtered by stage.
-- **Retention**: Cohort table (6 months × 6 columns) with green→red heat coloring, churn reason breakdown, churn by plan, churn by program month.
-
-**9. Settings (`/admin/settings`)**
-
-- Integrations status list (Stripe, Klaviyo, pharmacies, SMS, Dr. Nass) with live/red dots.
-- Team & roles list.
-- Pharmacy routing rules (reuses pharmacy chips from physician portal).
-- States served toggles.
-- Notification prefs.
-
-**10. Login (`/login/admin`)**
-
-- Split screen matching `/login/physician`: editorial left panel with "Blissley Operator Console" copy, right side email + magic-link button. Any email logs in (client-only) and lands on `/admin` with onboarding overlay on first visit.
-
-## Data & interactivity
-
-New store `src/lib/admin/store.ts` (same `useSyncExternalStore` + `localStorage` pattern as `portal/store.ts`). Seeds:
-
-- ~40 patients across statuses (active / pending / paused / failed / cancelled) with LTV, MRR, program, churn risk, join date.
-- ~30 orders with realistic statuses and tracking milestones.
-- ~30 payments (charges + refunds + failed).
-- ~15 leads (quiz-started, drop stage).
-- ~20 conversations across 4 channels (in-app, SMS, email, WhatsApp) with threads.
-- ~12 tasks for the Task Center.
-- Time-series arrays for KPIs, MRR waterfall, funnel counts, cohort retention, traffic-by-channel, hour×weekday heatmap, channel mix.
-- Session flag for admin auth + `onboardingComplete`.
-
-Actions cover: change date range (recomputes KPIs from seed), resolve task, assign conversation, send reply (with simulated auto-reply like the other portals), retry payment, issue refund, reship order, flag patient, drill into any funnel/pipeline segment (filters the Patients page via query param).
-
-## Charts
-
-Reuse `Chart.js` (already in the project for `WLCalculator`) for all charts to avoid a new dependency. Waterfall, donut, line, horizontal bars, sparkline, heatmap (rendered as a CSS grid of colored cells — no library needed) — all styled with brand tokens.
-
-## Responsiveness
-
-- ≥1280px: full sidebar + multi-column layouts as spec'd.
-- 768–1279px: sidebar collapses to icon rail; columns reflow to 2-up.
-- <768px: bottom tab bar, single-column stacked cards, drawers become full-screen sheets, Messages is single-panel with back nav. Same responsive rigor as `/portal/patient`.  
-  
-give clear demo for each variation when we long hold on logo it shows all the options same like /patient/portal
-
-## Files to create
-
-```text
-src/routes/login.admin.tsx
-src/routes/admin.tsx                        (shell + index redirect to dashboard)
-src/routes/admin.index.tsx                  (Dashboard)
-src/routes/admin.command.tsx
-src/routes/admin.patients.tsx
-src/routes/admin.leads.tsx
-src/routes/admin.orders.tsx
-src/routes/admin.payments.tsx
-src/routes/admin.messages.tsx
-src/routes/admin.reports.acquisition.tsx
-src/routes/admin.reports.revenue.tsx
-src/routes/admin.reports.funnel.tsx
-src/routes/admin.reports.retention.tsx
-src/routes/admin.settings.tsx
-
-src/lib/admin/store.ts                      (state + seeds + actions)
-src/lib/admin/seeds.ts                      (extracted large seed data)
-
-src/components/admin/AdminShell.tsx         (sidebar + topbar + mobile tabs + onboarding)
-src/components/admin/KpiCard.tsx
-src/components/admin/MrrWaterfall.tsx
-src/components/admin/FunnelWaterfall.tsx
-src/components/admin/LivePipeline.tsx
-src/components/admin/TaskCenter.tsx
-src/components/admin/RevenueByProgram.tsx
-src/components/admin/AcquisitionDonut.tsx
-src/components/admin/TrafficHeatmap.tsx
-src/components/admin/SessionFlow.tsx
-src/components/admin/CohortTable.tsx
-src/components/admin/PnlStatement.tsx
-src/components/admin/PatientDrawer.tsx
-src/components/admin/OrderDrawer.tsx
-src/components/admin/MessagesPanel.tsx
-src/components/admin/Onboarding.tsx
-```
-
-## Out of scope (V2, matching your list)
-
-Multi-brand switcher, creator/affiliate tracking, A/B test results, predictive churn ML, inventory, auto physician assignment, LTV projection modeling, custom report builder, API access.
-
-## Deliverable
-
-A complete, click-anything-and-it-works admin console with realistic seed data, matching the polish of `/portal/patient` and `/portal/physician`, and visually aligned with the Cuvo reference. Every button leads somewhere, every number is consistent across screens, and mobile works as well as desktop.
+Sub-routes stay as-is. Existing store shape unchanged; only new pure selectors added. No backend, no cloud — this is the demo dashboard.
