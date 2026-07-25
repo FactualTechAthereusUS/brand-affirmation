@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { AdminShell, Card, Pill } from "@/components/admin/AdminShell";
+import { AdminShell, Card } from "@/components/admin/AdminShell";
 import { Sparkline } from "@/components/admin/Sparkline";
 import { AreaChart } from "@/components/admin/analytics/AreaChart";
+import { Donut } from "@/components/admin/analytics/Donut";
 import { TaskCenter } from "@/components/admin/TaskCenter";
 import {
   computeKpis,
@@ -53,6 +54,15 @@ function AdminHome() {
 
   const mrrDelta = waterfall.reduce((a, i) => a + i.value, 0);
 
+  // Intuitive palette (matches /admin/analytics)
+  const C = {
+    revenue: "#2563eb",
+    mrr: "#7c3aed",
+    active: "#0ea5e9",
+    aov: "#f59e0b",
+    retention: "#10b981",
+  };
+
   // Pipeline (fulfillment) status counts — derived visually consistent
   const pipeline = [
     { key: "review",   label: "In review",    count: 38, sub: "4 stuck · 36h", tone: "warn" as const },
@@ -82,7 +92,7 @@ function AdminHome() {
               sub="Monthly recurring revenue"
               icon={<DollarSign className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={revTrend}
-              sparkColor="#171717"
+              sparkColor={C.mrr}
             />
             <KpiTile
               label="Net Revenue"
@@ -92,7 +102,7 @@ function AdminHome() {
               sub="Last 30 days"
               icon={<TrendingUp className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={revTrend}
-              sparkColor="#171717"
+              sparkColor={C.revenue}
             />
             <KpiTile
               label="Active Subscriptions"
@@ -102,7 +112,7 @@ function AdminHome() {
               sub="2.1% churn this month"
               icon={<Users className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={patientsTrend}
-              sparkColor="#171717"
+              sparkColor={C.active}
             />
             <KpiTile
               label="Avg Order Value"
@@ -112,7 +122,7 @@ function AdminHome() {
               sub="Per completed order"
               icon={<ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={shipTrend}
-              sparkColor="#ee7273"
+              sparkColor={C.aov}
             />
             <KpiTile
               label="Retention Rate"
@@ -122,13 +132,13 @@ function AdminHome() {
               sub={`${18 - refills}/18 refilled this month`}
               icon={<RefreshCw className="h-3.5 w-3.5" strokeWidth={1.75} />}
               spark={patientsTrend}
-              sparkColor="#171717"
+              sparkColor={C.retention}
             />
           </div>
 
           {/* Row 2 — Today's revenue · MRR movement · Revenue by program */}
           <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-3">
-            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} />
+            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} stroke={C.revenue} />
             <MrrMovementCard items={waterfall} delta={mrrDelta} />
             <RevenueByProgramCard programs={programs} />
           </div>
@@ -206,14 +216,20 @@ function KpiTile({
       </div>
       <div className="mt-1 text-[10.5px] text-ink/45">{sub}</div>
       <div className="mt-2 h-7 w-full">
-        <Sparkline data={spark} stroke={sparkColor} fill="transparent" height={28} className="h-7 w-full" />
+        <Sparkline
+          data={spark}
+          stroke={sparkColor}
+          fill={`${sparkColor}1f`}
+          height={28}
+          className="h-7 w-full"
+        />
       </div>
     </motion.div>
   );
 }
 
 /* ───────────────────────── Today's revenue ───────────────────────── */
-function TodayRevenueCard({ value, spark, prior, dates }: { value: number; spark: number[]; prior: number[]; dates: number[] }) {
+function TodayRevenueCard({ value, spark, prior, dates, stroke = "#2563eb" }: { value: number; spark: number[]; prior: number[]; dates: number[]; stroke?: string }) {
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
@@ -232,7 +248,7 @@ function TodayRevenueCard({ value, spark, prior, dates }: { value: number; spark
           dates={dates}
           label="Revenue"
           priorLabel="Prior 30d"
-          stroke="#171717"
+          stroke={stroke}
           height={180}
           formatValue={(v) => `$${Math.round(v).toLocaleString()}`}
           formatYTick={(v) => `$${Math.round(v / 1000)}K`}
@@ -247,8 +263,14 @@ function TodayRevenueCard({ value, spark, prior, dates }: { value: number; spark
 /* ───────────────────────── MRR movement (pixel strip) ───────────────────────── */
 function MrrMovementCard({ items, delta }: { items: { label: string; value: number; kind: "pos" | "neg" }[]; delta: number }) {
   const total = items.reduce((a, i) => a + Math.abs(i.value), 0) || 1;
-  // Build a rainbow pixel strip: green → lime → yellow → orange → red
-  const colors = ["#3f9b6a", "#77b95a", "#c8b04b", "#e69543", "#e0623b", "#c93a3a"];
+  // Movement palette — matches Analytics MRR donut (New→Expansion→Reactivated→Contraction→Churn→Failed)
+  const posColors = ["#7c3aed", "#2563eb", "#10b981"]; // gained
+  const negColors = ["#f59e0b", "#ee7273", "#c93a3a"]; // lost
+  const colorFor = (idx: number, kind: "pos" | "neg") =>
+    kind === "pos" ? posColors[idx % posColors.length] : negColors[idx % negColors.length];
+  let pi = 0, ni = 0;
+  const withColor = items.map((it) => ({ ...it, color: it.kind === "pos" ? colorFor(pi++, "pos") : colorFor(ni++, "neg") }));
+
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
@@ -264,15 +286,13 @@ function MrrMovementCard({ items, delta }: { items: { label: string; value: numb
 
       {/* pixel bar */}
       <div className="mt-3 flex h-4 gap-[2px] overflow-hidden rounded">
-        {items.map((it, idx) => {
+        {withColor.map((it) => {
           const w = (Math.abs(it.value) / total) * 100;
-          const c = colors[idx % colors.length];
-          // build ~ w/2 pixels for texture
           const pixels = Math.max(4, Math.round(w * 0.9));
           return (
             <div key={it.label} className="flex h-full gap-[1px]" style={{ width: `${w}%` }}>
               {Array.from({ length: pixels }).map((_, i) => (
-                <div key={i} className="h-full flex-1 rounded-[1px]" style={{ background: c, opacity: 0.55 + (i / pixels) * 0.45 }} />
+                <div key={i} className="h-full flex-1 rounded-[1px]" style={{ background: it.color, opacity: 0.55 + (i / pixels) * 0.45 }} />
               ))}
             </div>
           );
@@ -280,9 +300,9 @@ function MrrMovementCard({ items, delta }: { items: { label: string; value: numb
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px]">
-        {items.map((it, i) => (
+        {withColor.map((it) => (
           <div key={it.label} className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full" style={{ background: colors[i] }} />
+            <span className="h-2 w-2 rounded-full" style={{ background: it.color }} />
             <span className="text-ink/60">{it.label}</span>
             <span className={`ml-auto tabular-nums ${it.kind === "pos" ? "text-check" : "text-ever"}`}>
               {it.kind === "pos" ? "+" : "−"}${Math.abs(it.value / 1000).toFixed(1)}K
@@ -296,51 +316,33 @@ function MrrMovementCard({ items, delta }: { items: { label: string; value: numb
 
 /* ───────────────────────── Revenue by program (donut) ───────────────────────── */
 function RevenueByProgramCard({ programs }: { programs: { code: string; label: string; revenue: number }[] }) {
+  const palette = ["#7c3aed", "#2563eb", "#0ea5e9", "#10b981", "#f59e0b", "#ee7273"];
   const total = programs.reduce((a, p) => a + p.revenue, 0);
-  const palette = ["#ee7273", "#171717", "#1D437B", "#4a7c6f", "#c4a265", "#8b9bb4"];
-  let cum = 0;
-  const R = 32, C = 40, STROKE = 12;
-  const circ = 2 * Math.PI * R;
-
+  const segments = programs.slice(0, 6).map((p, i) => ({
+    label: p.label,
+    value: p.revenue,
+    color: palette[i % palette.length],
+  }));
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
         <div className="text-[11.5px] font-medium text-ink/55">Revenue by program · 30d</div>
+        <div className="text-[10.5px] tabular-nums text-ink/45">${(total / 1000).toFixed(1)}K total</div>
       </div>
-      <div className="mt-2 flex items-center gap-4">
-        <svg viewBox="0 0 80 80" className="h-[92px] w-[92px] shrink-0 -rotate-90">
-          <circle cx={C} cy={C} r={R} fill="none" stroke="#f0eee9" strokeWidth={STROKE} />
-          {programs.map((p, i) => {
-            const frac = p.revenue / total;
-            const dash = frac * circ;
-            const offset = -cum;
-            cum += dash;
-            return (
-              <circle
-                key={p.code}
-                cx={C} cy={C} r={R}
-                fill="none"
-                stroke={palette[i % palette.length]}
-                strokeWidth={STROKE}
-                strokeDasharray={`${dash} ${circ}`}
-                strokeDashoffset={offset}
-              />
-            );
-          })}
-        </svg>
-        <div className="min-w-0 flex-1 space-y-1 text-[11.5px]">
-          {programs.slice(0, 5).map((p, i) => (
-            <div key={p.code} className="flex items-center gap-2">
-              <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: palette[i] }} />
-              <span className="truncate text-ink/70">{p.label}</span>
-              <span className="ml-auto tabular-nums text-ink">${(p.revenue / 1000).toFixed(1)}K</span>
-            </div>
-          ))}
-        </div>
+      <div className="mt-3">
+        <Donut
+          segments={segments}
+          centerValue={`$${(total / 1000).toFixed(1)}K`}
+          centerLabel="30d"
+          size={120}
+          thickness={14}
+          formatValue={(v) => `$${(v / 1000).toFixed(1)}K`}
+        />
       </div>
     </Card>
   );
 }
+
 
 /* ───────────────────────── Pipeline tile ───────────────────────── */
 function PipelineTile({
@@ -367,7 +369,7 @@ function PipelineTile({
           <div
             key={i}
             className="h-1.5 flex-1 rounded-[1px]"
-            style={{ background: i < Math.min(count, 24) ? (tone === "ok" ? "#3f9b6a" : "#e69543") : "rgba(23,23,23,0.06)" }}
+            style={{ background: i < Math.min(count, 24) ? (tone === "ok" ? "#10b981" : "#f59e0b") : "rgba(23,23,23,0.06)" }}
           />
         ))}
       </div>
@@ -432,32 +434,40 @@ function PatientFunnelCard({ funnel }: { funnel: ReturnType<typeof conversionFun
       </div>
       <div className="mb-2.5 text-[10.5px] text-ink/45">Journey conversion · last 30 days</div>
       <div className="space-y-2">
-        {rows.map((r) => (
-          <div key={r.label}>
-            <div className="flex items-baseline justify-between text-[11.5px]">
-              <span className="text-ink/70">{r.label}</span>
-              <span className="tabular-nums">
-                <span className="text-ink">{r.value.toLocaleString()}</span>
-                <span className="ml-2 text-ink/45">{r.pct.toFixed(1)}%</span>
-              </span>
+        {rows.map((r, i) => {
+          // Gradient from indigo → violet → sky → emerald down the funnel
+          const stops = ["#2563eb", "#4f46e5", "#7c3aed", "#8b5cf6", "#6366f1", "#0ea5e9", "#0d9488", "#10b981"];
+          const bg = stops[i % stops.length];
+          return (
+            <div key={r.label}>
+              <div className="flex items-baseline justify-between text-[11.5px]">
+                <span className="text-ink/70">{r.label}</span>
+                <span className="tabular-nums">
+                  <span className="text-ink">{r.value.toLocaleString()}</span>
+                  <span className="ml-2 text-ink/45">{r.pct.toFixed(1)}%</span>
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-ink/[0.05]">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${r.pct}%` }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.03 }}
+                  className="h-full rounded-full"
+                  style={{ background: bg }}
+                />
+              </div>
             </div>
-            <div className="mt-1 h-1 w-full overflow-hidden rounded bg-ink/[0.05]">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${r.pct}%` }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="h-full rounded bg-ink"
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Card>
   );
 }
 
 function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: string }[] }) {
+  const palette = ["#7c3aed", "#2563eb", "#10b981", "#f59e0b", "#ee7273", "#0ea5e9"];
   const total = mix.reduce((a, m) => a + m.value, 0) || 1;
+  const colored = mix.map((m, i) => ({ ...m, color: palette[i % palette.length] }));
   return (
     <Card className="p-3.5">
       <div className="flex items-baseline justify-between">
@@ -466,13 +476,13 @@ function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: 
         </div>
         <div className="text-[10.5px] text-ink/45">last 30 days</div>
       </div>
-      <div className="mt-2.5 flex h-2 overflow-hidden rounded">
-        {mix.map((m) => (
+      <div className="mt-2.5 flex h-2 overflow-hidden rounded-full">
+        {colored.map((m) => (
           <div key={m.label} style={{ width: `${(m.value / total) * 100}%`, background: m.color }} />
         ))}
       </div>
       <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px]">
-        {mix.map((m) => (
+        {colored.map((m) => (
           <div key={m.label} className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full" style={{ background: m.color }} />
             <span className="text-ink/70">{m.label}</span>

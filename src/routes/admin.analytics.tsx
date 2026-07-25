@@ -186,8 +186,8 @@ function AnalyticsOverview() {
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Churn reasons</div>
             <HBar
-              color="#ee7273"
               formatValue={(v) => `${v}%`}
+              palette={["#ee7273", "#f59e0b", "#0ea5e9", "#7c3aed", "#94a3b8"]}
               rows={[
                 { label: "Side effects", value: 32 },
                 { label: "Cost", value: 22 },
@@ -208,7 +208,7 @@ function AnalyticsOverview() {
               <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Sessions by state</div>
               <div className="text-[11px] text-ink/45">Top 6</div>
             </div>
-            <HBar rows={geo} color="#171717" />
+            <HBar rows={geo} palette={["#2563eb", "#7c3aed", "#0ea5e9", "#10b981", "#f59e0b", "#8b5cf6"]} />
           </Card>
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Device mix</div>
@@ -219,12 +219,13 @@ function AnalyticsOverview() {
                 centerLabel="Mobile"
                 size={140}
                 thickness={18}
+                formatValue={(v) => `${v}%`}
               />
             </div>
           </Card>
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Traffic sources</div>
-            <HBar rows={sources} color={C.traffic} />
+            <HBar rows={sources} palette={["#7c3aed", "#2563eb", "#10b981", "#f59e0b", "#0ea5e9", "#ee7273"]} />
           </Card>
         </div>
       </AnalyticsSection>
@@ -246,26 +247,44 @@ function AnalyticsOverview() {
                 </tr>
               </thead>
               <tbody className="tabular-nums">
-                {movers.map((m, i) => (
-                  <motion.tr
-                    key={m.program}
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.03 }}
-                    className="border-b border-ink/[0.04] last:border-0 hover:bg-ink/[0.015]"
-                  >
-                    <td className="px-4 py-2.5 text-ink">{m.program}</td>
-                    <td className="px-3 py-2.5 text-right text-ink/80">{m.patients}</td>
-                    <td className="px-3 py-2.5 text-right text-ink">${m.newMrr.toLocaleString()}</td>
-                    <td className="px-3 py-2.5 text-right text-ink/70">${m.aov}</td>
-                    <td className="px-3 py-2.5 text-right text-check">{m.refillPct}%</td>
-                    <td className="px-3 py-2.5 text-right text-ever">{m.churnPct}%</td>
-                    <td className="px-4 py-2.5">
-                      <div className="ml-auto h-6 w-24"><LineChartMini data={m.spark} height={24} label={m.program} formatValue={usd} stroke={C.revenue} fill="rgba(37,99,235,0.08)" /></div>
-                    </td>
-                  </motion.tr>
-                ))}
+                {movers.map((m, i) => {
+                  const rowPalette = ["#2563eb", "#7c3aed", "#0ea5e9", "#10b981", "#f59e0b", "#ee7273"];
+                  const rowColor = rowPalette[i % rowPalette.length];
+                  return (
+                    <motion.tr
+                      key={m.program}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.03 }}
+                      className="border-b border-ink/[0.04] last:border-0 hover:bg-ink/[0.015]"
+                    >
+                      <td className="px-4 py-2.5 text-ink">
+                        <span className="inline-flex items-center gap-2">
+                          <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: rowColor }} />
+                          {m.program}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2.5 text-right text-ink/80">{m.patients}</td>
+                      <td className="px-3 py-2.5 text-right text-ink">${m.newMrr.toLocaleString()}</td>
+                      <td className="px-3 py-2.5 text-right text-ink/70">${m.aov}</td>
+                      <td className="px-3 py-2.5 text-right text-check">{m.refillPct}%</td>
+                      <td className="px-3 py-2.5 text-right text-ever">{m.churnPct}%</td>
+                      <td className="px-4 py-2.5">
+                        <div className="ml-auto h-6 w-24">
+                          <LineChartMini
+                            data={m.spark}
+                            height={24}
+                            label={m.program}
+                            formatValue={usd}
+                            stroke={rowColor}
+                            fill={`${rowColor}1f`}
+                          />
+                        </div>
+                      </td>
+                    </motion.tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
