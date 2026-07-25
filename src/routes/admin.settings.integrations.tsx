@@ -80,10 +80,11 @@ function IntegrationList({ list }: { list: Integration[] }) {
     <div className="divide-y divide-ink/6">
       {list.map((i) => (
         <div key={i.id} className="flex items-center gap-3 py-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg" style={{ background: i.logoUrl ? "transparent" : i.brand.color }}>
-            {i.logoUrl
-              ? <img src={i.logoUrl} alt="" className="h-10 w-10 object-contain" />
+          <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg" style={{ background: i.brand.logoUrl ? "transparent" : i.brand.color }}>
+            {i.brand.logoUrl
+              ? <img src={i.brand.logoUrl} alt="" className="h-10 w-10 object-contain" />
               : <span className="text-[13px] font-bold text-white">{i.brand.mono}</span>}
+
           </div>
           <div className="min-w-0 flex-1">
             <div className="truncate text-[13.5px] font-semibold text-ink">{i.name}</div>

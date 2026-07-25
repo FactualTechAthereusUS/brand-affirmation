@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { ExternalLink, Download, AlertTriangle, Pencil } from "lucide-react";
 import { PageHeader, SettingsCard, Field, TextInput } from "@/components/admin/settings/primitives";
 import { adminActions, useAdmin } from "@/lib/admin/store";
-import { toCsv } from "@/lib/admin/csv";
+import { downloadCsv } from "@/lib/admin/csv";
 
 export const Route = createFileRoute("/admin/settings/legal")({
   head: () => ({ meta: [{ title: "Legal & Policies · Settings — Blissley HQ" }, { name: "robots", content: "noindex,nofollow" }] }),

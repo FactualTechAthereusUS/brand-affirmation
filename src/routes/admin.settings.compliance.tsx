@@ -5,7 +5,7 @@ import { Upload, Download, ShieldCheck, AlertTriangle } from "lucide-react";
 import { PageHeader, SettingsCard, Field, Select, Toggle, TextInput } from "@/components/admin/settings/primitives";
 import { StatusPill } from "@/components/admin/AdminShell";
 import { adminActions, useAdmin, type BAARecord } from "@/lib/admin/store";
-import { toCsv } from "@/lib/admin/csv";
+import { downloadCsv } from "@/lib/admin/csv";
 
 export const Route = createFileRoute("/admin/settings/compliance")({
   head: () => ({ meta: [{ title: "Compliance & HIPAA · Settings — Blissley HQ" }, { name: "robots", content: "noindex,nofollow" }] }),
