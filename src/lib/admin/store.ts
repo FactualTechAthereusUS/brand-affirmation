@@ -486,7 +486,7 @@ function seed(): AdminState {
 }
 
 /* ────────── Storage ────────── */
-const KEY = "blissley.admin.v2";
+const KEY = "blissley.admin.v3";
 
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
