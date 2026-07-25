@@ -643,6 +643,61 @@ export const adminActions = {
   setPatientFilter(f: PatientStatus | "all") { set((s) => ({ ui: { ...s.ui, patientFilter: f } })); },
   setPatientSearch(q: string) { set((s) => ({ ui: { ...s.ui, patientSearch: q } })); },
   toggleLogoMenu(open?: boolean) { set((s) => ({ ui: { ...s.ui, showLogoMenu: open ?? !s.ui.showLogoMenu } })); },
+  setScenario(sc: DemoScenario) {
+    set(() => {
+      const fresh = seed();
+      if (sc === "empty") {
+        return { scenario: sc, patients: [], orders: [], payments: [], cases: [], checkIns: [], notifications: [], activity: [], tasks: [], conversations: [], alerts: [], leads: [] };
+      }
+      if (sc === "crisis") {
+        return {
+          scenario: sc,
+          payments: fresh.payments.map((p, i) => (i < 12 ? { ...p, status: "failed" as const, failureReason: "insufficient_funds" } : p)),
+          pharmacies: fresh.pharmacies.map((ph, i) => (i < 2 ? { ...ph, apiStatus: "degraded" as const, avgPrepHrs: ph.avgPrepHrs + 18 } : ph)),
+          cases: fresh.cases.map((c, i) => (i < 5 ? { ...c, priority: "urgent" as const, flags: [...c.flags, "SLA breach"] } : c)),
+          notifications: [...fresh.notifications, { id: "n_crisis", ts: Date.now(), tone: "critical" as const, title: "Payment gateway degraded", detail: "Stripe returning 5xx on 8% of charges", deepLink: "/admin/integrations", unread: true }],
+        };
+      }
+      if (sc === "churn") {
+        return {
+          scenario: sc,
+          patients: fresh.patients.map((p, i) => (i < 8 && p.status === "active" ? { ...p, status: "cancelled" as const, mrr: 0, churn: "critical" as const } : p)),
+        };
+      }
+      if (sc === "launch") {
+        return {
+          scenario: sc,
+          patients: [...fresh.patients, ...Array.from({ length: 12 }, (_, i) => ({
+            id: `pt_launch_${i}`, firstName: "Launch", lastName: `Lead ${i}`, email: `launch${i}@email.com`,
+            phone: `+1 (555) 555-01${i.toString().padStart(2, "0")}`, status: "pending" as const,
+            program: "tirz_mo" as const, mrr: 0, ltv: 0, startedAt: new Date().toISOString().slice(0, 10),
+            churn: "low" as const, state: "CA",
+          }))],
+        };
+      }
+      return { scenario: sc, ...fresh };
+    });
+  },
+  setRole(r: Role) { set({ role: r }); },
+  markNotificationRead(id: string) {
+    set((s) => ({ notifications: s.notifications.map((n) => (n.id === id ? { ...n, unread: false } : n)) }));
+  },
+  markAllNotificationsRead() {
+    set((s) => ({ notifications: s.notifications.map((n) => ({ ...n, unread: false })) }));
+  },
+  approveCase(id: string) {
+    set((s) => ({ cases: s.cases.map((c) => (c.id === id ? { ...c, status: "approved" as const, decision: "Approved" } : c)) }));
+  },
+  denyCase(id: string, reason: string) {
+    set((s) => ({ cases: s.cases.map((c) => (c.id === id ? { ...c, status: "denied" as const, decision: reason } : c)) }));
+  },
+  toggleIntegration(id: string) {
+    set((s) => ({ integrations: s.integrations.map((i) => (i.id === id ? { ...i, status: i.status === "connected" ? "down" as const : "connected" as const, lastSync: Date.now() } : i)) }));
+  },
+  setActiveCase(id: string | null) { set((s) => ({ ui: { ...s.ui, activeCaseId: id } })); },
+  sendCheckInReminder(id: string) {
+    set((s) => ({ activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Check-in reminder sent — ${s.checkIns.find(c => c.id === id)?.patientName ?? "patient"}`, tone: "info" as const }, ...s.activity] }));
+  },
 
   resolveTask(id: string) {
     set((s) => ({ tasks: s.tasks.map((t) => (t.id === id ? { ...t, status: "done" } : t)) }));
