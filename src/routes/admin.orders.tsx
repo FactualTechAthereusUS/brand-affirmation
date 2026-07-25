@@ -272,7 +272,7 @@ function RxPill({ status }: { status: "pending_review" | "approved" | "refill_du
   return <StatusPill tone={m.tone}>{m.icon}{m.label}</StatusPill>;
 }
 function FulfillPill({ status }: { status: Order["status"] }) {
-  const map: Record<Order["status"], { tone: "success" | "warn" | "critical" | "info" | "neutral"; icon: JSX.Element; label: string }> = {
+  const map: Record<Order["status"], { tone: "success" | "warn" | "critical" | "info" | "neutral"; icon: React.ReactNode; label: string }> = {
     processing:   { tone: "neutral", icon: <Clock className="mr-1 inline h-3 w-3" />, label: "Processing" },
     at_pharmacy:  { tone: "warn", icon: <Package className="mr-1 inline h-3 w-3" />, label: "At pharmacy" },
     shipped:      { tone: "info", icon: <Truck className="mr-1 inline h-3 w-3" />, label: "In transit" },
