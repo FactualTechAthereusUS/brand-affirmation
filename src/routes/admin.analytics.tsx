@@ -9,7 +9,7 @@ import { BreakdownBars } from "@/components/admin/analytics/BreakdownBars";
 import { CohortHeatmap } from "@/components/admin/analytics/Heatmap";
 import { computeKpis, funnelData, cohortRetention, useAdmin } from "@/lib/admin/store";
 import {
-  revenueTrend, sessionsTrend, aovTrend, activeTrend, priorPeriodShift,
+  revenueTrend, sessionsTrend, aovTrend, activeTrend, priorPeriodShift, datesTrend,
   physicianSLATrend, approvalRateTrend, refillAdherenceTrend,
   sessionsByState, deviceMix, trafficSources, programMovers, paymentsHealth,
   insightHeadline, conversionFunnel,
