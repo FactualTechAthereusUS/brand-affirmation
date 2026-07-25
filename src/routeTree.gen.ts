@@ -38,14 +38,26 @@ import { Route as IntakeNewWeightlossOursRouteImport } from './routes/intake_.ne
 import { Route as CheckoutTrimrxRouteImport } from './routes/checkout.trimrx'
 import { Route as CheckoutChargedBeforeRouteImport } from './routes/checkout.charged-before'
 import { Route as CheckoutUITemplate3RouteImport } from './routes/checkout.UI-template3'
+import { Route as AdminTeamRouteImport } from './routes/admin.team'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminPhysicianQueueRouteImport } from './routes/admin.physician-queue'
+import { Route as AdminPharmacyRouteImport } from './routes/admin.pharmacy'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
+import { Route as AdminLiveRouteImport } from './routes/admin.live'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminIntegrationsRouteImport } from './routes/admin.integrations'
 import { Route as AdminCommandRouteImport } from './routes/admin.command'
+import { Route as AdminCheckInsRouteImport } from './routes/admin.check-ins'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
+import { Route as AdminAnalyticsRetentionRouteImport } from './routes/admin.analytics.retention'
+import { Route as AdminAnalyticsFunnelRouteImport } from './routes/admin.analytics.funnel'
+import { Route as AdminAnalyticsFinancesRouteImport } from './routes/admin.analytics.finances'
+import { Route as AdminAnalyticsAcquisitionRouteImport } from './routes/admin.analytics.acquisition'
 
 const TestStateRoute = TestStateRouteImport.update({
   id: '/test-state',
@@ -192,6 +204,11 @@ const CheckoutUITemplate3Route = CheckoutUITemplate3RouteImport.update({
   path: '/checkout/UI-template3',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTeamRoute = AdminTeamRouteImport.update({
+  id: '/admin/team',
+  path: '/admin/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/admin/settings',
   path: '/admin/settings',
@@ -200,6 +217,16 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
 const AdminReportsRoute = AdminReportsRouteImport.update({
   id: '/admin/reports',
   path: '/admin/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPhysicianQueueRoute = AdminPhysicianQueueRouteImport.update({
+  id: '/admin/physician-queue',
+  path: '/admin/physician-queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPharmacyRoute = AdminPharmacyRouteImport.update({
+  id: '/admin/pharmacy',
+  path: '/admin/pharmacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
@@ -222,9 +249,19 @@ const AdminMessagesRoute = AdminMessagesRouteImport.update({
   path: '/admin/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLiveRoute = AdminLiveRouteImport.update({
+  id: '/admin/live',
+  path: '/admin/live',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLeadsRoute = AdminLeadsRouteImport.update({
   id: '/admin/leads',
   path: '/admin/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIntegrationsRoute = AdminIntegrationsRouteImport.update({
+  id: '/admin/integrations',
+  path: '/admin/integrations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCommandRoute = AdminCommandRouteImport.update({
@@ -232,6 +269,42 @@ const AdminCommandRoute = AdminCommandRouteImport.update({
   path: '/admin/command',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCheckInsRoute = AdminCheckInsRouteImport.update({
+  id: '/admin/check-ins',
+  path: '/admin/check-ins',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/admin/analytics',
+  path: '/admin/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPatientsRoute,
+} as any)
+const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
+  id: '/retention',
+  path: '/retention',
+  getParentRoute: () => AdminAnalyticsRoute,
+} as any)
+const AdminAnalyticsFunnelRoute = AdminAnalyticsFunnelRouteImport.update({
+  id: '/funnel',
+  path: '/funnel',
+  getParentRoute: () => AdminAnalyticsRoute,
+} as any)
+const AdminAnalyticsFinancesRoute = AdminAnalyticsFinancesRouteImport.update({
+  id: '/finances',
+  path: '/finances',
+  getParentRoute: () => AdminAnalyticsRoute,
+} as any)
+const AdminAnalyticsAcquisitionRoute =
+  AdminAnalyticsAcquisitionRouteImport.update({
+    id: '/acquisition',
+    path: '/acquisition',
+    getParentRoute: () => AdminAnalyticsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -246,14 +319,21 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
+  '/admin/check-ins': typeof AdminCheckInsRoute
   '/admin/command': typeof AdminCommandRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/orders': typeof AdminOrdersRoute
-  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/pharmacy': typeof AdminPharmacyRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/team': typeof AdminTeamRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -271,6 +351,11 @@ export interface FileRoutesByFullPath {
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
+  '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
+  '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
+  '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
+  '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/patients/$id': typeof AdminPatientsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -285,14 +370,21 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
+  '/admin/check-ins': typeof AdminCheckInsRoute
   '/admin/command': typeof AdminCommandRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/orders': typeof AdminOrdersRoute
-  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/pharmacy': typeof AdminPharmacyRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/team': typeof AdminTeamRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -310,6 +402,11 @@ export interface FileRoutesByTo {
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin': typeof AdminIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
+  '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
+  '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
+  '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
+  '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/patients/$id': typeof AdminPatientsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -325,14 +422,21 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
+  '/admin/check-ins': typeof AdminCheckInsRoute
   '/admin/command': typeof AdminCommandRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/orders': typeof AdminOrdersRoute
-  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/pharmacy': typeof AdminPharmacyRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/team': typeof AdminTeamRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -350,6 +454,11 @@ export interface FileRoutesById {
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
+  '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
+  '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
+  '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
+  '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/patients/$id': typeof AdminPatientsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -366,14 +475,21 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/admin/analytics'
+    | '/admin/check-ins'
     | '/admin/command'
+    | '/admin/integrations'
     | '/admin/leads'
+    | '/admin/live'
     | '/admin/messages'
     | '/admin/orders'
     | '/admin/patients'
     | '/admin/payments'
+    | '/admin/pharmacy'
+    | '/admin/physician-queue'
     | '/admin/reports'
     | '/admin/settings'
+    | '/admin/team'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -391,6 +507,11 @@ export interface FileRouteTypes {
     | '/weight-loss/sales'
     | '/admin/'
     | '/weight-loss/'
+    | '/admin/analytics/acquisition'
+    | '/admin/analytics/finances'
+    | '/admin/analytics/funnel'
+    | '/admin/analytics/retention'
+    | '/admin/patients/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -405,14 +526,21 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/admin/analytics'
+    | '/admin/check-ins'
     | '/admin/command'
+    | '/admin/integrations'
     | '/admin/leads'
+    | '/admin/live'
     | '/admin/messages'
     | '/admin/orders'
     | '/admin/patients'
     | '/admin/payments'
+    | '/admin/pharmacy'
+    | '/admin/physician-queue'
     | '/admin/reports'
     | '/admin/settings'
+    | '/admin/team'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -430,6 +558,11 @@ export interface FileRouteTypes {
     | '/weight-loss/sales'
     | '/admin'
     | '/weight-loss'
+    | '/admin/analytics/acquisition'
+    | '/admin/analytics/finances'
+    | '/admin/analytics/funnel'
+    | '/admin/analytics/retention'
+    | '/admin/patients/$id'
   id:
     | '__root__'
     | '/'
@@ -444,14 +577,21 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/admin/analytics'
+    | '/admin/check-ins'
     | '/admin/command'
+    | '/admin/integrations'
     | '/admin/leads'
+    | '/admin/live'
     | '/admin/messages'
     | '/admin/orders'
     | '/admin/patients'
     | '/admin/payments'
+    | '/admin/pharmacy'
+    | '/admin/physician-queue'
     | '/admin/reports'
     | '/admin/settings'
+    | '/admin/team'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -469,6 +609,11 @@ export interface FileRouteTypes {
     | '/weight-loss/sales'
     | '/admin/'
     | '/weight-loss/'
+    | '/admin/analytics/acquisition'
+    | '/admin/analytics/finances'
+    | '/admin/analytics/funnel'
+    | '/admin/analytics/retention'
+    | '/admin/patients/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -484,14 +629,21 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRouteWithChildren
+  AdminCheckInsRoute: typeof AdminCheckInsRoute
   AdminCommandRoute: typeof AdminCommandRoute
+  AdminIntegrationsRoute: typeof AdminIntegrationsRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
+  AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
-  AdminPatientsRoute: typeof AdminPatientsRoute
+  AdminPatientsRoute: typeof AdminPatientsRouteWithChildren
   AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminPharmacyRoute: typeof AdminPharmacyRoute
+  AdminPhysicianQueueRoute: typeof AdminPhysicianQueueRoute
   AdminReportsRoute: typeof AdminReportsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminTeamRoute: typeof AdminTeamRoute
   CheckoutUITemplate3Route: typeof CheckoutUITemplate3Route
   CheckoutChargedBeforeRoute: typeof CheckoutChargedBeforeRoute
   CheckoutTrimrxRoute: typeof CheckoutTrimrxRoute
@@ -714,6 +866,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutUITemplate3RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/team': {
+      id: '/admin/team'
+      path: '/admin/team'
+      fullPath: '/admin/team'
+      preLoaderRoute: typeof AdminTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/admin/settings'
@@ -726,6 +885,20 @@ declare module '@tanstack/react-router' {
       path: '/admin/reports'
       fullPath: '/admin/reports'
       preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/physician-queue': {
+      id: '/admin/physician-queue'
+      path: '/admin/physician-queue'
+      fullPath: '/admin/physician-queue'
+      preLoaderRoute: typeof AdminPhysicianQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/pharmacy': {
+      id: '/admin/pharmacy'
+      path: '/admin/pharmacy'
+      fullPath: '/admin/pharmacy'
+      preLoaderRoute: typeof AdminPharmacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/payments': {
@@ -756,11 +929,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/live': {
+      id: '/admin/live'
+      path: '/admin/live'
+      fullPath: '/admin/live'
+      preLoaderRoute: typeof AdminLiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/leads': {
       id: '/admin/leads'
       path: '/admin/leads'
       fullPath: '/admin/leads'
       preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/integrations': {
+      id: '/admin/integrations'
+      path: '/admin/integrations'
+      fullPath: '/admin/integrations'
+      preLoaderRoute: typeof AdminIntegrationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/command': {
@@ -769,6 +956,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/command'
       preLoaderRoute: typeof AdminCommandRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/check-ins': {
+      id: '/admin/check-ins'
+      path: '/admin/check-ins'
+      fullPath: '/admin/check-ins'
+      preLoaderRoute: typeof AdminCheckInsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/admin/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/patients/$id': {
+      id: '/admin/patients/$id'
+      path: '/$id'
+      fullPath: '/admin/patients/$id'
+      preLoaderRoute: typeof AdminPatientsIdRouteImport
+      parentRoute: typeof AdminPatientsRoute
+    }
+    '/admin/analytics/retention': {
+      id: '/admin/analytics/retention'
+      path: '/retention'
+      fullPath: '/admin/analytics/retention'
+      preLoaderRoute: typeof AdminAnalyticsRetentionRouteImport
+      parentRoute: typeof AdminAnalyticsRoute
+    }
+    '/admin/analytics/funnel': {
+      id: '/admin/analytics/funnel'
+      path: '/funnel'
+      fullPath: '/admin/analytics/funnel'
+      preLoaderRoute: typeof AdminAnalyticsFunnelRouteImport
+      parentRoute: typeof AdminAnalyticsRoute
+    }
+    '/admin/analytics/finances': {
+      id: '/admin/analytics/finances'
+      path: '/finances'
+      fullPath: '/admin/analytics/finances'
+      preLoaderRoute: typeof AdminAnalyticsFinancesRouteImport
+      parentRoute: typeof AdminAnalyticsRoute
+    }
+    '/admin/analytics/acquisition': {
+      id: '/admin/analytics/acquisition'
+      path: '/acquisition'
+      fullPath: '/admin/analytics/acquisition'
+      preLoaderRoute: typeof AdminAnalyticsAcquisitionRouteImport
+      parentRoute: typeof AdminAnalyticsRoute
     }
   }
 }
@@ -785,6 +1021,36 @@ const LoginRouteChildren: LoginRouteChildren = {
 
 const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 
+interface AdminAnalyticsRouteChildren {
+  AdminAnalyticsAcquisitionRoute: typeof AdminAnalyticsAcquisitionRoute
+  AdminAnalyticsFinancesRoute: typeof AdminAnalyticsFinancesRoute
+  AdminAnalyticsFunnelRoute: typeof AdminAnalyticsFunnelRoute
+  AdminAnalyticsRetentionRoute: typeof AdminAnalyticsRetentionRoute
+}
+
+const AdminAnalyticsRouteChildren: AdminAnalyticsRouteChildren = {
+  AdminAnalyticsAcquisitionRoute: AdminAnalyticsAcquisitionRoute,
+  AdminAnalyticsFinancesRoute: AdminAnalyticsFinancesRoute,
+  AdminAnalyticsFunnelRoute: AdminAnalyticsFunnelRoute,
+  AdminAnalyticsRetentionRoute: AdminAnalyticsRetentionRoute,
+}
+
+const AdminAnalyticsRouteWithChildren = AdminAnalyticsRoute._addFileChildren(
+  AdminAnalyticsRouteChildren,
+)
+
+interface AdminPatientsRouteChildren {
+  AdminPatientsIdRoute: typeof AdminPatientsIdRoute
+}
+
+const AdminPatientsRouteChildren: AdminPatientsRouteChildren = {
+  AdminPatientsIdRoute: AdminPatientsIdRoute,
+}
+
+const AdminPatientsRouteWithChildren = AdminPatientsRoute._addFileChildren(
+  AdminPatientsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
@@ -798,14 +1064,21 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
+  AdminAnalyticsRoute: AdminAnalyticsRouteWithChildren,
+  AdminCheckInsRoute: AdminCheckInsRoute,
   AdminCommandRoute: AdminCommandRoute,
+  AdminIntegrationsRoute: AdminIntegrationsRoute,
   AdminLeadsRoute: AdminLeadsRoute,
+  AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   AdminOrdersRoute: AdminOrdersRoute,
-  AdminPatientsRoute: AdminPatientsRoute,
+  AdminPatientsRoute: AdminPatientsRouteWithChildren,
   AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminPharmacyRoute: AdminPharmacyRoute,
+  AdminPhysicianQueueRoute: AdminPhysicianQueueRoute,
   AdminReportsRoute: AdminReportsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminTeamRoute: AdminTeamRoute,
   CheckoutUITemplate3Route: CheckoutUITemplate3Route,
   CheckoutChargedBeforeRoute: CheckoutChargedBeforeRoute,
   CheckoutTrimrxRoute: CheckoutTrimrxRoute,
@@ -825,13 +1098,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
