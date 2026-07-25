@@ -1346,6 +1346,7 @@ export const adminActions = {
     return id;
   },
 
+  resetAll() {
     state = seed();
     persist();
     listeners.forEach((l) => l());
