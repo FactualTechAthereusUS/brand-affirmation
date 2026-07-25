@@ -1,121 +1,106 @@
-Adopt Shopify's Order/Customer detail patterns across all three detail pages, adapted for telehealth. Purely presentational + a few store fields. No new routes, no migrations.
+## Goal
 
-## /admin/orders/$id — align to Shopify order page
+Make every visible button on `/admin/orders/$id` and `/admin/patients/$id`  and `/admin/leads/$id`  (plus the pieces in `admin.orders.index` / `admin.patients.index` they hand off to) actually do something end-to-end against the demo store, with clear feedback (state change + activity log + optional toast). No new backend — everything writes through `adminActions` in `src/lib/admin/store.ts` so the UI updates immediately and persists to localStorage.
 
-Reorder existing blocks and add missing ones.
+## Current state (verified from source)
 
-**Header row**
+**Already wired (do not touch):**
 
-- Keep #id, copy, RxBadge, FulfillBadge, cold-chain chip.
-- Add prev/next paginate arrows (sibling orders sorted by createdAt) — Shopify-parity nav.
-- Subheading line: `Placed {createdAt} · from {channel} · {program} · {cadence}`.
+- Patient page: `ManagePanel` pause/cancel/switch-plan modals, `QuickActionsPanel` magic link / refund modal / flag modal, `StatusBanner` retry/reactivate/write-off, `InternalNotes`, `TagsCard`, payments-row Retry, sendMagicLink.
+- Order page: `OrderInternalNotes` save note, VariantBanner links to physician queue.
+- Index pages: search, filter, sort, row-click navigation.
 
-**Variant banner** (new, above grid)
+**Gaps — buttons that render but do nothing:**
 
-- `exception` → red "Delayed / lost in transit" + Reship-at-no-cost CTA
-- `rxStatus = pending_review` → amber "Awaiting Rx approval — card authorized, not captured"
-- `payment.status = refunded` → gray "Refunded {date} · {amount}"
+Order detail (`admin.orders.$id.tsx`):
 
-**Left column** (main, existing order kept where sensible)
+- Toolbar: Print label, Refund, More, **Advance stage**
+- Variant banner: **Reship at no cost** (exception case)
+- Shipping card: Edit address, Reissue label, Reroute, Report exception
+- Payment card mini-btns: Refund, Send receipt, Retry
+- Subscription card: Pause, Skip next, Cancel
+- Assigned card: Reassign
+- Tags card: `+ Add`
+- Activity card header: Add internal note (should just focus the notes box)
+- Patient card: "View patient" link → `/admin/patients` (missing `$id`)
 
-1. Fulfillment stepper (as-is)
-2. **Line items — grouped by fulfillment status card** (Shopify pattern): "Unfulfilled" / "At pharmacy" / "Shipped" group headers, each with its items + per-group action (Mark dispatched / Print label / Track). Rx meta strip below (physician, state check, Rx#) stays.
-3. Shipping card (as-is)
-4. **Payment summary card** — Shopify layout: subtotal · discount · tax · shipping · Total, then a "Paid $X" or "Refunded $X" footer strip. Method + intent moved to smaller side panel inside card.
-5. **COGS (internal)** — new: drug cost, packaging, shipping cost, gross profit $, GP margin %. Deterministic from order id/program in `enrichOrder`.
-6. Clinical review (as-is)
-7. **Timeline w/ composer** — full-width, promoted to bottom. Add textarea + Post button = internal note (mirrors Shopify's Timeline Comment block).
+Patient detail (`admin.patients.$id.tsx`):
 
-**Right column**
+- Header: Send message (needs patient-scoped composer), **Issue refund** (header button — unwired; QuickActions refund is wired), More menu
+- Orders table: per-row **View** button (doesn't navigate to `/admin/orders/$id`)
+- Check-ins: **Send reminder now**
+- Intake: Download intake PDF
+- ManagePanel stubs: Update payment method (alert), Update shipping address (alert), billing-date Save
+- QuickActions stubs: Create new order (alert), Export patient record (alert), Delete patient (modal closes but no-op)
 
-- **Customer card** — Shopify parity: initials, name, "N orders" count, contact block w/ copy-email, shipping address w/ copy, billing (Same as shipping), then LTV / plan / started. Link → patient page.
-- **Subscription context** (as-is): cadence, refill #, next refill, quick actions.
-- **Conversion summary** (new): first order? attribution source · sessions · days from lead → conversion. Derive from patient enrichment.
-- **About this order** (new): Order risk (low/med/high pill, chargeback risk line), ID verification, address deliverability, exception flags.
-- Tags + Assigned (as-is).
+## Plan
 
-## /admin/patients/$id — align to Shopify customer page
+### 1. Extend `src/lib/admin/store.ts` with the missing actions
 
-Reorder + add metric strip.
+Add to `adminActions` (all mutate state + push to `activity` log for feedback; timeline events on orders where relevant):
 
-**Header** (as-is) + prev/next paginate arrows.
+- `advanceOrderStage(orderId)` — walk `processing → at_pharmacy → shipped → delivered`, append matching `timeline` event, set `deliveredAt`/`eta` when transitioning.
+- `refundOrder(orderId, reason?)` — set `payment.status = "refunded"`, push timeline note, activity log.
+- `retryOrderPayment(orderId)` — flip payment back to `paid` (demo).
+- `reissueLabel(orderId)` — regenerate `tracking` string, push `label` timeline event.
+- `reportOrderException(orderId, reason)` — status→`exception`, add flag, timeline `exception` event.
+- `rerouteOrder(orderId, newCity/newState)` — patch `shipTo`, timeline note.
+- `updateOrderAddress(orderId, patch)` — patch `shipTo`.
+- `assignOrderOps(orderId, ops)` — store `opsOwner` on order.
+- `addOrderTag` / `removeOrderTag`
+- `sendOrderReceipt(orderId)` / `printOrderLabel(orderId)` — activity toast only.
+- `pauseOrderSubscription(patientId)` (delegates to `pausePatient`) / `skipNextRefill(orderId)` — pushes eta forward 30d + activity.
+- `sendCheckInReminder` already exists on check-ins; add `sendPatientCheckInReminder(patientId)` for the patient page banner.
+- `deletePatient(id)` — remove from `patients`, cascade filter `orders`/`payments`, activity log.
+- `createManualOrder(patientId, program)` — insert a fresh `processing` order with a seeded timeline entry.
+- `updatePatientCard(id, brand, last4)` / `updatePatientAddress(id, addr)` / `updatePatientBillingDate(id, iso)`.
+- `exportPatientPdf(id)` — activity log only (demo).
 
-**Metric strip** (new, directly below header — Shopify's 4-card row)
+Each action normalizes through the existing `set(...)` helper so it participates in persistence + subscriptions.
 
-- Amount spent (`$totalSpent`)
-- Orders (count)
-- Patient since (relative, e.g. "8 months")
-- Segment / RFM (e.g. "Active · High LTV" or churn tier)
-Each card has an info tooltip explaining the metric.
+### 2. Add a tiny global toast
 
-**Left column**
+New `src/components/admin/Toast.tsx` + `useToast()` hook (module-level event bus). One mount in `AdminShell`. `adminActions` fires a toast for user-triggered ops (refund issued, label reissued, receipt sent, etc.). Keeps feedback consistent without redesigning any card.
 
-1. Status banner (as-is)
-2. **Last order card** (new — Shopify "Last order placed" pattern): most-recent order with status pills, mini line-items list, "Create order" + "View all orders" links. Placed above the Orders table.
-3. Subscription + DoseProgress (as-is)
-4. Clinical (as-is)
-5. Orders table (last 3, as-is) — kept below Last-order card for full history glance
-6. Check-ins (as-is)
-7. Payments (as-is)
-8. Communications (as-is)
-9. Intake (collapsed, as-is)
-10. **Activity timeline w/ composer** — promoted to full width bottom; existing PatientTimeline already includes note composer.
+### 3. Wire the order detail buttons (`admin.orders.$id.tsx`)
 
-**Right column** — trim to Shopify shape
+- Toolbar → `printOrderLabel`, open a small `RefundModal` (amount + reason) → `refundOrder`, replace `ToolbarBtn` with real onClicks; **Advance stage** → `advanceOrderStage` (disabled at `delivered`).
+- Variant banner Reship → `reshipOrder` + toast.
+- Shipping mini-btns → open `EditAddressModal` / `RerouteModal` / `ReissueLabelModal(confirm)` / `ReportExceptionModal(reason)`.
+- Payment mini-btns → `refundOrder` / `sendOrderReceipt` / `retryOrderPayment` (only enabled when relevant).
+- Subscription mini-btns → reuse `ManagePanel`'s pause/cancel/switch flows via a shared modal, or call `pausePatient` / `cancelPatient(reason)` directly on `o.patientId`.
+- Tags `+ Add` → inline input like patient TagsCard, calls `addOrderTag/removeOrderTag`.
+- Assigned "Reassign" → simple select modal listing 4 demo ops names → `assignOrderOps`.
+- Activity "Add internal note" → scrollIntoView + focus the notes textarea.
+- Fix "View patient" `Link` to `/admin/patients/$id` with `params={{ id: o.patientId }}`.
 
-- Customer info card (contact + copy email, default address, marketing subs Yes/No, tax, store credit N/A)
-- Manage (subscription controls, as-is)
-- Quick actions (as-is)
-- Tags (as-is)
-- Internal notes (as-is)
-- "At a glance" merged into the top metric strip; keep only projected LTV/churn as a small sub-card.
+### 4. Wire the patient detail buttons (`admin.patients.$id.tsx`)
 
-## /admin/leads/$id — light Shopify polish
+- Header "Send message" → navigate to `/admin/messages` and call `setActiveConvo` with the patient's conversation (fall back to creating a stub convo if none — one-liner in store).
+- Header **Issue refund** → open the same `RefundModal` used in `QuickActionsPanel` (extract it to `patients/RefundModal.tsx` and share).
+- Header "More" → dropdown with Pause / Cancel / Reactivate / Delete (delegating to existing modals in ManagePanel/QuickActions).
+- Orders row "View" → `nav({ to: "/admin/orders/$id", params: { id: o.id }})`.
+- Check-ins "Send reminder now" → `sendPatientCheckInReminder` + toast.
+- ManagePanel: replace "Update payment method" `alert` with `UpdateCardModal` (brand + last4) → `updatePatientCard`. Replace "Update shipping address" `alert` with `UpdateAddressModal` → `updatePatientAddress`. Wire billing-date Save → `updatePatientBillingDate`.
+- QuickActions: "Create new order" → confirm modal → `createManualOrder` then navigate to the new order. "Export patient record" → `exportPatientPdf` + toast. "Delete patient" → wire the existing confirm modal's Delete button to `deletePatient` then `nav("/admin/patients")`.
+- Intake "Download intake PDF" → toast (demo).
 
-Already comprehensive. Just add:
+### 5. Verification
 
-- Prev/next paginate arrows in header.
-- **Metric strip** (4 cards): Score · Projected LTV · Sessions · Days since first touch. Replaces the standalone ScoreGauge in the header (moved into card 1).
-- **Conversion summary** card (attribution: first-touch source, sessions, days-in-funnel) — currently split between Attribution + funnel; consolidate into one Shopify-style summary card next to Attribution.
+After implementing:
 
-No block removals, no new routes.  
-  
-make it as per telehelath not as ecom, u have to update everything as per telehealth 
-
-## Files touched
-
-- `src/lib/admin/orders-enrich.ts` — add `cogs`, `channel`, `orderRisk`, `siblingOrderIds` (for paginate).
-- `src/lib/admin/patients-enrich.ts` — add `amountSpent`, `orderCount`, `customerSinceRel`, `rfmGroup`, `siblingPatientIds`.
-- `src/lib/admin/leads-enrich.ts` — add `siblingLeadIds`, `sessionsCount`, `daysSinceFirstTouch`.
-- `src/lib/admin/store.ts` — add `orderNotes: Record<string, InternalNote[]>` + `adminActions.addOrderNote`.
-- `src/routes/admin.orders.$id.tsx` — reorder blocks, add variant banner, grouped fulfillment card, COGS, timeline-with-composer, conversion summary, order risk, customer card refactor.
-- `src/routes/admin.patients.$id.tsx` — add paginate, metric strip, Last-order card, Customer-info sidebar card refactor.
-- `src/routes/admin.leads.$id.tsx` — paginate, metric strip, conversion summary consolidation.
+- Manually walk `/admin/patients/pt_1000` → click every button; each should either open a modal, mutate visible state, or fire a toast. Reload page → state persists (localStorage).
+- Open one of that patient's orders → same drill.
+- Run `bunx tsgo --noEmit` (typecheck) and eyeball console/network in the preview after.
 
 ## Out of scope
 
-- No changes to list pages, no route additions, no schema/migrations, no styling overhaul beyond Shopify-pattern block moves.  
-  
-  
-  
-make it as per teheleath not just ecom  
+- Backend/Supabase writes (this is a demo store).
+- Redesigning any card layout — only replacing `onClick` handlers and adding small modals matching the existing modal style (`ManagePanel` / `QuickActionsPanel` patterns).
+- Messages composer redesign — we only wire the existing convo selection.
 
-  What's already built (verified by reading each file)
-  - `/admin/patients/$id` — every block in your spec is present: header, status banner, subscription + dose progression, clinical, orders (last 3), check-ins, payments, communications, intake (collapsible), activity timeline, at-a-glance, manage, quick actions, internal notes, tags. Variant banners handled by `StatusBanner`.
-  - `/admin/leads/$id` — funnel stepper, score breakdown, intake snapshot, outreach console, attribution, cart, projected value, consent, manage, tags, danger zone. Complete.
-  - `/admin/orders/$id` — timeline stepper, line items + Rx meta, shipping, payment, clinical review, activity log, patient sidebar, subscription sidebar, risk/flags, tags, assignment. Missing 4 items from your spec.
-  Gaps to fix (orders detail only)
-  1. Variant banner — add a top-of-page banner (below the toolbar, above the two-column grid) that switches on status:
-     - `exception` → red "Delayed / lost in transit" + "Reship at no cost" CTA
-     - `rx_status = pending_review` → amber "Awaiting Rx approval — card authorized, not captured"
-     - `payment.status = refunded` → gray "Order refunded on {date} · {amount}"
-  2. COGS block (internal) — left column, below Payment: drug cost, packaging, shipping cost, gross profit, GP margin %. Derive from `enrichOrder` (add fields — deterministic from order id/program so no schema changes needed).
-  3. Patient order history — right column, after Subscription: last 3 orders for `patientId` (id, date, status pill, amount) + "View all →" link to `/admin/orders?patient={id}`.
-  4. Internal notes — right column, bottom: reuse the same UX as `InternalNotes` (textarea + timestamped list), scoped per-order. Add `orderNotes` to store + `addOrderNote` action mirroring `addPatientNote`.
-  Files touched
-  - `src/lib/admin/orders-enrich.ts` — add `cogs: { drug, packaging, shipping, gp, gpPct }` to `EnrichedOrder`.
-  - `src/lib/admin/store.ts` — add `orderNotes: Record<orderId, InternalNote[]>` + `adminActions.addOrderNote`.
-  - `src/routes/admin.orders.$id.tsx` — insert VariantBanner, COGS card, PatientOrderHistory card, OrderInternalNotes card. No layout overhaul; slot into existing two-column grid.
-  No changes to patients/$id or leads/$id. No new routes. No migrations.
-  Out of scope
-  I will not rewrite the parts already matching spec, refactor styling, or touch the list pages. Purely additive to the orders detail page.
+## Technical notes
+
+- All new modals follow the existing `fixed inset-0 z-50 grid place-items-center bg-black/40` pattern used in `ManagePanel`.
+- Actions that need to derive extra fields (e.g. `advanceOrderStage` producing new `timeline` events) reuse `orders-enrich.ts` helpers where already available; anything new goes right next to the existing helpers.
+- Toast lives in `AdminShell` so it works across every admin page automatically, including `admin/orders`, `admin/patients`, and their lists.

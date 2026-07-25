@@ -126,6 +126,19 @@ export type Patient = {
   notes?: InternalNote[];
   cancelReason?: string;
   denialReason?: string;
+  // ── Overrides (mutated by adminActions) ──
+  cardBrandOverride?: string;
+  cardLast4Override?: string;
+  addressOverride?: { line1: string; line2?: string; city: string; state: string; zip: string };
+  nextBillingOverride?: string;
+};
+
+export type OrderTimelineExtra = {
+  ts: number;
+  actor: "patient" | "system" | "physician" | "pharmacy" | "carrier" | "ops";
+  kind: "created" | "paid" | "rx_approved" | "sent_to_pharmacy" | "dispensed" | "label" | "shipped" | "out_for_delivery" | "delivered" | "exception" | "note" | "message";
+  message: string;
+  meta?: string;
 };
 
 export type OrderStatus = "processing" | "at_pharmacy" | "shipped" | "delivered" | "exception";
@@ -139,6 +152,13 @@ export type Order = {
   createdAt: string;
   tracking?: string;
   eta?: string;
+  // ── Overrides (mutated by adminActions) ──
+  paymentOverride?: "paid" | "failed" | "refunded";
+  shipToOverride?: { line1?: string; line2?: string; city?: string; state?: string; zip?: string };
+  opsOwner?: string;
+  tags?: string[];
+  flagsExtra?: string[];
+  timelineExtra?: OrderTimelineExtra[];
 };
 
 export type PaymentStatus = "succeeded" | "failed" | "refunded";
@@ -1158,6 +1178,178 @@ export const adminActions = {
       activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refund $${amount} — ${s.patients.find(p => p.id === patientId)?.firstName ?? "patient"} · ${reason}`, tone: "info" as const }, ...s.activity],
     }));
   },
+
+  /* ── Order mutations ── */
+  advanceOrderStage(orderId: string) {
+    const ORDER: OrderStatus[] = ["processing", "at_pharmacy", "shipped", "delivered"];
+    set((s) => ({
+      orders: s.orders.map((o) => {
+        if (o.id !== orderId) return o;
+        const idx = ORDER.indexOf(o.status);
+        if (idx < 0 || idx >= ORDER.length - 1) return o;
+        const next = ORDER[idx + 1];
+        const kindMap: Record<OrderStatus, OrderTimelineExtra["kind"]> = {
+          processing: "created", at_pharmacy: "sent_to_pharmacy", shipped: "shipped", delivered: "delivered", exception: "exception",
+        };
+        const msgMap: Record<OrderStatus, string> = {
+          processing: "Order created",
+          at_pharmacy: "Rx transmitted to pharmacy",
+          shipped: "Shipment picked up by carrier",
+          delivered: "Delivered — signed",
+          exception: "Delivery exception",
+        };
+        const ev: OrderTimelineExtra = { ts: Date.now(), actor: "ops", kind: kindMap[next], message: msgMap[next] };
+        return {
+          ...o,
+          status: next,
+          tracking: o.tracking ?? `1Z${Math.random().toString(36).slice(2, 12).toUpperCase()}`,
+          timelineExtra: [...(o.timelineExtra ?? []), ev],
+        };
+      }),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Advanced order ${orderId.replace("ord_", "#")}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  refundOrder(orderId: string, reason = "Manual refund") {
+    set((s) => ({
+      orders: s.orders.map((o) => (o.id === orderId ? { ...o, paymentOverride: "refunded" as const, timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "ops" as const, kind: "note" as const, message: `Refund issued — ${reason}` }] } : o)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refund issued on ${orderId.replace("ord_", "#")} — ${reason}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  retryOrderPayment(orderId: string) {
+    set((s) => ({
+      orders: s.orders.map((o) => (o.id === orderId ? { ...o, paymentOverride: "paid" as const, timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "system" as const, kind: "paid" as const, message: "Retry captured" }] } : o)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Retried payment on ${orderId.replace("ord_", "#")}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  reissueLabel(orderId: string) {
+    const newTracking = `1Z${Math.random().toString(36).slice(2, 12).toUpperCase()}`;
+    set((s) => ({
+      orders: s.orders.map((o) => (o.id === orderId ? { ...o, tracking: newTracking, timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "ops" as const, kind: "label" as const, message: "Label reissued", meta: newTracking }] } : o)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Label reissued for ${orderId.replace("ord_", "#")}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  reportOrderException(orderId: string, reason: string) {
+    set((s) => ({
+      orders: s.orders.map((o) => (o.id === orderId ? { ...o, status: "exception" as const, flagsExtra: [...(o.flagsExtra ?? []), reason], timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "ops" as const, kind: "exception" as const, message: `Exception reported — ${reason}` }] } : o)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Exception on ${orderId.replace("ord_", "#")} — ${reason}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  updateOrderAddress(orderId: string, patch: NonNullable<Order["shipToOverride"]>) {
+    set((s) => ({
+      orders: s.orders.map((o) => (o.id === orderId ? { ...o, shipToOverride: { ...(o.shipToOverride ?? {}), ...patch }, timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "ops" as const, kind: "note" as const, message: `Shipping address updated` }] } : o)),
+    }));
+  },
+  assignOrderOps(orderId: string, ops: string) {
+    set((s) => ({ orders: s.orders.map((o) => (o.id === orderId ? { ...o, opsOwner: ops } : o)) }));
+  },
+  addOrderTag(orderId: string, tag: string) {
+    const t = tag.trim();
+    if (!t) return;
+    set((s) => ({ orders: s.orders.map((o) => (o.id === orderId ? { ...o, tags: Array.from(new Set([...(o.tags ?? []), t])) } : o)) }));
+  },
+  removeOrderTag(orderId: string, tag: string) {
+    set((s) => ({ orders: s.orders.map((o) => (o.id === orderId ? { ...o, tags: (o.tags ?? []).filter((x) => x !== tag) } : o)) }));
+  },
+  sendOrderReceipt(orderId: string) {
+    set((s) => ({
+      orders: s.orders.map((o) => (o.id === orderId ? { ...o, timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "ops" as const, kind: "message" as const, message: "Receipt emailed to patient" }] } : o)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Receipt sent for ${orderId.replace("ord_", "#")}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  printOrderLabel(orderId: string) {
+    set((s) => ({
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Label printed for ${orderId.replace("ord_", "#")}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  skipNextRefill(orderId: string) {
+    set((s) => ({
+      orders: s.orders.map((o) => {
+        if (o.id !== orderId) return o;
+        const cur = o.eta ? Date.parse(o.eta) : Date.now();
+        const next = new Date(cur + 30 * DAY).toISOString().slice(0, 10);
+        return { ...o, eta: next, timelineExtra: [...(o.timelineExtra ?? []), { ts: Date.now(), actor: "ops" as const, kind: "note" as const, message: `Refill skipped — next: ${next}` }] };
+      }),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refill skipped on ${orderId.replace("ord_", "#")}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  sendPatientCheckInReminder(patientId: string) {
+    set((s) => ({
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Check-in reminder sent — ${s.patients.find((p) => p.id === patientId)?.firstName ?? "patient"}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+
+  /* ── More patient mutations ── */
+  deletePatient(id: string) {
+    set((s) => ({
+      patients: s.patients.filter((p) => p.id !== id),
+      orders: s.orders.filter((o) => o.patientId !== id),
+      payments: s.payments.filter((p) => p.patientId !== id),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Patient deleted — ${s.patients.find((p) => p.id === id)?.firstName ?? "patient"}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  createManualOrder(patientId: string): string | null {
+    const p = state.patients.find((x) => x.id === patientId);
+    if (!p) return null;
+    const id = `ord_manual_${Date.now().toString(36)}`;
+    const order: Order = {
+      id,
+      patientId,
+      patientName: `${p.firstName} ${p.lastName}`,
+      amount: PROGRAMS[p.program].price,
+      status: "processing",
+      program: p.program,
+      createdAt: new Date().toISOString().slice(0, 10),
+    };
+    set((s) => ({
+      orders: [order, ...s.orders],
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Manual order created for ${p.firstName} ${p.lastName}`, tone: "success" as const }, ...s.activity],
+    }));
+    return id;
+  },
+  updatePatientCard(id: string, brand: string, last4: string) {
+    set((s) => ({ patients: s.patients.map((p) => (p.id === id ? { ...p, cardBrandOverride: brand, cardLast4Override: last4 } : p)) }));
+  },
+  updatePatientAddress(id: string, addr: NonNullable<Patient["addressOverride"]>) {
+    set((s) => ({ patients: s.patients.map((p) => (p.id === id ? { ...p, addressOverride: addr, state: addr.state ?? p.state } : p)) }));
+  },
+  updatePatientBillingDate(id: string, iso: string) {
+    set((s) => ({ patients: s.patients.map((p) => (p.id === id ? { ...p, nextBillingOverride: iso } : p)) }));
+  },
+  exportPatientPdf(id: string) {
+    set((s) => ({
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Patient record exported — ${s.patients.find((p) => p.id === id)?.firstName ?? "patient"}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  /** Ensure a conversation exists for a patient; return its id (creates a stub if none). */
+  ensureConversationFor(patientId: string): string | null {
+    const p = state.patients.find((x) => x.id === patientId);
+    if (!p) return null;
+    const existing = state.conversations.find((c) => c.patientId === patientId);
+    if (existing) return existing.id;
+    const id = `cv_${Date.now().toString(36)}`;
+    const convo: Conversation = {
+      id,
+      patientId,
+      patientName: `${p.firstName} ${p.lastName}`,
+      patientEmail: p.email,
+      patientPhone: p.phone,
+      channel: "in_app",
+      status: "support",
+      tag: "general",
+      assignedTo: "You",
+      unread: false,
+      preview: "New conversation",
+      updatedAt: Date.now(),
+      messages: [],
+      program: p.program,
+      ltv: p.ltv,
+      startedAt: p.startedAt,
+      internalNote: "",
+    };
+    set((s) => ({ conversations: [convo, ...s.conversations] }));
+    return id;
+  },
+
   resetAll() {
     state = seed();
     persist();

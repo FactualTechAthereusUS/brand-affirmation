@@ -119,11 +119,11 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
 
   const shipTo = {
     name: order.patientName,
-    line1: `${100 + (h % 8900)} ${pick(STREETS, h >> 1)}`,
-    line2: h % 4 === 0 ? `Apt ${(h % 40) + 1}` : undefined,
-    city: CITIES[state] ?? "Springfield",
-    state,
-    zip: String(10000 + (h % 89999)).padStart(5, "0"),
+    line1: order.shipToOverride?.line1 ?? `${100 + (h % 8900)} ${pick(STREETS, h >> 1)}`,
+    line2: order.shipToOverride?.line2 ?? (h % 4 === 0 ? `Apt ${(h % 40) + 1}` : undefined),
+    city: order.shipToOverride?.city ?? (CITIES[state] ?? "Springfield"),
+    state: order.shipToOverride?.state ?? state,
+    zip: order.shipToOverride?.zip ?? String(10000 + (h % 89999)).padStart(5, "0"),
   };
 
   const items: OrderItem[] = [
@@ -153,7 +153,7 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
     last4: String(4000 + (h % 5999)).slice(-4),
     intentId: `pi_${h.toString(36).slice(0, 14)}`,
     subtotal, discount: discountCents, tax: taxCents, shipping, total,
-    status: order.status === "exception" && h % 3 === 0 ? "failed" : "paid",
+    status: order.paymentOverride ?? (order.status === "exception" && h % 3 === 0 ? "failed" : "paid"),
   };
 
   // Timeline synthesized from createdAt + status
@@ -192,15 +192,20 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
   if (cadence !== "Monthly") tags.push("Bundle");
   if (h % 11 === 0) tags.push("VIP");
   if (drug === "Tirzepatide") tags.push("Titration");
+  for (const t of order.tags ?? []) if (!tags.includes(t)) tags.push(t);
 
   const flags: string[] = [];
   if (order.status === "exception") flags.push("Delivery exception");
   if (payment.status === "failed") flags.push("Payment failed");
   if (h % 19 === 0) flags.push("Escalated");
+  for (const f of order.flagsExtra ?? []) if (!flags.includes(f)) flags.push(f);
 
   const eta = order.status === "shipped" || order.status === "at_pharmacy"
     ? new Date(rxTs + 2 * DAY).toISOString().slice(0, 10)
     : order.eta;
+
+  // Merge extra timeline events (from admin actions)
+  if (order.timelineExtra?.length) t.push(...order.timelineExtra);
 
   // COGS (internal) — deterministic, in cents. Reflects compounded GLP-1 economics.
   const drugPerMonth = drug === "Tirzepatide" ? 5500 : 3800; // ~$55 / $38 wholesale per month

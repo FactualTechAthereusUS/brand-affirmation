@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import {
   ArrowLeft, Copy, Printer, RotateCcw, MoreHorizontal, ChevronRight, Snowflake, ShieldCheck,
   Truck, Package, Pill, CreditCard, FileText, MessageSquare, Tag, User2, AlertTriangle,
@@ -26,6 +27,9 @@ function OrderDetailPage() {
   const patientOrders = useAdmin((s) => s.orders.filter((o) => o.patientId === order?.patientId));
   const orderNotes = useAdmin((s) => s.orderNotes[id] ?? []);
   const nav = useNavigate();
+  const [editingAddr, setEditingAddr] = useState(false);
+  const [addTagOpen, setAddTagOpen] = useState(false);
+  const [newTag, setNewTag] = useState("");
 
   const o: EnrichedOrder | null = useMemo(() => (order ? enrichOrder(order, patient) : null), [order, patient]);
 
@@ -60,10 +64,24 @@ function OrderDetailPage() {
           <p className="mt-1 text-[12.5px] text-ink/55">Placed {o.createdAt} · {PROGRAMS[o.program].label} · {o.cadence}</p>
         </div>
         <div className="flex items-center gap-2">
-          <ToolbarBtn icon={<Printer className="h-3.5 w-3.5" />}>Print label</ToolbarBtn>
-          <ToolbarBtn icon={<RotateCcw className="h-3.5 w-3.5" />}>Refund</ToolbarBtn>
-          <ToolbarBtn icon={<MoreHorizontal className="h-3.5 w-3.5" />}>More</ToolbarBtn>
-          <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
+          <ToolbarBtn icon={<Printer className="h-3.5 w-3.5" />} onClick={() => { adminActions.printOrderLabel(o.id); toast.success("Label sent to printer"); }}>Print label</ToolbarBtn>
+          <ToolbarBtn icon={<RotateCcw className="h-3.5 w-3.5" />} tone="critical" onClick={() => {
+            if (o.payment.status === "refunded") { toast.info("Already refunded"); return; }
+            const reason = window.prompt("Refund reason?", "Customer request") ?? "";
+            if (!reason) return;
+            adminActions.refundOrder(o.id, reason);
+            toast.success(`Refunded ${formatMoney(o.payment.total)}`);
+          }}>Refund</ToolbarBtn>
+          <ToolbarBtn icon={<MoreHorizontal className="h-3.5 w-3.5" />} onClick={() => { adminActions.sendOrderReceipt(o.id); toast.success("Receipt emailed"); }}>Send receipt</ToolbarBtn>
+          <button
+            onClick={() => {
+              if (o.status === "delivered") { toast.info("Order already delivered"); return; }
+              adminActions.advanceOrderStage(o.id);
+              toast.success("Stage advanced");
+            }}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-indigo-700 disabled:opacity-40"
+            disabled={o.status === "delivered"}
+          >
             Advance stage <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -159,10 +177,15 @@ function OrderDetailPage() {
               </div>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
-              <MiniBtn>Edit address</MiniBtn>
-              <MiniBtn>Reissue label</MiniBtn>
-              <MiniBtn>Reroute</MiniBtn>
-              <MiniBtn tone="critical">Report exception</MiniBtn>
+              <MiniBtn onClick={() => setEditingAddr(true)}>Edit address</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.reissueLabel(o.id); toast.success("New label issued"); }}>Reissue label</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.reportOrderException(o.id, "Rerouted by ops"); toast.success("Reroute requested"); }}>Reroute</MiniBtn>
+              <MiniBtn tone="critical" onClick={() => {
+                const reason = window.prompt("Exception reason?", "Carrier delay") ?? "";
+                if (!reason) return;
+                adminActions.reportOrderException(o.id, reason);
+                toast.error(`Exception reported — ${reason}`);
+              }}>Report exception</MiniBtn>
             </div>
           </Card>
 
@@ -186,9 +209,14 @@ function OrderDetailPage() {
                 <div className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-ink/50">Intent</div>
                 <div className="mt-1 font-mono text-[11.5px] text-ink/70">{o.payment.intentId}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <MiniBtn>Refund</MiniBtn>
-                  <MiniBtn>Send receipt</MiniBtn>
-                  <MiniBtn>Retry</MiniBtn>
+                  <MiniBtn tone="critical" disabled={o.payment.status !== "paid"} onClick={() => {
+                    const reason = window.prompt("Refund reason?", "Customer request") ?? "";
+                    if (!reason) return;
+                    adminActions.refundOrder(o.id, reason);
+                    toast.success(`Refunded ${formatMoney(o.payment.total)}`);
+                  }}>Refund</MiniBtn>
+                  <MiniBtn onClick={() => { adminActions.sendOrderReceipt(o.id); toast.success("Receipt emailed"); }}>Send receipt</MiniBtn>
+                  <MiniBtn disabled={o.payment.status === "paid"} onClick={() => { adminActions.retryOrderPayment(o.id); toast.success("Payment retried"); }}>Retry</MiniBtn>
                 </div>
               </div>
             </div>
@@ -213,7 +241,7 @@ function OrderDetailPage() {
 
           {/* Activity log */}
           <Card className="p-4">
-            <SectionHead icon={<FileText className="h-4 w-4 text-indigo-600" />} title="Activity" right={<button className="text-[11.5px] font-semibold text-indigo-600 hover:underline">Add internal note</button>} />
+            <SectionHead icon={<FileText className="h-4 w-4 text-indigo-600" />} title="Activity" right={<button onClick={() => { document.getElementById("order-note-input")?.scrollIntoView({ behavior: "smooth", block: "center" }); (document.getElementById("order-note-input") as HTMLTextAreaElement | null)?.focus(); }} className="text-[11.5px] font-semibold text-indigo-600 hover:underline">Add internal note</button>} />
             <ol className="mt-3 space-y-3">
               {[...o.timeline].reverse().map((ev) => (
                 <li key={ev.ts + ev.kind} className="flex gap-3">
@@ -255,7 +283,7 @@ function OrderDetailPage() {
               <MetaRow label="LTV" value={formatMoney((patient?.ltv ?? 0) * 100)} />
               <MetaRow label="Started" value={patient?.startedAt ?? "—"} />
             </div>
-            <Link to="/admin/patients" className="mt-3 inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">View patient <ExternalLink className="h-3 w-3" /></Link>
+            <Link to="/admin/patients/$id" params={{ id: order!.patientId }} className="mt-3 inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">View patient <ExternalLink className="h-3 w-3" /></Link>
           </Card>
 
           {/* Subscription */}
@@ -268,9 +296,14 @@ function OrderDetailPage() {
               <MetaRow label="Next refill" value={o.eta ?? "—"} />
             </div>
             <div className="mt-3 flex flex-wrap gap-1.5">
-              <MiniBtn>Pause</MiniBtn>
-              <MiniBtn>Skip next</MiniBtn>
-              <MiniBtn tone="critical">Cancel</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.pausePatient(order!.patientId); toast.success("Subscription paused"); }}>Pause</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.skipNextRefill(o.id); toast.success("Refill skipped"); }}>Skip next</MiniBtn>
+              <MiniBtn tone="critical" onClick={() => {
+                const reason = window.prompt("Cancellation reason?", "Patient request") ?? "";
+                if (!reason) return;
+                adminActions.cancelPatient(order!.patientId, reason);
+                toast.success("Subscription cancelled");
+              }}>Cancel</MiniBtn>
             </div>
           </Card>
 
@@ -298,9 +331,18 @@ function OrderDetailPage() {
             <SectionHead icon={<Tag className="h-4 w-4 text-violet-600" />} title="Tags" />
             <div className="mt-3 flex flex-wrap gap-1.5">
               {o.tags.map((t) => (
-                <span key={t} className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">{t}</span>
+                <span key={t} className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">
+                  {t}
+                  <button onClick={() => adminActions.removeOrderTag(o.id, t)} className="ml-0.5 text-violet-700/60 hover:text-violet-900">×</button>
+                </span>
               ))}
-              <button className="inline-flex items-center gap-0.5 rounded-full border border-dashed border-ink/20 px-2 py-0.5 text-[11px] text-ink/55 hover:border-ink/40 hover:text-ink">+ Add</button>
+              {addTagOpen ? (
+                <form onSubmit={(e) => { e.preventDefault(); if (newTag.trim()) { adminActions.addOrderTag(o.id, newTag.trim()); setNewTag(""); setAddTagOpen(false); toast.success("Tag added"); } }} className="flex items-center gap-1">
+                  <input autoFocus value={newTag} onChange={(e) => setNewTag(e.target.value)} onBlur={() => setAddTagOpen(false)} placeholder="Tag…" className="w-24 rounded-full border border-ink/15 px-2 py-0.5 text-[11px] outline-none focus:border-indigo-500" />
+                </form>
+              ) : (
+                <button onClick={() => setAddTagOpen(true)} className="inline-flex items-center gap-0.5 rounded-full border border-dashed border-ink/20 px-2 py-0.5 text-[11px] text-ink/55 hover:border-ink/40 hover:text-ink">+ Add</button>
+              )}
             </div>
           </Card>
 
@@ -308,17 +350,29 @@ function OrderDetailPage() {
           <Card className="p-4">
             <SectionHead icon={<MessageSquare className="h-4 w-4 text-indigo-600" />} title="Assigned" />
             <div className="mt-3 space-y-1.5 text-[12px]">
-              <MetaRow label="Ops owner" value="Andre F." />
+              <MetaRow label="Ops owner" value={order!.opsOwner ?? "Andre F."} />
               <MetaRow label="Physician" value={o.physicianName} />
               <MetaRow label="Pharmacy" value={o.pharmacy.name} />
             </div>
-            <button className="mt-3 w-full rounded-lg border border-ink/10 bg-white py-1.5 text-[12px] font-semibold text-ink hover:bg-ink/[0.03]">Reassign</button>
+            <button onClick={() => {
+              const owner = window.prompt("Assign ops owner to:", o.opsOwner ?? "Andre F.") ?? "";
+              if (!owner) return;
+              adminActions.assignOrderOps(o.id, owner);
+              toast.success(`Reassigned to ${owner}`);
+            }} className="mt-3 w-full rounded-lg border border-ink/10 bg-white py-1.5 text-[12px] font-semibold text-ink hover:bg-ink/[0.03]">Reassign</button>
           </Card>
 
           {/* Internal notes */}
           <OrderInternalNotes orderId={id} notes={orderNotes} />
         </div>
       </div>
+      {editingAddr && (
+        <AddressEditor
+          initial={o.shipTo}
+          onClose={() => setEditingAddr(false)}
+          onSave={(patch) => { adminActions.updateOrderAddress(o.id, patch); setEditingAddr(false); toast.success("Shipping address updated"); }}
+        />
+      )}
     </AdminShell>
   );
 }
@@ -350,12 +404,13 @@ function buildSteps(o: EnrichedOrder): StepperStep[] {
   });
 }
 
-function ToolbarBtn({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
-  return <button className="inline-flex items-center gap-1.5 rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-[12.5px] font-medium text-ink hover:bg-ink/[0.03]">{icon}{children}</button>;
-}
-function MiniBtn({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "critical" }) {
+function ToolbarBtn({ icon, children, onClick, tone = "neutral" }: { icon: React.ReactNode; children: React.ReactNode; onClick?: () => void; tone?: "neutral" | "critical" }) {
   const cls = tone === "critical" ? "border-rose-200 bg-white text-rose-700 hover:bg-rose-50" : "border-ink/10 bg-white text-ink hover:bg-ink/[0.03]";
-  return <button className={`rounded-md border px-2 py-1 text-[11.5px] font-semibold ${cls}`}>{children}</button>;
+  return <button onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12.5px] font-medium ${cls}`}>{icon}{children}</button>;
+}
+function MiniBtn({ children, tone = "neutral", onClick, disabled }: { children: React.ReactNode; tone?: "neutral" | "critical"; onClick?: () => void; disabled?: boolean }) {
+  const cls = tone === "critical" ? "border-rose-200 bg-white text-rose-700 hover:bg-rose-50" : "border-ink/10 bg-white text-ink hover:bg-ink/[0.03]";
+  return <button onClick={onClick} disabled={disabled} className={`rounded-md border px-2 py-1 text-[11.5px] font-semibold disabled:opacity-40 ${cls}`}>{children}</button>;
 }
 function SectionHead({ icon, title, right }: { icon: React.ReactNode; title: string; right?: React.ReactNode }) {
   return (
@@ -430,7 +485,7 @@ function VariantBanner({ o }: { o: EnrichedOrder }) {
           <span className="font-semibold text-rose-800">Delayed / delivery exception</span>
           <span className="text-rose-700/80">— cold-chain window at risk. Reship at no cost to protect the patient.</span>
         </div>
-        <button className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-rose-700">
+        <button onClick={() => { adminActions.reissueLabel(o.id); adminActions.advanceOrderStage(o.id); toast.success("Free reship queued"); }} className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-rose-700">
           <RotateCcw className="h-3.5 w-3.5" /> Reship at no cost
         </button>
       </div>
@@ -558,6 +613,7 @@ function OrderInternalNotes({ orderId, notes }: { orderId: string; notes: Intern
         {notes.length === 0 && <div className="rounded-md border border-dashed border-ink/10 p-3 text-[11.5px] text-ink/45">No internal notes on this order yet.</div>}
       </div>
       <textarea
+        id="order-note-input"
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={2}
@@ -565,10 +621,42 @@ function OrderInternalNotes({ orderId, notes }: { orderId: string; notes: Intern
         className="mt-3 w-full resize-none rounded-lg border border-ink/10 bg-white p-2.5 text-[12.5px] outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
       />
       <button
-        onClick={() => { adminActions.addOrderNote(orderId, text); setText(""); }}
+        onClick={() => { adminActions.addOrderNote(orderId, text); setText(""); toast.success("Note added"); }}
         disabled={!text.trim()}
         className="mt-2 w-full rounded-lg bg-ink px-3 py-1.5 text-[12px] font-semibold text-white disabled:opacity-40"
       >Save note</button>
     </Card>
+  );
+}
+
+function AddressEditor({ initial, onClose, onSave }: { initial: { line1: string; line2?: string; city: string; state: string; zip: string }; onClose: () => void; onSave: (patch: { line1: string; line2?: string; city: string; state: string; zip: string }) => void }) {
+  const [f, setF] = useState({ line1: initial.line1, line2: initial.line2 ?? "", city: initial.city, state: initial.state, zip: initial.zip });
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/40 p-4" onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
+        <div className="mb-3 text-[15px] font-bold text-ink">Edit shipping address</div>
+        <div className="space-y-2">
+          <Field label="Street" value={f.line1} onChange={(v) => setF({ ...f, line1: v })} />
+          <Field label="Apt / Suite" value={f.line2} onChange={(v) => setF({ ...f, line2: v })} />
+          <div className="grid grid-cols-3 gap-2">
+            <Field label="City" value={f.city} onChange={(v) => setF({ ...f, city: v })} />
+            <Field label="State" value={f.state} onChange={(v) => setF({ ...f, state: v.toUpperCase().slice(0, 2) })} />
+            <Field label="ZIP" value={f.zip} onChange={(v) => setF({ ...f, zip: v })} />
+          </div>
+        </div>
+        <div className="mt-4 flex justify-end gap-2">
+          <button onClick={onClose} className="rounded-lg border border-ink/10 px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:bg-ink/[0.03]">Cancel</button>
+          <button onClick={() => onSave({ line1: f.line1, line2: f.line2 || undefined, city: f.city, state: f.state, zip: f.zip })} className="rounded-lg bg-indigo-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-indigo-700">Save</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <label className="block">
+      <span className="text-[10.5px] font-semibold uppercase tracking-wider text-ink/50">{label}</span>
+      <input value={value} onChange={(e) => onChange(e.target.value)} className="mt-0.5 w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1.5 text-[12.5px] outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
+    </label>
   );
 }

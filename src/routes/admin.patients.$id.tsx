@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { ArrowLeft, ChevronDown, ChevronUp, MessageSquare, DollarSign, MoreHorizontal, ExternalLink } from "lucide-react";
 import { AdminShell, Card, SectionTitle } from "@/components/admin/AdminShell";
 import { PROGRAMS, adminActions, useAdmin } from "@/lib/admin/store";
@@ -66,13 +67,23 @@ function PatientDetail() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button onClick={() => nav({ to: "/admin/messages" })} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
+            <button onClick={() => {
+              adminActions.ensureConversationFor(patient.id);
+              nav({ to: "/admin/messages" });
+            }} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
               <MessageSquare className="h-3.5 w-3.5" /> Send message
             </button>
-            <button className="inline-flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-3 py-2 text-[12.5px] font-semibold text-ink hover:border-ink/25">
+            <button onClick={() => {
+              const last = payments.filter((p) => p.status === "succeeded").sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+              if (!last) { toast.error("No successful payment to refund"); return; }
+              const reason = window.prompt(`Refund $${last.amount} to ${patient.firstName}?`, "Customer request") ?? "";
+              if (!reason) return;
+              adminActions.refundPayment(last.id);
+              toast.success(`Refunded $${last.amount}`);
+            }} className="inline-flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-3 py-2 text-[12.5px] font-semibold text-ink hover:border-ink/25">
               <DollarSign className="h-3.5 w-3.5" /> Issue refund
             </button>
-            <button className="rounded-lg border border-ink/12 bg-white p-2 text-ink/60 hover:border-ink/25"><MoreHorizontal className="h-4 w-4" /></button>
+            <button onClick={() => { adminActions.exportPatientPdf(patient.id); toast.success("PDF export queued"); }} className="rounded-lg border border-ink/12 bg-white p-2 text-ink/60 hover:border-ink/25" title="Export PDF"><MoreHorizontal className="h-4 w-4" /></button>
           </div>
         </div>
       </Card>
@@ -138,7 +149,7 @@ function PatientDetail() {
                     <td className="text-ink/80">{PROGRAMS[o.program].label.split(" · ")[0]}</td>
                     <td><OrderStatusPill status={o.status} /></td>
                     <td className="tabular-nums font-semibold">${o.amount}</td>
-                    <td className="text-right"><button className="text-[11.5px] font-semibold text-indigo-700 hover:underline">View</button></td>
+                    <td className="text-right"><Link to="/admin/orders/$id" params={{ id: o.id }} className="text-[11.5px] font-semibold text-indigo-700 hover:underline">View</Link></td>
                   </tr>
                 ))}
                 {orders.length === 0 && <tr><td colSpan={6} className="py-4 text-center text-ink/40">No orders yet</td></tr>}
@@ -159,7 +170,7 @@ function PatientDetail() {
               <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3 text-[12.5px]">
                 <div className="font-semibold text-amber-800">Check-in due — send reminder</div>
                 <div className="mt-1 text-ink/70">Next check-in due: <b>{e.nextBillingAt}</b></div>
-                <button className="mt-2 rounded-md bg-amber-500 px-2.5 py-1 text-[11.5px] font-semibold text-white">Send reminder now</button>
+                <button onClick={() => { adminActions.sendPatientCheckInReminder(patient.id); toast.success("Reminder sent"); }} className="mt-2 rounded-md bg-amber-500 px-2.5 py-1 text-[11.5px] font-semibold text-white hover:bg-amber-600">Send reminder now</button>
               </div>
             )}
           </Card>
