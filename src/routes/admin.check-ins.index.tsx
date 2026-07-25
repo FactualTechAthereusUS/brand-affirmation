@@ -5,7 +5,7 @@ import { AdminShell, Card, Pill } from "@/components/admin/AdminShell";
 import { adminActions, useAdmin, type CheckIn } from "@/lib/admin/store";
 import { Bell, Search, ChevronRight, Check } from "lucide-react";
 
-export const Route = createFileRoute("/admin/check-ins")({
+export const Route = createFileRoute("/admin/check-ins/")({
   head: () => ({ meta: [
     { title: "Check-ins — Blissley HQ" },
     { name: "description", content: "Monthly check-ins with weight deltas, side effects, and refill approval." },
