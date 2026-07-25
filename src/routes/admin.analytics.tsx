@@ -21,14 +21,14 @@ import {
 import { deviceMix, trafficSources } from "@/lib/admin/selectors";
 import { downloadCsv } from "@/lib/admin/csv";
 
-export const analyticsSearchSchema = z.object({
-  range: fallback(z.string(), "30d").default("30d"),
-  compare: fallback(z.string(), "prior").default("prior"),
-  auto: fallback(z.boolean(), false).default(false),
-});
+type AnalyticsSearch = { range: string; compare: string; auto: boolean };
 
 export const Route = createFileRoute("/admin/analytics")({
-  validateSearch: zodValidator(analyticsSearchSchema),
+  validateSearch: (raw: Record<string, unknown>): AnalyticsSearch => ({
+    range: typeof raw.range === "string" ? raw.range : "30d",
+    compare: typeof raw.compare === "string" ? raw.compare : "prior",
+    auto: raw.auto === true || raw.auto === "true",
+  }),
   head: () => ({ meta: [
     { title: "Analytics — Blissley Admin" },
     { name: "description", content: "Telehealth analytics: MRR, clinical SLA, refills, retention, and acquisition — one dense dashboard." },
