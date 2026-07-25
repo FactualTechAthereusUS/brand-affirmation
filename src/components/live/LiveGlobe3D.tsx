@@ -22,13 +22,14 @@ const MIN_DIST = 180;
 const MAX_DIST = 380;
 const INIT_DIST = 260;
 
-// Shopify palette (from HTML dump)
-const HEX_COLOR = "#6ECDB8";           // mint hex continents
-const OCEAN_COLOR = "#F2F6FA";         // off-white sphere
-const ATMO_COLOR = "#C9E7F0";          // light-cyan halo
-const ORDER_FILL = "#8F71EF";
-const ORDER_RING = "#7F4AFA";
-const VISITOR_COLOR = "#13ACF0";
+// Blissley admin palette — matches /admin and /analytics
+const HEX_COLOR = "#C7D2FE";           // indigo-200 continents
+const OCEAN_COLOR = "#FAFAFC";         // off-white sphere
+const ATMO_COLOR = "#DBEAFE";          // soft sky halo
+const ORDER_FILL = "#7C3AED";          // violet-600 pin
+const ORDER_RING = "#6D28D9";          // violet-700 ring
+const VISITOR_COLOR = "#2563EB";       // indigo-600 visitor dot
+
 
 // Convert lat/lng to spherical [phi, theta] for camera.
 function latLngToPhiTheta(lat: number, lng: number) {
