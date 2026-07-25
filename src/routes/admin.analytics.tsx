@@ -244,7 +244,7 @@ function AnalyticsOverview() {
                     <td className="px-3 py-2.5 text-right text-check">{m.refillPct}%</td>
                     <td className="px-3 py-2.5 text-right text-ever">{m.churnPct}%</td>
                     <td className="px-4 py-2.5">
-                      <div className="ml-auto h-6 w-24"><LineChartMini data={m.spark} height={24} stroke="#171717" fill="rgba(23,23,23,0.06)" /></div>
+                      <div className="ml-auto h-6 w-24"><LineChartMini data={m.spark} height={24} label={m.program} formatValue={usd} stroke="#171717" fill="rgba(23,23,23,0.06)" /></div>
                     </td>
                   </motion.tr>
                 ))}
