@@ -263,8 +263,14 @@ function TodayRevenueCard({ value, spark, prior, dates, stroke = "#2563eb" }: { 
 /* ───────────────────────── MRR movement (pixel strip) ───────────────────────── */
 function MrrMovementCard({ items, delta }: { items: { label: string; value: number; kind: "pos" | "neg" }[]; delta: number }) {
   const total = items.reduce((a, i) => a + Math.abs(i.value), 0) || 1;
-  // Build a rainbow pixel strip: green → lime → yellow → orange → red
-  const colors = ["#3f9b6a", "#77b95a", "#c8b04b", "#e69543", "#e0623b", "#c93a3a"];
+  // Movement palette — matches Analytics MRR donut (New→Expansion→Reactivated→Contraction→Churn→Failed)
+  const posColors = ["#7c3aed", "#2563eb", "#10b981"]; // gained
+  const negColors = ["#f59e0b", "#ee7273", "#c93a3a"]; // lost
+  const colorFor = (idx: number, kind: "pos" | "neg") =>
+    kind === "pos" ? posColors[idx % posColors.length] : negColors[idx % negColors.length];
+  let pi = 0, ni = 0;
+  const withColor = items.map((it) => ({ ...it, color: it.kind === "pos" ? colorFor(pi++, "pos") : colorFor(ni++, "neg") }));
+
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
@@ -280,15 +286,13 @@ function MrrMovementCard({ items, delta }: { items: { label: string; value: numb
 
       {/* pixel bar */}
       <div className="mt-3 flex h-4 gap-[2px] overflow-hidden rounded">
-        {items.map((it, idx) => {
+        {withColor.map((it) => {
           const w = (Math.abs(it.value) / total) * 100;
-          const c = colors[idx % colors.length];
-          // build ~ w/2 pixels for texture
           const pixels = Math.max(4, Math.round(w * 0.9));
           return (
             <div key={it.label} className="flex h-full gap-[1px]" style={{ width: `${w}%` }}>
               {Array.from({ length: pixels }).map((_, i) => (
-                <div key={i} className="h-full flex-1 rounded-[1px]" style={{ background: c, opacity: 0.55 + (i / pixels) * 0.45 }} />
+                <div key={i} className="h-full flex-1 rounded-[1px]" style={{ background: it.color, opacity: 0.55 + (i / pixels) * 0.45 }} />
               ))}
             </div>
           );
@@ -296,9 +300,9 @@ function MrrMovementCard({ items, delta }: { items: { label: string; value: numb
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px]">
-        {items.map((it, i) => (
+        {withColor.map((it) => (
           <div key={it.label} className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full" style={{ background: colors[i] }} />
+            <span className="h-2 w-2 rounded-full" style={{ background: it.color }} />
             <span className="text-ink/60">{it.label}</span>
             <span className={`ml-auto tabular-nums ${it.kind === "pos" ? "text-check" : "text-ever"}`}>
               {it.kind === "pos" ? "+" : "−"}${Math.abs(it.value / 1000).toFixed(1)}K
@@ -312,51 +316,33 @@ function MrrMovementCard({ items, delta }: { items: { label: string; value: numb
 
 /* ───────────────────────── Revenue by program (donut) ───────────────────────── */
 function RevenueByProgramCard({ programs }: { programs: { code: string; label: string; revenue: number }[] }) {
+  const palette = ["#7c3aed", "#2563eb", "#0ea5e9", "#10b981", "#f59e0b", "#ee7273"];
   const total = programs.reduce((a, p) => a + p.revenue, 0);
-  const palette = ["#ee7273", "#171717", "#1D437B", "#4a7c6f", "#c4a265", "#8b9bb4"];
-  let cum = 0;
-  const R = 32, C = 40, STROKE = 12;
-  const circ = 2 * Math.PI * R;
-
+  const segments = programs.slice(0, 6).map((p, i) => ({
+    label: p.label,
+    value: p.revenue,
+    color: palette[i % palette.length],
+  }));
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
         <div className="text-[11.5px] font-medium text-ink/55">Revenue by program · 30d</div>
+        <div className="text-[10.5px] tabular-nums text-ink/45">${(total / 1000).toFixed(1)}K total</div>
       </div>
-      <div className="mt-2 flex items-center gap-4">
-        <svg viewBox="0 0 80 80" className="h-[92px] w-[92px] shrink-0 -rotate-90">
-          <circle cx={C} cy={C} r={R} fill="none" stroke="#f0eee9" strokeWidth={STROKE} />
-          {programs.map((p, i) => {
-            const frac = p.revenue / total;
-            const dash = frac * circ;
-            const offset = -cum;
-            cum += dash;
-            return (
-              <circle
-                key={p.code}
-                cx={C} cy={C} r={R}
-                fill="none"
-                stroke={palette[i % palette.length]}
-                strokeWidth={STROKE}
-                strokeDasharray={`${dash} ${circ}`}
-                strokeDashoffset={offset}
-              />
-            );
-          })}
-        </svg>
-        <div className="min-w-0 flex-1 space-y-1 text-[11.5px]">
-          {programs.slice(0, 5).map((p, i) => (
-            <div key={p.code} className="flex items-center gap-2">
-              <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: palette[i] }} />
-              <span className="truncate text-ink/70">{p.label}</span>
-              <span className="ml-auto tabular-nums text-ink">${(p.revenue / 1000).toFixed(1)}K</span>
-            </div>
-          ))}
-        </div>
+      <div className="mt-3">
+        <Donut
+          segments={segments}
+          centerValue={`$${(total / 1000).toFixed(1)}K`}
+          centerLabel="30d"
+          size={120}
+          thickness={14}
+          formatValue={(v) => `$${(v / 1000).toFixed(1)}K`}
+        />
       </div>
     </Card>
   );
 }
+
 
 /* ───────────────────────── Pipeline tile ───────────────────────── */
 function PipelineTile({
