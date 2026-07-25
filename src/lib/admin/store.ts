@@ -908,7 +908,61 @@ export const adminActions = {
     set((s) => ({ conversations: s.conversations.map((c) => (c.id === convoId ? { ...c, assignedTo: to, status } : c)) }));
   },
   markLeadContacted(id: string) {
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, contacted: true } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, contacted: true, lastTouchAt: Date.now() } : l)) }));
+  },
+  updateLeadStatus(id: string, status: LeadStatus, lossReason?: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, status, lossReason: status === "lost" ? lossReason ?? l.lossReason : undefined } : l)) }));
+  },
+  assignLead(id: string, assignee: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, assignee, status: l.status === "new" ? "working" as const : l.status } : l)) }));
+  },
+  addLeadOutreach(id: string, channel: LeadOutreachChannel, subject: string, outcome = "logged") {
+    const o: LeadOutreach = { id: `or_${Date.now()}`, ts: Date.now(), channel, by: "You", subject, outcome };
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, outreach: [o, ...l.outreach], contacted: true, lastTouchAt: Date.now(), status: l.status === "new" ? "working" as const : l.status } : l)) }));
+  },
+  addLeadTag(id: string, tag: string) {
+    const t = tag.trim().toLowerCase().replace(/\s+/g, "-");
+    if (!t) return;
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: Array.from(new Set([...l.tags, t])) } : l)) }));
+  },
+  removeLeadTag(id: string, tag: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: l.tags.filter((x) => x !== tag) } : l)) }));
+  },
+  setLeadConsent(id: string, patch: Partial<Lead["consent"]>) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, consent: { ...l.consent, ...patch } } : l)) }));
+  },
+  markLeadLost(id: string, reason: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, status: "lost" as const, lossReason: reason } : l)) }));
+  },
+  convertLeadToPatient(id: string) {
+    const lead = state.leads.find((l) => l.id === id);
+    if (!lead) return;
+    const [firstName, ...rest] = lead.name.split(" ");
+    const lastName = rest.join(" ") || "—";
+    const isWL = lead.program === "Tirzepatide" || lead.program === "Semaglutide";
+    const program: ProgramCode = isWL ? (lead.program === "Tirzepatide" ? "tirz_mo" : "sema_mo") : "tirz_mo";
+    const newPt: Patient = {
+      id: `pt_from_${lead.id}`,
+      firstName, lastName,
+      email: lead.email,
+      phone: lead.phone,
+      status: "pending",
+      program,
+      mrr: 0,
+      ltv: 0,
+      startedAt: iso(0),
+      churn: "low",
+      state: lead.state,
+      tags: ["converted-lead"],
+    };
+    set((s) => ({
+      patients: [newPt, ...s.patients],
+      leads: s.leads.map((l) => (l.id === id ? { ...l, status: "won" as const, wonPatientId: newPt.id } : l)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Lead converted — ${lead.name}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  deleteLead(id: string) {
+    set((s) => ({ leads: s.leads.filter((l) => l.id !== id) }));
   },
 
   /* ── Patient mutations ── */
