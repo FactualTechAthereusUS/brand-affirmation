@@ -1,166 +1,154 @@
-## Goal
+# /admin/messages — end-to-end revamp
 
-Turn `/admin/physician-queue` and `/admin/check-ins` into working clinical workspaces with real detail pages and every button wired to the store (mutates state → persists in localStorage → fires a toast). No new backend — everything writes through `adminActions` in `src/lib/admin/store.ts`, same pattern already used for orders/patients.
+Goal: turn the current stale inbox into a real support console. Every button works, state persists, mobile is app-grade, desktop is Sage/Untitled-UI dense.
 
-## Current state (verified from source)
+## Layout (desktop → tablet → mobile)
 
-**Physician queue (`src/routes/admin.physician-queue.tsx`)**
-- Renders master/detail *in one page*. No `/admin/physician-queue/$id` route exists.
-- Tabs: new / flagged / awaitingReply / refill / approved. No "denied" tab, no metrics strip, no search, no wait-time coloring, no refills sub-columns.
-- `PhysicianCase` type is minimal: no age, sex, BMI, plan, state, checklist answers, dose history, prescription draft, patient-facing note.
-- Only two actions in store: `approveCase(id)` and `denyCase(id, reason)`. There is no request-info flow, no reassign, no priority toggle, no e-sign, no timeline event on the patient/order, no "awaiting reply → back to new when patient replies".
-- The "Note to patient" textarea in `CaseDetail` is captured in local state and thrown away on approve.
-
-**Check-ins (`src/routes/admin.check-ins.tsx`)**
-- One flat list. Tabs derive purely from `day` + `decision` (no submitted-review bucket, no completed-with-decision bucket, no 6-month refresh bucket).
-- `CheckIn` type has no answers, no history, no dose, no program, no next billing, no reminderSentAt, no physician assignment, no decisionAt.
-- Only button: "Nudge" → `sendCheckInReminder(id)` which just sets a `reminderSentAt` timestamp. No approve refill, no protocol adjustment, no hold, no message-before-decide, no detail page at all.
-
-**Not wired anywhere:** case detail deep-link from notifications/queue strip already points at `/admin/physician-queue?tab=...` but never opens a specific case; `PhysicianQueueStrip` counts include `checkinsOverdue` but clicking a row on check-ins page has no navigation.
-
-## Plan
-
-### 1. Extend types + seeds (`src/lib/admin/store.ts`, `src/lib/admin/seeds.ts`)
-
-Grow `PhysicianCase` with the fields the spec calls for (all optional so existing seeds still validate):
-
-```
-age, sex, bmi, height, weight, state, plan, planPrice,
-priorityPaid: boolean,
-checklist: { key: string; label: string; status: "ok" | "soft" | "hard" }[],
-intake: { group: string; items: { q: string; a: string; tone?: "ok"|"soft"|"hard" }[] }[],
-priorGlp?: { drug, lastDoseMg, lastInjectionAt, monthsOn, rxPhotoUrl },
-rxDraft: { drug, sig, qty, daysSupply, refills, pharmacyId, npi, dea },
-patientNote?: string, internalNote?: string,
-decisionAt?: number, decidedBy?: string,
-timeline: { at: number; kind: "submitted"|"assigned"|"approved"|"denied"|"info_requested"|"reply_received"|"reassigned"|"priority_set"; by?: string; detail?: string }[]
+```text
+Desktop  ≥1200:  [Filters 260] [Convo list 340] [Thread 1fr] [Patient panel 320]
+Tablet   768–1199: [Convo list 320] [Thread 1fr] (panel = drawer button)
+Mobile   <768:  Single-pane w/ back nav. List → Thread → (i) Patient sheet
 ```
 
-Grow `CheckIn`:
+Use the existing `admin-scope` tokens. No new palettes.
 
+## Left column — Filters & folders (new)
+
+- Search "Search conversations, patients, keywords…" (⌘K focuses)
+- Sections:
+  - **Inbox** (all open) · Unassigned · Assigned to me · Mentions · Snoozed · Closed · All
+  - **Channels**: In-app · SMS · Email · WhatsApp (with unread counts)
+  - **Tags**: Clinical · Intake · Shipping · Billing · Refund · General
+  - **Assignees**: Andre F. · Ops · Dr. Nass · Unassigned
+- Every filter is a real predicate combined with AND. Active filters shown as removable chips above the list.
+
+## Middle — Conversation list
+
+- Sort: Newest activity (default) · Oldest waiting · Priority
+- Row: avatar w/ presence dot, name, relative time, last-message preview (prefixed `You:`  if from me, italic if internal note), channel icon, status pill, unread dot + count badge, priority flag if clinical.
+- Bulk select (checkbox on hover): assign, tag, close, snooze, mark read.
+- Empty state per filter with illustration + "Clear filters".
+- Infinite list virtualization not required (demo scale); use overflow-y-auto.
+
+## Right of list — Thread
+
+Header:
+
+- Avatar, name, presence, channel · assignee, tags. Actions: Assign ▾, Tag ▾, Snooze ▾, Close/Reopen, ⋯ (View patient · View orders · Merge · Copy link).
+- Compact patient strip on tablet where panel is hidden.
+
+Transcript:
+
+- Grouped by day dividers ("Today", "Yesterday", "Wed, Jul 22").
+- Bubbles: patient left (white ring), me right (ink), internal note (honey bg, "Internal note" tag, not sent).
+- Metadata under each: sender name (staff only), time, channel, delivery state (Sent → Delivered → Seen) for patient-facing messages.
+- Supports: text, markdown-lite (bold/italic/links), emoji, attachments (image thumb + file card), quoted reply, system events ("Andre assigned to Dr. Nass", "Case BLS-C-… linked").
+- Typing indicator (simulated for demo when patient "responds").
+- Auto-scroll to bottom on new; "Jump to latest" pill when scrolled up.
+
+Composer:
+
+- Tabs at top: **Reply** · **Internal note** · **SMS** (if patient has phone) · **Email** (subject line appears).
+- Auto-grow textarea (44 → 172px). Enter sends, Shift+Enter newline. ⌘↵ also sends.
+- Toolbar row: 😊 emoji · 📎 attach · @ mention teammate · / macros · Insert canned reply · Schedule send · Signature toggle.
+- **Macros** (canned replies) — searchable menu with 8 seeded templates: `/nausea`, `/shipping-delay`, `/refill-approved`, `/refund-policy`, `/insurance`, `/dose-titration`, `/pause-plan`, `/reschedule-checkin`. Variables `{patientFirstName}`, `{doseMg}`, `{shipTrackingUrl}`.
+- Sending: optimistic append with `state: 'sending'` → `sent` (300ms) → `delivered` (600ms). If channel=email and no subject, block send with inline error.
+- After send: clears textarea, refocuses, updates convo `updatedAt`, moves to top, marks read.
+- Auto-reply simulator: 30% chance patient responds 3–6s later using scripted reply pool (feels alive without being annoying). Guarded by a "Demo replies" toggle in header (default on).
+
+## Right panel — Patient context
+
+Sticky, scrollable:
+
+- Patient card: avatar, name, email, phone (copy-to-clipboard on click), address city/state.
+- Program card: program label, dose, week, adherence %, next check-in, next ship date.
+- Financial: LTV, MRR, last payment, outstanding.
+- Linked cases (top 3) + Orders (top 3) with pills → deep-link to `/admin/patients/$id`, `/admin/orders/$id`, `/admin/physician-queue/$id`.
+- Assign block (existing) refined with search input.
+- Internal notes: editable, timestamped, add/delete.
+- Tags multi-select.
+- Danger zone: Close conversation, Merge duplicate.
+
+## Store additions (`src/lib/admin/store.ts`)
+
+Extend types (non-breaking; all optional):
+
+- `ConvoMessage`: add `channel?: MessageChannel`, `state?: 'sending'|'sent'|'delivered'|'seen'|'failed'`, `attachments?: {name,size,url,kind}[]`, `replyTo?: string`, `system?: boolean`, `subject?: string`.
+- `Conversation`: add `tags: ConvoTag[]` (migrate from single `tag`), `snoozedUntil?: number`, `priority?: 'normal'|'high'`, `unreadCount: number`, `mentions?: string[]`, `patientCity?: string`, `patientState?: string`.
+
+New actions:
+
+- `sendMessage(convoId, { text, channel, internal, attachments, subject })` — optimistic, simulates state transitions, updates preview/updatedAt/unread.
+- `markSeen(convoId)` — sets me-side messages to `seen`, resets unread.
+- `snoozeConvo(id, untilTs)` / `unsnooze(id)`
+- `closeConvo(id)` / `reopenConvo(id)`
+- `setTags(id, tags[])` / `toggleTag(id, tag)`
+- `setPriority(id, level)`
+- `deleteMessage(convoId, msgId)` (own messages only, <5min)
+- `startTyping(id)` / `stopTyping(id)` (transient in-memory, not persisted)
+- `simulatePatientReply(id)` — pulls from scripted pool by tag.
+- `bulkAssign(ids[], to, status)` / `bulkClose(ids[])` / `bulkTag(ids[], tag)`
+- Macro registry + `applyMacro(convoId, macroId)` returning interpolated text.
+
+Migration path: `normalizeConversations()` on hydrate — fills defaults for old localStorage entries (mirrors the leads-normalization pattern already in the store).
+
+## Component structure
+
+```text
+src/routes/admin.messages.tsx        (shell + route)
+src/components/admin/messages/
+  InboxFilters.tsx        (left column)
+  ConvoList.tsx           (middle) + ConvoRow.tsx
+  ThreadHeader.tsx
+  Transcript.tsx          + Bubble.tsx + DayDivider.tsx + SystemEvent.tsx
+  Composer.tsx            + MacroMenu.tsx + AttachmentChip.tsx + EmojiPicker.tsx (native)
+  PatientPanel.tsx
+  useMessagesUX.ts        (keyboard shortcuts, typing sim, auto-reply sim)
 ```
-kind: "day90" | "sixMonth",
-program: string, dose: string,
-monthOfCycle: number, cycleLength: 3 | 6,
-nextBillingAt: number, nextBillingAmt: number,
-reminderSentAt?: number, reminderCount: number,
-attemptCount: number, lastContactAt?: number,
-answers: { q: string; a: string }[],       // Q1..Q8 from spec
-prevWeight?: number, startWeight?: number, // for chart
-sideEffectsHistory: { month: number; note: string }[],
-priorNotes: { at: number; by: string; text: string }[],
-refillDraft: { drug, sig, qty, daysSupply, pharmacyId },
-decision: "clear" | "hold" | "review" | "approved" | "adjusted" | "held" | "awaiting_reply",
-decisionAt?: number, decidedBy?: string,
-patientNote?: string, internalNote?: string,
-adjustment?: { doseChange?: string; note?: string; reason?: string },
-holdReason?: string
-```
 
-Seed ~10 cases spanning `new / flagged / awaitingReply / refill / approved / denied` with realistic wait times (0.4h → 14h) plus at least one with `priorGlp` populated and one hard-flag case, and ~15 check-ins spanning `due (85-89) / overdue (>90 hold) / review (submitted) / completed / sixMonth`.
+Keyboard shortcuts (global on route):
 
-### 2. New `adminActions` (`src/lib/admin/store.ts`)
+- `⌘K` search · `j/k` next/prev convo · `e` close · `s` snooze · `a` assign · `#` tag · `r` reply · `n` internal note · `⌘↵` send.
 
-Case actions:
-- `approveCaseWithRx(caseId, { patientNote?, internalNote?, rxOverrides? })` — sets status `approved`, timeline `approved`, stamps `decidedBy` from `session.actor` / active physician, pushes an activity log entry, pushes a matching `timeline` note on the linked patient's next order (`orders.filter(o => o.patientId === c.patientId).sort by createdAt).at(-1)`), toast.
-- `requestInfoOnCase(caseId, message)` — status `awaitingReply`, timeline `info_requested`, calls `ensureConversationFor(patientId)` and appends a physician message, toast.
-- `receiveReplyOnCase(caseId)` — debug/demo helper for the "returns to queue" step (also invoked from the messages page in a follow-up); flips `awaitingReply` → `new`, timeline `reply_received`.
-- `denyCaseWithReason(caseId, reasonCode, freeText?)` — status `denied`, timeline `denied`, sets `decision` string, toast.
-- `reassignCase(caseId, physicianId)` / `setCasePriority(caseId, "urgent"|"normal")` — timeline entries, toast.
-- `updateCaseRxDraft(caseId, patch)` / `updateCasePatientNote(caseId, text)` / `updateCaseInternalNote(caseId, text)` — pure patches, no toast.
+## Mobile behavior (<768)
 
-Check-in actions:
-- `approveCheckInRefill(checkInId, { patientNote?, internalNote? })` — sets `decision = approved`, `decisionAt`, calls existing `createManualOrder(patientId, program)` to queue the refill order (already exists on the store per `.lovable/plan.md`), timeline the patient order, toast.
-- `approveCheckInWithAdjustment(checkInId, { doseChange, note, patientNote?, internalNote? })` — same as above but stores `adjustment` and posts the note into the patient conversation.
-- `messagePatientFromCheckIn(checkInId, message)` — sets `decision = awaiting_reply`, ensures conversation, appends message.
-- `holdCheckInRefill(checkInId, reasonCode, freeText?)` — sets `decision = held`, `holdReason`, freezes patient's next refill (calls existing `pausePatient` or a new `pauseNextRefill(patientId)` — pick `pauseNextRefill` so we don't cancel the whole subscription), notifies via activity log, toast.
-- `updateCheckInPatientNote / updateCheckInInternalNote` — pure patches.
-- `sendCheckInReminderNow(checkInId)` — bumps `reminderSentAt` + `reminderCount` (extend existing `sendCheckInReminder`).
+- Three views driven by URL search param `?view=list|thread|patient` (so back button works).
+- List: full-width, larger touch targets (56px rows), FAB "New message" opens patient picker.
+- Thread: sticky header w/ back arrow + name + (i) button, transcript, sticky composer above safe-area (`env(safe-area-inset-bottom)`), swipe-down on header returns to list.
+- Patient info as bottom sheet from (i), 90vh, drag handle.
+- Composer collapses toolbar behind a `+` menu on mobile.
 
-Every action pushes to `activity` + fires a Sonner toast, matching the pattern established for orders/patients.
+## Empty / error / loading states
 
-### 3. New routes
+- Skeleton for list on first load.
+- Empty inbox: illustration + "You're all caught up".
+- Failed send: inline red pill + Retry.
+- Offline banner via `navigator.onLine`.
 
-- `src/routes/admin.physician-queue.$id.tsx` — case detail page
-- `src/routes/admin.check-ins.$id.tsx` — check-in detail page
+## Toasts
 
-Both follow the exact 65/35 two-column layout from the spec with a sticky right decision column. Reuse the existing `AdminShell`, `Card`, `Pill`, and modal patterns from `admin.orders.$id.tsx` / `admin.patients.$id.tsx`. No new design system — same tokens, same density.
+- "Message sent" (undo 5s deletes it), "Snoozed until 9am tomorrow", "Assigned to Dr. Nass", "Closed conversation", "Macro applied".
 
-### 4. Rewrite `admin.physician-queue.tsx` list
+## What's already there and what will change
 
-- Top metrics strip: `In Queue`, `Flagged`, `Avg Wait Time`, `Approved Today`, `Denied Today` (derived from `cases` + `activity`).
-- Search box + `All cases ▾` filter + `Today ▾` window filter + Refresh button (recomputes wait times).
-- Tabs: `All | Flagged | New | Awaiting Reply | Refills | Completed Today | Denied Today` with counts.
-- Table columns per spec (`Case # | Patient | Age | Sex | BMI | Product | Plan | Submitted | Wait | Flags | Physician | Action`), with wait-time color pill (>12h red, 4-12h amber, <4h green) and one-line highest-severity flag summary.
-- Refills tab swaps columns to `Case # | Patient | Month | Product | Check-In Status | Weight Change | Side Effects | Action` with one-tap **Approve** on clean refills (calls `approveCaseWithRx` directly, no detail page hop) and **Review →** on anything flagged.
-- Sort order: Flagged → Awaiting reply → New oldest-first → Refills oldest-first.
-- Row click / **Review →** navigates to `/admin/physician-queue/$id`.
+Keep: existing `Conversation`, `ConvoMessage`, `sendReply`, `assignConvo`, `setActiveConvo`, `ensureConversationFor`. They stay for backwards compatibility; `sendReply` becomes a thin wrapper over new `sendMessage`.
 
-### 5. Wire `admin.physician-queue.$id.tsx` (case detail)
+Replace: the entire `admin.messages.tsx` UI (currently one file, ~180 lines) with the modular components above.
 
-Left column panels 1-7 per spec:
-1. **Patient snapshot** — pulls from `cases[id]` + `patients[patientId]` (via `enrichPatient`).
-2. **Safety flags** — renders hard vs soft blocks + full auto-evaluated checklist from `case.checklist`.
-3. **Intake answers** — collapsible groups from `case.intake` (accordion using `<details>` for zero-JS).
-4. **GLP-1 dose matching** — only if `case.priorGlp` set.
-5. **Prescription** — inline editable via `updateCaseRxDraft` with a titration accordion (static reference table, no data).
-6. **Patient note** — controlled textarea → `updateCasePatientNote` on blur.
-7. **Internal note** — controlled textarea → `updateCaseInternalNote` on blur.
+Add: filters, macros, snooze, close/reopen, tags[], priority, delivery states, typing/auto-reply sim, keyboard shortcuts, mobile 3-pane routing, patient panel deep-links.
 
-Right column sticky:
-- Summary block (patient, BMI, flags, wait, priority).
-- `Approve & send Rx` → opens `ApproveModal` (PIN entry as a demo e-sign: any 4 digits accepted; fires `approveCaseWithRx`).
-- `Request more information` → opens `RequestInfoModal` (textarea; fires `requestInfoOnCase`).
-- `Reject case` → opens `RejectModal` with the 9 radio reasons + Other; fires `denyCaseWithReason`.
-- Physician stats block: computed live from `cases` + `activity` (reviewed today / approved / rejected / avg time / remaining / oldest / licensed states from `physicians` seed).
+## Acceptance
 
-Top status banner: pending/awaiting-reply/approved/denied variants + `[Reassign physician ▾]` (select modal listing `physicians`, calls `reassignCase`) + `[Mark as priority →]` (`setCasePriority`).
+- Send a reply → appears instantly, transitions Sending→Sent→Delivered→Seen, list reorders, preview updates, unread cleared.
+- Toggle Internal note → sends honey-tagged message not counted as customer reply, no delivery states.
+- Assign to Dr. Nass → status flips to physician, activity event logged, toast shown, list badge updates.
+- Snooze 1h → convo leaves Inbox, appears in Snoozed, returns after time (simulated with setTimeout for demo).
+- Close → moves to Closed folder; Reopen returns it.
+- Macro `/nausea` interpolates patient first name and inserts into composer.
+- Filter by Channel=SMS + Tag=Clinical + Assignee=Dr. Nass → list filtered correctly, chips shown.
+- Mobile: list → tap row → thread → (i) → patient sheet; back button walks it in reverse.
+- Reload page → filters, active convo, messages, tags, snooze all persist via localStorage.
+- Keyboard: j/k navigates, r focuses composer, ⌘↵ sends.
 
-### 6. Rewrite `admin.check-ins.tsx` list
-
-- Top metrics strip per spec (`Due This Week`, `Overdue`, `Pending Review`, `Completed`, `6-Month Refresh`).
-- Search + `This month ▾` + `Export CSV ▾` (reuses existing `csv.ts`).
-- Tabs: `Due Now | Overdue | Pending Review | Completed | 6-Month Refresh` with counts, each with its own column set per spec.
-- **Due Now** row action `[Send reminder]` / `[Send now]` → `sendCheckInReminderNow`.
-- **Overdue** row action `[Call directly]` / `[Send final notice]` → activity log + toast (demo).
-- **Pending Review** / **Completed** / **6-Month Refresh** row action `[Review →]` / `[View]` navigates to `/admin/check-ins/$id`.
-
-### 7. Wire `admin.check-ins.$id.tsx` (check-in detail)
-
-- Status banner variants: pending / awaiting reply / held / approved / adjusted / 6-month refresh.
-- Left column panels: patient snapshot (with weight math + program month) → check-in answers Q1-Q8 → progress mini-chart (reuse the existing `orders-enrich.ts` helpers or a small inline SVG polyline computed from `startWeight → prevWeight → weight`) → prior check-in history → upcoming refill order.
-- Right column sticky:
-  - Quick summary block.
-  - `Approve refill` → `approveCheckInRefill`.
-  - `Approve with protocol adjustment` → modal with dose select + note → `approveCheckInWithAdjustment`.
-  - `Message patient before deciding` → modal textarea → `messagePatientFromCheckIn`.
-  - `Hold refill` → modal with 6 radio reasons + Other → `holdCheckInRefill`.
-  - Internal note textarea → `updateCheckInInternalNote` on blur.
-- **6-month refresh variant**: same page shell, but panels 2-6 render "Original intake | Updated profile" two-column diff, decision `Approve` fires `approveCheckInRefill` with a required physician note (button disabled until `patientNote.length > 0`).
-
-### 8. Update `PhysicianQueueStrip` and notifications
-
-- Update deep links so `checkinsOverdue` points at `/admin/check-ins?tab=overdue` (already correct) and any notification about a specific case links to `/admin/physician-queue/$id`.
-- No layout change to the strip — counts already come from `queueCounts` which we extend in `selectors.ts` to include `checkinsPendingReview` and `checkinsOverdue` (only `checkinsOverdue` is already there).
-
-### 9. Verification
-
-- Walk `/admin/physician-queue`: filter tabs count correctly, search narrows, refresh recomputes wait pills, clicking Review opens `/admin/physician-queue/BLS-C-…`, running through Approve / Request info / Reject on three different cases moves them between tabs and shows toasts, patient's linked order gets a timeline entry.
-- Walk `/admin/check-ins`: Due Now → Send reminder bumps the timestamp, Pending Review → Review opens detail, Approve refill queues a new order (visible in `/admin/orders`), Hold refill pauses next refill on the patient (visible on `/admin/patients/$id`), 6-month refresh requires a note.
-- Reload the page — every state change survives (localStorage via `set()`).
-- `bunx tsgo --noEmit` clean.
-
-## Out of scope
-
-- Real e-sign / real Stripe capture / real LifeFile transmission — all demo (PIN modal accepts any 4 digits, toast says "Rx transmitted").
-- Redesigning the shell, cards, or globe.
-- Editing the physician portal (`/portal/physician`) — this plan is admin-side only. The physician portal already has its own approve/deny flow.
-- Building a full Klaviyo/email event bus — approvals just push an `activity` entry and a toast.
-
-## Technical notes
-
-- All new modals follow the `fixed inset-0 z-50 grid place-items-center bg-black/40` pattern already used across admin.
-- Wait-time color helper lives next to `slaLeft` in the physician queue file; extracted to `src/lib/admin/queue-enrich.ts` if it grows past three call sites.
-- The Rx draft editor and the check-in refill draft editor are controlled components; typing debounces via `useDeferredValue` before calling `updateCaseRxDraft` to avoid thrashing localStorage.
-- `approveCheckInRefill` reuses the existing `createManualOrder(patientId, program)` from the orders/patients wiring pass; no duplicated order creation logic.
-- Case ↔ patient ↔ order linkage: cases have `patientId`; the "linked order" for timeline stamps is the most recent order for that patient, or `createManualOrder` result on approval if none exists yet.
+No backend changes. Everything runs against the existing Zustand-ish store with localStorage.  
+make UI like the reference images, match our color scheme in /analytics and /admin,  make it intuitive , smooth, give that finishing , full logic
