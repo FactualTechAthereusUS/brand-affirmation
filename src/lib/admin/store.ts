@@ -418,16 +418,105 @@ function seed(): AdminState {
     });
   }
 
-  const leads: Lead[] = Array.from({ length: 15 }, (_, i) => ({
-    id: `ld_${900 + i}`,
-    name: `${pick(FIRST, i * 4 + 1)} ${pick(LAST, i * 6 + 3)}`,
-    email: `lead${i}@email.com`,
-    lastStep: pick(["Q3 · Health history", "Q7 · State", "Q9 · Weight goal", "Q12 · Plan select", "Q14 · Payment"], i),
-    program: i % 2 === 0 ? "Tirzepatide" : "Semaglutide",
-    source: pick(["Meta", "Google", "Organic", "Referral"], i),
-    ageHrs: 3 + i * 4,
-    contacted: false,
-  }));
+  const leads: Lead[] = Array.from({ length: 42 }, (_, i) => {
+    const first = pick(FIRST, i * 4 + 1);
+    const last = pick(LAST, i * 6 + 3);
+    const step: LeadFunnelStep = pick(
+      ["landing", "intake_start", "intake_mid", "intake_mid", "intake_complete", "checkout", "payment_fail", "abandoned_cart"] as const,
+      i,
+    );
+    const progressPct = ({ landing: 8, intake_start: 22, intake_mid: 52, intake_complete: 74, checkout: 88, payment_fail: 94, abandoned_cart: 82 } as Record<LeadFunnelStep, number>)[step];
+    const source = pick(["Meta", "Google", "Organic", "Referral", "TikTok", "Klaviyo"], i);
+    const medium = source === "Meta" || source === "Google" || source === "TikTok" ? "paid" : source === "Klaviyo" ? "email" : source === "Referral" ? "referral" : "organic";
+    const ageHrs = 1 + ((i * 7) % 96);
+    const recencyBoost = ageHrs < 12 ? 25 : ageHrs < 36 ? 15 : ageHrs < 72 ? 6 : 0;
+    const channelBoost = source === "Google" ? 12 : source === "Meta" ? 10 : source === "Referral" ? 15 : source === "Klaviyo" ? 8 : 4;
+    const score = Math.max(3, Math.min(99, progressPct * 0.55 + recencyBoost + channelBoost + (i % 5)));
+    const intent: LeadIntent = score >= 70 ? "hot" : score >= 45 ? "warm" : "cold";
+    const status: LeadStatus =
+      i % 21 === 0 ? "won" :
+      i % 17 === 0 ? "lost" :
+      i % 19 === 0 ? "do_not_contact" :
+      step === "payment_fail" ? "working" :
+      intent === "hot" ? (i % 3 === 0 ? "working" : "new") :
+      intent === "warm" ? "nurturing" : "new";
+    const program = ["Tirzepatide", "Semaglutide", "Hair", "ED", "TRT"][i % 5];
+    const state = pick(STATES, i * 5);
+    const stateEligible = !(state === "MI" || state === "GA");
+    const createdAt = now - ageHrs * HR - (i % 4) * DAY;
+    const lastTouchAt = now - Math.floor(ageHrs / 2) * HR;
+    const outreach: LeadOutreach[] = status === "new" ? [] : [
+      { id: `or_${i}_1`, ts: createdAt + 30 * 60 * 1000, channel: "email", by: "System", subject: "Complete your Blissley intake", outcome: "delivered · opened" },
+      ...(intent !== "cold" ? [{ id: `or_${i}_2`, ts: createdAt + 4 * HR, channel: "sms" as const, by: "Andre F.", subject: "Quick check-in", outcome: i % 2 ? "delivered · no reply" : "delivered · replied" }] : []),
+      ...(status === "working" ? [{ id: `or_${i}_3`, ts: lastTouchAt, channel: "call" as const, by: "Andre F.", subject: "Discovery call", outcome: i % 2 ? "voicemail" : "connected · nurturing" }] : []),
+    ];
+    const intakeSnapshot: LeadIntakeAnswer[] = [
+      { q: "Which program are you interested in?", a: program, ts: createdAt + 60_000 },
+      { q: "What state do you live in?", a: state, ts: createdAt + 90_000 },
+      ...(program === "Tirzepatide" || program === "Semaglutide" ? [
+        { q: "Current weight (lb)?", a: `${180 + (i % 60)}`, ts: createdAt + 120_000 },
+        { q: "Goal weight (lb)?", a: `${150 + (i % 40)}`, ts: createdAt + 150_000 },
+      ] : []),
+      ...(step === "intake_mid" || step === "intake_complete" || step === "checkout" || step === "payment_fail" ? [
+        { q: "Any chronic conditions?", a: i % 3 === 0 ? "Hypertension" : "None", ts: createdAt + 180_000 },
+      ] : []),
+    ];
+    const isWL = program === "Tirzepatide" || program === "Semaglutide";
+    const firstOrder = isWL ? (i % 2 === 0 ? 299 : 249) : program === "Hair" ? 39 : program === "ED" ? 79 : 149;
+    return {
+      id: `ld_${900 + i}`,
+      name: `${first} ${last}`,
+      email: `${first.toLowerCase()}.${last.toLowerCase()}@email.com`,
+      phone: `+1 (415) 555-1${(100 + i).toString().padStart(3, "0")}`,
+      state,
+      city: pick(["San Francisco", "Austin", "Brooklyn", "Miami", "Chicago", "Seattle", "Denver", "Boston"], i),
+      dob: `19${70 + (i % 30)}-${((i % 12) + 1).toString().padStart(2, "0")}-${((i % 27) + 1).toString().padStart(2, "0")}`,
+      sex: (i % 2 === 0 ? "F" : "M") as "F" | "M",
+      program,
+      score: Math.round(score),
+      intent,
+      funnelStep: step,
+      progressPct,
+      stateEligible,
+      bmi: isWL ? Math.round((26 + (i % 12)) * 10) / 10 : undefined,
+      currentWeight: isWL ? 180 + (i % 60) : undefined,
+      goalWeight: isWL ? 150 + (i % 40) : undefined,
+      consent: {
+        sms: !(i % 11 === 0),
+        email: true,
+        marketing: !(i % 7 === 0),
+      },
+      attribution: {
+        source,
+        medium,
+        campaign: source === "Meta" ? "US_WL_Prospecting_v4" : source === "Google" ? "brand_exact" : source === "TikTok" ? "creator_seeding" : source === "Klaviyo" ? "abandoned_flow_2" : "organic",
+        adset: source === "Meta" ? pick(["Women 35-54 · GLP-1", "Men 30-50 · TRT", "LAL 1% purchasers"], i) : undefined,
+        creative: source === "Meta" ? pick(["UGC_Before_After_08", "Static_Rx_Kit_02", "VSL_60s_Coral"], i) : undefined,
+        landingUrl: isWL ? "/weight-loss" : `/${program.toLowerCase()}`,
+        firstTouch: createdAt - 3 * DAY,
+        lastTouch: lastTouchAt,
+        sessions: 1 + (i % 5),
+        deviceType: (["mobile", "mobile", "desktop", "tablet"] as const)[i % 4],
+      },
+      projectedFirstOrder: firstOrder,
+      projectedLTV: firstOrder * (isWL ? 5 : 3),
+      outreach,
+      tags: intent === "hot" ? ["priority"] : [],
+      assignee: status === "working" ? pick(["Andre F.", "Priya S.", "Ops"], i) : undefined,
+      status,
+      lossReason: status === "lost" ? pick(["price", "ineligible state", "competitor", "unresponsive"], i) : undefined,
+      intakeSnapshot,
+      cartItems: step === "checkout" || step === "payment_fail" || step === "abandoned_cart" ? [PROGRAMS[Object.keys(PROGRAMS)[i % 6] as keyof typeof PROGRAMS].label] : undefined,
+      coupon: step === "checkout" || step === "payment_fail" ? (i % 3 === 0 ? "BLISS30" : undefined) : undefined,
+      createdAt,
+      lastTouchAt,
+      // legacy
+      source,
+      lastStep: ({ landing: "Landing page", intake_start: "Q3 · Health history", intake_mid: "Q7 · State", intake_complete: "Q12 · Plan select", checkout: "Q14 · Payment", payment_fail: "Payment · declined", abandoned_cart: "Cart · abandoned" } as Record<LeadFunnelStep, string>)[step],
+      ageHrs,
+      contacted: outreach.length > 0,
+    };
+  });
 
   const tasks: Task[] = [
     { id: "t1", subject: "Your clinic", action: "Pay overdue invoice", ageHrs: 18, status: "open", assignee: "Unassigned", category: "billing" },
