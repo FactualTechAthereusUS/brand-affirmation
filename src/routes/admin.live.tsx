@@ -76,7 +76,7 @@ function LiveViewPage() {
     groups["Skin · Tretinoin"].value = 3840;
     groups["Hair · Finasteride"].value = 2210;
     for (const o of orders.slice(0, 40)) {
-      const price = o.price ?? 0;
+      const price = o.amount ?? 0;
       const p = o.program ?? "";
       if (p.startsWith("tirz")) groups["Weight Loss · Tirzepatide"].value += price;
       else if (p.startsWith("sema")) groups["Weight Loss · Semaglutide"].value += price;
@@ -230,7 +230,7 @@ function RecentOrders({ streamer }: { streamer: boolean }) {
               <div className="truncate font-medium text-ink">{o.patientName}</div>
               <div className="truncate text-[10.5px] text-ink/45">{o.id}</div>
             </div>
-            <div className="tabular-nums text-ink">{streamer ? "—" : `$${o.price}`}</div>
+            <div className="tabular-nums text-ink">{streamer ? "—" : `$${o.amount}`}</div>
           </div>
         ))}
       </div>
