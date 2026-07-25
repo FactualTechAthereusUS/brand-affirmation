@@ -122,6 +122,10 @@ export type Patient = {
   startedAt: string;
   churn: ChurnRisk;
   state: string;
+  tags?: string[];
+  notes?: InternalNote[];
+  cancelReason?: string;
+  denialReason?: string;
 };
 
 export type OrderStatus = "processing" | "at_pharmacy" | "shipped" | "delivered" | "exception";
