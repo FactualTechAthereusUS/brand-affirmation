@@ -57,7 +57,14 @@ import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.inde
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
 import { Route as AdminIntegrationsIndexRouteImport } from './routes/admin.integrations.index'
 import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
+import { Route as PharmabroAdminSettingsTeamRouteImport } from './routes/pharmabro-admin.settings.team'
 import { Route as PharmabroAdminSettingsStripeRouteImport } from './routes/pharmabro-admin.settings.stripe'
+import { Route as PharmabroAdminSettingsStatesRouteImport } from './routes/pharmabro-admin.settings.states'
+import { Route as PharmabroAdminSettingsPharmacyRouteImport } from './routes/pharmabro-admin.settings.pharmacy'
+import { Route as PharmabroAdminSettingsNotificationsRouteImport } from './routes/pharmabro-admin.settings.notifications'
+import { Route as PharmabroAdminSettingsLegalRouteImport } from './routes/pharmabro-admin.settings.legal'
+import { Route as PharmabroAdminSettingsIntegrationsRouteImport } from './routes/pharmabro-admin.settings.integrations'
+import { Route as PharmabroAdminSettingsComplianceRouteImport } from './routes/pharmabro-admin.settings.compliance'
 import { Route as PharmabroAdminBuildProductsRouteImport } from './routes/pharmabro-admin.build.products'
 import { Route as PharmabroAdminBuildPagesRouteImport } from './routes/pharmabro-admin.build.pages'
 import { Route as PharmabroAdminBuildIntakeRouteImport } from './routes/pharmabro-admin.build.intake'
@@ -325,10 +332,52 @@ const AdminCheckInsIndexRoute = AdminCheckInsIndexRouteImport.update({
   path: '/admin/check-ins/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PharmabroAdminSettingsTeamRoute =
+  PharmabroAdminSettingsTeamRouteImport.update({
+    id: '/team',
+    path: '/team',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
 const PharmabroAdminSettingsStripeRoute =
   PharmabroAdminSettingsStripeRouteImport.update({
     id: '/stripe',
     path: '/stripe',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
+const PharmabroAdminSettingsStatesRoute =
+  PharmabroAdminSettingsStatesRouteImport.update({
+    id: '/states',
+    path: '/states',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
+const PharmabroAdminSettingsPharmacyRoute =
+  PharmabroAdminSettingsPharmacyRouteImport.update({
+    id: '/pharmacy',
+    path: '/pharmacy',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
+const PharmabroAdminSettingsNotificationsRoute =
+  PharmabroAdminSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
+const PharmabroAdminSettingsLegalRoute =
+  PharmabroAdminSettingsLegalRouteImport.update({
+    id: '/legal',
+    path: '/legal',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
+const PharmabroAdminSettingsIntegrationsRoute =
+  PharmabroAdminSettingsIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
+const PharmabroAdminSettingsComplianceRoute =
+  PharmabroAdminSettingsComplianceRouteImport.update({
+    id: '/compliance',
+    path: '/compliance',
     getParentRoute: () => PharmabroAdminSettingsRoute,
   } as any)
 const PharmabroAdminBuildProductsRoute =
@@ -534,7 +583,14 @@ export interface FileRoutesByFullPath {
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
+  '/pharmabro-admin/settings/compliance': typeof PharmabroAdminSettingsComplianceRoute
+  '/pharmabro-admin/settings/integrations': typeof PharmabroAdminSettingsIntegrationsRoute
+  '/pharmabro-admin/settings/legal': typeof PharmabroAdminSettingsLegalRoute
+  '/pharmabro-admin/settings/notifications': typeof PharmabroAdminSettingsNotificationsRoute
+  '/pharmabro-admin/settings/pharmacy': typeof PharmabroAdminSettingsPharmacyRoute
+  '/pharmabro-admin/settings/states': typeof PharmabroAdminSettingsStatesRoute
   '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
+  '/pharmabro-admin/settings/team': typeof PharmabroAdminSettingsTeamRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
@@ -608,7 +664,14 @@ export interface FileRoutesByTo {
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
+  '/pharmabro-admin/settings/compliance': typeof PharmabroAdminSettingsComplianceRoute
+  '/pharmabro-admin/settings/integrations': typeof PharmabroAdminSettingsIntegrationsRoute
+  '/pharmabro-admin/settings/legal': typeof PharmabroAdminSettingsLegalRoute
+  '/pharmabro-admin/settings/notifications': typeof PharmabroAdminSettingsNotificationsRoute
+  '/pharmabro-admin/settings/pharmacy': typeof PharmabroAdminSettingsPharmacyRoute
+  '/pharmabro-admin/settings/states': typeof PharmabroAdminSettingsStatesRoute
   '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
+  '/pharmabro-admin/settings/team': typeof PharmabroAdminSettingsTeamRoute
   '/admin/check-ins': typeof AdminCheckInsIndexRoute
   '/admin/integrations': typeof AdminIntegrationsIndexRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
@@ -685,7 +748,14 @@ export interface FileRoutesById {
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
+  '/pharmabro-admin/settings/compliance': typeof PharmabroAdminSettingsComplianceRoute
+  '/pharmabro-admin/settings/integrations': typeof PharmabroAdminSettingsIntegrationsRoute
+  '/pharmabro-admin/settings/legal': typeof PharmabroAdminSettingsLegalRoute
+  '/pharmabro-admin/settings/notifications': typeof PharmabroAdminSettingsNotificationsRoute
+  '/pharmabro-admin/settings/pharmacy': typeof PharmabroAdminSettingsPharmacyRoute
+  '/pharmabro-admin/settings/states': typeof PharmabroAdminSettingsStatesRoute
   '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
+  '/pharmabro-admin/settings/team': typeof PharmabroAdminSettingsTeamRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
@@ -763,7 +833,14 @@ export interface FileRouteTypes {
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
+    | '/pharmabro-admin/settings/compliance'
+    | '/pharmabro-admin/settings/integrations'
+    | '/pharmabro-admin/settings/legal'
+    | '/pharmabro-admin/settings/notifications'
+    | '/pharmabro-admin/settings/pharmacy'
+    | '/pharmabro-admin/settings/states'
     | '/pharmabro-admin/settings/stripe'
+    | '/pharmabro-admin/settings/team'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
@@ -837,7 +914,14 @@ export interface FileRouteTypes {
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
+    | '/pharmabro-admin/settings/compliance'
+    | '/pharmabro-admin/settings/integrations'
+    | '/pharmabro-admin/settings/legal'
+    | '/pharmabro-admin/settings/notifications'
+    | '/pharmabro-admin/settings/pharmacy'
+    | '/pharmabro-admin/settings/states'
     | '/pharmabro-admin/settings/stripe'
+    | '/pharmabro-admin/settings/team'
     | '/admin/check-ins'
     | '/admin/integrations'
     | '/admin/leads'
@@ -913,7 +997,14 @@ export interface FileRouteTypes {
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
+    | '/pharmabro-admin/settings/compliance'
+    | '/pharmabro-admin/settings/integrations'
+    | '/pharmabro-admin/settings/legal'
+    | '/pharmabro-admin/settings/notifications'
+    | '/pharmabro-admin/settings/pharmacy'
+    | '/pharmabro-admin/settings/states'
     | '/pharmabro-admin/settings/stripe'
+    | '/pharmabro-admin/settings/team'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
@@ -1314,11 +1405,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCheckInsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pharmabro-admin/settings/team': {
+      id: '/pharmabro-admin/settings/team'
+      path: '/team'
+      fullPath: '/pharmabro-admin/settings/team'
+      preLoaderRoute: typeof PharmabroAdminSettingsTeamRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
     '/pharmabro-admin/settings/stripe': {
       id: '/pharmabro-admin/settings/stripe'
       path: '/stripe'
       fullPath: '/pharmabro-admin/settings/stripe'
       preLoaderRoute: typeof PharmabroAdminSettingsStripeRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
+    '/pharmabro-admin/settings/states': {
+      id: '/pharmabro-admin/settings/states'
+      path: '/states'
+      fullPath: '/pharmabro-admin/settings/states'
+      preLoaderRoute: typeof PharmabroAdminSettingsStatesRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
+    '/pharmabro-admin/settings/pharmacy': {
+      id: '/pharmabro-admin/settings/pharmacy'
+      path: '/pharmacy'
+      fullPath: '/pharmabro-admin/settings/pharmacy'
+      preLoaderRoute: typeof PharmabroAdminSettingsPharmacyRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
+    '/pharmabro-admin/settings/notifications': {
+      id: '/pharmabro-admin/settings/notifications'
+      path: '/notifications'
+      fullPath: '/pharmabro-admin/settings/notifications'
+      preLoaderRoute: typeof PharmabroAdminSettingsNotificationsRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
+    '/pharmabro-admin/settings/legal': {
+      id: '/pharmabro-admin/settings/legal'
+      path: '/legal'
+      fullPath: '/pharmabro-admin/settings/legal'
+      preLoaderRoute: typeof PharmabroAdminSettingsLegalRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
+    '/pharmabro-admin/settings/integrations': {
+      id: '/pharmabro-admin/settings/integrations'
+      path: '/integrations'
+      fullPath: '/pharmabro-admin/settings/integrations'
+      preLoaderRoute: typeof PharmabroAdminSettingsIntegrationsRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
+    }
+    '/pharmabro-admin/settings/compliance': {
+      id: '/pharmabro-admin/settings/compliance'
+      path: '/compliance'
+      fullPath: '/pharmabro-admin/settings/compliance'
+      preLoaderRoute: typeof PharmabroAdminSettingsComplianceRouteImport
       parentRoute: typeof PharmabroAdminSettingsRoute
     }
     '/pharmabro-admin/build/products': {
@@ -1512,12 +1652,29 @@ const LoginRouteChildren: LoginRouteChildren = {
 const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 
 interface PharmabroAdminSettingsRouteChildren {
+  PharmabroAdminSettingsComplianceRoute: typeof PharmabroAdminSettingsComplianceRoute
+  PharmabroAdminSettingsIntegrationsRoute: typeof PharmabroAdminSettingsIntegrationsRoute
+  PharmabroAdminSettingsLegalRoute: typeof PharmabroAdminSettingsLegalRoute
+  PharmabroAdminSettingsNotificationsRoute: typeof PharmabroAdminSettingsNotificationsRoute
+  PharmabroAdminSettingsPharmacyRoute: typeof PharmabroAdminSettingsPharmacyRoute
+  PharmabroAdminSettingsStatesRoute: typeof PharmabroAdminSettingsStatesRoute
   PharmabroAdminSettingsStripeRoute: typeof PharmabroAdminSettingsStripeRoute
+  PharmabroAdminSettingsTeamRoute: typeof PharmabroAdminSettingsTeamRoute
 }
 
 const PharmabroAdminSettingsRouteChildren: PharmabroAdminSettingsRouteChildren =
   {
+    PharmabroAdminSettingsComplianceRoute:
+      PharmabroAdminSettingsComplianceRoute,
+    PharmabroAdminSettingsIntegrationsRoute:
+      PharmabroAdminSettingsIntegrationsRoute,
+    PharmabroAdminSettingsLegalRoute: PharmabroAdminSettingsLegalRoute,
+    PharmabroAdminSettingsNotificationsRoute:
+      PharmabroAdminSettingsNotificationsRoute,
+    PharmabroAdminSettingsPharmacyRoute: PharmabroAdminSettingsPharmacyRoute,
+    PharmabroAdminSettingsStatesRoute: PharmabroAdminSettingsStatesRoute,
     PharmabroAdminSettingsStripeRoute: PharmabroAdminSettingsStripeRoute,
+    PharmabroAdminSettingsTeamRoute: PharmabroAdminSettingsTeamRoute,
   }
 
 const PharmabroAdminSettingsRouteWithChildren =
