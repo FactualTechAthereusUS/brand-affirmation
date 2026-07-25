@@ -10,6 +10,7 @@ import { adminActions, hydrateAdmin, useAdmin, type Role } from "@/lib/admin/sto
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import { DemoVariantSheet } from "./DemoVariantSheet";
 import { NotificationsBell } from "./NotificationsBell";
+import { Toaster } from "@/components/ui/sonner";
 
 type NavItem = { to?: string; label: string; icon: typeof LayoutGrid; exact?: boolean; roles?: Role[] };
 type NavGroup = { title: string; items: NavItem[] };
