@@ -170,7 +170,7 @@ function PatientDetail() {
               <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3 text-[12.5px]">
                 <div className="font-semibold text-amber-800">Check-in due — send reminder</div>
                 <div className="mt-1 text-ink/70">Next check-in due: <b>{e.nextBillingAt}</b></div>
-                <button className="mt-2 rounded-md bg-amber-500 px-2.5 py-1 text-[11.5px] font-semibold text-white">Send reminder now</button>
+                <button onClick={() => { adminActions.sendPatientCheckInReminder(patient.id); toast.success("Reminder sent"); }} className="mt-2 rounded-md bg-amber-500 px-2.5 py-1 text-[11.5px] font-semibold text-white hover:bg-amber-600">Send reminder now</button>
               </div>
             )}
           </Card>
