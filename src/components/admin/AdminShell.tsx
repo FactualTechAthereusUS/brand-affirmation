@@ -97,12 +97,9 @@ export function AdminShell({ title, children }: { title: string; children: React
         <button
           onMouseDown={startHold} onMouseUp={endHold} onMouseLeave={endHold}
           onTouchStart={startHold} onTouchEnd={endHold}
-          className="flex items-center gap-2 px-5 pt-5 text-left"
+          className="flex items-center px-5 pt-5 text-left"
         >
-          <span className="grid h-5 w-5 place-items-center rounded-full bg-ever text-white">
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-          </span>
-          {!collapsed && <span className="font-hero text-[15px] font-bold tracking-tight text-ink">blissley</span>}
+          <img src={blissleyLogo.url} alt="Blissley" className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
         </button>
 
         {/* Get Started pill */}
