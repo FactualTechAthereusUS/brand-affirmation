@@ -2478,6 +2478,146 @@ export const adminActions = {
     adminActions.logAudit("Bumped pharmacy priority", { targetType: "pharmacy", targetId: id });
   },
 
+  /* ────────── PharmaBro whitelabel tenant actions ────────── */
+  switchTenant(id: string) {
+    set((s) => {
+      const target = s.tenants.find((t) => t.id === id) ?? s.tenants[0];
+      const fresh = seed();
+      // Reset scenario data to a volume appropriate for tenant stage
+      if (target.stage === "zero") {
+        return {
+          tenant: target,
+          scenario: "empty",
+          patients: [], orders: [], payments: [], leads: [],
+          cases: [], checkIns: [], conversations: [], activity: [],
+          tasks: [], alerts: [], notifications: [],
+        };
+      }
+      if (target.stage === "ramping") {
+        const slice = <T,>(a: T[], n: number) => a.slice(0, Math.min(a.length, n));
+        return {
+          tenant: target,
+          scenario: "healthy",
+          patients: slice(fresh.patients, 60),
+          orders:   slice(fresh.orders, 45),
+          payments: slice(fresh.payments, 60),
+          leads:    slice(fresh.leads, 12),
+          cases:    slice(fresh.cases, 8),
+          checkIns: slice(fresh.checkIns, 6),
+          conversations: slice(fresh.conversations, 8),
+          activity: slice(fresh.activity, 8),
+          tasks:    slice(fresh.tasks, 6),
+          alerts:   slice(fresh.alerts, 2),
+          notifications: slice(fresh.notifications, 4),
+        };
+      }
+      // live: fresh full data
+      return {
+        tenant: target,
+        scenario: "healthy",
+        patients: fresh.patients, orders: fresh.orders, payments: fresh.payments,
+        leads: fresh.leads, cases: fresh.cases, checkIns: fresh.checkIns,
+        conversations: fresh.conversations, activity: fresh.activity,
+        tasks: fresh.tasks, alerts: fresh.alerts, notifications: fresh.notifications,
+      };
+    });
+    adminActions.logAudit("Switched brand tenant", { targetType: "tenant", targetId: id });
+  },
+
+  updateTenant(patch: Partial<BrandTenant>) {
+    set((s) => {
+      const merged = { ...s.tenant, ...patch };
+      return { tenant: merged, tenants: s.tenants.map((t) => t.id === merged.id ? merged : t) };
+    });
+  },
+
+  completeOnboardingStep(step: number) {
+    set((s) => {
+      const next = Math.max(s.tenant.onboardingStep, step);
+      const merged = { ...s.tenant, onboardingStep: next, stage: next >= 6 ? "live" as const : s.tenant.stage };
+      return { tenant: merged, tenants: s.tenants.map((t) => t.id === merged.id ? merged : t) };
+    });
+  },
+
+  /* ────────── PharmaBro build slice actions ────────── */
+  updateBlockProp(nodeId: string, blockId: string, key: string, value: string) {
+    set((s) => ({ build: { ...s.build, funnel: s.build.funnel.map((n) => n.id !== nodeId ? n : { ...n, blocks: n.blocks.map((b) => b.id !== blockId ? b : { ...b, props: { ...b.props, [key]: value } }) }) } }));
+  },
+  addFunnelBlock(nodeId: string, kind: FunnelBlockKind) {
+    set((s) => ({ build: { ...s.build, funnel: s.build.funnel.map((n) => n.id !== nodeId ? n : { ...n, blocks: [...n.blocks, { id: `b_${Date.now()}`, kind, title: kind, props: {} }] }) } }));
+  },
+  deleteFunnelBlock(nodeId: string, blockId: string) {
+    set((s) => ({ build: { ...s.build, funnel: s.build.funnel.map((n) => n.id !== nodeId ? n : { ...n, blocks: n.blocks.filter((b) => b.id !== blockId) }) } }));
+  },
+  publishFunnel() {
+    set((s) => ({ build: { ...s.build, funnelVersion: s.build.funnelVersion + 1 } }));
+    adminActions.logAudit("Published funnel", { targetType: "funnel" });
+  },
+
+  updateIntakeScreen(id: string, patch: Partial<IntakeScreen>) {
+    set((s) => ({ build: { ...s.build, intakeScreens: s.build.intakeScreens.map((sc) => sc.id === id ? { ...sc, ...patch } : sc) } }));
+  },
+  toggleIntakeScreenActive(id: string) {
+    set((s) => ({ build: { ...s.build, intakeScreens: s.build.intakeScreens.map((sc) => sc.id === id ? { ...sc, active: !sc.active } : sc) } }));
+  },
+  addIntakeAnswer(screenId: string, label: string) {
+    set((s) => ({ build: { ...s.build, intakeScreens: s.build.intakeScreens.map((sc) => sc.id === screenId ? { ...sc, answers: [...sc.answers, { id: `ans_${Date.now()}`, label }] } : sc) } }));
+  },
+  removeIntakeAnswer(screenId: string, ansId: string) {
+    set((s) => ({ build: { ...s.build, intakeScreens: s.build.intakeScreens.map((sc) => sc.id === screenId ? { ...sc, answers: sc.answers.filter((a) => a.id !== ansId) } : sc) } }));
+  },
+
+  createBuildProduct(p: Omit<BuildProduct, "id">) {
+    set((s) => ({ build: { ...s.build, products: [...s.build.products, { ...p, id: `p_${Date.now()}` }] } }));
+    adminActions.logAudit("Created product", { targetType: "product" });
+  },
+  updateBuildProduct(id: string, patch: Partial<BuildProduct>) {
+    set((s) => ({ build: { ...s.build, products: s.build.products.map((p) => p.id === id ? { ...p, ...patch } : p) } }));
+  },
+  archiveBuildProduct(id: string) {
+    set((s) => ({ build: { ...s.build, products: s.build.products.map((p) => p.id === id ? { ...p, status: "archived" as const } : p) } }));
+  },
+
+  createBuildPlan(p: Omit<BuildPlan, "id">) {
+    set((s) => ({ build: { ...s.build, plans: [...s.build.plans, { ...p, id: `pl_${Date.now()}` }] } }));
+  },
+  updateBuildPlan(id: string, patch: Partial<BuildPlan>) {
+    set((s) => ({ build: { ...s.build, plans: s.build.plans.map((p) => p.id === id ? { ...p, ...patch } : p) } }));
+  },
+  archiveBuildPlan(id: string) {
+    set((s) => ({ build: { ...s.build, plans: s.build.plans.map((p) => p.id === id ? { ...p, status: "archived" as const } : p) } }));
+  },
+
+  createBuildUpsell(u: Omit<BuildUpsell, "id">) {
+    set((s) => ({ build: { ...s.build, upsells: [...s.build.upsells, { ...u, id: `u_${Date.now()}` }] } }));
+  },
+  updateBuildUpsell(id: string, patch: Partial<BuildUpsell>) {
+    set((s) => ({ build: { ...s.build, upsells: s.build.upsells.map((u) => u.id === id ? { ...u, ...patch } : u) } }));
+  },
+
+  createBuildDiscount(d: Omit<BuildDiscount, "id">) {
+    set((s) => ({ build: { ...s.build, discounts: [...s.build.discounts, { ...d, id: `d_${Date.now()}` }] } }));
+  },
+  updateBuildDiscount(id: string, patch: Partial<BuildDiscount>) {
+    set((s) => ({ build: { ...s.build, discounts: s.build.discounts.map((d) => d.id === id ? { ...d, ...patch } : d) } }));
+  },
+
+  toggleEmailFlow(id: string) {
+    set((s) => ({ build: { ...s.build, emailFlows: s.build.emailFlows.map((f) => f.id === id ? { ...f, status: f.status === "live" ? "paused" as const : "live" as const, lastEditedAt: Date.now() } : f) } }));
+  },
+  syncEmailFlow(id: string) {
+    set((s) => ({ build: { ...s.build, emailFlows: s.build.emailFlows.map((f) => f.id === id ? { ...f, klaviyoSynced: true, klaviyoLastSyncAt: Date.now() } : f) } }));
+  },
+  syncAllEmailFlows() {
+    const ts = Date.now();
+    set((s) => ({ build: { ...s.build, emailFlows: s.build.emailFlows.map((f) => ({ ...f, klaviyoSynced: true, klaviyoLastSyncAt: ts })) } }));
+    adminActions.logAudit("Synced all flows to Klaviyo", { targetType: "email_flow" });
+  },
+
+  publishBuildPage(id: string) {
+    set((s) => ({ build: { ...s.build, pages: s.build.pages.map((p) => p.id === id ? { ...p, status: "live" as const, lastPublishedAt: Date.now() } : p) } }));
+  },
+
   resetAll() {
     state = seed();
     persist();
