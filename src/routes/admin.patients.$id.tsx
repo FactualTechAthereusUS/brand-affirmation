@@ -78,7 +78,7 @@ function PatientDetail() {
               if (!last) { toast.error("No successful payment to refund"); return; }
               const reason = window.prompt(`Refund $${last.amount} to ${patient.firstName}?`, "Customer request") ?? "";
               if (!reason) return;
-              adminActions.refundPayment(last.id, reason);
+              adminActions.refundPayment(last.id);
               toast.success(`Refunded $${last.amount}`);
             }} className="inline-flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-3 py-2 text-[12.5px] font-semibold text-ink hover:border-ink/25">
               <DollarSign className="h-3.5 w-3.5" /> Issue refund
