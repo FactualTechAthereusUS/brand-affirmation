@@ -89,11 +89,12 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
     const Icon = n.icon;
     return (
       <Link to={n.to!} className={`group relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ${
-        active ? "bg-ink/[0.04] font-semibold text-ink" : "text-ink/65 hover:bg-ink/[0.03] hover:text-ink"
+        active ? "bg-marine/[0.08] font-semibold text-marine" : "text-ink/65 hover:bg-ink/[0.04] hover:text-ink"
       }`}>
-        {active && <span className="absolute inset-y-1 left-0 w-[3px] rounded-full bg-ever" />}
-        <Icon className={`h-3.5 w-3.5 shrink-0 ${active ? "text-ink" : "text-ink/45"}`} strokeWidth={1.75} />
+        {active && <span className="absolute inset-y-1 left-0 w-[3px] rounded-full bg-marine" />}
+        <Icon className={`h-3.5 w-3.5 shrink-0 ${active ? "text-marine" : "text-ink/45"}`} strokeWidth={1.75} />
         {!collapsed && <span className="truncate">{n.label}</span>}
+
       </Link>
     );
   };
