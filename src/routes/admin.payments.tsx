@@ -148,7 +148,7 @@ function MetricCard({ label, value, sub, tone, spark }: { label: string; value: 
       <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">{label}</div>
       <div className={`mt-1 font-hero text-[22px] font-bold tabular-nums ${color}`}>{value}</div>
       {sub && <div className="mt-0.5 text-[11px] text-ink/50">{sub}</div>}
-      {spark && spark.length > 1 && <div className="mt-2 h-8"><Sparkline data={spark} tone={tone === "success" ? "up" : tone === "critical" ? "down" : "flat"} /></div>}
+      {spark && spark.length > 1 && <div className="mt-2 h-8"><Sparkline data={spark} stroke={tone === "success" ? "#10b981" : tone === "critical" ? "#ef4444" : "#f59e0b"} /></div>}
     </motion.div>
   );
 }
