@@ -3,11 +3,11 @@ import { useMemo, useState } from "react";
 import {
   ArrowLeft, Copy, Printer, RotateCcw, MoreHorizontal, ChevronRight, Snowflake, ShieldCheck,
   Truck, Package, Pill, CreditCard, FileText, MessageSquare, Tag, User2, AlertTriangle,
-  Stethoscope, MapPin, Clock, Check, ExternalLink,
+  Stethoscope, MapPin, Clock, Check, ExternalLink, TrendingUp, StickyNote,
 } from "lucide-react";
 import { AdminShell, Card, StatusPill, formatMoney } from "@/components/admin/AdminShell";
 import { Stepper, type StepperStep } from "@/components/admin/Stepper";
-import { PROGRAMS, useAdmin, type Order } from "@/lib/admin/store";
+import { PROGRAMS, useAdmin, adminActions, type Order, type InternalNote } from "@/lib/admin/store";
 import { enrichOrder, type EnrichedOrder, type TimelineEvent } from "@/lib/admin/orders-enrich";
 
 export const Route = createFileRoute("/admin/orders/$id")({
