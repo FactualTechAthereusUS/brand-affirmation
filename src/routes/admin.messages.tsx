@@ -19,15 +19,15 @@ function MessagesPage() {
 
   return (
     <AdminShell title="Unified inbox">
-      <div className="grid gap-3 lg:grid-cols-[320px_1fr_320px]">
+      <div className="grid gap-3 lg:grid-cols-[320px_1fr_320px] h-[calc(100vh-140px)] min-h-[560px]">
         {/* Convo list */}
-        <div className="overflow-hidden rounded-2xl border border-ink/8 bg-white">
+        <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-ink/8 bg-white">
           <div className="flex border-b border-ink/8 text-[12px]">
             {(["all", "unassigned", "mine"] as const).map((t) => (
               <button key={t} onClick={() => setTab(t)} className={`flex-1 py-2.5 font-semibold ${tab === t ? "border-b-2 border-ever text-ink" : "text-ink/50"}`}>{t}</button>
             ))}
           </div>
-          <div className="max-h-[640px] overflow-y-auto">
+          <div className="flex-1 overflow-y-auto">
             {filtered.map((c) => (
               <button key={c.id} onClick={() => adminActions.setActiveConvo(c.id)}
                 className={`flex w-full items-start gap-3 border-b border-ink/6 p-3 text-left last:border-0 ${active?.id === c.id ? "bg-ever/6" : "hover:bg-ink/4"}`}>
@@ -58,7 +58,7 @@ function MessagesPage() {
 
         {/* Sidebar */}
         {active && (
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-y-auto min-h-0">
             <div className="rounded-2xl border border-ink/8 bg-white p-4">
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Patient</div>
               <div className="mt-1 text-[15px] font-semibold text-ink">{active.patientName}</div>
@@ -110,7 +110,7 @@ function Thread({ convo }: { convo: Conversation }) {
     if (ta.current) ta.current.style.height = "auto";
   };
   return (
-    <div className="flex min-h-[520px] flex-col overflow-hidden rounded-2xl border border-ink/8 bg-white">
+    <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-ink/8 bg-white">
       <div className="flex items-center justify-between border-b border-ink/8 p-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
