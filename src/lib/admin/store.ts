@@ -3,6 +3,10 @@
  * useSyncExternalStore + localStorage. No backend.
  */
 import { useSyncExternalStore, useRef } from "react";
+import {
+  PHYSICIANS, PHARMACIES, CASES, CHECK_INS, NOTIFICATIONS, INTEGRATIONS,
+  CAMPAIGNS, generateFunnelDays,
+} from "./seeds";
 
 /* ────────── Types ────────── */
 export type PatientStatus = "active" | "pending" | "paused" | "failed" | "cancelled";
