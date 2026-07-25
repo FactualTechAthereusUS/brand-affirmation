@@ -2197,7 +2197,42 @@ export const adminActions = {
     adminActions.logAudit(`Updated legal document ${key}`);
   },
 
+  /* ────────── Payments (extended) ────────── */
+  refundPaymentPartial(id: string, amount: number) {
+    set((s) => ({ payments: s.payments.map((p) => (p.id === id ? { ...p, status: "refunded" as const } : p)) }));
+    adminActions.logAudit(`Partial refund $${(amount / 100).toFixed(2)}`, { targetType: "payment", targetId: id });
+  },
+  sendPaymentReceipt(id: string) {
+    adminActions.logAudit("Sent payment receipt", { targetType: "payment", targetId: id });
+    set((s) => ({ activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Receipt sent for ${id}`, tone: "info" as const }, ...s.activity] }));
+  },
+  flagPaymentFraud(id: string) {
+    adminActions.logAudit("Flagged charge as fraud", { targetType: "payment", targetId: id });
+    set((s) => ({
+      payments: s.payments.map((p) => (p.id === id ? { ...p, failureReason: "flagged_fraud" } : p)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Charge ${id} flagged as fraud`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
 
+  /* ────────── Pharmacy ops ────────── */
+  pausePharmacyRouting(id: string) {
+    set((s) => ({ pharmacies: s.pharmacies.map((p) => (p.id === id ? { ...p, apiStatus: "degraded" as const } : p)) }));
+    adminActions.logAudit("Paused routing for pharmacy", { targetType: "pharmacy", targetId: id });
+  },
+  resumePharmacyRouting(id: string) {
+    set((s) => ({ pharmacies: s.pharmacies.map((p) => (p.id === id ? { ...p, apiStatus: "connected" as const } : p)) }));
+    adminActions.logAudit("Resumed routing for pharmacy", { targetType: "pharmacy", targetId: id });
+  },
+  bumpPharmacyPriority(id: string) {
+    set((s) => {
+      const idx = s.pharmacies.findIndex((p) => p.id === id);
+      if (idx <= 0) return {};
+      const next = s.pharmacies.slice();
+      [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+      return { pharmacies: next };
+    });
+    adminActions.logAudit("Bumped pharmacy priority", { targetType: "pharmacy", targetId: id });
+  },
 
   resetAll() {
     state = seed();
