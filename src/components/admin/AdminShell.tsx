@@ -15,7 +15,7 @@ import { Toaster } from "@/components/ui/sonner";
 type NavItem = { to?: string; label: string; icon: typeof LayoutGrid; exact?: boolean; roles?: Role[] };
 type NavGroup = { title: string; items: NavItem[] };
 
-const NAV: NavGroup[] = [
+const RAW_NAV: NavGroup[] = [
   {
     title: "",
     items: [
@@ -60,6 +60,15 @@ const NAV: NavGroup[] = [
     ],
   },
 ];
+
+function remapNav(prefix: string): NavGroup[] {
+  if (prefix === "/admin") return RAW_NAV;
+  return RAW_NAV.map((g) => ({
+    ...g,
+    items: g.items.map((it) => ({ ...it, to: it.to?.replace(/^\/admin/, prefix) })),
+  }));
+}
+
 
 const ONBOARDING_STEPS = [
   "Connect Stripe", "Connect South End", "Invite physician", "Add first product",
