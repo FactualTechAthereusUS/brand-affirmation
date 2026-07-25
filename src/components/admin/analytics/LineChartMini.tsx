@@ -218,13 +218,15 @@ export function BarsMini({
     wrap.current = el;
     if (el && w === 0) setW(el.clientWidth);
   };
-  useMemo(() => {
-    if (!wrap.current) return;
+  useEffect(() => {
     const el = wrap.current;
-    const ro = new ResizeObserver(() => setW(el.clientWidth));
+    if (!el) return;
+    const update = () => setW(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [wrap.current]);
+  }, []);
 
   const max = Math.max(...data, p90 ?? 0) || 1;
   const padL = 32;
