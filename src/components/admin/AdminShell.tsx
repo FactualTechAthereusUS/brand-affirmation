@@ -232,7 +232,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             </button>
 
             <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] bg-white/70 px-2.5 py-1 backdrop-blur sm:flex">
-              <img src={blissleyLogo.url} alt="Blissley" className="h-4 w-auto" />
+              <Wordmark className="h-4 w-auto text-[13px] leading-none" />
               <span className="mx-1 h-3 w-px bg-ink/10" />
               <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
                 <span className="relative flex h-1.5 w-1.5">
