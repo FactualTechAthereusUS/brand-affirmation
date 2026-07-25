@@ -1,102 +1,117 @@
-# /admin/patients — Telehealth Revamp
+# Leads Revamp — Shopify-parity Telehealth Workspace
 
-Rebuild `/admin/patients` (list) and `/admin/patients/$id` (detail) to match the uploaded spec. Same indigo/violet/sky admin palette, same `AdminShell`. No changes outside `/admin/*`.
+Mirror the density and clarity we shipped for `/admin/patients`, borrowing structure from Shopify's Customers/Segments screen (uploaded ref). Leads = pre-conversion humans (abandoned intakes, unpaid checkouts, MQL from ads). This becomes the recovery + acquisition control tower.
 
----
+## Scope
 
-## 1. Data model — extend the Patient shape
+1. Rebuild `/admin/leads` (list) with KPI strip, saved segments, tabs, filters, dense table, bulk actions.
+2. New `/admin/leads/$id` detail page — full lead workspace (timeline, intake replay, outreach console, conversion attribution).
+3. Extend the seed data model so leads carry telehealth-grade signal (score, intent, funnel step, LTV projection, consent, attribution).
+4. Do NOT fold this into `/patients` — keep them separate (leads ≠ patients). Add a "Convert to patient" action that promotes a lead into the patients store.
 
-`src/lib/admin/store.ts` — add `PatientStatus` values `"denied"`, and extend `Patient` with:
-- `patientId` display code (e.g. `BLS-P-00284`), `city`, `dob`, `sex`, `heightIn`, `weightLbs`, `goalWeightLbs`, `bmi`, `dose` (step + strength), `monthOfPlan` (n of N), `nextBillingAt`, `nextBillingAmt`, `cardBrand`, `cardLast4`, `physicianName`, `physicianNpi`, `pharmacy`, `rxValidUntil`, `refillsLeft`, `rxSig`, `approvalNote`, `lastLoginAt`, `lastEmailOpenedAt`, `portalActive`, `tags[]`, `intake` (blob with contraindications, qualifying conditions, prior GLP-1, BP, meds, allergies, ec contact, scores), `internalNotes[]`, `communications` (klaviyo status, sms opt-in), `denialReason?`, `cancelledAt?`, `cancelReason?`, `winbackStage?`, `failedRetry?` `{ attempt, nextAt }`.
+## Data model additions (`src/lib/admin/store.ts`)
 
-Add a deterministic enricher `src/lib/admin/patients-enrich.ts` that synthesizes all extended fields from the existing seed (mirrors the pattern of `orders-enrich.ts`) so seeds stay lean. Expose selectors:
-- `selectPatients(state, { statusTab, segment, search, sort, page, pageSize })`
-- `selectPatientKpis(state)` → total, active, newThisMonth, churned + churnRate, failedPayment + $atRisk
-- `selectPatientSegments(state)` → the 6 shortcut counts (month2HighRisk, checkinDueThisWeek, checkinOverdue, highLtv6mo, winbackCandidates, noPortal14d)
+Extend `Lead`:
+- `phone`, `state`, `city`, `dob?`, `sex?`
+- `score` 0–100 (composite: funnel depth + recency + channel quality)
+- `intent`: `hot | warm | cold`
+- `funnelStep`: `landing | intake_start | intake_mid | intake_complete | checkout | payment_fail | abandoned_cart`
+- `progressPct` (0–100, derived from step)
+- `program`: existing + `hair | ed | skin | trt | general`
+- `stateEligible`: boolean (Rx state gating)
+- `bmi?`, `goalWeight?`, `currentWeight?` (WL leads)
+- `consent`: `{ sms: boolean; email: boolean; marketing: boolean }`
+- `attribution`: `{ source, medium, campaign, adset?, creative?, landingUrl, firstTouch, lastTouch }`
+- `deviceType`: `mobile | desktop | tablet`
+- `projectedLTV`, `projectedFirstOrder` (USD)
+- `outreach`: array of `{ ts, channel: 'email'|'sms'|'call'|'note', by, subject, outcome }`
+- `tags`: string[]
+- `assignee?`, `status`: `new | working | nurturing | won | lost | do_not_contact`
+- `lossReason?`, `wonPatientId?`
+- `intakeSnapshot`: array of `{ q, a, ts }` (their partial answers)
 
-## 2. List page — `src/routes/admin.patients.tsx`
+Add `LeadSegment` type (id, name, definition string, count, pinned).
 
-Full rewrite. Layout top-to-bottom:
+Enrich seed to ~40 leads across programs/states with realistic funnel distributions.
 
-1. **Top bar** — `Patients` heading, search input (name / email / phone / order # / state), right-side `[All ▾]` view menu, `[Export CSV ▾]`, `[+ Add Patient]`.
-2. **KPI strip** — 5 `KpiCard`s: Total Patients, Active, New This Month (vs prior), Churned (with churn rate), Failed Payment (with $ at risk). Same visual language as `admin.index` / `admin.orders`.
-3. **Status tabs** — `All / Active / Pending Approval / Paused / Cancelled / Denied / Payment Failed`, live counts. Underline + indigo active state.
-4. **Segment chips row** — the 6 quick filters from spec, each with count, plus a ghost `+ Create segment`.
-5. **Table** — dense, high-contrast, matching orders table style:
-   - Columns: Patient (avatar + name + email), Status pill, Program, Since, MRR, LTV, Month (n/N), Churn Risk pill, Last Active, Actions (`View`).
-   - Sortable headers; default newest first.
-   - Row click → `/admin/patients/$id`.
-   - Bulk-select checkbox column + bulk toolbar (Message / Tag / Export / Pause).
-   - Pagination footer: rows-per-page (10/25/50/100), page N of M, prev/next.
-   - Status pill colors: active=emerald, pending=amber, paused=slate, failed=coral, cancelled=muted, denied=ink.
-   - Churn pill: Low=emerald, Medium=amber, High=coral, Critical=solid coral.
+## Store actions
 
-Icons stay bare (no background tiles), per project rule.
+`updateLeadStatus`, `assignLead`, `addLeadOutreach`, `addLeadTag`, `removeLeadTag`, `setLeadConsent`, `convertLeadToPatient`, `markLeadLost(reason)`, `bulkLeadAction`.
 
-## 3. Detail page — `src/routes/admin.patients.$id.tsx`
+## List page `/admin/leads`
 
-Full rewrite. Full-page, not a modal. `← Patients` back link.
+Structure top-to-bottom:
 
-**Header card**: initials avatar (48px, indigo), name + status pill, email · phone, city, state · patient since date, patient ID mono. Primary buttons `[Send message] [Issue refund]`, kebab `More actions` (cancel / pause / flag / export record / delete).
+1. **Page header** — "Leads" + right-side buttons: Export, Import, Create segment, New lead.
+2. **KPI strip (6 cards)**:
+   - Open leads
+   - Hot (score ≥ 70)
+   - Abandoned checkouts · 30d
+   - Recovery rate · 30d
+   - Avg time-to-contact
+   - Projected recoverable revenue (Σ projectedFirstOrder for open)
+3. **Saved segments rail** (Shopify Segments pattern from ref image) — horizontal chip row + "All segments" link that expands into a table:
+   - Name · % of leads · Last activity · Created by
+   - Seeded segments: All leads, Hot · last 24h, Abandoned checkout · 30d, Intake started · not finished, Payment failed, State-eligible only, Meta paid, Google paid, DNC list, Won this month.
+4. **Tabs** (status): All · New · Working · Nurturing · Payment failed · Do not contact · Lost · Won.
+5. **Filter bar** — search (name/email/phone), Program, State, Source, Score range, Funnel step, Assignee, Date range. Save-as-segment button.
+6. **Table (dense)** columns:
+   - checkbox · Lead (name + email + phone) · Score (pill with color) · Intent · Program · Funnel step (mini progress bar) · State (with eligibility dot) · Source/Campaign · Age · Last touch · Assignee · Status · Actions (Email/SMS/Call/Open)
+7. **Bulk action bar** appears on selection: Email, SMS, Assign, Tag, Change status, Add to segment, Export, Delete.
+8. **Pagination** + rows-per-page.
 
-**Status banners** (conditional, above two-column grid):
-- Pending → amber banner block (awaiting physician review, wait time, assigned physician, card authorized, links).
-- Denied → dark gray banner (reason, refund line, email sent, care-team follow-up toggle).
-- Cancelled → muted banner (cancel date, reason, duration, total revenue, win-back stage, `Reactivate` / `Offer discount`).
-- Failed payment → coral banner (declined amount + date, retry schedule, portal warning, `Retry now` / `Contact patient` / `Write off`).
+## Detail page `/admin/leads/$id`
 
-**Two-column grid** (65 / 35):
+Full-width workspace, one scroll, mirrors `/admin/patients/$id` architecture.
 
-Left column blocks:
-1. **Subscription** — plan, status, started, current month, current dose, next billing, card. Dose progression stepper (reuse `Stepper.tsx`). `[Pause] [Cancel] [Switch plan] [Update billing date]`.
-2. **Clinical** — physician + NPI, approved date, Rx valid until, refills left, pharmacy, current Rx + sig, approval note quote.
-3. **Orders** — last 3 orders table (Order # / Date / Product / Status / Amount / Tracking / Actions). `View all →` links to `/admin/orders` filtered. `+ Create order`.
-4. **Check-ins** — next due date + days remaining. Completed state (weight delta, side effects, wellbeing, physician review line) or overdue warning with `Send reminder`. Collapsed history accordion.
-5. **Payments** — table of charges + totals (spent / refunds / net). Failed rows get inline `Retry` / `Contact`.
-6. **Communications** — email (last sent/opened, open rate, Klaviyo status), SMS (opt-in, last sms), Portal (last login, magic link resend), Messages summary.
-7. **Intake** — collapsed accordion. Expanded: Personal, Clinical Flags, Medications, Emergency Contact, Intake Scores. Read-only. `Download intake PDF` (stub).
-8. **Activity timeline** — reverse-chronological entries derived from orders/payments/checkins/messages/portal events. `Add internal note` composer at bottom.
+**Top status banner (conditional)**:
+- Payment failed → "Retry payment / Send new checkout link"
+- Intake abandoned mid → "Resume intake link"
+- Hot + not contacted in 2h → "Contact now"
+- DNC → red banner, disables outreach
 
-Right column blocks:
-- **A. At a glance** — LTV actual + 12-mo projection, MRR, total orders, churn risk, program, month, dose, physician, pharmacy, portal/email/check-in state rows.
-- **B. Manage** — Pause (duration picker modal), Cancel (confirm modal w/ reason), Switch plan (radio picker), Update payment method, Update billing date, Update shipping address.
-- **C. Quick actions** — Send message, Send magic link, Issue refund (amount + reason modal), Create new order, Flag for review, Export patient record, Delete patient (type-name-to-confirm).
-- **D. Internal notes** — list of past notes (author + timestamp + text, non-deletable), composer with `Save note`.
-- **E. Tags** — chip list + `+ Add tag`.
+**Header block** — avatar/initials, name, email, phone, state, score gauge, intent badge, assignee, status dropdown, quick actions (Email, SMS, Call, Convert to patient, Mark lost).
 
-Every mutating action calls a new store method (`pausePatient`, `cancelPatient`, `switchPlan`, `refundPayment`, `retryPayment`, `sendMagicLink`, `addPatientNote`, `addPatientTag`, `flagPatient`, `writeOffPayment`, `reactivatePatient`). All mutations append to activity + admin `activity` feed.
+**Left column (main)**:
+- **Lead score breakdown** — component bars (funnel depth, recency, channel, engagement) totalling score.
+- **Funnel progress** — horizontal stepper: Landing → Intake start → Intake mid → Intake complete → Checkout → Paid. Current step highlighted, drop-off arrow shown.
+- **Intake snapshot** — Q&A list from `intakeSnapshot` (what they answered before dropping) + "Resume intake" deep link.
+- **Attribution** — source/medium/campaign/creative, landing URL, first touch, last touch, device, sessions count.
+- **Outreach timeline** — chronological feed of email/sms/call/note events with outcomes. Inline composer at top (channel tabs: Email / SMS / Call log / Internal note).
+- **Related activity** — page views, form fields touched, cart contents if any, coupon codes.
 
-## 4. Palette + tokens
+**Right sidebar**:
+- **Quick info** — email/phone (click to copy), state, DOB, consent toggles (SMS/Email/Marketing), timezone, best time to contact.
+- **Projected value** — projected first order, projected LTV, program preference.
+- **Manage** — Assign to teammate, Change status, Add tag, Add to segment, Merge duplicates.
+- **Danger zone** — Mark do-not-contact, Mark lost (with reason dropdown: price, competitor, ineligible state, unresponsive, medical, other), Delete lead.
+- **Tags** — chips with add/remove.
 
-Reuse admin-scope tokens already in `src/styles.css` (indigo/violet/sky primary, emerald/amber/coral semantic). No new global tokens. Bare icons everywhere (no background circles).
+## Components to add (`src/components/admin/leads/`)
 
-## 5. Files touched
+- `LeadKpis.tsx`
+- `SegmentsRail.tsx` (chips + expandable segments table matching ref image)
+- `LeadsFilters.tsx`
+- `LeadsTable.tsx` (with column primitives: `ScorePill`, `IntentBadge`, `FunnelBar`, `EligibilityDot`)
+- `BulkActionBar.tsx`
+- `LeadStatusBanner.tsx`
+- `LeadScoreBreakdown.tsx`
+- `FunnelStepper.tsx`
+- `IntakeSnapshot.tsx`
+- `AttributionCard.tsx`
+- `OutreachTimeline.tsx` + `OutreachComposer.tsx`
+- `LeadManagePanel.tsx`, `LeadDangerZone.tsx`
 
-Create:
-- `src/lib/admin/patients-enrich.ts`
-- `src/components/admin/patients/StatusBanner.tsx` (variant per status)
-- `src/components/admin/patients/DoseProgress.tsx`
-- `src/components/admin/patients/PatientTimeline.tsx`
-- `src/components/admin/patients/ManagePanel.tsx`
-- `src/components/admin/patients/QuickActionsPanel.tsx`
-- `src/components/admin/patients/InternalNotes.tsx`
+## Styling
 
-Rewrite:
-- `src/routes/admin.patients.tsx`
-- `src/routes/admin.patients.$id.tsx`
+Stay inside `.admin-scope` tokens (indigo/violet/sky + emerald/amber/coral semantics). No icon background circles. Same table/card density we established in `/admin/patients` and `/admin/orders`.
 
-Extend:
-- `src/lib/admin/store.ts` — Patient type + `denied` status + new mutations + selectors.
-- `src/lib/admin/seeds.ts` — augment featured patients with denied / failed / cancelled examples matching spec personas (Sarah, Michael, Dana, Lisa, Omar, Ashley).
+## Out of scope for this pass
 
-## 6. Verification
+- Real ESP/SMS integration (all outreach is local store simulation).
+- Real ad-platform attribution ingestion (attribution is deterministic seed).
+- Segment builder UI (segments are pre-seeded; "Create segment" saves current filter set only).
 
-- `tsgo` clean.
-- Manual click-through: list tabs + chips + search + sort + pagination + row → detail; each detail variant (active / pending / paused / failed / cancelled / denied) renders its banner and correct data; every action modal opens and mutates store; timeline updates.
-- Grep for `__l5e` (must be zero) and hardcoded warm brand hex in touched files.
+## Deliverable
 
-## Out of scope
-
-- No real Stripe / Klaviyo / LifeFile integration — all stubs.
-- No changes to marketing site, portals, or non-admin routes.
-- Physician queue page untouched (link only).
+Dense Shopify-grade Leads workspace at `/admin/leads` + `/admin/leads/$id`, wired to the extended store, matching the visual language of the rest of the admin.
