@@ -223,8 +223,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink/40" />
                 <input placeholder="Search patients, orders, cases…"
-                  className="w-full rounded-lg bg-[#f7f6f2] py-1.5 pl-9 pr-12 text-[12.5px] outline-none placeholder:text-ink/40 focus:bg-white focus:ring-1 focus:ring-ink/10" />
+                  className="w-full rounded-lg bg-[#f1f2f4] py-1.5 pl-9 pr-12 text-[12.5px] outline-none placeholder:text-ink/40 focus:bg-white focus:ring-1 focus:ring-marine/30" />
                 <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 rounded border border-ink/10 bg-white px-1.5 py-0.5 text-[10px] text-ink/45">⌘K</kbd>
+
               </div>
             </div>
 
