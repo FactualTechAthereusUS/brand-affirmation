@@ -369,7 +369,7 @@ function PipelineTile({
           <div
             key={i}
             className="h-1.5 flex-1 rounded-[1px]"
-            style={{ background: i < Math.min(count, 24) ? (tone === "ok" ? "#3f9b6a" : "#e69543") : "rgba(23,23,23,0.06)" }}
+            style={{ background: i < Math.min(count, 24) ? (tone === "ok" ? "#10b981" : "#f59e0b") : "rgba(23,23,23,0.06)" }}
           />
         ))}
       </div>
