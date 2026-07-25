@@ -209,7 +209,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
       {/* Main column */}
       <div className={collapsed ? "lg:pl-[64px]" : "lg:pl-[220px]"}>
-        <header className={`sticky top-0 z-20 ${pathname.startsWith("/admin/live") ? "bg-transparent" : "border-b border-ink/[0.06] bg-white"}`}>
+        <header className={`sticky top-0 z-20 ${pathname === `${prefix}/live` ? "bg-transparent" : "border-b border-ink/[0.06] bg-white"}`}>
           <div className="flex h-14 items-center gap-3 px-4 lg:px-6">
             <button
               onClick={() => setCollapsed((v) => !v)}
