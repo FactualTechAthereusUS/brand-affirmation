@@ -144,13 +144,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Clinical operations">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Physician review · median" value={`${Math.round(sla.median.reduce((a,b)=>a+b,0)/sla.median.length)}m`} delta="−12%" deltaTone="positive" sub={`p90 · ${sla.p90}m`}>
-            <div className="h-24 px-2"><BarsMini data={sla.median} p90={sla.p90} color="#1D437B" /></div>
+            <div className="h-24 px-2 pb-4"><BarsMini data={sla.median} p90={sla.p90} dates={dts} label="Review time" formatValue={mins} color="#1D437B" /></div>
           </MetricCard>
           <MetricCard label="Approval rate" value={`${(approval.reduce((a,b)=>a+b,0)/approval.length).toFixed(1)}%`} delta="+1.4pt" sub="Target 82–88%">
-            <div className="h-24"><LineChartMini data={approval} band={{ lo: 82, hi: 88, color: "rgba(74,124,111,0.10)" }} stroke="#4a7c6f" fill="rgba(74,124,111,0.08)" /></div>
+            <div className="h-24 pb-4"><LineChartMini data={approval} dates={dts} label="Approval rate" formatValue={pct1} band={{ lo: 82, hi: 88, color: "rgba(74,124,111,0.10)" }} stroke="#4a7c6f" fill="rgba(74,124,111,0.08)" /></div>
           </MetricCard>
           <MetricCard label="Refill adherence · day 60" value={`${refill[refill.length-1]}%`} delta="+3.1pt" sub="On active Rx">
-            <div className="h-24"><LineChartMini data={refill} prior={priorPeriodShift(refill, 5)} stroke="#ee7273" fill="rgba(238,114,115,0.08)" /></div>
+            <div className="h-24 pb-4"><LineChartMini data={refill} prior={priorPeriodShift(refill, 5)} dates={dts} label="Adherence" formatValue={pct} stroke="#ee7273" fill="rgba(238,114,115,0.08)" /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
