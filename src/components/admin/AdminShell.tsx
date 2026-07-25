@@ -230,9 +230,10 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             </div>
 
             <div className="ml-auto flex items-center gap-1.5">
-              <button className="hidden items-center gap-1 rounded-lg bg-ink px-2.5 py-1.5 text-[11.5px] font-semibold text-white sm:flex">
+              <button className="hidden items-center gap-1 rounded-lg bg-marine px-2.5 py-1.5 text-[11.5px] font-semibold text-white shadow-[0_1px_0_rgba(15,23,42,0.08)] hover:bg-marine/90 sm:flex">
                 <Plus className="h-3.5 w-3.5" strokeWidth={2.25} /> New patient
               </button>
+
               <button className="hidden rounded-md p-1.5 text-ink/50 hover:bg-ink/5 hover:text-ink sm:block" aria-label="Help">
                 <HelpCircle className="h-4 w-4" strokeWidth={1.75} />
               </button>
