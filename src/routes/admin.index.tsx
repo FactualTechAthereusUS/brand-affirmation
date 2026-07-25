@@ -44,6 +44,8 @@ function AdminHome() {
   const shipTrend = useAdmin((s) => ordersTrend(s, 30));
   const funnel = useAdmin(conversionFunnel);
   const refills = useAdmin(refillsDue);
+  const dts = useAdmin((s) => datesTrend(s, 30));
+  const revPrior = priorPeriodShift(revTrend, 8);
 
   const waterfall = mrrMovement();
   const programs = revenueByProgram();
