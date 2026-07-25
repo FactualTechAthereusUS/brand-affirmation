@@ -366,6 +366,13 @@ function OrderDetailPage() {
           <OrderInternalNotes orderId={id} notes={orderNotes} />
         </div>
       </div>
+      {editingAddr && (
+        <AddressEditor
+          initial={o.shipTo}
+          onClose={() => setEditingAddr(false)}
+          onSave={(patch) => { adminActions.updateOrderAddress(o.id, patch); setEditingAddr(false); toast.success("Shipping address updated"); }}
+        />
+      )}
     </AdminShell>
   );
 }
