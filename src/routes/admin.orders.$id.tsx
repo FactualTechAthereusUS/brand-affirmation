@@ -274,6 +274,9 @@ function OrderDetailPage() {
             </div>
           </Card>
 
+          {/* Patient order history */}
+          <PatientOrderHistory patientId={order!.patientId} currentId={id} orders={patientOrders} />
+
           {/* Risk */}
           <Card className="p-4">
             <SectionHead icon={<AlertTriangle className="h-4 w-4 text-amber-600" />} title="Risk & flags" />
