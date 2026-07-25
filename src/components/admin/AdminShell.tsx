@@ -5,6 +5,7 @@ import {
   Activity, BarChart3, CreditCard, ChevronDown, HelpCircle, LayoutGrid, MessageSquare,
   Package, PanelLeft, Plus, Search, Settings, Stethoscope, UserCircle2, Users, X,
   Building2, ClipboardCheck, Plug, Radio, PieChart, Target, TrendingUp, DollarSign, ArrowRightLeft,
+  Workflow, ClipboardList, PackagePlus, Mail, FileCode, Check,
 } from "lucide-react";
 import { adminActions, hydrateAdmin, useAdmin, type Role } from "@/lib/admin/store";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
@@ -42,12 +43,22 @@ const NAV: NavGroup[] = [
     ],
   },
   {
+    title: "Build",
+    items: [
+      { to: "/admin/build/funnel",   label: "Funnel builder", icon: Workflow,      roles: ["owner"] },
+      { to: "/admin/build/intake",   label: "Intake builder", icon: ClipboardList, roles: ["owner", "clinical"] },
+      { to: "/admin/build/products", label: "Products",       icon: PackagePlus,   roles: ["owner"] },
+      { to: "/admin/build/emails",   label: "Email flows",    icon: Mail,          roles: ["owner"] },
+      { to: "/admin/build/pages",    label: "Pages",          icon: FileCode,      roles: ["owner"] },
+    ],
+  },
+  {
     title: "Analytics",
     items: [
       { to: "/admin/analytics",             label: "Overview",    icon: BarChart3, roles: ["owner", "ops"] },
       { to: "/admin/analytics/acquisition", label: "Acquisition", icon: Target,    roles: ["owner", "ops"] },
       { to: "/admin/analytics/funnel",      label: "Funnel",      icon: PieChart,  roles: ["owner", "ops"] },
-      { to: "/admin/analytics/retention",   label: "Retention",   icon: TrendingUp,roles: ["owner", "ops"] },
+      { to: "/admin/analytics/retention",   label: "Retention",   icon: TrendingUp,roles: ["owner"] },
       { to: "/admin/analytics/finances",    label: "Finances",    icon: DollarSign,roles: ["owner"] },
     ],
   },
@@ -71,6 +82,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const session = useAdmin((s) => s.session);
   const role = useAdmin((s) => s.role);
   const scenario = useAdmin((s) => s.scenario);
+  const tenant = useAdmin((s) => s.tenant);
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const [mobileNav, setMobileNav] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -78,6 +90,11 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
   useEffect(() => { hydrateAdmin(); }, []);
   useEffect(() => { if (!session) adminActions.signIn("hello@blissley.com"); }, [session]);
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.style.setProperty("--brand-primary", tenant.primary);
+    document.documentElement.style.setProperty("--brand-accent", tenant.accent);
+  }, [tenant.primary, tenant.accent]);
 
   const startHold = () => { holdRef.current = setTimeout(() => adminActions.toggleLogoMenu(true), 600); };
   const endHold = () => { if (holdRef.current) clearTimeout(holdRef.current); };
@@ -128,7 +145,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           className="flex items-center px-4 pt-5 text-left"
           title="Long-press for demo controls"
         >
-          <img src={blissleyLogo.url} alt="Blissley" className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
+          {tenant.id === "blissley"
+            ? <img src={blissleyLogo.url} alt={tenant.name} className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
+            : <span className={`font-hero font-bold tracking-tight ${collapsed ? "text-[15px]" : "text-[18px]"}`} style={{ color: tenant.primary }}>{tenant.logoText}</span>}
         </button>
 
         {!collapsed && (
@@ -136,13 +155,15 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             <div className="relative grid h-7 w-7 shrink-0 place-items-center">
               <svg viewBox="0 0 32 32" className="h-7 w-7 -rotate-90">
                 <circle cx="16" cy="16" r="12" fill="none" stroke="#e5e7eb" strokeWidth="3" />
-                <circle cx="16" cy="16" r="12" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray={`${(0/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
-
+                <circle cx="16" cy="16" r="12" fill="none" stroke={tenant.primary} strokeWidth="3" strokeDasharray={`${(tenant.onboardingStep/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
               </svg>
+              {tenant.onboardingStep >= ONBOARDING_STEPS.length && (
+                <Check className="absolute inset-0 m-auto h-3 w-3" style={{ color: tenant.primary }} strokeWidth={3} />
+              )}
             </div>
             <div className="min-w-0 flex-1 leading-tight">
               <div className="text-[12px] font-semibold text-ink">Get Started</div>
-              <div className="text-[10.5px] text-ink/50">0 of {ONBOARDING_STEPS.length} complete</div>
+              <div className="text-[10.5px] text-ink/50">{tenant.onboardingStep} of {ONBOARDING_STEPS.length} complete</div>
             </div>
           </div>
         )}
@@ -175,7 +196,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               transition={{ type: "spring", damping: 28, stiffness: 260 }}
               className="fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-ink/[0.06] bg-white lg:hidden">
               <div className="flex items-center justify-between px-5 py-5">
-                <img src={blissleyLogo.url} alt="Blissley" className="h-7 w-auto" />
+                {tenant.id === "blissley"
+                  ? <img src={blissleyLogo.url} alt={tenant.name} className="h-7 w-auto" />
+                  : <span className="font-hero text-[18px] font-bold tracking-tight" style={{ color: tenant.primary }}>{tenant.logoText}</span>}
                 <button onClick={() => setMobileNav(false)} className="rounded-lg p-1.5 text-ink/60"><X className="h-4 w-4" /></button>
               </div>
               <nav className="flex-1 overflow-y-auto px-2 pb-3">
@@ -210,7 +233,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             </button>
 
             <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] bg-white/70 px-2.5 py-1 backdrop-blur sm:flex">
-              <img src={blissleyLogo.url} alt="Blissley" className="h-4 w-auto" />
+              {tenant.id === "blissley"
+                ? <img src={blissleyLogo.url} alt={tenant.name} className="h-4 w-auto" />
+                : <span className="text-[12px] font-bold tracking-tight" style={{ color: tenant.primary }}>{tenant.logoText}</span>}
               <span className="mx-1 h-3 w-px bg-ink/10" />
               <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
                 <span className="relative flex h-1.5 w-1.5">

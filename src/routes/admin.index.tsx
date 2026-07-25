@@ -47,12 +47,15 @@ function AdminHome() {
   const refills = useAdmin(refillsDue);
   const dts = useAdmin((s) => datesTrend(s, 30));
   const revPrior = priorPeriodShift(revTrend, 8);
+  const tenant = useAdmin((s) => s.tenant);
 
   const waterfall = mrrMovement();
   const programs = revenueByProgram();
   const acq = acquisitionMix();
 
   const mrrDelta = waterfall.reduce((a, i) => a + i.value, 0);
+
+  if (tenant.stage === "zero") return <ZeroStateHome tenant={tenant} />;
 
   // Intuitive palette (matches /admin/analytics)
   const C = {
@@ -491,5 +494,80 @@ function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: 
         ))}
       </div>
     </Card>
+  );
+}
+
+/* ═════════════════════ ZERO-STATE ONBOARDING (PharmaBro) ═════════════════════ */
+function ZeroStateHome({ tenant }: { tenant: ReturnType<typeof useAdmin<any>> extends any ? any : never }) {
+  const STEPS: { key: string; label: string; sub: string; to: string }[] = [
+    { key: "brand",    label: "Set your brand identity",        sub: "Logo, name, colors, support email", to: "/admin/settings/general" },
+    { key: "stripe",   label: "Connect Stripe payments",         sub: "Take live payments in test mode",   to: "/admin/integrations" },
+    { key: "pharmacy", label: "Connect a pharmacy",              sub: "South End, Strive, or Valiant",     to: "/admin/settings/pharmacy-routing" },
+    { key: "product",  label: "Add your first product & plan",   sub: "Semaglutide, tirzepatide, or custom", to: "/admin/build/products" },
+    { key: "intake",   label: "Configure your intake quiz",      sub: "13 clinical screens ready to edit", to: "/admin/build/intake" },
+    { key: "emails",   label: "Wire your email flows",           sub: "13 pre-built Klaviyo flows",        to: "/admin/build/emails" },
+    { key: "publish",  label: "Publish your funnel",             sub: "Sales, plan, checkout, portal",     to: "/admin/build/pages" },
+  ];
+  const completed = tenant.onboardingStep;
+  const pct = Math.round((completed / STEPS.length) * 100);
+  return (
+    <AdminShell>
+      <div className="mx-auto max-w-4xl">
+        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45">Welcome to PharmaBro</div>
+          <h1 className="mt-1 font-hero text-[28px] font-semibold leading-tight text-ink">
+            Let's launch <span style={{ color: tenant.primary }}>{tenant.name}</span>.
+          </h1>
+          <p className="mt-2 max-w-2xl text-[14px] text-ink/60">
+            Your telehealth infrastructure is ready. Follow the steps below to go from empty to your first paid patient — usually 30 minutes.
+          </p>
+        </motion.div>
+
+        <div className="mb-4 rounded-2xl border border-ink/[0.08] bg-white p-4">
+          <div className="mb-2 flex items-center justify-between">
+            <div className="text-[12.5px] font-semibold text-ink">Setup progress</div>
+            <div className="text-[11px] tabular-nums text-ink/55">{completed} of {STEPS.length} · {pct}%</div>
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-ink/[0.06]">
+            <div className="h-full rounded-full transition-[width] duration-500" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${tenant.primary}, ${tenant.accent})` }} />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          {STEPS.map((s, i) => {
+            const done = i < completed;
+            const active = i === completed;
+            return (
+              <motion.div key={s.key}
+                initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
+                className={`flex items-center gap-3 rounded-xl border p-3.5 ${active ? "border-ink/25 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)]" : done ? "border-ink/[0.06] bg-ink/[0.02]" : "border-ink/[0.08] bg-white"}`}>
+                <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-[12px] font-semibold ${done ? "text-white" : active ? "text-white" : "border border-ink/15 text-ink/50"}`}
+                  style={done || active ? { background: tenant.primary } : {}}>
+                  {done ? "✓" : i + 1}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className={`text-[13.5px] font-semibold ${done ? "text-ink/50 line-through" : "text-ink"}`}>{s.label}</div>
+                  <div className="mt-0.5 text-[11.5px] text-ink/50">{s.sub}</div>
+                </div>
+                {!done && (
+                  <div className="flex items-center gap-2">
+                    <Link to={s.to} className="rounded-md px-3 py-1.5 text-[11.5px] font-semibold text-white" style={{ background: tenant.primary }}>
+                      {active ? "Start" : "Open"}
+                    </Link>
+                    <button onClick={() => { import("@/lib/admin/store").then((m) => m.adminActions.completeOnboardingStep(i + 1)); }}
+                      className="rounded-md border border-ink/[0.1] px-2.5 py-1.5 text-[11px] text-ink/55 hover:text-ink">Mark done</button>
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-ink/[0.08] bg-white p-4 text-[12px] text-ink/60">
+          <div className="mb-1 text-[11.5px] font-semibold text-ink">Need help?</div>
+          Hold the logo (long-press) in the sidebar to switch between demo tenants: <b>Blissley</b> (live, full data), <b>Nova Health</b> (ramping), or <b>ZeroCo</b> (this empty state).
+        </div>
+      </div>
+    </AdminShell>
   );
 }

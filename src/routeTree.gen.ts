@@ -69,6 +69,11 @@ import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
 import { Route as AdminIntegrationsIdRouteImport } from './routes/admin.integrations.$id'
 import { Route as AdminCheckInsIdRouteImport } from './routes/admin.check-ins.$id'
+import { Route as AdminBuildProductsRouteImport } from './routes/admin.build.products'
+import { Route as AdminBuildPagesRouteImport } from './routes/admin.build.pages'
+import { Route as AdminBuildIntakeRouteImport } from './routes/admin.build.intake'
+import { Route as AdminBuildFunnelRouteImport } from './routes/admin.build.funnel'
+import { Route as AdminBuildEmailsRouteImport } from './routes/admin.build.emails'
 import { Route as AdminAnalyticsRetentionRouteImport } from './routes/admin.analytics.retention'
 import { Route as AdminAnalyticsFunnelRouteImport } from './routes/admin.analytics.funnel'
 import { Route as AdminAnalyticsFinancesRouteImport } from './routes/admin.analytics.finances'
@@ -379,6 +384,31 @@ const AdminCheckInsIdRoute = AdminCheckInsIdRouteImport.update({
   path: '/admin/check-ins/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBuildProductsRoute = AdminBuildProductsRouteImport.update({
+  id: '/admin/build/products',
+  path: '/admin/build/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBuildPagesRoute = AdminBuildPagesRouteImport.update({
+  id: '/admin/build/pages',
+  path: '/admin/build/pages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBuildIntakeRoute = AdminBuildIntakeRouteImport.update({
+  id: '/admin/build/intake',
+  path: '/admin/build/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBuildFunnelRoute = AdminBuildFunnelRouteImport.update({
+  id: '/admin/build/funnel',
+  path: '/admin/build/funnel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBuildEmailsRoute = AdminBuildEmailsRouteImport.update({
+  id: '/admin/build/emails',
+  path: '/admin/build/emails',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
   id: '/retention',
   path: '/retention',
@@ -444,6 +474,11 @@ export interface FileRoutesByFullPath {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/build/emails': typeof AdminBuildEmailsRoute
+  '/admin/build/funnel': typeof AdminBuildFunnelRoute
+  '/admin/build/intake': typeof AdminBuildIntakeRoute
+  '/admin/build/pages': typeof AdminBuildPagesRoute
+  '/admin/build/products': typeof AdminBuildProductsRoute
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
@@ -509,6 +544,11 @@ export interface FileRoutesByTo {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/build/emails': typeof AdminBuildEmailsRoute
+  '/admin/build/funnel': typeof AdminBuildFunnelRoute
+  '/admin/build/intake': typeof AdminBuildIntakeRoute
+  '/admin/build/pages': typeof AdminBuildPagesRoute
+  '/admin/build/products': typeof AdminBuildProductsRoute
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
@@ -576,6 +616,11 @@ export interface FileRoutesById {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/build/emails': typeof AdminBuildEmailsRoute
+  '/admin/build/funnel': typeof AdminBuildFunnelRoute
+  '/admin/build/intake': typeof AdminBuildIntakeRoute
+  '/admin/build/pages': typeof AdminBuildPagesRoute
+  '/admin/build/products': typeof AdminBuildProductsRoute
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
@@ -644,6 +689,11 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/build/emails'
+    | '/admin/build/funnel'
+    | '/admin/build/intake'
+    | '/admin/build/pages'
+    | '/admin/build/products'
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
@@ -709,6 +759,11 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/build/emails'
+    | '/admin/build/funnel'
+    | '/admin/build/intake'
+    | '/admin/build/pages'
+    | '/admin/build/products'
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
@@ -775,6 +830,11 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/build/emails'
+    | '/admin/build/funnel'
+    | '/admin/build/intake'
+    | '/admin/build/pages'
+    | '/admin/build/products'
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
@@ -836,6 +896,11 @@ export interface RootRouteChildren {
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
+  AdminBuildEmailsRoute: typeof AdminBuildEmailsRoute
+  AdminBuildFunnelRoute: typeof AdminBuildFunnelRoute
+  AdminBuildIntakeRoute: typeof AdminBuildIntakeRoute
+  AdminBuildPagesRoute: typeof AdminBuildPagesRoute
+  AdminBuildProductsRoute: typeof AdminBuildProductsRoute
   AdminCheckInsIdRoute: typeof AdminCheckInsIdRoute
   AdminIntegrationsIdRoute: typeof AdminIntegrationsIdRoute
   AdminLeadsIdRoute: typeof AdminLeadsIdRoute
@@ -1272,6 +1337,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCheckInsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/build/products': {
+      id: '/admin/build/products'
+      path: '/admin/build/products'
+      fullPath: '/admin/build/products'
+      preLoaderRoute: typeof AdminBuildProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/build/pages': {
+      id: '/admin/build/pages'
+      path: '/admin/build/pages'
+      fullPath: '/admin/build/pages'
+      preLoaderRoute: typeof AdminBuildPagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/build/intake': {
+      id: '/admin/build/intake'
+      path: '/admin/build/intake'
+      fullPath: '/admin/build/intake'
+      preLoaderRoute: typeof AdminBuildIntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/build/funnel': {
+      id: '/admin/build/funnel'
+      path: '/admin/build/funnel'
+      fullPath: '/admin/build/funnel'
+      preLoaderRoute: typeof AdminBuildFunnelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/build/emails': {
+      id: '/admin/build/emails'
+      path: '/admin/build/emails'
+      fullPath: '/admin/build/emails'
+      preLoaderRoute: typeof AdminBuildEmailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/analytics/retention': {
       id: '/admin/analytics/retention'
       path: '/retention'
@@ -1400,6 +1500,11 @@ const rootRouteChildren: RootRouteChildren = {
   WeightLossSalesRoute: WeightLossSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
+  AdminBuildEmailsRoute: AdminBuildEmailsRoute,
+  AdminBuildFunnelRoute: AdminBuildFunnelRoute,
+  AdminBuildIntakeRoute: AdminBuildIntakeRoute,
+  AdminBuildPagesRoute: AdminBuildPagesRoute,
+  AdminBuildProductsRoute: AdminBuildProductsRoute,
   AdminCheckInsIdRoute: AdminCheckInsIdRoute,
   AdminIntegrationsIdRoute: AdminIntegrationsIdRoute,
   AdminLeadsIdRoute: AdminLeadsIdRoute,
