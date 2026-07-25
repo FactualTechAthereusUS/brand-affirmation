@@ -626,6 +626,7 @@ function seed(): AdminState {
     integrations: INTEGRATIONS,
     campaigns: CAMPAIGNS,
     funnelDays: generateFunnelDays(),
+    orderNotes: {},
     ui: {
       patientDrawerId: null,
       orderDrawerId: null,
