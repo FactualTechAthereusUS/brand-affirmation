@@ -28,7 +28,7 @@ function belongs(c: CheckIn, k: TabKey): boolean {
   if (k === "due") return c.decision === "clear" && c.day >= 85 && c.day <= 89;
   if (k === "review") return c.decision === "review";
   if (k === "held") return c.decision === "hold" || c.decision === "held";
-  if (k === "6mo") return c.kind === "6mo";
+  if (k === "6mo") return c.kind === "sixMonth";
   return c.decision === "approved" || c.decision === "adjusted";
 }
 
