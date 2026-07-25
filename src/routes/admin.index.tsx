@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { AdminShell, Card, Pill } from "@/components/admin/AdminShell";
 import { Sparkline } from "@/components/admin/Sparkline";
+import { AreaChart } from "@/components/admin/analytics/AreaChart";
 import { TaskCenter } from "@/components/admin/TaskCenter";
 import {
   computeKpis,
@@ -17,6 +18,8 @@ import {
   ordersTrend,
   conversionFunnel,
   refillsDue,
+  datesTrend,
+  priorPeriodShift,
 } from "@/lib/admin/selectors";
 import {
   DollarSign, TrendingUp, Users, ShoppingCart, RefreshCw,
