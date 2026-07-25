@@ -887,6 +887,7 @@ function load(): AdminState {
         ...fresh,
         ...parsed,
         leads: normalizeLeads(parsed.leads, fresh.leads),
+        integrations: normalizeIntegrations(parsed.integrations, fresh.integrations),
         ui: { ...fresh.ui, ...(parsed.ui ?? {}) },
       } as AdminState;
     }
