@@ -14,6 +14,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as RefundRouteImport } from './routes/refund'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PharmabroAdminRouteImport } from './routes/pharmabro-admin'
 import { Route as MedicationSafetyRouteImport } from './routes/medication-safety'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -22,6 +23,7 @@ import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-c
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
+import { Route as PharmabroAdminIndexRouteImport } from './routes/pharmabro-admin.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
@@ -99,6 +101,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PharmabroAdminRoute = PharmabroAdminRouteImport.update({
+  id: '/pharmabro-admin',
+  path: '/pharmabro-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MedicationSafetyRoute = MedicationSafetyRouteImport.update({
   id: '/medication-safety',
   path: '/medication-safety',
@@ -138,6 +145,11 @@ const WeightLossIndexRoute = WeightLossIndexRouteImport.update({
   id: '/weight-loss/',
   path: '/weight-loss/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PharmabroAdminIndexRoute = PharmabroAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PharmabroAdminRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
@@ -409,6 +421,7 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
+  '/pharmabro-admin': typeof PharmabroAdminRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
@@ -439,6 +452,7 @@ export interface FileRoutesByFullPath {
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
+  '/pharmabro-admin/': typeof PharmabroAdminIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -504,6 +518,7 @@ export interface FileRoutesByTo {
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin': typeof AdminIndexRoute
+  '/pharmabro-admin': typeof PharmabroAdminIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -541,6 +556,7 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
+  '/pharmabro-admin': typeof PharmabroAdminRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
@@ -571,6 +587,7 @@ export interface FileRoutesById {
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
+  '/pharmabro-admin/': typeof PharmabroAdminIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -609,6 +626,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/medication-safety'
+    | '/pharmabro-admin'
     | '/privacy'
     | '/refund'
     | '/shipping'
@@ -639,6 +657,7 @@ export interface FileRouteTypes {
     | '/sales/trimrx'
     | '/weight-loss/sales'
     | '/admin/'
+    | '/pharmabro-admin/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -704,6 +723,7 @@ export interface FileRouteTypes {
     | '/sales/trimrx'
     | '/weight-loss/sales'
     | '/admin'
+    | '/pharmabro-admin'
     | '/weight-loss'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -740,6 +760,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/medication-safety'
+    | '/pharmabro-admin'
     | '/privacy'
     | '/refund'
     | '/shipping'
@@ -770,6 +791,7 @@ export interface FileRouteTypes {
     | '/sales/trimrx'
     | '/weight-loss/sales'
     | '/admin/'
+    | '/pharmabro-admin/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -807,6 +829,7 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRouteWithChildren
   MedicationSafetyRoute: typeof MedicationSafetyRoute
+  PharmabroAdminRoute: typeof PharmabroAdminRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RefundRoute: typeof RefundRoute
   ShippingRoute: typeof ShippingRoute
@@ -887,6 +910,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pharmabro-admin': {
+      id: '/pharmabro-admin'
+      path: '/pharmabro-admin'
+      fullPath: '/pharmabro-admin'
+      preLoaderRoute: typeof PharmabroAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/medication-safety': {
       id: '/medication-safety'
       path: '/medication-safety'
@@ -942,6 +972,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/weight-loss/'
       preLoaderRoute: typeof WeightLossIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/pharmabro-admin/': {
+      id: '/pharmabro-admin/'
+      path: '/'
+      fullPath: '/pharmabro-admin/'
+      preLoaderRoute: typeof PharmabroAdminIndexRouteImport
+      parentRoute: typeof PharmabroAdminRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -1315,6 +1352,18 @@ const LoginRouteChildren: LoginRouteChildren = {
 
 const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 
+interface PharmabroAdminRouteChildren {
+  PharmabroAdminIndexRoute: typeof PharmabroAdminIndexRoute
+}
+
+const PharmabroAdminRouteChildren: PharmabroAdminRouteChildren = {
+  PharmabroAdminIndexRoute: PharmabroAdminIndexRoute,
+}
+
+const PharmabroAdminRouteWithChildren = PharmabroAdminRoute._addFileChildren(
+  PharmabroAdminRouteChildren,
+)
+
 interface AdminAnalyticsRouteChildren {
   AdminAnalyticsAcquisitionRoute: typeof AdminAnalyticsAcquisitionRoute
   AdminAnalyticsFinancesRoute: typeof AdminAnalyticsFinancesRoute
@@ -1371,6 +1420,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRouteWithChildren,
   MedicationSafetyRoute: MedicationSafetyRoute,
+  PharmabroAdminRoute: PharmabroAdminRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RefundRoute: RefundRoute,
   ShippingRoute: ShippingRoute,
