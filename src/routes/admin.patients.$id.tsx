@@ -68,8 +68,8 @@ function PatientDetail() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button onClick={() => {
-              const convoId = adminActions.ensureConversationFor(patient.id);
-              nav({ to: "/admin/messages", search: convoId ? { convo: convoId } as never : undefined });
+              adminActions.ensureConversationFor(patient.id);
+              nav({ to: "/admin/messages" });
             }} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
               <MessageSquare className="h-3.5 w-3.5" /> Send message
             </button>
