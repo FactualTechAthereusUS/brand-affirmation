@@ -9,7 +9,7 @@ export function Sparkline({
   const line = `M${pts.join(" L")}`;
   const area = `${line} L100,${height} L0,${height} Z`;
   return (
-    <svg className={className} viewBox={`0 0 100 ${height}`} preserveAspectRatio="none">
+    <svg className={`block h-full w-full ${className}`} viewBox={`0 0 100 ${height}`} preserveAspectRatio="none">
       <path d={area} fill={fill} />
       <path d={line} fill="none" stroke={stroke} strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
     </svg>
