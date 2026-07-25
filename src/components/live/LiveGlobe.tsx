@@ -64,6 +64,7 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
       canvas.style.height = `${h}px`;
 
       globeRef.current?.destroy();
+      // cobe supports onRender at runtime; not in its .d.ts, so we cast.
       globeRef.current = createGlobe(canvas, {
         devicePixelRatio: dpr,
         width: w * dpr,
@@ -80,11 +81,10 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
         glowColor: [0.86, 0.9, 0.98],
         markers: [],
         opacity: 0.98,
-        onRender: (state) => {
+        onRender: (state: Record<string, unknown>) => {
           const now = Date.now();
           const idleFor = now - lastInteract.current;
 
-          // Focus interp (~800ms ease)
           if (targetPhi.current != null && targetTheta.current != null) {
             phi.current += (targetPhi.current - phi.current) * 0.08;
             theta.current += (targetTheta.current - theta.current) * 0.08;
@@ -96,11 +96,9 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
               targetTheta.current = null;
             }
           } else if (!drag.current && idleFor > 2000) {
-            // idle auto-rotate
             phi.current += 0.0022;
           }
 
-          // Clamp theta
           if (theta.current > 0.9) theta.current = 0.9;
           if (theta.current < -0.9) theta.current = -0.9;
 
@@ -116,7 +114,7 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
             return { location: [s.lat, s.lng] as [number, number], size: sz };
           });
         },
-      });
+      } as Parameters<typeof createGlobe>[1]);
     };
 
     rebuild();
