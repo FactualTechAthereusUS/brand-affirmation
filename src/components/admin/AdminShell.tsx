@@ -43,12 +43,22 @@ const NAV: NavGroup[] = [
     ],
   },
   {
+    title: "Build",
+    items: [
+      { to: "/admin/build/funnel",   label: "Funnel builder", icon: Workflow,      roles: ["owner"] },
+      { to: "/admin/build/intake",   label: "Intake builder", icon: ClipboardList, roles: ["owner", "clinical"] },
+      { to: "/admin/build/products", label: "Products",       icon: PackagePlus,   roles: ["owner"] },
+      { to: "/admin/build/emails",   label: "Email flows",    icon: Mail,          roles: ["owner"] },
+      { to: "/admin/build/pages",    label: "Pages",          icon: FileCode,      roles: ["owner"] },
+    ],
+  },
+  {
     title: "Analytics",
     items: [
       { to: "/admin/analytics",             label: "Overview",    icon: BarChart3, roles: ["owner", "ops"] },
       { to: "/admin/analytics/acquisition", label: "Acquisition", icon: Target,    roles: ["owner", "ops"] },
       { to: "/admin/analytics/funnel",      label: "Funnel",      icon: PieChart,  roles: ["owner", "ops"] },
-      { to: "/admin/analytics/retention",   label: "Retention",   icon: TrendingUp,roles: ["owner", "ops"] },
+      { to: "/admin/analytics/retention",   label: "Retention",   icon: TrendingUp,roles: ["owner"] },
       { to: "/admin/analytics/finances",    label: "Finances",    icon: DollarSign,roles: ["owner"] },
     ],
   },
