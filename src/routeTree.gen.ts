@@ -53,6 +53,7 @@ import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
+import { Route as AdminPhysicianQueueIdRouteImport } from './routes/admin.physician-queue.$id'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
@@ -281,6 +282,11 @@ const AdminLeadsIndexRoute = AdminLeadsIndexRouteImport.update({
   path: '/admin/leads/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPhysicianQueueIdRoute = AdminPhysicianQueueIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPhysicianQueueRoute,
+} as any)
 const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
   id: '/admin/patients/$id',
   path: '/admin/patients/$id',
@@ -339,7 +345,7 @@ export interface FileRoutesByFullPath {
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
-  '/admin/physician-queue': typeof AdminPhysicianQueueRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -367,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
+  '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
@@ -392,7 +399,7 @@ export interface FileRoutesByTo {
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
-  '/admin/physician-queue': typeof AdminPhysicianQueueRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -420,6 +427,7 @@ export interface FileRoutesByTo {
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
+  '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
   '/admin/orders': typeof AdminOrdersIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
@@ -446,7 +454,7 @@ export interface FileRoutesById {
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
-  '/admin/physician-queue': typeof AdminPhysicianQueueRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -474,6 +482,7 @@ export interface FileRoutesById {
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
+  '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
@@ -529,6 +538,7 @@ export interface FileRouteTypes {
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/patients/$id'
+    | '/admin/physician-queue/$id'
     | '/admin/leads/'
     | '/admin/orders/'
     | '/admin/patients/'
@@ -582,6 +592,7 @@ export interface FileRouteTypes {
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/patients/$id'
+    | '/admin/physician-queue/$id'
     | '/admin/leads'
     | '/admin/orders'
     | '/admin/patients'
@@ -635,6 +646,7 @@ export interface FileRouteTypes {
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/patients/$id'
+    | '/admin/physician-queue/$id'
     | '/admin/leads/'
     | '/admin/orders/'
     | '/admin/patients/'
@@ -661,7 +673,7 @@ export interface RootRouteChildren {
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminPharmacyRoute: typeof AdminPharmacyRoute
-  AdminPhysicianQueueRoute: typeof AdminPhysicianQueueRoute
+  AdminPhysicianQueueRoute: typeof AdminPhysicianQueueRouteWithChildren
   AdminReportsRoute: typeof AdminReportsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminTeamRoute: typeof AdminTeamRoute
@@ -998,6 +1010,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/physician-queue/$id': {
+      id: '/admin/physician-queue/$id'
+      path: '/$id'
+      fullPath: '/admin/physician-queue/$id'
+      preLoaderRoute: typeof AdminPhysicianQueueIdRouteImport
+      parentRoute: typeof AdminPhysicianQueueRoute
+    }
     '/admin/patients/$id': {
       id: '/admin/patients/$id'
       path: '/admin/patients/$id'
@@ -1080,6 +1099,17 @@ const AdminAnalyticsRouteWithChildren = AdminAnalyticsRoute._addFileChildren(
   AdminAnalyticsRouteChildren,
 )
 
+interface AdminPhysicianQueueRouteChildren {
+  AdminPhysicianQueueIdRoute: typeof AdminPhysicianQueueIdRoute
+}
+
+const AdminPhysicianQueueRouteChildren: AdminPhysicianQueueRouteChildren = {
+  AdminPhysicianQueueIdRoute: AdminPhysicianQueueIdRoute,
+}
+
+const AdminPhysicianQueueRouteWithChildren =
+  AdminPhysicianQueueRoute._addFileChildren(AdminPhysicianQueueRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
@@ -1101,7 +1131,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMessagesRoute: AdminMessagesRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminPharmacyRoute: AdminPharmacyRoute,
-  AdminPhysicianQueueRoute: AdminPhysicianQueueRoute,
+  AdminPhysicianQueueRoute: AdminPhysicianQueueRouteWithChildren,
   AdminReportsRoute: AdminReportsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminTeamRoute: AdminTeamRoute,
