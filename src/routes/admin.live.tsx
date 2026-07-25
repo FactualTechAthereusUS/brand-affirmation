@@ -24,7 +24,7 @@ export const Route = createFileRoute("/admin/live")({
 
 function LiveViewPage() {
   const orders = useAdmin((s) => s.orders);
-  const { sessions, counts, byLocation, focus, focusOn } = useLiveSessions();
+  const { sessions, purchaseEvents, counts, byLocation, focus, focusOn } = useLiveSessions();
 
   const [view, setView] = useState<"globe" | "map">(() => {
     if (typeof window === "undefined") return "globe";
@@ -186,9 +186,9 @@ function LiveViewPage() {
             <ClientOnly fallback={<GlobeFallback />}>
               <Suspense fallback={<GlobeFallback />}>
                 {view === "globe" ? (
-                  <LiveGlobe sessions={sessions} focus={focus} className="h-full w-full" />
+                  <LiveGlobe sessions={sessions} purchaseEvents={purchaseEvents} focus={focus} className="h-full w-full" />
                 ) : (
-                  <LiveMap sessions={sessions} className="h-full w-full" />
+                  <LiveMap sessions={sessions} purchaseEvents={purchaseEvents} className="h-full w-full" />
                 )}
               </Suspense>
             </ClientOnly>
