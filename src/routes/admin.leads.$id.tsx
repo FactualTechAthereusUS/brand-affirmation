@@ -38,6 +38,9 @@ function LeadDetailPage() {
     );
   }
 
+  const tags = lead.tags ?? [];
+  const landingUrl = lead.attribution?.landingUrl ?? "/weight-loss";
+
   return (
     <AdminShell title="Lead">
       <div className="mb-3 flex items-center justify-between">
@@ -157,7 +160,7 @@ function LeadDetailPage() {
                 className="w-full rounded-lg border border-ink/12 bg-white px-3 py-1.5 text-left font-semibold text-ink hover:bg-ink/[0.03]">
                 {lead.status === "do_not_contact" ? "Remove DNC status" : "Mark do-not-contact"}
               </button>
-              <a href={lead.attribution.landingUrl} target="_blank" rel="noreferrer"
+              <a href={landingUrl} target="_blank" rel="noreferrer"
                 className="flex items-center justify-between rounded-lg border border-ink/12 bg-white px-3 py-1.5 font-semibold text-ink hover:bg-ink/[0.03]">
                 Open landing page <ExternalLink className="h-3.5 w-3.5" />
               </a>
@@ -167,8 +170,8 @@ function LeadDetailPage() {
           <Card className="p-5">
             <SectionTitle>Tags</SectionTitle>
             <div className="flex flex-wrap gap-1.5">
-              {lead.tags.length === 0 && <span className="text-[12px] text-ink/45">No tags yet.</span>}
-              {lead.tags.map((t) => (
+              {tags.length === 0 && <span className="text-[12px] text-ink/45">No tags yet.</span>}
+              {tags.map((t) => (
                 <span key={t} className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-700 ring-1 ring-indigo-200">
                   <TagIcon className="h-2.5 w-2.5" /> {t}
                   <button onClick={() => adminActions.removeLeadTag(lead.id, t)} className="ml-0.5 text-indigo-500 hover:text-rose-600">×</button>

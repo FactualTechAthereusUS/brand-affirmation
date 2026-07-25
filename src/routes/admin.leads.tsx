@@ -10,6 +10,7 @@ import {
 import { ScorePill, IntentBadge, LeadStatusPill, EligibilityDot, FunnelBar, ChannelIcon, LeadInitials } from "@/components/admin/leads/LeadPills";
 
 export const Route = createFileRoute("/admin/leads")({
+  ssr: false,
   head: () => ({ meta: [
     { title: "Leads — Blissley HQ" },
     { name: "description", content: "Recover abandoned intakes and route hot inbound leads before they cool." },

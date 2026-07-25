@@ -1014,18 +1014,18 @@ export const adminActions = {
   },
   addLeadOutreach(id: string, channel: LeadOutreachChannel, subject: string, outcome = "logged") {
     const o: LeadOutreach = { id: `or_${Date.now()}`, ts: Date.now(), channel, by: "You", subject, outcome };
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, outreach: [o, ...l.outreach], contacted: true, lastTouchAt: Date.now(), status: l.status === "new" ? "working" as const : l.status } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, outreach: [o, ...(l.outreach ?? [])], contacted: true, lastTouchAt: Date.now(), status: l.status === "new" ? "working" as const : l.status } : l)) }));
   },
   addLeadTag(id: string, tag: string) {
     const t = tag.trim().toLowerCase().replace(/\s+/g, "-");
     if (!t) return;
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: Array.from(new Set([...l.tags, t])) } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: Array.from(new Set([...(l.tags ?? []), t])) } : l)) }));
   },
   removeLeadTag(id: string, tag: string) {
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: l.tags.filter((x) => x !== tag) } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: (l.tags ?? []).filter((x) => x !== tag) } : l)) }));
   },
   setLeadConsent(id: string, patch: Partial<Lead["consent"]>) {
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, consent: { ...l.consent, ...patch } } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, consent: { ...(l.consent ?? { email: true, sms: false, marketing: false }), ...patch } } : l)) }));
   },
   markLeadLost(id: string, reason: string) {
     set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, status: "lost" as const, lossReason: reason } : l)) }));
