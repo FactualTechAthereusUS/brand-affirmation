@@ -390,16 +390,18 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
       const dy = e.clientY - drag.current.y;
       const nowT = performance.now();
       const dt = Math.max(1, nowT - drag.current.lastT);
-      // Track instantaneous velocity for release momentum
-      drag.current.vTheta = -((e.clientX - drag.current.lastX) / 180) / dt * 16;
-      drag.current.vPhi   = -((e.clientY - drag.current.lastY) / 180) / dt * 16;
+      // Sensitivity: distance-aware so close-up drag feels 1:1
+      const sens = 130 * (camDist.current / INIT_DIST);
+      drag.current.vTheta = -((e.clientX - drag.current.lastX) / sens) / dt * 16;
+      drag.current.vPhi   = -((e.clientY - drag.current.lastY) / sens) / dt * 16;
       drag.current.lastX = e.clientX;
       drag.current.lastY = e.clientY;
       drag.current.lastT = nowT;
-      camTheta.current = drag.current.theta - dx / 180;
-      camPhi.current = drag.current.phi - dy / 180;
+      camTheta.current = drag.current.theta - dx / sens;
+      camPhi.current = drag.current.phi - dy / sens;
       lastInteract.current = Date.now();
     }
+
   }, [hitTest]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
