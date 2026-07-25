@@ -14,7 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_leads: {
+        Row: {
+          age_hrs: number
+          assignee: string | null
+          attribution: Json
+          bmi: number | null
+          cart_items: Json | null
+          city: string
+          consent: Json
+          contacted: boolean
+          coupon: string | null
+          created_at_ms: number
+          current_weight: number | null
+          dob: string | null
+          email: string
+          funnel_step: string
+          goal_weight: number | null
+          id: string
+          intake_snapshot: Json
+          intent: string
+          last_step: string
+          last_touch_at_ms: number
+          loss_reason: string | null
+          name: string
+          outreach: Json
+          phone: string
+          program: string
+          progress_pct: number
+          projected_first_order: number
+          projected_ltv: number
+          score: number
+          sex: string | null
+          source: string
+          state: string
+          state_eligible: boolean
+          status: string
+          tags: Json
+          updated_at: string
+          won_patient_id: string | null
+        }
+        Insert: {
+          age_hrs?: number
+          assignee?: string | null
+          attribution?: Json
+          bmi?: number | null
+          cart_items?: Json | null
+          city: string
+          consent?: Json
+          contacted?: boolean
+          coupon?: string | null
+          created_at_ms: number
+          current_weight?: number | null
+          dob?: string | null
+          email: string
+          funnel_step?: string
+          goal_weight?: number | null
+          id: string
+          intake_snapshot?: Json
+          intent?: string
+          last_step?: string
+          last_touch_at_ms: number
+          loss_reason?: string | null
+          name: string
+          outreach?: Json
+          phone: string
+          program: string
+          progress_pct?: number
+          projected_first_order?: number
+          projected_ltv?: number
+          score?: number
+          sex?: string | null
+          source?: string
+          state: string
+          state_eligible?: boolean
+          status?: string
+          tags?: Json
+          updated_at?: string
+          won_patient_id?: string | null
+        }
+        Update: {
+          age_hrs?: number
+          assignee?: string | null
+          attribution?: Json
+          bmi?: number | null
+          cart_items?: Json | null
+          city?: string
+          consent?: Json
+          contacted?: boolean
+          coupon?: string | null
+          created_at_ms?: number
+          current_weight?: number | null
+          dob?: string | null
+          email?: string
+          funnel_step?: string
+          goal_weight?: number | null
+          id?: string
+          intake_snapshot?: Json
+          intent?: string
+          last_step?: string
+          last_touch_at_ms?: number
+          loss_reason?: string | null
+          name?: string
+          outreach?: Json
+          phone?: string
+          program?: string
+          progress_pct?: number
+          projected_first_order?: number
+          projected_ltv?: number
+          score?: number
+          sex?: string | null
+          source?: string
+          state?: string
+          state_eligible?: boolean
+          status?: string
+          tags?: Json
+          updated_at?: string
+          won_patient_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
