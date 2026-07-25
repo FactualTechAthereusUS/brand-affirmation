@@ -91,7 +91,7 @@ function LiveViewPage() {
     <AdminShell>
       <div
         ref={wrapRef}
-        className={`relative ${fs ? "fixed inset-0 z-50 bg-canvas p-4" : ""}`}
+        className={`${fs ? "fixed inset-0 z-50 bg-[#f6f6f7] p-4" : "-mx-4 -mt-4 min-h-[calc(100vh-56px)] bg-[#f6f6f7] px-4 pb-16 pt-4 lg:-mx-6 lg:px-6"} relative`}
       >
         {/* Top bar */}
         <div className="mb-3 flex items-center justify-between gap-3">
