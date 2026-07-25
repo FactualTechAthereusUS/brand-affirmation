@@ -27,7 +27,26 @@ function timeAgo(ts: number): string {
   return `${Math.floor(s/86400)}d ago`;
 }
 
-function BrandTile({ color, mono, size = 40 }: { color: string; mono: string; size?: number }) {
+function BrandTile({ color, mono, logoUrl, size = 40 }: { color: string; mono: string; logoUrl?: string; size?: number }) {
+  if (logoUrl) {
+    return (
+      <img
+        src={logoUrl}
+        alt=""
+        className="shrink-0 object-contain"
+        style={{ width: size, height: size }}
+      />
+    );
+  }
+  return (
+    <div
+      className="grid shrink-0 place-items-center rounded-lg font-hero font-semibold text-white"
+      style={{ width: size, height: size, backgroundColor: color, fontSize: size * 0.42, letterSpacing: "-0.02em" }}
+    >
+      {mono}
+    </div>
+  );
+}
   return (
     <div className="grid shrink-0 place-items-center rounded-lg font-hero font-semibold text-white"
       style={{ width: size, height: size, backgroundColor: color, fontSize: size * 0.42 }}>
