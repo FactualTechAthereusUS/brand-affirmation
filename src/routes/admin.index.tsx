@@ -46,7 +46,7 @@ function AdminDashboard() {
   const revenue = revenueByProgram();
   const acquisition = acquisitionMix();
   const funnel = funnelData();
-  const pipeline = pipelineCounts();
+  const pipeline = pipelineCounts(state);
   const [tab, setTab] = useState<"all" | "billing" | "patient_ops" | "admin" | "unassigned">("all");
 
   const tabCounts = {
