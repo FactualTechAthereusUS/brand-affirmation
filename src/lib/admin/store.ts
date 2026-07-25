@@ -839,6 +839,43 @@ function normalizeLeads(rawLeads: unknown, freshLeads: Lead[]) {
   return rawLeads.map((lead, index) => normalizeLead(lead, freshLeads[index % freshLeads.length] ?? freshLeads[0])).filter(Boolean);
 }
 
+/** Merge persisted integration state onto fresh catalog. Preserves user-set
+ *  status/config/webhookEvents/syncHistory; drops persisted entries whose
+ *  id no longer exists in the catalog; adds any new catalog entries. */
+function normalizeIntegrations(raw: unknown, fresh: Integration[]): Integration[] {
+  if (!Array.isArray(raw)) return fresh;
+  const persisted = new Map<string, unknown>();
+  for (const item of raw) if (isRecord(item) && typeof item.id === "string") persisted.set(item.id, item);
+  return fresh.map((base) => {
+    const p = persisted.get(base.id);
+    if (!isRecord(p)) return base;
+    const status = typeof p.status === "string" && ["connected","degraded","down","disconnected"].includes(p.status)
+      ? p.status as IntegrationStatus : base.status;
+    const config = isRecord(p.config) ? p.config as Record<string, string | boolean> : base.config;
+    const webhookEvents = Array.isArray(p.webhookEvents)
+      ? base.webhookEvents.map((w) => {
+          const match = (p.webhookEvents as unknown[]).find((x) => isRecord(x) && x.key === w.key);
+          return isRecord(match) && typeof match.enabled === "boolean" ? { ...w, enabled: match.enabled } : w;
+        })
+      : base.webhookEvents;
+    const syncHistory = Array.isArray(p.syncHistory)
+      ? (p.syncHistory as unknown[]).filter((h): h is IntegrationSyncEntry =>
+          isRecord(h) && typeof h.ts === "number" && typeof h.event === "string"
+          && (h.status === "ok" || h.status === "warn" || h.status === "error"))
+      : base.syncHistory;
+    return {
+      ...base,
+      status,
+      lastSync: asNumber(p.lastSync, base.lastSync),
+      lastError: typeof p.lastError === "string" ? p.lastError : undefined,
+      connectedAt: typeof p.connectedAt === "number" ? p.connectedAt : (status === "connected" ? base.connectedAt : undefined),
+      config,
+      webhookEvents,
+      syncHistory,
+    };
+  });
+}
+
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
   const fresh = seed();
