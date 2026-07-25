@@ -78,8 +78,8 @@ function matchSegment(l: Lead, key: string | null): boolean {
     case "intake_stalled": return l.funnelStep === "intake_start" || l.funnelStep === "intake_mid";
     case "payment_failed": return l.funnelStep === "payment_fail";
     case "state_eligible": return l.stateEligible;
-    case "meta_paid": return l.attribution.source === "Meta";
-    case "google_paid": return l.attribution.source === "Google";
+    case "meta_paid": return l.attribution?.source === "Meta";
+    case "google_paid": return l.attribution?.source === "Google";
     case "dnc": return l.status === "do_not_contact";
     case "won_month": return l.status === "won" && Date.now() - l.createdAt < 30 * DAY;
     default: return true;
