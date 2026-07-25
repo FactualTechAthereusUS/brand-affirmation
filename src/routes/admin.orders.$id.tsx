@@ -177,10 +177,15 @@ function OrderDetailPage() {
               </div>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
-              <MiniBtn>Edit address</MiniBtn>
-              <MiniBtn>Reissue label</MiniBtn>
-              <MiniBtn>Reroute</MiniBtn>
-              <MiniBtn tone="critical">Report exception</MiniBtn>
+              <MiniBtn onClick={() => setEditingAddr(true)}>Edit address</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.reissueLabel(o.id); toast.success("New label issued"); }}>Reissue label</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.reportOrderException(o.id, "Rerouted by ops"); toast.success("Reroute requested"); }}>Reroute</MiniBtn>
+              <MiniBtn tone="critical" onClick={() => {
+                const reason = window.prompt("Exception reason?", "Carrier delay") ?? "";
+                if (!reason) return;
+                adminActions.reportOrderException(o.id, reason);
+                toast.error(`Exception reported — ${reason}`);
+              }}>Report exception</MiniBtn>
             </div>
           </Card>
 
