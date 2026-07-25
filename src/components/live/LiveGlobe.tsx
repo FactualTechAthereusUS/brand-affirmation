@@ -92,14 +92,15 @@ export default function LiveGlobe({ sessions, purchaseEvents, focus, className }
         phi: phi.current,
         theta: theta.current,
         dark: 0,
-        diffuse: 1.2,
+        diffuse: 1.15,
         scale: scale.current,
-        mapSamples: 16000,
-        mapBrightness: 4,
+        mapSamples: 22000,
+        mapBrightness: 5.4,
         mapBaseBrightness: 0,
-        baseColor: [0.98, 0.98, 1.0],
+        // Teal-mint continents on a very light sphere — Shopify parity.
+        baseColor: [0.42, 0.86, 0.78],
         markerColor: [0.486, 0.227, 0.929],
-        glowColor: [0.95, 0.97, 1.0],
+        glowColor: [0.93, 0.98, 0.97],
         markers: [],
         opacity: 1,
         onRender: (state: Record<string, unknown>) => {
@@ -245,7 +246,11 @@ export default function LiveGlobe({ sessions, purchaseEvents, focus, className }
     <div
       ref={wrapperRef}
       className={`relative select-none ${className ?? ""}`}
-      style={{ touchAction: "none", background: "#f6f8fc" }}
+      style={{
+        touchAction: "none",
+        background:
+          "radial-gradient(circle at 50% 42%, #ffffff 0%, #f4f7fb 55%, #eef2f7 100%)",
+      }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}

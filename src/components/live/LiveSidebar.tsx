@@ -49,13 +49,36 @@ function usd(n: number) {
   return `$${n.toLocaleString()}`;
 }
 
-function Kpi({ label, value, streamer, tint = "#2563eb" }: { label: string; value: number | string; streamer: boolean; tint?: string }) {
+function Sparkline({ color, seed }: { color: string; seed: number }) {
+  // Deterministic pseudo-noise so it doesn't jump every render
+  const pts = Array.from({ length: 24 }, (_, i) => {
+    const s = Math.sin((seed + i) * 1.7) + Math.cos((seed + i) * 0.9);
+    return 0.5 + s * 0.18 + (i > 20 ? 0.2 : 0);
+  });
+  const w = 84;
+  const h = 22;
+  const step = w / (pts.length - 1);
+  const d = pts.map((v, i) => `${i === 0 ? "M" : "L"}${(i * step).toFixed(1)},${(h - v * h).toFixed(1)}`).join(" ");
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="shrink-0">
+      <path d={d} fill="none" stroke={color} strokeWidth={1.4} strokeLinecap="round" opacity={0.9} />
+      <path d={`${d} L${w},${h} L0,${h} Z`} fill={color} opacity={0.08} />
+    </svg>
+  );
+}
+
+function Kpi({
+  label, value, streamer, tint = "#2563eb", seed = 1, delta,
+}: { label: string; value: number | string; streamer: boolean; tint?: string; seed?: number; delta?: string }) {
   return (
     <div className="rounded-lg border border-ink/[0.06] bg-white p-3">
       <div className="text-[10.5px] font-medium uppercase tracking-[0.06em] text-ink/50">{label}</div>
-      <div className="mt-1 flex items-baseline gap-1.5 font-hero text-[22px] font-semibold text-ink tabular-nums">
-        {streamer ? <span>—</span> : typeof value === "number" ? <CountUp value={value} /> : <span>{value}</span>}
-        <span className="h-1.5 w-1.5 rounded-full" style={{ background: tint }} />
+      <div className="mt-1 flex items-center justify-between gap-2">
+        <div className="flex items-baseline gap-1.5 font-hero text-[20px] font-semibold text-ink tabular-nums">
+          {streamer ? <span>—</span> : typeof value === "number" ? <CountUp value={value} /> : <span>{value}</span>}
+          {delta && !streamer && <span className="text-[10.5px] font-medium text-ink/45">{delta}</span>}
+        </div>
+        <Sparkline color={tint} seed={seed} />
       </div>
     </div>
   );
@@ -114,10 +137,10 @@ export function LiveSidebar({
 
       {/* KPIs 2x2 */}
       <div className="grid grid-cols-2 gap-2">
-        <Kpi label="Visitors right now" value={counts.visitors} streamer={streamer} tint="#2563eb" />
-        <Kpi label="Total sales"        value={streamer ? "—" : usd(totalSales)} streamer={false} tint="#10b981" />
-        <Kpi label="Sessions"           value={counts.sessions} streamer={streamer} tint="#0ea5e9" />
-        <Kpi label="Orders"             value={counts.purchased} streamer={streamer} tint="#7c3aed" />
+        <Kpi label="Visitors right now" value={counts.visitors} streamer={streamer} tint="#2563eb" seed={3} />
+        <Kpi label="Total sales"        value={streamer ? "—" : usd(totalSales)} streamer={false} tint="#10b981" seed={11} delta="—" />
+        <Kpi label="Sessions"           value={counts.sessions} streamer={streamer} tint="#0ea5e9" seed={7} delta="↘ 34%" />
+        <Kpi label="Orders"             value={counts.purchased} streamer={streamer} tint="#7c3aed" seed={17} delta="—" />
       </div>
 
       {/* Patient behavior */}
