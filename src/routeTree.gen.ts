@@ -30,6 +30,7 @@ import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
 import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
+import { Route as PharmabroAdminSettingsRouteImport } from './routes/pharmabro-admin.settings'
 import { Route as LoginPhysicianRouteImport } from './routes/login.physician'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as IntakeWeightloss3RouteImport } from './routes/intake_.weightloss-3'
@@ -56,6 +57,7 @@ import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.inde
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
 import { Route as AdminIntegrationsIndexRouteImport } from './routes/admin.integrations.index'
 import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
+import { Route as PharmabroAdminSettingsStripeRouteImport } from './routes/pharmabro-admin.settings.stripe'
 import { Route as PharmabroAdminBuildProductsRouteImport } from './routes/pharmabro-admin.build.products'
 import { Route as PharmabroAdminBuildPagesRouteImport } from './routes/pharmabro-admin.build.pages'
 import { Route as PharmabroAdminBuildIntakeRouteImport } from './routes/pharmabro-admin.build.intake'
@@ -186,6 +188,11 @@ const PortalPatientRoute = PortalPatientRouteImport.update({
   id: '/portal/patient',
   path: '/portal/patient',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PharmabroAdminSettingsRoute = PharmabroAdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PharmabroAdminRoute,
 } as any)
 const LoginPhysicianRoute = LoginPhysicianRouteImport.update({
   id: '/physician',
@@ -318,6 +325,12 @@ const AdminCheckInsIndexRoute = AdminCheckInsIndexRouteImport.update({
   path: '/admin/check-ins/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PharmabroAdminSettingsStripeRoute =
+  PharmabroAdminSettingsStripeRouteImport.update({
+    id: '/stripe',
+    path: '/stripe',
+    getParentRoute: () => PharmabroAdminSettingsRoute,
+  } as any)
 const PharmabroAdminBuildProductsRoute =
   PharmabroAdminBuildProductsRouteImport.update({
     id: '/build/products',
@@ -488,6 +501,7 @@ export interface FileRoutesByFullPath {
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
   '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
+  '/pharmabro-admin/settings': typeof PharmabroAdminSettingsRouteWithChildren
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
@@ -520,6 +534,7 @@ export interface FileRoutesByFullPath {
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
+  '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
@@ -560,6 +575,7 @@ export interface FileRoutesByTo {
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
   '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
+  '/pharmabro-admin/settings': typeof PharmabroAdminSettingsRouteWithChildren
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
@@ -592,6 +608,7 @@ export interface FileRoutesByTo {
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
+  '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
   '/admin/check-ins': typeof AdminCheckInsIndexRoute
   '/admin/integrations': typeof AdminIntegrationsIndexRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
@@ -635,6 +652,7 @@ export interface FileRoutesById {
   '/intake_/weightloss-3': typeof IntakeWeightloss3Route
   '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
+  '/pharmabro-admin/settings': typeof PharmabroAdminSettingsRouteWithChildren
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
@@ -667,6 +685,7 @@ export interface FileRoutesById {
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
+  '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
@@ -711,6 +730,7 @@ export interface FileRouteTypes {
     | '/intake/weightloss-3'
     | '/login/admin'
     | '/login/physician'
+    | '/pharmabro-admin/settings'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
@@ -743,6 +763,7 @@ export interface FileRouteTypes {
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
+    | '/pharmabro-admin/settings/stripe'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
@@ -783,6 +804,7 @@ export interface FileRouteTypes {
     | '/intake/weightloss-3'
     | '/login/admin'
     | '/login/physician'
+    | '/pharmabro-admin/settings'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
@@ -815,6 +837,7 @@ export interface FileRouteTypes {
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
+    | '/pharmabro-admin/settings/stripe'
     | '/admin/check-ins'
     | '/admin/integrations'
     | '/admin/leads'
@@ -857,6 +880,7 @@ export interface FileRouteTypes {
     | '/intake_/weightloss-3'
     | '/login/admin'
     | '/login/physician'
+    | '/pharmabro-admin/settings'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
@@ -889,6 +913,7 @@ export interface FileRouteTypes {
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
+    | '/pharmabro-admin/settings/stripe'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
@@ -1100,6 +1125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalPatientRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pharmabro-admin/settings': {
+      id: '/pharmabro-admin/settings'
+      path: '/settings'
+      fullPath: '/pharmabro-admin/settings'
+      preLoaderRoute: typeof PharmabroAdminSettingsRouteImport
+      parentRoute: typeof PharmabroAdminRoute
+    }
     '/login/physician': {
       id: '/login/physician'
       path: '/physician'
@@ -1281,6 +1313,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/check-ins/'
       preLoaderRoute: typeof AdminCheckInsIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/pharmabro-admin/settings/stripe': {
+      id: '/pharmabro-admin/settings/stripe'
+      path: '/stripe'
+      fullPath: '/pharmabro-admin/settings/stripe'
+      preLoaderRoute: typeof PharmabroAdminSettingsStripeRouteImport
+      parentRoute: typeof PharmabroAdminSettingsRoute
     }
     '/pharmabro-admin/build/products': {
       id: '/pharmabro-admin/build/products'
@@ -1472,6 +1511,20 @@ const LoginRouteChildren: LoginRouteChildren = {
 
 const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 
+interface PharmabroAdminSettingsRouteChildren {
+  PharmabroAdminSettingsStripeRoute: typeof PharmabroAdminSettingsStripeRoute
+}
+
+const PharmabroAdminSettingsRouteChildren: PharmabroAdminSettingsRouteChildren =
+  {
+    PharmabroAdminSettingsStripeRoute: PharmabroAdminSettingsStripeRoute,
+  }
+
+const PharmabroAdminSettingsRouteWithChildren =
+  PharmabroAdminSettingsRoute._addFileChildren(
+    PharmabroAdminSettingsRouteChildren,
+  )
+
 interface PharmabroAdminBuildEmailsRouteChildren {
   PharmabroAdminBuildEmailsFlowIdRoute: typeof PharmabroAdminBuildEmailsFlowIdRoute
 }
@@ -1487,6 +1540,7 @@ const PharmabroAdminBuildEmailsRouteWithChildren =
   )
 
 interface PharmabroAdminRouteChildren {
+  PharmabroAdminSettingsRoute: typeof PharmabroAdminSettingsRouteWithChildren
   PharmabroAdminIndexRoute: typeof PharmabroAdminIndexRoute
   PharmabroAdminBuildEmailsRoute: typeof PharmabroAdminBuildEmailsRouteWithChildren
   PharmabroAdminBuildFunnelRoute: typeof PharmabroAdminBuildFunnelRoute
@@ -1496,6 +1550,7 @@ interface PharmabroAdminRouteChildren {
 }
 
 const PharmabroAdminRouteChildren: PharmabroAdminRouteChildren = {
+  PharmabroAdminSettingsRoute: PharmabroAdminSettingsRouteWithChildren,
   PharmabroAdminIndexRoute: PharmabroAdminIndexRoute,
   PharmabroAdminBuildEmailsRoute: PharmabroAdminBuildEmailsRouteWithChildren,
   PharmabroAdminBuildFunnelRoute: PharmabroAdminBuildFunnelRoute,
