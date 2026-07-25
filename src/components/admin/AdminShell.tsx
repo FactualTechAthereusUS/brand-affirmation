@@ -258,6 +258,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
         <main className="w-full px-4 pb-16 pt-4 lg:px-6">{children}</main>
       </div>
+      <Toaster position="bottom-right" richColors closeButton />
 
 
       {/* Mobile bottom tabs */}
