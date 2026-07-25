@@ -224,7 +224,7 @@ function AnalyticsOverview() {
           </Card>
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Traffic sources</div>
-            <HBar rows={sources} color="#1D437B" />
+            <HBar rows={sources} color={C.traffic} />
           </Card>
         </div>
       </AnalyticsSection>
