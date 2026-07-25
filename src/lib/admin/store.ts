@@ -138,7 +138,7 @@ export type Integration = {
   lastError?: string;
   description: string;
   docsUrl: string;
-  brand: { color: string; mono: string };
+  brand: { color: string; mono: string; logoUrl?: string };
   scopes: IntegrationScope[];
   configSchema: IntegrationConfigField[];
   config: Record<string, string | boolean>;
