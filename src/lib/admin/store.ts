@@ -9,7 +9,9 @@ import {
 } from "./seeds";
 
 /* ────────── Types ────────── */
-export type PatientStatus = "active" | "pending" | "paused" | "failed" | "cancelled";
+export type PatientStatus = "active" | "pending" | "paused" | "failed" | "cancelled" | "denied";
+
+export type InternalNote = { id: string; author: string; ts: number; text: string };
 export type ChurnRisk = "low" | "medium" | "high" | "critical";
 export type ProgramCode = "tirz_mo" | "tirz_3mo" | "tirz_6mo" | "sema_mo" | "sema_3mo" | "sema_6mo";
 
