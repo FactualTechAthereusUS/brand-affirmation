@@ -208,7 +208,7 @@ function AnalyticsOverview() {
               <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Sessions by state</div>
               <div className="text-[11px] text-ink/45">Top 6</div>
             </div>
-            <HBar rows={geo} color="#171717" />
+            <HBar rows={geo} palette={["#2563eb", "#7c3aed", "#0ea5e9", "#10b981", "#f59e0b", "#8b5cf6"]} />
           </Card>
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Device mix</div>
@@ -219,12 +219,13 @@ function AnalyticsOverview() {
                 centerLabel="Mobile"
                 size={140}
                 thickness={18}
+                formatValue={(v) => `${v}%`}
               />
             </div>
           </Card>
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Traffic sources</div>
-            <HBar rows={sources} color={C.traffic} />
+            <HBar rows={sources} palette={["#7c3aed", "#2563eb", "#10b981", "#f59e0b", "#0ea5e9", "#ee7273"]} />
           </Card>
         </div>
       </AnalyticsSection>
