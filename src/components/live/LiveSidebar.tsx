@@ -11,19 +11,28 @@ type Counts = {
   cartsActive: number;
   checkingOut: number;
   purchased: number;
+  shipped: number;
 };
 
 type Series = { today: number[]; prev: number[]; total: number; delta: number };
 
+export type Telehealth = {
+  consults: Series;
+  rxApproved: Series;
+  revenue: Series;
+  avgResponseMin: number;
+  approvalRate: number;
+  refillsDue: number;
+};
+
 type Props = {
   counts: Counts;
-  totalSales: number;
   byLocation: ByLocationRow[];
   streamer: boolean;
   onFocus: (lat: number, lng: number) => void;
   orderRows: { label: string; value: number; color: string }[];
   newReturning: { newPct: number; returningPct: number };
-  series: { sales: Series; sessions: Series; orders: Series };
+  telehealth: Telehealth;
   lastTickAt: number;
 };
 
@@ -53,7 +62,6 @@ function usd(n: number) {
   return `$${n.toLocaleString()}`;
 }
 
-// Catmull–Rom → cubic bezier for smooth mini area.
 function smoothPath(pts: { x: number; y: number }[]): string {
   if (pts.length < 2) return "";
   const d: string[] = [`M${pts[0].x.toFixed(2)},${pts[0].y.toFixed(2)}`];
@@ -92,9 +100,7 @@ function MiniArea({ today, prev, color }: { today: number[]; prev: number[]; col
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
-      {/* Previous period — dashed neutral */}
       <path d={dPrev} fill="none" stroke="#94a3b8" strokeOpacity="0.55" strokeWidth="1" strokeDasharray="2.5 2" />
-      {/* Today area + line */}
       <path d={area} fill={`url(#${id})`} />
       <path d={dToday} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -144,6 +150,23 @@ function KpiCard({
   );
 }
 
+function MicroTile({
+  label, value, tint, hint, streamer,
+}: { label: string; value: string; tint: string; hint?: string; streamer: boolean }) {
+  return (
+    <div className="rounded-lg border border-ink/[0.06] bg-white p-2.5">
+      <div className="flex items-center gap-1.5">
+        <span className="h-1.5 w-1.5 rounded-full" style={{ background: tint }} />
+        <div className="truncate text-[10px] font-medium uppercase tracking-[0.06em] text-ink/50">{label}</div>
+      </div>
+      <div className="mt-1 font-hero text-[15px] font-semibold text-ink tabular-nums leading-none">
+        {streamer ? "—" : value}
+      </div>
+      {hint && <div className="mt-1 text-[10px] text-ink/40">{hint}</div>}
+    </div>
+  );
+}
+
 function useAgo(ts: number) {
   const [, force] = useState(0);
   useEffect(() => {
@@ -156,7 +179,7 @@ function useAgo(ts: number) {
 }
 
 export function LiveSidebar({
-  counts, totalSales, byLocation, streamer, onFocus, orderRows, newReturning, series, lastTickAt,
+  counts, byLocation, streamer, onFocus, orderRows, newReturning, telehealth, lastTickAt,
 }: Props) {
   const [q, setQ] = useState("");
   const [sug, setSug] = useState<City[]>([]);
@@ -176,16 +199,19 @@ export function LiveSidebar({
     }
   };
 
-  // Patient behaviour funnel: In intake → Awaiting physician → Approved
+  // 4-stage funnel: In intake → Awaiting physician → Approved → Shipped
   const funnel = useMemo(() => {
     const inIntake = counts.cartsActive;
     const awaiting = counts.checkingOut;
     const approved = counts.purchased;
-    const total = Math.max(1, inIntake + awaiting + approved);
-    return { inIntake, awaiting, approved, total };
+    const shipped  = Math.max(counts.shipped, Math.floor(counts.purchased * 0.6));
+    const total = Math.max(1, inIntake + awaiting + approved + shipped);
+    return { inIntake, awaiting, approved, shipped, total };
   }, [counts]);
 
   const orderMax = Math.max(1, ...orderRows.map((r) => r.value));
+
+  const responseGood = telehealth.avgResponseMin < 15;
 
   return (
     <div className="flex flex-col gap-3">
@@ -230,9 +256,9 @@ export function LiveSidebar({
         <span className="tabular-nums">auto-refresh 20s</span>
       </div>
 
-      {/* KPIs 2x2 — visitors + 3 timeseries */}
+      {/* Primary KPIs — telehealth-native 2×2 */}
       <div className="grid grid-cols-2 gap-2">
-        {/* Visitors right now — no series, pulse only */}
+        {/* Visitors right now — pulse only */}
         <div className="rounded-lg border border-ink/[0.06] bg-white p-3">
           <div className="text-[10.5px] font-medium uppercase tracking-[0.06em] text-ink/50">Visitors right now</div>
           <div className="mt-1 flex items-end justify-between gap-2">
@@ -247,12 +273,37 @@ export function LiveSidebar({
           <div className="mt-1 text-[10.5px] text-ink/40">Last 5 minutes</div>
         </div>
 
-        <KpiCard label="Total sales" value={series.sales.total} tint="#10b981" streamer={streamer} series={series.sales} isCurrency />
-        <KpiCard label="Sessions"    value={series.sessions.total} tint="#0ea5e9" streamer={streamer} series={series.sessions} />
-        <KpiCard label="Orders"      value={series.orders.total}   tint="#7c3aed" streamer={streamer} series={series.orders} />
+        <KpiCard label="Consults started" value={telehealth.consults.total}   tint="#2563eb" streamer={streamer} series={telehealth.consults} />
+        <KpiCard label="Rx approved"      value={telehealth.rxApproved.total} tint="#7c3aed" streamer={streamer} series={telehealth.rxApproved} />
+        <KpiCard label="Revenue today"    value={telehealth.revenue.total}    tint="#10b981" streamer={streamer} series={telehealth.revenue} isCurrency />
       </div>
 
-      {/* Patient behavior — funnel bar */}
+      {/* Secondary micro-tiles */}
+      <div className="grid grid-cols-3 gap-2">
+        <MicroTile
+          label="Response"
+          value={`${telehealth.avgResponseMin}m`}
+          tint={responseGood ? "#10b981" : "#f59e0b"}
+          hint={responseGood ? "Under 15m target" : "Above target"}
+          streamer={streamer}
+        />
+        <MicroTile
+          label="Approval 24h"
+          value={`${telehealth.approvalRate}%`}
+          tint="#7c3aed"
+          hint="Of reviewed"
+          streamer={streamer}
+        />
+        <MicroTile
+          label="Refills · 7d"
+          value={String(telehealth.refillsDue)}
+          tint="#f59e0b"
+          hint="Due soon"
+          streamer={streamer}
+        />
+      </div>
+
+      {/* Patient behavior — 4-stage funnel */}
       <Card className="p-0 overflow-hidden">
         <div className="border-b border-ink/[0.06] px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Patient behavior</div>
         <div className="px-3.5 py-3">
@@ -260,12 +311,14 @@ export function LiveSidebar({
             <motion.div initial={{ width: 0 }} animate={{ width: `${(funnel.inIntake / funnel.total) * 100}%` }} transition={{ duration: 0.5 }} style={{ background: "#2563eb" }} />
             <motion.div initial={{ width: 0 }} animate={{ width: `${(funnel.awaiting / funnel.total) * 100}%` }} transition={{ duration: 0.5, delay: 0.05 }} style={{ background: "#7c3aed" }} />
             <motion.div initial={{ width: 0 }} animate={{ width: `${(funnel.approved / funnel.total) * 100}%` }} transition={{ duration: 0.5, delay: 0.1 }} style={{ background: "#10b981" }} />
+            <motion.div initial={{ width: 0 }} animate={{ width: `${(funnel.shipped / funnel.total) * 100}%` }} transition={{ duration: 0.5, delay: 0.15 }} style={{ background: "#0ea5e9" }} />
           </div>
-          <div className="mt-2.5 grid grid-cols-3 gap-2 text-[11px]">
+          <div className="mt-2.5 grid grid-cols-4 gap-2 text-[11px]">
             {[
               { label: "In intake", value: funnel.inIntake, color: "#2563eb" },
-              { label: "Awaiting physician", value: funnel.awaiting, color: "#7c3aed" },
+              { label: "Awaiting", value: funnel.awaiting, color: "#7c3aed" },
               { label: "Approved", value: funnel.approved, color: "#10b981" },
+              { label: "Shipped",  value: funnel.shipped,  color: "#0ea5e9" },
             ].map((r) => (
               <div key={r.label} className="min-w-0">
                 <div className="flex items-center gap-1.5 text-ink/55">
@@ -297,7 +350,9 @@ export function LiveSidebar({
               className="block w-full text-left"
             >
               <div className="mb-1 flex items-baseline justify-between gap-2 text-[11.5px]">
-                <span className="min-w-0 truncate text-ink/75">{row.label}</span>
+                <span className="min-w-0 truncate text-ink/75">
+                  {streamer ? `${row.country} · •• · ••••••` : row.label}
+                </span>
                 <span className="shrink-0 tabular-nums text-ink/70">{streamer ? "—" : row.n}</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-ink/[0.05]">
@@ -314,7 +369,7 @@ export function LiveSidebar({
         </div>
       </Card>
 
-      {/* New vs returning */}
+      {/* New vs returning patients */}
       <Card className="p-3.5">
         <div className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">New vs returning patients</div>
         <div className="flex h-2 overflow-hidden rounded-full">
@@ -333,9 +388,9 @@ export function LiveSidebar({
         </div>
       </Card>
 
-      {/* Revenue by treatment — with mini bars */}
+      {/* Revenue by program */}
       <Card className="p-3.5">
-        <div className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Revenue by treatment</div>
+        <div className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Revenue by program</div>
         <div className="space-y-2.5">
           {orderRows.map((r) => (
             <div key={r.label} className="text-[12px]">
