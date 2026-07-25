@@ -283,30 +283,31 @@ export function AreaChart({
           {hover && (
             <motion.div
               key="tt"
-              initial={{ opacity: 0, y: -2 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -2 }}
-              transition={{ duration: 0.12 }}
-              className="pointer-events-none absolute z-10 rounded-lg border border-ink/10 bg-white/95 px-2.5 py-1.5 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] backdrop-blur"
+              initial={{ opacity: 0, y: 4, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.96 }}
+              transition={{ duration: 0.14, ease: [0.2, 0.8, 0.2, 1] }}
+              className="pointer-events-none absolute z-10 rounded-xl bg-ink px-3 py-2 shadow-[0_10px_28px_-8px_rgba(0,0,0,0.35)]"
               style={{
-                left: Math.max(4, Math.min(w - 160, hover.px - 80)),
-                top: Math.max(4, hover.py - 68),
-                width: 156,
+                left: Math.max(4, Math.min(w - 168, hover.px - 84)),
+                top: Math.max(4, hover.py - 78),
+                width: 164,
               }}
             >
-              <div className="text-[10px] uppercase tracking-[0.06em] text-ink/45">{fmtDate(dts[hover.i])}</div>
+              <div className="text-[9.5px] font-medium uppercase tracking-[0.08em] text-white/55">{fmtDate(dts[hover.i])}</div>
               <div className="mt-0.5 flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full" style={{ background: stroke }} />
-                <span className="text-[11px] text-ink/60">{label}</span>
-                <span className="ml-auto font-hero text-[12px] font-semibold tabular-nums text-ink">{fmt(data[hover.i])}</span>
+                <span className="text-[10.5px] text-white/70">{label}</span>
+                <span className="ml-auto font-hero text-[13px] font-semibold tabular-nums text-white">{fmt(data[hover.i])}</span>
               </div>
               {prior && (
                 <div className="mt-0.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: stroke, opacity: 0.35 }} />
-                  <span className="text-[11px] text-ink/45">{priorLabel}</span>
-                  <span className="ml-auto text-[11px] tabular-nums text-ink/60">{fmt(prior[hover.i])}</span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
+                  <span className="text-[10.5px] text-white/45">{priorLabel}</span>
+                  <span className="ml-auto text-[10.5px] tabular-nums text-white/60">{fmt(prior[hover.i])}</span>
                 </div>
               )}
+              <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" />
             </motion.div>
           )}
         </AnimatePresence>
