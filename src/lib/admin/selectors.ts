@@ -10,7 +10,14 @@ export function todayRevenue(s: AdminState): number {
 }
 
 export function revenueTrend(s: AdminState, days = 30): number[] {
-  return s.funnelDays.slice(-days).map((d) => d.revenue);
+  const raw = s.funnelDays.slice(-days).map((d) => d.revenue);
+  if (raw.length < 3) return raw;
+  return raw.map((_, i) => {
+    const a = raw[Math.max(0, i - 1)];
+    const b = raw[i];
+    const c = raw[Math.min(raw.length - 1, i + 1)];
+    return Math.round((a + b + c) / 3);
+  });
 }
 
 export function datesTrend(s: AdminState, days = 30): number[] {
