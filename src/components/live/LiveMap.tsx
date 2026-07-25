@@ -1,12 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { geoNaturalEarth1, geoPath, type GeoProjection } from "d3-geo";
-import { feature } from "topojson-client";
-import type { Feature, FeatureCollection, Geometry } from "geojson";
-import worldTopo from "world-atlas/countries-110m.json";
+import { useEffect, useRef, useState } from "react";
 import { DOT_RULES } from "./dotRules";
 import type { LiveSession, PurchaseEvent } from "@/hooks/useLiveSessions";
-import type { ProjectFn } from "./PulseOverlay";
-import PulseOverlay from "./PulseOverlay";
 
 type Props = {
   sessions: LiveSession[];
@@ -14,226 +8,215 @@ type Props = {
   className?: string;
 };
 
-const W = 1200;
-const H = 620;
+// Global loader promise so we only inject the <script> once even with hot reloads.
+declare global {
+  interface Window {
+    google?: typeof google;
+    __blissleyGMapsLoader?: Promise<void>;
+    __blissleyGMapsInit?: () => void;
+  }
+}
 
-// Extract real country GeoJSON from the bundled topojson.
-type CountryProps = { name: string };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const countriesFC = feature(worldTopo as any, (worldTopo as any).objects.countries) as unknown as FeatureCollection<Geometry, CountryProps>;
+function loadGoogleMaps(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.google?.maps) return Promise.resolve();
+  if (window.__blissleyGMapsLoader) return window.__blissleyGMapsLoader;
 
-// Countries we'll label (larger + recognizable). Rendered only when zoomed enough.
-const LABELED = new Set([
-  "United States of America", "Canada", "Mexico", "Brazil", "Argentina",
-  "United Kingdom", "France", "Spain", "Germany", "Italy", "Poland", "Sweden", "Norway",
-  "Russia", "China", "India", "Japan", "South Korea", "Indonesia", "Australia",
-  "South Africa", "Egypt", "Saudi Arabia", "Turkey", "Iran", "Pakistan",
-  "Nigeria", "Kenya", "Ethiopia", "Algeria", "Libya", "Sudan",
-  "Colombia", "Peru", "Chile", "Venezuela",
-  "Kazakhstan", "Mongolia", "Thailand", "Vietnam", "Philippines", "Malaysia",
-  "New Zealand", "Greenland", "Iceland", "Finland", "Ukraine",
-]);
+  const key = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY;
+  const channel = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID;
+  if (!key) return Promise.reject(new Error("Missing Google Maps browser key"));
 
-const LABEL_SHORT: Record<string, string> = {
-  "United States of America": "United States",
-  "Russia": "Russia",
-  "United Kingdom": "United Kingdom",
-};
+  window.__blissleyGMapsLoader = new Promise<void>((resolve, reject) => {
+    window.__blissleyGMapsInit = () => resolve();
+    const s = document.createElement("script");
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&callback=__blissleyGMapsInit${channel ? `&channel=${channel}` : ""}`;
+    s.async = true;
+    s.defer = true;
+    s.onerror = () => reject(new Error("Failed to load Google Maps"));
+    document.head.appendChild(s);
+  });
+  return window.__blissleyGMapsLoader;
+}
+
+// Muted light style matching Shopify's live view — gray land, white water, subtle labels.
+const MAP_STYLE: google.maps.MapTypeStyle[] = [
+  { elementType: "geometry", stylers: [{ color: "#e9ecef" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
+  { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#d1d5db" }] },
+  { featureType: "administrative.country", elementType: "geometry.stroke", stylers: [{ color: "#c7ccd3" }] },
+  { featureType: "administrative.land_parcel", stylers: [{ visibility: "off" }] },
+  { featureType: "administrative.neighborhood", stylers: [{ visibility: "off" }] },
+  { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#eef0f3" }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#f6f7f9" }] },
+  { featureType: "road", elementType: "labels", stylers: [{ visibility: "off" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#eceef2" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#9ca3af" }] },
+];
 
 export default function LiveMap({ sessions, purchaseEvents, className }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [box, setBox] = useState({ w: 0, h: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const drag = useRef<{ x: number; y: number; px: number; py: number; moved: boolean } | null>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const markersRef = useRef<Map<string, google.maps.Marker>>(new Map());
+  const pulseRef = useRef<google.maps.Marker[]>([]);
+  const [ready, setReady] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
-  const projection: GeoProjection = useMemo(
-    () => geoNaturalEarth1().fitSize([W, H], countriesFC),
-    [],
-  );
-  const pathGen = useMemo(() => geoPath(projection), [projection]);
-
-  const countryPaths = useMemo(() => {
-    return countriesFC.features
-      .map((f: Feature<Geometry, CountryProps>) => ({
-        name: f.properties?.name ?? "",
-        d: pathGen(f) ?? "",
-        c: pathGen.centroid(f) as [number, number],
-      }))
-      .filter((f) => f.d);
-  }, [pathGen]);
-
-  const projectPt = useCallback(
-    (lat: number, lng: number): [number, number] | null => {
-      const p = projection([lng, lat]);
-      return p ? [p[0], p[1]] : null;
-    },
-    [projection],
-  );
-
+  // Init map
   useEffect(() => {
-    if (!wrapRef.current) return;
-    const ro = new ResizeObserver(() => {
-      const r = wrapRef.current!.getBoundingClientRect();
-      setBox({ w: r.width, h: r.height });
-    });
-    ro.observe(wrapRef.current);
-    return () => ro.disconnect();
+    let cancelled = false;
+    loadGoogleMaps()
+      .then(() => {
+        if (cancelled || !wrapRef.current || !window.google) return;
+        const map = new window.google.maps.Map(wrapRef.current, {
+          center: { lat: 25, lng: -20 },
+          zoom: 2,
+          minZoom: 2,
+          maxZoom: 16,
+          disableDefaultUI: true,
+          zoomControl: true,
+          gestureHandling: "greedy",
+          clickableIcons: false,
+          backgroundColor: "#ffffff",
+          styles: MAP_STYLE,
+          restriction: {
+            latLngBounds: { north: 85, south: -85, west: -180, east: 180 },
+            strictBounds: false,
+          },
+        });
+        mapRef.current = map;
+        setReady(true);
+      })
+      .catch((e) => setErr(e.message ?? "Map failed to load"));
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    setZoom((z) => Math.min(6, Math.max(1, z - e.deltaY * 0.002)));
-  }, []);
+  // Sync session markers — small colored dots per stage.
+  useEffect(() => {
+    if (!ready || !mapRef.current || !window.google) return;
+    const map = mapRef.current;
+    const nextIds = new Set(sessions.map((s) => s.id));
 
-  const onPointerDown = useCallback((e: React.PointerEvent) => {
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y, moved: false };
-  }, [pan]);
+    // Remove stale
+    for (const [id, m] of markersRef.current) {
+      if (!nextIds.has(id)) {
+        m.setMap(null);
+        markersRef.current.delete(id);
+      }
+    }
+    // Add or update
+    for (const s of sessions) {
+      const rule = DOT_RULES[s.stage];
+      const existing = markersRef.current.get(s.id);
+      const icon: google.maps.Symbol = {
+        path: window.google.maps.SymbolPath.CIRCLE,
+        scale: rule.sizeMap * 0.6,
+        fillColor: rule.hex,
+        fillOpacity: 0.95,
+        strokeColor: "#ffffff",
+        strokeWeight: 1.5,
+      };
+      if (existing) {
+        existing.setPosition({ lat: s.lat, lng: s.lng });
+        existing.setIcon(icon);
+      } else {
+        const m = new window.google.maps.Marker({
+          map,
+          position: { lat: s.lat, lng: s.lng },
+          icon,
+          title: `${rule.label} · ${s.label}`,
+          optimized: true,
+          zIndex: s.stage === "purchased" ? 1000 : s.stage === "checkout" ? 500 : 100,
+        });
+        markersRef.current.set(s.id, m);
+      }
+    }
+  }, [sessions, ready]);
 
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    if (!drag.current) return;
-    const dx = e.clientX - drag.current.x;
-    const dy = e.clientY - drag.current.y;
-    if (Math.abs(dx) + Math.abs(dy) > 2) drag.current.moved = true;
-    setPan({ x: drag.current.px + dx, y: drag.current.py + dy });
-  }, []);
+  // Purchase pulse — bigger emerald marker that fades out over ~5s
+  useEffect(() => {
+    if (!ready || !mapRef.current || !window.google || purchaseEvents.length === 0) return;
+    const map = mapRef.current;
+    const now = Date.now();
+    const rule = DOT_RULES.purchased;
 
-  const onPointerUp = useCallback((e: React.PointerEvent) => {
-    (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
-    drag.current = null;
-  }, []);
-
-  const resetView = useCallback(() => { setZoom(1); setPan({ x: 0, y: 0 }); }, []);
-
-  // Projector for PulseOverlay — returns absolute screen px in overlay space
-  const project: ProjectFn = useCallback((lat, lng) => {
-    if (!box.w) return null;
-    const p = projectPt(lat, lng);
-    if (!p) return null;
-    const sx = (p[0] / W) * box.w * zoom + pan.x;
-    const sy = (p[1] / H) * box.h * zoom + pan.y;
-    return { x: sx, y: sy, visible: sx > -20 && sx < box.w + 20 && sy > -20 && sy < box.h + 20 };
-  }, [box, zoom, pan, projectPt]);
+    for (const e of purchaseEvents) {
+      const age = now - e.at;
+      if (age > 5000) continue;
+      const key = `pulse-${e.id}`;
+      if (pulseRef.current.some((m) => m.get("pkey") === key)) continue;
+      const marker = new window.google.maps.Marker({
+        map,
+        position: { lat: e.lat, lng: e.lng },
+        icon: {
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale: 18,
+          fillColor: rule.hex,
+          fillOpacity: 0.28,
+          strokeColor: rule.hex,
+          strokeOpacity: 0.9,
+          strokeWeight: 2,
+        },
+        clickable: false,
+        zIndex: 2000,
+      });
+      marker.set("pkey", key);
+      pulseRef.current.push(marker);
+      // Fade out
+      let step = 0;
+      const timer = setInterval(() => {
+        step++;
+        const t = step / 20;
+        const scale = 18 + t * 30;
+        const opacity = Math.max(0, 0.28 * (1 - t));
+        marker.setIcon({
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale,
+          fillColor: rule.hex,
+          fillOpacity: opacity,
+          strokeColor: rule.hex,
+          strokeOpacity: Math.max(0, 0.9 * (1 - t)),
+          strokeWeight: 2,
+        });
+        if (t >= 1) {
+          clearInterval(timer);
+          marker.setMap(null);
+          pulseRef.current = pulseRef.current.filter((x) => x !== marker);
+        }
+      }, 250);
+    }
+  }, [purchaseEvents, ready]);
 
   return (
-    <div
-      ref={wrapRef}
-      className={`relative overflow-hidden ${className ?? ""}`}
-      style={{ touchAction: "none", background: "#f6f8fc", cursor: drag.current ? "grabbing" : "grab" }}
-      onWheel={onWheel}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-    >
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="h-full w-full"
-        preserveAspectRatio="xMidYMid meet"
-        style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: "0 0" }}
-      >
-        <defs>
-          <radialGradient id="mapGlow" cx="50%" cy="50%" r="70%">
-            <stop offset="0%" stopColor="#eef2ff" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#f6f8fc" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        <rect width={W} height={H} fill="#f6f8fc" />
-        <rect width={W} height={H} fill="url(#mapGlow)" />
-
-        {/* Countries */}
-        <g>
-          {countryPaths.map((c) => (
-            <path
-              key={c.name}
-              d={c.d}
-              fill="#e4e8ef"
-              stroke="#ffffff"
-              strokeWidth={0.6}
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
-        </g>
-
-        {/* Country labels — only when zoomed a bit, and only for known countries */}
-        {zoom >= 1.2 && (
-          <g style={{ pointerEvents: "none" }}>
-            {countryPaths.map((c) => {
-              if (!LABELED.has(c.name)) return null;
-              const [cx, cy] = c.c;
-              if (!Number.isFinite(cx) || !Number.isFinite(cy)) return null;
-              const label = LABEL_SHORT[c.name] ?? c.name;
-              const fs = Math.max(6.5, 10 / zoom);
-              return (
-                <text
-                  key={`lbl-${c.name}`}
-                  x={cx}
-                  y={cy}
-                  textAnchor="middle"
-                  fill="#6b7180"
-                  fontSize={fs}
-                  fontWeight={500}
-                  style={{ paintOrder: "stroke", stroke: "#f6f8fc", strokeWidth: 2 }}
-                >
-                  {label}
-                </text>
-              );
-            })}
-          </g>
-        )}
-
-        {/* Session dots */}
-        {sessions.map((s) => {
-          const p = projectPt(s.lat, s.lng);
-          if (!p) return null;
-          const [x, y] = p;
-          const rule = DOT_RULES[s.stage];
-          return (
-            <g key={s.id}>
-              {rule.pulse && (
-                <circle cx={x} cy={y} r={rule.sizeMap + 6} fill={rule.hex} opacity={0.22}>
-                  <animate attributeName="r" from={rule.sizeMap} to={rule.sizeMap + 14} dur="1.4s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" from="0.32" to="0" dur="1.4s" repeatCount="indefinite" />
-                </circle>
-              )}
-              <circle cx={x} cy={y} r={rule.sizeMap / Math.max(1, zoom * 0.7)} fill={rule.hex} stroke="#fff" strokeWidth={1 / zoom}>
-                <title>{`${s.city} — ${rule.label}`}</title>
-              </circle>
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* Pulse rings + arcs overlay (uses screen-space projector) */}
-      <PulseOverlay project={project} purchaseEvents={purchaseEvents} hqLat={37.77} hqLng={-122.42} />
-
-      {/* Zoom controls */}
-      <div className="absolute bottom-3 right-3 flex flex-col overflow-hidden rounded-md border border-ink/10 bg-white/90 shadow-sm backdrop-blur">
-        <button type="button" onClick={() => setZoom((z) => Math.min(6, z + 0.4))} aria-label="Zoom in" className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]">
-          <span className="text-sm leading-none">+</span>
-        </button>
-        <div className="h-px w-full bg-ink/10" />
-        <button type="button" onClick={() => setZoom((z) => Math.max(1, z - 0.4))} aria-label="Zoom out" className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]">
-          <span className="text-sm leading-none">−</span>
-        </button>
-        <div className="h-px w-full bg-ink/10" />
-        <button type="button" onClick={resetView} aria-label="Reset" className="grid h-7 w-7 place-items-center text-[9px] font-semibold text-ink/60 hover:bg-ink/[0.04]">
-          FIT
-        </button>
-      </div>
-
+    <div className={`relative ${className ?? ""}`}>
+      <div ref={wrapRef} className="absolute inset-0" />
+      {!ready && !err && (
+        <div className="absolute inset-0 grid place-items-center bg-white">
+          <div className="flex items-center gap-2 text-[11.5px] text-ink/45">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2563eb]" />
+            Loading map…
+          </div>
+        </div>
+      )}
+      {err && (
+        <div className="absolute inset-0 grid place-items-center bg-white text-[11.5px] text-ink/60">
+          {err}
+        </div>
+      )}
       {/* Legend */}
-      <div className="absolute bottom-3 left-3 flex items-center gap-3 rounded-md border border-ink/10 bg-white/85 px-2.5 py-1 text-[10.5px] font-medium text-ink/70 shadow-sm backdrop-blur">
+      <div className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-3 rounded-md border border-ink/10 bg-white/95 px-2.5 py-1.5 text-[10.5px] font-medium text-ink/70 shadow-sm backdrop-blur">
         <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.browsing.hex }} /> Visitors
+          <span className="h-2 w-2 rounded-full" style={{ background: DOT_RULES.purchased.hex }} />
+          Orders
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.cart.hex }} /> Intake
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.checkout.hex }} /> Checkout
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.purchased.hex }} /> Orders
+          <span className="h-2 w-2 rounded-full" style={{ background: DOT_RULES.browsing.hex }} />
+          Visitors right now
         </span>
       </div>
     </div>
