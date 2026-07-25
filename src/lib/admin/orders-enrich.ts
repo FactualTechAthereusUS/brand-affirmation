@@ -153,7 +153,7 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
     last4: String(4000 + (h % 5999)).slice(-4),
     intentId: `pi_${h.toString(36).slice(0, 14)}`,
     subtotal, discount: discountCents, tax: taxCents, shipping, total,
-    status: order.status === "exception" && h % 3 === 0 ? "failed" : "paid",
+    status: order.paymentOverride ?? (order.status === "exception" && h % 3 === 0 ? "failed" : "paid"),
   };
 
   // Timeline synthesized from createdAt + status
