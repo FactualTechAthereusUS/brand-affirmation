@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { AdminShell, Card, Pill } from "@/components/admin/AdminShell";
+import { AdminShell, Card } from "@/components/admin/AdminShell";
 import { Sparkline } from "@/components/admin/Sparkline";
 import { AreaChart } from "@/components/admin/analytics/AreaChart";
+import { Donut } from "@/components/admin/analytics/Donut";
 import { TaskCenter } from "@/components/admin/TaskCenter";
 import {
   computeKpis,
