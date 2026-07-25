@@ -186,7 +186,10 @@ function LeadsPage() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((l) => (
+              {rows.map((l) => {
+                const source = l.attribution?.source ?? l.source ?? "Organic";
+                const campaign = l.attribution?.campaign ?? source;
+                return (
                 <tr key={l.id} onClick={() => nav({ to: "/admin/leads/$id", params: { id: l.id } })}
                   className="cursor-pointer border-b border-ink/[0.06] last:border-0 hover:bg-indigo-50/40">
                   <td className="px-3 py-2.5" onClick={(ev) => { ev.stopPropagation(); toggleRow(l.id); }}>
@@ -207,8 +210,8 @@ function LeadsPage() {
                   <td className="py-2.5"><FunnelBar step={l.funnelStep} pct={l.progressPct} /></td>
                   <td className="py-2.5"><EligibilityDot ok={l.stateEligible} state={l.state} /></td>
                   <td className="py-2.5">
-                    <div className="flex items-center gap-1.5"><ChannelIcon source={l.attribution.source} /></div>
-                    <div className="mt-0.5 truncate text-[10.5px] text-ink/50">{l.attribution.campaign}</div>
+                    <div className="flex items-center gap-1.5"><ChannelIcon source={source} /></div>
+                    <div className="mt-0.5 truncate text-[10.5px] text-ink/50">{campaign}</div>
                   </td>
                   <td className="py-2.5 tabular-nums text-ink/70">{l.ageHrs}h</td>
                   <td className="py-2.5 text-ink/70">{l.assignee ?? <span className="text-ink/40">—</span>}</td>
@@ -224,7 +227,7 @@ function LeadsPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              );})}
               {rows.length === 0 && (
                 <tr><td colSpan={12} className="py-12 text-center text-[12.5px] text-ink/45">No leads match your filters.</td></tr>
               )}

@@ -116,12 +116,13 @@ export function ScoreGauge({ score }: { score: number }) {
 }
 
 export function ChannelIcon({ source }: { source: string }) {
+  const label = source || "Organic";
   const c: Record<string, string> = { Meta: "bg-blue-100 text-blue-700", Google: "bg-amber-100 text-amber-700", Organic: "bg-emerald-100 text-emerald-700", Referral: "bg-violet-100 text-violet-700", TikTok: "bg-pink-100 text-pink-700", Klaviyo: "bg-indigo-100 text-indigo-700" };
-  return <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold ${c[source] ?? "bg-ink/[0.06] text-ink/70"}`}>{source}</span>;
+  return <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold ${c[label] ?? "bg-ink/[0.06] text-ink/70"}`}>{label}</span>;
 }
 
 export function LeadInitials({ lead }: { lead: Lead }) {
-  const parts = lead.name.split(" ");
+  const parts = (lead.name || "Lead").split(" ");
   const initials = ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
   return <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[11px] font-semibold text-white">{initials}</div>;
 }

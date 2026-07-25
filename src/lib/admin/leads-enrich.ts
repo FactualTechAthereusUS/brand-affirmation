@@ -25,7 +25,7 @@ export function selectLeadKpis(s: Pick<AdminState, "leads">): LeadKpis {
     ? Math.round((leads.filter((l) => l.status === "won" && Date.now() - l.createdAt < 30 * DAY).length / abandonedCheckouts30d) * 1000) / 10
     : 0;
   const avgTimeToContactHrs = contactWindow.length
-    ? Math.round((contactWindow.reduce((sum, l) => sum + Math.max(0.1, (l.outreach[l.outreach.length - 1]?.ts ?? l.lastTouchAt) - l.createdAt), 0) / contactWindow.length) / 3_600_000 * 10) / 10
+    ? Math.round((contactWindow.reduce((sum, l) => sum + Math.max(0.1, ((l.outreach ?? [])[l.outreach?.length - 1]?.ts ?? l.lastTouchAt) - l.createdAt), 0) / contactWindow.length) / 3_600_000 * 10) / 10
     : 0;
   const recoverableRevenue = leads
     .filter((l) => l.status !== "won" && l.status !== "lost" && l.status !== "do_not_contact")
@@ -142,8 +142,11 @@ export function scoreBreakdown(l: Lead) {
   const funnel = Math.round(l.progressPct * 0.55);
   const ageHrs = (Date.now() - l.createdAt) / 3_600_000;
   const recency = ageHrs < 12 ? 25 : ageHrs < 36 ? 15 : ageHrs < 72 ? 6 : 0;
-  const channel = l.attribution.source === "Google" ? 12 : l.attribution.source === "Meta" ? 10 : l.attribution.source === "Referral" ? 15 : l.attribution.source === "Klaviyo" ? 8 : 4;
-  const engagement = Math.min(20, l.outreach.filter((o) => o.outcome.includes("replied") || o.outcome.includes("connected")).length * 8 + l.intakeSnapshot.length);
+  const source = l.attribution?.source ?? l.source ?? "Organic";
+  const channel = source === "Google" ? 12 : source === "Meta" ? 10 : source === "Referral" ? 15 : source === "Klaviyo" ? 8 : 4;
+  const outreach = l.outreach ?? [];
+  const intakeSnapshot = l.intakeSnapshot ?? [];
+  const engagement = Math.min(20, outreach.filter((o) => o.outcome.includes("replied") || o.outcome.includes("connected")).length * 8 + intakeSnapshot.length);
   return [
     { label: "Funnel depth", value: funnel, max: 55, tone: "indigo" as const },
     { label: "Recency", value: recency, max: 25, tone: "violet" as const },
