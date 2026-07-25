@@ -80,12 +80,31 @@ export function LineChartMini({
   const dts = makeDates(data.length, dates);
   const fmt = formatValue ?? ((v: number) => v.toLocaleString());
 
-  const toXY = (arr: number[]) =>
-    arr.map((v, i) => `${(i / (arr.length - 1)) * W},${H - ((v - min) / range) * (H - pad * 2) - pad}`);
-  const pts = toXY(data);
-  const line = `M${pts.join(" L")}`;
+  const toPts = (arr: number[]): [number, number][] =>
+    arr.map((v, i) => [(i / (arr.length - 1)) * W, H - ((v - min) / range) * (H - pad * 2) - pad]);
+
+  // Catmull-Rom → cubic bezier for silky smooth lines (Shopify/Framer feel)
+  const smoothPath = (pts: [number, number][], tension = 0.5): string => {
+    if (pts.length < 2) return "";
+    let d = `M${pts[0][0]},${pts[0][1]}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] ?? pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] ?? p2;
+      const c1x = p1[0] + ((p2[0] - p0[0]) / 6) * tension;
+      const c1y = p1[1] + ((p2[1] - p0[1]) / 6) * tension;
+      const c2x = p2[0] - ((p3[0] - p1[0]) / 6) * tension;
+      const c2y = p2[1] - ((p3[1] - p1[1]) / 6) * tension;
+      d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+    }
+    return d;
+  };
+
+  const dataPts = toPts(data);
+  const line = smoothPath(dataPts);
   const area = `${line} L${W},${H} L0,${H} Z`;
-  const priorLine = prior ? `M${toXY(prior).join(" L")}` : "";
+  const priorLine = prior ? smoothPath(toPts(prior)) : "";
   const bandY = (v: number) => H - ((v - min) / range) * (H - pad * 2) - pad;
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -94,7 +113,9 @@ export function LineChartMini({
     const x = Math.max(0, Math.min(r.width, e.clientX - r.left));
     const i = Math.round((x / r.width) * (data.length - 1));
     const px = (i / (data.length - 1)) * r.width;
-    const py = (1 - (data[i] - min) / range) * (r.height - (pad / H) * 2 * r.height) + (pad / H) * r.height;
+    // Normalised y (0..1) inside SVG, then scaled to container height
+    const yNorm = 1 - pad / H - ((data[i] - min) / range) * (1 - (pad * 2) / H);
+    const py = yNorm * r.height;
     setHover({ i, px, py, w: r.width });
   };
   const onLeave = () => setHover(null);
