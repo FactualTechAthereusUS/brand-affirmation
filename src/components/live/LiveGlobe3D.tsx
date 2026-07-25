@@ -183,9 +183,10 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
           momentum.current = null;
           lastInteract.current = Date.now();
         }
-      } else if (!drag.current && idleFor > 2500) {
-        camTheta.current += 0.0015;
+      } else if (!drag.current && !pointer.current && idleFor > 3000) {
+        camTheta.current += 0.0012;
       }
+
 
 
       // Clamp phi so we don't flip upside down
