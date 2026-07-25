@@ -606,6 +606,7 @@ function OrderInternalNotes({ orderId, notes }: { orderId: string; notes: Intern
         {notes.length === 0 && <div className="rounded-md border border-dashed border-ink/10 p-3 text-[11.5px] text-ink/45">No internal notes on this order yet.</div>}
       </div>
       <textarea
+        id="order-note-input"
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={2}
@@ -613,7 +614,7 @@ function OrderInternalNotes({ orderId, notes }: { orderId: string; notes: Intern
         className="mt-3 w-full resize-none rounded-lg border border-ink/10 bg-white p-2.5 text-[12.5px] outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
       />
       <button
-        onClick={() => { adminActions.addOrderNote(orderId, text); setText(""); }}
+        onClick={() => { adminActions.addOrderNote(orderId, text); setText(""); toast.success("Note added"); }}
         disabled={!text.trim()}
         className="mt-2 w-full rounded-lg bg-ink px-3 py-1.5 text-[12px] font-semibold text-white disabled:opacity-40"
       >Save note</button>
