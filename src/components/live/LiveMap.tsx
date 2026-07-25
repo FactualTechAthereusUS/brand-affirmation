@@ -1,3 +1,4 @@
+/// <reference types="google.maps" />
 import { useEffect, useRef, useState } from "react";
 import { DOT_RULES } from "./dotRules";
 import type { LiveSession, PurchaseEvent } from "@/hooks/useLiveSessions";
