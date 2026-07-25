@@ -134,8 +134,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           <div className="mx-3 mt-4 flex items-center gap-2.5 rounded-xl border border-ink/[0.08] bg-white px-2.5 py-2">
             <div className="relative grid h-7 w-7 shrink-0 place-items-center">
               <svg viewBox="0 0 32 32" className="h-7 w-7 -rotate-90">
-                <circle cx="16" cy="16" r="12" fill="none" stroke="#e8e6e0" strokeWidth="3" />
-                <circle cx="16" cy="16" r="12" fill="none" stroke="#171717" strokeWidth="3" strokeDasharray={`${(0/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#e5e7eb" strokeWidth="3" />
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray={`${(0/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
+
               </svg>
             </div>
             <div className="min-w-0 flex-1 leading-tight">
