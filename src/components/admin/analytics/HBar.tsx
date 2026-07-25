@@ -18,7 +18,7 @@ export function HBar({
   return (
     <div className="space-y-2.5">
       {rows.map((r, i) => {
-        const c = r.color ?? palette?.[i % palette.length] ?? color;
+        const c = r.color ?? (palette ? palette[i % palette.length] : color);
         const isActive = hover === i;
         return (
           <div
