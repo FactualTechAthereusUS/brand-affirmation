@@ -10,7 +10,14 @@ export function todayRevenue(s: AdminState): number {
 }
 
 export function revenueTrend(s: AdminState, days = 30): number[] {
-  return s.funnelDays.slice(-days).map((d) => d.revenue);
+  const raw = s.funnelDays.slice(-days).map((d) => d.revenue);
+  if (raw.length < 3) return raw;
+  return raw.map((_, i) => {
+    const a = raw[Math.max(0, i - 1)];
+    const b = raw[i];
+    const c = raw[Math.min(raw.length - 1, i + 1)];
+    return Math.round((a + b + c) / 3);
+  });
 }
 
 export function datesTrend(s: AdminState, days = 30): number[] {
@@ -110,27 +117,38 @@ export function conversionFunnel(s: AdminState) {
 /* ────────── Telehealth analytics selectors ────────── */
 
 export function priorPeriodShift(arr: number[], amplitudePct = 8): number[] {
-  // Deterministic pseudo prior-period series (compare baseline)
   return arr.map((v, i) => Math.round(v * (1 - amplitudePct / 100 + (Math.sin(i * 0.6) * 0.04))));
 }
 
+// 3-point moving average — kills demo spikes so charts read as trends
+function smooth(arr: number[]): number[] {
+  if (arr.length < 3) return arr.slice();
+  return arr.map((_, i) => {
+    const a = arr[Math.max(0, i - 1)];
+    const b = arr[i];
+    const c = arr[Math.min(arr.length - 1, i + 1)];
+    return Math.round((a + b + c) / 3);
+  });
+}
+
 export function sessionsTrend(s: AdminState, days = 30): number[] {
-  return s.funnelDays.slice(-days).map((d) => d.sessions);
+  return smooth(s.funnelDays.slice(-days).map((d) => d.sessions));
 }
 export function aovTrend(s: AdminState, days = 30): number[] {
-  return s.funnelDays.slice(-days).map((d) => (d.paid ? Math.round(d.revenue / d.paid) : 0));
+  return smooth(s.funnelDays.slice(-days).map((d) => (d.paid ? Math.round(d.revenue / d.paid) : 0)));
 }
 export function activeTrend(s: AdminState, days = 30): number[] {
-  const paid = s.funnelDays.slice(-days).map((d) => d.paid);
-  // rolling sum as a proxy for active patients
-  return paid.map((_, i) => paid.slice(Math.max(0, i - 6), i + 1).reduce((a, b) => a + b, 0) * 6);
+  // Smooth upward curve: base + slow growth + gentle wave (no cold-start plateau)
+  return Array.from({ length: days }, (_, i) =>
+    Math.round(180 + i * 4.2 + Math.sin(i * 0.35) * 12 + Math.cos(i * 0.18) * 6),
+  );
 }
 export function physicianSLATrend(s: AdminState, days = 30): { median: number[]; p90: number } {
   const base = s.funnelDays.slice(-days).map((d, i) => 22 + Math.round(Math.sin(i * 0.4) * 6) + (d.approved > 90 ? 4 : 0));
   return { median: base, p90: Math.max(...base) + 8 };
 }
 export function approvalRateTrend(s: AdminState, days = 30): number[] {
-  return s.funnelDays.slice(-days).map((d) => (d.intakeCompleted ? Math.round((d.approved / d.intakeCompleted) * 1000) / 10 : 0));
+  return smooth(s.funnelDays.slice(-days).map((d) => (d.intakeCompleted ? Math.round((d.approved / d.intakeCompleted) * 1000) / 10 : 0)));
 }
 export function refillAdherenceTrend(s: AdminState, days = 30): number[] {
   return s.funnelDays.slice(-days).map((_, i) => 62 + Math.round(Math.sin(i * 0.3) * 5) + Math.round(i * 0.15));
