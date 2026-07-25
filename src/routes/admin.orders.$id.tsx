@@ -194,6 +194,9 @@ function OrderDetailPage() {
             </div>
           </Card>
 
+          {/* COGS — internal */}
+          <CogsCard o={o} />
+
           {/* Clinical excerpt */}
           <Card className="p-4">
             <SectionHead icon={<Stethoscope className="h-4 w-4 text-indigo-600" />} title="Clinical review" right={<Link to="/admin/physician-queue" className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">Open case <ExternalLink className="h-3 w-3" /></Link>} />
