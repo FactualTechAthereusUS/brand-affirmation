@@ -137,10 +137,10 @@ export function LiveSidebar({
 
       {/* KPIs 2x2 */}
       <div className="grid grid-cols-2 gap-2">
-        <Kpi label="Visitors right now" value={counts.visitors} streamer={streamer} tint="#2563eb" />
-        <Kpi label="Total sales"        value={streamer ? "—" : usd(totalSales)} streamer={false} tint="#10b981" />
-        <Kpi label="Sessions"           value={counts.sessions} streamer={streamer} tint="#0ea5e9" />
-        <Kpi label="Orders"             value={counts.purchased} streamer={streamer} tint="#7c3aed" />
+        <Kpi label="Visitors right now" value={counts.visitors} streamer={streamer} tint="#2563eb" seed={3} />
+        <Kpi label="Total sales"        value={streamer ? "—" : usd(totalSales)} streamer={false} tint="#10b981" seed={11} delta="—" />
+        <Kpi label="Sessions"           value={counts.sessions} streamer={streamer} tint="#0ea5e9" seed={7} delta="↘ 34%" />
+        <Kpi label="Orders"             value={counts.purchased} streamer={streamer} tint="#7c3aed" seed={17} delta="—" />
       </div>
 
       {/* Patient behavior */}
