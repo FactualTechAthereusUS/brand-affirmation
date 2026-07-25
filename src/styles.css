@@ -236,3 +236,26 @@
 }
 .legal-prose th { color: var(--color-ink); font-weight: 600; }
 
+
+/* =========================================================================
+   Admin dashboard scope — rebind brand tokens to a Shopify-style
+   indigo/violet/sky/amber/emerald palette. Applies only inside
+   `.admin-scope` (the AdminShell root); the marketing site is untouched.
+   ========================================================================= */
+.admin-scope {
+  --color-canvas: #f6f6f7;   /* page bg */
+  --color-ink: #0f172a;      /* slate-900 primary text */
+  --color-ever: #ee7273;     /* danger / failed / churn — kept coral */
+  --color-check: #10b981;    /* emerald — success / positive */
+  --color-honey: #f59e0b;    /* amber — warn / AOV */
+  --color-marine: #2563eb;   /* indigo — primary accent / active */
+  --color-bluebell: #7c3aed; /* violet — MRR / secondary accent */
+  --color-blush: #ee7273;    /* alias to danger */
+  --color-mist: #e5e7eb;     /* hairline */
+  --color-hairline: #e5e7eb;
+}
+
+.admin-scope ::selection {
+  background: var(--color-marine);
+  color: #ffffff;
+}
