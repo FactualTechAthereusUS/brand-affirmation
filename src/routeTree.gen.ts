@@ -45,7 +45,6 @@ import { Route as AdminPharmacyRouteImport } from './routes/admin.pharmacy'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLiveRouteImport } from './routes/admin.live'
-import { Route as AdminIntegrationsRouteImport } from './routes/admin.integrations'
 import { Route as AdminCommandRouteImport } from './routes/admin.command'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminPhysicianQueueIndexRouteImport } from './routes/admin.physician-queue.index'
@@ -243,11 +242,6 @@ const AdminLiveRoute = AdminLiveRouteImport.update({
   path: '/admin/live',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIntegrationsRoute = AdminIntegrationsRouteImport.update({
-  id: '/admin/integrations',
-  path: '/admin/integrations',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminCommandRoute = AdminCommandRouteImport.update({
   id: '/admin/command',
   path: '/admin/command',
@@ -346,7 +340,6 @@ export interface FileRoutesByFullPath {
   '/test-state': typeof TestStateRoute
   '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
-  '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -401,7 +394,6 @@ export interface FileRoutesByTo {
   '/test-state': typeof TestStateRoute
   '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
-  '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -457,7 +449,6 @@ export interface FileRoutesById {
   '/test-state': typeof TestStateRoute
   '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
-  '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -514,7 +505,6 @@ export interface FileRouteTypes {
     | '/test-state'
     | '/admin/analytics'
     | '/admin/command'
-    | '/admin/integrations'
     | '/admin/live'
     | '/admin/messages'
     | '/admin/payments'
@@ -569,7 +559,6 @@ export interface FileRouteTypes {
     | '/test-state'
     | '/admin/analytics'
     | '/admin/command'
-    | '/admin/integrations'
     | '/admin/live'
     | '/admin/messages'
     | '/admin/payments'
@@ -624,7 +613,6 @@ export interface FileRouteTypes {
     | '/test-state'
     | '/admin/analytics'
     | '/admin/command'
-    | '/admin/integrations'
     | '/admin/live'
     | '/admin/messages'
     | '/admin/payments'
@@ -680,7 +668,6 @@ export interface RootRouteChildren {
   TestStateRoute: typeof TestStateRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRouteWithChildren
   AdminCommandRoute: typeof AdminCommandRoute
-  AdminIntegrationsRoute: typeof AdminIntegrationsRoute
   AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
@@ -969,13 +956,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLiveRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/integrations': {
-      id: '/admin/integrations'
-      path: '/admin/integrations'
-      fullPath: '/admin/integrations'
-      preLoaderRoute: typeof AdminIntegrationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/command': {
       id: '/admin/command'
       path: '/admin/command'
@@ -1136,7 +1116,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestStateRoute: TestStateRoute,
   AdminAnalyticsRoute: AdminAnalyticsRouteWithChildren,
   AdminCommandRoute: AdminCommandRoute,
-  AdminIntegrationsRoute: AdminIntegrationsRoute,
   AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
