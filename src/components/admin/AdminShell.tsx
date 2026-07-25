@@ -82,6 +82,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const session = useAdmin((s) => s.session);
   const role = useAdmin((s) => s.role);
   const scenario = useAdmin((s) => s.scenario);
+  const tenant = useAdmin((s) => s.tenant);
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const [mobileNav, setMobileNav] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -89,6 +90,11 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
   useEffect(() => { hydrateAdmin(); }, []);
   useEffect(() => { if (!session) adminActions.signIn("hello@blissley.com"); }, [session]);
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.style.setProperty("--brand-primary", tenant.primary);
+    document.documentElement.style.setProperty("--brand-accent", tenant.accent);
+  }, [tenant.primary, tenant.accent]);
 
   const startHold = () => { holdRef.current = setTimeout(() => adminActions.toggleLogoMenu(true), 600); };
   const endHold = () => { if (holdRef.current) clearTimeout(holdRef.current); };
