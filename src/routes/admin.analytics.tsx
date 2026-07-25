@@ -55,12 +55,28 @@ function AnalyticsOverview() {
     { label: "Paid", count: funnelSum.paid, pct: funnelSum.paidPct, delta: "−4%" },
   ];
 
+  // Chart palette — intuitive per-metric colors (Shopify/Cuvo inspired)
+  const C = {
+    revenue: "#2563eb",   // indigo blue
+    mrr: "#7c3aed",       // violet
+    active: "#0ea5e9",    // sky
+    sessions: "#8b5cf6",  // soft violet
+    aov: "#f59e0b",       // amber
+    sla: "#0d9488",       // teal
+    approval: "#10b981",  // emerald (with band)
+    refill: "#7c3aed",    // violet
+    charges: "#2563eb",   // blue bars
+    failed: "#ee7273",    // coral
+    recovered: "#10b981", // emerald
+    traffic: "#7c3aed",
+  };
+
   const mrrSegments = [
-    { label: "New", value: 11400, color: "#ee7273" },
-    { label: "Expansion", value: 3500, color: "#171717" },
-    { label: "Reactivated", value: 1500, color: "#c4a265" },
-    { label: "Contraction", value: 1800, color: "#8b9bb4" },
-    { label: "Churn", value: 3300, color: "#dc3545" },
+    { label: "New", value: 11400, color: "#7c3aed" },
+    { label: "Expansion", value: 3500, color: "#2563eb" },
+    { label: "Reactivated", value: 1500, color: "#10b981" },
+    { label: "Contraction", value: 1800, color: "#f59e0b" },
+    { label: "Churn", value: 3300, color: "#ee7273" },
   ];
 
   const failedTotal = pay.failed.reduce((a, b) => a + b, 0);
