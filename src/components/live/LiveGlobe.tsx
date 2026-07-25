@@ -1,10 +1,12 @@
 import createGlobe from "cobe";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { DOT_RULES } from "./dotRules";
-import type { LiveSession } from "@/hooks/useLiveSessions";
+import { DOT_RULES, HQ } from "./dotRules";
+import type { LiveSession, PurchaseEvent } from "@/hooks/useLiveSessions";
+import PulseOverlay, { type ProjectFn } from "./PulseOverlay";
 
 type Props = {
   sessions: LiveSession[];
+  purchaseEvents: PurchaseEvent[];
   focus?: { lat: number; lng: number } | null;
   className?: string;
 };
@@ -16,7 +18,26 @@ function locationToAngles(lat: number, lng: number): [number, number] {
   return [Math.PI - ((lng * Math.PI) / 180 - Math.PI / 2), (lat * Math.PI) / 180];
 }
 
-export default function LiveGlobe({ sessions, focus, className }: Props) {
+// World unit vector → camera-space [x2, y2, z2] using current phi/theta.
+function projectLatLng(lat: number, lng: number, phi: number, theta: number) {
+  const latR = (lat * Math.PI) / 180;
+  const lngR = (lng * Math.PI) / 180;
+  const wx = Math.cos(latR) * Math.cos(lngR);
+  const wy = Math.sin(latR);
+  const wz = Math.cos(latR) * Math.sin(lngR);
+  const cosP = Math.cos(phi);
+  const sinP = Math.sin(phi);
+  const x1 = wx * cosP - wz * sinP;
+  const z1 = wx * sinP + wz * cosP;
+  const y1 = wy;
+  const cosT = Math.cos(theta);
+  const sinT = Math.sin(theta);
+  const y2 = y1 * cosT - z1 * sinT;
+  const z2 = y1 * sinT + z1 * cosT;
+  return { x2: x1, y2, z2 };
+}
+
+export default function LiveGlobe({ sessions, purchaseEvents, focus, className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null);
@@ -31,9 +52,10 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
   const pointer = useRef<{ x: number; y: number } | null>(null);
   const sessionsRef = useRef(sessions);
   sessionsRef.current = sessions;
+  const purchaseRef = useRef(purchaseEvents);
+  purchaseRef.current = purchaseEvents;
 
   const [tooltip, setTooltip] = useState<Tooltip>(null);
-  const [size, setSize] = useState({ w: 0, h: 0 });
 
   // Focus interp
   useEffect(() => {
@@ -44,7 +66,7 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
     lastInteract.current = Date.now();
   }, [focus]);
 
-  // Build/resize globe
+  // Build / resize globe
   useEffect(() => {
     const canvas = canvasRef.current;
     const wrap = wrapperRef.current;
@@ -56,7 +78,6 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
       const rect = wrap.getBoundingClientRect();
       const w = Math.max(320, rect.width);
       const h = Math.max(320, rect.height);
-      setSize({ w, h });
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = w * dpr;
       canvas.height = h * dpr;
@@ -64,7 +85,6 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
       canvas.style.height = `${h}px`;
 
       globeRef.current?.destroy();
-      // cobe supports onRender at runtime; not in its .d.ts, so we cast.
       globeRef.current = createGlobe(canvas, {
         devicePixelRatio: dpr,
         width: w * dpr,
@@ -72,15 +92,15 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
         phi: phi.current,
         theta: theta.current,
         dark: 0,
-        diffuse: 1.15,
+        diffuse: 1.2,
         scale: scale.current,
-        mapSamples: 16000,
-        mapBrightness: 5.6,
-        baseColor: [0.98, 0.99, 1.0],
+        mapSamples: 22000,
+        mapBrightness: 8.5,
+        baseColor: [0.965, 0.97, 0.985],
         markerColor: [0.145, 0.388, 0.921],
-        glowColor: [0.86, 0.9, 0.98],
+        glowColor: [0.90, 0.93, 1.0],
         markers: [],
-        opacity: 0.98,
+        opacity: 1,
         onRender: (state: Record<string, unknown>) => {
           const now = Date.now();
           const idleFor = now - lastInteract.current;
@@ -106,12 +126,14 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
           state.theta = theta.current;
           state.scale = scale.current;
 
+          // Markers — per-session color + pulse
           state.markers = sessionsRef.current.map((s) => {
             const rule = DOT_RULES[s.stage];
-            const sz = rule.pulse
-              ? rule.size * (1 + 0.35 * Math.sin(now / 300))
-              : rule.size;
-            return { location: [s.lat, s.lng] as [number, number], size: sz };
+            const sz = rule.pulse ? rule.size * (1 + 0.35 * Math.sin(now / 300)) : rule.size;
+            return {
+              location: [s.lat, s.lng] as [number, number],
+              size: sz,
+            };
           });
         },
       } as Parameters<typeof createGlobe>[1]);
@@ -132,13 +154,40 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
     };
   }, []);
 
-  // Pointer interactions
+  // Pointer handlers
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     drag.current = { x: e.clientX, y: e.clientY, phi: phi.current, theta: theta.current };
     targetPhi.current = null;
     targetTheta.current = null;
     lastInteract.current = Date.now();
+  }, []);
+
+  const hitTest = useCallback(() => {
+    const wrap = wrapperRef.current;
+    const p = pointer.current;
+    if (!wrap || !p) return;
+    const { width, height } = wrap.getBoundingClientRect();
+    const cx = width / 2;
+    const cy = height / 2;
+    const r = (Math.min(width, height) / 2) * scale.current * 0.92;
+
+    let best: { d: number; sx: number; sy: number; session: LiveSession } | null = null;
+    for (const s of sessionsRef.current) {
+      const { x2, y2, z2 } = projectLatLng(s.lat, s.lng, phi.current, theta.current);
+      if (z2 < 0.02) continue;
+      const sx = cx + x2 * r;
+      const sy = cy - y2 * r;
+      const dx = sx - p.x;
+      const dy = sy - p.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      const hit = DOT_RULES[s.stage].size * 220;
+      if (d < Math.max(10, hit)) {
+        if (!best || d < best.d) best = { d, sx, sy, session: s };
+      }
+    }
+    if (best) setTooltip({ x: best.sx, y: best.sy, session: best.session });
+    else setTooltip((prev) => (prev ? null : prev));
   }, []);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
@@ -155,7 +204,7 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
       theta.current = drag.current.theta - dy / 200;
       lastInteract.current = Date.now();
     }
-  }, []);
+  }, [hitTest]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
@@ -178,69 +227,24 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
     lastInteract.current = Date.now();
   }, []);
 
-  // Project [lat,lng] to screen for hover hit test
-  const hitTest = useCallback(() => {
+  // Overlay projector — called every frame from PulseOverlay
+  const project: ProjectFn = useCallback((lat, lng) => {
     const wrap = wrapperRef.current;
-    const p = pointer.current;
-    if (!wrap || !p) return;
+    if (!wrap) return null;
     const { width, height } = wrap.getBoundingClientRect();
     const cx = width / 2;
     const cy = height / 2;
     const r = (Math.min(width, height) / 2) * scale.current * 0.92;
-
-    // Camera basis derived from current phi/theta (COBE-style)
-    const phiC = phi.current;
-    const thC = theta.current;
-
-    // Convert each session to camera-space [x, y, z]
-    let best: { d: number; sx: number; sy: number; session: LiveSession } | null = null;
-    for (const s of sessionsRef.current) {
-      const latR = (s.lat * Math.PI) / 180;
-      const lngR = (s.lng * Math.PI) / 180;
-
-      // World unit vector on sphere
-      const wx = Math.cos(latR) * Math.cos(lngR);
-      const wy = Math.sin(latR);
-      const wz = Math.cos(latR) * Math.sin(lngR);
-
-      // Rotate around Y (phi) then around X (theta)
-      const cosP = Math.cos(phiC);
-      const sinP = Math.sin(phiC);
-      const x1 = wx * cosP - wz * sinP;
-      const z1 = wx * sinP + wz * cosP;
-      const y1 = wy;
-
-      const cosT = Math.cos(thC);
-      const sinT = Math.sin(thC);
-      const y2 = y1 * cosT - z1 * sinT;
-      const z2 = y1 * sinT + z1 * cosT;
-      const x2 = x1;
-
-      // Front-facing? z2 > 0 means towards camera in this convention
-      if (z2 < 0.02) continue;
-
-      const sx = cx + x2 * r;
-      const sy = cy - y2 * r;
-      const dx = sx - p.x;
-      const dy = sy - p.y;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      const hit = DOT_RULES[s.stage].size * 220; // in px, approx
-      if (d < Math.max(10, hit)) {
-        if (!best || d < best.d) best = { d, sx, sy, session: s };
-      }
-    }
-    if (best) {
-      setTooltip({ x: best.sx, y: best.sy, session: best.session });
-    } else {
-      setTooltip((prev) => (prev ? null : prev));
-    }
+    const { x2, y2, z2 } = projectLatLng(lat, lng, phi.current, theta.current);
+    if (z2 < -0.05) return null; // behind globe
+    return { x: cx + x2 * r, y: cy - y2 * r, visible: z2 > 0.02 };
   }, []);
 
   return (
     <div
       ref={wrapperRef}
       className={`relative select-none ${className ?? ""}`}
-      style={{ touchAction: "none" }}
+      style={{ touchAction: "none", background: "linear-gradient(180deg,#fafbff 0%,#f5f7fb 100%)" }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -248,6 +252,9 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
       onWheel={onWheel}
     >
       <canvas ref={canvasRef} style={{ cursor: drag.current ? "grabbing" : "grab" }} />
+
+      {/* Pulse rings + arcs (SVG overlay that sticks to globe as it rotates) */}
+      <PulseOverlay project={project} purchaseEvents={purchaseEvents} hqLat={HQ.lat} hqLng={HQ.lng} />
 
       {/* Tooltip */}
       {tooltip && (
@@ -268,21 +275,11 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
 
       {/* Zoom controls */}
       <div className="absolute bottom-3 right-3 flex flex-col overflow-hidden rounded-md border border-ink/10 bg-white/90 shadow-sm backdrop-blur">
-        <button
-          type="button"
-          onClick={() => zoom(0.2)}
-          aria-label="Zoom in"
-          className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]"
-        >
+        <button type="button" onClick={() => zoom(0.2)} aria-label="Zoom in" className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]">
           <span className="text-sm leading-none">+</span>
         </button>
         <div className="h-px w-full bg-ink/10" />
-        <button
-          type="button"
-          onClick={() => zoom(-0.2)}
-          aria-label="Zoom out"
-          className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]"
-        >
+        <button type="button" onClick={() => zoom(-0.2)} aria-label="Zoom out" className="grid h-7 w-7 place-items-center text-ink/70 hover:bg-ink/[0.04]">
           <span className="text-sm leading-none">−</span>
         </button>
       </div>
@@ -290,23 +287,18 @@ export default function LiveGlobe({ sessions, focus, className }: Props) {
       {/* Legend */}
       <div className="absolute bottom-3 left-3 flex items-center gap-3 rounded-md border border-ink/10 bg-white/85 px-2.5 py-1 text-[10.5px] font-medium text-ink/70 shadow-sm backdrop-blur">
         <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.browsing.hex }} />
-          Visitors
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.browsing.hex }} /> Visitors
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.checkout.hex }} />
-          Checkout
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.cart.hex }} /> Intake
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.purchased.hex }} />
-          Orders
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.checkout.hex }} /> Checkout
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: DOT_RULES.purchased.hex }} /> Orders
         </span>
       </div>
-
-      {/* size sentinel for a11y (unused but avoids TS complaint) */}
-      <span className="sr-only">
-        Globe {size.w}x{size.h}
-      </span>
     </div>
   );
 }

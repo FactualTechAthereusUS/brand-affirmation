@@ -13,16 +13,34 @@ export type LiveSession = {
   country: string;
   countryCode: string;
   label: string;
-  seenAt: number;   // last heartbeat / stage advance
-  bornAt: number;   // first-seen — drives "time on site"
+  seenAt: number;
+  bornAt: number;
 };
 
-const LIVE_MS = 60_000;         // browsing/cart/checkout expire after 60s idle
-const PURCHASED_MS = 300_000;   // purchases linger 5 min
+export type PurchaseEvent = {
+  id: string;
+  lat: number;
+  lng: number;
+  city: string;
+  country: string;
+  amount: number;
+  program: "Semaglutide" | "Tirzepatide" | "Tretinoin" | "Finasteride";
+  at: number;
+};
+
+const LIVE_MS = 60_000;
+const PURCHASED_MS = 300_000;
+const PULSE_EVENT_TTL = 8_000; // halo ring stays 8s
 const STAGE_ORDER: Stage[] = ["browsing", "cart", "checkout", "purchased"];
 
-// Deterministic-ish PRNG so first paint doesn't flicker between server/client.
-// (This hook runs client-only, but we still want stable-feeling numbers per tick.)
+const PROGRAMS: PurchaseEvent["program"][] = ["Semaglutide", "Tirzepatide", "Tretinoin", "Finasteride"];
+const PRICE_BY_PROGRAM: Record<PurchaseEvent["program"], number[]> = {
+  Semaglutide:  [249, 279, 299, 349],
+  Tirzepatide:  [349, 399, 449, 499],
+  Tretinoin:    [39, 49, 59],
+  Finasteride:  [29, 39, 49],
+};
+
 function mulberry32(seed: number) {
   let a = seed >>> 0;
   return () => {
@@ -34,8 +52,11 @@ function mulberry32(seed: number) {
   };
 }
 
-const jitter = (n: number, spread: number, rnd: () => number) =>
-  n + (rnd() - 0.5) * spread;
+const jitter = (n: number, spread: number, rnd: () => number) => n + (rnd() - 0.5) * spread;
+
+function pick<T>(arr: T[], rnd: () => number): T {
+  return arr[Math.floor(rnd() * arr.length)];
+}
 
 function makeSession(city: City, stage: Stage, rnd: () => number): LiveSession {
   const id = `s_${Math.floor(rnd() * 1e12).toString(36)}`;
@@ -57,19 +78,18 @@ function makeSession(city: City, stage: Stage, rnd: () => number): LiveSession {
 
 function seed(rnd: () => number): LiveSession[] {
   const list: LiveSession[] = [];
-  // Weight distribution: skew US, add international sprinkle.
-  const weightMap: Record<string, number> = { US: 5, CA: 2, GB: 2, DE: 1, FR: 1, AU: 1, JP: 1, IN: 1 };
+  const weightMap: Record<string, number> = { US: 6, CA: 2, GB: 2, DE: 1, FR: 1, AU: 1, JP: 1, IN: 1 };
   const bag: City[] = [];
   for (const c of CITIES) {
     const w = weightMap[c.countryCode] ?? 1;
     for (let i = 0; i < w; i++) bag.push(c);
   }
-  const total = 82;
+  const total = 96;
   for (let i = 0; i < total; i++) {
     const city = bag[Math.floor(rnd() * bag.length)];
-    // Distribution: 62% browsing, 20% cart, 12% checkout, 6% purchased
     const p = rnd();
-    const stage: Stage = p < 0.62 ? "browsing" : p < 0.82 ? "cart" : p < 0.94 ? "checkout" : "purchased";
+    // 60% browsing, 22% intake, 12% checkout, 6% purchased
+    const stage: Stage = p < 0.60 ? "browsing" : p < 0.82 ? "cart" : p < 0.94 ? "checkout" : "purchased";
     list.push(makeSession(city, stage, rnd));
   }
   return list;
@@ -92,6 +112,7 @@ export type ByLocationRow = {
 export function useLiveSessions() {
   const rndRef = useRef(mulberry32(0xB1_15_51_EE));
   const [sessions, setSessions] = useState<LiveSession[]>(() => seed(rndRef.current));
+  const [purchaseEvents, setPurchaseEvents] = useState<PurchaseEvent[]>([]);
   const [focus, setFocus] = useState<{ lat: number; lng: number } | null>(null);
   const focusTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -101,13 +122,14 @@ export function useLiveSessions() {
     focusTimer.current = setTimeout(() => setFocus(null), holdMs);
   }, []);
 
-  // Tick: birth, advance, expire.
+  // Session tick: birth / heartbeat / stage-advance / expire
   useEffect(() => {
     const id = setInterval(() => {
       const rnd = rndRef.current;
       const now = Date.now();
+      let firedPurchase: PurchaseEvent | null = null;
+
       setSessions((prev) => {
-        // Expire
         let next = prev.filter((s) => isLive(s, now));
 
         // Birth 0–2
@@ -117,21 +139,51 @@ export function useLiveSessions() {
           next.push(makeSession(city, "browsing", rnd));
         }
 
-        // Advance 1–3 sessions forward
+        // Advance 1–3
         const advances = 1 + Math.floor(rnd() * 3);
         for (let i = 0; i < advances && next.length; i++) {
           const idx = Math.floor(rnd() * next.length);
           const s = next[idx];
           const currIdx = STAGE_ORDER.indexOf(s.stage);
-          if (currIdx < STAGE_ORDER.length - 1 && rnd() > 0.35) {
-            next[idx] = { ...s, stage: STAGE_ORDER[currIdx + 1], seenAt: now };
+          if (currIdx < STAGE_ORDER.length - 1 && rnd() > 0.4) {
+            const nextStage = STAGE_ORDER[currIdx + 1];
+            next[idx] = { ...s, stage: nextStage, seenAt: now };
+            if (nextStage === "purchased" && !firedPurchase) {
+              const program = pick(PROGRAMS, rnd);
+              firedPurchase = {
+                id: `p_${Math.floor(rnd() * 1e12).toString(36)}`,
+                lat: s.lat,
+                lng: s.lng,
+                city: s.city,
+                country: s.country,
+                amount: pick(PRICE_BY_PROGRAM[program], rnd),
+                program,
+                at: now,
+              };
+            }
           } else {
-            next[idx] = { ...s, seenAt: now }; // heartbeat
+            next[idx] = { ...s, seenAt: now };
           }
         }
         return next;
       });
+
+      if (firedPurchase) {
+        setPurchaseEvents((prev) => [...prev.filter((e) => now - e.at < PULSE_EVENT_TTL), firedPurchase!]);
+      }
     }, 1500);
+    return () => clearInterval(id);
+  }, []);
+
+  // Prune expired purchase events every 500ms so overlay stays clean
+  useEffect(() => {
+    const id = setInterval(() => {
+      const now = Date.now();
+      setPurchaseEvents((prev) => {
+        const kept = prev.filter((e) => now - e.at < PULSE_EVENT_TTL);
+        return kept.length === prev.length ? prev : kept;
+      });
+    }, 500);
     return () => clearInterval(id);
   }, []);
 
@@ -167,5 +219,5 @@ export function useLiveSessions() {
     return Array.from(map.values()).sort((a, b) => b.n - a.n);
   }, [sessions]);
 
-  return { sessions, counts, byLocation, focus, focusOn };
+  return { sessions, purchaseEvents, counts, byLocation, focus, focusOn };
 }
