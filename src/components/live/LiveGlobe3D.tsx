@@ -71,9 +71,11 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
     let cancelled = false;
     (async () => {
       const mod = await import("world-atlas/countries-110m.json");
-      // Cast through unknown for topojson shape
-      const topo = (mod.default ?? mod) as unknown as Parameters<typeof feature>[0];
-      const fc = feature(topo, (topo as { objects: { countries: unknown } }).objects.countries as never) as unknown as FeatureCollection;
+      const topoRaw = (mod as { default?: unknown }).default ?? mod;
+      const topo = topoRaw as unknown as Parameters<typeof feature>[0] & {
+        objects: { countries: Parameters<typeof feature>[1] };
+      };
+      const fc = feature(topo, topo.objects.countries) as unknown as FeatureCollection;
       if (!cancelled) setLandFeatures(fc.features);
     })();
     return () => { cancelled = true; };
