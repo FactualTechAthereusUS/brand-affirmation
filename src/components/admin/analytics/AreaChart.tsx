@@ -90,7 +90,7 @@ export function AreaChart({
   const [w, setW] = useState(0);
   const [hover, setHover] = useState<{ i: number; px: number; py: number } | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!wrap.current) return;
     const el = wrap.current;
     const update = () => setW(el.clientWidth);
