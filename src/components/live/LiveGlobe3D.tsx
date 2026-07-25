@@ -422,17 +422,16 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
 
       {tooltip && (
         <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-ink/10 bg-white px-2 py-1 text-[11px] font-medium text-ink shadow-[0_8px_24px_-8px_rgba(0,0,0,0.25)]"
+          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-ink/10 bg-white px-2.5 py-1.5 text-[11px] font-medium text-ink shadow-[0_8px_24px_-8px_rgba(0,0,0,0.25)]"
           style={{ left: tooltip.x, top: tooltip.y - 12 }}
         >
-          <span
-            className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            style={{ background: tooltipHex }}
-          />
-          <span className="align-middle">{tooltip.session.city}</span>
-          <span className="ml-1.5 align-middle text-ink/45">
-            · {DOT_RULES[tooltip.session.stage].label}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: tooltipHex }} />
+            <span>{tooltip.session.country} · {tooltip.session.region} · {tooltip.session.city}</span>
+          </div>
+          <div className="mt-0.5 text-[10px] font-normal text-ink/45">
+            {DOT_RULES[tooltip.session.stage].label} · {new Date(tooltip.session.seenAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+          </div>
         </div>
       )}
 
