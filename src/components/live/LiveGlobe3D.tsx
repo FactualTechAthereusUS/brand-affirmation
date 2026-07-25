@@ -279,11 +279,12 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
       let el = markerElsRef.current.get(s.id);
       if (!el) {
         el = document.createElement("div");
-        el.className = "absolute pointer-events-auto -translate-x-1/2 -translate-y-1/2";
+        el.className = "absolute pointer-events-none -translate-x-1/2 -translate-y-1/2";
         el.style.willChange = "transform, opacity";
         markerElsRef.current.set(s.id, el);
         holder.appendChild(el);
       }
+
       const rule = DOT_RULES[s.stage];
       const proj = projectFrame(s.lat, s.lng);
       if (!proj) continue;
