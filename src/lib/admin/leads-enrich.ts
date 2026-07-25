@@ -107,7 +107,7 @@ export function selectLeads(s: Pick<AdminState, "leads">, p: LeadListParams) {
     if (p.statusTab !== "all" && l.status !== p.statusTab) return false;
     if (!matchSegment(l, p.segment)) return false;
     if (q) {
-      const hay = `${l.name} ${l.email} ${l.phone} ${l.state} ${l.program} ${l.attribution.source} ${l.attribution.campaign}`.toLowerCase();
+      const hay = `${l.name} ${l.email} ${l.phone} ${l.state} ${l.program} ${l.attribution?.source ?? ""} ${l.attribution?.campaign ?? ""}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
