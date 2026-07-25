@@ -1341,6 +1341,10 @@ export const adminActions = {
       preview: "New conversation",
       updatedAt: Date.now(),
       messages: [],
+      program: p.program,
+      ltv: p.ltv,
+      startedAt: p.startedAt,
+      internalNote: "",
     };
     set((s) => ({ conversations: [convo, ...s.conversations] }));
     return id;
