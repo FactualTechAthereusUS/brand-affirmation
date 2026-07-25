@@ -1,100 +1,94 @@
 ## Goal
 
-Match Shopify Live View interaction feel for both the 3D globe and 2D map, and swap the KPI stack from Shopify's ecom metrics to a Blissley telehealth set. Keep the current palette (indigo / violet / sky / emerald / amber) and full-bleed layout.
+Unify the entire `/admin/*` surface (shell, nav, home, patients, physician queue, pharmacy, orders, payments, messages, leads, check-ins, reports, integrations, team, settings, live view, and all analytics subpages) under the same visual system already used on `/admin/analytics`: a light Shopify-gray canvas with a semantic indigo/violet/sky/amber/emerald data palette. The public marketing site, intake, sales, checkout, portal, and physician portal remain untouched.
 
-## What Shopify actually does (from the HTML dump + reference shots)
+## Design System (admin-only)
 
-- **Globe (3D):** rotates continuously at a slow idle spin; on `pointerdown` the spin pauses and the sphere follows the cursor 1:1 (lat/lng delta from drag); on release, angular velocity decays with momentum (exponential ease-out) then idle spin resumes. Wheel scroll zooms the camera dolly between a min/max radius; double-click zooms in one step. Hovering a pin raises it, shows an HTML tooltip anchored to the projected screen position with `Country · Region · City · h:mm a` and the event type. New "purchase" events emit a short expanding ring + a bright pulse.
-- **Map (2D):** standard Google Maps drag/zoom, but markers are custom DOM overlays. Hover on a marker opens the same tooltip card; a purchase drops an emerald ripple that fades over ~1.4s. Keyboard: `+ / -` zoom, arrow keys pan, `G` switch to globe, `M` switch to map, `S` toggle streamer mode (mask city labels + patient initials).
-- **Header chrome:** "Live · updated Ns ago · auto-refresh 20s", Streamer toggle, Globe/Map toggle, Fullscreen.
-- **Sidebar:** KPI grid (2×2) with sparkline + Δ% chip, funnel bar, sessions by location, new vs returning, sales by product.
+Introduce a scoped token set that only applies inside the admin shell. No global `styles.css` recolor — we don't want to bleed into the marketing/portal surfaces.
 
-## Telehealth-native KPI set (replaces Shopify's ecom set)
+```text
+Canvas      #f6f6f7   page background
+Surface     #ffffff   cards
+Hairline    #e5e7eb   borders / dividers
+Ink         #0f172a   primary text (slate-900)
+Muted       #475569   secondary text (slate-600)
+Faint       #94a3b8   tertiary / labels
 
-Live counter — 2×2 primary tiles (hourly today vs previous period, Δ%):
+Data palette (semantic, matches /analytics)
+  Revenue    #2563eb  indigo-600
+  MRR        #7c3aed  violet-600
+  Active     #0ea5e9  sky-500
+  AOV        #f59e0b  amber-500
+  Retention  #10b981  emerald-500
+  Warning    #f59e0b
+  Danger     #ee7273  (kept — brand coral, doubles as churn/failed)
+  Positive   #10b981
 
-1. **Visitors right now** — pulse dot, last 5 min unique visitors.
-2. **Consults started** — intake forms opened in last 5 min (replaces "Total sales" as the top-of-funnel live pulse).
-3. **Rx approved** — prescriptions signed by physicians (live, rolling 24h).
-4. **Revenue today** — gross paid orders today, $ with Δ% vs yesterday.
+Accent (primary action, links, active nav)
+  Primary    #2563eb  indigo-600
+  Primary/hover  #1d4ed8
+```
 
-Secondary strip (compact tiles under the 2×2):
+Density stays tight (12–13px body, 22px section titles, tabular-nums for all metrics), radius `rounded-xl` on cards, `rounded-lg` on controls, subtle `shadow-[0_1px_0_rgba(15,23,42,0.04)]` on cards — same feel as `/admin/analytics`.
 
-5. **Avg physician response** — minutes, target <15m, green if under.
-6. **Refills due 7d** — count with a mini bar.
-7. **Approval rate 24h** — % approved of reviewed cases.
+## Approach
 
-Funnel bar (replaces "Patient behavior"):
+Rather than sweeping every route in isolation, we retheme the **shell + shared primitives** so most pages inherit the new look automatically, then do targeted passes for the pages that use inline hex/legacy tokens.
 
-- **In intake → Awaiting physician → Approved → Shipped** (indigo → violet → emerald → sky) with live counts.
+### Step 1 — Shell + primitives (biggest visual lift)
 
-Lists:
+Update `src/components/admin/AdminShell.tsx`:
+- Page background: `bg-[#f6f6f7]` (was `bg-white`).
+- Sidebar: `bg-white` with `border-r border-[#e5e7eb]`; active nav item uses `bg-indigo-50 text-indigo-700` with a 2px indigo left rail; inactive `text-slate-600`.
+- Topbar: white with `border-b border-[#e5e7eb]`; search chip `bg-[#f1f2f4]`; primary "Create" button `bg-indigo-600 text-white hover:bg-indigo-700`; avatar circle indigo.
+- Role chip / onboarding card: white surface, indigo progress fill.
+- `Card` primitive: `bg-white border border-[#e5e7eb] rounded-xl shadow-[0_1px_0_rgba(15,23,42,0.04)]`.
+- `SectionTitle`: slate-900 title, slate-500 subtitle.
 
-- **Sessions by location** (unchanged, indigo bars).
-- **New vs returning patients** — single stacked bar (violet / emerald).
-- **Revenue by program** — Weight loss, Hair, Sleep, Skin, Sexual Health (amber → emerald gradient bars, top 5).
+Update `src/components/admin/KpiCard.tsx`:
+- Tone map → `positive: emerald-600`, `warn: amber-600`, `critical: coral #ee7273`, default slate.
+- Sparkline stroke follows tone.
 
-All series driven by `useLiveSessions.ts` (extended) — deterministic hourly buckets today + previous period so Δ% is stable across renders.
+Update `src/components/admin/Sparkline.tsx`, `PipelineStrip.tsx`, `PhysicianQueueStrip.tsx`, `PharmacyHealthCard.tsx`, `FunnelWaterfall.tsx`, `MrrMovementBar.tsx`, `ActivityFeed.tsx`, `TaskCenter.tsx`, `NotificationsBell.tsx`:
+- Replace `text-ink`, `text-ever`, `text-check`, `text-honey`, `bg-canvas`, `border-ink/…` with slate/indigo/emerald/amber/coral equivalents.
+- Any inline chart color (`#ee7273`, `#4a7c6f`, `#c4a265`, `#1D437B`) → analytics palette.
 
-## Interaction parity — implementation
+### Step 2 — Per-route pass (surgical find/replace)
 
-### `LiveGlobe3D.tsx`
+Same token remap applied route-by-route. Each route keeps its structure/content; only classes and hex constants change.
 
-- Idle auto-rotate at 0.15°/frame; pause on `pointerdown`, resume 800ms after `pointerup`.
-- Drag: convert pointer Δx/Δy to yaw/pitch (pitch clamped ±80°); track velocity in a small ring buffer.
-- Momentum: on release, apply last velocity, decay by `v *= 0.94` per frame until below threshold.
-- Wheel: zoom camera Z between 180–420 (min/max), ease with lerp.
-- Double-click: tween to `focus(lat,lng)` at zoom 220 over 700ms (cubic-bezier).
-- Hover: raycast HTML markers; show tooltip `Country · Region · City · h:mm a · <event>` anchored via screen projection; scale the pin 1→1.4 with a coral halo ring.
-- New purchase: spawn a 900ms expanding torus ring at the pin (emerald) + pulse.
-- Streamer mode: replace city label with `••••••` and initials with `••`.
+- `admin.index.tsx` (Home): KPI grid → new tones; pipeline / task center / activity feed inherit from Step 1.
+- `admin.live.tsx`: already indigo/violet — just align the sidebar KPI cards, timeseries strokes, and streamer-mode chip to the token names for consistency.
+- `admin.patients.tsx` + `admin.patients.$id.tsx`: table hairlines slate-200, status pills use semantic tones (active=emerald, paused=amber, churned=coral, lead=sky), tabs get indigo underline.
+- `admin.physician-queue.tsx`, `admin.pharmacy.tsx`, `admin.check-ins.tsx`: swap sage/coral status chips for emerald/amber/coral; queue rail indigo.
+- `admin.orders.tsx`, `admin.payments.tsx`, `admin.leads.tsx`: fulfillment stages → indigo/sky/emerald; failed → coral; refunded → slate.
+- `admin.messages.tsx`: unread dot indigo, outbound bubble indigo-50/indigo-900, inbound slate-100.
+- `admin.reports.tsx` and every `admin.analytics.*` route: already correct — audit only, no changes expected beyond the shared components.
+- `admin.integrations.tsx`, `admin.team.tsx`, `admin.settings.tsx`, `admin.command.tsx`: form fields → slate borders + `focus:ring-indigo-500`, toggles indigo, danger buttons coral.
 
-### `LiveMap.tsx`
+### Step 3 — Responsive polish
 
-- Custom `OverlayView` markers keyed by session id (no marker churn on tick).
-- Hover: same tooltip card as globe (shared `<LivePinTooltip/>` component).
-- Purchase ripple: SVG circle animates r 6→28, opacity 0.6→0 over 1400ms.
-- Keyboard shortcuts: `+ / -` zoom, arrows pan (200px), `G/M` view toggle, `S` streamer, `F` fullscreen, `?` opens a shortcuts sheet.
-- Streamer mode: apply a Google Maps style that hides `locality`/`administrative_area_level_3` labels.
+- Sidebar collapses to icon-rail (64px) at `lg`, sheet drawer at `<lg` — already wired, verify contrast on new tokens.
+- KPI grids: `grid-cols-2 md:grid-cols-4 xl:grid-cols-5` where appropriate; tables get `overflow-x-auto` wrappers where missing.
+- Tap targets ≥ 36px on mobile; sticky topbar preserved.
 
-### `admin.live.tsx`
+### Step 4 — Verification
 
-- Add keyboard listener at route level (only when not typing in an input).
-- Update top bar: Streamer / Globe / Map / Fullscreen / `?` (shortcuts).
-- Sidebar swapped to the telehealth KPI stack above; funnel now 4 stages; add secondary strip + "Revenue by program".
+- `rg` for leftover `text-ink|text-ever|text-check|text-honey|bg-canvas|#ee7273|#4a7c6f|#c4a265|#1D437B` inside `src/routes/admin.*` and `src/components/admin/*` — expected result: only intentional coral (`#ee7273`) uses on danger/failed states.
+- Visual sweep of every admin route at desktop (1440), tablet (900), mobile (390) via Playwright screenshots.
+- Confirm marketing/intake/portal pages are visually unchanged.
 
-### `useLiveSessions.ts`
+## Out of scope
 
-- Add series for `consultsStarted`, `rxApproved`, `revenueToday`, `avgPhysicianResponseMin`, `approvalRatePct`, `refillsDue7d`.
-- Rolling counters:
-  - `visitorsNow` = unique visitor ids in last 5 min.
-  - `consultsLast5` = intake_started events in last 5 min.
-  - `rxApprovedLast24` = physician_signed events in last 24h.
-  - `revenueTodaySum` = order.total for events since local midnight.
-- 4-stage funnel counts from status: `intake` → `awaiting_physician` → `approved` → `shipped`.
-- Previous-period series generated with the same deterministic seed, offset by 24h, so every Δ% chip is stable.
+- No changes to `/`, `/weight-loss*`, `/intake*`, `/sales*`, `/checkout*`, `/confirmation*`, `/portal/*`, `/emails`, `/login*`, or legal pages.
+- No data-model, route, or auth changes — presentation only.
+- No new pages, no removed pages.
 
-## Demo variations to show
+## Deliverables
 
-After the build, verify at `/admin/live` with Playwright (viewport 1440×900):
+1. Retheme'd `AdminShell` + all shared `components/admin/*` primitives.
+2. Class/hex sweep across all 21 admin routes.
+3. Grep clean of legacy tokens inside admin scope.
+4. Screenshots (desktop/tablet/mobile) of Home, Patients, Physician Queue, Orders, Payments, Messages, Analytics Overview, Live View, Settings — attached in the reply.
 
-1. **Globe · idle spin + hover pin** — screenshot with tooltip open on a US pin, dashed previous-period line visible in KPI cards.
-2. **Globe · drag & momentum** — pointer drag from center-left to center-right, release, capture mid-decay.
-3. **Globe · purchase pulse** — inject a purchase event, capture the emerald ring at ~450ms.
-4. **Map · zoomed to US East Coast** — hover on New York pin, tooltip visible.
-5. **Streamer mode ON** — same map, city labels masked, patient names redacted in the activity feed.
-6. **Shortcuts sheet** — `?` overlay listing all keys.
-
-## Files touched
-
-- `src/hooks/useLiveSessions.ts` — extend telemetry with telehealth counters + 4-stage funnel.
-- `src/components/live/LivePinTooltip.tsx` *(new)* — shared tooltip used by globe + map.
-- `src/components/live/LiveGlobe3D.tsx` — idle spin, drag+momentum, wheel zoom, dbl-click focus, hover tooltip, purchase ring, streamer masking.
-- `src/components/live/LiveMap.tsx` — custom overlay markers, hover tooltip, purchase ripple, keyboard shortcuts, streamer style.
-- `src/components/live/LiveSidebar.tsx` — new KPI stack, 4-stage funnel, secondary strip, "Revenue by program".
-- `src/components/live/ShortcutsSheet.tsx` *(new)* — `?` overlay.
-- `src/routes/admin.live.tsx` — route-level keyboard handler, shortcuts button, top-bar wiring.
-
-Scope is presentation-only — no backend, no schema, no auth changes.  
-  
-rememebr u have to match it , but make sure it's as per our telehealth everything not just ecom, this is not for ecom but telehealth, so all the metrics and everyhting must be as per blissley and it's busienss model teleheltaht , so think asp er that and execute 
+Reply **"go"** and I'll execute Step 1 → Step 4 in order.
