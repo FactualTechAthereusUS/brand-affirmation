@@ -1,70 +1,112 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { toast } from "sonner";
-import { CheckCircle2, Plug } from "lucide-react";
-import { Card, BrandButton } from "@/components/pharmabro/BrandShell";
-import { pharmabroActions, useActiveBrand, type IntegrationKey } from "@/lib/pharmabro/store";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { ArrowRight } from "lucide-react";
+import { PageHeader, SettingsCard } from "@/components/admin/settings/primitives";
+import { StatusPill } from "@/components/admin/AdminShell";
+import { useAdmin, type Integration } from "@/lib/admin/store";
 
 export const Route = createFileRoute("/pharmabro-admin/settings/integrations")({
-  head: () => ({ meta: [{ title: "Integrations · Settings" }, { name: "robots", content: "noindex" }] }),
-  component: IntegrationsPage,
+  head: () => ({ meta: [{ title: "Integrations · Settings — Blissley HQ" }, { name: "robots", content: "noindex,nofollow" }] }),
+  component: IntegrationsSettings,
 });
 
-const CATALOG: { key: IntegrationKey; name: string; category: string; desc: string }[] = [
-  { key: "klaviyo", name: "Klaviyo", category: "Email", desc: "Sync patient events and email flows" },
-  { key: "metaPixel", name: "Meta Pixel", category: "Analytics", desc: "Track conversions from Facebook & Instagram ads" },
-  { key: "metaAds", name: "Meta Ads", category: "Advertising", desc: "Push conversion events to your ad account" },
-  { key: "ga4", name: "Google Analytics 4", category: "Analytics", desc: "Site & funnel analytics" },
-  { key: "googleAds", name: "Google Ads", category: "Advertising", desc: "Conversion tracking + CAPI" },
-  { key: "tiktok", name: "TikTok Ads", category: "Advertising", desc: "TikTok Pixel + Events API" },
-  { key: "mercury", name: "Mercury", category: "Banking", desc: "Payouts destination" },
-];
+const CRITICAL_NAMES = ["Stripe", "LifeFile EHR", "Dr Telx", "Klaviyo", "Mercury"];
+const ANALYTICS_NAMES = ["Meta Ads", "Meta Pixel / CAPI", "Google Analytics 4"];
 
-function IntegrationsPage() {
-  const brand = useActiveBrand();
+function statusTone(status: string): "success" | "warn" | "critical" | "neutral" {
+  if (status === "connected") return "success";
+  if (status === "degraded") return "warn";
+  if (status === "down") return "critical";
+  return "neutral";
+}
+
+function IntegrationsSettings() {
+  const integrations = useAdmin((s) => s.integrations);
+  const counts = useMemo(() => ({
+    connected:    integrations.filter((i) => i.status === "connected").length,
+    degraded:     integrations.filter((i) => i.status === "degraded").length,
+    down:         integrations.filter((i) => i.status === "down").length,
+    disconnected: integrations.filter((i) => i.status === "disconnected").length,
+  }), [integrations]);
+
+  const critical  = integrations.filter((i) => CRITICAL_NAMES.some((n) => i.name.includes(n) || n.includes(i.name)));
+  const analytics = integrations.filter((i) => ANALYTICS_NAMES.some((n) => i.name.includes(n) || n.includes(i.name)));
+
   return (
     <div className="space-y-4">
-      <Card className="p-4">
-        <div className="text-[13.5px] font-bold text-ink">Your integrations</div>
-        <p className="text-[12px] text-ink/55">Connect your own analytics, email, and ad accounts. PharmaBro-managed connections (Dr Telx, South End, LifeFile) are handled behind the scenes.</p>
-      </Card>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {CATALOG.map((c) => {
-          const state = brand.integrations[c.key];
-          return (
-            <Card key={c.key} className="p-4">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Plug className="h-4 w-4 text-ink/50" />
-                    <div className="text-[13.5px] font-bold text-ink">{c.name}</div>
-                  </div>
-                  <div className="mt-0.5 text-[10.5px] uppercase tracking-[0.1em] text-ink/45">{c.category}</div>
-                </div>
-                {state.connected && <CheckCircle2 className="h-4 w-4 text-emerald-500" />}
+      <PageHeader
+        title="Integrations"
+        description="Health summary. Manage all integrations from the marketplace."
+        action={
+          <Link to="/pharmabro-admin/integrations" className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12.5px] font-semibold text-white hover:bg-ink/90">
+            Open marketplace <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        }
+      />
+
+      <SettingsCard label="Status">
+        <div className="grid gap-3 sm:grid-cols-4">
+          {[
+            { k: "Connected",     v: counts.connected,    tone: "success" as const },
+            { k: "Degraded",      v: counts.degraded,     tone: "warn" as const },
+            { k: "Down",          v: counts.down,         tone: "critical" as const },
+            { k: "Not connected", v: counts.disconnected, tone: "neutral" as const },
+          ].map((s) => (
+            <div key={s.k} className="rounded-xl border border-ink/8 bg-[#faf9f6] p-3">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">{s.k}</div>
+              <div className="mt-1 flex items-center justify-between">
+                <div className="font-hero text-xl font-bold text-ink">{s.v}</div>
+                <StatusPill tone={s.tone}>{s.tone === "critical" ? "attention" : s.tone === "warn" ? "check" : s.tone === "success" ? "healthy" : "action"}</StatusPill>
               </div>
-              <p className="mt-2 text-[12px] text-ink/60">{c.desc}</p>
-              {state.connected ? (
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="text-[10.5px] text-ink/50">{state.account}</span>
-                  <button onClick={() => { pharmabroActions.disconnectIntegration(c.key); toast(`${c.name} disconnected`); }}
-                    className="rounded-full border border-ink/12 bg-white px-3 py-1 text-[11px] font-semibold text-rose-600">Disconnect</button>
-                </div>
-              ) : (
-                <BrandButton className="mt-3 w-full justify-center" onClick={() => { pharmabroActions.connectIntegration(c.key); toast.success(`${c.name} connected`); }}>Connect</BrandButton>
-              )}
-            </Card>
-          );
-        })}
-      </div>
-      <Card className="p-4">
-        <div className="text-[13.5px] font-bold text-ink">Managed by PharmaBro</div>
-        <p className="text-[12px] text-ink/55">These integrations are pre-connected across all brands — you don't manage them.</p>
-        <ul className="mt-2 space-y-1 text-[12.5px] text-ink/70">
-          <li>→ <b>South End Pharmacy</b> · fulfillment</li>
-          <li>→ <b>LifeFile</b> · e-prescribing</li>
-          <li>→ <b>Dr Telx</b> · physician network</li>
-        </ul>
-      </Card>
+            </div>
+          ))}
+        </div>
+      </SettingsCard>
+
+      <SettingsCard label="Critical infrastructure" description="Business cannot operate without these.">
+        <IntegrationList list={critical} />
+      </SettingsCard>
+
+      <SettingsCard label="Analytics">
+        <IntegrationList list={analytics} />
+      </SettingsCard>
     </div>
   );
+}
+
+function IntegrationList({ list }: { list: Integration[] }) {
+  if (!list.length) return <div className="text-[12.5px] text-ink/50">No matches in catalog.</div>;
+  return (
+    <div className="divide-y divide-ink/6">
+      {list.map((i) => (
+        <div key={i.id} className="flex items-center gap-3 py-3">
+          <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg" style={{ background: i.brand.logoUrl ? "transparent" : i.brand.color }}>
+            {i.brand.logoUrl
+              ? <img src={i.brand.logoUrl} alt="" className="h-10 w-10 object-contain" />
+              : <span className="text-[13px] font-bold text-white">{i.brand.mono}</span>}
+
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[13.5px] font-semibold text-ink">{i.name}</div>
+            <div className="truncate text-[11.5px] text-ink/55">{i.description}</div>
+          </div>
+          <StatusPill tone={statusTone(i.status)}>{i.status}</StatusPill>
+          <div className="hidden sm:block text-right text-[11px] text-ink/45 min-w-[110px]">
+            {i.lastSync ? `Sync · ${relative(i.lastSync)}` : "—"}
+          </div>
+          <Link to="/pharmabro-admin/integrations/$id" params={{ id: i.id }} className="rounded-full border border-ink/12 bg-white px-3 py-1.5 text-[11.5px] font-semibold text-ink/70 hover:border-ink/30 hover:text-ink">
+            Manage
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function relative(ts: number) {
+  const d = Date.now() - ts;
+  if (d < 60_000) return "just now";
+  if (d < 3600_000) return `${Math.round(d / 60_000)}m ago`;
+  if (d < 86400_000) return `${Math.round(d / 3600_000)}h ago`;
+  return `${Math.round(d / 86400_000)}d ago`;
 }

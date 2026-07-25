@@ -1,261 +1,495 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { motion } from "framer-motion";
+import { AdminShell, Card } from "@/components/admin/AdminShell";
+import { Sparkline } from "@/components/admin/Sparkline";
+import { AreaChart } from "@/components/admin/analytics/AreaChart";
+import { Donut } from "@/components/admin/analytics/Donut";
+import { TaskCenter } from "@/components/admin/TaskCenter";
 import {
-  CheckCircle2, Circle, ArrowRight, TrendingUp, TrendingDown,
-  Users, CreditCard, Package, AlertTriangle, Activity,
+  computeKpis,
+  mrrMovement,
+  revenueByProgram,
+  acquisitionMix,
+  useAdmin,
+} from "@/lib/admin/store";
+import {
+  todayRevenue,
+  revenueTrend,
+  newPatientsTrend,
+  ordersTrend,
+  conversionFunnel,
+  refillsDue,
+  datesTrend,
+  priorPeriodShift,
+} from "@/lib/admin/selectors";
+import {
+  DollarSign, TrendingUp, Users, ShoppingCart, RefreshCw,
+  Plus, CalendarClock, CreditCard, Search, ArrowRight, ChevronDown,
 } from "lucide-react";
-import { Card, PageHeader, Pill, SectionTitle, BrandButton } from "@/components/pharmabro/BrandShell";
-import { useActiveBrand, useActiveData } from "@/lib/pharmabro/store";
 
 export const Route = createFileRoute("/pharmabro-admin/")({
-  head: () => ({ meta: [{ title: "Home — Brand Admin" }, { name: "robots", content: "noindex" }] }),
-  component: HomePage,
+  head: () => ({
+    meta: [
+      { title: "Dashboard — Blissley" },
+      { name: "description", content: "Blissley operator console. Real-time patient, order, and revenue signals." },
+    ],
+  }),
+  component: AdminHome,
 });
 
-function HomePage() {
-  const brand = useActiveBrand();
-  const data = useActiveData();
+function AdminHome() {
+  const kpi = useAdmin(computeKpis);
+  const todayRev = useAdmin(todayRevenue);
+  const revTrend = useAdmin((s) => revenueTrend(s, 30));
+  const patientsTrend = useAdmin((s) => newPatientsTrend(s, 30));
+  const shipTrend = useAdmin((s) => ordersTrend(s, 30));
+  const funnel = useAdmin(conversionFunnel);
+  const refills = useAdmin(refillsDue);
+  const dts = useAdmin((s) => datesTrend(s, 30));
+  const revPrior = priorPeriodShift(revTrend, 8);
 
-  const kpis = useMemo(() => {
-    const activePatients = data.patients.filter((p) => p.status === "active").length;
-    const mrrCents = data.patients.filter((p) => p.status === "active").reduce((s, p) => s + p.mrrCents, 0);
-    const netRevenue = data.payments.filter((p) => p.status === "succeeded").reduce((s, p) => s + p.amountCents, 0);
-    const failed = data.payments.filter((p) => p.status === "failed").length;
-    const retention = activePatients > 0 ? Math.min(98, 82 + (activePatients % 15)) : 0;
-    return { activePatients, mrrCents, netRevenue, failed, retention };
-  }, [data]);
+  const waterfall = mrrMovement();
+  const programs = revenueByProgram();
+  const acq = acquisitionMix();
 
-  if (brand.stage === "onboarding") return <OnboardingHome />;
+  const mrrDelta = waterfall.reduce((a, i) => a + i.value, 0);
+
+  // Intuitive palette (matches /admin/analytics)
+  const C = {
+    revenue: "#2563eb",
+    mrr: "#7c3aed",
+    active: "#0ea5e9",
+    aov: "#f59e0b",
+    retention: "#10b981",
+  };
+
+  // Pipeline (fulfillment) status counts — derived visually consistent
+  const pipeline = [
+    { key: "review",   label: "In review",    count: 38, sub: "4 stuck · 36h", tone: "warn" as const },
+    { key: "approved", label: "Approved",     count: 17, sub: "On pace",       tone: "ok" as const },
+    { key: "pharm",    label: "At pharmacy",  count: 5,  sub: "2 stuck · 3d",  tone: "warn" as const },
+    { key: "shipped",  label: "Shipped",      count: 5,  sub: "1 stuck · 6d",  tone: "warn" as const },
+    { key: "delivered",label: "Delivered",    count: 23, sub: "Completed last 7d", tone: "ok" as const },
+  ];
 
   return (
-    <div className="space-y-4">
-      <PageHeader
-        title={`Good afternoon, ${brand.name}`}
-        subtitle="Here's what's happening across your business."
-      />
-
-      {/* KPI row */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <Kpi label="MRR" value={fmt(kpis.mrrCents)} delta="+12.4%" up icon={TrendingUp} />
-        <Kpi label="Net revenue (30d)" value={fmt(kpis.netRevenue)} delta="+8.1%" up icon={CreditCard} />
-        <Kpi label="Active patients" value={kpis.activePatients.toLocaleString()} delta="+3.2%" up icon={Users} />
-        <Kpi label="Failed payments" value={String(kpis.failed)} delta="-14%" up={false} icon={AlertTriangle} />
-        <Kpi label="Retention" value={`${kpis.retention}%`} delta="+1.1pp" up icon={Activity} />
+    <AdminShell>
+      {/* ─── Page header ─── */}
+      <div className="mb-4 flex items-baseline justify-between">
+        <h1 className="font-hero text-[15px] font-semibold text-ink/70">Dashboard</h1>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Revenue chart */}
-        <Card className="lg:col-span-2 p-4">
-          <SectionTitle subtitle="Revenue today + trailing 30 days">Revenue</SectionTitle>
-          <RevenueChart data={data.payments} primary={brand.theme.primary} />
-        </Card>
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        {/* ═══════════════ MAIN COLUMN ═══════════════ */}
+        <div className="min-w-0 space-y-4">
+          {/* Row 1 — Top KPIs */}
+          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 xl:grid-cols-5">
+            <KpiTile
+              label="Current MRR"
+              value={`$${kpi.mrr.toLocaleString()}`}
+              delta="+4.8%"
+              deltaTone="positive"
+              sub="Monthly recurring revenue"
+              icon={<DollarSign className="h-3.5 w-3.5" strokeWidth={1.75} />}
+              spark={revTrend}
+              sparkColor={C.mrr}
+            />
+            <KpiTile
+              label="Net Revenue"
+              value={`$${kpi.netRevenue.toLocaleString()}`}
+              delta="+8.2%"
+              deltaTone="positive"
+              sub="Last 30 days"
+              icon={<TrendingUp className="h-3.5 w-3.5" strokeWidth={1.75} />}
+              spark={revTrend}
+              sparkColor={C.revenue}
+            />
+            <KpiTile
+              label="Active Subscriptions"
+              value={kpi.activeCount.toLocaleString()}
+              delta="+38"
+              deltaTone="positive"
+              sub="2.1% churn this month"
+              icon={<Users className="h-3.5 w-3.5" strokeWidth={1.75} />}
+              spark={patientsTrend}
+              sparkColor={C.active}
+            />
+            <KpiTile
+              label="Avg Order Value"
+              value={`$${kpi.aov}`}
+              delta="-1.4%"
+              deltaTone="negative"
+              sub="Per completed order"
+              icon={<ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />}
+              spark={shipTrend}
+              sparkColor={C.aov}
+            />
+            <KpiTile
+              label="Retention Rate"
+              value={`${kpi.retention}%`}
+              delta="+1.4pt"
+              deltaTone="positive"
+              sub={`${18 - refills}/18 refilled this month`}
+              icon={<RefreshCw className="h-3.5 w-3.5" strokeWidth={1.75} />}
+              spark={patientsTrend}
+              sparkColor={C.retention}
+            />
+          </div>
 
-        {/* Task center */}
-        <Card className="p-4">
-          <SectionTitle subtitle="What needs your attention">Tasks</SectionTitle>
-          <ul className="space-y-2 text-[13px]">
-            <TaskRow label={`${data.cases.filter((c) => c.status === "queued").length} cases awaiting physician`} to="/pharmabro-admin/physician-queue" />
-            <TaskRow label={`${data.checkIns.filter((c) => c.status === "due").length} check-ins due`} to="/pharmabro-admin/check-ins" />
-            <TaskRow label={`${data.payments.filter((p) => p.status === "failed").length} failed payments to retry`} to="/pharmabro-admin/payments" />
-            <TaskRow label={`${data.conversations.filter((c) => c.unread > 0).length} unread messages`} to="/pharmabro-admin/messages" />
-          </ul>
-        </Card>
+          {/* Row 2 — Today's revenue · MRR movement · Revenue by program */}
+          <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-3">
+            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} stroke={C.revenue} />
+            <MrrMovementCard items={waterfall} delta={mrrDelta} />
+            <RevenueByProgramCard programs={programs} />
+          </div>
+
+          {/* Row 3 — Pipeline strip */}
+          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 xl:grid-cols-5">
+            {pipeline.map(({ key, ...p }, i) => (
+              <PipelineTile key={key} {...p} idx={i} />
+            ))}
+          </div>
+
+          {/* Row 4 — Actions (Task center) */}
+          <div>
+            <div className="mb-2 flex items-baseline justify-between">
+              <div>
+                <div className="font-hero text-[15px] font-semibold text-ink">Actions</div>
+                <div className="mt-0.5 text-[11.5px] text-ink/50">Prioritized tasks to keep operations moving</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="hidden items-center gap-1.5 rounded-md border border-ink/[0.08] px-2.5 py-1 text-[11.5px] text-ink/60 hover:border-ink/20 hover:text-ink sm:flex">
+                  <CalendarClock className="h-3 w-3" /> Customize Columns
+                </button>
+                <Link
+                  to="/pharmabro-admin/command"
+                  className="flex items-center gap-1 rounded-md bg-ink px-2.5 py-1 text-[11.5px] font-semibold text-white"
+                >
+                  View All <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+            </div>
+            <TaskCenter />
+          </div>
+        </div>
+
+        {/* ═══════════════ RIGHT RAIL ═══════════════ */}
+        <aside className="space-y-3">
+          <QuickActionsCard />
+          <PatientFunnelCard funnel={funnel} />
+          <AcquisitionCard mix={acq} />
+        </aside>
       </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        {/* Physician strip */}
-        <Card className="p-4">
-          <SectionTitle subtitle="Cases waiting on physician review">Physician queue</SectionTitle>
-          <PipelineStrip
-            stages={[
-              { label: "Queued", count: data.cases.filter((c) => c.status === "queued").length },
-              { label: "In review", count: 3 },
-              { label: "Approved today", count: 7 },
-              { label: "SLA breaches", count: data.cases.filter((c) => c.slaHrs < 0).length, tone: "warn" },
-            ]}
-            primary={brand.theme.primary}
-          />
-        </Card>
-        {/* Pharmacy strip */}
-        <Card className="p-4">
-          <SectionTitle subtitle="Fulfillment flowing through pharmacy partners">Pharmacy</SectionTitle>
-          <PipelineStrip
-            stages={[
-              { label: "Paid", count: data.orders.filter((o) => o.stage === "paid").length },
-              { label: "Picking", count: data.orders.filter((o) => o.stage === "pharmacy").length },
-              { label: "Shipped", count: data.orders.filter((o) => o.stage === "shipped").length },
-              { label: "Delivered", count: data.orders.filter((o) => o.stage === "delivered").length },
-            ]}
-            primary={brand.theme.primary}
-          />
-        </Card>
-      </div>
-
-      {/* Funnel */}
-      <Card className="p-4">
-        <SectionTitle subtitle="Landing → intake → checkout → paid → shipped">Patient funnel</SectionTitle>
-        <FunnelWaterfall primary={brand.theme.primary} scale={Math.max(1, Math.floor(data.patients.length / 40))} />
-      </Card>
-    </div>
+    </AdminShell>
   );
 }
 
-function Kpi({ label, value, delta, up, icon: Icon }: { label: string; value: string; delta: string; up: boolean; icon: typeof TrendingUp }) {
+/* ───────────────────────── KPI Tile ───────────────────────── */
+function KpiTile({
+  label, value, delta, deltaTone, sub, icon, spark, sparkColor,
+}: {
+  label: string;
+  value: string;
+  delta: string;
+  deltaTone: "positive" | "negative";
+  sub: string;
+  icon: React.ReactNode;
+  spark: number[];
+  sparkColor: string;
+}) {
   return (
-    <Card className="p-3">
-      <div className="flex items-center justify-between">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">{label}</span>
-        <Icon className="h-3.5 w-3.5 text-ink/40" strokeWidth={1.5} />
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="rounded-xl border border-ink/[0.08] bg-white p-3.5"
+    >
+      <div className="flex items-start justify-between gap-2">
+        <div className="text-[11px] font-medium text-ink/55">{label}</div>
+        <div className="text-ink/40">{icon}</div>
       </div>
-      <div className="mt-1.5 text-[22px] font-bold tracking-tight text-ink">{value}</div>
-      <div className={`mt-0.5 flex items-center gap-1 text-[11px] ${up ? "text-emerald-600" : "text-rose-600"}`}>
-        {up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-        {delta}
+      <div className="mt-2 flex items-baseline gap-2 tabular-nums">
+        <div className="font-hero text-[24px] font-semibold leading-none text-ink">{value}</div>
+        <div className={`text-[11px] font-medium ${deltaTone === "positive" ? "text-check" : "text-ever"}`}>
+          {deltaTone === "positive" ? "↗ " : "↘ "}{delta}
+        </div>
+      </div>
+      <div className="mt-1 text-[10.5px] text-ink/45">{sub}</div>
+      <div className="mt-2 h-7 w-full">
+        <Sparkline
+          data={spark}
+          stroke={sparkColor}
+          fill={`${sparkColor}1f`}
+          height={28}
+          className="h-7 w-full"
+        />
+      </div>
+    </motion.div>
+  );
+}
+
+/* ───────────────────────── Today's revenue ───────────────────────── */
+function TodayRevenueCard({ value, spark, prior, dates, stroke = "#2563eb" }: { value: number; spark: number[]; prior: number[]; dates: number[]; stroke?: string }) {
+  return (
+    <Card className="p-4">
+      <div className="flex items-baseline justify-between">
+        <div className="text-[11.5px] font-medium text-ink/55">Today's revenue</div>
+        <div className="text-[10.5px] text-ink/45">vs prior period</div>
+      </div>
+      <div className="mt-1.5 flex items-baseline gap-2 tabular-nums">
+        <div className="font-hero text-[26px] font-semibold text-ink">${value.toLocaleString()}</div>
+        <div className="text-[11px] font-medium text-check">↗ +12.4%</div>
+        <div className="text-[10.5px] text-ink/45">vs $2,776 yesterday</div>
+      </div>
+      <div className="mt-3">
+        <AreaChart
+          data={spark}
+          prior={prior}
+          dates={dates}
+          label="Revenue"
+          priorLabel="Prior 30d"
+          stroke={stroke}
+          height={180}
+          formatValue={(v) => `$${Math.round(v).toLocaleString()}`}
+          formatYTick={(v) => `$${Math.round(v / 1000)}K`}
+          yTicks={4}
+          xTicks={5}
+        />
       </div>
     </Card>
   );
 }
 
-function TaskRow({ label, to }: { label: string; to: string }) {
-  return (
-    <li>
-      <Link to={to} className="flex items-center justify-between rounded-lg px-2.5 py-2 hover:bg-ink/[0.03]">
-        <span className="text-ink/80">{label}</span>
-        <ArrowRight className="h-3.5 w-3.5 text-ink/40" />
-      </Link>
-    </li>
-  );
-}
+/* ───────────────────────── MRR movement (pixel strip) ───────────────────────── */
+function MrrMovementCard({ items, delta }: { items: { label: string; value: number; kind: "pos" | "neg" }[]; delta: number }) {
+  const total = items.reduce((a, i) => a + Math.abs(i.value), 0) || 1;
+  // Movement palette — matches Analytics MRR donut (New→Expansion→Reactivated→Contraction→Churn→Failed)
+  const posColors = ["#7c3aed", "#2563eb", "#10b981"]; // gained
+  const negColors = ["#f59e0b", "#ee7273", "#c93a3a"]; // lost
+  const colorFor = (idx: number, kind: "pos" | "neg") =>
+    kind === "pos" ? posColors[idx % posColors.length] : negColors[idx % negColors.length];
+  let pi = 0, ni = 0;
+  const withColor = items.map((it) => ({ ...it, color: it.kind === "pos" ? colorFor(pi++, "pos") : colorFor(ni++, "neg") }));
 
-function PipelineStrip({ stages, primary }: { stages: { label: string; count: number; tone?: "warn" }[]; primary: string }) {
-  const total = Math.max(1, stages.reduce((s, x) => s + x.count, 0));
   return (
-    <div>
-      <div className="flex gap-1.5 overflow-hidden rounded-lg bg-ink/5">
-        {stages.map((s, i) => (
-          <div key={i} className="h-2 rounded" style={{ width: `${(s.count / total) * 100}%`, background: s.tone === "warn" ? "#f59e0b" : primary, opacity: 1 - i * 0.15 }} />
-        ))}
+    <Card className="p-4">
+      <div className="flex items-baseline justify-between">
+        <div className="text-[11.5px] font-medium text-ink/55">MRR movement · 4w</div>
+        <div className="text-right text-[10px] leading-tight text-ink/45">
+          <div><span className="text-check">+$16.4K</span> gained</div>
+          <div><span className="text-ever">−$7K</span> lost</div>
+        </div>
       </div>
-      <div className="mt-3 grid grid-cols-4 gap-2 text-[11px]">
-        {stages.map((s, i) => (
-          <div key={i} className="text-center">
-            <div className="text-[18px] font-bold text-ink">{s.count}</div>
-            <div className="text-ink/50">{s.label}</div>
+      <div className={`mt-1.5 font-hero text-[26px] font-semibold tabular-nums ${delta >= 0 ? "text-check" : "text-ever"}`}>
+        {delta >= 0 ? "+" : "−"}${Math.abs(delta / 1000).toFixed(1)}K
+      </div>
+
+      {/* pixel bar */}
+      <div className="mt-3 flex h-4 gap-[2px] overflow-hidden rounded">
+        {withColor.map((it) => {
+          const w = (Math.abs(it.value) / total) * 100;
+          const pixels = Math.max(4, Math.round(w * 0.9));
+          return (
+            <div key={it.label} className="flex h-full gap-[1px]" style={{ width: `${w}%` }}>
+              {Array.from({ length: pixels }).map((_, i) => (
+                <div key={i} className="h-full flex-1 rounded-[1px]" style={{ background: it.color, opacity: 0.55 + (i / pixels) * 0.45 }} />
+              ))}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px]">
+        {withColor.map((it) => (
+          <div key={it.label} className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full" style={{ background: it.color }} />
+            <span className="text-ink/60">{it.label}</span>
+            <span className={`ml-auto tabular-nums ${it.kind === "pos" ? "text-check" : "text-ever"}`}>
+              {it.kind === "pos" ? "+" : "−"}${Math.abs(it.value / 1000).toFixed(1)}K
+            </span>
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
-function RevenueChart({ data, primary }: { data: { amountCents: number; createdMs: number; status: string }[]; primary: string }) {
-  // Build 30-day daily aggregation
-  const now = Date.now();
-  const days = Array.from({ length: 30 }).map((_, i) => {
-    const start = now - (29 - i) * 86400000;
-    const end = start + 86400000;
-    return data.filter((p) => p.createdMs >= start && p.createdMs < end && p.status === "succeeded")
-      .reduce((s, p) => s + p.amountCents, 0);
-  });
-  const max = Math.max(1, ...days);
+/* ───────────────────────── Revenue by program (donut) ───────────────────────── */
+function RevenueByProgramCard({ programs }: { programs: { code: string; label: string; revenue: number }[] }) {
+  const palette = ["#7c3aed", "#2563eb", "#0ea5e9", "#10b981", "#f59e0b", "#ee7273"];
+  const total = programs.reduce((a, p) => a + p.revenue, 0);
+  const segments = programs.slice(0, 6).map((p, i) => ({
+    label: p.label,
+    value: p.revenue,
+    color: palette[i % palette.length],
+  }));
   return (
-    <div>
-      <div className="flex h-40 items-end gap-1">
-        {days.map((v, i) => (
-          <div key={i} className="flex-1 rounded-sm transition-all hover:opacity-80"
-            style={{ height: `${(v / max) * 100}%`, minHeight: 2, background: primary, opacity: 0.6 + (i / 30) * 0.4 }}
+    <Card className="p-4">
+      <div className="flex items-baseline justify-between">
+        <div className="text-[11.5px] font-medium text-ink/55">Revenue by program · 30d</div>
+        <div className="text-[10.5px] tabular-nums text-ink/45">${(total / 1000).toFixed(1)}K total</div>
+      </div>
+      <div className="mt-3">
+        <Donut
+          segments={segments}
+          centerValue={`$${(total / 1000).toFixed(1)}K`}
+          centerLabel="30d"
+          size={120}
+          thickness={14}
+          formatValue={(v) => `$${(v / 1000).toFixed(1)}K`}
+        />
+      </div>
+    </Card>
+  );
+}
+
+
+/* ───────────────────────── Pipeline tile ───────────────────────── */
+function PipelineTile({
+  label, count, sub, tone, idx,
+}: { label: string; count: number; sub: string; tone: "ok" | "warn"; idx: number }) {
+  const dot = tone === "ok" ? "bg-check" : "bg-honey";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, delay: idx * 0.03 }}
+      className="rounded-xl border border-ink/[0.08] bg-white p-3.5"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-[11.5px] text-ink/70">
+          <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
+          <span>{label}</span>
+        </div>
+        <div className="font-hero text-[22px] font-semibold tabular-nums text-ink">{count}</div>
+      </div>
+      {/* dashed progress bar */}
+      <div className="mt-2 flex gap-[2px]">
+        {Array.from({ length: 24 }).map((_, i) => (
+          <div
+            key={i}
+            className="h-1.5 flex-1 rounded-[1px]"
+            style={{ background: i < Math.min(count, 24) ? (tone === "ok" ? "#10b981" : "#f59e0b") : "rgba(23,23,23,0.06)" }}
           />
         ))}
       </div>
-      <div className="mt-2 flex justify-between text-[10px] text-ink/40">
-        <span>30 days ago</span><span>Today</span>
+      <div className="mt-2 text-[10.5px] text-ink/45">{sub}</div>
+    </motion.div>
+  );
+}
+
+/* ═════════════════════ RIGHT RAIL ═════════════════════ */
+
+function QuickActionsCard() {
+  const items = [
+    { icon: Plus,          label: "New order" },
+    { icon: CreditCard,    label: "Update billing" },
+    { icon: CalendarClock, label: "Schedule" },
+    { icon: Search,        label: "Quick lookup" },
+  ];
+  return (
+    <Card className="p-3.5">
+      <div className="mb-2.5 text-[13px] font-semibold text-ink">Quick actions</div>
+      <div className="grid grid-cols-2 gap-2">
+        {items.map(({ icon: Icon, label }) => (
+          <button
+            key={label}
+            className="flex items-center gap-2 rounded-lg border border-ink/[0.08] px-2.5 py-2 text-left text-[11.5px] font-medium text-ink transition-colors hover:border-ink/20 hover:bg-ink/[0.02]"
+          >
+            <Icon className="h-3.5 w-3.5 text-ink/60" strokeWidth={1.75} />
+            {label}
+          </button>
+        ))}
       </div>
-    </div>
+      <div className="relative mt-2.5">
+        <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink/40" />
+        <input
+          placeholder="Lookup order # or patient…"
+          className="w-full rounded-lg border border-ink/[0.08] py-2 pl-8 pr-8 text-[11.5px] outline-none placeholder:text-ink/40 focus:border-ink/20"
+        />
+        <ArrowRight className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink/40" />
+      </div>
+    </Card>
   );
 }
 
-function FunnelWaterfall({ primary, scale }: { primary: string; scale: number }) {
-  const steps = [
-    { label: "Visits", value: 8420 * scale },
-    { label: "Started intake", value: 3120 * scale },
-    { label: "Completed intake", value: 1840 * scale },
-    { label: "Paid", value: 720 * scale },
-    { label: "Shipped", value: 640 * scale },
+function PatientFunnelCard({ funnel }: { funnel: ReturnType<typeof conversionFunnel> }) {
+  const rows = [
+    { label: "Traffic",       value: 12480, pct: 100.0 },
+    { label: "Intake started", value: Math.max(4612, Math.round(funnel.intake)), pct: 37.0 },
+    { label: "Submitted",     value: 3348, pct: 26.8 },
+    { label: "Medical review", value: 3098, pct: 24.8 },
+    { label: "Approved",      value: 2743, pct: 22.0 },
+    { label: "Rx sent",       value: 2610, pct: 20.9 },
+    { label: "Shipped",       value: 2492, pct: 20.0 },
+    { label: "Refill (M2)",   value: 1304, pct: 10.4 },
   ];
-  const max = steps[0].value;
   return (
-    <div className="space-y-2">
-      {steps.map((s, i) => (
-        <div key={i} className="flex items-center gap-3">
-          <div className="w-32 text-[12px] text-ink/60">{s.label}</div>
-          <div className="relative flex-1">
-            <div className="h-7 rounded" style={{ width: `${(s.value / max) * 100}%`, background: primary, opacity: 1 - i * 0.14 }} />
-            <span className="absolute inset-y-0 left-2 flex items-center text-[11px] font-semibold text-white">
-              {s.value.toLocaleString()}
-            </span>
-          </div>
-          <div className="w-16 text-right text-[11px] text-ink/50">{Math.round((s.value / max) * 100)}%</div>
+    <Card className="p-3.5">
+      <div className="flex items-baseline justify-between">
+        <div className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+          <ChevronDown className="h-3.5 w-3.5 text-ink/50" /> Patient funnel
         </div>
-      ))}
-    </div>
+        <div className="text-[11.5px] font-semibold text-ink">10.4%</div>
+      </div>
+      <div className="mb-2.5 text-[10.5px] text-ink/45">Journey conversion · last 30 days</div>
+      <div className="space-y-2">
+        {rows.map((r, i) => {
+          // Gradient from indigo → violet → sky → emerald down the funnel
+          const stops = ["#2563eb", "#4f46e5", "#7c3aed", "#8b5cf6", "#6366f1", "#0ea5e9", "#0d9488", "#10b981"];
+          const bg = stops[i % stops.length];
+          return (
+            <div key={r.label}>
+              <div className="flex items-baseline justify-between text-[11.5px]">
+                <span className="text-ink/70">{r.label}</span>
+                <span className="tabular-nums">
+                  <span className="text-ink">{r.value.toLocaleString()}</span>
+                  <span className="ml-2 text-ink/45">{r.pct.toFixed(1)}%</span>
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-ink/[0.05]">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${r.pct}%` }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.03 }}
+                  className="h-full rounded-full"
+                  style={{ background: bg }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
   );
 }
 
-function OnboardingHome() {
-  const brand = useActiveBrand();
-  const steps = [
-    { id: "logo", label: "Upload your logo", to: "/pharmabro-admin/settings", done: !!brand.logoUrl },
-    { id: "colors", label: "Set brand colors", to: "/pharmabro-admin/settings", done: brand.theme.primary !== "#171717" },
-    { id: "stripe", label: "Connect Stripe", to: "/pharmabro-admin/settings/stripe", done: brand.stripe.connected },
-    { id: "products", label: "Configure products & pricing", to: "/pharmabro-admin/build/products", done: false },
-    { id: "funnel", label: "Build your funnel", to: "/pharmabro-admin/build/funnel", done: false },
-    { id: "publish", label: "Publish your site", to: "/pharmabro-admin/build/pages", done: false },
-  ];
-  const complete = steps.filter((s) => s.done).length;
-  const pct = Math.round((complete / steps.length) * 100);
-
+function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: string }[] }) {
+  const palette = ["#7c3aed", "#2563eb", "#10b981", "#f59e0b", "#ee7273", "#0ea5e9"];
+  const total = mix.reduce((a, m) => a + m.value, 0) || 1;
+  const colored = mix.map((m, i) => ({ ...m, color: palette[i % palette.length] }));
   return (
-    <div className="space-y-4">
-      <PageHeader
-        title={`Welcome to ${brand.name}`}
-        subtitle="Your telehealth brand — let's get you live in 30 minutes."
-      />
-
-      <Card className="p-6">
-        <div className="flex items-center gap-6">
-          <div className="relative grid h-24 w-24 place-items-center">
-            <svg viewBox="0 0 100 100" className="absolute inset-0 h-24 w-24 -rotate-90">
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#e5e7eb" strokeWidth="8" />
-              <circle cx="50" cy="50" r="42" fill="none" stroke={brand.theme.primary} strokeWidth="8"
-                strokeDasharray={`${(pct / 100) * 264} 264`} strokeLinecap="round" />
-            </svg>
-            <div className="text-[20px] font-bold">{pct}%</div>
-          </div>
-          <div className="flex-1">
-            <div className="text-[16px] font-bold text-ink">Get {brand.name} live</div>
-            <div className="text-[12.5px] text-ink/55">{complete} of {steps.length} complete</div>
-          </div>
+    <Card className="p-3.5">
+      <div className="flex items-baseline justify-between">
+        <div className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+          <ChevronDown className="h-3.5 w-3.5 text-ink/50" /> Acquisition
         </div>
-
-        <div className="mt-6 space-y-2">
-          {steps.map((s) => (
-            <Link key={s.id} to={s.to}
-              className="flex items-center gap-3 rounded-lg border border-ink/[0.08] bg-white p-3 hover:border-ink/20"
-            >
-              {s.done ? <CheckCircle2 className="h-4 w-4" style={{ color: brand.theme.primary }} /> : <Circle className="h-4 w-4 text-ink/30" />}
-              <span className={`flex-1 text-[13.5px] ${s.done ? "text-ink/50 line-through" : "font-semibold text-ink"}`}>{s.label}</span>
-              <ArrowRight className="h-3.5 w-3.5 text-ink/40" />
-            </Link>
-          ))}
-        </div>
-      </Card>
-    </div>
+        <div className="text-[10.5px] text-ink/45">last 30 days</div>
+      </div>
+      <div className="mt-2.5 flex h-2 overflow-hidden rounded-full">
+        {colored.map((m) => (
+          <div key={m.label} style={{ width: `${(m.value / total) * 100}%`, background: m.color }} />
+        ))}
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px]">
+        {colored.map((m) => (
+          <div key={m.label} className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full" style={{ background: m.color }} />
+            <span className="text-ink/70">{m.label}</span>
+            <span className="ml-auto tabular-nums text-ink">{Math.round((m.value / total) * 100)}%</span>
+          </div>
+        ))}
+      </div>
+    </Card>
   );
-}
-
-function fmt(cents: number) {
-  const n = cents / 100;
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(1)}k`;
-  return `$${n.toFixed(0)}`;
 }
