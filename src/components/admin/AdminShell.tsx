@@ -116,7 +116,8 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   );
 
   return (
-    <div className="min-h-screen bg-white text-ink">
+    <div className="admin-scope min-h-screen bg-canvas text-ink">
+
       {/* Desktop sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-30 hidden flex-col border-r border-ink/[0.06] bg-white transition-[width] duration-200 lg:flex ${collapsed ? "w-[64px]" : "w-[220px]"}`}>
         <button
