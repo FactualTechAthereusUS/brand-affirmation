@@ -1004,7 +1004,10 @@ export const adminActions = {
   },
   setActiveCase(id: string | null) { set((s) => ({ ui: { ...s.ui, activeCaseId: id } })); },
   sendCheckInReminder(id: string) {
-    set((s) => ({ activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Check-in reminder sent — ${s.checkIns.find(c => c.id === id)?.patientName ?? "patient"}`, tone: "info" as const }, ...s.activity] }));
+    set((s) => ({
+      checkIns: s.checkIns.map((c) => (c.id === id ? { ...c, reminderSentAt: Date.now(), reminderCount: (c.reminderCount ?? 0) + 1 } : c)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Check-in reminder sent — ${s.checkIns.find(c => c.id === id)?.patientName ?? "patient"}`, tone: "info" as const }, ...s.activity],
+    }));
   },
 
   resolveTask(id: string) {
