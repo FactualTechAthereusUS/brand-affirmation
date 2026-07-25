@@ -75,7 +75,7 @@ function Stars() {
   return (
     <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
       {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} viewBox="0 0 20 20" className="h-[15px] w-[15px] fill-[#ee7273]">
+        <svg key={i} viewBox="0 0 20 20" className="h-[15px] w-[15px] fill-[#2563eb]">
           <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
         </svg>
       ))}
@@ -202,10 +202,10 @@ export function WLSocialProof() {
       <div className="mx-auto max-w-6xl px-6 text-center">
         <Reveal>
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
-            What people are <span className="italic text-ever">saying.</span>
+            What people are <span className="italic text-indigo">saying.</span>
           </h2>
           <p className="mt-3 text-[14px] text-[#6B6B6B] md:text-[16px]">
-            <span className="text-[#ee7273]">★★★★★</span> &nbsp; 4.8 out of 5 · 3,000+ reviews
+            <span className="text-[#2563eb]">★★★★★</span> &nbsp; 4.8 out of 5 · 3,000+ reviews
           </p>
         </Reveal>
       </div>

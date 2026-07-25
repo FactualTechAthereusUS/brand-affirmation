@@ -49,7 +49,7 @@ export function Products() {
           <div className="mb-10 md:mb-14 flex items-end justify-between gap-6">
             <div>
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
                 Personalized care
               </div>
               <h2 className="max-w-2xl text-[38px] leading-[1.02] md:text-[64px] font-medium tracking-tight text-ink">
@@ -86,7 +86,7 @@ export function Products() {
 
                   {/* Text */}
                   <div className="mt-3.5 flex flex-col gap-1.5 px-0.5">
-                    <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
+                    <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">
                       {p.badge}
                     </span>
                     <h3 className="text-[16px] md:text-[17px] font-medium tracking-tight text-ink">

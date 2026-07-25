@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 
 /* ─────────  Palette (Blissley Pink)  ───────── */
-export const NAVY = "#ee7273";
+export const NAVY = "#2563eb";
 export const NAVY_SOFT = "#f4a3a4";
 
 
@@ -14,7 +14,7 @@ function RadioCircle({ on }: { on: boolean }) {
     <span
       className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full border transition-colors"
       style={{
-        borderColor: on ? NAVY : "rgba(238,114,115,0.25)",
+        borderColor: on ? NAVY : "rgba(37,99,235,0.25)",
         background: on ? NAVY : "transparent",
       }}
       aria-hidden
@@ -128,7 +128,7 @@ export function TrxButton({
       whileTap={disabled ? undefined : { scale: 0.98 }}
       transition={{ type: "spring", stiffness: 420, damping: 26 }}
       className="inline-flex h-[58px] w-full items-center justify-center rounded-full px-6 text-[15.5px] font-medium text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
-      style={{ background: NAVY, boxShadow: "0 12px 30px rgba(238,114,115,0.28)" }}
+      style={{ background: NAVY, boxShadow: "0 12px 30px rgba(37,99,235,0.28)" }}
     >
       {children}
     </motion.button>
@@ -141,8 +141,8 @@ function CheckSquare({ on }: { on: boolean }) {
     <span
       className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-[6px] border transition-colors"
       style={{
-        borderColor: on ? NAVY : "rgba(238,114,115,0.25)",
-        background: on ? NAVY : "rgba(238,114,115,0.06)",
+        borderColor: on ? NAVY : "rgba(37,99,235,0.25)",
+        background: on ? NAVY : "rgba(37,99,235,0.06)",
       }}
       aria-hidden
     >
@@ -174,7 +174,7 @@ export function TrxOption({
       style={{
         borderColor: selected ? NAVY : "rgba(23,23,23,0.10)",
         boxShadow: selected
-          ? "0 8px 24px rgba(238,114,115,0.12)"
+          ? "0 8px 24px rgba(37,99,235,0.12)"
           : "0 1px 0 rgba(0,0,0,0.02)",
       }}
     >
@@ -207,7 +207,7 @@ export function TrxIconOption({
       style={{
         borderColor: selected ? NAVY : "rgba(23,23,23,0.10)",
         boxShadow: selected
-          ? "0 10px 28px rgba(238,114,115,0.14)"
+          ? "0 10px 28px rgba(37,99,235,0.14)"
           : "0 1px 0 rgba(0,0,0,0.02)",
       }}
     >

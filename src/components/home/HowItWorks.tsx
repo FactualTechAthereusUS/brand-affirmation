@@ -87,7 +87,7 @@ export function HowItWorks() {
           <div className="md:sticky md:top-28">
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-3 py-1 text-[12px] font-medium text-ink/70">
-                <span className="h-1.5 w-1.5 rounded-full bg-ever" />
+                <span className="h-1.5 w-1.5 rounded-full bg-indigo" />
                 How it works
               </span>
             </Reveal>
@@ -95,7 +95,7 @@ export function HowItWorks() {
               <h2 className="mt-5 font-sans text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
                 Getting started
                 <br />
-                <span className="italic text-ever">should feel simple.</span>
+                <span className="italic text-indigo">should feel simple.</span>
               </h2>
             </Reveal>
             <Reveal delay={0.1}>

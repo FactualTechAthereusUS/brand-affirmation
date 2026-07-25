@@ -54,7 +54,7 @@ export function WLFinalCTA() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex items-center gap-2 text-[13px] font-medium text-white/90 md:text-[14px]"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
               Get started
             </motion.div>
 
