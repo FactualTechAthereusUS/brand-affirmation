@@ -54,6 +54,7 @@ import { Route as AdminCommandRouteImport } from './routes/admin.command'
 import { Route as AdminCheckInsRouteImport } from './routes/admin.check-ins'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
+import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminAnalyticsRetentionRouteImport } from './routes/admin.analytics.retention'
 import { Route as AdminAnalyticsFunnelRouteImport } from './routes/admin.analytics.funnel'
 import { Route as AdminAnalyticsFinancesRouteImport } from './routes/admin.analytics.finances'
@@ -284,6 +285,11 @@ const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminPatientsRoute,
 } as any)
+const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminOrdersRoute,
+} as any)
 const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
   id: '/retention',
   path: '/retention',
@@ -326,7 +332,7 @@ export interface FileRoutesByFullPath {
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
@@ -355,6 +361,7 @@ export interface FileRoutesByFullPath {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
 }
 export interface FileRoutesByTo {
@@ -377,7 +384,7 @@ export interface FileRoutesByTo {
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
@@ -406,6 +413,7 @@ export interface FileRoutesByTo {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
 }
 export interface FileRoutesById {
@@ -429,7 +437,7 @@ export interface FileRoutesById {
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
@@ -458,6 +466,7 @@ export interface FileRoutesById {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
 }
 export interface FileRouteTypes {
@@ -511,6 +520,7 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/orders/$id'
     | '/admin/patients/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -562,6 +572,7 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/orders/$id'
     | '/admin/patients/$id'
   id:
     | '__root__'
@@ -613,6 +624,7 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/orders/$id'
     | '/admin/patients/$id'
   fileRoutesById: FileRoutesById
 }
@@ -636,7 +648,7 @@ export interface RootRouteChildren {
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
-  AdminOrdersRoute: typeof AdminOrdersRoute
+  AdminOrdersRoute: typeof AdminOrdersRouteWithChildren
   AdminPatientsRoute: typeof AdminPatientsRouteWithChildren
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminPharmacyRoute: typeof AdminPharmacyRoute
@@ -978,6 +990,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPatientsIdRouteImport
       parentRoute: typeof AdminPatientsRoute
     }
+    '/admin/orders/$id': {
+      id: '/admin/orders/$id'
+      path: '/$id'
+      fullPath: '/admin/orders/$id'
+      preLoaderRoute: typeof AdminOrdersIdRouteImport
+      parentRoute: typeof AdminOrdersRoute
+    }
     '/admin/analytics/retention': {
       id: '/admin/analytics/retention'
       path: '/retention'
@@ -1039,6 +1058,18 @@ const AdminAnalyticsRouteWithChildren = AdminAnalyticsRoute._addFileChildren(
   AdminAnalyticsRouteChildren,
 )
 
+interface AdminOrdersRouteChildren {
+  AdminOrdersIdRoute: typeof AdminOrdersIdRoute
+}
+
+const AdminOrdersRouteChildren: AdminOrdersRouteChildren = {
+  AdminOrdersIdRoute: AdminOrdersIdRoute,
+}
+
+const AdminOrdersRouteWithChildren = AdminOrdersRoute._addFileChildren(
+  AdminOrdersRouteChildren,
+)
+
 interface AdminPatientsRouteChildren {
   AdminPatientsIdRoute: typeof AdminPatientsIdRoute
 }
@@ -1071,7 +1102,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLeadsRoute: AdminLeadsRoute,
   AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
-  AdminOrdersRoute: AdminOrdersRoute,
+  AdminOrdersRoute: AdminOrdersRouteWithChildren,
   AdminPatientsRoute: AdminPatientsRouteWithChildren,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminPharmacyRoute: AdminPharmacyRoute,
