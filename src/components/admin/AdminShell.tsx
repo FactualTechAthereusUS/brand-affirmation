@@ -195,7 +195,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
       {/* Main column */}
       <div className={collapsed ? "lg:pl-[64px]" : "lg:pl-[220px]"}>
-        <header className="sticky top-0 z-20 border-b border-ink/[0.06] bg-white">
+        <header className={`sticky top-0 z-20 ${pathname.startsWith("/admin/live") ? "bg-transparent" : "border-b border-ink/[0.06] bg-white"}`}>
           <div className="flex h-14 items-center gap-3 px-4 lg:px-6">
             <button
               onClick={() => setCollapsed((v) => !v)}
@@ -208,7 +208,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               <LayoutGrid className="h-4 w-4" />
             </button>
 
-            <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] px-2.5 py-1 sm:flex">
+            <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] bg-white/70 px-2.5 py-1 backdrop-blur sm:flex">
               <img src={blissleyLogo.url} alt="Blissley" className="h-4 w-auto" />
               <span className="mx-1 h-3 w-px bg-ink/10" />
               <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
@@ -257,6 +257,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 
         <main className="mx-auto max-w-[1600px] px-4 pb-16 pt-4 lg:px-6">{children}</main>
       </div>
+
 
       {/* Mobile bottom tabs */}
       <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-around border-t border-ink/[0.06] bg-white py-1.5 lg:hidden">
