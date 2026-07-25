@@ -1162,9 +1162,7 @@ function Guarantee() {
     <section className="bg-indigo py-16 text-white sm:py-24">
       <div className="mx-auto max-w-4xl px-5 text-center">
         <Reveal>
-          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white/20 backdrop-blur">
-            <ShieldCheck className="h-8 w-8" />
-          </div>
+          <ShieldCheck className="h-8 w-8" />
           <h2 className="font-hero mt-6 text-[28px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[38px]">
             Our promise to you.
           </h2>
@@ -1173,9 +1171,7 @@ function Guarantee() {
           {items.map((g, i) => (
             <Reveal key={g.t} delay={i * 0.05}>
               <div>
-                <div className="mx-auto grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur">
-                  <Sparkles className="h-5 w-5" />
-                </div>
+                <Sparkles className="h-5 w-5" />
                 <div className="mt-4 text-[17px] font-semibold">{g.t}</div>
                 <p className="mt-2 text-[14px] leading-[1.6] text-white/85">{g.b}</p>
               </div>

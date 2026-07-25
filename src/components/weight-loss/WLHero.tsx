@@ -101,9 +101,7 @@ export function WLHero() {
                 loading="eager"
               />
               <span className="pl-1">Start My Free Assessment</span>
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-canvas transition-transform duration-300 group-hover:rotate-45 md:h-11 md:w-11">
-                <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
-              </span>
+              <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
             </motion.a>
 
             <motion.button

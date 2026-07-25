@@ -235,9 +235,7 @@ function PortalEmail() {
                 key={f.title}
                 className="grid grid-cols-[64px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[76px_minmax(0,1fr)] md:gap-5"
               >
-                <div className="grid aspect-square place-items-center rounded-2xl bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
-                  <Icon className="h-7 w-7 text-[#2563eb]" strokeWidth={1.75} />
-                </div>
+                <Icon className="h-7 w-7 text-[#2563eb]" strokeWidth={1.75} />
                 <div className="min-w-0 pt-1">
                   <h3 className="text-[15.5px] font-semibold leading-tight text-ink md:text-[16.5px]">
                     {f.title}
@@ -475,9 +473,7 @@ function RefundEmail() {
       {/* Refund confirmed card */}
       <div className="mx-3 mb-2 mt-8 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
-            <Check className="h-5 w-5 text-[#2563eb]" strokeWidth={2.5} />
-          </span>
+          <Check className="h-5 w-5 text-[#2563eb]" strokeWidth={2.5} />
           <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
             Refund confirmed
           </h2>
@@ -604,9 +600,7 @@ function ShippingEmail() {
       {/* Hero card */}
       <div className="px-5 pt-6 md:px-8">
         <div className="rounded-[20px] bg-canvas p-6 text-center shadow-[0_1px_0_rgba(0,0,0,0.03)] ring-1 ring-ink/5 md:p-8">
-          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
-            <Package className="h-8 w-8 text-[#2563eb]" strokeWidth={1.75} />
-          </div>
+          <Package className="h-8 w-8 text-[#2563eb]" strokeWidth={1.75} />
           <h1 className="mt-5 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
             It's on its way, Sarah.
           </h1>
@@ -794,9 +788,7 @@ function UpdatePaymentButton({ label = "Update payment method" }: { label?: stri
 function CareUnaffectedNote() {
   return (
     <div className="mx-3 mb-2 mt-6 flex items-start gap-3 rounded-[16px] bg-canvas p-4 ring-1 ring-ink/5 md:mx-5 md:p-5">
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
-        <HeartPulse className="h-4 w-4 text-[#2563eb]" strokeWidth={2.2} />
-      </span>
+      <HeartPulse className="h-4 w-4 text-[#2563eb]" strokeWidth={2.2} />
       <p className="text-[13.5px] leading-[1.55] text-ink/70">
         Your care and physician relationship are unaffected. We just need a valid card on file to
         prepare your next shipment.
@@ -938,9 +930,7 @@ function PaymentFailedEmail3() {
 
       <div className="mx-3 mt-8 rounded-[20px] bg-[#2563eb]/8 p-5 ring-1 ring-[#2563eb]/15 md:mx-5 md:p-6">
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#2563eb]/15 ring-1 ring-[#2563eb]/20">
-            <Clock className="h-4.5 w-4.5 text-[#2563eb]" strokeWidth={2.2} />
-          </span>
+          <Clock className="h-4.5 w-4.5 text-[#2563eb]" strokeWidth={2.2} />
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#2563eb]">
               48 hours remaining
@@ -1059,9 +1049,7 @@ function CheckInEmail1() {
           <div className="absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
         </div>
         <div className="relative">
-          <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-white/20 text-white ring-1 ring-white/30 backdrop-blur-sm">
-            <Check className="h-7 w-7" strokeWidth={3} />
-          </span>
+          <Check className="h-7 w-7" strokeWidth={3} />
           <h1 className="mt-5 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[36px]">
             Quick check-in, Sarah.
           </h1>
@@ -1262,9 +1250,7 @@ function DeliveryEmail() {
           <div className="absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
         </div>
         <div className="relative">
-          <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-white/20 text-white ring-1 ring-white/30 backdrop-blur-sm">
-            <Check className="h-7 w-7" strokeWidth={3} />
-          </span>
+          <Check className="h-7 w-7" strokeWidth={3} />
           <h1 className="mt-5 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[36px]">
             It's here, Sarah.
           </h1>
@@ -1396,9 +1382,7 @@ function AccountShell({
 
       {/* Hero */}
       <div className="px-5 pt-10 pb-6 text-center md:px-8">
-        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
-          <Icon className="h-6 w-6 text-[#2563eb]" strokeWidth={2.2} />
-        </span>
+        <Icon className="h-6 w-6 text-[#2563eb]" strokeWidth={2.2} />
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[34px]">
           {title}
           <br />
@@ -1450,9 +1434,7 @@ function MetaRow({
 }) {
   return (
     <div className="flex items-start gap-3 py-3">
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
-        <Icon className="h-4 w-4 text-[#2563eb]" strokeWidth={2.2} />
-      </span>
+      <Icon className="h-4 w-4 text-[#2563eb]" strokeWidth={2.2} />
       <div className="min-w-0 flex-1">
         <p className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink/55">{label}</p>
         <p className="mt-0.5 text-[13.5px] leading-[1.5] text-ink">{value}</p>
@@ -1464,9 +1446,7 @@ function MetaRow({
 function SecurityNote({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-3 mb-2 mt-2 flex items-start gap-3 rounded-[16px] bg-canvas p-4 ring-1 ring-ink/5 md:mx-5 md:p-5">
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink/[0.06] ring-1 ring-ink/10">
-        <ShieldCheck className="h-4 w-4 text-ink/70" strokeWidth={2.2} />
-      </span>
+      <ShieldCheck className="h-4 w-4 text-ink/70" strokeWidth={2.2} />
       <p className="text-[13px] leading-[1.55] text-ink/70">{children}</p>
     </div>
   );
@@ -1691,9 +1671,7 @@ function EmailPreview() {
 
             {/* Guarantee */}
             <div className="mt-5 flex gap-3 rounded-2xl bg-[#2563eb]/8 p-4 ring-1 ring-[#2563eb]/15">
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white ring-1 ring-[#2563eb]/20">
-                <Check className="h-4 w-4 text-[#2563eb]" strokeWidth={3} />
-              </span>
+              <Check className="h-4 w-4 text-[#2563eb]" strokeWidth={3} />
               <p className="text-[13px] leading-[1.55] text-ink/75">
                 If your physician doesn't approve your prescription, you'll get a{" "}
                 <span className="font-semibold text-ink">full refund</span>. No questions asked.

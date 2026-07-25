@@ -697,11 +697,9 @@ export function TrimRxIntakeFlow() {
                             "Improves treatment adherence and comfort",
                           ].map((f) => (
                             <li key={f} className="flex items-start gap-2.5 sm:gap-3">
-                              <span className="mt-0.5 grid h-4 w-4 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-white">
-                                <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                              <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                                   <path d="M4 10.5l4 4 8-9" />
                                 </svg>
-                              </span>
                               <span>{f}</span>
                             </li>
                           ))}

@@ -28,9 +28,7 @@ export function PaymentFailedInline({ open, onDismiss, onTryAgain, onAlt }: Prop
         >
           <div className="mb-4 overflow-hidden rounded-2xl border border-[#F0C4C4] bg-[#FFF6F6] shadow-[0_10px_30px_-15px_rgba(37,99,235,0.35)]">
             <div className="flex items-start gap-3 p-4">
-              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#2563eb]/12 text-[#2563eb]">
-                <AlertCircle className="h-5 w-5" strokeWidth={2.2} />
-              </div>
+              <AlertCircle className="h-5 w-5" strokeWidth={2.2} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <div className="text-[15px] font-bold text-ink">Payment not processed</div>

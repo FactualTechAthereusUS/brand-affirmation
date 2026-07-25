@@ -401,9 +401,7 @@ function Segmented<T extends string>({ value, onChange, options }: { value: T; o
 function EmptyQueue() {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="mt-8 rounded-3xl border border-ink/10 bg-white p-10 text-center">
-      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#4a7c6f]/10 text-[#4a7c6f]">
-        <Check className="h-6 w-6" strokeWidth={2.5} />
-      </div>
+      <Check className="h-6 w-6" strokeWidth={2.5} />
       <h2 className="mt-5 font-hero text-2xl text-ink">Nothing waiting. Great work.</h2>
       <p className="mx-auto mt-2 max-w-md text-sm text-ink/55">
         We'll ping you the moment a new intake comes in. In the meantime, catch up on refills or check messages.
@@ -765,9 +763,7 @@ function PanelRx({ c }: { c: Case }) {
       {/* Pharmacy selector */}
       <div className="mt-4 rounded-2xl border border-ink/8 bg-[#faf9f6] p-3">
         <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-[#1D437B] ring-1 ring-ink/8">
-            <Package className="h-4 w-4" />
-          </div>
+          <Package className="h-4 w-4" />
           <div className="min-w-0 flex-1">
             <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/45">Pharmacy</div>
             <div className="mt-0.5 whitespace-pre-line text-sm font-medium text-ink">{rx.pharmacy}</div>
@@ -1073,7 +1069,7 @@ function RefillsTab() {
 function EmptyState({ title, body }: { title: string; body: string }) {
   return (
     <div className="mt-8 rounded-3xl border border-ink/10 bg-white p-10 text-center">
-      <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-ink/5 text-ink/60"><CheckCircle2 className="h-5 w-5" /></div>
+      <CheckCircle2 className="h-5 w-5" />
       <h3 className="mt-4 font-hero text-xl text-ink">{title}</h3>
       <p className="mt-1 text-sm text-ink/55">{body}</p>
     </div>
