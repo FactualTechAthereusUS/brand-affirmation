@@ -92,7 +92,16 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const endHold = () => { if (holdRef.current) clearTimeout(holdRef.current); };
 
   const prefix = pathname.startsWith("/pharmabro-admin") ? "/pharmabro-admin" : "/admin";
+  const isPharmabro = prefix === "/pharmabro-admin";
   const navGroups = remapNav(prefix);
+  const Wordmark = ({ className = "" }: { className?: string }) =>
+    isPharmabro ? (
+      <span className={`font-serif italic tracking-tight text-ink ${className}`} style={{ fontFamily: "'Instrument Serif', 'Cormorant Garamond', serif" }}>
+        pharmabro<span className="text-marine">.</span>
+      </span>
+    ) : (
+      <img src={blissleyLogo.url} alt="Blissley" className={className} />
+    );
 
   const canSee = (n: NavItem) => !n.roles || n.roles.includes(role);
   const isActive = (n: NavItem) => n.to && (n.exact ? pathname === n.to : pathname === n.to || pathname.startsWith(n.to + "/") || pathname.startsWith(n.to + "?"));
@@ -141,7 +150,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           className="flex items-center px-4 pt-5 text-left"
           title="Long-press for demo controls"
         >
-          <img src={blissleyLogo.url} alt="Blissley" className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
+          <Wordmark className={collapsed ? "h-6 w-auto text-[18px] leading-none" : "h-7 w-auto text-[22px] leading-none"} />
         </button>
 
         {!collapsed && (
@@ -188,7 +197,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               transition={{ type: "spring", damping: 28, stiffness: 260 }}
               className="fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-ink/[0.06] bg-white lg:hidden">
               <div className="flex items-center justify-between px-5 py-5">
-                <img src={blissleyLogo.url} alt="Blissley" className="h-7 w-auto" />
+                <Wordmark className="h-7 w-auto text-[22px] leading-none" />
                 <button onClick={() => setMobileNav(false)} className="rounded-lg p-1.5 text-ink/60"><X className="h-4 w-4" /></button>
               </div>
               <nav className="flex-1 overflow-y-auto px-2 pb-3">
@@ -223,7 +232,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             </button>
 
             <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] bg-white/70 px-2.5 py-1 backdrop-blur sm:flex">
-              <img src={blissleyLogo.url} alt="Blissley" className="h-4 w-auto" />
+              <Wordmark className="h-4 w-auto text-[13px] leading-none" />
               <span className="mx-1 h-3 w-px bg-ink/10" />
               <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
                 <span className="relative flex h-1.5 w-1.5">
