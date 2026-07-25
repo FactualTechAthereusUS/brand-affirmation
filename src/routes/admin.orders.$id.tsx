@@ -354,7 +354,12 @@ function OrderDetailPage() {
               <MetaRow label="Physician" value={o.physicianName} />
               <MetaRow label="Pharmacy" value={o.pharmacy.name} />
             </div>
-            <button className="mt-3 w-full rounded-lg border border-ink/10 bg-white py-1.5 text-[12px] font-semibold text-ink hover:bg-ink/[0.03]">Reassign</button>
+            <button onClick={() => {
+              const owner = window.prompt("Assign ops owner to:", o.opsOwner ?? "Andre F.") ?? "";
+              if (!owner) return;
+              adminActions.assignOrderOps(o.id, owner);
+              toast.success(`Reassigned to ${owner}`);
+            }} className="mt-3 w-full rounded-lg border border-ink/10 bg-white py-1.5 text-[12px] font-semibold text-ink hover:bg-ink/[0.03]">Reassign</button>
           </Card>
 
           {/* Internal notes */}
