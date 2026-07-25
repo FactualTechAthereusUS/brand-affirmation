@@ -116,9 +116,11 @@ export function conversionFunnel(s: AdminState) {
 
 /* ────────── Telehealth analytics selectors ────────── */
 
+/** @deprecated — use makeWindow(...).priorSlice instead. Kept for callers not yet migrated. */
 export function priorPeriodShift(arr: number[], amplitudePct = 8): number[] {
   return arr.map((v, i) => Math.round(v * (1 - amplitudePct / 100 + (Math.sin(i * 0.6) * 0.04))));
 }
+
 
 // 3-point moving average — kills demo spikes so charts read as trends
 function smooth(arr: number[]): number[] {

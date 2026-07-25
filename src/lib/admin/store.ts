@@ -1060,7 +1060,30 @@ export const adminActions = {
     persist();
     listeners.forEach((l) => l());
   },
+  /** Shift funnelDays forward by one day — used by /admin/analytics auto-refresh. */
+  tick() {
+    set((s) => {
+      const last = s.funnelDays[s.funnelDays.length - 1];
+      if (!last) return {};
+      const wob = (Math.random() - 0.5) * 0.08;
+      const scale = 1 + wob;
+      const next: FunnelDay = {
+        ts: last.ts + DAY,
+        sessions: Math.round(last.sessions * scale),
+        intakeStarted: Math.round(last.intakeStarted * scale),
+        intakeCompleted: Math.round(last.intakeCompleted * scale),
+        approved: Math.round(last.approved * scale),
+        paid: Math.round(last.paid * scale),
+        shipped: Math.round(last.shipped * scale),
+        revenue: Math.round(last.revenue * scale),
+        newMrr: last.newMrr,
+        churnedMrr: last.churnedMrr,
+      };
+      return { funnelDays: [...s.funnelDays.slice(1), next] };
+    });
+  },
 };
+
 
 export function hydrateAdmin() {
   if (typeof window === "undefined") return;
