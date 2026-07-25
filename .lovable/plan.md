@@ -1,99 +1,121 @@
+Adopt Shopify's Order/Customer detail patterns across all three detail pages, adapted for telehealth. Purely presentational + a few store fields. No new routes, no migrations.
 
-# /admin/analytics — logic optimization (no UI revamp)
+## /admin/orders/$id — align to Shopify order page
 
-Goal: make every number, delta, chart overlay, and control on `/admin/analytics` (and its 4 sub-pages) computed from `AdminState`, not hardcoded strings. Keep the current Shopify-inspired layout. Borrow only three behaviours from the reference dump: date-range + compare picker, prior-period overlay everywhere, and computed "Increase/Decrease of X%" deltas.
+Reorder existing blocks and add missing ones.
 
-## What's broken today
+**Header row**
 
-Inspected `admin.analytics.tsx` + `lib/admin/selectors.ts`:
+- Keep #id, copy, RxBadge, FulfillBadge, cold-chain chip.
+- Add prev/next paginate arrows (sibling orders sorted by createdAt) — Shopify-parity nav.
+- Subheading line: `Placed {createdAt} · from {channel} · {program} · {cadence}`.
 
-- Date-range / Compare / Currency / Export / New report buttons — inert.
-- Deltas on `MetricCard`s ("+8.1%", "−63%", "+38%") are hardcoded strings.
-- "Prior period" line is `priorPeriodShift` — just current × ~0.92 with noise, not the real prior window.
-- `sessionsByState` multiplies patient share × magic `12480`.
-- `programMovers.refillPct = 62 + ((i*7)%22)` — placeholder.
-- `physicianSLATrend` / `approvalRateTrend` / `refillAdherenceTrend` — sinusoidal fakes, don't read `cases` or `checkIns`.
-- `paymentsHealth.failed/recovered` — synthesized from `paid`, not from `payments[]`.
-- Auto-refresh / Expand / Customize / Hide insights — not present or not wired.
-- Sub-pages (`acquisition|funnel|retention|finances`) are 30–107 line stubs; don't share date state with the parent.
-- Insight card tone is scenario-only; not derived from the actual biggest mover.
+**Variant banner** (new, above grid)
 
-## Plan
+- `exception` → red "Delayed / lost in transit" + Reship-at-no-cost CTA
+- `rxStatus = pending_review` → amber "Awaiting Rx approval — card authorized, not captured"
+- `payment.status = refunded` → gray "Refunded {date} · {amount}"
 
-### 1. Range + compare state via URL search
+**Left column** (main, existing order kept where sensible)
 
-- Add `validateSearch` on `/admin/analytics` for `{ range: "7d"|"30d"|"90d"|"ytd"|"custom", compare: "prior"|"yoy"|"none", from?: string, to?: string }`.
-- Read via `Route.useSearch()`; write via `useNavigate({ search: prev => ... })`.
-- Two popovers on the existing buttons (Radix `Popover` already used elsewhere) with the Shopify set: Today / Yesterday / Last 7 / Last 30 / Last 90 / YTD / Custom; and No comparison / Prior period / Previous year.
-- Propagate to `/admin/analytics/{acquisition,funnel,retention,finances}` via `<Link search>`.
+1. Fulfillment stepper (as-is)
+2. **Line items — grouped by fulfillment status card** (Shopify pattern): "Unfulfilled" / "At pharmacy" / "Shipped" group headers, each with its items + per-group action (Mark dispatched / Print label / Track). Rx meta strip below (physician, state check, Rx#) stays.
+3. Shipping card (as-is)
+4. **Payment summary card** — Shopify layout: subtotal · discount · tax · shipping · Total, then a "Paid $X" or "Refunded $X" footer strip. Method + intent moved to smaller side panel inside card.
+5. **COGS (internal)** — new: drug cost, packaging, shipping cost, gross profit $, GP margin %. Deterministic from order id/program in `enrichOrder`.
+6. Clinical review (as-is)
+7. **Timeline w/ composer** — full-width, promoted to bottom. Add textarea + Post button = internal note (mirrors Shopify's Timeline Comment block).
 
-### 2. Real selectors (in `src/lib/admin/selectors.ts`)
+**Right column**
 
-Add a window helper `slice(s, days)` returning `{ current: FunnelDay[], prior: FunnelDay[] }` using `funnelDays.slice(-2*days,-days)` for prior. Refactor every trend selector to accept this:
+- **Customer card** — Shopify parity: initials, name, "N orders" count, contact block w/ copy-email, shipping address w/ copy, billing (Same as shipping), then LTV / plan / started. Link → patient page.
+- **Subscription context** (as-is): cadence, refill #, next refill, quick actions.
+- **Conversion summary** (new): first order? attribution source · sessions · days from lead → conversion. Derive from patient enrichment.
+- **About this order** (new): Order risk (low/med/high pill, chargeback risk line), ID verification, address deliverability, exception flags.
+- Tags + Assigned (as-is).
 
-- `revenueTrend / sessionsTrend / aovTrend / newPatientsTrend` → return `{ current, prior, dates, sum, priorSum, deltaPct }`.
-- `activeTrend` → keep smooth growth curve but derive base from `patients.length`; delta = `patients.filter(active this window) − prior`.
-- `physicianSLATrend` → per-day median of `(case.decidedAt − case.submittedAt)/60000` for cases decided that day; `p90` from the same array. Falls back to seed medians if a day has 0 decisions.
-- `approvalRateTrend` → `approved/(approved+denied)` per day from `cases`.
-- `refillAdherenceTrend` → per-day `clear / (clear+hold+review)` from `checkIns` bucketed by `submittedAt`.
-- `paymentsHealth` → count `payments[]` bucketed by day and `status ∈ {succeeded, failed, recovered}`; recoveryRate = recovered / failed.
-- `sessionsByState` → real `funnelDays[].sessions * (statePop / totalPatients)` — no magic 12480; add per-state delta from prior window.
-- `programMovers` → real `refillPct` from `checkIns` filtered to patients in that program; real `churnPct` from `patients.status==="cancelled"`; real `spark` from that program's daily revenue.
+## /admin/patients/$id — align to Shopify customer page
 
-### 3. Deltas from data, not strings
+Reorder + add metric strip.
 
-- New `pctDelta(cur, prior)` + `formatDelta({ pct, positiveIsGood })`.
-- Remove every hardcoded delta prop on `MetricCard`; pass computed strings + tone (`positive|critical|neutral`).
-- Insight banner: `pickTopMover(selectors)` returns the metric whose |ΔPct| is largest, respecting scenario override. `See why →` deep-links to the matching sub-page.
+**Header** (as-is) + prev/next paginate arrows.
 
-### 4. Auto-refresh
+**Metric strip** (new, directly below header — Shopify's 4-card row)
 
-- `useAutoRefresh(intervalMs, enabled)` hook: `setInterval` that calls `store.tick()` (append one new `FunnelDay` shifted forward, cull head). Toggle exposed on the "Turn on auto-refresh" button; shows a live "Last refreshed Xs ago".
+- Amount spent (`$totalSpent`)
+- Orders (count)
+- Patient since (relative, e.g. "8 months")
+- Segment / RFM (e.g. "Active · High LTV" or churn tier)
+Each card has an info tooltip explaining the metric.
 
-### 5. Export CSV
+**Left column**
 
-- `exportCsv(name, rows)` helper. Wire the Export button to a small menu: Program movers, Funnel, Cohort retention, Payments health. Downloads a `.csv` blob — no backend.
+1. Status banner (as-is)
+2. **Last order card** (new — Shopify "Last order placed" pattern): most-recent order with status pills, mini line-items list, "Create order" + "View all orders" links. Placed above the Orders table.
+3. Subscription + DoseProgress (as-is)
+4. Clinical (as-is)
+5. Orders table (last 3, as-is) — kept below Last-order card for full history glance
+6. Check-ins (as-is)
+7. Payments (as-is)
+8. Communications (as-is)
+9. Intake (collapsed, as-is)
+10. **Activity timeline w/ composer** — promoted to full width bottom; existing PatientTimeline already includes note composer.
 
-### 6. Prior-period overlay on charts
+**Right column** — trim to Shopify shape
 
-- `AreaChart` / `LineChartMini` / `BarsMini` already accept a `prior` array. Pass the **real** prior slice from the selector, not `priorPeriodShift(current)`.
-- Add a small legend row under each chart showing "Current / Prior" swatches.
+- Customer info card (contact + copy email, default address, marketing subs Yes/No, tax, store credit N/A)
+- Manage (subscription controls, as-is)
+- Quick actions (as-is)
+- Tags (as-is)
+- Internal notes (as-is)
+- "At a glance" merged into the top metric strip; keep only projected LTV/churn as a small sub-card.
 
-### 7. Sub-pages made real
+## /admin/leads/$id — light Shopify polish
 
-- `admin.analytics.acquisition.tsx` — Campaigns table sorted by spend, real CAC/ROAS/leads from `campaigns[]`, channel mix donut from `acquisitionSpendMix`, landing-page top list from `funnelDays.sessions` split by seeded referrer weight.
-- `admin.analytics.funnel.tsx` — 6-step funnel from `funnelDays`: Sessions → Intake started → Intake completed → Approved → Paid → Shipped; step-to-step conv + drop counts.
-- `admin.analytics.retention.tsx` — Cohort heatmap + churn reasons (already there) + returning-customer rate line + LTV by cohort computed from `patients[].mrr * tenureMonths`.
-- `admin.analytics.finances.tsx` — MRR waterfall (already exists) + Net revenue vs Refunds bar + Gross-vs-net breakdown table from `payments[]`.
+Already comprehensive. Just add:
 
-All sub-pages read `useSearch()` from the parent route (same `range/compare`) via `Route.useSearch()` on their own routes with the same `validateSearch`, or via `getRouteApi("/admin/analytics").useSearch()` if we lift it to a shared search schema.
+- Prev/next paginate arrows in header.
+- **Metric strip** (4 cards): Score · Projected LTV · Sessions · Days since first touch. Replaces the standalone ScoreGauge in the header (moved into card 1).
+- **Conversion summary** card (attribution: first-touch source, sessions, days-in-funnel) — currently split between Attribution + funnel; consolidate into one Shopify-style summary card next to Attribution.
 
-### 8. Insight card
-
-- Replace the scenario-only headline with `pickInsight(state, window)`:
-  - Compute WoW % change for each of: netRevenue, activePatients, approvalRate, refillAdherence, failedPayments, sessions.
-  - Return the biggest |Δ|, tone `critical` if it's a "bad-direction" metric (failedPayments up, adherence down, approvalRate down), else `positive`.
-  - Scenario override retained for demo screenshots.
-
-### 9. Cleanup
-
-- Delete `priorPeriodShift` (replaced by real prior slice).
-- Remove hardcoded delta strings from `admin.analytics.tsx`.
-- Add a tiny `useAnalyticsWindow(search)` hook that returns `{ days, currentDates, priorDates, currentRange, priorRange }` and pass it to every selector — single source of truth for the window.
+No block removals, no new routes.  
+  
+make it as per telehelath not as ecom, u have to update everything as per telehealth 
 
 ## Files touched
 
-- `src/lib/admin/selectors.ts` — refactor + add window helper, real telehealth selectors.
-- `src/lib/admin/store.ts` — add `tick()` for auto-refresh; no schema change.
-- `src/lib/admin/csv.ts` (new) — CSV export helper.
-- `src/routes/admin.analytics.tsx` — wire search state, popovers, auto-refresh, real deltas, real prior overlays, export menu. Keep JSX/layout intact.
-- `src/routes/admin.analytics.{acquisition,funnel,retention,finances}.tsx` — replace stub content with real selector-driven blocks; share `validateSearch`.
-- `src/components/admin/analytics/MetricCard.tsx` — accept `{ deltaPct?: number; positiveIsGood?: boolean }` and render the pill from that (keeps existing string prop as fallback).
+- `src/lib/admin/orders-enrich.ts` — add `cogs`, `channel`, `orderRisk`, `siblingOrderIds` (for paginate).
+- `src/lib/admin/patients-enrich.ts` — add `amountSpent`, `orderCount`, `customerSinceRel`, `rfmGroup`, `siblingPatientIds`.
+- `src/lib/admin/leads-enrich.ts` — add `siblingLeadIds`, `sessionsCount`, `daysSinceFirstTouch`.
+- `src/lib/admin/store.ts` — add `orderNotes: Record<string, InternalNote[]>` + `adminActions.addOrderNote`.
+- `src/routes/admin.orders.$id.tsx` — reorder blocks, add variant banner, grouped fulfillment card, COGS, timeline-with-composer, conversion summary, order risk, customer card refactor.
+- `src/routes/admin.patients.$id.tsx` — add paginate, metric strip, Last-order card, Customer-info sidebar card refactor.
+- `src/routes/admin.leads.$id.tsx` — paginate, metric strip, conversion summary consolidation.
 
-No changes to `AdminShell`, admin theme, or other admin routes.
+## Out of scope
 
-## Non-goals
+- No changes to list pages, no route additions, no schema/migrations, no styling overhaul beyond Shopify-pattern block moves.  
+  
+  
+  
+make it as per teheleath not just ecom  
 
-- No visual redesign, no new chart types, no new pages.
-- No backend / real data source — this stays fully client-side over `AdminState`.
-- No changes to `/admin/live` or other admin scopes.
+  What's already built (verified by reading each file)
+  - `/admin/patients/$id` — every block in your spec is present: header, status banner, subscription + dose progression, clinical, orders (last 3), check-ins, payments, communications, intake (collapsible), activity timeline, at-a-glance, manage, quick actions, internal notes, tags. Variant banners handled by `StatusBanner`.
+  - `/admin/leads/$id` — funnel stepper, score breakdown, intake snapshot, outreach console, attribution, cart, projected value, consent, manage, tags, danger zone. Complete.
+  - `/admin/orders/$id` — timeline stepper, line items + Rx meta, shipping, payment, clinical review, activity log, patient sidebar, subscription sidebar, risk/flags, tags, assignment. Missing 4 items from your spec.
+  Gaps to fix (orders detail only)
+  1. Variant banner — add a top-of-page banner (below the toolbar, above the two-column grid) that switches on status:
+     - `exception` → red "Delayed / lost in transit" + "Reship at no cost" CTA
+     - `rx_status = pending_review` → amber "Awaiting Rx approval — card authorized, not captured"
+     - `payment.status = refunded` → gray "Order refunded on {date} · {amount}"
+  2. COGS block (internal) — left column, below Payment: drug cost, packaging, shipping cost, gross profit, GP margin %. Derive from `enrichOrder` (add fields — deterministic from order id/program so no schema changes needed).
+  3. Patient order history — right column, after Subscription: last 3 orders for `patientId` (id, date, status pill, amount) + "View all →" link to `/admin/orders?patient={id}`.
+  4. Internal notes — right column, bottom: reuse the same UX as `InternalNotes` (textarea + timestamped list), scoped per-order. Add `orderNotes` to store + `addOrderNote` action mirroring `addPatientNote`.
+  Files touched
+  - `src/lib/admin/orders-enrich.ts` — add `cogs: { drug, packaging, shipping, gp, gpPct }` to `EnrichedOrder`.
+  - `src/lib/admin/store.ts` — add `orderNotes: Record<orderId, InternalNote[]>` + `adminActions.addOrderNote`.
+  - `src/routes/admin.orders.$id.tsx` — insert VariantBanner, COGS card, PatientOrderHistory card, OrderInternalNotes card. No layout overhaul; slot into existing two-column grid.
+  No changes to patients/$id or leads/$id. No new routes. No migrations.
+  Out of scope
+  I will not rewrite the parts already matching spec, refactor styling, or touch the list pages. Purely additive to the orders detail page.

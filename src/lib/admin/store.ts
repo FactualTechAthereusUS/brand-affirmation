@@ -309,6 +309,7 @@ export type AdminState = {
   integrations: Integration[];
   campaigns: Campaign[];
   funnelDays: FunnelDay[];
+  orderNotes: Record<string, InternalNote[]>;
   ui: {
     patientDrawerId: string | null;
     orderDrawerId: string | null;
@@ -625,6 +626,7 @@ function seed(): AdminState {
     integrations: INTEGRATIONS,
     campaigns: CAMPAIGNS,
     funnelDays: generateFunnelDays(),
+    orderNotes: {},
     ui: {
       patientDrawerId: null,
       orderDrawerId: null,
@@ -1107,6 +1109,11 @@ export const adminActions = {
     if (!text.trim()) return;
     const note: InternalNote = { id: `n_${Date.now()}`, author, ts: Date.now(), text: text.trim() };
     set((s) => ({ patients: s.patients.map((p) => (p.id === id ? { ...p, notes: [note, ...(p.notes ?? [])] } : p)) }));
+  },
+  addOrderNote(orderId: string, text: string, author = "You") {
+    if (!text.trim()) return;
+    const note: InternalNote = { id: `on_${Date.now()}`, author, ts: Date.now(), text: text.trim() };
+    set((s) => ({ orderNotes: { ...s.orderNotes, [orderId]: [note, ...(s.orderNotes[orderId] ?? [])] } }));
   },
   addPatientTag(id: string, tag: string) {
     const t = tag.trim().toLowerCase().replace(/\s+/g, "-");

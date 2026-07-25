@@ -3,11 +3,11 @@ import { useMemo, useState } from "react";
 import {
   ArrowLeft, Copy, Printer, RotateCcw, MoreHorizontal, ChevronRight, Snowflake, ShieldCheck,
   Truck, Package, Pill, CreditCard, FileText, MessageSquare, Tag, User2, AlertTriangle,
-  Stethoscope, MapPin, Clock, Check, ExternalLink,
+  Stethoscope, MapPin, Clock, Check, ExternalLink, TrendingUp, StickyNote,
 } from "lucide-react";
 import { AdminShell, Card, StatusPill, formatMoney } from "@/components/admin/AdminShell";
 import { Stepper, type StepperStep } from "@/components/admin/Stepper";
-import { PROGRAMS, useAdmin, type Order } from "@/lib/admin/store";
+import { PROGRAMS, useAdmin, adminActions, type Order, type InternalNote } from "@/lib/admin/store";
 import { enrichOrder, type EnrichedOrder, type TimelineEvent } from "@/lib/admin/orders-enrich";
 
 export const Route = createFileRoute("/admin/orders/$id")({
@@ -23,6 +23,8 @@ function OrderDetailPage() {
   const { id } = useParams({ from: "/admin/orders/$id" });
   const order = useAdmin((s) => s.orders.find((o) => o.id === id));
   const patient = useAdmin((s) => s.patients.find((p) => p.id === order?.patientId));
+  const patientOrders = useAdmin((s) => s.orders.filter((o) => o.patientId === order?.patientId));
+  const orderNotes = useAdmin((s) => s.orderNotes[id] ?? []);
   const nav = useNavigate();
 
   const o: EnrichedOrder | null = useMemo(() => (order ? enrichOrder(order, patient) : null), [order, patient]);
@@ -66,6 +68,8 @@ function OrderDetailPage() {
           </button>
         </div>
       </div>
+
+      <VariantBanner o={o} />
 
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         {/* LEFT column */}
@@ -190,6 +194,9 @@ function OrderDetailPage() {
             </div>
           </Card>
 
+          {/* COGS — internal */}
+          <CogsCard o={o} />
+
           {/* Clinical excerpt */}
           <Card className="p-4">
             <SectionHead icon={<Stethoscope className="h-4 w-4 text-indigo-600" />} title="Clinical review" right={<Link to="/admin/physician-queue" className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">Open case <ExternalLink className="h-3 w-3" /></Link>} />
@@ -267,6 +274,9 @@ function OrderDetailPage() {
             </div>
           </Card>
 
+          {/* Patient order history */}
+          <PatientOrderHistory patientId={order!.patientId} currentId={id} orders={patientOrders} />
+
           {/* Risk */}
           <Card className="p-4">
             <SectionHead icon={<AlertTriangle className="h-4 w-4 text-amber-600" />} title="Risk & flags" />
@@ -304,6 +314,9 @@ function OrderDetailPage() {
             </div>
             <button className="mt-3 w-full rounded-lg border border-ink/10 bg-white py-1.5 text-[12px] font-semibold text-ink hover:bg-ink/[0.03]">Reassign</button>
           </Card>
+
+          {/* Internal notes */}
+          <OrderInternalNotes orderId={id} notes={orderNotes} />
         </div>
       </div>
     </AdminShell>
@@ -404,4 +417,158 @@ function TimelineDot({ kind }: { kind: TimelineEvent["kind"] }) {
   };
   const m = map[kind];
   return <div className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full ${m.bg}`}>{m.icon}</div>;
+}
+
+/* ─────────────── New telehealth blocks ─────────────── */
+
+function VariantBanner({ o }: { o: EnrichedOrder }) {
+  if (o.status === "exception") {
+    return (
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3">
+        <div className="flex items-center gap-2 text-[13px]">
+          <AlertTriangle className="h-4 w-4 text-rose-600" />
+          <span className="font-semibold text-rose-800">Delayed / delivery exception</span>
+          <span className="text-rose-700/80">— cold-chain window at risk. Reship at no cost to protect the patient.</span>
+        </div>
+        <button className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-rose-700">
+          <RotateCcw className="h-3.5 w-3.5" /> Reship at no cost
+        </button>
+      </div>
+    );
+  }
+  if (o.rxStatus === "pending_review") {
+    return (
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+        <div className="flex items-center gap-2 text-[13px]">
+          <Clock className="h-4 w-4 text-amber-700" />
+          <span className="font-semibold text-amber-900">Awaiting Rx approval</span>
+          <span className="text-amber-800/80">— card authorized, not captured until physician e-signs. SLA 48h.</span>
+        </div>
+        <Link to="/admin/physician-queue" className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-amber-700">
+          Open physician queue <ChevronRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+    );
+  }
+  if (o.payment.status === "refunded") {
+    return (
+      <div className="mb-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-[13px]">
+        <RotateCcw className="h-4 w-4 text-slate-500" />
+        <span className="font-semibold text-slate-800">Order refunded</span>
+        <span className="text-slate-600">— {formatMoney(o.payment.total)} returned to {o.payment.method} •••• {o.payment.last4}.</span>
+      </div>
+    );
+  }
+  return null;
+}
+
+function CogsCard({ o }: { o: EnrichedOrder }) {
+  const c = o.cogs;
+  const gpTone = c.gpPct >= 55 ? "text-emerald-700" : c.gpPct >= 35 ? "text-amber-700" : "text-rose-700";
+  return (
+    <Card className="p-4">
+      <SectionHead
+        icon={<TrendingUp className="h-4 w-4 text-indigo-600" />}
+        title="Unit economics · internal"
+        right={<span className="rounded bg-ink/[0.05] px-1.5 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-ink/55">Ops only</span>}
+      />
+      <div className="mt-3 grid gap-3 sm:grid-cols-5">
+        <CogsMetric label="Drug cost" value={formatMoney(c.drug)} sub={`${o.items[0].name.split(" ")[0]} · ${o.cadence.toLowerCase()}`} />
+        <CogsMetric label="Packaging" value={formatMoney(c.packaging)} sub="Cold-chain kit" />
+        <CogsMetric label="Shipping" value={formatMoney(c.shipping)} sub={`${o.carrier} ${o.service}`} />
+        <CogsMetric label="Gross profit" value={formatMoney(c.gp)} sub="Order-level" bold />
+        <CogsMetric label="GP margin" value={`${c.gpPct}%`} sub="Target ≥ 55%" tone={gpTone} bold />
+      </div>
+      <div className="mt-3 flex items-center justify-between rounded-lg bg-ink/[0.03] px-3 py-2 text-[12px] text-ink/65">
+        <span>Revenue captured</span>
+        <span className="font-mono font-semibold text-ink">{formatMoney(o.payment.total)}</span>
+        <span className="text-ink/30">−</span>
+        <span>COGS</span>
+        <span className="font-mono font-semibold text-ink">{formatMoney(c.drug + c.packaging + c.shipping)}</span>
+        <span className="text-ink/30">=</span>
+        <span className={`font-mono font-bold ${gpTone}`}>{formatMoney(c.gp)}</span>
+      </div>
+    </Card>
+  );
+}
+function CogsMetric({ label, value, sub, bold, tone }: { label: string; value: string; sub: string; bold?: boolean; tone?: string }) {
+  return (
+    <div>
+      <div className="text-[10.5px] font-semibold uppercase tracking-wider text-ink/50">{label}</div>
+      <div className={`mt-0.5 tabular-nums ${bold ? "text-[16px] font-bold" : "text-[14px] font-semibold"} ${tone ?? "text-ink"}`}>{value}</div>
+      <div className="text-[10.5px] text-ink/45">{sub}</div>
+    </div>
+  );
+}
+
+function PatientOrderHistory({ patientId, currentId, orders }: { patientId: string; currentId: string; orders: Order[] }) {
+  const others = orders.filter((o) => o.id !== currentId).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 3);
+  return (
+    <Card className="p-4">
+      <SectionHead
+        icon={<Package className="h-4 w-4 text-indigo-600" />}
+        title="Patient order history"
+        right={<Link to="/admin/orders" className="text-[11.5px] font-semibold text-indigo-600 hover:underline">View all →</Link>}
+      />
+      {others.length === 0 && (
+        <div className="mt-3 rounded-md border border-dashed border-ink/10 p-3 text-[11.5px] text-ink/45">
+          First order — no prior history for this patient.
+        </div>
+      )}
+      <ul className="mt-3 space-y-2">
+        {others.map((o) => (
+          <li key={o.id}>
+            <Link to="/admin/orders/$id" params={{ id: o.id }} className="flex items-center justify-between rounded-lg border border-ink/8 bg-white px-3 py-2 hover:border-indigo-300 hover:bg-indigo-50/40">
+              <div className="min-w-0">
+                <div className="font-mono text-[11.5px] font-semibold text-ink">#{o.id.replace("ord_", "")}</div>
+                <div className="text-[11px] text-ink/55">{o.createdAt} · {PROGRAMS[o.program].label.split(" · ")[0]}</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <FulfillBadge status={o.status} />
+                <span className="tabular-nums text-[12.5px] font-semibold text-ink">${o.amount}</span>
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <Link to="/admin/patients/$id" params={{ id: patientId }} className="mt-3 inline-flex items-center gap-1 text-[11.5px] font-semibold text-indigo-600 hover:underline">
+        Open full patient timeline <ExternalLink className="h-3 w-3" />
+      </Link>
+    </Card>
+  );
+}
+
+function OrderInternalNotes({ orderId, notes }: { orderId: string; notes: InternalNote[] }) {
+  const [text, setText] = useState("");
+  function fmt(ts: number) {
+    const d = new Date(ts);
+    return `${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })} · ${d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}`;
+  }
+  return (
+    <Card className="p-4">
+      <SectionHead icon={<StickyNote className="h-4 w-4 text-amber-600" />} title="Internal notes" />
+      <p className="mt-1 text-[11px] text-ink/50">Visible to ops team only. Never shown to the patient.</p>
+      <div className="mt-3 space-y-2">
+        {notes.map((n) => (
+          <div key={n.id} className="rounded-md border border-amber-200 bg-amber-50/50 p-2.5">
+            <div className="text-[12.5px] text-ink">{n.text}</div>
+            <div className="mt-1 text-[10.5px] text-ink/50">— {n.author} · {fmt(n.ts)}</div>
+          </div>
+        ))}
+        {notes.length === 0 && <div className="rounded-md border border-dashed border-ink/10 p-3 text-[11.5px] text-ink/45">No internal notes on this order yet.</div>}
+      </div>
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={2}
+        placeholder="Add order note (e.g. pharmacy called, cold pack replaced)…"
+        className="mt-3 w-full resize-none rounded-lg border border-ink/10 bg-white p-2.5 text-[12.5px] outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+      />
+      <button
+        onClick={() => { adminActions.addOrderNote(orderId, text); setText(""); }}
+        disabled={!text.trim()}
+        className="mt-2 w-full rounded-lg bg-ink px-3 py-1.5 text-[12px] font-semibold text-white disabled:opacity-40"
+      >Save note</button>
+    </Card>
+  );
 }
