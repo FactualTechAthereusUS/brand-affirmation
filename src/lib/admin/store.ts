@@ -217,6 +217,8 @@ export type AdminState = {
   session: { email: string; name: string; loggedInAt: number } | null;
   onboardingComplete: boolean;
   dateRange: "24h" | "7d" | "30d" | "4w" | "90d";
+  scenario: DemoScenario;
+  role: Role;
   patients: Patient[];
   orders: Order[];
   payments: Payment[];
@@ -225,11 +227,20 @@ export type AdminState = {
   conversations: Conversation[];
   activity: ActivityEvent[];
   alerts: Alert[];
+  physicians: Physician[];
+  pharmacies: Pharmacy[];
+  cases: PhysicianCase[];
+  checkIns: CheckIn[];
+  notifications: Notification[];
+  integrations: Integration[];
+  campaigns: Campaign[];
+  funnelDays: FunnelDay[];
   ui: {
     patientDrawerId: string | null;
     orderDrawerId: string | null;
     paymentDrawerId: string | null;
     activeConvoId: string | null;
+    activeCaseId: string | null;
     patientFilter: PatientStatus | "all";
     patientSearch: string;
     showLogoMenu: boolean;
