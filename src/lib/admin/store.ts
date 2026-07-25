@@ -104,13 +104,47 @@ export type Notification = {
   unread: boolean;
 };
 
+export type IntegrationCategory =
+  | "Payments" | "Pharmacies" | "Clinical" | "Marketing"
+  | "Analytics" | "Email/SMS" | "Shipping" | "Comms" | "Banking" | "Auth";
+
+export type IntegrationStatus = "connected" | "degraded" | "down" | "disconnected";
+
+export type IntegrationConfigField = {
+  key: string;
+  label: string;
+  type: "text" | "secret" | "select" | "toggle" | "url";
+  options?: string[];
+  required?: boolean;
+  placeholder?: string;
+  help?: string;
+};
+
+export type IntegrationScope = { key: string; label: string; required?: boolean };
+export type IntegrationWebhookEvent = { key: string; label: string; enabled: boolean };
+export type IntegrationSyncEntry = {
+  ts: number;
+  event: string;
+  status: "ok" | "warn" | "error";
+  detail?: string;
+};
+
 export type Integration = {
   id: string;
   name: string;
-  category: "Critical" | "Clinical" | "Analytics" | "Banking";
-  status: "connected" | "degraded" | "down";
+  category: IntegrationCategory;
+  status: IntegrationStatus;
   lastSync: number;
   lastError?: string;
+  description: string;
+  docsUrl: string;
+  brand: { color: string; mono: string };
+  scopes: IntegrationScope[];
+  configSchema: IntegrationConfigField[];
+  config: Record<string, string | boolean>;
+  webhookEvents: IntegrationWebhookEvent[];
+  syncHistory: IntegrationSyncEntry[];
+  connectedAt?: number;
 };
 
 export type Campaign = {
@@ -805,6 +839,43 @@ function normalizeLeads(rawLeads: unknown, freshLeads: Lead[]) {
   return rawLeads.map((lead, index) => normalizeLead(lead, freshLeads[index % freshLeads.length] ?? freshLeads[0])).filter(Boolean);
 }
 
+/** Merge persisted integration state onto fresh catalog. Preserves user-set
+ *  status/config/webhookEvents/syncHistory; drops persisted entries whose
+ *  id no longer exists in the catalog; adds any new catalog entries. */
+function normalizeIntegrations(raw: unknown, fresh: Integration[]): Integration[] {
+  if (!Array.isArray(raw)) return fresh;
+  const persisted = new Map<string, unknown>();
+  for (const item of raw) if (isRecord(item) && typeof item.id === "string") persisted.set(item.id, item);
+  return fresh.map((base) => {
+    const p = persisted.get(base.id);
+    if (!isRecord(p)) return base;
+    const status = typeof p.status === "string" && ["connected","degraded","down","disconnected"].includes(p.status)
+      ? p.status as IntegrationStatus : base.status;
+    const config = isRecord(p.config) ? p.config as Record<string, string | boolean> : base.config;
+    const webhookEvents = Array.isArray(p.webhookEvents)
+      ? base.webhookEvents.map((w) => {
+          const match = (p.webhookEvents as unknown[]).find((x) => isRecord(x) && x.key === w.key);
+          return isRecord(match) && typeof match.enabled === "boolean" ? { ...w, enabled: match.enabled } : w;
+        })
+      : base.webhookEvents;
+    const syncHistory = Array.isArray(p.syncHistory)
+      ? (p.syncHistory as unknown[]).filter((h): h is IntegrationSyncEntry =>
+          isRecord(h) && typeof h.ts === "number" && typeof h.event === "string"
+          && (h.status === "ok" || h.status === "warn" || h.status === "error"))
+      : base.syncHistory;
+    return {
+      ...base,
+      status,
+      lastSync: asNumber(p.lastSync, base.lastSync),
+      lastError: typeof p.lastError === "string" ? p.lastError : undefined,
+      connectedAt: typeof p.connectedAt === "number" ? p.connectedAt : (status === "connected" ? base.connectedAt : undefined),
+      config,
+      webhookEvents,
+      syncHistory,
+    };
+  });
+}
+
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
   const fresh = seed();
@@ -816,6 +887,7 @@ function load(): AdminState {
         ...fresh,
         ...parsed,
         leads: normalizeLeads(parsed.leads, fresh.leads),
+        integrations: normalizeIntegrations(parsed.integrations, fresh.integrations),
         ui: { ...fresh.ui, ...(parsed.ui ?? {}) },
       } as AdminState;
     }
@@ -1039,6 +1111,76 @@ export const adminActions = {
   },
   toggleIntegration(id: string) {
     set((s) => ({ integrations: s.integrations.map((i) => (i.id === id ? { ...i, status: i.status === "connected" ? "down" as const : "connected" as const, lastSync: Date.now() } : i)) }));
+  },
+  connectIntegration(id: string, cfg: Record<string, string | boolean>) {
+    const ts = Date.now();
+    const entry: IntegrationSyncEntry = { ts, event: "Integration connected", status: "ok" };
+    set((s) => ({
+      integrations: s.integrations.map((i) => i.id === id ? {
+        ...i,
+        status: "connected" as const,
+        lastSync: ts,
+        connectedAt: i.connectedAt ?? ts,
+        config: { ...i.config, ...cfg },
+        lastError: undefined,
+        syncHistory: [entry, ...i.syncHistory].slice(0, 50),
+      } : i),
+      activity: [{ id: `a_${ts}`, ts, text: `Connected ${s.integrations.find((i) => i.id === id)?.name ?? "integration"}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  disconnectIntegration(id: string) {
+    const ts = Date.now();
+    const entry: IntegrationSyncEntry = { ts, event: "Integration disconnected", status: "warn" };
+    set((s) => ({
+      integrations: s.integrations.map((i) => i.id === id ? {
+        ...i,
+        status: "disconnected" as const,
+        config: {},
+        connectedAt: undefined,
+        lastError: undefined,
+        syncHistory: [entry, ...i.syncHistory].slice(0, 50),
+      } : i),
+      activity: [{ id: `a_${ts}`, ts, text: `Disconnected ${s.integrations.find((i) => i.id === id)?.name ?? "integration"}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  testIntegration(id: string) {
+    const ts = Date.now();
+    const ok = Math.random() > 0.1;
+    const entry: IntegrationSyncEntry = ok
+      ? { ts, event: "Test connection · OK", status: "ok", detail: `Round-trip ${Math.floor(180 + Math.random()*400)}ms` }
+      : { ts, event: "Test connection · Failed", status: "error", detail: "HTTP 401 · check credentials" };
+    set((s) => ({
+      integrations: s.integrations.map((i) => i.id === id ? {
+        ...i,
+        status: ok ? "connected" as const : "degraded" as const,
+        lastSync: ok ? ts : i.lastSync,
+        lastError: ok ? undefined : "Test failed — HTTP 401",
+        syncHistory: [entry, ...i.syncHistory].slice(0, 50),
+      } : i),
+    }));
+    return ok;
+  },
+  syncIntegration(id: string) {
+    const ts = Date.now();
+    const entry: IntegrationSyncEntry = { ts, event: "Manual sync", status: "ok", detail: `${Math.floor(4+Math.random()*40)} records reconciled` };
+    set((s) => ({
+      integrations: s.integrations.map((i) => i.id === id ? {
+        ...i, lastSync: ts,
+        syncHistory: [entry, ...i.syncHistory].slice(0, 50),
+      } : i),
+    }));
+  },
+  updateIntegrationConfig(id: string, patch: Record<string, string | boolean>) {
+    set((s) => ({
+      integrations: s.integrations.map((i) => i.id === id ? { ...i, config: { ...i.config, ...patch } } : i),
+    }));
+  },
+  toggleIntegrationWebhookEvent(id: string, key: string) {
+    set((s) => ({
+      integrations: s.integrations.map((i) => i.id === id ? {
+        ...i, webhookEvents: i.webhookEvents.map((w) => w.key === key ? { ...w, enabled: !w.enabled } : w),
+      } : i),
+    }));
   },
   setActiveCase(id: string | null) { set((s) => ({ ui: { ...s.ui, activeCaseId: id } })); },
   sendCheckInReminder(id: string) {

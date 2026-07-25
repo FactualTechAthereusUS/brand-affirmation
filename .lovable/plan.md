@@ -1,154 +1,196 @@
-# /admin/messages — end-to-end revamp
+# /admin/integrations — full revamp
 
-Goal: turn the current stale inbox into a real support console. Every button works, state persists, mobile is app-grade, desktop is Sage/Untitled-UI dense.
+Turn the current stale card grid into a real integrations surface that works end-to-end on demo data. Match the reference visuals (Untitled UI / Sage marketplace): clean cards with real brand logos, clear Connected vs Not-connected state, a working Connect modal with scope permissions, a per-integration detail drawer/page with settings + logs + webhooks + sync activity, category tabs, and search.
 
-## Layout (desktop → tablet → mobile)
+## What's broken today
 
-```text
-Desktop  ≥1200:  [Filters 260] [Convo list 340] [Thread 1fr] [Patient panel 320]
-Tablet   768–1199: [Convo list 320] [Thread 1fr] (panel = drawer button)
-Mobile   <768:  Single-pane w/ back nav. List → Thread → (i) Patient sheet
-```
+- `/admin/integrations` renders a static grid. Configure / Test / Logs buttons do nothing. Toggle just flips status.
+- Only one state exists ("connected/degraded/down"). No `disconnected` (not-yet-connected) state, so we can't show a real marketplace.
+- No detail page, no OAuth-style connect dialog, no configuration fields, no webhook/event log, no sync history.
+- Category set is tiny (Critical / Clinical / Analytics / Banking). Missing: Payments, Marketing/Ads, Email/SMS, Shipping, EHR, Pharmacies, Comms, Auth.
+- No logos. Only text names.
 
-Use the existing `admin-scope` tokens. No new palettes.
+## Full integration catalog (demo data)
 
-## Left column — Filters & folders (new)
+Seed a realistic telehealth stack, most disconnected, a few connected/degraded so both states are visible.
 
-- Search "Search conversations, patients, keywords…" (⌘K focuses)
-- Sections:
-  - **Inbox** (all open) · Unassigned · Assigned to me · Mentions · Snoozed · Closed · All
-  - **Channels**: In-app · SMS · Email · WhatsApp (with unread counts)
-  - **Tags**: Clinical · Intake · Shipping · Billing · Refund · General
-  - **Assignees**: Andre F. · Ops · Dr. Nass · Unassigned
-- Every filter is a real predicate combined with AND. Active filters shown as removable chips above the list.
 
-## Middle — Conversation list
+| Category        | Integration         | Default state |
+| --------------- | ------------------- | ------------- |
+| Payments        | Stripe              | connected     |
+| Payments        | Paddle              | disconnected  |
+| Payments        | Affirm              | disconnected  |
+| Payments        | Klarna              | disconnected  |
+| Pharmacies      | South End Rx        | connected     |
+| Pharmacies      | Wells Rx            | connected     |
+| Pharmacies      | EpiqScripts         | connected     |
+| Pharmacies      | Strive Rx           | degraded      |
+| Pharmacies      | Empower             | disconnected  |
+| Clinical        | LifeFile EHR        | connected     |
+| Clinical        | Dr. Telx            | connected     |
+| Clinical        | DoseSpot ePrescribe | disconnected  |
+| Clinical        | Photon Health       | disconnected  |
+| Marketing / Ads | Meta Ads            | connected     |
+| Marketing / Ads | Google Ads          | disconnected  |
+| Marketing / Ads | TikTok Ads          | disconnected  |
+| Analytics       | Meta Pixel / CAPI   | connected     |
+| Analytics       | Google Analytics 4  | connected     |
+| Analytics       | PostHog             | disconnected  |
+| Analytics       | Segment             | disconnected  |
+| Email / SMS     | Klaviyo             | connected     |
+| Email / SMS     | Postmark            | disconnected  |
+| Email / SMS     | Twilio SMS          | disconnected  |
+| Email / SMS     | SendGrid            | disconnected  |
+| Shipping        | ShipStation         | disconnected  |
+| Shipping        | EasyPost            | disconnected  |
+| Shipping        | UPS                 | disconnected  |
+| Shipping        | FedEx               | disconnected  |
+| Comms           | Slack               | disconnected  |
+| Comms           | Intercom            | disconnected  |
+| Comms           | Zendesk             | disconnected  |
+| Banking         | Mercury             | connected     |
+| Auth            | Auth0               | disconnected  |
+| Auth            | Google SSO          | disconnected  |
 
-- Sort: Newest activity (default) · Oldest waiting · Priority
-- Row: avatar w/ presence dot, name, relative time, last-message preview (prefixed `You:`  if from me, italic if internal note), channel icon, status pill, unread dot + count badge, priority flag if clinical.
-- Bulk select (checkbox on hover): assign, tag, close, snooze, mark read.
-- Empty state per filter with illustration + "Clear filters".
-- Infinite list virtualization not required (demo scale); use overflow-y-auto.
 
-## Right of list — Thread
-
-Header:
-
-- Avatar, name, presence, channel · assignee, tags. Actions: Assign ▾, Tag ▾, Snooze ▾, Close/Reopen, ⋯ (View patient · View orders · Merge · Copy link).
-- Compact patient strip on tablet where panel is hidden.
-
-Transcript:
-
-- Grouped by day dividers ("Today", "Yesterday", "Wed, Jul 22").
-- Bubbles: patient left (white ring), me right (ink), internal note (honey bg, "Internal note" tag, not sent).
-- Metadata under each: sender name (staff only), time, channel, delivery state (Sent → Delivered → Seen) for patient-facing messages.
-- Supports: text, markdown-lite (bold/italic/links), emoji, attachments (image thumb + file card), quoted reply, system events ("Andre assigned to Dr. Nass", "Case BLS-C-… linked").
-- Typing indicator (simulated for demo when patient "responds").
-- Auto-scroll to bottom on new; "Jump to latest" pill when scrolled up.
-
-Composer:
-
-- Tabs at top: **Reply** · **Internal note** · **SMS** (if patient has phone) · **Email** (subject line appears).
-- Auto-grow textarea (44 → 172px). Enter sends, Shift+Enter newline. ⌘↵ also sends.
-- Toolbar row: 😊 emoji · 📎 attach · @ mention teammate · / macros · Insert canned reply · Schedule send · Signature toggle.
-- **Macros** (canned replies) — searchable menu with 8 seeded templates: `/nausea`, `/shipping-delay`, `/refill-approved`, `/refund-policy`, `/insurance`, `/dose-titration`, `/pause-plan`, `/reschedule-checkin`. Variables `{patientFirstName}`, `{doseMg}`, `{shipTrackingUrl}`.
-- Sending: optimistic append with `state: 'sending'` → `sent` (300ms) → `delivered` (600ms). If channel=email and no subject, block send with inline error.
-- After send: clears textarea, refocuses, updates convo `updatedAt`, moves to top, marks read.
-- Auto-reply simulator: 30% chance patient responds 3–6s later using scripted reply pool (feels alive without being annoying). Guarded by a "Demo replies" toggle in header (default on).
-
-## Right panel — Patient context
-
-Sticky, scrollable:
-
-- Patient card: avatar, name, email, phone (copy-to-clipboard on click), address city/state.
-- Program card: program label, dose, week, adherence %, next check-in, next ship date.
-- Financial: LTV, MRR, last payment, outstanding.
-- Linked cases (top 3) + Orders (top 3) with pills → deep-link to `/admin/patients/$id`, `/admin/orders/$id`, `/admin/physician-queue/$id`.
-- Assign block (existing) refined with search input.
-- Internal notes: editable, timestamped, add/delete.
-- Tags multi-select.
-- Danger zone: Close conversation, Merge duplicate.
+Each item gets: brand color, monogram (SVG letter tile — no external logos, matches "no image bg" rule with just a rounded tinted square + letter), short description, provider URL, permission scopes, config schema (list of typed fields), webhook events list, and a 30-day sync history.
 
 ## Store additions (`src/lib/admin/store.ts`)
 
-Extend types (non-breaking; all optional):
+Extend `Integration`:
 
-- `ConvoMessage`: add `channel?: MessageChannel`, `state?: 'sending'|'sent'|'delivered'|'seen'|'failed'`, `attachments?: {name,size,url,kind}[]`, `replyTo?: string`, `system?: boolean`, `subject?: string`.
-- `Conversation`: add `tags: ConvoTag[]` (migrate from single `tag`), `snoozedUntil?: number`, `priority?: 'normal'|'high'`, `unreadCount: number`, `mentions?: string[]`, `patientCity?: string`, `patientState?: string`.
+- `status: "connected" | "degraded" | "down" | "disconnected"` — add `disconnected`
+- `description: string` — one-liner
+- `docsUrl: string`
+- `brand: { color: string; mono: string }` — for logo tile
+- `scopes: { key: string; label: string; required: boolean }[]`
+- `configSchema: { key: string; label: string; type: "text"|"secret"|"select"|"toggle"; options?: string[]; required?: boolean }[]`
+- `config: Record<string, string | boolean>` — user-entered values (secrets stored masked)
+- `webhookEvents: { key: string; label: string; enabled: boolean }[]`
+- `syncHistory: { ts: number; event: string; status: "ok"|"warn"|"error"; detail?: string }[]`
+- `connectedAt?: number`
 
 New actions:
 
-- `sendMessage(convoId, { text, channel, internal, attachments, subject })` — optimistic, simulates state transitions, updates preview/updatedAt/unread.
-- `markSeen(convoId)` — sets me-side messages to `seen`, resets unread.
-- `snoozeConvo(id, untilTs)` / `unsnooze(id)`
-- `closeConvo(id)` / `reopenConvo(id)`
-- `setTags(id, tags[])` / `toggleTag(id, tag)`
-- `setPriority(id, level)`
-- `deleteMessage(convoId, msgId)` (own messages only, <5min)
-- `startTyping(id)` / `stopTyping(id)` (transient in-memory, not persisted)
-- `simulatePatientReply(id)` — pulls from scripted pool by tag.
-- `bulkAssign(ids[], to, status)` / `bulkClose(ids[])` / `bulkTag(ids[], tag)`
-- Macro registry + `applyMacro(convoId, macroId)` returning interpolated text.
+- `connectIntegration(id, config)` → sets `status: connected`, stores masked config, appends `syncHistory` "Connected", toast.
+- `disconnectIntegration(id)` → status `disconnected`, clears config, appends history.
+- `reconnectIntegration(id)` / `testIntegration(id)` → simulated: 200ms delay → 90% ok / 10% degraded, appends history entry, toast.
+- `updateIntegrationConfig(id, patch)`
+- `toggleWebhookEvent(id, key)`
+- `syncIntegration(id)` → appends "Manual sync" entry, updates `lastSync`, toast.
 
-Migration path: `normalizeConversations()` on hydrate — fills defaults for old localStorage entries (mirrors the leads-normalization pattern already in the store).
+`normalizeIntegrations()` on hydrate fills defaults so old localStorage entries don't crash.
 
-## Component structure
+## Route structure
 
-```text
-src/routes/admin.messages.tsx        (shell + route)
-src/components/admin/messages/
-  InboxFilters.tsx        (left column)
-  ConvoList.tsx           (middle) + ConvoRow.tsx
-  ThreadHeader.tsx
-  Transcript.tsx          + Bubble.tsx + DayDivider.tsx + SystemEvent.tsx
-  Composer.tsx            + MacroMenu.tsx + AttachmentChip.tsx + EmojiPicker.tsx (native)
-  PatientPanel.tsx
-  useMessagesUX.ts        (keyboard shortcuts, typing sim, auto-reply sim)
-```
+- `src/routes/admin.integrations.index.tsx` — marketplace grid (rename current file; router already uses index pattern elsewhere).
+- `src/routes/admin.integrations.$id.tsx` — detail page.
 
-Keyboard shortcuts (global on route):
+## Marketplace page (`admin.integrations.index.tsx`)
 
-- `⌘K` search · `j/k` next/prev convo · `e` close · `s` snooze · `a` assign · `#` tag · `r` reply · `n` internal note · `⌘↵` send.
+Header: title + description + search input (right).
 
-## Mobile behavior (<768)
+Tab strip (horizontal, hairline underline for active — matches `/admin/analytics` tabs):
+`All · Payments · Pharmacies · Clinical · Marketing · Analytics · Email/SMS · Shipping · Comms · Banking · Auth`
 
-- Three views driven by URL search param `?view=list|thread|patient` (so back button works).
-- List: full-width, larger touch targets (56px rows), FAB "New message" opens patient picker.
-- Thread: sticky header w/ back arrow + name + (i) button, transcript, sticky composer above safe-area (`env(safe-area-inset-bottom)`), swipe-down on header returns to list.
-- Patient info as bottom sheet from (i), 90vh, drag handle.
-- Composer collapses toolbar behind a `+` menu on mobile.
+Above-the-fold summary strip (like analytics KPI strip):
 
-## Empty / error / loading states
+- Connected count · Degraded count · Available count · Last sync (relative)
 
-- Skeleton for list on first load.
-- Empty inbox: illustration + "You're all caught up".
-- Failed send: inline red pill + Retry.
-- Offline banner via `navigator.onLine`.
+Grid: responsive 1/2/3/4 cols. Card shows:
 
-## Toasts
+- 40px rounded tile with brand color bg + white monogram letter (no image files, no circle — square tile with `rounded-lg`)
+- Name + external-link icon → docsUrl
+- 2-line description
+- Status pill: `Connected` (emerald) · `Degraded` (amber) · `Down` (coral) · `Not connected` (ink/40)
+- Bottom row: "Last sync 12m ago" + primary action button
+  - Not connected → `Connect` (marine)
+  - Connected → `Manage` (ink outline) + small `Test` icon button
+- Whole card is a Link to detail page; primary button opens Connect modal directly (stopPropagation).
 
-- "Message sent" (undo 5s deletes it), "Snoozed until 9am tomorrow", "Assigned to Dr. Nass", "Closed conversation", "Macro applied".
+Empty state per filter with illustration line.
 
-## What's already there and what will change
+## Connect modal
 
-Keep: existing `Conversation`, `ConvoMessage`, `sendReply`, `assignConvo`, `setActiveConvo`, `ensureConversationFor`. They stay for backwards compatibility; `sendReply` becomes a thin wrapper over new `sendMessage`.
+Reference: image-154 (Untitled UI "Connect X to Y").
 
-Replace: the entire `admin.messages.tsx` UI (currently one file, ~180 lines) with the modular components above.
+Two-step:
 
-Add: filters, macros, snooze, close/reopen, tags[], priority, delivery states, typing/auto-reply sim, keyboard shortcuts, mobile 3-pane routing, patient panel deep-links.
+1. **Permissions** — lock icon header, "Blissley would like to" list of scopes (checkmarks), Cancel + Allow access.
+2. **Configuration** — dynamic form from `configSchema`. Secret fields render as password inputs with show/hide. Inline validation for required fields. Submit → `connectIntegration`, close, toast "Connected to Stripe", card flips to Connected state.
+
+For already-connected integrations, "Manage" opens the detail page instead of the modal.
+
+## Detail page (`admin.integrations.$id.tsx`)
+
+Header row: back link · brand tile · name + provider URL · status pill · action buttons (Test, Sync now, Disconnect (danger outline)).
+
+3-column layout on desktop, stack on mobile:
+
+Left/main:
+
+- **Overview** card — description, connected since, last sync, next scheduled sync
+- **Configuration** — editable form from `configSchema`, Save button, secrets masked (`sk_live_••••1234`), Rotate button on secret fields
+- **Webhook events** — list of `webhookEvents` with toggles. Webhook URL block (copyable) + Signing secret (reveal/rotate).
+- **Sync activity** — reverse-chronological list from `syncHistory` with status dot, event, timestamp, expandable detail. "Load more" pagination.
+
+Right rail:
+
+- **Scopes granted** — checkmarked list
+- **Related** — 3 sibling integrations from the same category
+- **Danger zone** — Disconnect (confirm dialog: "Disconnect Stripe? Payments will fail until reconnected.")
+
+## Category-specific configuration schemas
+
+Each seeded with realistic fields, all demo:
+
+- Stripe: publishable key, secret key (masked), webhook signing secret, statement descriptor, currency select
+- Meta Pixel/CAPI: pixel id, CAPI access token (masked), test event code, auto-advanced matching toggle
+- Klaviyo: private API key (masked), public API key, default list, double opt-in toggle
+- Twilio SMS: account SID, auth token (masked), from number, messaging service SID
+- ShipStation: API key, API secret, store id
+- Pharmacies: API base URL, API key, account id, fallback pharmacy toggle
+- LifeFile EHR: base URL, client id, client secret, sync interval select
+
+Everything demo — no real network calls. `testIntegration` simulates a 300–800ms delay then appends a history row.
+
+## Interactions & UX polish
+
+- Search filters by name/description across all categories.
+- Category chip counts show connected/total (`Payments · 1/4`).
+- Framer Motion: card hover lift, modal fade+scale, status pill count-up on connect.
+- Toasts on every mutation via existing `sonner` Toaster.
+- Persist all state to localStorage via existing store pattern.
+- Full-viewport dense layout (no max-w) — matches other admin pages.
+- Keyboard: `Esc` closes modal, `⌘K` focuses search.
+
+## Mobile
+
+- Grid collapses to 1 col with 72px card height.
+- Detail page becomes single column; right rail moves below main.
+- Connect modal becomes bottom sheet on <640px.
 
 ## Acceptance
 
-- Send a reply → appears instantly, transitions Sending→Sent→Delivered→Seen, list reorders, preview updates, unread cleared.
-- Toggle Internal note → sends honey-tagged message not counted as customer reply, no delivery states.
-- Assign to Dr. Nass → status flips to physician, activity event logged, toast shown, list badge updates.
-- Snooze 1h → convo leaves Inbox, appears in Snoozed, returns after time (simulated with setTimeout for demo).
-- Close → moves to Closed folder; Reopen returns it.
-- Macro `/nausea` interpolates patient first name and inserts into composer.
-- Filter by Channel=SMS + Tag=Clinical + Assignee=Dr. Nass → list filtered correctly, chips shown.
-- Mobile: list → tap row → thread → (i) → patient sheet; back button walks it in reverse.
-- Reload page → filters, active convo, messages, tags, snooze all persist via localStorage.
-- Keyboard: j/k navigates, r focuses composer, ⌘↵ sends.
+- Land on `/admin/integrations`: see mixed state — some Connected cards (Stripe, LifeFile, Meta Pixel, Klaviyo, Wells Rx, Mercury) and many `Not connected` cards.
+- Click `Connect` on Google Ads → permissions screen → allow → config form → save. Card flips to Connected, appears in summary count, toast "Google Ads connected". Persist through reload.
+- Click a Connected card → detail page. Toggle webhook event, save. Click Test → simulated OK, activity row appended, timestamp updates.
+- Click Disconnect on Stripe → confirm dialog → card returns to `Not connected`, all config cleared, toast.
+- Filter by "Payments" tab → only 4 payment integrations shown with correct count.
+- Search "twilio" → single result.
+- Mobile: cards stack, connect flow works as bottom sheet.
 
-No backend changes. Everything runs against the existing Zustand-ish store with localStorage.  
-make UI like the reference images, match our color scheme in /analytics and /admin,  make it intuitive , smooth, give that finishing , full logic
+## Files touched
+
+- `src/lib/admin/store.ts` — extend Integration type, seed catalog, add actions, normalize helper.
+- `src/routes/admin.integrations.tsx` → rename to `admin.integrations.index.tsx` (matches sibling routing pattern used across admin).
+- `src/routes/admin.integrations.$id.tsx` — new detail page.
+- `src/components/admin/integrations/` — new folder:
+  - `IntegrationCard.tsx`, `IntegrationTile.tsx` (letter monogram), `ConnectDialog.tsx`, `ConfigForm.tsx`, `WebhookPanel.tsx`, `SyncActivity.tsx`, `DisconnectConfirm.tsx`
+- Uses existing `AdminShell`, `Card`, `Pill`, sonner toaster.
+
+No backend, no real API calls — demo-grade, fully persistent via existing localStorage store.
+
+&nbsp;
+
+i will provide all the logos , so for logos make it placeholders 
