@@ -1,8 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { z } from "zod";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { AdminShell, Card } from "@/components/admin/AdminShell";
 import { MetricCard, AnalyticsSection } from "@/components/admin/analytics/MetricCard";
 import { LineChartMini, BarsMini } from "@/components/admin/analytics/LineChartMini";
