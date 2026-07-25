@@ -192,15 +192,20 @@ export function enrichOrder(order: Order, patient?: Patient): EnrichedOrder {
   if (cadence !== "Monthly") tags.push("Bundle");
   if (h % 11 === 0) tags.push("VIP");
   if (drug === "Tirzepatide") tags.push("Titration");
+  for (const t of order.tags ?? []) if (!tags.includes(t)) tags.push(t);
 
   const flags: string[] = [];
   if (order.status === "exception") flags.push("Delivery exception");
   if (payment.status === "failed") flags.push("Payment failed");
   if (h % 19 === 0) flags.push("Escalated");
+  for (const f of order.flagsExtra ?? []) if (!flags.includes(f)) flags.push(f);
 
   const eta = order.status === "shipped" || order.status === "at_pharmacy"
     ? new Date(rxTs + 2 * DAY).toISOString().slice(0, 10)
     : order.eta;
+
+  // Merge extra timeline events (from admin actions)
+  if (order.timelineExtra?.length) t.push(...order.timelineExtra);
 
   // COGS (internal) — deterministic, in cents. Reflects compounded GLP-1 economics.
   const drugPerMonth = drug === "Tirzepatide" ? 5500 : 3800; // ~$55 / $38 wholesale per month
