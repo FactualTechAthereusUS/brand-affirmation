@@ -241,7 +241,7 @@ function OrderDetailPage() {
 
           {/* Activity log */}
           <Card className="p-4">
-            <SectionHead icon={<FileText className="h-4 w-4 text-indigo-600" />} title="Activity" right={<button className="text-[11.5px] font-semibold text-indigo-600 hover:underline">Add internal note</button>} />
+            <SectionHead icon={<FileText className="h-4 w-4 text-indigo-600" />} title="Activity" right={<button onClick={() => { document.getElementById("order-note-input")?.scrollIntoView({ behavior: "smooth", block: "center" }); (document.getElementById("order-note-input") as HTMLTextAreaElement | null)?.focus(); }} className="text-[11.5px] font-semibold text-indigo-600 hover:underline">Add internal note</button>} />
             <ol className="mt-3 space-y-3">
               {[...o.timeline].reverse().map((ev) => (
                 <li key={ev.ts + ev.kind} className="flex gap-3">
