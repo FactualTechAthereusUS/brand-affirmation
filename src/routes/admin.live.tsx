@@ -196,7 +196,7 @@ function LiveViewPage() {
           className="relative"
           style={{ height: fs ? "calc(100vh - 72px)" : "calc(100vh - 88px)" }}
         >
-          <div className={`absolute inset-0 ${fs ? "" : "-mx-4 lg:-mx-6"} overflow-hidden bg-white`}>
+          <div className={`absolute inset-0 ${fs ? "" : "-mx-4 lg:-mx-6"} overflow-hidden ${view === "map" ? "bg-transparent" : "bg-white"}`}>
             <ClientOnly fallback={<GlobeFallback />}>
               <Suspense fallback={<GlobeFallback />}>
                 {view === "globe" ? (
@@ -210,7 +210,7 @@ function LiveViewPage() {
 
           <div className="relative z-10 flex h-full w-full lg:w-[380px]">
             <div className="min-w-0 h-full w-full overflow-y-auto pr-1 [scrollbar-width:thin]">
-              <div className="rounded-xl border border-ink/[0.06] bg-white/95 p-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur">
+              <div className={`rounded-xl border border-ink/[0.06] p-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur ${view === "map" ? "bg-white/60" : "bg-white/95"}`}>
                 <LiveSidebar
                   counts={counts}
                   byLocation={byLocation}
@@ -224,14 +224,14 @@ function LiveViewPage() {
               </div>
               {!fs && (
                 <div className="mt-3 space-y-3">
-                  <div className="rounded-xl border border-ink/[0.06] bg-white/95 p-3.5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur">
+                  <div className={`rounded-xl border border-ink/[0.06] p-3.5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur ${view === "map" ? "bg-white/60" : "bg-white/95"}`}>
                     <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.06em] text-ink/55">Live activity</div>
                     <div className="text-[11.5px] text-ink/45">Intake, physician approvals & payment signals</div>
                     <div className="mt-2">
                       <ActivityFeed limit={6} title="" />
                     </div>
                   </div>
-                  <div className="rounded-xl border border-ink/[0.06] bg-white/95 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur">
+                  <div className={`rounded-xl border border-ink/[0.06] shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur ${view === "map" ? "bg-white/60" : "bg-white/95"}`}>
                     <RecentOrders streamer={streamer} />
                   </div>
                   <div className="h-4" />
