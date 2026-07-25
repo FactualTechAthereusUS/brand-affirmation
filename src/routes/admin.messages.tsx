@@ -58,7 +58,7 @@ function MessagesPage() {
 
         {/* Sidebar */}
         {active && (
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-y-auto min-h-0">
             <div className="rounded-2xl border border-ink/8 bg-white p-4">
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Patient</div>
               <div className="mt-1 text-[15px] font-semibold text-ink">{active.patientName}</div>
