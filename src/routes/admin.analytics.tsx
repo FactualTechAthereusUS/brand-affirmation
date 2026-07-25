@@ -70,6 +70,7 @@ function AnalyticsOverview() {
 
   return (
     <AdminShell>
+      <div className="-mx-4 -mt-4 min-h-[calc(100vh-56px)] bg-[#f6f6f7] px-4 pb-16 pt-4 lg:-mx-6 lg:px-6">
       {/* Top bar */}
       <motion.div
         initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
