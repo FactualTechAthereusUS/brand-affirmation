@@ -434,25 +434,31 @@ function PatientFunnelCard({ funnel }: { funnel: ReturnType<typeof conversionFun
       </div>
       <div className="mb-2.5 text-[10.5px] text-ink/45">Journey conversion · last 30 days</div>
       <div className="space-y-2">
-        {rows.map((r) => (
-          <div key={r.label}>
-            <div className="flex items-baseline justify-between text-[11.5px]">
-              <span className="text-ink/70">{r.label}</span>
-              <span className="tabular-nums">
-                <span className="text-ink">{r.value.toLocaleString()}</span>
-                <span className="ml-2 text-ink/45">{r.pct.toFixed(1)}%</span>
-              </span>
+        {rows.map((r, i) => {
+          // Gradient from indigo → violet → sky → emerald down the funnel
+          const stops = ["#2563eb", "#4f46e5", "#7c3aed", "#8b5cf6", "#6366f1", "#0ea5e9", "#0d9488", "#10b981"];
+          const bg = stops[i % stops.length];
+          return (
+            <div key={r.label}>
+              <div className="flex items-baseline justify-between text-[11.5px]">
+                <span className="text-ink/70">{r.label}</span>
+                <span className="tabular-nums">
+                  <span className="text-ink">{r.value.toLocaleString()}</span>
+                  <span className="ml-2 text-ink/45">{r.pct.toFixed(1)}%</span>
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-ink/[0.05]">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${r.pct}%` }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.03 }}
+                  className="h-full rounded-full"
+                  style={{ background: bg }}
+                />
+              </div>
             </div>
-            <div className="mt-1 h-1 w-full overflow-hidden rounded bg-ink/[0.05]">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${r.pct}%` }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="h-full rounded bg-ink"
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Card>
   );
