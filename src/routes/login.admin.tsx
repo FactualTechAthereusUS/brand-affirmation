@@ -60,7 +60,7 @@ function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@blissley.com"
-                className="w-full rounded-2xl border border-ink/12 bg-white px-4 py-3.5 text-[15px] outline-none placeholder:text-ink/30 focus:border-ever/60 focus:ring-4 focus:ring-ever/10"
+                className="w-full rounded-2xl border border-ink/12 bg-white px-4 py-3.5 text-[15px] outline-none placeholder:text-ink/30 focus:border-indigo/60 focus:ring-4 focus:ring-indigo/10"
               />
             </label>
             <button
@@ -79,7 +79,7 @@ function AdminLogin() {
             </div>
             <button
               onClick={enter}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-ever px-5 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-ever/90"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-indigo px-5 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-indigo/90"
             >
               <Zap className="h-4 w-4" /> Enter demo console
             </button>

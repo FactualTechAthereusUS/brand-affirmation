@@ -54,7 +54,7 @@ export function WLHero() {
             transition={{ duration: 0.6 }}
             className="inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white backdrop-blur-xl"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
             GLP-1 Weight Loss
           </motion.div>
 

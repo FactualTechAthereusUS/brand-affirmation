@@ -95,7 +95,7 @@ export function acquisitionSpendMix(s: AdminState) {
   const grouped: Record<string, number> = {};
   for (const c of s.campaigns) grouped[c.channel] = (grouped[c.channel] ?? 0) + c.spend;
   const total = Object.values(grouped).reduce((a, b) => a + b, 0) || 1;
-  const colors: Record<string, string> = { Meta: "#ee7273", Google: "#1D437B", Email: "#4a7c6f", Affiliate: "#c4a265", Organic: "#8b9bb4" };
+  const colors: Record<string, string> = { Meta: "#2563eb", Google: "#1D437B", Email: "#4a7c6f", Affiliate: "#c4a265", Organic: "#8b9bb4" };
   return Object.entries(grouped).map(([label, value]) => ({ label, value, pct: (value / total) * 100, color: colors[label] ?? "#171717" }));
 }
 
@@ -172,7 +172,7 @@ export function sessionsByState(s: AdminState): { label: string; value: number; 
 
 export function deviceMix(): { label: string; value: number; color: string }[] {
   return [
-    { label: "Mobile", value: 68, color: "#ee7273" },
+    { label: "Mobile", value: 68, color: "#2563eb" },
     { label: "Desktop", value: 26, color: "#171717" },
     { label: "Tablet", value: 6, color: "#c4a265" },
   ];

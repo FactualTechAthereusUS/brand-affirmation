@@ -46,7 +46,7 @@ import payAffirm from "@/assets/pay-affirm.png.asset.json";
 /* ── Brand tokens ── */
 const NAVY = "#1D437B";
 const NAVY_SOFT = "#6B94C7";
-const PINK = "#ee7273";
+const PINK = "#2563eb";
 const GREEN = "#16A34A";
 const GREEN_TINT = "#EAFBEF";
 const BLUE_TINT = "#E7EEFB";
@@ -1417,7 +1417,7 @@ function ReservationBanner() {
     <div className="lg:hidden px-4 pt-3">
       <div
         className="flex items-start gap-3 rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4"
-        style={{ background: "rgba(238, 114, 115, 0.10)" }}
+        style={{ background: "rgba(37,99,235, 0.10)" }}
       >
         <svg
           width="20"

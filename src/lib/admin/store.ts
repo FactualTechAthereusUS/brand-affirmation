@@ -578,7 +578,7 @@ export function revenueByProgram() {
 
 export function acquisitionMix() {
   return [
-    { label: "Meta", value: 48, color: "#ee7273" },
+    { label: "Meta", value: 48, color: "#2563eb" },
     { label: "Google", value: 27, color: "#1D437B" },
     { label: "Organic", value: 18, color: "#4a7c6f" },
     { label: "Referral", value: 7, color: "#c4a265" },

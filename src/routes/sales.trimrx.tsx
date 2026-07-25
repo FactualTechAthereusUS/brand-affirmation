@@ -38,7 +38,7 @@ export const Route = createFileRoute("/sales/trimrx")({
 /* ─────────  Brand tokens (match intake / LP)  ───────── */
 const NAVY = "#1D437B";
 const NAVY_SOFT = "#6B94C7";
-const PINK = "#ee7273";
+const PINK = "#2563eb";
 const PINK_SOFT = "#f8b9b9";
 const CANVAS = "#FFFFFF";
 

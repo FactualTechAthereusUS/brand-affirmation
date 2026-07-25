@@ -146,7 +146,7 @@ function Sidebar() {
                 {count ? (
                   <span
                     className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
-                      active ? "bg-white text-ink" : "bg-[#ee7273] text-white"
+                      active ? "bg-white text-ink" : "bg-[#2563eb] text-white"
                     }`}
                   >
                     {count}
@@ -198,7 +198,7 @@ function BottomNav() {
               <Icon className="h-5 w-5" />
               <span>{n.label.split(" ")[0]}</span>
               {count ? (
-                <span className="absolute right-1/4 top-1 grid h-4 min-w-[16px] place-items-center rounded-full bg-[#ee7273] px-1 text-[9px] font-bold text-white">
+                <span className="absolute right-1/4 top-1 grid h-4 min-w-[16px] place-items-center rounded-full bg-[#2563eb] px-1 text-[9px] font-bold text-white">
                   {count > 9 ? "9+" : count}
                 </span>
               ) : null}
@@ -221,7 +221,7 @@ function TopBar({ onSignOut }: { onSignOut: () => void }) {
   return (
     <>
       {licenseAlert !== "none" && (
-        <div className={`${licenseAlert === "d7" ? "bg-[#ee7273] text-white" : "bg-[#f7c948] text-ink"} px-4 py-2 text-center text-xs font-semibold sm:px-6`}>
+        <div className={`${licenseAlert === "d7" ? "bg-[#2563eb] text-white" : "bg-[#f7c948] text-ink"} px-4 py-2 text-center text-xs font-semibold sm:px-6`}>
           <span className="inline-flex items-center gap-2">
             <AlertTriangle className="h-3.5 w-3.5" />
             {licenseAlert === "d7"
@@ -271,7 +271,7 @@ function TopBar({ onSignOut }: { onSignOut: () => void }) {
                 <Settings2 className="h-4 w-4" /> Preferences
               </button>
               <div className="my-1 border-t border-ink/8" />
-              <button onClick={onSignOut} className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-[#ee7273] hover:bg-[#ee7273]/5">
+              <button onClick={onSignOut} className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-[#2563eb] hover:bg-[#2563eb]/5">
                 <LogOut className="h-4 w-4" /> Sign out
               </button>
             </motion.div>
@@ -437,7 +437,7 @@ function CaseCard({ c }: { c: Case }) {
           <div className="flex flex-wrap items-center gap-2">
             <StatusPill status={c.status} />
             {flagged && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#ee7273]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#ee7273]">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#2563eb]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2563eb]">
                 <AlertTriangle className="h-3 w-3" /> {c.flags.length} flag{c.flags.length > 1 ? "s" : ""}
               </span>
             )}
@@ -451,11 +451,11 @@ function CaseCard({ c }: { c: Case }) {
               · {c.patient.age}{c.patient.sex} · {c.patient.state} · BMI {c.patient.bmi}
             </span>
           </h3>
-          <p className={`mt-1 text-sm ${flagged ? "text-[#ee7273]" : "text-ink/55"}`}>{c.flagSummary}</p>
+          <p className={`mt-1 text-sm ${flagged ? "text-[#2563eb]" : "text-ink/55"}`}>{c.flagSummary}</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <div className={`text-xs font-semibold ${sla === "over" ? "text-[#ee7273]" : sla === "warn" ? "text-[#c48a2a]" : "text-ink/60"}`}>
+            <div className={`text-xs font-semibold ${sla === "over" ? "text-[#2563eb]" : sla === "warn" ? "text-[#c48a2a]" : "text-ink/60"}`}>
               {hrs}h waiting
             </div>
             <div className="text-[10px] uppercase tracking-[0.12em] text-ink/40">SLA {sla === "over" ? "over" : "on track"}</div>
@@ -473,7 +473,7 @@ function StatusPill({ status }: { status: CaseStatus }) {
     in_review: { l: "In review", c: "bg-[#f2ede4] text-ink" },
     awaiting_info: { l: "Awaiting info", c: "bg-[#f7c948]/20 text-[#8a6a10]" },
     approved: { l: "Approved", c: "bg-[#4a7c6f]/15 text-[#4a7c6f]" },
-    rejected: { l: "Rejected", c: "bg-[#ee7273]/15 text-[#ee7273]" },
+    rejected: { l: "Rejected", c: "bg-[#2563eb]/15 text-[#2563eb]" },
   };
   const { l, c } = map[status];
   return <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${c}`}>{l}</span>;
@@ -557,7 +557,7 @@ function Panel({ title, icon: Icon, children, tone = "default" }: { title: strin
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.3 }}
-      className={`rounded-3xl border bg-white p-5 sm:p-6 ${tone === "warn" ? "border-[#ee7273]/25 ring-1 ring-[#ee7273]/10" : "border-ink/8"}`}
+      className={`rounded-3xl border bg-white p-5 sm:p-6 ${tone === "warn" ? "border-[#2563eb]/25 ring-1 ring-[#2563eb]/10" : "border-ink/8"}`}
     >
       <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/50">
         <Icon className="h-3.5 w-3.5" />
@@ -620,7 +620,7 @@ function FlagRow({ f }: { f: Flag }) {
   const tones = {
     info: "bg-[#eef4ff] text-[#1D437B] border-[#1D437B]/15",
     warn: "bg-[#fff5e5] text-[#8a5f0a] border-[#c48a2a]/25",
-    critical: "bg-[#ee7273]/8 text-[#8a2a2b] border-[#ee7273]/25",
+    critical: "bg-[#2563eb]/8 text-[#8a2a2b] border-[#2563eb]/25",
   } as const;
   const Icon = f.severity === "info" ? Info : AlertTriangle;
   return (
@@ -805,7 +805,7 @@ function PanelRx({ c }: { c: Case }) {
 }
 function RxChipGroup({ label, hint, value, options, onChange, accent = "blue" }: { label: string; hint?: string; value: string; options: string[]; onChange: (v: string) => void; accent?: "blue" | "pink" }) {
   const active = accent === "pink"
-    ? "bg-[#ee7273] text-white border-[#ee7273] shadow-sm shadow-[#ee7273]/25"
+    ? "bg-[#2563eb] text-white border-[#2563eb] shadow-sm shadow-[#2563eb]/25"
     : "bg-[#1D437B] text-white border-[#1D437B] shadow-sm shadow-[#1D437B]/20";
   return (
     <div>
@@ -910,7 +910,7 @@ function ReviewActionBar({ c }: { c: Case }) {
           </button>
           <button
             onClick={() => physicianActions.openESign("reject")}
-            className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#ee7273]/25 bg-white px-4 py-2.5 text-sm font-semibold text-[#ee7273] hover:bg-[#ee7273]/5"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#2563eb]/25 bg-white px-4 py-2.5 text-sm font-semibold text-[#2563eb] hover:bg-[#2563eb]/5"
           >
             <X className="h-4 w-4" /> Reject
           </button>
@@ -1011,7 +1011,7 @@ function ESignModal() {
             onClick={submit}
             disabled={action === "approve" && !validPin}
             className={`mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition disabled:opacity-40 ${
-              action === "reject" ? "bg-[#ee7273] text-white hover:bg-[#e05f60]" : "bg-ink text-white hover:bg-ink/90"
+              action === "reject" ? "bg-[#2563eb] text-white hover:bg-[#e05f60]" : "bg-ink text-white hover:bg-ink/90"
             }`}
           >
             {cta}
@@ -1085,14 +1085,14 @@ function RefillCard({ r }: { r: Refill }) {
   const ci = r.checkIn;
   const trendGood = ci.weightDelta < -5;
   return (
-    <motion.div layout className={`rounded-3xl border bg-white p-4 sm:p-5 ${r.flagged ? "border-[#ee7273]/25 ring-1 ring-[#ee7273]/10" : "border-ink/8"}`}>
+    <motion.div layout className={`rounded-3xl border bg-white p-4 sm:p-5 ${r.flagged ? "border-[#2563eb]/25 ring-1 ring-[#2563eb]/10" : "border-ink/8"}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-ink text-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em]">Month {r.monthNumber}</span>
             <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/45">{r.product} · {r.currentDose}</span>
             {r.flagged && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#ee7273]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#ee7273]">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#2563eb]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2563eb]">
                 <AlertTriangle className="h-3 w-3" /> Needs review
               </span>
             )}
@@ -1157,7 +1157,7 @@ function RefillCard({ r }: { r: Refill }) {
   );
 }
 function MiniKv({ k, v, tone = "default" }: { k: string; v: string; tone?: "default" | "ok" | "warn" }) {
-  const t = tone === "warn" ? "text-[#ee7273]" : tone === "ok" ? "text-[#4a7c6f]" : "text-ink";
+  const t = tone === "warn" ? "text-[#2563eb]" : tone === "ok" ? "text-[#4a7c6f]" : "text-ink";
   return (
     <div className="rounded-xl border border-ink/8 bg-[#faf9f6] p-2.5">
       <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-ink/45">{k}</div>
@@ -1169,7 +1169,7 @@ function MiniKv({ k, v, tone = "default" }: { k: string; v: string; tone?: "defa
 /* ============================================================
    Messages tab
    ============================================================ */
-const PINK = "#ee7273";
+const PINK = "#2563eb";
 const INK_HEX = "#171717";
 
 function initialsOf(f: string, l: string) {
@@ -1516,9 +1516,9 @@ function DashboardTab() {
 
 function BigStat({ label, value, tone = "default" }: { label: string; value: number | string; tone?: "default" | "coral" }) {
   return (
-    <div className={`rounded-3xl border p-5 ${tone === "coral" ? "border-[#ee7273]/20 bg-[#ee7273]/5" : "border-ink/8 bg-white"}`}>
+    <div className={`rounded-3xl border p-5 ${tone === "coral" ? "border-[#2563eb]/20 bg-[#2563eb]/5" : "border-ink/8 bg-white"}`}>
       <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink/50">{label}</div>
-      <div className={`mt-2 text-4xl font-semibold tabular-nums ${tone === "coral" ? "text-[#ee7273]" : "text-ink"}`}>{value}</div>
+      <div className={`mt-2 text-4xl font-semibold tabular-nums ${tone === "coral" ? "text-[#2563eb]" : "text-ink"}`}>{value}</div>
     </div>
   );
 }
@@ -1560,7 +1560,7 @@ function ProfileTab() {
                     <div className="text-ink/60">{exp ?? "—"}</div>
                     <div className="text-right">
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${
-                        days < 30 ? "bg-[#ee7273]/10 text-[#ee7273]" : days < 90 ? "bg-[#f7c948]/20 text-[#8a6a10]" : "bg-[#4a7c6f]/10 text-[#4a7c6f]"
+                        days < 30 ? "bg-[#2563eb]/10 text-[#2563eb]" : days < 90 ? "bg-[#f7c948]/20 text-[#8a6a10]" : "bg-[#4a7c6f]/10 text-[#4a7c6f]"
                       }`}>
                         {days < 30 ? `${days}d left` : "Active"}
                       </span>
@@ -1669,7 +1669,7 @@ function Toasts() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.96 }}
             className={`pointer-events-auto inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-xl ${
-              t.kind === "success" ? "bg-ink text-white" : t.kind === "warn" ? "bg-[#ee7273] text-white" : "bg-white text-ink"
+              t.kind === "success" ? "bg-ink text-white" : t.kind === "warn" ? "bg-[#2563eb] text-white" : "bg-white text-ink"
             }`}
           >
             {t.kind === "success" && <Check className="h-4 w-4" />}

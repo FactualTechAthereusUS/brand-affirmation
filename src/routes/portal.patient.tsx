@@ -44,7 +44,7 @@ export const Route = createFileRoute("/portal/patient")({
 });
 
 const INK = "#171717";
-const PINK = "#ee7273";
+const PINK = "#2563eb";
 const NAVY = "#1D437B";
 
 type Tab = "home" | "messages" | "plan" | "settings";
@@ -288,7 +288,7 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
               style={{ color: active ? INK : "#8a8a8a" }}
             >
               {active && (
-                <motion.span layoutId="tabpill" className="absolute inset-0 -z-10 rounded-full" style={{ background: "rgba(238,114,115,0.12)" }} transition={{ type: "spring", stiffness: 400, damping: 32 }} />
+                <motion.span layoutId="tabpill" className="absolute inset-0 -z-10 rounded-full" style={{ background: "rgba(37,99,235,0.12)" }} transition={{ type: "spring", stiffness: 400, damping: 32 }} />
               )}
               <div className="relative">
                 <Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.2 : 1.8} />
@@ -924,7 +924,7 @@ function PlanTab() {
               const done = wk <= 2;
               const upcoming = wk === 3;
               return (
-                <div key={wk} className={`rounded-xl p-2.5 text-center ${done ? "bg-[#EAF3EF]" : upcoming ? "bg-[#FFF3F1] ring-1 ring-[#ee7273]/40" : "bg-white"}`}>
+                <div key={wk} className={`rounded-xl p-2.5 text-center ${done ? "bg-[#EAF3EF]" : upcoming ? "bg-[#FFF3F1] ring-1 ring-[#2563eb]/40" : "bg-white"}`}>
                   <div className="text-[10px] font-semibold uppercase tracking-wide text-ink/50">Wk {wk}</div>
                   <div className="mt-1">
                     {done ? (

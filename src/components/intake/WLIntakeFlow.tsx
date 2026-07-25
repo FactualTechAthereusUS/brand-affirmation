@@ -84,7 +84,7 @@ function SlimBar({ value }: { value: number }) {
     <div className="relative h-[10px] w-full overflow-hidden rounded-full bg-ink/[0.08]">
       <motion.div
         style={{ width: w }}
-        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-ever to-[#f38a8b]"
+        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo to-[#f38a8b]"
       />
       {/* shimmer */}
       <motion.div
@@ -320,7 +320,7 @@ export function WLIntakeFlow() {
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="rounded-2xl border border-ever/25 bg-ever/[0.06] p-5"
+                      className="rounded-2xl border border-indigo/25 bg-indigo/[0.06] p-5"
                     >
                       <p className="text-[14px] leading-[1.55] text-ink/75">
                         GLP-1 medications are not recommended during pregnancy or
@@ -371,7 +371,7 @@ export function WLIntakeFlow() {
                   <select
                     value={answers.dobM ?? ""}
                     onChange={(e) => set({ dobM: e.target.value })}
-                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-[15px] text-ink outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
                   >
                     <option value="">Month</option>
                     {MONTHS.map((m, i) => (
@@ -384,7 +384,7 @@ export function WLIntakeFlow() {
                     placeholder="DD"
                     value={answers.dobD ?? ""}
                     onChange={(e) => set({ dobD: e.target.value })}
-                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
                   />
                   <input
                     type="number"
@@ -392,7 +392,7 @@ export function WLIntakeFlow() {
                     placeholder="YYYY"
                     value={answers.dobY ?? ""}
                     onChange={(e) => set({ dobY: e.target.value })}
-                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
                   />
                 </div>
               </ScreenShell>
@@ -404,7 +404,7 @@ export function WLIntakeFlow() {
                 { key: "under", label: "Underweight", range: "<18.5", max: 18.5, color: "#7aa5c4" },
                 { key: "normal", label: "Normal", range: "18.5–24.9", max: 25, color: "#6fbf8a" },
                 { key: "over", label: "Overweight", range: "25–29.9", max: 30, color: "#e8a86b" },
-                { key: "obese", label: "Obese", range: "≥30", max: 45, color: "#ee7273" },
+                { key: "obese", label: "Obese", range: "≥30", max: 45, color: "#2563eb" },
               ];
               const activeIdx = bmi === null ? -1 : categories.findIndex((c) => bmi < c.max);
               const active = activeIdx === -1 ? categories[categories.length - 1] : categories[activeIdx];
@@ -584,7 +584,7 @@ export function WLIntakeFlow() {
                       onChange={(e) => set({ pastSurgeriesDetail: e.target.value })}
                       placeholder="e.g. gallbladder removal 2019, c-section 2015"
                       rows={3}
-                      className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                      className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
                     />
                   </motion.label>
                 )}
@@ -630,7 +630,7 @@ export function WLIntakeFlow() {
                       onChange={(e) => set({ currentConditionsDetail: e.target.value })}
                       placeholder="e.g. hypothyroidism, hypertension, GERD"
                       rows={3}
-                      className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
+                      className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
                     />
                   </motion.label>
                 )}
@@ -948,7 +948,7 @@ export function WLIntakeFlow() {
                     placeholder="List name and dose."
                     rows={3}
                     disabled={answers.noMedications}
-                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
+                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
                   />
                   <button
                     type="button"
@@ -982,7 +982,7 @@ export function WLIntakeFlow() {
                     placeholder="List allergies and reactions."
                     rows={3}
                     disabled={answers.noAllergies}
-                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
+                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
                   />
                   <button
                     type="button"
@@ -1060,7 +1060,7 @@ function ConsentRow({
         type="button"
         onClick={() => onChange(!checked)}
         className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 transition-all ${
-          checked ? "border-ever bg-ever text-white" : "border-ink/25 bg-white"
+          checked ? "border-indigo bg-indigo text-white" : "border-ink/25 bg-white"
         }`}
         aria-checked={checked}
         role="checkbox"
@@ -1115,7 +1115,7 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
       className="fixed inset-0 z-50 overflow-hidden"
     >
       {/* Base brand gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f6a5a5] via-ever to-[#d95758]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#f6a5a5] via-indigo to-[#d95758]" />
       {/* Ambient orbs */}
       <motion.div
         className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
@@ -1198,7 +1198,7 @@ function FullscreenLoading({ firstName, state }: { firstName?: string; state?: s
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
-              className="grid h-16 w-16 place-items-center rounded-full bg-white text-ever"
+              className="grid h-16 w-16 place-items-center rounded-full bg-white text-indigo"
             >
               <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
                 <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
@@ -1272,7 +1272,7 @@ function WLProjectionScreen({
         className="font-hero text-[26px] font-bold leading-[1.15] tracking-[-0.02em] text-ink md:text-[32px]"
       >
         {firstName ? `${firstName}, in` : "In"} six months, you could lose{" "}
-        <span className="text-ever">{lossLbs} lbs</span>.
+        <span className="text-indigo">{lossLbs} lbs</span>.
       </motion.h2>
 
       <motion.div
@@ -1284,8 +1284,8 @@ function WLProjectionScreen({
         <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
           <defs>
             <linearGradient id="wlLineIntake" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stopColor="#ee7273" />
-              <stop offset="100%" stopColor="#ee7273" />
+              <stop offset="0%" stopColor="#2563eb" />
+              <stop offset="100%" stopColor="#2563eb" />
             </linearGradient>
           </defs>
           <line x1={padL} x2={W - padR} y1={yAt(start)} y2={yAt(start)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
@@ -1308,12 +1308,12 @@ function WLProjectionScreen({
             transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.circle
-            cx={xAt(0)} cy={yAt(start)} r={8} fill="#ee7273"
+            cx={xAt(0)} cy={yAt(start)} r={8} fill="#2563eb"
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
           />
           <motion.circle
-            cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#ee7273"
+            cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#2563eb"
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 1.8, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}
           />
@@ -1391,7 +1391,7 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
         <span
           className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-4 py-2 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150 md:text-[11px]"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
           Real patient story
         </span>
         <h2 className="mt-4 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink md:text-[34px]">
@@ -1410,7 +1410,7 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
             <img src={story.before} alt={`${story.name} before`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
           <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
             Before
           </span>
         </div>
@@ -1419,7 +1419,7 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
             <img src={story.after} alt={`${story.name} after`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.18)" }} />
           </div>
           <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/55 px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-xl backdrop-saturate-150 md:bottom-4 md:left-4 md:text-[11.5px]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
             After
           </span>
         </div>
@@ -1433,7 +1433,7 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
       >
         <div className="flex items-center gap-1" aria-label="5 star rating">
           {[0, 1, 2, 3, 4].map((i) => (
-            <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#ee7273" aria-hidden>
+            <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#2563eb" aria-hidden>
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
           ))}
@@ -1447,7 +1447,7 @@ function SocialProofScreen({ sex, onNext }: { sex?: Sex; onNext: () => void }) {
             <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
             <span className="truncate text-[14.5px] font-medium text-ink">{story.name}</span>
           </div>
-          <span className="shrink-0 text-[13px] font-semibold text-ever">{story.result}</span>
+          <span className="shrink-0 text-[13px] font-semibold text-indigo">{story.result}</span>
         </div>
       </motion.div>
 

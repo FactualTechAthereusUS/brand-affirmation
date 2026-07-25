@@ -46,7 +46,7 @@ export function WLFAQ() {
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <h2 className="text-[30px] leading-[1.1] text-ink sm:text-[34px] md:text-[52px]">
-            Common <span className="italic text-ever">questions.</span>
+            Common <span className="italic text-indigo">questions.</span>
           </h2>
         </Reveal>
 
@@ -67,7 +67,7 @@ export function WLFAQ() {
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0, scale: isOpen ? 1.1 : 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="shrink-0 text-ever"
+                    className="shrink-0 text-indigo"
                   >
                     <Plus className="h-6 w-6" strokeWidth={1.5} />
                   </motion.span>

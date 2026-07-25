@@ -29,7 +29,7 @@ export function LegalPage({ eyebrow, title, content }: LegalPageProps) {
             className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-60"
             style={{
               background:
-                "radial-gradient(60% 60% at 50% 0%, rgba(238,114,115,0.18) 0%, rgba(238,114,115,0) 70%)",
+                "radial-gradient(60% 60% at 50% 0%, rgba(37,99,235,0.18) 0%, rgba(37,99,235,0) 70%)",
             }}
           />
           <div className="relative mx-auto max-w-3xl px-6">
@@ -41,7 +41,7 @@ export function LegalPage({ eyebrow, title, content }: LegalPageProps) {
                 <span aria-hidden>←</span> Back to home
               </Link>
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
                 {eyebrow}
               </div>
               <h1 className="text-[40px] leading-[1.02] md:text-[64px] font-medium tracking-tight text-ink">
@@ -78,7 +78,7 @@ export function LegalPage({ eyebrow, title, content }: LegalPageProps) {
                 Email{" "}
                 <a
                   href="mailto:support@blissley.com"
-                  className="text-[#ee7273] underline underline-offset-4"
+                  className="text-[#2563eb] underline underline-offset-4"
                 >
                   support@blissley.com
                 </a>{" "}

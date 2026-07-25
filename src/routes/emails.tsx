@@ -56,7 +56,7 @@ function NextDaysSection() {
           <div className="relative -mr-6 md:-mr-2">
             <div
               className="absolute inset-0 rounded-full blur-3xl"
-              style={{ background: "radial-gradient(closest-side, rgba(238,114,115,0.4), transparent 70%)" }}
+              style={{ background: "radial-gradient(closest-side, rgba(37,99,235,0.4), transparent 70%)" }}
             />
             <img
               src={vialBlissley.url}
@@ -200,7 +200,7 @@ function PortalEmail() {
         <h1 className="mt-3 font-hero text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[40px]">
           Your Blissley portal
           <br />
-          <span className="text-[#ee7273]">is ready.</span>
+          <span className="text-[#2563eb]">is ready.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[340px] text-[14.5px] leading-[1.55] text-ink/65">
           This is where everything lives — your physician review status, your care team, your
@@ -224,7 +224,7 @@ function PortalEmail() {
       {/* Inside your portal card */}
       <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
         <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
-          Inside <span className="text-[#ee7273]">your portal</span>
+          Inside <span className="text-[#2563eb]">your portal</span>
         </h2>
 
         <ul className="mt-6 space-y-5">
@@ -235,8 +235,8 @@ function PortalEmail() {
                 key={f.title}
                 className="grid grid-cols-[64px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[76px_minmax(0,1fr)] md:gap-5"
               >
-                <div className="grid aspect-square place-items-center rounded-2xl bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-                  <Icon className="h-7 w-7 text-[#ee7273]" strokeWidth={1.75} />
+                <div className="grid aspect-square place-items-center rounded-2xl bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
+                  <Icon className="h-7 w-7 text-[#2563eb]" strokeWidth={1.75} />
                 </div>
                 <div className="min-w-0 pt-1">
                   <h3 className="text-[15.5px] font-semibold leading-tight text-ink md:text-[16.5px]">
@@ -253,7 +253,7 @@ function PortalEmail() {
       {/* Closer */}
       <div className="px-5 pb-10 pt-4 text-center md:px-8">
         <h2 className="font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
-          Need a <span className="text-[#ee7273]">new login link?</span>
+          Need a <span className="text-[#2563eb]">new login link?</span>
         </h2>
         <p className="mt-2 text-[13.5px] text-ink/60">
           Visit{" "}
@@ -318,7 +318,7 @@ function PlansEmail() {
         <h1 className="font-hero text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[40px]">
           Weight loss plans
           <br />
-          <span className="text-[#ee7273]">that put you first</span>
+          <span className="text-[#2563eb]">that put you first</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[340px] text-[14.5px] leading-[1.55] text-ink/65">
           If prescribed, you'll get a comprehensive treatment plan designed to help you lose weight,
@@ -343,7 +343,7 @@ function PlansEmail() {
       {/* Set up for success card */}
       <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
         <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
-          How you'll be <span className="text-[#ee7273]">set up for success</span>
+          How you'll be <span className="text-[#2563eb]">set up for success</span>
         </h2>
 
         <ul className="mt-6 space-y-6">
@@ -373,7 +373,7 @@ function PlansEmail() {
       {/* Closer CTA */}
       <div className="px-5 pb-10 pt-4 text-center md:px-8">
         <h2 className="font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
-          Start your <span className="text-[#ee7273]">weight loss journey</span>
+          Start your <span className="text-[#2563eb]">weight loss journey</span>
         </h2>
         <p className="mt-2 text-[13.5px] text-ink/60">
           100% online. No insurance required.
@@ -454,7 +454,7 @@ function RefundEmail() {
         <h1 className="mt-3 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[36px]">
           An update on your
           <br />
-          <span className="text-[#ee7273]">Blissley review</span>
+          <span className="text-[#2563eb]">Blissley review</span>
         </h1>
       </div>
 
@@ -475,8 +475,8 @@ function RefundEmail() {
       {/* Refund confirmed card */}
       <div className="mx-3 mb-2 mt-8 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-            <Check className="h-5 w-5 text-[#ee7273]" strokeWidth={2.5} />
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
+            <Check className="h-5 w-5 text-[#2563eb]" strokeWidth={2.5} />
           </span>
           <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
             Refund confirmed
@@ -512,7 +512,7 @@ function RefundEmail() {
       {/* What happens next */}
       <div className="px-5 pb-4 pt-6 md:px-8">
         <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
-          What happens <span className="text-[#ee7273]">next</span>
+          What happens <span className="text-[#2563eb]">next</span>
         </h2>
         <p className="mt-4 text-[15px] leading-[1.65] text-ink/70">
           A member of our care team will reach out within 24 hours to talk through your options —
@@ -604,8 +604,8 @@ function ShippingEmail() {
       {/* Hero card */}
       <div className="px-5 pt-6 md:px-8">
         <div className="rounded-[20px] bg-canvas p-6 text-center shadow-[0_1px_0_rgba(0,0,0,0.03)] ring-1 ring-ink/5 md:p-8">
-          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-            <Package className="h-8 w-8 text-[#ee7273]" strokeWidth={1.75} />
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
+            <Package className="h-8 w-8 text-[#2563eb]" strokeWidth={1.75} />
           </div>
           <h1 className="mt-5 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.01em] text-ink md:text-[30px]">
             It's on its way, Sarah.
@@ -722,7 +722,7 @@ function PaymentShell({
   children: React.ReactNode;
 }) {
   const toneMap = {
-    coral: { bg: "bg-[#ee7273]/10", ring: "ring-[#ee7273]/15", text: "text-[#ee7273]" },
+    coral: { bg: "bg-[#2563eb]/10", ring: "ring-[#2563eb]/15", text: "text-[#2563eb]" },
     amber: { bg: "bg-amber-500/10", ring: "ring-amber-500/20", text: "text-amber-600" },
     ink: { bg: "bg-ink/10", ring: "ring-ink/15", text: "text-ink" },
   }[accentTone];
@@ -794,8 +794,8 @@ function UpdatePaymentButton({ label = "Update payment method" }: { label?: stri
 function CareUnaffectedNote() {
   return (
     <div className="mx-3 mb-2 mt-6 flex items-start gap-3 rounded-[16px] bg-canvas p-4 ring-1 ring-ink/5 md:mx-5 md:p-5">
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-        <HeartPulse className="h-4 w-4 text-[#ee7273]" strokeWidth={2.2} />
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
+        <HeartPulse className="h-4 w-4 text-[#2563eb]" strokeWidth={2.2} />
       </span>
       <p className="text-[13.5px] leading-[1.55] text-ink/70">
         Your care and physician relationship are unaffected. We just need a valid card on file to
@@ -936,13 +936,13 @@ function PaymentFailedEmail3() {
         </p>
       </div>
 
-      <div className="mx-3 mt-8 rounded-[20px] bg-[#ee7273]/8 p-5 ring-1 ring-[#ee7273]/15 md:mx-5 md:p-6">
+      <div className="mx-3 mt-8 rounded-[20px] bg-[#2563eb]/8 p-5 ring-1 ring-[#2563eb]/15 md:mx-5 md:p-6">
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/15 ring-1 ring-[#ee7273]/20">
-            <Clock className="h-4.5 w-4.5 text-[#ee7273]" strokeWidth={2.2} />
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#2563eb]/15 ring-1 ring-[#2563eb]/20">
+            <Clock className="h-4.5 w-4.5 text-[#2563eb]" strokeWidth={2.2} />
           </span>
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#ee7273]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#2563eb]">
               48 hours remaining
             </p>
             <p className="mt-0.5 text-[13.5px] text-ink/75">
@@ -986,7 +986,7 @@ function PhysicianMessageEmail() {
         <h1 className="mt-3 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[36px]">
           You have a new message
           <br />
-          <span className="text-[#ee7273]">from Dr. Nass</span>
+          <span className="text-[#2563eb]">from Dr. Nass</span>
         </h1>
       </div>
 
@@ -1006,7 +1006,7 @@ function PhysicianMessageEmail() {
       <div className="px-5 pt-8 pb-2 md:px-8">
         <a
           href="/portal/patient"
-          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#2563eb] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
         >
           View my message
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1019,7 +1019,7 @@ function PhysicianMessageEmail() {
       {/* Login link helper */}
       <div className="px-5 pb-10 pt-6 text-center md:px-8">
         <h2 className="font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em] text-ink md:text-[24px]">
-          Need a <span className="text-[#ee7273]">new login link?</span>
+          Need a <span className="text-[#2563eb]">new login link?</span>
         </h2>
         <p className="mt-2 text-[13.5px] leading-[1.55] text-ink/60">
           Visit{" "}
@@ -1053,7 +1053,7 @@ function CheckInEmail1() {
       </div>
 
       {/* Coral hero */}
-      <div className="relative overflow-hidden bg-[#ee7273] px-5 py-12 text-center md:px-8 md:py-14">
+      <div className="relative overflow-hidden bg-[#2563eb] px-5 py-12 text-center md:px-8 md:py-14">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/30 blur-3xl" />
           <div className="absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
@@ -1078,15 +1078,15 @@ function CheckInEmail1() {
         </p>
         <ul className="mt-4 space-y-2.5 text-[14.5px] leading-[1.55] text-ink/80">
           <li className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>Your current weight</span>
           </li>
           <li className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>Any side effects you've noticed</span>
           </li>
           <li className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>How things are going overall</span>
           </li>
         </ul>
@@ -1099,7 +1099,7 @@ function CheckInEmail1() {
       <div className="px-5 pt-6 pb-2 md:px-8">
         <a
           href="/portal/patient"
-          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#2563eb] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
         >
           Complete My Check-In
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1147,7 +1147,7 @@ function CheckInEmail2() {
         <h1 className="mt-3 font-hero text-[30px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[36px]">
           Your next box is waiting
           <br />
-          <span className="text-[#ee7273]">on this.</span>
+          <span className="text-[#2563eb]">on this.</span>
         </h1>
       </div>
 
@@ -1165,7 +1165,7 @@ function CheckInEmail2() {
       <div className="px-5 pt-6 pb-2 md:px-8">
         <a
           href="/portal/patient"
-          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#2563eb] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
         >
           Complete My Check-In
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1256,7 +1256,7 @@ function DeliveryEmail() {
       </div>
 
       {/* Coral hero */}
-      <div className="relative overflow-hidden bg-[#ee7273] px-5 py-12 text-center md:px-8 md:py-14">
+      <div className="relative overflow-hidden bg-[#2563eb] px-5 py-12 text-center md:px-8 md:py-14">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/30 blur-3xl" />
           <div className="absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
@@ -1290,15 +1290,15 @@ function DeliveryEmail() {
         </p>
         <ul className="mt-4 space-y-3 text-[14.5px] leading-[1.55] text-ink/80">
           <li className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>Inject at night, before bed — you'll sleep through the first adjustment.</span>
           </li>
           <li className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>Rotate injection sites each week.</span>
           </li>
           <li className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>Discard your vial 28 days after first puncture.</span>
           </li>
         </ul>
@@ -1376,7 +1376,7 @@ function AccountShell({
 }) {
   const btn =
     ctaTone === "coral"
-      ? "bg-[#ee7273] text-white"
+      ? "bg-[#2563eb] text-white"
       : "bg-ink text-white";
   return (
     <div className="mt-6 overflow-hidden rounded-[22px] bg-ink/[0.04] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] ring-1 ring-ink/5">
@@ -1396,13 +1396,13 @@ function AccountShell({
 
       {/* Hero */}
       <div className="px-5 pt-10 pb-6 text-center md:px-8">
-        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-          <Icon className="h-6 w-6 text-[#ee7273]" strokeWidth={2.2} />
+        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
+          <Icon className="h-6 w-6 text-[#2563eb]" strokeWidth={2.2} />
         </span>
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[34px]">
           {title}
           <br />
-          <span className="text-[#ee7273]">{titleAccent}</span>
+          <span className="text-[#2563eb]">{titleAccent}</span>
         </h1>
       </div>
 
@@ -1450,8 +1450,8 @@ function MetaRow({
 }) {
   return (
     <div className="flex items-start gap-3 py-3">
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ee7273]/10 ring-1 ring-[#ee7273]/15">
-        <Icon className="h-4 w-4 text-[#ee7273]" strokeWidth={2.2} />
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#2563eb]/10 ring-1 ring-[#2563eb]/15">
+        <Icon className="h-4 w-4 text-[#2563eb]" strokeWidth={2.2} />
       </span>
       <div className="min-w-0 flex-1">
         <p className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-ink/55">{label}</p>
@@ -1629,7 +1629,7 @@ function EmailPreview() {
             <h1 className="mt-3 font-hero text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[40px]">
               Thanks, Sarah.
               <br />
-              <span className="text-[#ee7273]">Your order is in.</span>
+              <span className="text-[#2563eb]">Your order is in.</span>
             </h1>
             <p className="mx-auto mt-4 max-w-[340px] text-[14.5px] leading-[1.55] text-ink/65">
               We'll email you the moment Dr. Nass completes your physician review.
@@ -1644,7 +1644,7 @@ function EmailPreview() {
           {/* Product + totals card */}
           <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
             <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
-              Your <span className="text-[#ee7273]">order</span>
+              Your <span className="text-[#2563eb]">order</span>
             </h2>
 
             <div className="mt-5 flex gap-4">
@@ -1677,7 +1677,7 @@ function EmailPreview() {
               </div>
               <div className="flex justify-between">
                 <dt className="text-ink/70">Shipping</dt>
-                <dd className="font-medium uppercase tracking-wide text-[#ee7273]">Free</dd>
+                <dd className="font-medium uppercase tracking-wide text-[#2563eb]">Free</dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-ink/70">Estimated Taxes</dt>
@@ -1690,9 +1690,9 @@ function EmailPreview() {
             </dl>
 
             {/* Guarantee */}
-            <div className="mt-5 flex gap-3 rounded-2xl bg-[#ee7273]/8 p-4 ring-1 ring-[#ee7273]/15">
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white ring-1 ring-[#ee7273]/20">
-                <Check className="h-4 w-4 text-[#ee7273]" strokeWidth={3} />
+            <div className="mt-5 flex gap-3 rounded-2xl bg-[#2563eb]/8 p-4 ring-1 ring-[#2563eb]/15">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white ring-1 ring-[#2563eb]/20">
+                <Check className="h-4 w-4 text-[#2563eb]" strokeWidth={3} />
               </span>
               <p className="text-[13px] leading-[1.55] text-ink/75">
                 If your physician doesn't approve your prescription, you'll get a{" "}
@@ -1704,7 +1704,7 @@ function EmailPreview() {
           {/* Shipping + Payment card */}
           <div className="mx-3 mb-6 rounded-[20px] bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] md:mx-5 md:p-7">
             <h2 className="font-hero text-[22px] font-semibold leading-[1.15] tracking-[-0.01em] text-ink md:text-[26px]">
-              Shipping <span className="text-[#ee7273]">& payment</span>
+              Shipping <span className="text-[#2563eb]">& payment</span>
             </h2>
 
             <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">

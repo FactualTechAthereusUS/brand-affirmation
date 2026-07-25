@@ -64,7 +64,7 @@ function CoralCTA({ href = "#", children }: { href?: string; children: React.Rea
   return (
     <a
       href={href}
-      className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#ee7273] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
+      className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#2563eb] px-8 text-[14.5px] font-medium text-white transition-transform hover:-translate-y-0.5"
     >
       {children}
       <ArrowRight className="h-4 w-4" />
@@ -75,7 +75,7 @@ function CoralCTA({ href = "#", children }: { href?: string; children: React.Rea
 function FlowDivider({ label, title, subtitle }: { label: string; title: string; subtitle: string }) {
   return (
     <div className="mt-12 mb-2 rounded-[18px] bg-ink px-5 py-6 text-white md:px-7">
-      <p className="text-[10.5px] font-bold uppercase tracking-[0.18em] text-[#ee7273]">{label}</p>
+      <p className="text-[10.5px] font-bold uppercase tracking-[0.18em] text-[#2563eb]">{label}</p>
       <h2 className="mt-1.5 font-hero text-[20px] font-semibold leading-tight tracking-[-0.01em]">
         {title}
       </h2>
@@ -149,7 +149,7 @@ function Flow1A_Email2() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           It's not the food.
           <br />
-          <span className="text-[#ee7273]">It's the voice.</span>
+          <span className="text-[#2563eb]">It's the voice.</span>
         </h1>
       </div>
 
@@ -185,7 +185,7 @@ function Flow1A_Email3() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           I'll stop after
           <br />
-          <span className="text-[#ee7273]">this one.</span>
+          <span className="text-[#2563eb]">this one.</span>
         </h1>
       </div>
 
@@ -220,7 +220,7 @@ function Flow1B_Email1() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           You were two minutes
           <br />
-          <span className="text-[#ee7273]">from done.</span>
+          <span className="text-[#2563eb]">from done.</span>
         </h1>
       </div>
 
@@ -252,7 +252,7 @@ function Flow1B_Email2() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           90% done, still
           <br />
-          <span className="text-[#ee7273]">sitting there.</span>
+          <span className="text-[#2563eb]">sitting there.</span>
         </h1>
       </div>
 
@@ -283,7 +283,7 @@ function Flow1B_Email3() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           Still at
           <br />
-          <span className="text-[#ee7273]">90%.</span>
+          <span className="text-[#2563eb]">90%.</span>
         </h1>
       </div>
 
@@ -314,7 +314,7 @@ function Flow2_Email1() {
       </div>
 
       {/* Minimal coral hero band — quiet confirmation, not celebration */}
-      <div className="mx-3 mt-4 rounded-[20px] bg-[#ee7273] md:mx-5">
+      <div className="mx-3 mt-4 rounded-[20px] bg-[#2563eb] md:mx-5">
         <div className="px-6 py-16 text-center md:py-20">
           <p className="font-hero text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-white md:text-[30px]">
             Your program is ready.
@@ -326,7 +326,7 @@ function Flow2_Email1() {
         <h1 className="font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           I already know
           <br />
-          <span className="text-[#ee7273]">what you're going to ask me.</span>
+          <span className="text-[#2563eb]">what you're going to ask me.</span>
         </h1>
       </div>
 
@@ -369,7 +369,7 @@ function Flow2_Email2() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           You're probably wondering
           <br />
-          <span className="text-[#ee7273]">about the money.</span>
+          <span className="text-[#2563eb]">about the money.</span>
         </h1>
       </div>
 
@@ -521,7 +521,7 @@ function Stars() {
   return (
     <div className="flex items-center gap-0.5" aria-label="5 stars">
       {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 fill-[#ee7273]">
+        <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 fill-[#2563eb]">
           <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6L1.3 7.7l6.1-.6L10 1.5z" />
         </svg>
       ))}
@@ -559,8 +559,8 @@ function BigReviewCard({ r }: { r: BigReview }) {
         </p>
         <p className="mt-3 text-[13.5px] leading-[1.6] text-ink/70">{r.body}</p>
 
-        <div className="mt-4 flex items-center gap-2 rounded-full bg-[#ee7273]/8 px-3 py-2 ring-1 ring-[#ee7273]/15">
-          <TrendingDown className="h-3.5 w-3.5 text-[#ee7273]" strokeWidth={2.5} />
+        <div className="mt-4 flex items-center gap-2 rounded-full bg-[#2563eb]/8 px-3 py-2 ring-1 ring-[#2563eb]/15">
+          <TrendingDown className="h-3.5 w-3.5 text-[#2563eb]" strokeWidth={2.5} />
           <span className="text-[12px] font-semibold text-ink">{r.outcome}</span>
         </div>
       </div>
@@ -579,7 +579,7 @@ function Flow2_Email3() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           What could be waiting
           <br />
-          <span className="text-[#ee7273]">on the other side.</span>
+          <span className="text-[#2563eb]">on the other side.</span>
         </h1>
         <p className="mt-4 text-[14px] leading-[1.6] text-ink/70">
           Real patients. Real objections. Real outcomes. No filters.
@@ -622,7 +622,7 @@ function Flow2_Email4() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           Can I ask you
           <br />
-          <span className="text-[#ee7273]">something?</span>
+          <span className="text-[#2563eb]">something?</span>
         </h1>
       </div>
 
@@ -654,7 +654,7 @@ function Flow2_Email5() {
       </div>
 
       {/* Coral loss-aversion hero */}
-      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-[#ee7273] p-6 text-white md:mx-5 md:p-10">
+      <div className="relative mx-3 mt-4 overflow-hidden rounded-[20px] bg-[#2563eb] p-6 text-white md:mx-5 md:p-10">
         <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/15 blur-3xl" />
         <div className="absolute -bottom-16 -left-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
         <div className="relative">
@@ -759,7 +759,7 @@ function Flow3_Email2() {
         <h1 className="mt-5 font-hero text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[32px]">
           Same molecule.
           <br />
-          <span className="text-[#ee7273]">Different entry point.</span>
+          <span className="text-[#2563eb]">Different entry point.</span>
         </h1>
       </div>
 
@@ -768,7 +768,7 @@ function Flow3_Email2() {
         <div className="relative grid grid-cols-[1.1fr_1fr_1fr] items-stretch">
           {/* Header row */}
           <div />
-          <div className="z-10 mx-0 flex h-14 items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#f28a86] to-[#ee7273] px-2 text-center text-[12px] font-bold uppercase tracking-[0.14em] text-white">
+          <div className="z-10 mx-0 flex h-14 items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#4f79f0] to-[#2563eb] px-2 text-center text-[12px] font-bold uppercase tracking-[0.14em] text-white">
             Blissley
           </div>
           <div className="flex h-14 items-end justify-center pb-2 text-center text-[12px] font-bold uppercase tracking-[0.14em] text-ink/60">
@@ -796,7 +796,7 @@ function Flow3_Email2() {
           </div>
 
           {/* Blissley column */}
-          <div className="col-start-2 row-start-2 -mt-px rounded-b-2xl bg-gradient-to-b from-[#ee7273] to-[#f2a08f]">
+          <div className="col-start-2 row-start-2 -mt-px rounded-b-2xl bg-gradient-to-b from-[#2563eb] to-[#6d92f5]">
             {[
               "Tirzepatide",
               "$299",
@@ -992,7 +992,7 @@ function Flow3_Email4() {
         <h1 className="mt-5 font-hero text-[26px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink md:text-[30px]">
           One last thing before
           <br />
-          <span className="text-[#ee7273]">I close your file.</span>
+          <span className="text-[#2563eb]">I close your file.</span>
         </h1>
       </div>
 
@@ -1347,7 +1347,7 @@ function AskingList() {
       <ul className="mt-4 space-y-3">
         {items.map((it) => (
           <li key={it} className="flex items-start gap-3 text-[14.5px] leading-relaxed text-ink">
-            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ee7273]" />
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
             <span>{it}</span>
           </li>
         ))}
@@ -1453,7 +1453,7 @@ function Flow5_SMS() {
             <p>
               Blissley: Your 90-day check-in is still pending. Your next shipment is on hold.
               Takes 2 min:{" "}
-              <a href="#" className="text-[#ee7273] underline underline-offset-2">
+              <a href="#" className="text-[#2563eb] underline underline-offset-2">
                 blissley.co/ci
               </a>
             </p>
