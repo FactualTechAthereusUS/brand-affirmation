@@ -9,7 +9,9 @@ import {
 } from "./seeds";
 
 /* ────────── Types ────────── */
-export type PatientStatus = "active" | "pending" | "paused" | "failed" | "cancelled";
+export type PatientStatus = "active" | "pending" | "paused" | "failed" | "cancelled" | "denied";
+
+export type InternalNote = { id: string; author: string; ts: number; text: string };
 export type ChurnRisk = "low" | "medium" | "high" | "critical";
 export type ProgramCode = "tirz_mo" | "tirz_3mo" | "tirz_6mo" | "sema_mo" | "sema_3mo" | "sema_6mo";
 
@@ -120,6 +122,10 @@ export type Patient = {
   startedAt: string;
   churn: ChurnRisk;
   state: string;
+  tags?: string[];
+  notes?: InternalNote[];
+  cancelReason?: string;
+  denialReason?: string;
 };
 
 export type OrderStatus = "processing" | "at_pharmacy" | "shipped" | "delivered" | "exception";
@@ -287,6 +293,7 @@ function seed(): AdminState {
     const price = PROGRAMS[program].price;
     const monthsIn = (i % 6) + 1;
     const status: PatientStatus =
+      i % 19 === 0 ? "denied" :
       i % 13 === 0 ? "failed" :
       i % 11 === 0 ? "cancelled" :
       i % 9 === 0 ? "paused" :
@@ -304,10 +311,13 @@ function seed(): AdminState {
       status,
       program,
       mrr: status === "active" ? price : 0,
-      ltv: price * monthsIn,
+      ltv: status === "denied" || status === "pending" ? 0 : price * monthsIn,
       startedAt: iso(monthsIn * 30 * DAY),
       churn,
       state: pick(STATES, i * 5),
+      tags: status === "active" && monthsIn >= 3 ? ["high-value", `${PROGRAMS[program].family}-patient`] : [],
+      cancelReason: status === "cancelled" ? pick(["Too expensive", "Side effects", "Reached goal", "Switching provider"], i) : undefined,
+      denialReason: status === "denied" ? pick(["BMI below threshold", "Contraindication", "Incomplete history"], i) : undefined,
     });
 
     // one active order per patient
@@ -476,7 +486,7 @@ function seed(): AdminState {
 }
 
 /* ────────── Storage ────────── */
-const KEY = "blissley.admin.v2";
+const KEY = "blissley.admin.v3";
 
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
@@ -746,6 +756,97 @@ export const adminActions = {
   },
   markLeadContacted(id: string) {
     set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, contacted: true } : l)) }));
+  },
+
+  /* ── Patient mutations ── */
+  updatePatient(id: string, patch: Partial<Patient>) {
+    set((s) => ({ patients: s.patients.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
+  },
+  pausePatient(id: string) {
+    set((s) => ({
+      patients: s.patients.map((p) => (p.id === id ? { ...p, status: "paused" as const, mrr: 0, churn: "high" as const } : p)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Subscription paused — ${s.patients.find(p => p.id === id)?.firstName ?? "patient"}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  cancelPatient(id: string, reason: string) {
+    set((s) => ({
+      patients: s.patients.map((p) => (p.id === id ? { ...p, status: "cancelled" as const, mrr: 0, cancelReason: reason, churn: "critical" as const } : p)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Subscription cancelled — ${s.patients.find(p => p.id === id)?.firstName ?? "patient"} · ${reason}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  reactivatePatient(id: string) {
+    set((s) => ({
+      patients: s.patients.map((p) => {
+        if (p.id !== id) return p;
+        return { ...p, status: "active" as const, mrr: PROGRAMS[p.program].price, churn: "low" as const, cancelReason: undefined };
+      }),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Subscription reactivated — ${s.patients.find(p => p.id === id)?.firstName ?? "patient"}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  switchPlanPatient(id: string, program: ProgramCode) {
+    set((s) => ({
+      patients: s.patients.map((p) => (p.id === id ? { ...p, program, mrr: p.status === "active" ? PROGRAMS[program].price : 0 } : p)),
+    }));
+  },
+  retryPatientPayment(patientId: string) {
+    set((s) => ({
+      patients: s.patients.map((p) => (p.id === patientId ? { ...p, status: "active" as const, mrr: PROGRAMS[p.program].price, churn: "low" as const } : p)),
+      payments: s.payments.map((p) => (p.patientId === patientId && p.status === "failed" ? { ...p, status: "succeeded" as const, failureReason: undefined } : p)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Payment retried & captured — ${s.patients.find(p => p.id === patientId)?.firstName ?? "patient"}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  writeOffPatientPayment(patientId: string) {
+    set((s) => ({
+      payments: s.payments.map((p) => (p.patientId === patientId && p.status === "failed" ? { ...p, status: "refunded" as const } : p)),
+    }));
+  },
+  addPatientNote(id: string, text: string, author = "You") {
+    if (!text.trim()) return;
+    const note: InternalNote = { id: `n_${Date.now()}`, author, ts: Date.now(), text: text.trim() };
+    set((s) => ({ patients: s.patients.map((p) => (p.id === id ? { ...p, notes: [note, ...(p.notes ?? [])] } : p)) }));
+  },
+  addPatientTag(id: string, tag: string) {
+    const t = tag.trim().toLowerCase().replace(/\s+/g, "-");
+    if (!t) return;
+    set((s) => ({
+      patients: s.patients.map((p) => (p.id === id ? { ...p, tags: Array.from(new Set([...(p.tags ?? []), t])) } : p)),
+    }));
+  },
+  removePatientTag(id: string, tag: string) {
+    set((s) => ({
+      patients: s.patients.map((p) => (p.id === id ? { ...p, tags: (p.tags ?? []).filter((t) => t !== tag) } : p)),
+    }));
+  },
+  flagPatientForReview(id: string, reason: string) {
+    const patient = state.patients.find((p) => p.id === id);
+    if (!patient) return;
+    const task: Task = {
+      id: `t_${Date.now()}`,
+      subject: `${patient.firstName} ${patient.lastName}`,
+      action: `Flag: ${reason}`,
+      ageHrs: 0,
+      status: "open",
+      assignee: "Unassigned",
+      category: "care_ops",
+    };
+    set((s) => ({
+      tasks: [task, ...s.tasks],
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Flagged ${patient.firstName} ${patient.lastName} — ${reason}`, tone: "warn" as const }, ...s.activity],
+    }));
+  },
+  sendMagicLink(id: string) {
+    set((s) => ({
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Magic link sent — ${s.patients.find(p => p.id === id)?.firstName ?? "patient"}`, tone: "info" as const }, ...s.activity],
+    }));
+  },
+  refundPatientCharge(patientId: string, amount: number, reason: string) {
+    set((s) => ({
+      payments: [
+        { id: `py_r_${Date.now()}`, patientId, patientName: s.patients.find(p => p.id === patientId) ? `${s.patients.find(p => p.id === patientId)!.firstName} ${s.patients.find(p => p.id === patientId)!.lastName}` : "Patient", amount, status: "refunded" as const, createdAt: iso(0), method: "Visa · 4242", failureReason: reason },
+        ...s.payments,
+      ],
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refund $${amount} — ${s.patients.find(p => p.id === patientId)?.firstName ?? "patient"} · ${reason}`, tone: "info" as const }, ...s.activity],
+    }));
   },
   resetAll() {
     state = seed();
