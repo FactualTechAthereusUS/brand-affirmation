@@ -9,7 +9,7 @@ import { LiveSidebar } from "@/components/live/LiveSidebar";
 import { useLiveSessions } from "@/hooks/useLiveSessions";
 import { useAdmin } from "@/lib/admin/store";
 
-const LiveGlobe = lazy(() => import("@/components/live/LiveGlobe"));
+const LiveGlobe = lazy(() => import("@/components/live/LiveGlobe3D"));
 const LiveMap = lazy(() => import("@/components/live/LiveMap"));
 
 export const Route = createFileRoute("/admin/live")({
