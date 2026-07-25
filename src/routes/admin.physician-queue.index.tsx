@@ -5,7 +5,7 @@ import { AdminShell, Card, Pill } from "@/components/admin/AdminShell";
 import { adminActions, useAdmin, type PhysicianCase } from "@/lib/admin/store";
 import { Flame, ChevronRight, RefreshCcw, Search, Check } from "lucide-react";
 
-export const Route = createFileRoute("/admin/physician-queue")({
+export const Route = createFileRoute("/admin/physician-queue/")({
   head: () => ({ meta: [
     { title: "Physician queue — Blissley HQ" },
     { name: "description", content: "Case review queue with SLA countdowns, wait-time coloring, and safety flags." },
