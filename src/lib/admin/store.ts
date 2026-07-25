@@ -389,6 +389,137 @@ export type Alert = {
   action: string;
 };
 
+export type TeamRole = "owner" | "ops" | "support" | "clinical";
+export type TeamMemberStatus = "active" | "invited" | "suspended";
+export type TeamMember = {
+  id: string;
+  name: string;
+  email: string;
+  role: TeamRole;
+  lastLoginAt?: number;
+  status: TeamMemberStatus;
+  avatarInitials: string;
+};
+export type PendingInvite = { id: string; email: string; role: TeamRole; invitedAt: number; expiresAt: number };
+
+export type PharmacyContact = {
+  id: string;
+  name: string;
+  contact: string;
+  email: string;
+  phone?: string;
+  status: "primary" | "backup" | "standby" | "pending";
+  notes?: string;
+  statesCovered: number;
+  apiConnected: boolean;
+};
+
+export type RoutingRule = {
+  product: "sema_injectable" | "tirze_injectable" | "oral_glp1" | "ed_peptides";
+  label: string;
+  primaryId: string;
+  backupId?: string;
+  meta?: string;
+};
+
+export type StateCode = string;
+export type StateCoverage = { enabled: boolean; primary: boolean; backup: boolean };
+
+export type AlertKey =
+  | "queue_over_12h" | "case_flagged_red" | "denial_rate_high" | "checkin_overdue"
+  | "shipment_delayed" | "southend_api_down" | "drtelx_api_down" | "lifefile_fail"
+  | "payment_failed" | "refund_large" | "revenue_low" | "mrr_drop" | "churn_high"
+  | "new_patient" | "winback" | "sixmo_plan";
+
+export type NotificationsSettings = {
+  alerts: Record<AlertKey, boolean>;
+  emailRecipients: string[];
+  smsRecipient: string;
+  digest: {
+    daily: boolean; dailyTime: string;
+    weekly: boolean; weeklyDay: string; weeklyTime: string;
+    items: Record<string, boolean>;
+  };
+};
+
+export type BAARecord = {
+  id: string;
+  vendor: string;
+  status: "signed" | "website_tos" | "pending" | "missing";
+  docType: string;
+  dateISO: string;
+  note?: string;
+};
+
+export type LegalDoc = { key: string; label: string; url: string; body: string; updatedAt: number };
+
+export type PricingConfig = {
+  sema: { m1: number; mOngoing: number; q3: number; q6: number };
+  tirze: { m1: number; mOngoing: number; q3: number; q6: number };
+  upsells: { priorityReview: number; shippingInsurance: number };
+};
+
+export type SettingsSlice = {
+  business: {
+    legalName: string; dba: string; ein: string; businessType: string;
+    registeredState: string; address1: string; city: string; state: string; zip: string;
+  };
+  contact: {
+    supportEmail: string; transactionalEmail: string; supportPhone: string;
+    website: string; portalUrl: string;
+  };
+  brand: { logoUrl?: string; primaryColor: string };
+  stripe: {
+    accountId: string; connectedAtISO: string; mode: "live" | "test";
+    chargeModel: "manual" | "immediate"; payoutSchedule: string; payoutBankLast4: string;
+  };
+  pricing: PricingConfig;
+  team: {
+    members: TeamMember[];
+    require2FA: boolean;
+    sessionTimeoutHours: number;
+    pendingInvites: PendingInvite[];
+  };
+  routing: {
+    rules: RoutingRule[];
+    pharmacies: PharmacyContact[];
+    versionAEnforced: boolean;
+    versionAConfirmedBy: string;
+    versionAConfirmedAtISO: string;
+  };
+  states: {
+    served: Record<StateCode, StateCoverage>;
+    waitlistList: string;
+    autoNotify: boolean;
+    waitlistCounts: Record<StateCode, number>;
+  };
+  notifications: NotificationsSettings;
+  compliance: {
+    baa: BAARecord[];
+    legitScript: { status: "certified" | "pending" | "missing"; sinceISO: string; renewalISO: string };
+    licenseExpiryAlerts: boolean;
+    hipaaChecklist: Record<string, boolean>;
+  };
+  legal: {
+    docs: LegalDoc[];
+    entity: {
+      legalName: string; formationState: string; formationDateISO: string; ein: string;
+      registeredAgent: string; dbaFilings: { name: string; dateISO: string }[];
+      bank: string; bankLast4: string;
+    };
+  };
+};
+
+export type AuditEntry = {
+  id: string;
+  ts: number;
+  actor: string;
+  action: string;
+  targetType?: string;
+  targetId?: string;
+  meta?: string;
+};
+
 export type AdminState = {
   session: { email: string; name: string; loggedInAt: number } | null;
   onboardingComplete: boolean;
@@ -412,6 +543,8 @@ export type AdminState = {
   campaigns: Campaign[];
   funnelDays: FunnelDay[];
   orderNotes: Record<string, InternalNote[]>;
+  settings: SettingsSlice;
+  auditLog: AuditEntry[];
   ui: {
     patientDrawerId: string | null;
     orderDrawerId: string | null;
@@ -732,6 +865,8 @@ function seed(): AdminState {
     campaigns: CAMPAIGNS,
     funnelDays: generateFunnelDays(),
     orderNotes: {},
+    settings: seedSettings(),
+    auditLog: seedAuditLog(),
     ui: {
       patientDrawerId: null,
       orderDrawerId: null,
@@ -743,6 +878,168 @@ function seed(): AdminState {
       showLogoMenu: false,
     },
   };
+}
+
+/* ────────── Settings seeds ────────── */
+const US_STATES: { code: string; name: string }[] = [
+  ["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],
+  ["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],
+  ["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],["IA","Iowa"],
+  ["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],
+  ["MA","Massachusetts"],["MI","Michigan"],["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],
+  ["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],
+  ["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],
+  ["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],
+  ["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],
+  ["VA","Virginia"],["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"],
+].map(([code, name]) => ({ code, name }));
+
+export const US_STATE_LIST = US_STATES;
+
+const DEFAULT_SERVED_STATES = new Set([
+  "AL","AK","AZ","AR","CA","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
+  "MA","MI","MN","MO","MT","NE","NV","NH","NJ","NM","NC","ND","OH","OK","OR","PA","SC","TX",
+]);
+
+function seedSettings(): SettingsSlice {
+  const now = Date.now();
+  const served: Record<string, StateCoverage> = {};
+  const waitlist: Record<string, number> = {};
+  for (const s of US_STATES) {
+    const enabled = DEFAULT_SERVED_STATES.has(s.code);
+    served[s.code] = {
+      enabled,
+      primary: enabled && !["AK","HI"].includes(s.code),
+      backup: true,
+    };
+    if (!enabled) waitlist[s.code] = Math.floor(Math.random() * 40) + 5;
+  }
+  return {
+    business: {
+      legalName: "TheFactual LLC",
+      dba: "Blissley",
+      ein: "88-2145093",
+      businessType: "Telehealth Platform (Technology)",
+      registeredState: "Delaware",
+      address1: "8 The Green, Suite 4000",
+      city: "Dover", state: "DE", zip: "19901",
+    },
+    contact: {
+      supportEmail: "care@blissley.com",
+      transactionalEmail: "noreply@blissley.com",
+      supportPhone: "+1 (415) 555-0114",
+      website: "https://blissley.com",
+      portalUrl: "https://portal.blissley.com",
+    },
+    brand: { primaryColor: "#ee7273" },
+    stripe: {
+      accountId: "acct_1PfXk2H4nZ8QwR9L",
+      connectedAtISO: "2026-07-01",
+      mode: "live",
+      chargeModel: "manual",
+      payoutSchedule: "Automatic — every 2 days",
+      payoutBankLast4: "4218",
+    },
+    pricing: {
+      sema:  { m1: 249, mOngoing: 299, q3: 711, q6: 1422 },
+      tirze: { m1: 299, mOngoing: 399, q3: 1017, q6: 1794 },
+      upsells: { priorityReview: 49.95, shippingInsurance: 3.94 },
+    },
+    team: {
+      members: [
+        { id: "tm_1", name: "Anmol Bansod",  email: "anmol@blissley.com",   role: "owner",   lastLoginAt: now - 15 * 60 * 1000,       status: "active", avatarInitials: "AB" },
+        { id: "tm_2", name: "Julie Chen",    email: "julie@blissley.com",   role: "ops",     lastLoginAt: now - 4 * 60 * 60 * 1000,   status: "active", avatarInitials: "JC" },
+        { id: "tm_3", name: "Andre Francis", email: "andre@blissley.com",   role: "support", lastLoginAt: now - 26 * 60 * 60 * 1000,  status: "active", avatarInitials: "AF" },
+        { id: "tm_4", name: "Priya Kapoor",  email: "priya@blissley.com",   role: "support", lastLoginAt: now - 3 * 24 * 3600 * 1000, status: "active", avatarInitials: "PK" },
+      ],
+      require2FA: true,
+      sessionTimeoutHours: 4,
+      pendingInvites: [],
+    },
+    routing: {
+      pharmacies: [
+        { id: "rx_southend", name: "South End Pharmacy", contact: "Chad Kehoe",         email: "chad@southendpharmacy.com",   phone: "+1 (984) 555-0101", status: "primary", statesCovered: 36, apiConnected: true,  notes: "Only Dr Telx 4 physicians registered. Orders from other physicians will not ship." },
+        { id: "rx_wellsrx",  name: "WellsRx",             contact: "Paul Clemens",       email: "paul@wellsrx.com",            phone: "+1 (704) 555-0177", status: "backup",  statesCovered: 50, apiConnected: true,  notes: "Tirzepatide backup + supplemental." },
+        { id: "rx_epiq",     name: "Epiq Scripts",        contact: "Josh Meranda",       email: "josh@epiqscripts.com",        phone: "+1 (512) 555-0122", status: "primary", statesCovered: 44, apiConnected: true,  notes: "ED + peptides primary." },
+        { id: "rx_valiant",  name: "Valiant Pharmacy",    contact: "Sara Ng",            email: "orders@valiantrx.com",        phone: "+1 (949) 555-0133", status: "primary", statesCovered: 42, apiConnected: true,  notes: "Oral GLP-1 primary (SemaMelt, TirzeMelt)." },
+        { id: "rx_strive",   name: "Strive Pharmacy",     contact: "Mia Nakamura",       email: "mia@striverx.com",            phone: "+1 (480) 555-0164", status: "backup",  statesCovered: 50, apiConnected: true,  notes: "Semaglutide backup — full-state coverage." },
+      ],
+      rules: [
+        { product: "sema_injectable",  label: "Semaglutide injectable",  primaryId: "rx_southend", backupId: "rx_strive",   meta: "SE1.5 · SE5 (Version A titration)" },
+        { product: "tirze_injectable", label: "Tirzepatide injectable",  primaryId: "rx_southend", backupId: "rx_wellsrx",  meta: "Tirzepatide 22 mg/mL · lfProductID: 202355193" },
+        { product: "oral_glp1",        label: "Oral GLP-1",              primaryId: "rx_valiant",  backupId: "rx_epiq",     meta: "SemaMelt · TirzeMelt ODT" },
+        { product: "ed_peptides",      label: "ED / Peptides",           primaryId: "rx_epiq",     backupId: undefined,     meta: "Quad ED · NAD+ · Sermorelin · MICC" },
+      ],
+      versionAEnforced: true,
+      versionAConfirmedBy: "Chad Kehoe (South End)",
+      versionAConfirmedAtISO: "2026-06-14",
+    },
+    states: { served, waitlistList: "Blissley — State Waitlist", autoNotify: true, waitlistCounts: waitlist },
+    notifications: {
+      alerts: {
+        queue_over_12h: true, case_flagged_red: true, denial_rate_high: true, checkin_overdue: true,
+        shipment_delayed: true, southend_api_down: true, drtelx_api_down: true, lifefile_fail: true,
+        payment_failed: true, refund_large: true, revenue_low: false, mrr_drop: true, churn_high: true,
+        new_patient: false, winback: true, sixmo_plan: true,
+      },
+      emailRecipients: ["anmol@blissley.com"],
+      smsRecipient: "+1 (415) 555-0114",
+      digest: {
+        daily: true, dailyTime: "08:00",
+        weekly: true, weeklyDay: "Monday", weeklyTime: "08:00",
+        items: { mrr: true, new_patients: true, churned: true, queue: true, shipments: true, failed_payments: true, revenue: true },
+      },
+    },
+    compliance: {
+      baa: [
+        { id: "baa_drtelx",   vendor: "Dr Telx",   status: "signed",       docType: "Full BAA",      dateISO: "2026-06-01" },
+        { id: "baa_southend", vendor: "South End", status: "website_tos",  docType: "Website TOS",   dateISO: "2026-06-01", note: "South End does not sign BAAs. Website TOS serves as agreement." },
+        { id: "baa_wellsrx",  vendor: "WellsRx",   status: "signed",       docType: "Full BAA",      dateISO: "2026-06-15" },
+        { id: "baa_stripe",   vendor: "Stripe",    status: "signed",       docType: "Stripe BAA",    dateISO: "2026-06-01" },
+        { id: "baa_aws",      vendor: "AWS",       status: "signed",       docType: "AWS BAA",       dateISO: "2026-06-01" },
+        { id: "baa_klaviyo",  vendor: "Klaviyo",   status: "signed",       docType: "Klaviyo BAA",   dateISO: "2026-06-01", note: "Does not cover PHI in email. Clinical content must stay portal-only." },
+      ],
+      legitScript: { status: "certified", sinceISO: "2026-05-12", renewalISO: "2027-05-12" },
+      licenseExpiryAlerts: true,
+      hipaaChecklist: {
+        encryption_rest: true, encryption_transit: true, audit_logging: true,
+        session_timeout: true, phi_in_urls: true, phi_in_emails: true, breach_sop: true,
+      },
+    },
+    legal: {
+      docs: [
+        { key: "terms",         label: "Terms of Service",                url: "blissley.com/terms",        body: "Standard Terms of Service governing use of the Blissley telehealth platform...", updatedAt: now - 30 * 24 * 3600 * 1000 },
+        { key: "privacy",       label: "Privacy Policy",                  url: "blissley.com/privacy",      body: "How Blissley collects, uses, and safeguards protected health information...",  updatedAt: now - 30 * 24 * 3600 * 1000 },
+        { key: "consent",       label: "Telehealth Informed Consent",     url: "blissley.com/consent",      body: "I consent to receive telehealth services through Blissley...",                 updatedAt: now - 30 * 24 * 3600 * 1000 },
+        { key: "hipaa",         label: "HIPAA Notice of Privacy Practices", url: "blissley.com/hipaa",      body: "Notice describing how PHI may be used and disclosed...",                       updatedAt: now - 30 * 24 * 3600 * 1000 },
+        { key: "cancellation",  label: "Cancellation & Refund Policy",    url: "blissley.com/cancellation", body: "You may cancel your Blissley subscription at any time from the patient portal...", updatedAt: now - 30 * 24 * 3600 * 1000 },
+      ],
+      entity: {
+        legalName: "TheFactual LLC",
+        formationState: "Delaware",
+        formationDateISO: "2025-11-04",
+        ein: "88-2145093",
+        registeredAgent: "Harvard Business Services, 16192 Coastal Hwy, Lewes DE 19958",
+        dbaFilings: [
+          { name: "Blissley",     dateISO: "2026-01-08" },
+          { name: "PharmaBro.ai", dateISO: "2026-04-22" },
+        ],
+        bank: "Mercury Business",
+        bankLast4: "4218",
+      },
+    },
+  };
+}
+
+function seedAuditLog(): AuditEntry[] {
+  const now = Date.now();
+  return [
+    { id: "aud_1", ts: now -  8 * 60 * 1000,      actor: "Anmol Bansod",   action: "Issued refund",         targetType: "payment", targetId: "pi_3PfXk2H4", meta: "$299 · BLS-P-00284" },
+    { id: "aud_2", ts: now - 42 * 60 * 1000,      actor: "Anmol Bansod",   action: "Viewed patient record", targetType: "patient", targetId: "BLS-P-00284" },
+    { id: "aud_3", ts: now -  3 * 3600 * 1000,    actor: "System",         action: "Rx transmitted to South End", targetType: "case", targetId: "BLS-C-0284" },
+    { id: "aud_4", ts: now -  4 * 3600 * 1000,    actor: "Dr. Nass",       action: "Approved case",         targetType: "case", targetId: "BLS-C-0284", meta: "e-sig hash: 9f2a…c14b" },
+    { id: "aud_5", ts: now -  6 * 3600 * 1000,    actor: "System",         action: "Stripe charge captured", targetType: "payment", targetId: "pi_3PfXk2H4", meta: "$299 · BLS-P-00284" },
+  ];
 }
 
 /* ────────── Storage ────────── */
@@ -876,6 +1173,19 @@ function normalizeIntegrations(raw: unknown, fresh: Integration[]): Integration[
   });
 }
 
+function mergeSettings(raw: unknown, fresh: SettingsSlice): SettingsSlice {
+  if (!isRecord(raw)) return fresh;
+  const merged: SettingsSlice = { ...fresh };
+  for (const key of Object.keys(fresh) as (keyof SettingsSlice)[]) {
+    const persisted = (raw as Record<string, unknown>)[key];
+    if (isRecord(persisted)) {
+      // shallow merge object slices; arrays inside are replaced only if array-like persisted
+      (merged as Record<string, unknown>)[key] = { ...(fresh[key] as object), ...(persisted as object) };
+    }
+  }
+  return merged;
+}
+
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
   const fresh = seed();
@@ -888,6 +1198,8 @@ function load(): AdminState {
         ...parsed,
         leads: normalizeLeads(parsed.leads, fresh.leads),
         integrations: normalizeIntegrations(parsed.integrations, fresh.integrations),
+        settings: mergeSettings(parsed.settings, fresh.settings),
+        auditLog: Array.isArray(parsed.auditLog) ? parsed.auditLog as AuditEntry[] : fresh.auditLog,
         ui: { ...fresh.ui, ...(parsed.ui ?? {}) },
       } as AdminState;
     }
@@ -1797,6 +2109,95 @@ export const adminActions = {
       activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Refill held — ${ci.patientName} · ${reason}`, tone: "warn" as const }, ...s.activity],
     }));
   },
+
+  /* ────── Settings actions ────── */
+  logAudit(action: string, meta?: { targetType?: string; targetId?: string; meta?: string; actor?: string }) {
+    const actor = meta?.actor ?? state.session?.name ?? "You";
+    const entry: AuditEntry = {
+      id: `aud_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      ts: Date.now(),
+      actor, action,
+      targetType: meta?.targetType, targetId: meta?.targetId, meta: meta?.meta,
+    };
+    set((s) => ({ auditLog: [entry, ...s.auditLog].slice(0, 500) }));
+  },
+  updateSettingsSection<K extends keyof SettingsSlice>(section: K, patch: Partial<SettingsSlice[K]>) {
+    set((s) => ({ settings: { ...s.settings, [section]: { ...(s.settings[section] as object), ...(patch as object) } } as SettingsSlice }));
+    adminActions.logAudit(`Updated ${String(section)} settings`);
+  },
+  updatePricing(patch: Partial<PricingConfig>) {
+    set((s) => ({ settings: { ...s.settings, pricing: { ...s.settings.pricing, ...patch } } }));
+    adminActions.logAudit("Updated plan pricing");
+  },
+  inviteTeamMember(email: string, role: TeamRole) {
+    const invite: PendingInvite = {
+      id: `inv_${Date.now()}`, email, role,
+      invitedAt: Date.now(), expiresAt: Date.now() + 72 * 3600 * 1000,
+    };
+    set((s) => ({ settings: { ...s.settings, team: { ...s.settings.team, pendingInvites: [invite, ...s.settings.team.pendingInvites] } } }));
+    adminActions.logAudit(`Invited team member ${email} as ${role}`);
+  },
+  cancelInvite(id: string) {
+    set((s) => ({ settings: { ...s.settings, team: { ...s.settings.team, pendingInvites: s.settings.team.pendingInvites.filter((i) => i.id !== id) } } }));
+    adminActions.logAudit("Cancelled pending invite");
+  },
+  removeTeamMember(id: string) {
+    const member = state.settings.team.members.find((m) => m.id === id);
+    if (!member || member.role === "owner") return;
+    set((s) => ({ settings: { ...s.settings, team: { ...s.settings.team, members: s.settings.team.members.filter((m) => m.id !== id) } } }));
+    adminActions.logAudit(`Removed team member ${member.email}`);
+  },
+  updateTeamMemberRole(id: string, role: TeamRole) {
+    set((s) => ({ settings: { ...s.settings, team: { ...s.settings.team, members: s.settings.team.members.map((m) => m.id === id ? { ...m, role } : m) } } }));
+    adminActions.logAudit("Updated team member role", { targetId: id, meta: role });
+  },
+  setRoutingRule(product: RoutingRule["product"], slot: "primaryId" | "backupId", pharmacyId: string | undefined) {
+    set((s) => ({ settings: { ...s.settings, routing: { ...s.settings.routing, rules: s.settings.routing.rules.map((r) => r.product === product ? { ...r, [slot]: pharmacyId } : r) } } }));
+    adminActions.logAudit(`Updated pharmacy routing (${product} · ${slot})`);
+  },
+  toggleVersionA(enforced: boolean) {
+    set((s) => ({ settings: { ...s.settings, routing: { ...s.settings.routing, versionAEnforced: enforced } } }));
+    adminActions.logAudit(`Version A enforcement ${enforced ? "enabled" : "disabled"}`);
+  },
+  toggleServedState(code: string, enabled: boolean) {
+    set((s) => {
+      const prev = s.settings.states.served[code] ?? { enabled: false, primary: true, backup: true };
+      return { settings: { ...s.settings, states: { ...s.settings.states, served: { ...s.settings.states.served, [code]: { ...prev, enabled } } } } };
+    });
+    adminActions.logAudit(`${enabled ? "Enabled" : "Disabled"} state ${code}`);
+  },
+  notifyWaitlist(code: string) {
+    set((s) => ({ settings: { ...s.settings, states: { ...s.settings.states, waitlistCounts: { ...s.settings.states.waitlistCounts, [code]: 0 } } } }));
+    adminActions.logAudit(`Notified waitlist patients in ${code}`);
+  },
+  toggleAlertKey(key: AlertKey) {
+    set((s) => ({ settings: { ...s.settings, notifications: { ...s.settings.notifications, alerts: { ...s.settings.notifications.alerts, [key]: !s.settings.notifications.alerts[key] } } } }));
+  },
+  addAlertEmail(email: string) {
+    set((s) => ({ settings: { ...s.settings, notifications: { ...s.settings.notifications, emailRecipients: Array.from(new Set([...s.settings.notifications.emailRecipients, email])) } } }));
+    adminActions.logAudit(`Added alert recipient ${email}`);
+  },
+  removeAlertEmail(email: string) {
+    set((s) => ({ settings: { ...s.settings, notifications: { ...s.settings.notifications, emailRecipients: s.settings.notifications.emailRecipients.filter((e) => e !== email) } } }));
+    adminActions.logAudit(`Removed alert recipient ${email}`);
+  },
+  updateDigest(patch: Partial<NotificationsSettings["digest"]>) {
+    set((s) => ({ settings: { ...s.settings, notifications: { ...s.settings.notifications, digest: { ...s.settings.notifications.digest, ...patch } } } }));
+  },
+  toggleDigestItem(key: string) {
+    set((s) => ({ settings: { ...s.settings, notifications: { ...s.settings.notifications, digest: { ...s.settings.notifications.digest, items: { ...s.settings.notifications.digest.items, [key]: !s.settings.notifications.digest.items[key] } } } } }));
+  },
+  uploadBAA(entry: Omit<BAARecord, "id">) {
+    const rec: BAARecord = { id: `baa_${Date.now()}`, ...entry };
+    set((s) => ({ settings: { ...s.settings, compliance: { ...s.settings.compliance, baa: [rec, ...s.settings.compliance.baa] } } }));
+    adminActions.logAudit(`Uploaded BAA for ${entry.vendor}`);
+  },
+  updateLegalDoc(key: string, body: string) {
+    set((s) => ({ settings: { ...s.settings, legal: { ...s.settings.legal, docs: s.settings.legal.docs.map((d) => d.key === key ? { ...d, body, updatedAt: Date.now() } : d) } } }));
+    adminActions.logAudit(`Updated legal document ${key}`);
+  },
+
+
 
   resetAll() {
     state = seed();

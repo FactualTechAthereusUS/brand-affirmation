@@ -47,12 +47,22 @@ import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLiveRouteImport } from './routes/admin.live'
 import { Route as AdminCommandRouteImport } from './routes/admin.command'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AdminSettingsIndexRouteImport } from './routes/admin.settings.index'
 import { Route as AdminPhysicianQueueIndexRouteImport } from './routes/admin.physician-queue.index'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
 import { Route as AdminIntegrationsIndexRouteImport } from './routes/admin.integrations.index'
 import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
+import { Route as AdminSettingsTeamRouteImport } from './routes/admin.settings.team'
+import { Route as AdminSettingsStatesRouteImport } from './routes/admin.settings.states'
+import { Route as AdminSettingsPlanBillingRouteImport } from './routes/admin.settings.plan-billing'
+import { Route as AdminSettingsPharmacyRoutingRouteImport } from './routes/admin.settings.pharmacy-routing'
+import { Route as AdminSettingsNotificationsRouteImport } from './routes/admin.settings.notifications'
+import { Route as AdminSettingsLegalRouteImport } from './routes/admin.settings.legal'
+import { Route as AdminSettingsIntegrationsRouteImport } from './routes/admin.settings.integrations'
+import { Route as AdminSettingsGeneralRouteImport } from './routes/admin.settings.general'
+import { Route as AdminSettingsComplianceRouteImport } from './routes/admin.settings.compliance'
 import { Route as AdminPhysicianQueueIdRouteImport } from './routes/admin.physician-queue.$id'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
@@ -254,6 +264,11 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   path: '/admin/analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
 const AdminPhysicianQueueIndexRoute =
   AdminPhysicianQueueIndexRouteImport.update({
     id: '/admin/physician-queue/',
@@ -284,6 +299,55 @@ const AdminCheckInsIndexRoute = AdminCheckInsIndexRouteImport.update({
   id: '/admin/check-ins/',
   path: '/admin/check-ins/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSettingsTeamRoute = AdminSettingsTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsStatesRoute = AdminSettingsStatesRouteImport.update({
+  id: '/states',
+  path: '/states',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsPlanBillingRoute =
+  AdminSettingsPlanBillingRouteImport.update({
+    id: '/plan-billing',
+    path: '/plan-billing',
+    getParentRoute: () => AdminSettingsRoute,
+  } as any)
+const AdminSettingsPharmacyRoutingRoute =
+  AdminSettingsPharmacyRoutingRouteImport.update({
+    id: '/pharmacy-routing',
+    path: '/pharmacy-routing',
+    getParentRoute: () => AdminSettingsRoute,
+  } as any)
+const AdminSettingsNotificationsRoute =
+  AdminSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AdminSettingsRoute,
+  } as any)
+const AdminSettingsLegalRoute = AdminSettingsLegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsIntegrationsRoute =
+  AdminSettingsIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
+    getParentRoute: () => AdminSettingsRoute,
+  } as any)
+const AdminSettingsGeneralRoute = AdminSettingsGeneralRouteImport.update({
+  id: '/general',
+  path: '/general',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsComplianceRoute = AdminSettingsComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => AdminSettingsRoute,
 } as any)
 const AdminPhysicianQueueIdRoute = AdminPhysicianQueueIdRouteImport.update({
   id: '/admin/physician-queue/$id',
@@ -357,7 +421,7 @@ export interface FileRoutesByFullPath {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
   '/admin/reports': typeof AdminReportsRoute
-  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/settings': typeof AdminSettingsRouteWithChildren
   '/admin/team': typeof AdminTeamRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
@@ -386,12 +450,22 @@ export interface FileRoutesByFullPath {
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
+  '/admin/settings/compliance': typeof AdminSettingsComplianceRoute
+  '/admin/settings/general': typeof AdminSettingsGeneralRoute
+  '/admin/settings/integrations': typeof AdminSettingsIntegrationsRoute
+  '/admin/settings/legal': typeof AdminSettingsLegalRoute
+  '/admin/settings/notifications': typeof AdminSettingsNotificationsRoute
+  '/admin/settings/pharmacy-routing': typeof AdminSettingsPharmacyRoutingRoute
+  '/admin/settings/plan-billing': typeof AdminSettingsPlanBillingRoute
+  '/admin/settings/states': typeof AdminSettingsStatesRoute
+  '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
+  '/admin/settings/': typeof AdminSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -413,7 +487,6 @@ export interface FileRoutesByTo {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
   '/admin/reports': typeof AdminReportsRoute
-  '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
@@ -442,12 +515,22 @@ export interface FileRoutesByTo {
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
+  '/admin/settings/compliance': typeof AdminSettingsComplianceRoute
+  '/admin/settings/general': typeof AdminSettingsGeneralRoute
+  '/admin/settings/integrations': typeof AdminSettingsIntegrationsRoute
+  '/admin/settings/legal': typeof AdminSettingsLegalRoute
+  '/admin/settings/notifications': typeof AdminSettingsNotificationsRoute
+  '/admin/settings/pharmacy-routing': typeof AdminSettingsPharmacyRoutingRoute
+  '/admin/settings/plan-billing': typeof AdminSettingsPlanBillingRoute
+  '/admin/settings/states': typeof AdminSettingsStatesRoute
+  '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/admin/check-ins': typeof AdminCheckInsIndexRoute
   '/admin/integrations': typeof AdminIntegrationsIndexRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
   '/admin/orders': typeof AdminOrdersIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
   '/admin/physician-queue': typeof AdminPhysicianQueueIndexRoute
+  '/admin/settings': typeof AdminSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -470,7 +553,7 @@ export interface FileRoutesById {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
   '/admin/reports': typeof AdminReportsRoute
-  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/settings': typeof AdminSettingsRouteWithChildren
   '/admin/team': typeof AdminTeamRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
@@ -499,12 +582,22 @@ export interface FileRoutesById {
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
+  '/admin/settings/compliance': typeof AdminSettingsComplianceRoute
+  '/admin/settings/general': typeof AdminSettingsGeneralRoute
+  '/admin/settings/integrations': typeof AdminSettingsIntegrationsRoute
+  '/admin/settings/legal': typeof AdminSettingsLegalRoute
+  '/admin/settings/notifications': typeof AdminSettingsNotificationsRoute
+  '/admin/settings/pharmacy-routing': typeof AdminSettingsPharmacyRoutingRoute
+  '/admin/settings/plan-billing': typeof AdminSettingsPlanBillingRoute
+  '/admin/settings/states': typeof AdminSettingsStatesRoute
+  '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
+  '/admin/settings/': typeof AdminSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -557,12 +650,22 @@ export interface FileRouteTypes {
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
+    | '/admin/settings/compliance'
+    | '/admin/settings/general'
+    | '/admin/settings/integrations'
+    | '/admin/settings/legal'
+    | '/admin/settings/notifications'
+    | '/admin/settings/pharmacy-routing'
+    | '/admin/settings/plan-billing'
+    | '/admin/settings/states'
+    | '/admin/settings/team'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
     | '/admin/orders/'
     | '/admin/patients/'
     | '/admin/physician-queue/'
+    | '/admin/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -584,7 +687,6 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/pharmacy'
     | '/admin/reports'
-    | '/admin/settings'
     | '/admin/team'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
@@ -613,12 +715,22 @@ export interface FileRouteTypes {
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
+    | '/admin/settings/compliance'
+    | '/admin/settings/general'
+    | '/admin/settings/integrations'
+    | '/admin/settings/legal'
+    | '/admin/settings/notifications'
+    | '/admin/settings/pharmacy-routing'
+    | '/admin/settings/plan-billing'
+    | '/admin/settings/states'
+    | '/admin/settings/team'
     | '/admin/check-ins'
     | '/admin/integrations'
     | '/admin/leads'
     | '/admin/orders'
     | '/admin/patients'
     | '/admin/physician-queue'
+    | '/admin/settings'
   id:
     | '__root__'
     | '/'
@@ -669,12 +781,22 @@ export interface FileRouteTypes {
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
+    | '/admin/settings/compliance'
+    | '/admin/settings/general'
+    | '/admin/settings/integrations'
+    | '/admin/settings/legal'
+    | '/admin/settings/notifications'
+    | '/admin/settings/pharmacy-routing'
+    | '/admin/settings/plan-billing'
+    | '/admin/settings/states'
+    | '/admin/settings/team'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
     | '/admin/orders/'
     | '/admin/patients/'
     | '/admin/physician-queue/'
+    | '/admin/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -697,7 +819,7 @@ export interface RootRouteChildren {
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminPharmacyRoute: typeof AdminPharmacyRoute
   AdminReportsRoute: typeof AdminReportsRoute
-  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSettingsRoute: typeof AdminSettingsRouteWithChildren
   AdminTeamRoute: typeof AdminTeamRoute
   CheckoutUITemplate3Route: typeof CheckoutUITemplate3Route
   CheckoutChargedBeforeRoute: typeof CheckoutChargedBeforeRoute
@@ -996,6 +1118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnalyticsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/settings/': {
+      id: '/admin/settings/'
+      path: '/'
+      fullPath: '/admin/settings/'
+      preLoaderRoute: typeof AdminSettingsIndexRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
     '/admin/physician-queue/': {
       id: '/admin/physician-queue/'
       path: '/admin/physician-queue'
@@ -1037,6 +1166,69 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/check-ins/'
       preLoaderRoute: typeof AdminCheckInsIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/settings/team': {
+      id: '/admin/settings/team'
+      path: '/team'
+      fullPath: '/admin/settings/team'
+      preLoaderRoute: typeof AdminSettingsTeamRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/states': {
+      id: '/admin/settings/states'
+      path: '/states'
+      fullPath: '/admin/settings/states'
+      preLoaderRoute: typeof AdminSettingsStatesRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/plan-billing': {
+      id: '/admin/settings/plan-billing'
+      path: '/plan-billing'
+      fullPath: '/admin/settings/plan-billing'
+      preLoaderRoute: typeof AdminSettingsPlanBillingRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/pharmacy-routing': {
+      id: '/admin/settings/pharmacy-routing'
+      path: '/pharmacy-routing'
+      fullPath: '/admin/settings/pharmacy-routing'
+      preLoaderRoute: typeof AdminSettingsPharmacyRoutingRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/notifications': {
+      id: '/admin/settings/notifications'
+      path: '/notifications'
+      fullPath: '/admin/settings/notifications'
+      preLoaderRoute: typeof AdminSettingsNotificationsRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/legal': {
+      id: '/admin/settings/legal'
+      path: '/legal'
+      fullPath: '/admin/settings/legal'
+      preLoaderRoute: typeof AdminSettingsLegalRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/integrations': {
+      id: '/admin/settings/integrations'
+      path: '/integrations'
+      fullPath: '/admin/settings/integrations'
+      preLoaderRoute: typeof AdminSettingsIntegrationsRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/general': {
+      id: '/admin/settings/general'
+      path: '/general'
+      fullPath: '/admin/settings/general'
+      preLoaderRoute: typeof AdminSettingsGeneralRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/compliance': {
+      id: '/admin/settings/compliance'
+      path: '/compliance'
+      fullPath: '/admin/settings/compliance'
+      preLoaderRoute: typeof AdminSettingsComplianceRouteImport
+      parentRoute: typeof AdminSettingsRoute
     }
     '/admin/physician-queue/$id': {
       id: '/admin/physician-queue/$id'
@@ -1141,6 +1333,36 @@ const AdminAnalyticsRouteWithChildren = AdminAnalyticsRoute._addFileChildren(
   AdminAnalyticsRouteChildren,
 )
 
+interface AdminSettingsRouteChildren {
+  AdminSettingsComplianceRoute: typeof AdminSettingsComplianceRoute
+  AdminSettingsGeneralRoute: typeof AdminSettingsGeneralRoute
+  AdminSettingsIntegrationsRoute: typeof AdminSettingsIntegrationsRoute
+  AdminSettingsLegalRoute: typeof AdminSettingsLegalRoute
+  AdminSettingsNotificationsRoute: typeof AdminSettingsNotificationsRoute
+  AdminSettingsPharmacyRoutingRoute: typeof AdminSettingsPharmacyRoutingRoute
+  AdminSettingsPlanBillingRoute: typeof AdminSettingsPlanBillingRoute
+  AdminSettingsStatesRoute: typeof AdminSettingsStatesRoute
+  AdminSettingsTeamRoute: typeof AdminSettingsTeamRoute
+  AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
+}
+
+const AdminSettingsRouteChildren: AdminSettingsRouteChildren = {
+  AdminSettingsComplianceRoute: AdminSettingsComplianceRoute,
+  AdminSettingsGeneralRoute: AdminSettingsGeneralRoute,
+  AdminSettingsIntegrationsRoute: AdminSettingsIntegrationsRoute,
+  AdminSettingsLegalRoute: AdminSettingsLegalRoute,
+  AdminSettingsNotificationsRoute: AdminSettingsNotificationsRoute,
+  AdminSettingsPharmacyRoutingRoute: AdminSettingsPharmacyRoutingRoute,
+  AdminSettingsPlanBillingRoute: AdminSettingsPlanBillingRoute,
+  AdminSettingsStatesRoute: AdminSettingsStatesRoute,
+  AdminSettingsTeamRoute: AdminSettingsTeamRoute,
+  AdminSettingsIndexRoute: AdminSettingsIndexRoute,
+}
+
+const AdminSettingsRouteWithChildren = AdminSettingsRoute._addFileChildren(
+  AdminSettingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
@@ -1161,7 +1383,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminPharmacyRoute: AdminPharmacyRoute,
   AdminReportsRoute: AdminReportsRoute,
-  AdminSettingsRoute: AdminSettingsRoute,
+  AdminSettingsRoute: AdminSettingsRouteWithChildren,
   AdminTeamRoute: AdminTeamRoute,
   CheckoutUITemplate3Route: CheckoutUITemplate3Route,
   CheckoutChargedBeforeRoute: CheckoutChargedBeforeRoute,
