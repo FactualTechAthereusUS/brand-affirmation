@@ -67,13 +67,23 @@ function PatientDetail() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button onClick={() => nav({ to: "/admin/messages" })} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
+            <button onClick={() => {
+              const convoId = adminActions.ensureConversationFor(patient.id);
+              nav({ to: "/admin/messages", search: convoId ? { convo: convoId } as never : undefined });
+            }} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
               <MessageSquare className="h-3.5 w-3.5" /> Send message
             </button>
-            <button className="inline-flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-3 py-2 text-[12.5px] font-semibold text-ink hover:border-ink/25">
+            <button onClick={() => {
+              const last = payments.filter((p) => p.status === "succeeded").sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+              if (!last) { toast.error("No successful payment to refund"); return; }
+              const reason = window.prompt(`Refund $${last.amount} to ${patient.firstName}?`, "Customer request") ?? "";
+              if (!reason) return;
+              adminActions.refundPayment(last.id, reason);
+              toast.success(`Refunded $${last.amount}`);
+            }} className="inline-flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-3 py-2 text-[12.5px] font-semibold text-ink hover:border-ink/25">
               <DollarSign className="h-3.5 w-3.5" /> Issue refund
             </button>
-            <button className="rounded-lg border border-ink/12 bg-white p-2 text-ink/60 hover:border-ink/25"><MoreHorizontal className="h-4 w-4" /></button>
+            <button onClick={() => { adminActions.exportPatientPdf(patient.id); toast.success("PDF export queued"); }} className="rounded-lg border border-ink/12 bg-white p-2 text-ink/60 hover:border-ink/25" title="Export PDF"><MoreHorizontal className="h-4 w-4" /></button>
           </div>
         </div>
       </Card>
