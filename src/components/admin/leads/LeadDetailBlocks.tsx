@@ -95,11 +95,12 @@ export function LeadScoreBreakdown({ lead }: { lead: Lead }) {
 }
 
 export function IntakeSnapshotCard({ lead }: { lead: Lead }) {
+  const intakeSnapshot = lead.intakeSnapshot ?? [];
   return (
     <div className="space-y-2.5">
-      {lead.intakeSnapshot.length === 0 ? (
+      {intakeSnapshot.length === 0 ? (
         <div className="text-[12.5px] text-ink/50">No intake answers submitted yet.</div>
-      ) : lead.intakeSnapshot.map((it, i) => (
+      ) : intakeSnapshot.map((it, i) => (
         <div key={i} className="rounded-lg border border-ink/8 bg-white px-3 py-2">
           <div className="text-[11px] font-medium text-ink/55">{it.q}</div>
           <div className="mt-0.5 text-[13px] font-semibold text-ink">{it.a}</div>
@@ -115,7 +116,16 @@ export function IntakeSnapshotCard({ lead }: { lead: Lead }) {
 }
 
 export function AttributionCard({ lead }: { lead: Lead }) {
-  const a = lead.attribution;
+  const a = lead.attribution ?? {
+    source: lead.source || "Organic",
+    medium: "organic",
+    campaign: lead.source || "Organic",
+    landingUrl: "/weight-loss",
+    deviceType: "mobile" as const,
+    sessions: 1,
+    firstTouch: lead.createdAt,
+    lastTouch: lead.lastTouchAt,
+  };
   const rows: Array<[string, React.ReactNode]> = [
     ["Source", <ChannelIcon key="s" source={a.source} />],
     ["Medium", a.medium],
@@ -151,6 +161,7 @@ export function OutreachConsole({ lead }: { lead: Lead }) {
   const [channel, setChannel] = useState<LeadOutreachChannel>("email");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const outreach = lead.outreach ?? [];
 
   function send() {
     if (!subject.trim() && !body.trim()) return;
@@ -187,8 +198,8 @@ export function OutreachConsole({ lead }: { lead: Lead }) {
       </div>
 
       <div className="mt-2 space-y-2">
-        {lead.outreach.length === 0 && <div className="rounded-lg border border-dashed border-ink/12 py-6 text-center text-[12px] text-ink/45">No outreach yet.</div>}
-        {lead.outreach.map((o) => {
+        {outreach.length === 0 && <div className="rounded-lg border border-dashed border-ink/12 py-6 text-center text-[12px] text-ink/45">No outreach yet.</div>}
+        {outreach.map((o) => {
           const Icon = CHANNELS.find((c) => c.key === o.channel)?.icon ?? Mail;
           return (
             <div key={o.id} className="flex gap-3 rounded-lg border border-ink/8 bg-white px-3 py-2.5">
@@ -221,10 +232,11 @@ export function CopyField({ value }: { value: string }) {
 
 export function ConsentToggles({ lead }: { lead: Lead }) {
   const items: Array<[keyof Lead["consent"], string]> = [["email", "Email"], ["sms", "SMS"], ["marketing", "Marketing"]];
+  const consent = lead.consent ?? { email: true, sms: false, marketing: false };
   return (
     <div className="space-y-1.5">
       {items.map(([k, label]) => {
-        const on = lead.consent[k];
+        const on = consent[k];
         return (
           <label key={k} className="flex items-center justify-between text-[12.5px]">
             <span className="text-ink/75">{label} opt-in</span>

@@ -641,6 +641,97 @@ function seed(): AdminState {
 /* ────────── Storage ────────── */
 const KEY = "blissley.admin.v3";
 
+const LEAD_STATUSES: LeadStatus[] = ["new", "working", "nurturing", "won", "lost", "do_not_contact"];
+const LEAD_INTENTS: LeadIntent[] = ["hot", "warm", "cold"];
+const LEAD_FUNNEL_STEPS: LeadFunnelStep[] = ["landing", "intake_start", "intake_mid", "intake_complete", "checkout", "payment_fail", "abandoned_cart"];
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function asString(value: unknown, fallback: string) {
+  return typeof value === "string" && value.trim() ? value : fallback;
+}
+
+function asNumber(value: unknown, fallback: number) {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function asBoolean(value: unknown, fallback: boolean) {
+  return typeof value === "boolean" ? value : fallback;
+}
+
+function normalizeLead(raw: unknown, fallback: Lead): Lead {
+  if (!isRecord(raw)) return fallback;
+
+  const rawAttribution = isRecord(raw.attribution) ? raw.attribution : {};
+  const fallbackSource = asString(raw.source, fallback.source || "Organic");
+  const source = asString(rawAttribution.source, fallback.attribution.source || fallbackSource);
+  const medium = asString(
+    rawAttribution.medium,
+    source === "Meta" || source === "Google" || source === "TikTok" ? "paid" : source === "Klaviyo" ? "email" : source === "Referral" ? "referral" : "organic",
+  );
+
+  const rawConsent = isRecord(raw.consent) ? raw.consent : {};
+  const rawStatus = asString(raw.status, fallback.status) as LeadStatus;
+  const rawIntent = asString(raw.intent, fallback.intent) as LeadIntent;
+  const rawFunnelStep = asString(raw.funnelStep, asString(raw.lastStep, fallback.funnelStep)) as LeadFunnelStep;
+
+  return {
+    ...fallback,
+    ...raw,
+    id: asString(raw.id, fallback.id),
+    name: asString(raw.name, fallback.name),
+    email: asString(raw.email, fallback.email),
+    phone: asString(raw.phone, fallback.phone),
+    state: asString(raw.state, fallback.state),
+    city: asString(raw.city, fallback.city),
+    program: asString(raw.program, fallback.program),
+    score: Math.max(0, Math.min(100, Math.round(asNumber(raw.score, fallback.score)))),
+    intent: LEAD_INTENTS.includes(rawIntent) ? rawIntent : fallback.intent,
+    funnelStep: LEAD_FUNNEL_STEPS.includes(rawFunnelStep) ? rawFunnelStep : fallback.funnelStep,
+    progressPct: Math.max(0, Math.min(100, Math.round(asNumber(raw.progressPct, fallback.progressPct)))),
+    stateEligible: asBoolean(raw.stateEligible, fallback.stateEligible),
+    consent: {
+      sms: asBoolean(rawConsent.sms, fallback.consent.sms),
+      email: asBoolean(rawConsent.email, fallback.consent.email),
+      marketing: asBoolean(rawConsent.marketing, fallback.consent.marketing),
+    },
+    attribution: {
+      source,
+      medium,
+      campaign: asString(rawAttribution.campaign, fallback.attribution.campaign || source),
+      adset: typeof rawAttribution.adset === "string" ? rawAttribution.adset : fallback.attribution.adset,
+      creative: typeof rawAttribution.creative === "string" ? rawAttribution.creative : fallback.attribution.creative,
+      landingUrl: asString(rawAttribution.landingUrl, fallback.attribution.landingUrl || "/weight-loss"),
+      firstTouch: asNumber(rawAttribution.firstTouch, fallback.attribution.firstTouch),
+      lastTouch: asNumber(rawAttribution.lastTouch, fallback.attribution.lastTouch),
+      sessions: Math.max(1, Math.round(asNumber(rawAttribution.sessions, fallback.attribution.sessions || 1))),
+      deviceType: rawAttribution.deviceType === "desktop" || rawAttribution.deviceType === "tablet" || rawAttribution.deviceType === "mobile"
+        ? rawAttribution.deviceType
+        : fallback.attribution.deviceType,
+    },
+    projectedFirstOrder: Math.max(0, Math.round(asNumber(raw.projectedFirstOrder, fallback.projectedFirstOrder))),
+    projectedLTV: Math.max(0, Math.round(asNumber(raw.projectedLTV, fallback.projectedLTV))),
+    outreach: Array.isArray(raw.outreach) ? raw.outreach as LeadOutreach[] : fallback.outreach,
+    tags: Array.isArray(raw.tags) ? raw.tags.filter((t): t is string => typeof t === "string") : fallback.tags,
+    status: LEAD_STATUSES.includes(rawStatus) ? rawStatus : fallback.status,
+    intakeSnapshot: Array.isArray(raw.intakeSnapshot) ? raw.intakeSnapshot as LeadIntakeAnswer[] : fallback.intakeSnapshot,
+    cartItems: Array.isArray(raw.cartItems) ? raw.cartItems.filter((t): t is string => typeof t === "string") : fallback.cartItems,
+    createdAt: asNumber(raw.createdAt, fallback.createdAt),
+    lastTouchAt: asNumber(raw.lastTouchAt, fallback.lastTouchAt),
+    source,
+    lastStep: asString(raw.lastStep, fallback.lastStep),
+    ageHrs: Math.max(0, Math.round(asNumber(raw.ageHrs, fallback.ageHrs))),
+    contacted: asBoolean(raw.contacted, fallback.contacted),
+  };
+}
+
+function normalizeLeads(rawLeads: unknown, freshLeads: Lead[]) {
+  if (!Array.isArray(rawLeads)) return freshLeads;
+  return rawLeads.map((lead, index) => normalizeLead(lead, freshLeads[index % freshLeads.length] ?? freshLeads[0])).filter(Boolean);
+}
+
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
   const fresh = seed();
@@ -648,7 +739,12 @@ function load(): AdminState {
     const raw = window.localStorage.getItem(KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<AdminState>;
-      return { ...fresh, ...parsed, ui: { ...fresh.ui, ...(parsed.ui ?? {}) } } as AdminState;
+      return {
+        ...fresh,
+        ...parsed,
+        leads: normalizeLeads(parsed.leads, fresh.leads),
+        ui: { ...fresh.ui, ...(parsed.ui ?? {}) },
+      } as AdminState;
     }
   } catch {}
   try { window.localStorage.setItem(KEY, JSON.stringify(fresh)); } catch {}
@@ -918,18 +1014,18 @@ export const adminActions = {
   },
   addLeadOutreach(id: string, channel: LeadOutreachChannel, subject: string, outcome = "logged") {
     const o: LeadOutreach = { id: `or_${Date.now()}`, ts: Date.now(), channel, by: "You", subject, outcome };
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, outreach: [o, ...l.outreach], contacted: true, lastTouchAt: Date.now(), status: l.status === "new" ? "working" as const : l.status } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, outreach: [o, ...(l.outreach ?? [])], contacted: true, lastTouchAt: Date.now(), status: l.status === "new" ? "working" as const : l.status } : l)) }));
   },
   addLeadTag(id: string, tag: string) {
     const t = tag.trim().toLowerCase().replace(/\s+/g, "-");
     if (!t) return;
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: Array.from(new Set([...l.tags, t])) } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: Array.from(new Set([...(l.tags ?? []), t])) } : l)) }));
   },
   removeLeadTag(id: string, tag: string) {
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: l.tags.filter((x) => x !== tag) } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: (l.tags ?? []).filter((x) => x !== tag) } : l)) }));
   },
   setLeadConsent(id: string, patch: Partial<Lead["consent"]>) {
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, consent: { ...l.consent, ...patch } } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, consent: { ...(l.consent ?? { email: true, sms: false, marketing: false }), ...patch } } : l)) }));
   },
   markLeadLost(id: string, reason: string) {
     set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, status: "lost" as const, lossReason: reason } : l)) }));
