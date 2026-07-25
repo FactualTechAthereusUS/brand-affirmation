@@ -69,6 +69,8 @@ function OrderDetailPage() {
         </div>
       </div>
 
+      <VariantBanner o={o} />
+
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         {/* LEFT column */}
         <div className="space-y-4">
