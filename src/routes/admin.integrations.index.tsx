@@ -208,7 +208,7 @@ function IntegrationCard({ integration, onConnect }: { integration: Integration;
         className="group block rounded-xl border border-ink/[0.08] bg-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] transition hover:border-ink/20 hover:shadow-[0_4px_16px_rgba(15,23,42,0.06)]"
       >
         <div className="flex items-start gap-3">
-          <BrandTile color={integration.brand.color} mono={integration.brand.mono} />
+          <BrandTile color={integration.brand.color} mono={integration.brand.mono} logoUrl={integration.brand.logoUrl} />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
               <div className="truncate text-[13.5px] font-semibold text-ink">{integration.name}</div>
@@ -299,7 +299,7 @@ export function ConnectDialog({ integration, onClose, onConnected }: { integrati
       >
         {/* Header */}
         <div className="flex items-center gap-3 border-b border-ink/[0.06] px-5 py-4">
-          <BrandTile color={integration.brand.color} mono={integration.brand.mono} size={36} />
+          <BrandTile color={integration.brand.color} mono={integration.brand.mono} logoUrl={integration.brand.logoUrl} size={36} />
           <div className="min-w-0 flex-1">
             <div className="text-[10.5px] font-medium uppercase tracking-[0.12em] text-ink/45">{step === "perms" ? "Authorize" : "Configuration"}</div>
             <div className="truncate text-[15px] font-semibold text-ink">Connect Blissley to {integration.name}</div>
