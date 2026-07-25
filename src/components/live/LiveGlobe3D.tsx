@@ -467,7 +467,7 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, streamer,
       className={`relative select-none ${className ?? ""}`}
       style={{
         touchAction: "none",
-        background: "radial-gradient(circle at 50% 45%, #ffffff 0%, #f4f7fb 55%, #eef2f7 100%)",
+        background: "radial-gradient(circle at 50% 45%, #ffffff 0%, #f6f6f7 60%, #eef1f6 100%)",
       }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
