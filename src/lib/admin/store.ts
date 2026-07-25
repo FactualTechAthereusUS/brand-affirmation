@@ -153,15 +153,79 @@ export type Payment = {
   failureReason?: string;
 };
 
+export type LeadStatus = "new" | "working" | "nurturing" | "won" | "lost" | "do_not_contact";
+export type LeadIntent = "hot" | "warm" | "cold";
+export type LeadFunnelStep =
+  | "landing" | "intake_start" | "intake_mid" | "intake_complete"
+  | "checkout" | "payment_fail" | "abandoned_cart";
+export type LeadOutreachChannel = "email" | "sms" | "call" | "note";
+export type LeadOutreach = {
+  id: string;
+  ts: number;
+  channel: LeadOutreachChannel;
+  by: string;
+  subject: string;
+  outcome: string;
+};
+export type LeadIntakeAnswer = { q: string; a: string; ts: number };
+export type LeadAttribution = {
+  source: string;
+  medium: string;
+  campaign: string;
+  adset?: string;
+  creative?: string;
+  landingUrl: string;
+  firstTouch: number;
+  lastTouch: number;
+  sessions: number;
+  deviceType: "mobile" | "desktop" | "tablet";
+};
+
 export type Lead = {
   id: string;
   name: string;
   email: string;
-  lastStep: string;
+  phone: string;
+  state: string;
+  city: string;
+  dob?: string;
+  sex?: "M" | "F" | "X";
   program: string;
+  score: number;
+  intent: LeadIntent;
+  funnelStep: LeadFunnelStep;
+  progressPct: number;
+  stateEligible: boolean;
+  bmi?: number;
+  currentWeight?: number;
+  goalWeight?: number;
+  consent: { sms: boolean; email: boolean; marketing: boolean };
+  attribution: LeadAttribution;
+  projectedFirstOrder: number;
+  projectedLTV: number;
+  outreach: LeadOutreach[];
+  tags: string[];
+  assignee?: string;
+  status: LeadStatus;
+  lossReason?: string;
+  wonPatientId?: string;
+  intakeSnapshot: LeadIntakeAnswer[];
+  cartItems?: string[];
+  coupon?: string;
+  createdAt: number;
+  lastTouchAt: number;
+  // legacy — kept for back-compat with prior UI
   source: string;
+  lastStep: string;
   ageHrs: number;
   contacted: boolean;
+};
+
+export type LeadSegment = {
+  key: string;
+  label: string;
+  definition: string;
+  pinned?: boolean;
 };
 
 export type TaskCategory = "billing" | "care_ops" | "fulfillment" | "compliance" | "admin";
@@ -354,16 +418,105 @@ function seed(): AdminState {
     });
   }
 
-  const leads: Lead[] = Array.from({ length: 15 }, (_, i) => ({
-    id: `ld_${900 + i}`,
-    name: `${pick(FIRST, i * 4 + 1)} ${pick(LAST, i * 6 + 3)}`,
-    email: `lead${i}@email.com`,
-    lastStep: pick(["Q3 · Health history", "Q7 · State", "Q9 · Weight goal", "Q12 · Plan select", "Q14 · Payment"], i),
-    program: i % 2 === 0 ? "Tirzepatide" : "Semaglutide",
-    source: pick(["Meta", "Google", "Organic", "Referral"], i),
-    ageHrs: 3 + i * 4,
-    contacted: false,
-  }));
+  const leads: Lead[] = Array.from({ length: 42 }, (_, i) => {
+    const first = pick(FIRST, i * 4 + 1);
+    const last = pick(LAST, i * 6 + 3);
+    const step: LeadFunnelStep = pick(
+      ["landing", "intake_start", "intake_mid", "intake_mid", "intake_complete", "checkout", "payment_fail", "abandoned_cart"] as const,
+      i,
+    );
+    const progressPct = ({ landing: 8, intake_start: 22, intake_mid: 52, intake_complete: 74, checkout: 88, payment_fail: 94, abandoned_cart: 82 } as Record<LeadFunnelStep, number>)[step];
+    const source = pick(["Meta", "Google", "Organic", "Referral", "TikTok", "Klaviyo"], i);
+    const medium = source === "Meta" || source === "Google" || source === "TikTok" ? "paid" : source === "Klaviyo" ? "email" : source === "Referral" ? "referral" : "organic";
+    const ageHrs = 1 + ((i * 7) % 96);
+    const recencyBoost = ageHrs < 12 ? 25 : ageHrs < 36 ? 15 : ageHrs < 72 ? 6 : 0;
+    const channelBoost = source === "Google" ? 12 : source === "Meta" ? 10 : source === "Referral" ? 15 : source === "Klaviyo" ? 8 : 4;
+    const score = Math.max(3, Math.min(99, progressPct * 0.55 + recencyBoost + channelBoost + (i % 5)));
+    const intent: LeadIntent = score >= 70 ? "hot" : score >= 45 ? "warm" : "cold";
+    const status: LeadStatus =
+      i % 21 === 0 ? "won" :
+      i % 17 === 0 ? "lost" :
+      i % 19 === 0 ? "do_not_contact" :
+      step === "payment_fail" ? "working" :
+      intent === "hot" ? (i % 3 === 0 ? "working" : "new") :
+      intent === "warm" ? "nurturing" : "new";
+    const program = ["Tirzepatide", "Semaglutide", "Hair", "ED", "TRT"][i % 5];
+    const state = pick(STATES, i * 5);
+    const stateEligible = !(state === "MI" || state === "GA");
+    const createdAt = now - ageHrs * HR - (i % 4) * DAY;
+    const lastTouchAt = now - Math.floor(ageHrs / 2) * HR;
+    const outreach: LeadOutreach[] = status === "new" ? [] : [
+      { id: `or_${i}_1`, ts: createdAt + 30 * 60 * 1000, channel: "email", by: "System", subject: "Complete your Blissley intake", outcome: "delivered · opened" },
+      ...(intent !== "cold" ? [{ id: `or_${i}_2`, ts: createdAt + 4 * HR, channel: "sms" as const, by: "Andre F.", subject: "Quick check-in", outcome: i % 2 ? "delivered · no reply" : "delivered · replied" }] : []),
+      ...(status === "working" ? [{ id: `or_${i}_3`, ts: lastTouchAt, channel: "call" as const, by: "Andre F.", subject: "Discovery call", outcome: i % 2 ? "voicemail" : "connected · nurturing" }] : []),
+    ];
+    const intakeSnapshot: LeadIntakeAnswer[] = [
+      { q: "Which program are you interested in?", a: program, ts: createdAt + 60_000 },
+      { q: "What state do you live in?", a: state, ts: createdAt + 90_000 },
+      ...(program === "Tirzepatide" || program === "Semaglutide" ? [
+        { q: "Current weight (lb)?", a: `${180 + (i % 60)}`, ts: createdAt + 120_000 },
+        { q: "Goal weight (lb)?", a: `${150 + (i % 40)}`, ts: createdAt + 150_000 },
+      ] : []),
+      ...(step === "intake_mid" || step === "intake_complete" || step === "checkout" || step === "payment_fail" ? [
+        { q: "Any chronic conditions?", a: i % 3 === 0 ? "Hypertension" : "None", ts: createdAt + 180_000 },
+      ] : []),
+    ];
+    const isWL = program === "Tirzepatide" || program === "Semaglutide";
+    const firstOrder = isWL ? (i % 2 === 0 ? 299 : 249) : program === "Hair" ? 39 : program === "ED" ? 79 : 149;
+    return {
+      id: `ld_${900 + i}`,
+      name: `${first} ${last}`,
+      email: `${first.toLowerCase()}.${last.toLowerCase()}@email.com`,
+      phone: `+1 (415) 555-1${(100 + i).toString().padStart(3, "0")}`,
+      state,
+      city: pick(["San Francisco", "Austin", "Brooklyn", "Miami", "Chicago", "Seattle", "Denver", "Boston"], i),
+      dob: `19${70 + (i % 30)}-${((i % 12) + 1).toString().padStart(2, "0")}-${((i % 27) + 1).toString().padStart(2, "0")}`,
+      sex: (i % 2 === 0 ? "F" : "M") as "F" | "M",
+      program,
+      score: Math.round(score),
+      intent,
+      funnelStep: step,
+      progressPct,
+      stateEligible,
+      bmi: isWL ? Math.round((26 + (i % 12)) * 10) / 10 : undefined,
+      currentWeight: isWL ? 180 + (i % 60) : undefined,
+      goalWeight: isWL ? 150 + (i % 40) : undefined,
+      consent: {
+        sms: !(i % 11 === 0),
+        email: true,
+        marketing: !(i % 7 === 0),
+      },
+      attribution: {
+        source,
+        medium,
+        campaign: source === "Meta" ? "US_WL_Prospecting_v4" : source === "Google" ? "brand_exact" : source === "TikTok" ? "creator_seeding" : source === "Klaviyo" ? "abandoned_flow_2" : "organic",
+        adset: source === "Meta" ? pick(["Women 35-54 · GLP-1", "Men 30-50 · TRT", "LAL 1% purchasers"], i) : undefined,
+        creative: source === "Meta" ? pick(["UGC_Before_After_08", "Static_Rx_Kit_02", "VSL_60s_Coral"], i) : undefined,
+        landingUrl: isWL ? "/weight-loss" : `/${program.toLowerCase()}`,
+        firstTouch: createdAt - 3 * DAY,
+        lastTouch: lastTouchAt,
+        sessions: 1 + (i % 5),
+        deviceType: (["mobile", "mobile", "desktop", "tablet"] as const)[i % 4],
+      },
+      projectedFirstOrder: firstOrder,
+      projectedLTV: firstOrder * (isWL ? 5 : 3),
+      outreach,
+      tags: intent === "hot" ? ["priority"] : [],
+      assignee: status === "working" ? pick(["Andre F.", "Priya S.", "Ops"], i) : undefined,
+      status,
+      lossReason: status === "lost" ? pick(["price", "ineligible state", "competitor", "unresponsive"], i) : undefined,
+      intakeSnapshot,
+      cartItems: step === "checkout" || step === "payment_fail" || step === "abandoned_cart" ? [PROGRAMS[Object.keys(PROGRAMS)[i % 6] as keyof typeof PROGRAMS].label] : undefined,
+      coupon: step === "checkout" || step === "payment_fail" ? (i % 3 === 0 ? "BLISS30" : undefined) : undefined,
+      createdAt,
+      lastTouchAt,
+      // legacy
+      source,
+      lastStep: ({ landing: "Landing page", intake_start: "Q3 · Health history", intake_mid: "Q7 · State", intake_complete: "Q12 · Plan select", checkout: "Q14 · Payment", payment_fail: "Payment · declined", abandoned_cart: "Cart · abandoned" } as Record<LeadFunnelStep, string>)[step],
+      ageHrs,
+      contacted: outreach.length > 0,
+    };
+  });
 
   const tasks: Task[] = [
     { id: "t1", subject: "Your clinic", action: "Pay overdue invoice", ageHrs: 18, status: "open", assignee: "Unassigned", category: "billing" },
@@ -755,7 +908,61 @@ export const adminActions = {
     set((s) => ({ conversations: s.conversations.map((c) => (c.id === convoId ? { ...c, assignedTo: to, status } : c)) }));
   },
   markLeadContacted(id: string) {
-    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, contacted: true } : l)) }));
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, contacted: true, lastTouchAt: Date.now() } : l)) }));
+  },
+  updateLeadStatus(id: string, status: LeadStatus, lossReason?: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, status, lossReason: status === "lost" ? lossReason ?? l.lossReason : undefined } : l)) }));
+  },
+  assignLead(id: string, assignee: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, assignee, status: l.status === "new" ? "working" as const : l.status } : l)) }));
+  },
+  addLeadOutreach(id: string, channel: LeadOutreachChannel, subject: string, outcome = "logged") {
+    const o: LeadOutreach = { id: `or_${Date.now()}`, ts: Date.now(), channel, by: "You", subject, outcome };
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, outreach: [o, ...l.outreach], contacted: true, lastTouchAt: Date.now(), status: l.status === "new" ? "working" as const : l.status } : l)) }));
+  },
+  addLeadTag(id: string, tag: string) {
+    const t = tag.trim().toLowerCase().replace(/\s+/g, "-");
+    if (!t) return;
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: Array.from(new Set([...l.tags, t])) } : l)) }));
+  },
+  removeLeadTag(id: string, tag: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, tags: l.tags.filter((x) => x !== tag) } : l)) }));
+  },
+  setLeadConsent(id: string, patch: Partial<Lead["consent"]>) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, consent: { ...l.consent, ...patch } } : l)) }));
+  },
+  markLeadLost(id: string, reason: string) {
+    set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, status: "lost" as const, lossReason: reason } : l)) }));
+  },
+  convertLeadToPatient(id: string) {
+    const lead = state.leads.find((l) => l.id === id);
+    if (!lead) return;
+    const [firstName, ...rest] = lead.name.split(" ");
+    const lastName = rest.join(" ") || "—";
+    const isWL = lead.program === "Tirzepatide" || lead.program === "Semaglutide";
+    const program: ProgramCode = isWL ? (lead.program === "Tirzepatide" ? "tirz_mo" : "sema_mo") : "tirz_mo";
+    const newPt: Patient = {
+      id: `pt_from_${lead.id}`,
+      firstName, lastName,
+      email: lead.email,
+      phone: lead.phone,
+      status: "pending",
+      program,
+      mrr: 0,
+      ltv: 0,
+      startedAt: iso(0),
+      churn: "low",
+      state: lead.state,
+      tags: ["converted-lead"],
+    };
+    set((s) => ({
+      patients: [newPt, ...s.patients],
+      leads: s.leads.map((l) => (l.id === id ? { ...l, status: "won" as const, wonPatientId: newPt.id } : l)),
+      activity: [{ id: `a_${Date.now()}`, ts: Date.now(), text: `Lead converted — ${lead.name}`, tone: "success" as const }, ...s.activity],
+    }));
+  },
+  deleteLead(id: string) {
+    set((s) => ({ leads: s.leads.filter((l) => l.id !== id) }));
   },
 
   /* ── Patient mutations ── */
