@@ -374,38 +374,48 @@ type PharmabroState = {
   data: Record<BrandId, BrandData>;
 };
 
-export const usePharmabro = create<PharmabroState>(() => ({
+let state: PharmabroState = {
   hydrated: false,
   activeBrandId: "brand_northstar",
   brands: BRANDS,
   data: DATA,
-}));
+};
+const listeners = new Set<() => void>();
+function subscribe(fn: () => void) { listeners.add(fn); return () => { listeners.delete(fn); }; }
+function getState() { return state; }
+function setState(patch: Partial<PharmabroState> | ((s: PharmabroState) => Partial<PharmabroState>)) {
+  const next = typeof patch === "function" ? patch(state) : patch;
+  state = { ...state, ...next };
+  listeners.forEach((fn) => fn());
+}
+
+export const usePharmabro = <T,>(selector: (s: PharmabroState) => T): T =>
+  useSyncExternalStore(subscribe, () => selector(state), () => selector(state));
+usePharmabro.getState = getState;
+usePharmabro.setState = setState;
 
 function persist() {
   if (typeof window === "undefined") return;
   try {
-    const { activeBrandId, brands, data } = usePharmabro.getState();
+    const { activeBrandId, brands, data } = state;
     localStorage.setItem(LS_KEY, JSON.stringify({ activeBrandId, brands, data }));
   } catch {}
 }
 
 export function hydratePharmabro() {
   if (typeof window === "undefined") return;
-  if (usePharmabro.getState().hydrated) return;
+  if (state.hydrated) return;
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed?.activeBrandId && parsed?.brands && parsed?.data) {
-        usePharmabro.setState({
-          hydrated: true, activeBrandId: parsed.activeBrandId,
-          brands: parsed.brands, data: parsed.data,
-        });
+        setState({ hydrated: true, activeBrandId: parsed.activeBrandId, brands: parsed.brands, data: parsed.data });
         return;
       }
     }
   } catch {}
-  usePharmabro.setState({ hydrated: true });
+  setState({ hydrated: true });
 }
 
 /* ---------- SELECTORS ---------- */
@@ -415,6 +425,7 @@ export function useActiveBrand(): Brand {
 export function useActiveData(): BrandData {
   return usePharmabro((s) => s.data[s.activeBrandId] ?? makeEmptyData());
 }
+
 
 /* ---------- ACTIONS ---------- */
 function updateBrand(id: BrandId, patch: Partial<Brand>) {
