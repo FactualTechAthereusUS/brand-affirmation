@@ -128,7 +128,7 @@ function AdminHome() {
 
           {/* Row 2 — Today's revenue · MRR movement · Revenue by program */}
           <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-3">
-            <TodayRevenueCard value={todayRev} spark={revTrend} />
+            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} />
             <MrrMovementCard items={waterfall} delta={mrrDelta} />
             <RevenueByProgramCard programs={programs} />
           </div>
