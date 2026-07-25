@@ -24,7 +24,7 @@ export const Route = createFileRoute("/admin/live")({
 
 function LiveViewPage() {
   const orders = useAdmin((s) => s.orders);
-  const { sessions, purchaseEvents, counts, byLocation, focus, focusOn } = useLiveSessions();
+  const { sessions, purchaseEvents, counts, byLocation, focus, focusOn, series, lastTickAt } = useLiveSessions();
 
   const [view, setView] = useState<"globe" | "map">(() => {
     if (typeof window === "undefined") return "globe";
