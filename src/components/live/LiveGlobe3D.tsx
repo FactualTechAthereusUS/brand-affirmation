@@ -114,9 +114,9 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
     holder.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // Lights — soft, top-lit
-    scene.add(new THREE.AmbientLight(0xffffff, 1.0));
-    const dir = new THREE.DirectionalLight(0xffffff, 0.55);
+    // Flat, even lighting so the sphere reads uniformly off-white (Shopify parity)
+    scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+    const dir = new THREE.DirectionalLight(0xffffff, 0.25);
     dir.position.set(1, 1.2, 1);
     scene.add(dir);
 
@@ -131,11 +131,8 @@ export default function LiveGlobe3D({ sessions, purchaseEvents, focus, className
       .hexPolygonColor(() => HEX_COLOR)
       .hexPolygonAltitude(0.005);
 
-    const oceanMat = new THREE.MeshPhongMaterial({
-      color: OCEAN_COLOR,
-      transparent: false,
-      shininess: 4,
-    });
+    // Basic material → no shading falloff; sphere stays uniformly light.
+    const oceanMat = new THREE.MeshBasicMaterial({ color: OCEAN_COLOR });
     globe.globeMaterial(oceanMat);
     scene.add(globe);
     globeRef.current = globe;
