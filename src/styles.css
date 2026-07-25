@@ -13,17 +13,31 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  /* Brand palette */
-  --color-canvas: #ffffff;
+  /* Brand palette — unified with /admin */
+  --color-canvas: #f6f6f7;
+  --color-surface: #ffffff;
   --color-ink: #171717;
-  --color-ever: #ee7273;
+  --color-ever: #ee7273;        /* legacy coral — destructive/critical only */
+  --color-indigo: #2563eb;      /* primary CTA, revenue */
+  --color-violet: #7c3aed;      /* accent, MRR */
+  --color-sky: #0ea5e9;         /* info, sessions */
+  --color-emerald: #10b981;     /* success, approvals */
+  --color-amber: #f59e0b;       /* warning, AOV */
   --color-marine: #1D437B;
-  --color-mist: #d8d2c7;
+  --color-mist: #eef2ff;        /* soft indigo tint */
   --color-bluebell: #8b9bb4;
   --color-honey: #c4a265;
   --color-blush: #c4998a;
-  --color-check: #4a7c6f;
-  --color-hairline: #e8e4dc;
+  --color-check: #10b981;
+  --color-hairline: rgba(23,23,23,0.06);
+
+  /* Chart tokens */
+  --chart-primary: #2563eb;
+  --chart-accent:  #7c3aed;
+  --chart-sky:     #0ea5e9;
+  --chart-emerald: #10b981;
+  --chart-amber:   #f59e0b;
+  --chart-coral:   #ee7273;
 
   /* Shadcn semantic mapping */
   --color-background: var(--background);
