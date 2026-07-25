@@ -293,6 +293,7 @@ function seed(): AdminState {
     const price = PROGRAMS[program].price;
     const monthsIn = (i % 6) + 1;
     const status: PatientStatus =
+      i % 19 === 0 ? "denied" :
       i % 13 === 0 ? "failed" :
       i % 11 === 0 ? "cancelled" :
       i % 9 === 0 ? "paused" :
@@ -310,10 +311,13 @@ function seed(): AdminState {
       status,
       program,
       mrr: status === "active" ? price : 0,
-      ltv: price * monthsIn,
+      ltv: status === "denied" || status === "pending" ? 0 : price * monthsIn,
       startedAt: iso(monthsIn * 30 * DAY),
       churn,
       state: pick(STATES, i * 5),
+      tags: status === "active" && monthsIn >= 3 ? ["high-value", `${PROGRAMS[program].family}-patient`] : [],
+      cancelReason: status === "cancelled" ? pick(["Too expensive", "Side effects", "Reached goal", "Switching provider"], i) : undefined,
+      denialReason: status === "denied" ? pick(["BMI below threshold", "Contraindication", "Incomplete history"], i) : undefined,
     });
 
     // one active order per patient
