@@ -196,7 +196,7 @@ function LiveViewPage() {
           className="relative"
           style={{ height: fs ? "calc(100vh - 72px)" : "calc(100vh - 88px)" }}
         >
-          <div className={`absolute inset-0 ${fs ? "" : "-mx-4 lg:-mx-6"} overflow-hidden bg-white`}>
+          <div className={`absolute inset-0 ${fs ? "" : "-mx-4 lg:-mx-6"} overflow-hidden ${view === "map" ? "bg-transparent" : "bg-white"}`}>
             <ClientOnly fallback={<GlobeFallback />}>
               <Suspense fallback={<GlobeFallback />}>
                 {view === "globe" ? (
