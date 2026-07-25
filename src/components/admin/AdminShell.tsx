@@ -196,7 +196,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               transition={{ type: "spring", damping: 28, stiffness: 260 }}
               className="fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-ink/[0.06] bg-white lg:hidden">
               <div className="flex items-center justify-between px-5 py-5">
-                <img src={blissleyLogo.url} alt="Blissley" className="h-7 w-auto" />
+                {tenant.id === "blissley"
+                  ? <img src={blissleyLogo.url} alt={tenant.name} className="h-7 w-auto" />
+                  : <span className="font-hero text-[18px] font-bold tracking-tight" style={{ color: tenant.primary }}>{tenant.logoText}</span>}
                 <button onClick={() => setMobileNav(false)} className="rounded-lg p-1.5 text-ink/60"><X className="h-4 w-4" /></button>
               </div>
               <nav className="flex-1 overflow-y-auto px-2 pb-3">
