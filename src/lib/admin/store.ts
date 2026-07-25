@@ -38,6 +38,13 @@ export type Pharmacy = {
   drugs: string[];
 };
 
+export type CaseTimelineEvent = {
+  ts: number;
+  kind: "submitted" | "assigned" | "approved" | "denied" | "info_requested" | "reply_received" | "reassigned" | "priority_set" | "note";
+  by?: string;
+  detail?: string;
+};
+
 export type PhysicianCase = {
   id: string;
   patientId: string;
@@ -51,7 +58,17 @@ export type PhysicianCase = {
   status: "new" | "flagged" | "awaitingReply" | "approved" | "denied" | "refill";
   decision?: string;
   note?: string;
+  /** overrides applied by admin actions */
+  patientNote?: string;
+  internalNote?: string;
+  rxDraft?: { drug?: string; sig?: string; qty?: string; daysSupply?: number; refills?: number; pharmacyId?: string };
+  timeline?: CaseTimelineEvent[];
+  decisionAt?: number;
+  decidedBy?: string;
+  priorityPaid?: boolean;
 };
+
+export type CheckInDecision = "clear" | "hold" | "review" | "approved" | "adjusted" | "held" | "awaiting_reply";
 
 export type CheckIn = {
   id: string;
@@ -62,7 +79,18 @@ export type CheckIn = {
   weight?: number;
   delta?: number;
   sideEffects?: string[];
-  decision: "clear" | "hold" | "review";
+  decision: CheckInDecision;
+  /** overrides applied by admin actions */
+  patientNote?: string;
+  internalNote?: string;
+  adjustment?: { doseChange?: string; note?: string };
+  holdReason?: string;
+  reminderSentAt?: number;
+  reminderCount?: number;
+  decisionAt?: number;
+  decidedBy?: string;
+  refillOrderId?: string;
+  kind?: "day90" | "sixMonth";
 };
 
 export type NotificationTone = "info" | "success" | "warn" | "critical";
