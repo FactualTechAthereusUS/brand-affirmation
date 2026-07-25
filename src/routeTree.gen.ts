@@ -55,12 +55,12 @@ import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.inde
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
 import { Route as AdminIntegrationsIndexRouteImport } from './routes/admin.integrations.index'
 import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
-import { Route as PharmabroAdminSettingsStripeRouteImport } from './routes/pharmabro-admin.settings.stripe'
 import { Route as PharmabroAdminBuildProductsRouteImport } from './routes/pharmabro-admin.build.products'
 import { Route as PharmabroAdminBuildPagesRouteImport } from './routes/pharmabro-admin.build.pages'
 import { Route as PharmabroAdminBuildIntakeRouteImport } from './routes/pharmabro-admin.build.intake'
 import { Route as PharmabroAdminBuildFunnelRouteImport } from './routes/pharmabro-admin.build.funnel'
 import { Route as PharmabroAdminBuildEmailsRouteImport } from './routes/pharmabro-admin.build.emails'
+import { Route as PharmabroAdminAnalyticsAcquisitionRouteImport } from './routes/pharmabro-admin.analytics.acquisition'
 import { Route as AdminSettingsTeamRouteImport } from './routes/admin.settings.team'
 import { Route as AdminSettingsStatesRouteImport } from './routes/admin.settings.states'
 import { Route as AdminSettingsPlanBillingRouteImport } from './routes/admin.settings.plan-billing'
@@ -313,12 +313,6 @@ const AdminCheckInsIndexRoute = AdminCheckInsIndexRouteImport.update({
   path: '/admin/check-ins/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PharmabroAdminSettingsStripeRoute =
-  PharmabroAdminSettingsStripeRouteImport.update({
-    id: '/settings/stripe',
-    path: '/settings/stripe',
-    getParentRoute: () => PharmabroAdminRoute,
-  } as any)
 const PharmabroAdminBuildProductsRoute =
   PharmabroAdminBuildProductsRouteImport.update({
     id: '/build/products',
@@ -347,6 +341,12 @@ const PharmabroAdminBuildEmailsRoute =
   PharmabroAdminBuildEmailsRouteImport.update({
     id: '/build/emails',
     path: '/build/emails',
+    getParentRoute: () => PharmabroAdminRoute,
+  } as any)
+const PharmabroAdminAnalyticsAcquisitionRoute =
+  PharmabroAdminAnalyticsAcquisitionRouteImport.update({
+    id: '/analytics/acquisition',
+    path: '/analytics/acquisition',
     getParentRoute: () => PharmabroAdminRoute,
   } as any)
 const AdminSettingsTeamRoute = AdminSettingsTeamRouteImport.update({
@@ -515,12 +515,12 @@ export interface FileRoutesByFullPath {
   '/admin/settings/plan-billing': typeof AdminSettingsPlanBillingRoute
   '/admin/settings/states': typeof AdminSettingsStatesRoute
   '/admin/settings/team': typeof AdminSettingsTeamRoute
+  '/pharmabro-admin/analytics/acquisition': typeof PharmabroAdminAnalyticsAcquisitionRoute
   '/pharmabro-admin/build/emails': typeof PharmabroAdminBuildEmailsRouteWithChildren
   '/pharmabro-admin/build/funnel': typeof PharmabroAdminBuildFunnelRoute
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
-  '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
@@ -588,12 +588,12 @@ export interface FileRoutesByTo {
   '/admin/settings/plan-billing': typeof AdminSettingsPlanBillingRoute
   '/admin/settings/states': typeof AdminSettingsStatesRoute
   '/admin/settings/team': typeof AdminSettingsTeamRoute
+  '/pharmabro-admin/analytics/acquisition': typeof PharmabroAdminAnalyticsAcquisitionRoute
   '/pharmabro-admin/build/emails': typeof PharmabroAdminBuildEmailsRouteWithChildren
   '/pharmabro-admin/build/funnel': typeof PharmabroAdminBuildFunnelRoute
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
-  '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
   '/admin/check-ins': typeof AdminCheckInsIndexRoute
   '/admin/integrations': typeof AdminIntegrationsIndexRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
@@ -663,12 +663,12 @@ export interface FileRoutesById {
   '/admin/settings/plan-billing': typeof AdminSettingsPlanBillingRoute
   '/admin/settings/states': typeof AdminSettingsStatesRoute
   '/admin/settings/team': typeof AdminSettingsTeamRoute
+  '/pharmabro-admin/analytics/acquisition': typeof PharmabroAdminAnalyticsAcquisitionRoute
   '/pharmabro-admin/build/emails': typeof PharmabroAdminBuildEmailsRouteWithChildren
   '/pharmabro-admin/build/funnel': typeof PharmabroAdminBuildFunnelRoute
   '/pharmabro-admin/build/intake': typeof PharmabroAdminBuildIntakeRoute
   '/pharmabro-admin/build/pages': typeof PharmabroAdminBuildPagesRoute
   '/pharmabro-admin/build/products': typeof PharmabroAdminBuildProductsRoute
-  '/pharmabro-admin/settings/stripe': typeof PharmabroAdminSettingsStripeRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
@@ -739,12 +739,12 @@ export interface FileRouteTypes {
     | '/admin/settings/plan-billing'
     | '/admin/settings/states'
     | '/admin/settings/team'
+    | '/pharmabro-admin/analytics/acquisition'
     | '/pharmabro-admin/build/emails'
     | '/pharmabro-admin/build/funnel'
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
-    | '/pharmabro-admin/settings/stripe'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
@@ -812,12 +812,12 @@ export interface FileRouteTypes {
     | '/admin/settings/plan-billing'
     | '/admin/settings/states'
     | '/admin/settings/team'
+    | '/pharmabro-admin/analytics/acquisition'
     | '/pharmabro-admin/build/emails'
     | '/pharmabro-admin/build/funnel'
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
-    | '/pharmabro-admin/settings/stripe'
     | '/admin/check-ins'
     | '/admin/integrations'
     | '/admin/leads'
@@ -886,12 +886,12 @@ export interface FileRouteTypes {
     | '/admin/settings/plan-billing'
     | '/admin/settings/states'
     | '/admin/settings/team'
+    | '/pharmabro-admin/analytics/acquisition'
     | '/pharmabro-admin/build/emails'
     | '/pharmabro-admin/build/funnel'
     | '/pharmabro-admin/build/intake'
     | '/pharmabro-admin/build/pages'
     | '/pharmabro-admin/build/products'
-    | '/pharmabro-admin/settings/stripe'
     | '/admin/check-ins/'
     | '/admin/integrations/'
     | '/admin/leads/'
@@ -1278,13 +1278,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCheckInsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pharmabro-admin/settings/stripe': {
-      id: '/pharmabro-admin/settings/stripe'
-      path: '/settings/stripe'
-      fullPath: '/pharmabro-admin/settings/stripe'
-      preLoaderRoute: typeof PharmabroAdminSettingsStripeRouteImport
-      parentRoute: typeof PharmabroAdminRoute
-    }
     '/pharmabro-admin/build/products': {
       id: '/pharmabro-admin/build/products'
       path: '/build/products'
@@ -1318,6 +1311,13 @@ declare module '@tanstack/react-router' {
       path: '/build/emails'
       fullPath: '/pharmabro-admin/build/emails'
       preLoaderRoute: typeof PharmabroAdminBuildEmailsRouteImport
+      parentRoute: typeof PharmabroAdminRoute
+    }
+    '/pharmabro-admin/analytics/acquisition': {
+      id: '/pharmabro-admin/analytics/acquisition'
+      path: '/analytics/acquisition'
+      fullPath: '/pharmabro-admin/analytics/acquisition'
+      preLoaderRoute: typeof PharmabroAdminAnalyticsAcquisitionRouteImport
       parentRoute: typeof PharmabroAdminRoute
     }
     '/admin/settings/team': {
@@ -1490,21 +1490,22 @@ const PharmabroAdminBuildEmailsRouteWithChildren =
   )
 
 interface PharmabroAdminRouteChildren {
+  PharmabroAdminAnalyticsAcquisitionRoute: typeof PharmabroAdminAnalyticsAcquisitionRoute
   PharmabroAdminBuildEmailsRoute: typeof PharmabroAdminBuildEmailsRouteWithChildren
   PharmabroAdminBuildFunnelRoute: typeof PharmabroAdminBuildFunnelRoute
   PharmabroAdminBuildIntakeRoute: typeof PharmabroAdminBuildIntakeRoute
   PharmabroAdminBuildPagesRoute: typeof PharmabroAdminBuildPagesRoute
   PharmabroAdminBuildProductsRoute: typeof PharmabroAdminBuildProductsRoute
-  PharmabroAdminSettingsStripeRoute: typeof PharmabroAdminSettingsStripeRoute
 }
 
 const PharmabroAdminRouteChildren: PharmabroAdminRouteChildren = {
+  PharmabroAdminAnalyticsAcquisitionRoute:
+    PharmabroAdminAnalyticsAcquisitionRoute,
   PharmabroAdminBuildEmailsRoute: PharmabroAdminBuildEmailsRouteWithChildren,
   PharmabroAdminBuildFunnelRoute: PharmabroAdminBuildFunnelRoute,
   PharmabroAdminBuildIntakeRoute: PharmabroAdminBuildIntakeRoute,
   PharmabroAdminBuildPagesRoute: PharmabroAdminBuildPagesRoute,
   PharmabroAdminBuildProductsRoute: PharmabroAdminBuildProductsRoute,
-  PharmabroAdminSettingsStripeRoute: PharmabroAdminSettingsStripeRoute,
 }
 
 const PharmabroAdminRouteWithChildren = PharmabroAdminRoute._addFileChildren(
