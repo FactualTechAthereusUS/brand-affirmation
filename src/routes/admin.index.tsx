@@ -26,6 +26,7 @@ import {
   acquisitionMix,
   pipelineCounts,
   useAdmin,
+  type AdminState,
 } from "@/lib/admin/store";
 
 export const Route = createFileRoute("/admin/")({
