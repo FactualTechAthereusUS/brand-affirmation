@@ -55,12 +55,28 @@ function AnalyticsOverview() {
     { label: "Paid", count: funnelSum.paid, pct: funnelSum.paidPct, delta: "−4%" },
   ];
 
+  // Chart palette — intuitive per-metric colors (Shopify/Cuvo inspired)
+  const C = {
+    revenue: "#2563eb",   // indigo blue
+    mrr: "#7c3aed",       // violet
+    active: "#0ea5e9",    // sky
+    sessions: "#8b5cf6",  // soft violet
+    aov: "#f59e0b",       // amber
+    sla: "#0d9488",       // teal
+    approval: "#10b981",  // emerald (with band)
+    refill: "#7c3aed",    // violet
+    charges: "#2563eb",   // blue bars
+    failed: "#ee7273",    // coral
+    recovered: "#10b981", // emerald
+    traffic: "#7c3aed",
+  };
+
   const mrrSegments = [
-    { label: "New", value: 11400, color: "#ee7273" },
-    { label: "Expansion", value: 3500, color: "#171717" },
-    { label: "Reactivated", value: 1500, color: "#c4a265" },
-    { label: "Contraction", value: 1800, color: "#8b9bb4" },
-    { label: "Churn", value: 3300, color: "#dc3545" },
+    { label: "New", value: 11400, color: "#7c3aed" },
+    { label: "Expansion", value: 3500, color: "#2563eb" },
+    { label: "Reactivated", value: 1500, color: "#10b981" },
+    { label: "Contraction", value: 1800, color: "#f59e0b" },
+    { label: "Churn", value: 3300, color: "#ee7273" },
   ];
 
   const failedTotal = pay.failed.reduce((a, b) => a + b, 0);
@@ -107,7 +123,7 @@ function AnalyticsOverview() {
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-4">
-          <div className="h-10 w-32"><LineChartMini data={rev.slice(-14)} dates={dts.slice(-14)} label="Net revenue" formatValue={usd} stroke={insight.tone === "critical" ? "#ee7273" : "#171717"} height={40} /></div>
+          <div className="h-10 w-32"><LineChartMini data={rev.slice(-14)} dates={dts.slice(-14)} label="Net revenue" formatValue={usd} stroke={insight.tone === "critical" ? "#ee7273" : "#2563eb"} height={40} /></div>
           <button className="rounded-lg border border-ink/12 px-2.5 py-1.5 text-[11.5px] text-ink/70 hover:border-ink">See why →</button>
         </div>
       </motion.div>
@@ -116,13 +132,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Revenue">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Net revenue" value={`$${kpi.netRevenue.toLocaleString()}`} delta="+8.1%" sub="Compared to prior 30d">
-            <div className="px-3 pb-2"><AreaChart data={rev} prior={priorPeriodShift(rev, 8)} dates={dts} label="Net revenue" formatValue={usd} formatYTick={(v)=>`$${Math.round(v/1000)}k`} stroke="#171717" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={rev} prior={priorPeriodShift(rev, 8)} dates={dts} label="Net revenue" formatValue={usd} formatYTick={(v)=>`$${Math.round(v/1000)}k`} stroke={C.revenue} height={200} /></div>
           </MetricCard>
           <MetricCard label="MRR" value={`$${kpi.mrr.toLocaleString()}`} delta="+4.6%" sub="Recurring monthly">
             <div className="px-3"><Donut segments={mrrSegments} centerValue={`$${(kpi.mrr / 1000).toFixed(1)}k`} centerLabel="MRR" size={132} thickness={16} /></div>
           </MetricCard>
           <MetricCard label="Active patients" value={kpi.activeCount.toLocaleString()} delta="+3.2%" sub="Patients on refill">
-            <div className="px-3 pb-2"><AreaChart data={active} prior={priorPeriodShift(active, 6)} dates={dts} label="Active patients" stroke="#1D437B" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={active} prior={priorPeriodShift(active, 6)} dates={dts} label="Active patients" stroke={C.active} height={200} /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
@@ -131,13 +147,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Acquisition & funnel">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Sessions" value={funnelSum.sessions.toLocaleString()} delta="+9%">
-            <div className="px-3 pb-2"><AreaChart data={sess} prior={priorPeriodShift(sess, 10)} dates={dts} label="Sessions" stroke="#ee7273" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={sess} prior={priorPeriodShift(sess, 10)} dates={dts} label="Sessions" stroke={C.sessions} height={200} /></div>
           </MetricCard>
           <MetricCard label="Conversion breakdown" value={`${funnelSum.paidPct.toFixed(2)}%`} delta="+0.4%" sub="Session → Paid">
             <div className="px-3 pb-2"><BreakdownBars steps={breakdown} /></div>
           </MetricCard>
           <MetricCard label="AOV" value={`$${kpi.aov}`} delta="+0.4%" sub="Weighted by program">
-            <div className="px-3 pb-2"><AreaChart data={aov} prior={priorPeriodShift(aov, 4)} dates={dts} label="AOV" formatValue={usd} formatYTick={usd} stroke="#c4a265" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={aov} prior={priorPeriodShift(aov, 4)} dates={dts} label="AOV" formatValue={usd} formatYTick={usd} stroke={C.aov} height={200} /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
@@ -146,13 +162,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Clinical operations">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Physician review · median" value={`${Math.round(sla.median.reduce((a,b)=>a+b,0)/sla.median.length)}m`} delta="−12%" deltaTone="positive" sub={`p90 · ${sla.p90}m`}>
-            <div className="h-48 px-2 pb-4"><BarsMini data={sla.median} p90={sla.p90} dates={dts} label="Review time" formatValue={mins} color="#1D437B" /></div>
+            <div className="h-52 px-2"><BarsMini data={sla.median} p90={sla.p90} dates={dts} label="Review time" formatValue={mins} color={C.sla} height={200} /></div>
           </MetricCard>
           <MetricCard label="Approval rate" value={`${(approval.reduce((a,b)=>a+b,0)/approval.length).toFixed(1)}%`} delta="+1.4pt" sub="Target 82–88%">
-            <div className="px-3 pb-2"><AreaChart data={approval} dates={dts} label="Approval rate" formatValue={pct1} formatYTick={(v)=>`${Math.round(v)}%`} band={{ lo: 82, hi: 88, color: "rgba(74,124,111,0.10)" }} stroke="#4a7c6f" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={approval} dates={dts} label="Approval rate" formatValue={pct1} formatYTick={(v)=>`${Math.round(v)}%`} band={{ lo: 82, hi: 88, color: "rgba(16,185,129,0.10)" }} stroke={C.approval} height={200} /></div>
           </MetricCard>
           <MetricCard label="Refill adherence · day 60" value={`${refill[refill.length-1]}%`} delta="+3.1pt" sub="On active Rx">
-            <div className="px-3 pb-2"><AreaChart data={refill} prior={priorPeriodShift(refill, 5)} dates={dts} label="Adherence" formatValue={pct} formatYTick={(v)=>`${Math.round(v)}%`} stroke="#ee7273" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={refill} prior={priorPeriodShift(refill, 5)} dates={dts} label="Adherence" formatValue={pct} formatYTick={(v)=>`${Math.round(v)}%`} stroke={C.refill} height={200} /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
@@ -208,7 +224,7 @@ function AnalyticsOverview() {
           </Card>
           <Card className="p-4">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Traffic sources</div>
-            <HBar rows={sources} color="#1D437B" />
+            <HBar rows={sources} color={C.traffic} />
           </Card>
         </div>
       </AnalyticsSection>
@@ -246,7 +262,7 @@ function AnalyticsOverview() {
                     <td className="px-3 py-2.5 text-right text-check">{m.refillPct}%</td>
                     <td className="px-3 py-2.5 text-right text-ever">{m.churnPct}%</td>
                     <td className="px-4 py-2.5">
-                      <div className="ml-auto h-6 w-24"><LineChartMini data={m.spark} height={24} label={m.program} formatValue={usd} stroke="#171717" fill="rgba(23,23,23,0.06)" /></div>
+                      <div className="ml-auto h-6 w-24"><LineChartMini data={m.spark} height={24} label={m.program} formatValue={usd} stroke={C.revenue} fill="rgba(37,99,235,0.08)" /></div>
                     </td>
                   </motion.tr>
                 ))}
@@ -260,13 +276,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Payments health">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Total charges" value={totalPayments.toLocaleString()} delta="+5.4%">
-            <div className="h-52 px-2 pb-4"><BarsMini data={pay.totals} dates={dts} label="Charges" color="#171717" /></div>
+            <div className="h-52 px-2"><BarsMini data={pay.totals} dates={dts} label="Charges" color={C.charges} height={200} /></div>
           </MetricCard>
           <MetricCard label="Failed payments" value={failedTotal.toLocaleString()} delta="+38%" deltaTone="critical" sub="Stripe timeouts spiking">
-            <div className="px-3 pb-2"><AreaChart data={pay.failed} dates={dts} label="Failed" stroke="#ee7273" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={pay.failed} dates={dts} label="Failed" stroke={C.failed} height={200} /></div>
           </MetricCard>
           <MetricCard label="Recovery rate" value={`${recoveryRate}%`} delta="+4pt" deltaTone="positive" sub="Auto-retry + dunning">
-            <div className="px-3 pb-2"><AreaChart data={pay.recovered} dates={dts} label="Recovered" stroke="#4a7c6f" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={pay.recovered} dates={dts} label="Recovered" stroke={C.recovered} height={200} /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>

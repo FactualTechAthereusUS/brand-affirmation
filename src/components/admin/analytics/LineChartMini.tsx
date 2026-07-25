@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 /* ────────── shared helpers ────────── */
 
@@ -21,24 +21,25 @@ function Tooltip({
   x: number; y: number; containerW: number;
   label?: string; dateText: string; valueText: string; priorText?: string; color: string;
 }) {
-  const boxW = 148;
+  const boxW = 156;
   const left = Math.max(4, Math.min(containerW - boxW - 4, x - boxW / 2));
   return (
     <motion.div
-      initial={{ opacity: 0, y: -2, scale: 0.98 }}
+      initial={{ opacity: 0, y: 4, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -2, scale: 0.98 }}
+      exit={{ opacity: 0, y: 4, scale: 0.96 }}
       transition={{ duration: 0.14, ease: [0.2, 0.8, 0.2, 1] }}
-      style={{ left, top: Math.max(4, y - 62), width: boxW }}
-      className="pointer-events-none absolute z-20 rounded-lg border border-ink/10 bg-white/95 px-2.5 py-1.5 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] backdrop-blur"
+      style={{ left, top: Math.max(4, y - 74), width: boxW }}
+      className="pointer-events-none absolute z-20 rounded-xl bg-ink px-3 py-2 shadow-[0_10px_28px_-8px_rgba(0,0,0,0.35)]"
     >
-      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.06em] text-ink/45">
+      <div className="text-[9.5px] font-medium uppercase tracking-[0.08em] text-white/55">{dateText}</div>
+      <div className="mt-0.5 flex items-center gap-1.5">
         <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: color }} />
-        {label ?? "Value"}
+        <span className="text-[10.5px] text-white/70">{label ?? "Value"}</span>
+        <span className="ml-auto font-hero text-[13px] font-semibold tabular-nums text-white">{valueText}</span>
       </div>
-      <div className="mt-0.5 font-hero text-[14px] font-semibold tabular-nums text-ink">{valueText}</div>
-      <div className="mt-0.5 text-[10.5px] text-ink/55">{dateText}</div>
-      {priorText && <div className="text-[10.5px] text-ink/40">Prior · {priorText}</div>}
+      {priorText && <div className="mt-0.5 text-[10.5px] text-white/45">Prior · {priorText}</div>}
+      <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" />
     </motion.div>
   );
 }
@@ -198,7 +199,7 @@ export function LineChartMini({
 /* ────────── BarsMini ────────── */
 
 export function BarsMini({
-  data, color = "#171717", height = 96, p90, dates, label, formatValue,
+  data, color = "#2563eb", height = 96, p90, dates, label, formatValue,
 }: {
   data: number[];
   color?: string;
@@ -209,68 +210,128 @@ export function BarsMini({
   formatValue?: (v: number) => string;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
-  const [hover, setHover] = useState<{ i: number; px: number; py: number; w: number } | null>(null);
+  const [w, setW] = useState(0);
+  const [hover, setHover] = useState<{ i: number; px: number; py: number } | null>(null);
+
+
+  useEffect(() => {
+    const el = wrap.current;
+    if (!el) return;
+    const update = () => setW(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const max = Math.max(...data, p90 ?? 0) || 1;
-  const W = 100;
+  const padL = 32;
+  const padR = 8;
+  const padT = 8;
+  const padB = 20;
   const H = height;
-  const gap = 1.2;
-  const barW = (W - gap * (data.length - 1)) / data.length;
+  const innerW = Math.max(1, w - padL - padR);
+  const innerH = Math.max(1, H - padT - padB);
+  const gap = data.length > 20 ? 2 : 3;
+  const barW = Math.max(2, (innerW - gap * (data.length - 1)) / data.length);
   const dts = makeDates(data.length, dates);
   const fmt = formatValue ?? ((v: number) => v.toLocaleString());
+  const fmtY = (v: number) => v >= 1000 ? `${(v / 1000).toFixed(v >= 10000 ? 0 : 1)}k` : Math.round(v).toString();
+
+  // 3 Y ticks
+  const ticks = [max, max * 0.5, 0];
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const el = wrap.current; if (!el) return;
+    const el = wrap.current; if (!el || w === 0) return;
     const r = el.getBoundingClientRect();
     const x = Math.max(0, Math.min(r.width, e.clientX - r.left));
-    const i = Math.max(0, Math.min(data.length - 1, Math.floor((x / r.width) * data.length)));
-    const px = ((i + 0.5) / data.length) * r.width;
-    const py = (1 - data[i] / max) * (r.height - 4) + 2;
-    setHover({ i, px, py, w: r.width });
+    if (x < padL - 4 || x > padL + innerW + 4) { setHover(null); return; }
+    const i = Math.max(0, Math.min(data.length - 1, Math.floor(((x - padL) / innerW) * data.length)));
+    const px = padL + ((i + 0.5) / data.length) * innerW;
+    const py = padT + (1 - data[i] / max) * innerH;
+    setHover({ i, px, py });
   };
+
+  const gradId = useRef(`bg-${Math.random().toString(36).slice(2, 7)}`).current;
 
   return (
     <div
       ref={wrap}
-      className="relative h-full w-full"
+      className="relative w-full select-none"
+      style={{ height: H + 12 }}
       onPointerMove={onMove}
       onPointerLeave={() => setHover(null)}
     >
-      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="block h-full w-full">
-        {p90 !== undefined && (
-          <line
-            x1="0" x2={W}
-            y1={H - (p90 / max) * (H - 4) - 2}
-            y2={H - (p90 / max) * (H - 4) - 2}
-            stroke={color} strokeOpacity="0.35" strokeDasharray="2 2" strokeWidth="1"
-            vectorEffect="non-scaling-stroke"
-          />
-        )}
-        {data.map((v, i) => {
-          const h = (v / max) * (H - 4);
-          const isHot = hover?.i === i;
-          return (
-            <motion.rect
-              key={i}
-              x={i * (barW + gap)}
-              width={barW}
-              y={H - h - 2}
-              height={h}
-              initial={{ opacity: 0, scaleY: 0 }}
-              animate={{ opacity: 1, scaleY: 1 }}
-              transition={{ duration: 0.5, delay: i * 0.015, ease: "easeOut" }}
-              style={{ transformOrigin: `0 ${H}px`, transformBox: "fill-box" as any }}
-              rx="1"
-              fill={color}
-              fillOpacity={hover ? (isHot ? 1 : 0.45) : 1}
-            />
-          );
-        })}
-      </svg>
+      {w > 0 && (
+        <svg width={w} height={H} className="block">
+          <defs>
+            <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity="1" />
+              <stop offset="100%" stopColor={color} stopOpacity="0.55" />
+            </linearGradient>
+          </defs>
 
-      <div className="pointer-events-none absolute inset-x-0 -bottom-4 flex justify-between px-0.5 text-[9.5px] text-ink/40 tabular-nums">
-        <span>{fmtShortDate(dts[0])}</span>
-        <span>{fmtShortDate(dts[dts.length - 1])}</span>
-      </div>
+          {/* Grid + Y ticks */}
+          {ticks.map((t, i) => {
+            const y = padT + (1 - t / max) * innerH;
+            return (
+              <g key={i}>
+                <line x1={padL} x2={padL + innerW} y1={y} y2={y} stroke="rgba(23,23,23,0.06)" strokeWidth="1" />
+                <text x={padL - 6} y={y + 3} textAnchor="end" style={{ fontSize: 9.5, fill: "rgba(23,23,23,0.4)" }}>{fmtY(t)}</text>
+              </g>
+            );
+          })}
+
+          {/* p90 line */}
+          {p90 !== undefined && (
+            <g>
+              <line
+                x1={padL} x2={padL + innerW}
+                y1={padT + (1 - p90 / max) * innerH}
+                y2={padT + (1 - p90 / max) * innerH}
+                stroke={color} strokeOpacity="0.55" strokeDasharray="3 3" strokeWidth="1.25"
+              />
+            </g>
+          )}
+
+          {/* Bars */}
+          {data.map((v, i) => {
+            const h = (v / max) * innerH;
+            const y = padT + innerH - h;
+            const x = padL + i * (barW + gap);
+            const isHot = hover?.i === i;
+            return (
+              <motion.rect
+                key={i}
+                x={x}
+                width={barW}
+                y={y}
+                height={h}
+                rx={Math.min(barW / 2, 3)}
+                fill={`url(#${gradId})`}
+                initial={{ opacity: 0, y: y + h, height: 0 }}
+                animate={{ opacity: 1, y, height: h }}
+                transition={{ duration: 0.5, delay: i * 0.012, ease: [0.2, 0.8, 0.2, 1] }}
+                style={{ filter: hover && !isHot ? "brightness(0.7) saturate(0.7)" : undefined, transition: "filter 160ms ease" }}
+              />
+            );
+          })}
+
+          {/* Hover crosshair */}
+          {hover && (
+            <line
+              x1={hover.px} x2={hover.px}
+              y1={padT} y2={padT + innerH}
+              stroke="rgba(23,23,23,0.22)" strokeWidth="1" strokeDasharray="2 2"
+              pointerEvents="none"
+            />
+          )}
+
+          {/* X ticks (start / end) */}
+          <text x={padL} y={H - 4} style={{ fontSize: 9.5, fill: "rgba(23,23,23,0.42)" }}>{fmtShortDate(dts[0])}</text>
+          <text x={padL + innerW} y={H - 4} textAnchor="end" style={{ fontSize: 9.5, fill: "rgba(23,23,23,0.42)" }}>{fmtShortDate(dts[dts.length - 1])}</text>
+        </svg>
+      )}
 
       <AnimatePresence>
         {hover && (
@@ -278,7 +339,7 @@ export function BarsMini({
             key="tt"
             x={hover.px}
             y={hover.py}
-            containerW={hover.w}
+            containerW={w}
             label={label}
             dateText={fmtDate(dts[hover.i])}
             valueText={fmt(data[hover.i])}
