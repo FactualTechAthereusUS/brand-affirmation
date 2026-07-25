@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { BrandShell } from "@/components/pharmabro/BrandShell";
 
 export const Route = createFileRoute("/pharmabro-admin")({
   head: () => ({
@@ -8,13 +7,5 @@ export const Route = createFileRoute("/pharmabro-admin")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
-  component: PharmabroLayout,
+  component: () => <Outlet />,
 });
-
-function PharmabroLayout() {
-  return (
-    <BrandShell>
-      <Outlet />
-    </BrandShell>
-  );
-}
