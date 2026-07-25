@@ -307,5 +307,18 @@ export function Pill({ tone = "neutral", children }: { tone?: "neutral" | "succe
   return <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-medium ${map[tone]}`}>{children}</span>;
 }
 
-// Placeholder export kept for legacy references
-export { UserCircle2 as _AvatarIcon };
+// Legacy helper re-exports (used by admin.orders, admin.patients, etc.)
+export function StatusPill({ tone = "neutral", children }: { tone?: "neutral" | "success" | "warn" | "critical" | "info"; children: ReactNode }) {
+  return <Pill tone={tone}>{children}</Pill>;
+}
+export function formatMoney(cents: number): string {
+  const n = cents > 10_000 ? cents / 100 : cents;
+  return `$${n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+}
+export function timeAgo(ts: number): string {
+  const s = Math.max(1, Math.floor((Date.now() - ts) / 1000));
+  if (s < 60) return `${s}s ago`;
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  return `${Math.floor(s / 86400)}d ago`;
+}

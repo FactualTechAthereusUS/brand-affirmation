@@ -6,7 +6,7 @@ import { FunnelWaterfall } from "@/components/admin/FunnelWaterfall";
 import { computeKpis, funnelData, useAdmin } from "@/lib/admin/store";
 import { mrrWaterfall, revenueTrend, newPatientsTrend } from "@/lib/admin/selectors";
 
-export const Route = createFileRoute("/admin/analytics/")({
+export const Route = createFileRoute("/admin/analytics")({
   head: () => ({ meta: [{ title: "Analytics — Blissley Admin" }, { name: "description", content: "MRR, funnel, and unit economics at a glance." }] }),
   component: AnalyticsOverview,
 });
