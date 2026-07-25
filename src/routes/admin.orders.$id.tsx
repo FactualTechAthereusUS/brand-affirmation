@@ -296,9 +296,14 @@ function OrderDetailPage() {
               <MetaRow label="Next refill" value={o.eta ?? "—"} />
             </div>
             <div className="mt-3 flex flex-wrap gap-1.5">
-              <MiniBtn>Pause</MiniBtn>
-              <MiniBtn>Skip next</MiniBtn>
-              <MiniBtn tone="critical">Cancel</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.pausePatient(order!.patientId); toast.success("Subscription paused"); }}>Pause</MiniBtn>
+              <MiniBtn onClick={() => { adminActions.skipNextRefill(o.id); toast.success("Refill skipped"); }}>Skip next</MiniBtn>
+              <MiniBtn tone="critical" onClick={() => {
+                const reason = window.prompt("Cancellation reason?", "Patient request") ?? "";
+                if (!reason) return;
+                adminActions.cancelPatient(order!.patientId, reason);
+                toast.success("Subscription cancelled");
+              }}>Cancel</MiniBtn>
             </div>
           </Card>
 
