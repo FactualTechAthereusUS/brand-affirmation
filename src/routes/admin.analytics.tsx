@@ -132,13 +132,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Revenue">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Net revenue" value={`$${kpi.netRevenue.toLocaleString()}`} delta="+8.1%" sub="Compared to prior 30d">
-            <div className="px-3 pb-2"><AreaChart data={rev} prior={priorPeriodShift(rev, 8)} dates={dts} label="Net revenue" formatValue={usd} formatYTick={(v)=>`$${Math.round(v/1000)}k`} stroke="#171717" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={rev} prior={priorPeriodShift(rev, 8)} dates={dts} label="Net revenue" formatValue={usd} formatYTick={(v)=>`$${Math.round(v/1000)}k`} stroke={C.revenue} height={200} /></div>
           </MetricCard>
           <MetricCard label="MRR" value={`$${kpi.mrr.toLocaleString()}`} delta="+4.6%" sub="Recurring monthly">
             <div className="px-3"><Donut segments={mrrSegments} centerValue={`$${(kpi.mrr / 1000).toFixed(1)}k`} centerLabel="MRR" size={132} thickness={16} /></div>
           </MetricCard>
           <MetricCard label="Active patients" value={kpi.activeCount.toLocaleString()} delta="+3.2%" sub="Patients on refill">
-            <div className="px-3 pb-2"><AreaChart data={active} prior={priorPeriodShift(active, 6)} dates={dts} label="Active patients" stroke="#1D437B" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={active} prior={priorPeriodShift(active, 6)} dates={dts} label="Active patients" stroke={C.active} height={200} /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
