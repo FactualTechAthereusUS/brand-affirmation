@@ -218,8 +218,7 @@ export function AdminShell({ title, children }: { title: string; children: React
 
             {/* Workspace chip */}
             <div className="hidden items-center gap-2 rounded-lg border border-ink/[0.08] px-2.5 py-1 sm:flex">
-              <span className="grid h-4 w-4 place-items-center rounded-full bg-ever"><span className="h-1 w-1 rounded-full bg-white" /></span>
-              <span className="text-[12px] font-semibold text-ink">blissley</span>
+              <img src={blissleyLogo.url} alt="Blissley" className="h-4 w-auto" />
               <span className="mx-1 h-3 w-px bg-ink/10" />
               <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
                 <span className="relative flex h-1.5 w-1.5">
