@@ -187,10 +187,7 @@ export function AdminShell({ title, children }: { title: string; children: React
               transition={{ type: "spring", damping: 28, stiffness: 260 }}
               className="fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-ink/[0.06] bg-white lg:hidden">
               <div className="flex items-center justify-between px-5 py-5">
-                <div className="flex items-center gap-2">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-ever"><span className="h-1.5 w-1.5 rounded-full bg-white" /></span>
-                  <span className="font-hero text-[15px] font-bold text-ink">blissley</span>
-                </div>
+                <img src={blissleyLogo.url} alt="Blissley" className="h-7 w-auto" />
                 <button onClick={() => setMobileNav(false)} className="rounded-lg p-1.5 text-ink/60"><X className="h-4 w-4" /></button>
               </div>
               <nav className="flex-1 overflow-y-auto px-2 pb-3">
