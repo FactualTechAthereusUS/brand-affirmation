@@ -104,13 +104,47 @@ export type Notification = {
   unread: boolean;
 };
 
+export type IntegrationCategory =
+  | "Payments" | "Pharmacies" | "Clinical" | "Marketing"
+  | "Analytics" | "Email/SMS" | "Shipping" | "Comms" | "Banking" | "Auth";
+
+export type IntegrationStatus = "connected" | "degraded" | "down" | "disconnected";
+
+export type IntegrationConfigField = {
+  key: string;
+  label: string;
+  type: "text" | "secret" | "select" | "toggle" | "url";
+  options?: string[];
+  required?: boolean;
+  placeholder?: string;
+  help?: string;
+};
+
+export type IntegrationScope = { key: string; label: string; required?: boolean };
+export type IntegrationWebhookEvent = { key: string; label: string; enabled: boolean };
+export type IntegrationSyncEntry = {
+  ts: number;
+  event: string;
+  status: "ok" | "warn" | "error";
+  detail?: string;
+};
+
 export type Integration = {
   id: string;
   name: string;
-  category: "Critical" | "Clinical" | "Analytics" | "Banking";
-  status: "connected" | "degraded" | "down";
+  category: IntegrationCategory;
+  status: IntegrationStatus;
   lastSync: number;
   lastError?: string;
+  description: string;
+  docsUrl: string;
+  brand: { color: string; mono: string };
+  scopes: IntegrationScope[];
+  configSchema: IntegrationConfigField[];
+  config: Record<string, string | boolean>;
+  webhookEvents: IntegrationWebhookEvent[];
+  syncHistory: IntegrationSyncEntry[];
+  connectedAt?: number;
 };
 
 export type Campaign = {
