@@ -53,11 +53,7 @@ function CompliancePage() {
       TargetID: a.targetId ?? "",
       Meta: a.meta ?? "",
     }));
-    const csv = toCsv(rows);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `blissley-audit-log-${Date.now()}.csv`; a.click();
-    URL.revokeObjectURL(url);
+    downloadCsv(`blissley-audit-log-${Date.now()}.csv`, rows);
     toast.success("Audit log exported");
   };
 

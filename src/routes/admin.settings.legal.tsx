@@ -31,11 +31,7 @@ function LegalPage() {
       Version: "v2026.06.01", IP: `73.${(i * 7) % 255}.${(i * 3) % 255}.${(i * 5) % 255}`,
       TimestampISO: new Date(Date.now() - i * 3600_000).toISOString(),
     }));
-    const csv = toCsv(rows);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `blissley-consent-records-${Date.now()}.csv`; a.click();
-    URL.revokeObjectURL(url);
+    downloadCsv(`blissley-consent-records-${Date.now()}.csv`, rows);
     toast.success("Consent records exported");
   };
 
