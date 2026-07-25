@@ -675,7 +675,7 @@ export const adminActions = {
           }))],
         };
       }
-      return { scenario: sc, ...fresh };
+      return { ...fresh, scenario: sc };
     });
   },
   setRole(r: Role) { set({ role: r }); },
