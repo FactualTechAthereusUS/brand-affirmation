@@ -150,7 +150,7 @@ function RowFragment({ day, row, maxHM, rIdx }: { day: string; row: number[]; ma
         const intensity = v / maxHM;
         return (
           <div key={`${rIdx}-${c}`} className="aspect-square rounded-md" title={`${v} signups`} style={{
-            background: `color-mix(in oklab, #ee7273 ${Math.round(intensity * 100)}%, #f0ebe3)`,
+            background: `color-mix(in oklab, #ee7273 ${Math.round(intensity * 100)}%, #f1f5f9)`,
           }} />
         );
       })}
