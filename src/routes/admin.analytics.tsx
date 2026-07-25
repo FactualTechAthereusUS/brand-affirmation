@@ -40,6 +40,11 @@ function AnalyticsOverview() {
   const pay = useAdmin((s) => paymentsHealth(s, 30));
   const insight = useAdmin(insightHeadline);
   const cohorts = cohortRetention();
+  const dts = useAdmin((s) => datesTrend(s, 30));
+  const usd = (v: number) => `$${v.toLocaleString()}`;
+  const pct = (v: number) => `${v}%`;
+  const pct1 = (v: number) => `${v.toFixed(1)}%`;
+  const mins = (v: number) => `${v}m`;
 
   const funnel = funnelData();
   const breakdown = [
