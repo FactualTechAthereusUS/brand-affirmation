@@ -126,6 +126,19 @@ export type Patient = {
   notes?: InternalNote[];
   cancelReason?: string;
   denialReason?: string;
+  // ── Overrides (mutated by adminActions) ──
+  cardBrandOverride?: string;
+  cardLast4Override?: string;
+  addressOverride?: { line1: string; line2?: string; city: string; state: string; zip: string };
+  nextBillingOverride?: string;
+};
+
+export type OrderTimelineExtra = {
+  ts: number;
+  actor: "patient" | "system" | "physician" | "pharmacy" | "carrier" | "ops";
+  kind: "created" | "paid" | "rx_approved" | "sent_to_pharmacy" | "dispensed" | "label" | "shipped" | "out_for_delivery" | "delivered" | "exception" | "note" | "message";
+  message: string;
+  meta?: string;
 };
 
 export type OrderStatus = "processing" | "at_pharmacy" | "shipped" | "delivered" | "exception";
@@ -139,6 +152,13 @@ export type Order = {
   createdAt: string;
   tracking?: string;
   eta?: string;
+  // ── Overrides (mutated by adminActions) ──
+  paymentOverride?: "paid" | "failed" | "refunded";
+  shipToOverride?: { line1?: string; line2?: string; city?: string; state?: string; zip?: string };
+  opsOwner?: string;
+  tags?: string[];
+  flagsExtra?: string[];
+  timelineExtra?: OrderTimelineExtra[];
 };
 
 export type PaymentStatus = "succeeded" | "failed" | "refunded";
