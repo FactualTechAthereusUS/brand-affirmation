@@ -27,10 +27,22 @@ function timeAgo(ts: number): string {
   return `${Math.floor(s/86400)}d ago`;
 }
 
-function BrandTile({ color, mono, size = 40 }: { color: string; mono: string; size?: number }) {
+function BrandTile({ color, mono, logoUrl, size = 40 }: { color: string; mono: string; logoUrl?: string; size?: number }) {
+  if (logoUrl) {
+    return (
+      <img
+        src={logoUrl}
+        alt=""
+        className="shrink-0 object-contain"
+        style={{ width: size, height: size }}
+      />
+    );
+  }
   return (
-    <div className="grid shrink-0 place-items-center rounded-lg font-hero font-semibold text-white"
-      style={{ width: size, height: size, backgroundColor: color, fontSize: size * 0.42 }}>
+    <div
+      className="grid shrink-0 place-items-center rounded-lg font-hero font-semibold text-white"
+      style={{ width: size, height: size, backgroundColor: color, fontSize: size * 0.42, letterSpacing: "-0.02em" }}
+    >
       {mono}
     </div>
   );
@@ -80,7 +92,7 @@ function IntegrationDetail() {
         </Link>
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:items-center">
           <div className="flex min-w-0 items-center gap-3">
-            <BrandTile color={integration.brand.color} mono={integration.brand.mono} size={48} />
+            <BrandTile color={integration.brand.color} mono={integration.brand.mono} logoUrl={integration.brand.logoUrl} size={48} />
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h1 className="truncate font-hero text-[22px] font-semibold text-ink">{integration.name}</h1>
@@ -200,7 +212,7 @@ function IntegrationDetail() {
                     params={{ id: r.id }}
                     className="flex items-center gap-2 rounded-lg px-1.5 py-1.5 hover:bg-ink/[0.03]"
                   >
-                    <BrandTile color={r.brand.color} mono={r.brand.mono} size={28}/>
+                    <BrandTile color={r.brand.color} mono={r.brand.mono} logoUrl={r.brand.logoUrl} size={28}/>
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-[12px] font-medium text-ink">{r.name}</div>
                       <div className="truncate text-[10.5px] text-ink/50">{r.description}</div>

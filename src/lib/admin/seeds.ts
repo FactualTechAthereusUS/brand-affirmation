@@ -6,6 +6,16 @@ import type {
   Physician, Pharmacy, PhysicianCase, CheckIn, Notification, Integration,
   Campaign, FunnelDay,
 } from "./store";
+import logoStripe from "@/assets/logo-stripe.png.asset.json";
+import logoPaddle from "@/assets/logo-paddle.png.asset.json";
+import logoKlarna from "@/assets/logo-klarna.png.asset.json";
+import logoAffirm from "@/assets/logo-affirm.png.asset.json";
+import logoDoseSpot from "@/assets/logo-dosespot.png.asset.json";
+import logoMeta from "@/assets/logo-meta.png.asset.json";
+import logoGoogleAds from "@/assets/logo-google-ads.png.asset.json";
+import logoGoogleAnalytics from "@/assets/logo-google-analytics.png.asset.json";
+import logoTikTokAds from "@/assets/logo-tiktok-ads.png.asset.json";
+import logoUps from "@/assets/logo-ups.png.asset.json";
 
 const now = Date.now();
 const HR = 3600_000;
@@ -85,7 +95,7 @@ export const INTEGRATIONS: Integration[] = [
     lastSync: now - 4*60_000, connectedAt: now - 42*DAY,
     description: "Process card payments, subscriptions, and refunds.",
     docsUrl: "https://stripe.com/docs",
-    brand: { color: "#635bff", mono: "S" },
+    brand: { color: "#635bff", mono: "S", logoUrl: logoStripe.url },
     scopes: SCOPES_READWRITE,
     configSchema: [
       { key: "pk", label: "Publishable key", type: "text", required: true, placeholder: "pk_live_..." },
@@ -112,7 +122,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_paddle", name: "Paddle", category: "Payments", status: "disconnected",
     lastSync: 0, description: "Merchant-of-record billing with tax + compliance handled.",
-    docsUrl: "https://developer.paddle.com", brand: { color: "#111827", mono: "P" },
+    docsUrl: "https://developer.paddle.com", brand: { color: "#FFDD35", mono: "P", logoUrl: logoPaddle.url },
     scopes: SCOPES_READWRITE,
     configSchema: [
       { key: "vendor_id", label: "Vendor ID", type: "text", required: true },
@@ -123,7 +133,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_affirm", name: "Affirm", category: "Payments", status: "disconnected",
     lastSync: 0, description: "Buy-now-pay-later for eligible carts $150+.",
-    docsUrl: "https://docs.affirm.com", brand: { color: "#0FA0EA", mono: "A" },
+    docsUrl: "https://docs.affirm.com", brand: { color: "#0FA0EA", mono: "A", logoUrl: logoAffirm.url },
     scopes: SCOPES_READONLY,
     configSchema: [
       { key: "public_key", label: "Public API key", type: "text", required: true },
@@ -133,7 +143,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_klarna", name: "Klarna", category: "Payments", status: "disconnected",
     lastSync: 0, description: "Pay in 4 installments at checkout.",
-    docsUrl: "https://docs.klarna.com", brand: { color: "#FFA8CD", mono: "K" },
+    docsUrl: "https://docs.klarna.com", brand: { color: "#FFA8CD", mono: "K", logoUrl: logoKlarna.url },
     scopes: SCOPES_READONLY,
     configSchema: [
       { key: "username", label: "API username", type: "text", required: true },
@@ -260,7 +270,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_dosespot", name: "DoseSpot", category: "Clinical", status: "disconnected",
     lastSync: 0, description: "E-prescribing across all 50 states with EPCS.",
-    docsUrl: "https://dosespot.com", brand: { color: "#dc2626", mono: "D" },
+    docsUrl: "https://dosespot.com", brand: { color: "#0F6FB8", mono: "D", logoUrl: logoDoseSpot.url },
     scopes: SCOPES_READWRITE,
     configSchema: [
       { key: "clinic_id", label: "Clinic ID", type: "text", required: true },
@@ -285,7 +295,7 @@ export const INTEGRATIONS: Integration[] = [
     lastSync: now - 6*60_000, connectedAt: now - 30*DAY,
     description: "Facebook & Instagram campaigns, audiences, and conversions.",
     docsUrl: "https://developers.facebook.com/docs/marketing-apis",
-    brand: { color: "#1877F2", mono: "M" },
+    brand: { color: "#1877F2", mono: "M", logoUrl: logoMeta.url },
     scopes: [
       { key: "ads_read", label: "Read your ads and campaigns", required: true },
       { key: "ads_management", label: "Create and edit campaigns", required: true },
@@ -304,7 +314,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_google_ads", name: "Google Ads", category: "Marketing", status: "disconnected",
     lastSync: 0, description: "Search, Performance Max, and YouTube campaigns.",
-    docsUrl: "https://developers.google.com/google-ads", brand: { color: "#4285F4", mono: "G" },
+    docsUrl: "https://developers.google.com/google-ads", brand: { color: "#4285F4", mono: "G", logoUrl: logoGoogleAds.url },
     scopes: [
       { key: "adwords", label: "Manage your AdWords campaigns", required: true },
     ],
@@ -316,7 +326,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_tiktok", name: "TikTok Ads", category: "Marketing", status: "disconnected",
     lastSync: 0, description: "Spark ads, Events API, and conversion campaigns.",
-    docsUrl: "https://business-api.tiktok.com", brand: { color: "#000000", mono: "T" },
+    docsUrl: "https://business-api.tiktok.com", brand: { color: "#000000", mono: "T", logoUrl: logoTikTokAds.url },
     scopes: SCOPES_READWRITE,
     configSchema: [
       { key: "advertiser_id", label: "Advertiser ID", type: "text", required: true },
@@ -330,7 +340,7 @@ export const INTEGRATIONS: Integration[] = [
     lastSync: now - 8*60_000, connectedAt: now - 60*DAY,
     description: "Server-side conversion API + browser pixel for iOS attribution.",
     docsUrl: "https://developers.facebook.com/docs/marketing-api/conversions-api",
-    brand: { color: "#1877F2", mono: "P" },
+    brand: { color: "#1877F2", mono: "P", logoUrl: logoMeta.url },
     scopes: [{ key: "capi", label: "Send conversion events server-side", required: true }],
     configSchema: [
       { key: "pixel_id", label: "Pixel ID", type: "text", required: true },
@@ -346,7 +356,7 @@ export const INTEGRATIONS: Integration[] = [
     lastSync: now - 14*60_000, connectedAt: now - 90*DAY,
     description: "First-party analytics, funnels, and audiences.",
     docsUrl: "https://developers.google.com/analytics",
-    brand: { color: "#F9AB00", mono: "G" },
+    brand: { color: "#F9AB00", mono: "G", logoUrl: logoGoogleAnalytics.url },
     scopes: [{ key: "analytics.read", label: "Read Analytics data", required: true }],
     configSchema: [
       { key: "measurement_id", label: "Measurement ID", type: "text", required: true, placeholder: "G-XXXXXXXX" },
@@ -453,7 +463,7 @@ export const INTEGRATIONS: Integration[] = [
   },
   { id: "int_ups", name: "UPS", category: "Shipping", status: "disconnected",
     lastSync: 0, description: "Direct UPS shipping account for cold-chain routing.",
-    docsUrl: "https://www.ups.com/developer", brand: { color: "#5F3B1A", mono: "U" },
+    docsUrl: "https://www.ups.com/developer", brand: { color: "#5F3B1A", mono: "U", logoUrl: logoUps.url },
     scopes: SCOPES_READONLY,
     configSchema: [
       { key: "account_number", label: "Account number", type: "text", required: true },
