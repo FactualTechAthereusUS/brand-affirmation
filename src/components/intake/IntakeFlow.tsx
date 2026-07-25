@@ -1205,7 +1205,7 @@ function LoadingScreen({ answers }: { answers: Answers }) {
     >
       <div className="relative grid h-20 w-20 place-items-center">
         <motion.span
-          className="absolute inset-0 rounded-full border-[3px] border-indigo/25 border-t-ever"
+          className="absolute inset-0 rounded-full border-[3px] border-indigo/25 border-t-indigo"
           animate={{ rotate: 360 }}
           transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
         />
