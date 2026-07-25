@@ -953,6 +953,21 @@ export function trafficOverTime() {
   }));
 }
 
+function pickAutoReply(text: string): string {
+  const t = text.toLowerCase();
+  if (/refund|cancel/.test(t)) return "Thanks — I'll review this and get back to you shortly.";
+  if (/dose|nausea|side effect|symptom/.test(t)) return "Got it, sharing this with Dr. Nass. Please continue current dose unless we advise otherwise.";
+  if (/shipping|track|delivery|arrive/.test(t)) return "Thanks for the update — I'll check tracking and follow up within the hour.";
+  if (/thank|thanks|appreciate/.test(t)) return "Anytime — let us know if anything else comes up.";
+  const generic = [
+    "Thanks — got it. I'll follow up shortly.",
+    "Understood. Let me look into this and circle back.",
+    "Received — appreciate the note.",
+    "Got it, one moment while I check.",
+  ];
+  return generic[text.length % generic.length];
+}
+
 /* ────────── Actions ────────── */
 export const adminActions = {
   signIn(email: string) {
