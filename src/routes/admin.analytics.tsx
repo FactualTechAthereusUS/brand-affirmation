@@ -123,7 +123,7 @@ function AnalyticsOverview() {
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-4">
-          <div className="h-10 w-32"><LineChartMini data={rev.slice(-14)} dates={dts.slice(-14)} label="Net revenue" formatValue={usd} stroke={insight.tone === "critical" ? "#ee7273" : "#171717"} height={40} /></div>
+          <div className="h-10 w-32"><LineChartMini data={rev.slice(-14)} dates={dts.slice(-14)} label="Net revenue" formatValue={usd} stroke={insight.tone === "critical" ? "#ee7273" : "#2563eb"} height={40} /></div>
           <button className="rounded-lg border border-ink/12 px-2.5 py-1.5 text-[11.5px] text-ink/70 hover:border-ink">See why →</button>
         </div>
       </motion.div>
