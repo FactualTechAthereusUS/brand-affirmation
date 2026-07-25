@@ -47,13 +47,6 @@ function BrandTile({ color, mono, logoUrl, size = 40 }: { color: string; mono: s
     </div>
   );
 }
-  return (
-    <div className="grid shrink-0 place-items-center rounded-lg font-hero font-semibold text-white"
-      style={{ width: size, height: size, backgroundColor: color, fontSize: size * 0.42 }}>
-      {mono}
-    </div>
-  );
-}
 
 function StatusChip({ status }: { status: Integration["status"] }) {
   const map = {
