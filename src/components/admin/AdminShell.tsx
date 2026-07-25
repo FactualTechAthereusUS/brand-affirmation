@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { adminActions, hydrateAdmin, useAdmin } from "@/lib/admin/store";
+import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 
 type NavItem = { to?: string; label: string; icon: typeof LayoutGrid; exact?: boolean; soon?: boolean };
 
