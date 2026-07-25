@@ -276,13 +276,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Payments health">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Total charges" value={totalPayments.toLocaleString()} delta="+5.4%">
-            <div className="h-52 px-2 pb-4"><BarsMini data={pay.totals} dates={dts} label="Charges" color="#171717" /></div>
+            <div className="h-52 px-2"><BarsMini data={pay.totals} dates={dts} label="Charges" color={C.charges} height={200} /></div>
           </MetricCard>
           <MetricCard label="Failed payments" value={failedTotal.toLocaleString()} delta="+38%" deltaTone="critical" sub="Stripe timeouts spiking">
-            <div className="px-3 pb-2"><AreaChart data={pay.failed} dates={dts} label="Failed" stroke="#ee7273" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={pay.failed} dates={dts} label="Failed" stroke={C.failed} height={200} /></div>
           </MetricCard>
           <MetricCard label="Recovery rate" value={`${recoveryRate}%`} delta="+4pt" deltaTone="positive" sub="Auto-retry + dunning">
-            <div className="px-3 pb-2"><AreaChart data={pay.recovered} dates={dts} label="Recovered" stroke="#4a7c6f" height={200} /></div>
+            <div className="px-3 pb-2"><AreaChart data={pay.recovered} dates={dts} label="Recovered" stroke={C.recovered} height={200} /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
