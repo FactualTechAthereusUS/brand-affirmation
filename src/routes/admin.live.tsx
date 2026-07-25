@@ -128,9 +128,7 @@ function LiveViewPage() {
         {/* Top bar */}
         <div className="mb-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="grid h-6 w-6 place-items-center rounded-md bg-ink/[0.06]">
-              <Globe2 className="h-3.5 w-3.5 text-ink/70" strokeWidth={1.75} />
-            </div>
+            <Globe2 className="h-3.5 w-3.5 text-ink/70" strokeWidth={1.75} />
             <h1 className="font-hero text-[19px] font-semibold text-ink">Live View</h1>
             <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
               <span className="relative flex h-1.5 w-1.5">

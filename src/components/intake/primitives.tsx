@@ -260,9 +260,7 @@ export function CategoryCard({
           {sub}
         </span>
       </div>
-      <div className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
-        <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
-      </div>
+      <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
     </motion.button>
   );
 }

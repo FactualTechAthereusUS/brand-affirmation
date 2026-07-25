@@ -349,7 +349,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           {planState === "paused" && (
             <MotionCard key="paused">
               <div className="flex items-start gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[color:var(--color-mist)]/70"><Pause className="h-5 w-5 text-ink/70" /></div>
+                <Pause className="h-5 w-5 text-ink/70" />
                 <div className="flex-1">
                   <div className="text-[15px] font-semibold text-ink">Program paused</div>
                   <div className="mt-0.5 text-[13px] text-ink/60">You're paused for {pauseDays} days. No charges, no shipments.</div>
@@ -389,7 +389,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           {planState === "check_in_due" && (
             <MotionCard key="checkin" accent>
               <div className="flex items-start gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white shadow-sm"><AlertCircle className="h-5 w-5" style={{ color: PINK }} /></div>
+                <AlertCircle className="h-5 w-5" style={{ color: PINK }} />
                 <div className="min-w-0">
                   <div className="text-[15px] font-semibold text-ink">Check-in required</div>
                   <div className="mt-0.5 text-[13px] text-ink/70">Your next refill is waiting on your monthly check-in.</div>
@@ -569,9 +569,7 @@ function doseCountdown(iso: string): string {
 function PendingApproval() {
   return (
     <div className="flex items-start gap-3">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white border border-ink/10">
-        <Loader2 className="h-5 w-5 animate-spin text-ink stroke-[2.5px]" />
-      </div>
+      <Loader2 className="h-5 w-5 animate-spin text-ink stroke-[2.5px]" />
       <div>
         <div className="text-[15px] font-semibold text-ink">Physician Review In Progress</div>
         <div className="mt-0.5 text-[13px] text-ink/60">Dr. Scott Nass MD is reviewing your profile.</div>

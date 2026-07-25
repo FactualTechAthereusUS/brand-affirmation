@@ -88,9 +88,7 @@ export function Hero() {
                 <img src={vialImg.url} alt="" className="h-full w-full object-cover" />
               </span>
               Get started
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-canvas transition-transform duration-300 group-hover:rotate-45">
-                <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
-              </span>
+              <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
             </motion.a>
 
             <motion.button
