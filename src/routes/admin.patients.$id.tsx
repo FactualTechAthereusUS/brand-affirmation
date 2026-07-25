@@ -149,7 +149,7 @@ function PatientDetail() {
                     <td className="text-ink/80">{PROGRAMS[o.program].label.split(" · ")[0]}</td>
                     <td><OrderStatusPill status={o.status} /></td>
                     <td className="tabular-nums font-semibold">${o.amount}</td>
-                    <td className="text-right"><button className="text-[11.5px] font-semibold text-indigo-700 hover:underline">View</button></td>
+                    <td className="text-right"><Link to="/admin/orders/$id" params={{ id: o.id }} className="text-[11.5px] font-semibold text-indigo-700 hover:underline">View</Link></td>
                   </tr>
                 ))}
                 {orders.length === 0 && <tr><td colSpan={6} className="py-4 text-center text-ink/40">No orders yet</td></tr>}
