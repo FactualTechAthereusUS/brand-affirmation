@@ -65,6 +65,7 @@ export type EnrichedOrder = Order & {
   deliveredAt?: string;
   dose: string;
   cadence: "Monthly" | "3-Month" | "6-Month";
+  cogs: { drug: number; packaging: number; shipping: number; gp: number; gpPct: number };
 };
 
 const PHARMACIES = [
