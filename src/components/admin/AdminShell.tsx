@@ -91,8 +91,12 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const startHold = () => { holdRef.current = setTimeout(() => adminActions.toggleLogoMenu(true), 600); };
   const endHold = () => { if (holdRef.current) clearTimeout(holdRef.current); };
 
+  const prefix = pathname.startsWith("/pharmabro-admin") ? "/pharmabro-admin" : "/admin";
+  const navGroups = remapNav(prefix);
+
   const canSee = (n: NavItem) => !n.roles || n.roles.includes(role);
   const isActive = (n: NavItem) => n.to && (n.exact ? pathname === n.to : pathname === n.to || pathname.startsWith(n.to + "/") || pathname.startsWith(n.to + "?"));
+
 
   const NavRow = ({ n }: { n: NavItem }) => {
     const active = isActive(n);
