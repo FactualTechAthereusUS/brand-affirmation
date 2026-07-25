@@ -69,6 +69,7 @@ import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
 import { Route as AdminIntegrationsIdRouteImport } from './routes/admin.integrations.$id'
 import { Route as AdminCheckInsIdRouteImport } from './routes/admin.check-ins.$id'
+import { Route as AdminBuildFunnelRouteImport } from './routes/admin.build.funnel'
 import { Route as AdminAnalyticsRetentionRouteImport } from './routes/admin.analytics.retention'
 import { Route as AdminAnalyticsFunnelRouteImport } from './routes/admin.analytics.funnel'
 import { Route as AdminAnalyticsFinancesRouteImport } from './routes/admin.analytics.finances'
@@ -379,6 +380,11 @@ const AdminCheckInsIdRoute = AdminCheckInsIdRouteImport.update({
   path: '/admin/check-ins/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBuildFunnelRoute = AdminBuildFunnelRouteImport.update({
+  id: '/admin/build/funnel',
+  path: '/admin/build/funnel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
   id: '/retention',
   path: '/retention',
@@ -444,6 +450,7 @@ export interface FileRoutesByFullPath {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/build/funnel': typeof AdminBuildFunnelRoute
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
@@ -509,6 +516,7 @@ export interface FileRoutesByTo {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/build/funnel': typeof AdminBuildFunnelRoute
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
@@ -576,6 +584,7 @@ export interface FileRoutesById {
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
   '/admin/analytics/funnel': typeof AdminAnalyticsFunnelRoute
   '/admin/analytics/retention': typeof AdminAnalyticsRetentionRoute
+  '/admin/build/funnel': typeof AdminBuildFunnelRoute
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
@@ -644,6 +653,7 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/build/funnel'
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
@@ -709,6 +719,7 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/build/funnel'
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
@@ -775,6 +786,7 @@ export interface FileRouteTypes {
     | '/admin/analytics/finances'
     | '/admin/analytics/funnel'
     | '/admin/analytics/retention'
+    | '/admin/build/funnel'
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
@@ -836,6 +848,7 @@ export interface RootRouteChildren {
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
+  AdminBuildFunnelRoute: typeof AdminBuildFunnelRoute
   AdminCheckInsIdRoute: typeof AdminCheckInsIdRoute
   AdminIntegrationsIdRoute: typeof AdminIntegrationsIdRoute
   AdminLeadsIdRoute: typeof AdminLeadsIdRoute
@@ -1272,6 +1285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCheckInsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/build/funnel': {
+      id: '/admin/build/funnel'
+      path: '/admin/build/funnel'
+      fullPath: '/admin/build/funnel'
+      preLoaderRoute: typeof AdminBuildFunnelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/analytics/retention': {
       id: '/admin/analytics/retention'
       path: '/retention'
@@ -1400,6 +1420,7 @@ const rootRouteChildren: RootRouteChildren = {
   WeightLossSalesRoute: WeightLossSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
+  AdminBuildFunnelRoute: AdminBuildFunnelRoute,
   AdminCheckInsIdRoute: AdminCheckInsIdRoute,
   AdminIntegrationsIdRoute: AdminIntegrationsIdRoute,
   AdminLeadsIdRoute: AdminLeadsIdRoute,
