@@ -133,7 +133,7 @@ function AnalyticsOverview() {
   }, []);
 
   const updateSearch = (patch: Partial<{ range: RangeKey; compare: CompareKey; auto: boolean }>) => {
-    navigate({ search: (prev) => ({ ...prev, ...patch }) });
+    navigate({ search: (prev: AnalyticsSearch) => ({ ...prev, ...patch }) });
   };
 
   const handleExport = (kind: "movers" | "funnel" | "cohort" | "payments") => {
