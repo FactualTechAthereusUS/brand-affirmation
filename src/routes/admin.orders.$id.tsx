@@ -61,10 +61,24 @@ function OrderDetailPage() {
           <p className="mt-1 text-[12.5px] text-ink/55">Placed {o.createdAt} · {PROGRAMS[o.program].label} · {o.cadence}</p>
         </div>
         <div className="flex items-center gap-2">
-          <ToolbarBtn icon={<Printer className="h-3.5 w-3.5" />}>Print label</ToolbarBtn>
-          <ToolbarBtn icon={<RotateCcw className="h-3.5 w-3.5" />}>Refund</ToolbarBtn>
-          <ToolbarBtn icon={<MoreHorizontal className="h-3.5 w-3.5" />}>More</ToolbarBtn>
-          <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-indigo-700">
+          <ToolbarBtn icon={<Printer className="h-3.5 w-3.5" />} onClick={() => { adminActions.printOrderLabel(o.id); toast.success("Label sent to printer"); }}>Print label</ToolbarBtn>
+          <ToolbarBtn icon={<RotateCcw className="h-3.5 w-3.5" />} tone="critical" onClick={() => {
+            if (o.payment.status === "refunded") { toast.info("Already refunded"); return; }
+            const reason = window.prompt("Refund reason?", "Customer request") ?? "";
+            if (!reason) return;
+            adminActions.refundOrder(o.id, reason);
+            toast.success(`Refunded ${formatMoney(o.payment.total)}`);
+          }}>Refund</ToolbarBtn>
+          <ToolbarBtn icon={<MoreHorizontal className="h-3.5 w-3.5" />} onClick={() => { adminActions.sendOrderReceipt(o.id); toast.success("Receipt emailed"); }}>Send receipt</ToolbarBtn>
+          <button
+            onClick={() => {
+              if (o.status === "delivered") { toast.info("Order already delivered"); return; }
+              adminActions.advanceOrderStage(o.id);
+              toast.success("Stage advanced");
+            }}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-[12.5px] font-semibold text-white hover:bg-indigo-700 disabled:opacity-40"
+            disabled={o.status === "delivered"}
+          >
             Advance stage <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
