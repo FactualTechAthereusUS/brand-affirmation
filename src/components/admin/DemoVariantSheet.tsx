@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Zap, AlertTriangle, TrendingDown, Rocket, EyeOff, User } from "lucide-react";
+import { X, Zap, AlertTriangle, TrendingDown, Rocket, EyeOff, User, Building2 } from "lucide-react";
 import { adminActions, useAdmin, type DemoScenario, type Role } from "@/lib/admin/store";
 
 const SCENARIOS: { key: DemoScenario; label: string; sub: string; icon: typeof Zap; tone: string }[] = [
@@ -17,10 +17,18 @@ const ROLES: { key: Role; label: string; sub: string }[] = [
   { key: "support",  label: "Support",  sub: "Messages, patients read-only; no financials" },
 ];
 
+const STAGE_LABEL: Record<string, string> = {
+  live: "Live · full data",
+  ramping: "Ramping · early sales",
+  zero: "Zero · just onboarded",
+};
+
 export function DemoVariantSheet() {
   const open = useAdmin((s) => s.ui.showLogoMenu);
   const scenario = useAdmin((s) => s.scenario);
   const role = useAdmin((s) => s.role);
+  const tenant = useAdmin((s) => s.tenant);
+  const tenants = useAdmin((s) => s.tenants);
   return (
     <AnimatePresence>
       {open && (
@@ -35,8 +43,8 @@ export function DemoVariantSheet() {
           >
             <div className="flex items-center justify-between border-b border-ink/[0.06] px-5 py-3">
               <div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">Demo control</div>
-                <div className="mt-0.5 font-hero text-[15px] font-semibold text-ink">Switch scenario · role · portal</div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">PharmaBro · Demo control</div>
+                <div className="mt-0.5 font-hero text-[15px] font-semibold text-ink">Switch brand · scenario · role</div>
               </div>
               <button onClick={() => adminActions.toggleLogoMenu(false)} className="rounded-lg p-1.5 text-ink/60 hover:bg-ink/5">
                 <X className="h-4 w-4" />
@@ -44,7 +52,32 @@ export function DemoVariantSheet() {
             </div>
 
             <div className="max-h-[70vh] overflow-y-auto p-5">
-              <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">Scenario</div>
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">Brand tenant</div>
+              <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {tenants.map((t) => {
+                  const active = tenant.id === t.id;
+                  return (
+                    <button key={t.id} onClick={() => { adminActions.switchTenant(t.id); adminActions.toggleLogoMenu(false); }}
+                      className={`flex flex-col items-start gap-1.5 rounded-xl border p-3 text-left transition-all ${
+                        active ? "border-ink bg-ink/[0.03]" : "border-ink/[0.08] hover:border-ink/25"
+                      }`}>
+                      <div className="flex w-full items-center gap-2">
+                        <span className="h-6 w-6 shrink-0 rounded-md" style={{ background: `linear-gradient(135deg, ${t.primary}, ${t.accent})` }} />
+                        <span className="text-[13px] font-semibold text-ink">{t.name}</span>
+                        {active && <span className="ml-auto text-[10px] font-semibold text-check">Active</span>}
+                      </div>
+                      <div className="text-[10.5px] text-ink/55">{STAGE_LABEL[t.stage] ?? t.stage}</div>
+                      <div className="text-[10px] text-ink/40">{t.website}</div>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="mt-2 flex items-center gap-1.5 text-[10.5px] text-ink/45">
+                <Building2 className="h-3 w-3" />
+                Switching tenants reseeds patients, orders, and payments to match the tenant's stage.
+              </div>
+
+              <div className="mt-5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">Scenario</div>
               <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {SCENARIOS.map((s) => {
                   const Icon = s.icon;
