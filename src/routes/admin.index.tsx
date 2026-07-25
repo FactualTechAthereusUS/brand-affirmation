@@ -40,7 +40,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function AdminDashboard() {
-  const state = useAdmin((s) => s);
+  const state = useAdmin((s: ReturnType<typeof useAdmin>) => s);
   const kpis = computeKpis(state);
   const revenue = revenueByProgram();
   const acquisition = acquisitionMix();
