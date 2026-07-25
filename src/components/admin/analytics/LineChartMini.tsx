@@ -253,14 +253,15 @@ export function BarsMini({
               key={i}
               x={i * (barW + gap)}
               width={barW}
-              initial={{ y: H, height: 0 }}
-              whileInView={{ y: H - h - 2, height: h }}
-              viewport={{ once: true }}
+              y={H - h - 2}
+              height={h}
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
               transition={{ duration: 0.5, delay: i * 0.015, ease: "easeOut" }}
+              style={{ transformOrigin: `0 ${H}px`, transformBox: "fill-box" as any }}
               rx="1"
               fill={color}
-              opacity={hover ? (isHot ? 1 : 0.45) : 1}
-              style={{ transition: "opacity 160ms ease" }}
+              fillOpacity={hover ? (isHot ? 1 : 0.45) : 1}
             />
           );
         })}
