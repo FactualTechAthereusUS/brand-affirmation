@@ -41,18 +41,18 @@ import { Route as CheckoutUITemplate3RouteImport } from './routes/checkout.UI-te
 import { Route as AdminTeamRouteImport } from './routes/admin.team'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
-import { Route as AdminPhysicianQueueRouteImport } from './routes/admin.physician-queue'
 import { Route as AdminPharmacyRouteImport } from './routes/admin.pharmacy'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLiveRouteImport } from './routes/admin.live'
 import { Route as AdminIntegrationsRouteImport } from './routes/admin.integrations'
 import { Route as AdminCommandRouteImport } from './routes/admin.command'
-import { Route as AdminCheckInsRouteImport } from './routes/admin.check-ins'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AdminPhysicianQueueIndexRouteImport } from './routes/admin.physician-queue.index'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
+import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
 import { Route as AdminPhysicianQueueIdRouteImport } from './routes/admin.physician-queue.$id'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
@@ -223,11 +223,6 @@ const AdminReportsRoute = AdminReportsRouteImport.update({
   path: '/admin/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminPhysicianQueueRoute = AdminPhysicianQueueRouteImport.update({
-  id: '/admin/physician-queue',
-  path: '/admin/physician-queue',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminPharmacyRoute = AdminPharmacyRouteImport.update({
   id: '/admin/pharmacy',
   path: '/admin/pharmacy',
@@ -258,16 +253,17 @@ const AdminCommandRoute = AdminCommandRouteImport.update({
   path: '/admin/command',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCheckInsRoute = AdminCheckInsRouteImport.update({
-  id: '/admin/check-ins',
-  path: '/admin/check-ins',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   id: '/admin/analytics',
   path: '/admin/analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPhysicianQueueIndexRoute =
+  AdminPhysicianQueueIndexRouteImport.update({
+    id: '/admin/physician-queue/',
+    path: '/admin/physician-queue/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminPatientsIndexRoute = AdminPatientsIndexRouteImport.update({
   id: '/admin/patients/',
   path: '/admin/patients/',
@@ -283,10 +279,15 @@ const AdminLeadsIndexRoute = AdminLeadsIndexRouteImport.update({
   path: '/admin/leads/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCheckInsIndexRoute = AdminCheckInsIndexRouteImport.update({
+  id: '/admin/check-ins/',
+  path: '/admin/check-ins/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminPhysicianQueueIdRoute = AdminPhysicianQueueIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPhysicianQueueRoute,
+  id: '/admin/physician-queue/$id',
+  path: '/admin/physician-queue/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
   id: '/admin/patients/$id',
@@ -304,9 +305,9 @@ const AdminLeadsIdRoute = AdminLeadsIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCheckInsIdRoute = AdminCheckInsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminCheckInsRoute,
+  id: '/admin/check-ins/$id',
+  path: '/admin/check-ins/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
   id: '/retention',
@@ -344,14 +345,12 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
   '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
-  '/admin/check-ins': typeof AdminCheckInsRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
-  '/admin/physician-queue': typeof AdminPhysicianQueueRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -381,9 +380,11 @@ export interface FileRoutesByFullPath {
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
+  '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
+  '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -399,14 +400,12 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
   '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
-  '/admin/check-ins': typeof AdminCheckInsRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
-  '/admin/physician-queue': typeof AdminPhysicianQueueRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -436,9 +435,11 @@ export interface FileRoutesByTo {
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
+  '/admin/check-ins': typeof AdminCheckInsIndexRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
   '/admin/orders': typeof AdminOrdersIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
+  '/admin/physician-queue': typeof AdminPhysicianQueueIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -455,14 +456,12 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
   '/admin/analytics': typeof AdminAnalyticsRouteWithChildren
-  '/admin/check-ins': typeof AdminCheckInsRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/pharmacy': typeof AdminPharmacyRoute
-  '/admin/physician-queue': typeof AdminPhysicianQueueRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -492,9 +491,11 @@ export interface FileRoutesById {
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
+  '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
+  '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -512,14 +513,12 @@ export interface FileRouteTypes {
     | '/terms'
     | '/test-state'
     | '/admin/analytics'
-    | '/admin/check-ins'
     | '/admin/command'
     | '/admin/integrations'
     | '/admin/live'
     | '/admin/messages'
     | '/admin/payments'
     | '/admin/pharmacy'
-    | '/admin/physician-queue'
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/team'
@@ -549,9 +548,11 @@ export interface FileRouteTypes {
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
+    | '/admin/check-ins/'
     | '/admin/leads/'
     | '/admin/orders/'
     | '/admin/patients/'
+    | '/admin/physician-queue/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -567,14 +568,12 @@ export interface FileRouteTypes {
     | '/terms'
     | '/test-state'
     | '/admin/analytics'
-    | '/admin/check-ins'
     | '/admin/command'
     | '/admin/integrations'
     | '/admin/live'
     | '/admin/messages'
     | '/admin/payments'
     | '/admin/pharmacy'
-    | '/admin/physician-queue'
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/team'
@@ -604,9 +603,11 @@ export interface FileRouteTypes {
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
+    | '/admin/check-ins'
     | '/admin/leads'
     | '/admin/orders'
     | '/admin/patients'
+    | '/admin/physician-queue'
   id:
     | '__root__'
     | '/'
@@ -622,14 +623,12 @@ export interface FileRouteTypes {
     | '/terms'
     | '/test-state'
     | '/admin/analytics'
-    | '/admin/check-ins'
     | '/admin/command'
     | '/admin/integrations'
     | '/admin/live'
     | '/admin/messages'
     | '/admin/payments'
     | '/admin/pharmacy'
-    | '/admin/physician-queue'
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/team'
@@ -659,9 +658,11 @@ export interface FileRouteTypes {
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
+    | '/admin/check-ins/'
     | '/admin/leads/'
     | '/admin/orders/'
     | '/admin/patients/'
+    | '/admin/physician-queue/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -678,14 +679,12 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRouteWithChildren
-  AdminCheckInsRoute: typeof AdminCheckInsRouteWithChildren
   AdminCommandRoute: typeof AdminCommandRoute
   AdminIntegrationsRoute: typeof AdminIntegrationsRoute
   AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminPharmacyRoute: typeof AdminPharmacyRoute
-  AdminPhysicianQueueRoute: typeof AdminPhysicianQueueRouteWithChildren
   AdminReportsRoute: typeof AdminReportsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminTeamRoute: typeof AdminTeamRoute
@@ -704,12 +703,16 @@ export interface RootRouteChildren {
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
+  AdminCheckInsIdRoute: typeof AdminCheckInsIdRoute
   AdminLeadsIdRoute: typeof AdminLeadsIdRoute
   AdminOrdersIdRoute: typeof AdminOrdersIdRoute
   AdminPatientsIdRoute: typeof AdminPatientsIdRoute
+  AdminPhysicianQueueIdRoute: typeof AdminPhysicianQueueIdRoute
+  AdminCheckInsIndexRoute: typeof AdminCheckInsIndexRoute
   AdminLeadsIndexRoute: typeof AdminLeadsIndexRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
   AdminPatientsIndexRoute: typeof AdminPatientsIndexRoute
+  AdminPhysicianQueueIndexRoute: typeof AdminPhysicianQueueIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -938,13 +941,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/physician-queue': {
-      id: '/admin/physician-queue'
-      path: '/admin/physician-queue'
-      fullPath: '/admin/physician-queue'
-      preLoaderRoute: typeof AdminPhysicianQueueRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/pharmacy': {
       id: '/admin/pharmacy'
       path: '/admin/pharmacy'
@@ -987,18 +983,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCommandRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/check-ins': {
-      id: '/admin/check-ins'
-      path: '/admin/check-ins'
-      fullPath: '/admin/check-ins'
-      preLoaderRoute: typeof AdminCheckInsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/analytics': {
       id: '/admin/analytics'
       path: '/admin/analytics'
       fullPath: '/admin/analytics'
       preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/physician-queue/': {
+      id: '/admin/physician-queue/'
+      path: '/admin/physician-queue'
+      fullPath: '/admin/physician-queue/'
+      preLoaderRoute: typeof AdminPhysicianQueueIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/patients/': {
@@ -1022,12 +1018,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/check-ins/': {
+      id: '/admin/check-ins/'
+      path: '/admin/check-ins'
+      fullPath: '/admin/check-ins/'
+      preLoaderRoute: typeof AdminCheckInsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/physician-queue/$id': {
       id: '/admin/physician-queue/$id'
-      path: '/$id'
+      path: '/admin/physician-queue/$id'
       fullPath: '/admin/physician-queue/$id'
       preLoaderRoute: typeof AdminPhysicianQueueIdRouteImport
-      parentRoute: typeof AdminPhysicianQueueRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/patients/$id': {
       id: '/admin/patients/$id'
@@ -1052,10 +1055,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/check-ins/$id': {
       id: '/admin/check-ins/$id'
-      path: '/$id'
+      path: '/admin/check-ins/$id'
       fullPath: '/admin/check-ins/$id'
       preLoaderRoute: typeof AdminCheckInsIdRouteImport
-      parentRoute: typeof AdminCheckInsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/analytics/retention': {
       id: '/admin/analytics/retention'
@@ -1118,29 +1121,6 @@ const AdminAnalyticsRouteWithChildren = AdminAnalyticsRoute._addFileChildren(
   AdminAnalyticsRouteChildren,
 )
 
-interface AdminCheckInsRouteChildren {
-  AdminCheckInsIdRoute: typeof AdminCheckInsIdRoute
-}
-
-const AdminCheckInsRouteChildren: AdminCheckInsRouteChildren = {
-  AdminCheckInsIdRoute: AdminCheckInsIdRoute,
-}
-
-const AdminCheckInsRouteWithChildren = AdminCheckInsRoute._addFileChildren(
-  AdminCheckInsRouteChildren,
-)
-
-interface AdminPhysicianQueueRouteChildren {
-  AdminPhysicianQueueIdRoute: typeof AdminPhysicianQueueIdRoute
-}
-
-const AdminPhysicianQueueRouteChildren: AdminPhysicianQueueRouteChildren = {
-  AdminPhysicianQueueIdRoute: AdminPhysicianQueueIdRoute,
-}
-
-const AdminPhysicianQueueRouteWithChildren =
-  AdminPhysicianQueueRoute._addFileChildren(AdminPhysicianQueueRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConfirmationRoute: ConfirmationRoute,
@@ -1155,14 +1135,12 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
   AdminAnalyticsRoute: AdminAnalyticsRouteWithChildren,
-  AdminCheckInsRoute: AdminCheckInsRouteWithChildren,
   AdminCommandRoute: AdminCommandRoute,
   AdminIntegrationsRoute: AdminIntegrationsRoute,
   AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminPharmacyRoute: AdminPharmacyRoute,
-  AdminPhysicianQueueRoute: AdminPhysicianQueueRouteWithChildren,
   AdminReportsRoute: AdminReportsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminTeamRoute: AdminTeamRoute,
@@ -1181,12 +1159,16 @@ const rootRouteChildren: RootRouteChildren = {
   WeightLossSalesRoute: WeightLossSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
+  AdminCheckInsIdRoute: AdminCheckInsIdRoute,
   AdminLeadsIdRoute: AdminLeadsIdRoute,
   AdminOrdersIdRoute: AdminOrdersIdRoute,
   AdminPatientsIdRoute: AdminPatientsIdRoute,
+  AdminPhysicianQueueIdRoute: AdminPhysicianQueueIdRoute,
+  AdminCheckInsIndexRoute: AdminCheckInsIndexRoute,
   AdminLeadsIndexRoute: AdminLeadsIndexRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
   AdminPatientsIndexRoute: AdminPatientsIndexRoute,
+  AdminPhysicianQueueIndexRoute: AdminPhysicianQueueIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
