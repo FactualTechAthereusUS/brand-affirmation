@@ -1,148 +1,102 @@
-# Orders Revamp — Shopify-parity for Telehealth
+# /admin/patients — Telehealth Revamp
 
-Turn `/admin/orders` from a single table + side drawer into a Shopify-grade Orders workspace: a rich list view with analytics bar, saved views, filters, bulk actions, and a **full detail page** at `/admin/orders/$id` that replaces the current drawer entirely.
-
-Scope: `/admin/orders` only. No other admin section, no marketing site.
+Rebuild `/admin/patients` (list) and `/admin/patients/$id` (detail) to match the uploaded spec. Same indigo/violet/sky admin palette, same `AdminShell`. No changes outside `/admin/*`.
 
 ---
 
-## 1) List page `/admin/orders`
+## 1. Data model — extend the Patient shape
 
-### Header row
+`src/lib/admin/store.ts` — add `PatientStatus` values `"denied"`, and extend `Patient` with:
+- `patientId` display code (e.g. `BLS-P-00284`), `city`, `dob`, `sex`, `heightIn`, `weightLbs`, `goalWeightLbs`, `bmi`, `dose` (step + strength), `monthOfPlan` (n of N), `nextBillingAt`, `nextBillingAmt`, `cardBrand`, `cardLast4`, `physicianName`, `physicianNpi`, `pharmacy`, `rxValidUntil`, `refillsLeft`, `rxSig`, `approvalNote`, `lastLoginAt`, `lastEmailOpenedAt`, `portalActive`, `tags[]`, `intake` (blob with contraindications, qualifying conditions, prior GLP-1, BP, meds, allergies, ec contact, scores), `internalNotes[]`, `communications` (klaviyo status, sms opt-in), `denialReason?`, `cancelledAt?`, `cancelReason?`, `winbackStage?`, `failedRetry?` `{ attempt, nextAt }`.
 
-- Title "Orders" + count.
-- Right cluster: `Export`, `Print`, `More actions` menu (Hide analytics bar, Reset columns), primary `Create order` (opens a modal — new manual Rx order).
+Add a deterministic enricher `src/lib/admin/patients-enrich.ts` that synthesizes all extended fields from the existing seed (mirrors the pattern of `orders-enrich.ts`) so seeds stay lean. Expose selectors:
+- `selectPatients(state, { statusTab, segment, search, sort, page, pageSize })`
+- `selectPatientKpis(state)` → total, active, newThisMonth, churned + churnRate, failedPayment + $atRisk
+- `selectPatientSegments(state)` → the 6 shortcut counts (month2HighRisk, checkinDueThisWeek, checkinOverdue, highLtv6mo, winbackCandidates, noPortal14d)
 
-### Analytics bar (dismissible)
+## 2. List page — `src/routes/admin.patients.tsx`
 
-Four sparkline KPIs across the top, 7‑day trend + delta vs prior period:
+Full rewrite. Layout top-to-bottom:
 
-1. **Orders today** (count)
-2. **Revenue today** (sum of paid orders)
-3. **Time to ship** (avg hrs from Rx approved → carrier pickup)
-4. **Exceptions open** (stuck / carrier issue / RTS)
+1. **Top bar** — `Patients` heading, search input (name / email / phone / order # / state), right-side `[All ▾]` view menu, `[Export CSV ▾]`, `[+ Add Patient]`.
+2. **KPI strip** — 5 `KpiCard`s: Total Patients, Active, New This Month (vs prior), Churned (with churn rate), Failed Payment (with $ at risk). Same visual language as `admin.index` / `admin.orders`.
+3. **Status tabs** — `All / Active / Pending Approval / Paused / Cancelled / Denied / Payment Failed`, live counts. Underline + indigo active state.
+4. **Segment chips row** — the 6 quick filters from spec, each with count, plus a ghost `+ Create segment`.
+5. **Table** — dense, high-contrast, matching orders table style:
+   - Columns: Patient (avatar + name + email), Status pill, Program, Since, MRR, LTV, Month (n/N), Churn Risk pill, Last Active, Actions (`View`).
+   - Sortable headers; default newest first.
+   - Row click → `/admin/patients/$id`.
+   - Bulk-select checkbox column + bulk toolbar (Message / Tag / Export / Pause).
+   - Pagination footer: rows-per-page (10/25/50/100), page N of M, prev/next.
+   - Status pill colors: active=emerald, pending=amber, paused=slate, failed=coral, cancelled=muted, denied=ink.
+   - Churn pill: Low=emerald, Medium=amber, High=coral, Critical=solid coral.
 
-### Saved views (tabs)
+Icons stay bare (no background tiles), per project rule.
 
-Horizontal tab strip like Shopify: `All`, `Needs Rx`, `At pharmacy`, `Shipped`, `Delivered`, `Exceptions`, `Refunds`, `+ New view`. Each view persists filters, sort, and column set (client‑side store, keyed per view).
+## 3. Detail page — `src/routes/admin.patients.$id.tsx`
 
-### Search + filter row
+Full rewrite. Full-page, not a modal. `← Patients` back link.
 
-- Search input (order id, patient name, tracking, email, phone).
-- Filter chips: Status, Program (Tirz/Sema, cadence), Pharmacy, Carrier, Ship state, Date range, Cold‑chain, Refill # (1st/refill/n), Flagged, Payment status.
-- Sort menu: Created, Amount, Ship date, ETA, Patient, Status.
+**Header card**: initials avatar (48px, indigo), name + status pill, email · phone, city, state · patient since date, patient ID mono. Primary buttons `[Send message] [Issue refund]`, kebab `More actions` (cancel / pause / flag / export record / delete).
 
-### Bulk actions (appear on row selection)
+**Status banners** (conditional, above two-column grid):
+- Pending → amber banner block (awaiting physician review, wait time, assigned physician, card authorized, links).
+- Denied → dark gray banner (reason, refund line, email sent, care-team follow-up toggle).
+- Cancelled → muted banner (cancel date, reason, duration, total revenue, win-back stage, `Reactivate` / `Offer discount`).
+- Failed payment → coral banner (declined amount + date, retry schedule, portal warning, `Retry now` / `Contact patient` / `Write off`).
 
-- Mark shipped / add tracking (bulk)
-- Assign to pharmacy
-- Print shipping labels (mock)
-- Send patient update (SMS/email template)
-- Flag / Unflag
-- Export selected
+**Two-column grid** (65 / 35):
 
-### Table (dense, sticky header, column chooser)
+Left column blocks:
+1. **Subscription** — plan, status, started, current month, current dose, next billing, card. Dose progression stepper (reuse `Stepper.tsx`). `[Pause] [Cancel] [Switch plan] [Update billing date]`.
+2. **Clinical** — physician + NPI, approved date, Rx valid until, refills left, pharmacy, current Rx + sig, approval note quote.
+3. **Orders** — last 3 orders table (Order # / Date / Product / Status / Amount / Tracking / Actions). `View all →` links to `/admin/orders` filtered. `+ Create order`.
+4. **Check-ins** — next due date + days remaining. Completed state (weight delta, side effects, wellbeing, physician review line) or overdue warning with `Send reminder`. Collapsed history accordion.
+5. **Payments** — table of charges + totals (spent / refunds / net). Failed rows get inline `Retry` / `Contact`.
+6. **Communications** — email (last sent/opened, open rate, Klaviyo status), SMS (opt-in, last sms), Portal (last login, magic link resend), Messages summary.
+7. **Intake** — collapsed accordion. Expanded: Personal, Clinical Flags, Medications, Emergency Contact, Intake Scores. Read-only. `Download intake PDF` (stub).
+8. **Activity timeline** — reverse-chronological entries derived from orders/payments/checkins/messages/portal events. `Add internal note` composer at bottom.
 
-Default columns:
-`☐ · Order · Date · Patient · Program & cadence · Rx status · Fulfillment · Payment · Amount · Pharmacy · Carrier/Tracking · ETA · Ship‑to state · Tags`
+Right column blocks:
+- **A. At a glance** — LTV actual + 12-mo projection, MRR, total orders, churn risk, program, month, dose, physician, pharmacy, portal/email/check-in state rows.
+- **B. Manage** — Pause (duration picker modal), Cancel (confirm modal w/ reason), Switch plan (radio picker), Update payment method, Update billing date, Update shipping address.
+- **C. Quick actions** — Send message, Send magic link, Issue refund (amount + reason modal), Create new order, Flag for review, Export patient record, Delete patient (type-name-to-confirm).
+- **D. Internal notes** — list of past notes (author + timestamp + text, non-deletable), composer with `Save note`.
+- **E. Tags** — chip list + `+ Add tag`.
 
-- Row click → **navigates to `/admin/orders/$id**` (no more drawer).
-- Status pills use existing admin tokens (success/info/warn/critical). Two pill columns — Rx status and Fulfillment — because telehealth splits these.
-- Rx status: `pending review`, `approved`, `denied`, `refill due`.
-- Fulfillment: `processing`, `at pharmacy`, `label created`, `shipped`, `out for delivery`, `delivered`, `exception`.
+Every mutating action calls a new store method (`pausePatient`, `cancelPatient`, `switchPlan`, `refundPayment`, `retryPayment`, `sendMagicLink`, `addPatientNote`, `addPatientTag`, `flagPatient`, `writeOffPayment`, `reactivatePatient`). All mutations append to activity + admin `activity` feed.
 
-### Empty / loading states
+## 4. Palette + tokens
 
-Skeleton rows on first paint. Empty state per view with helpful CTA.
+Reuse admin-scope tokens already in `src/styles.css` (indigo/violet/sky primary, emerald/amber/coral semantic). No new global tokens. Bare icons everywhere (no background circles).
 
----
+## 5. Files touched
 
-## 2) Full detail page `/admin/orders/$id`
+Create:
+- `src/lib/admin/patients-enrich.ts`
+- `src/components/admin/patients/StatusBanner.tsx` (variant per status)
+- `src/components/admin/patients/DoseProgress.tsx`
+- `src/components/admin/patients/PatientTimeline.tsx`
+- `src/components/admin/patients/ManagePanel.tsx`
+- `src/components/admin/patients/QuickActionsPanel.tsx`
+- `src/components/admin/patients/InternalNotes.tsx`
 
-New route file `src/routes/admin.orders.$id.tsx`. Two‑column layout on desktop, single column on mobile/tablet.
+Rewrite:
+- `src/routes/admin.patients.tsx`
+- `src/routes/admin.patients.$id.tsx`
 
-### Top bar
+Extend:
+- `src/lib/admin/store.ts` — Patient type + `denied` status + new mutations + selectors.
+- `src/lib/admin/seeds.ts` — augment featured patients with denied / failed / cancelled examples matching spec personas (Sarah, Michael, Dana, Lisa, Omar, Ashley).
 
-- Back to Orders, order id `#ord_20400`, copy‑id icon.
-- Status stack (2 pills): Rx status + Fulfillment.
-- Right: `Print label`, `Refund`, `More actions` (Cancel, Duplicate as refill, Flag, Contact patient, Escalate to physician), primary `Advance stage`.
+## 6. Verification
 
-### Left column (75%)
+- `tsgo` clean.
+- Manual click-through: list tabs + chips + search + sort + pagination + row → detail; each detail variant (active / pending / paused / failed / cancelled / denied) renders its banner and correct data; every action modal opens and mutates store; timeline updates.
+- Grep for `__l5e` (must be zero) and hardcoded warm brand hex in touched files.
 
-1. **Fulfillment timeline** (horizontal stepper)
-  Rx approved → Sent to pharmacy → Compounded/dispensed → Label created → Picked up → In transit → Out for delivery → Delivered. Each node shows timestamp, actor (system / pharmacy / carrier), and a "mark done" affordance for ops when needed.
-2. **Line items card**
-  - Medication (Tirzepatide 2.5 mg → 5 mg titration), cadence (Monthly / 3‑Month / 6‑Month), quantity of pens/vials, refills remaining, lot #, NDC, cold‑chain flag.
-  - Physician of record (link to case), Rx #, DEA/state check pass badge, controlled‑substance flag.
-  - Supplies bundle (needles, sharps, alcohol swabs, nausea pack if OTO).
-3. **Shipping card**
-  - Ship‑to address (with state controls: allowed/blocked), Signature required, Cold‑chain (2‑8 °C), Carrier + service, Tracking # with copy, live status, ETA, delivery attempts, POD photo (mock).
-  - Actions: Edit address (only pre‑label), Reissue label, Reroute, Report exception.
-4. **Payment card**
-  - Charge summary (subtotal, discounts, tax, shipping = free, total), method (Visa •• 4242), Stripe/Paddle intent id, invoice pdf link.
-  - Actions: Refund (partial/full), Retry payment, Send receipt.
-5. **Clinical notes / physician thread**
-  - Read‑only excerpt of the case: chief complaint, BMI, contraindications checked, physician note, e‑sign timestamp. Link to full case in Physician Portal.
-6. **Timeline (activity log)**
-  Chronological events: intake submitted → paid → Rx approved by Dr. X → sent to Empower Pharmacy → label created → shipped → delivered. Includes patient/CS messages inline. Ops can `Add note` (internal only).
+## Out of scope
 
-### Right column (25%)
-
-1. **Patient snapshot**
-  Avatar, name, email, phone, DOB, state, LTV, plan, `View patient` link.
-2. **Subscription / next refill**
-  Program, cadence, `Next refill: Aug 24, 2026`, days remaining, pause/resume, skip next, cancel.
-3. **Risk & flags**
-  Churn risk, prior exceptions count, chargeback history, ID verification status, address deliverability.
-4. **Tags**
-  Free‑form tag chips (VIP, First fill, Titration, Escalated, GLP‑1 shortage, etc.), add/remove inline.
-5. **Assigned to**
-  Ops owner + physician of record.
-
----
-
-## Data model additions
-
-Extend `Order` in `src/lib/admin/store.ts` (non‑breaking; new fields optional):
-
-- `rxStatus: "pending" | "approved" | "denied" | "refill_due"`
-- `physicianId?`, `pharmacy: "Empower" | "Hallandale" | "Strive" | ...`
-- `carrier?: "UPS" | "FedEx" | "USPS"`, `service?`, `signatureRequired?: boolean`, `coldChain?: boolean`
-- `shipTo: { name, line1, line2?, city, state, zip }`
-- `items: Array<{ sku, name, dose, qty, refillsRemaining, lot?, ndc? }>`
-- `payment: { method, last4, intentId, subtotal, discount, tax, total, status }`
-- `timeline: Array<{ ts, actor, kind, message }>`
-- `tags: string[]`, `flags: string[]`, `refillNumber: number`
-- `eta?`, `deliveredAt?`
-
-Seed generator updated so the 40+ existing orders get realistic derived values (pharmacy round‑robin, carriers by state, cold‑chain true for GLP‑1, timeline synthesized from `createdAt` + status).
-
-Selectors: `useOrder(id)`, `useOrderFilters()`, `useOrderView(viewId)`.
-
----
-
-## Technical details
-
-- **Routing**: add `src/routes/admin.orders.$id.tsx`. Keep list at `admin.orders.tsx`. Remove the existing side‑drawer branch (and `ui.orderDrawerId` usage in orders); `adminActions.openOrder(id)` becomes `router.navigate({ to: "/admin/orders/$id", params: { id } })`.
-- **Styling**: reuse `AdminShell`, `Card`, `StatusPill`, `formatMoney`. Add two small primitives in `src/components/admin/`:
-  - `Stepper.tsx` — horizontal fulfillment stepper (indigo active, emerald done, slate pending, coral exception).
-  - `MiniSpark.tsx` — inline 40×14 SVG sparkline for the analytics bar.
-- **Charts/palette**: stay on the current admin indigo/violet/sky/emerald/amber/coral scoped tokens.
-- **State**: extend zustand slice with `orderViews`, `orderFilters`, `orderSelection`, and helpers `setView / setFilter / toggleSelect / bulkUpdate`.
-- **Responsiveness**: table becomes a card list under `md`; detail page collapses to one column under `lg`; sticky action bar on mobile detail.
-- **Perf**: virtualize the table only if row count exceeds ~200 (not needed today with ~40 seeds).
-- **No backend calls**: everything continues to run off the local seeded store, matching the rest of `/admin`.
-
----
-
-## Deliverables checklist  
-  
-  
-make it all as per telehealth , not as per ecom tha'ts it
-
-- `src/lib/admin/store.ts` — extended `Order`, richer seeds, new selectors/actions.
-- `src/routes/admin.orders.tsx` — analytics bar, saved views, filters, bulk actions, new columns, row → navigate.
-- `src/routes/admin.orders.$id.tsx` — full detail page (left/right layout, all cards above).
-- `src/components/admin/Stepper.tsx`, `src/components/admin/MiniSpark.tsx`.
-- Head metadata on the new detail route (title `Order #{id} — Blissley HQ`, `noindex`).
-- Grep pass for `orderDrawerId` to ensure it's only used in non‑orders code (or removed).
+- No real Stripe / Klaviyo / LifeFile integration — all stubs.
+- No changes to marketing site, portals, or non-admin routes.
+- Physician queue page untouched (link only).
