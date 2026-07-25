@@ -123,7 +123,7 @@
   }
 
   ::selection {
-    background: var(--color-ever);
+    background: var(--color-indigo);
     color: var(--color-canvas);
   }
 
@@ -200,7 +200,7 @@
 .legal-prose p { color: color-mix(in oklab, var(--color-ink) 72%, transparent); }
 .legal-prose strong { color: var(--color-ink); font-weight: 600; }
 .legal-prose a {
-  color: var(--color-ever);
+  color: var(--color-indigo);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -211,14 +211,14 @@
 .legal-prose ul { list-style: disc; }
 .legal-prose ol { list-style: decimal; }
 .legal-prose li { margin-top: 0.4em; }
-.legal-prose li::marker { color: var(--color-ever); }
+.legal-prose li::marker { color: var(--color-indigo); }
 .legal-prose hr {
   border: 0;
   border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
   margin: 2.4em 0;
 }
 .legal-prose blockquote {
-  border-left: 3px solid var(--color-ever);
+  border-left: 3px solid var(--color-indigo);
   padding: 0.2em 0 0.2em 1em;
   color: color-mix(in oklab, var(--color-ink) 65%, transparent);
   font-style: italic;
@@ -237,7 +237,7 @@
   display: block;
   overflow-x: auto;
 }
-.legal-prose thead { background: color-mix(in oklab, var(--color-ever) 8%, transparent); }
+.legal-prose thead { background: color-mix(in oklab, var(--color-indigo) 8%, transparent); }
 .legal-prose th, .legal-prose td {
   border: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
   padding: 0.6em 0.9em;
