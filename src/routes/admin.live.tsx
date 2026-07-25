@@ -231,7 +231,7 @@ function LiveViewPage() {
                       <ActivityFeed limit={6} title="" />
                     </div>
                   </div>
-                  <div className="rounded-xl border border-ink/[0.06] bg-white/95 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur">
+                  <div className={`rounded-xl border border-ink/[0.06] shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur ${view === "map" ? "bg-white/60" : "bg-white/95"}`}>
                     <RecentOrders streamer={streamer} />
                   </div>
                   <div className="h-4" />
