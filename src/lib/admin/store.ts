@@ -476,21 +476,20 @@ function seed(): AdminState {
 }
 
 /* ────────── Storage ────────── */
-const KEY = "blissley.admin.v1";
+const KEY = "blissley.admin.v2";
 
 function load(): AdminState {
   if (typeof window === "undefined") return seed();
+  const fresh = seed();
   try {
     const raw = window.localStorage.getItem(KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as AdminState;
-      if (!parsed.ui) parsed.ui = seed().ui;
-      return parsed;
+      const parsed = JSON.parse(raw) as Partial<AdminState>;
+      return { ...fresh, ...parsed, ui: { ...fresh.ui, ...(parsed.ui ?? {}) } } as AdminState;
     }
   } catch {}
-  const s = seed();
-  try { window.localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
-  return s;
+  try { window.localStorage.setItem(KEY, JSON.stringify(fresh)); } catch {}
+  return fresh;
 }
 
 let state: AdminState = typeof window !== "undefined" ? load() : seed();
