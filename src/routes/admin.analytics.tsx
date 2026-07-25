@@ -129,13 +129,13 @@ function AnalyticsOverview() {
       <AnalyticsSection title="Acquisition & funnel">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Sessions" value={funnelSum.sessions.toLocaleString()} delta="+9%">
-            <div className="h-24"><LineChartMini data={sess} prior={priorPeriodShift(sess, 10)} stroke="#ee7273" fill="rgba(238,114,115,0.08)" /></div>
+            <div className="h-24 pb-4"><LineChartMini data={sess} prior={priorPeriodShift(sess, 10)} dates={dts} label="Sessions" stroke="#ee7273" fill="rgba(238,114,115,0.08)" /></div>
           </MetricCard>
           <MetricCard label="Conversion breakdown" value={`${funnelSum.paidPct.toFixed(2)}%`} delta="+0.4%" sub="Session → Paid">
             <div className="px-3 pb-2"><BreakdownBars steps={breakdown} /></div>
           </MetricCard>
           <MetricCard label="AOV" value={`$${kpi.aov}`} delta="+0.4%" sub="Weighted by program">
-            <div className="h-24"><LineChartMini data={aov} prior={priorPeriodShift(aov, 4)} stroke="#c4a265" fill="rgba(196,162,101,0.10)" /></div>
+            <div className="h-24 pb-4"><LineChartMini data={aov} prior={priorPeriodShift(aov, 4)} dates={dts} label="AOV" formatValue={usd} stroke="#c4a265" fill="rgba(196,162,101,0.10)" /></div>
           </MetricCard>
         </div>
       </AnalyticsSection>
