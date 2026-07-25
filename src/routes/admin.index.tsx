@@ -54,6 +54,15 @@ function AdminHome() {
 
   const mrrDelta = waterfall.reduce((a, i) => a + i.value, 0);
 
+  // Intuitive palette (matches /admin/analytics)
+  const C = {
+    revenue: "#2563eb",
+    mrr: "#7c3aed",
+    active: "#0ea5e9",
+    aov: "#f59e0b",
+    retention: "#10b981",
+  };
+
   // Pipeline (fulfillment) status counts — derived visually consistent
   const pipeline = [
     { key: "review",   label: "In review",    count: 38, sub: "4 stuck · 36h", tone: "warn" as const },
