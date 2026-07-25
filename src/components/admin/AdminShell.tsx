@@ -102,7 +102,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
     const active = isActive(n);
     const Icon = n.icon;
     return (
-      <Link to={n.to!} className={`group relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ${
+      <Link to={n.to! as string} className={`group relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ${
         active ? "bg-marine/[0.08] font-semibold text-marine" : "text-ink/65 hover:bg-ink/[0.04] hover:text-ink"
       }`}>
         {active && <span className="absolute inset-y-1 left-0 w-[3px] rounded-full bg-marine" />}
