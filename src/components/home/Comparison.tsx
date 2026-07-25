@@ -25,13 +25,13 @@ function BlissleyCell({ v }: { v: Val }) {
     <div className="flex items-center justify-center py-4">
       {v === true ? (
         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/95 shadow-sm">
-          <Check className="h-4 w-4 text-[#2563eb]" strokeWidth={3} />
+          <Check className="h-4 w-4 text-[#ee7273]" strokeWidth={3} />
         </div>
       ) : v === "varies" ? (
         <span className="text-[13px] font-medium text-white/90">Varies</span>
       ) : (
         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/95">
-          <X className="h-4 w-4 text-[#2563eb]" strokeWidth={3} />
+          <X className="h-4 w-4 text-[#ee7273]" strokeWidth={3} />
         </div>
       )}
     </div>
@@ -44,12 +44,12 @@ function OtherCell({ v }: { v: Val }) {
     <div className="flex items-center justify-center py-4">
       {v === true ? (
         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#fde5e6]">
-          <Check className="h-4 w-4 text-[#2563eb]" strokeWidth={3} />
+          <Check className="h-4 w-4 text-[#ee7273]" strokeWidth={3} />
         </div>
       ) : v === "varies" ? (
         <span className="text-[13px] font-medium text-[#8a8a8a]">Varies</span>
       ) : (
-        <X className="h-5 w-5 text-[#2563eb]" strokeWidth={3} />
+        <X className="h-5 w-5 text-[#ee7273]" strokeWidth={3} />
       )}
     </div>
   );
@@ -61,9 +61,9 @@ export function Comparison() {
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <h2 className="text-center text-[34px] leading-[1.1] text-ink md:text-[52px]">
-            Why <span className="italic text-indigo">Blissley</span> is
+            Why <span className="italic text-ever">Blissley</span> is
             <br className="hidden md:block" /> the{" "}
-            <span className="italic text-indigo">smarter choice.</span>
+            <span className="italic text-ever">smarter choice.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-center text-[16px] text-[#6B6B6B] md:text-[18px]">
             Same clinicians. Same medications. None of the friction.
@@ -77,7 +77,7 @@ export function Comparison() {
               {/* Header row */}
               <div />
               <div className="relative">
-                <div className="mx-1 flex h-[130px] items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#4f79f0] to-[#2563eb]">
+                <div className="mx-1 flex h-[130px] items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#f28a86] to-[#ee7273]">
                   <img
                     src={logo.url}
                     alt="Blissley"
@@ -111,7 +111,7 @@ export function Comparison() {
               </div>
 
               {/* Blissley column - coral gradient continues */}
-              <div className="col-start-2 row-start-2 mx-1 -mt-px rounded-b-2xl bg-gradient-to-b from-[#2563eb] to-[#6d92f5]">
+              <div className="col-start-2 row-start-2 mx-1 -mt-px rounded-b-2xl bg-gradient-to-b from-[#ee7273] to-[#f2a08f]">
                 {rows.map((r) => (
                   <div key={`b-${r.feat}`} className="flex h-14 items-center justify-center">
                     <BlissleyCell v={r.blissley} />
@@ -143,7 +143,7 @@ export function Comparison() {
           <div className="mt-10 md:hidden">
             <div className="grid grid-cols-[1.2fr_0.7fr_0.7fr_0.7fr] items-end gap-x-1">
               <div />
-              <div className="flex h-[110px] items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#4f79f0] to-[#2563eb] px-1">
+              <div className="flex h-[110px] items-center justify-center rounded-t-2xl bg-gradient-to-b from-[#f28a86] to-[#ee7273] px-1">
                 <img
                   src={logo.url}
                   alt="Blissley"
@@ -175,7 +175,7 @@ export function Comparison() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-b-2xl bg-gradient-to-b from-[#2563eb] to-[#6d92f5]">
+              <div className="rounded-b-2xl bg-gradient-to-b from-[#ee7273] to-[#f2a08f]">
                 {rows.map((r) => (
                   <div key={`m-b-${r.feat}`} className="flex h-16 items-center justify-center">
                     <BlissleyCell v={r.blissley} />

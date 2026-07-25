@@ -101,7 +101,7 @@ export function FeaturedPrograms() {
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
             Your program,
             <br />
-            <span className="italic text-indigo">your terms.</span>
+            <span className="italic text-ever">your terms.</span>
           </h2>
           <p className="mt-3 text-[16px] text-[#6B6B6B] md:text-[18px]">
             Physician-supervised. Discreet. Delivered.

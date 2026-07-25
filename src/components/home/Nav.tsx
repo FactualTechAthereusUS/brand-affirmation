@@ -206,8 +206,8 @@ export function Nav() {
           >
             {/* Ambient glow blobs behind the glass */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
-              <div className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-[#2563eb]/25 blur-3xl" />
-              <div className="absolute bottom-0 right-[-20%] h-80 w-80 rounded-full bg-[#2563eb]/15 blur-3xl" />
+              <div className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-[#ee7273]/25 blur-3xl" />
+              <div className="absolute bottom-0 right-[-20%] h-80 w-80 rounded-full bg-[#ee7273]/15 blur-3xl" />
               <div className="absolute top-1/3 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
             </div>
 

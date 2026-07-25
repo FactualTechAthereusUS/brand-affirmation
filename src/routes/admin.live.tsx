@@ -123,12 +123,14 @@ function LiveViewPage() {
     <AdminShell>
       <div
         ref={wrapRef}
-        className={`${fs ? "fixed inset-0 z-50 bg-[#f6f6f7] p-3" : "-mx-4 -mt-4 min-h-[calc(100vh-56px)] bg-[#f6f6f7] px-4 lg:-mx-6 lg:px-6"} relative`}
+        className={`${fs ? "fixed inset-0 z-50 bg-[#f6f6f7] p-3" : "-mx-4 -mt-4 min-h-[calc(100vh-56px)] bg-[#f6f6f7] px-4 pt-4 lg:-mx-6 lg:px-6"} relative`}
       >
-        {/* Top bar — floats transparently over the map/globe */}
-        <div className={`absolute z-20 flex items-center justify-between gap-3 ${fs ? "left-3 right-3 top-3" : "left-4 right-4 top-4 lg:left-6 lg:right-6"}`}>
+        {/* Top bar */}
+        <div className="mb-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <Globe2 className="h-3.5 w-3.5 text-ink/70" strokeWidth={1.75} />
+            <div className="grid h-6 w-6 place-items-center rounded-md bg-ink/[0.06]">
+              <Globe2 className="h-3.5 w-3.5 text-ink/70" strokeWidth={1.75} />
+            </div>
             <h1 className="font-hero text-[19px] font-semibold text-ink">Live View</h1>
             <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
               <span className="relative flex h-1.5 w-1.5">
@@ -142,7 +144,7 @@ function LiveViewPage() {
             <button
               type="button"
               onClick={() => setShortcuts(true)}
-              className="hidden h-8 items-center gap-1.5 rounded-md border border-ink/10 bg-white/80 px-2.5 text-[11.5px] font-medium text-ink/70 backdrop-blur hover:bg-white sm:flex"
+              className="hidden h-8 items-center gap-1.5 rounded-md border border-ink/10 bg-white px-2.5 text-[11.5px] font-medium text-ink/70 hover:bg-ink/[0.03] sm:flex"
               title="Keyboard shortcuts (?)"
             >
               <Keyboard className="h-3.5 w-3.5" />
@@ -151,18 +153,18 @@ function LiveViewPage() {
             <button
               type="button"
               onClick={() => setStreamer((v) => !v)}
-              className="flex h-8 items-center gap-1.5 rounded-md border border-ink/10 bg-white/80 px-2.5 text-[11.5px] font-medium text-ink/70 backdrop-blur hover:bg-white"
+              className="flex h-8 items-center gap-1.5 rounded-md border border-ink/10 bg-white px-2.5 text-[11.5px] font-medium text-ink/70 hover:bg-ink/[0.03]"
               title={streamer ? "Show numbers (S)" : "Streamer mode (S) — mask names & cities"}
             >
               {streamer ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
               {streamer ? "Show" : "Streamer"}
             </button>
-            <div className="flex overflow-hidden rounded-md border border-ink/10 bg-white/80 backdrop-blur">
+            <div className="flex overflow-hidden rounded-md border border-ink/10 bg-white">
               <button
                 type="button"
                 onClick={() => setView("globe")}
                 aria-pressed={view === "globe"}
-                className={`grid h-8 w-8 place-items-center text-ink/60 ${view === "globe" ? "bg-ink/[0.05] text-ink" : "hover:bg-white"}`}
+                className={`grid h-8 w-8 place-items-center text-ink/60 ${view === "globe" ? "bg-ink/[0.05] text-ink" : "hover:bg-ink/[0.03]"}`}
                 title="Globe view (G)"
               >
                 <Globe2 className="h-3.5 w-3.5" />
@@ -172,7 +174,7 @@ function LiveViewPage() {
                 type="button"
                 onClick={() => setView("map")}
                 aria-pressed={view === "map"}
-                className={`grid h-8 w-8 place-items-center text-ink/60 ${view === "map" ? "bg-ink/[0.05] text-ink" : "hover:bg-white"}`}
+                className={`grid h-8 w-8 place-items-center text-ink/60 ${view === "map" ? "bg-ink/[0.05] text-ink" : "hover:bg-ink/[0.03]"}`}
                 title="Map view (M)"
               >
                 <MapIcon className="h-3.5 w-3.5" />
@@ -181,7 +183,7 @@ function LiveViewPage() {
             <button
               type="button"
               onClick={toggleFullscreen}
-              className="grid h-8 w-8 place-items-center rounded-md border border-ink/10 bg-white/80 text-ink/60 backdrop-blur hover:bg-white"
+              className="grid h-8 w-8 place-items-center rounded-md border border-ink/10 bg-white text-ink/60 hover:bg-ink/[0.03]"
               title={fs ? "Exit fullscreen (F)" : "Fullscreen (F)"}
             >
               {fs ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
@@ -189,12 +191,11 @@ function LiveViewPage() {
           </div>
         </div>
 
-        {/* Main split — sidebar scrolls; map/globe is full-bleed and extends under the top bar */}
+        {/* Main split — sidebar scrolls; map/globe is full-bleed */}
         <div
           className="relative"
-          style={{ height: fs ? "100vh" : "calc(100vh - 56px)" }}
+          style={{ height: fs ? "calc(100vh - 72px)" : "calc(100vh - 88px)" }}
         >
-
           <div className={`absolute inset-0 ${fs ? "" : "-mx-4 lg:-mx-6"} overflow-hidden ${view === "map" ? "bg-transparent" : "bg-white"}`}>
             <ClientOnly fallback={<GlobeFallback />}>
               <Suspense fallback={<GlobeFallback />}>
@@ -208,8 +209,7 @@ function LiveViewPage() {
           </div>
 
           <div className="relative z-10 flex h-full w-full lg:w-[380px]">
-            <div className="min-w-0 h-full w-full overflow-y-auto pr-1 pt-14 [scrollbar-width:thin]">
-
+            <div className="min-w-0 h-full w-full overflow-y-auto pr-1 [scrollbar-width:thin]">
               <div className={view === "map" ? "" : "rounded-xl border border-ink/[0.06] bg-white/95 p-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.25)] backdrop-blur"}>
                 <LiveSidebar
                   counts={counts}

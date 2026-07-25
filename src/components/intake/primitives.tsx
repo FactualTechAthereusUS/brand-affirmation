@@ -41,7 +41,7 @@ export function ProgressBar({ value }: { value: number }) {
                 >
                   {active && (
                     <motion.span
-                      className="absolute inset-0 rounded-full bg-indigo/35"
+                      className="absolute inset-0 rounded-full bg-ever/35"
                       initial={{ scale: 1, opacity: 0.6 }}
                       animate={{ scale: [1, 1.9, 1], opacity: [0.5, 0, 0.5] }}
                       transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
@@ -50,7 +50,7 @@ export function ProgressBar({ value }: { value: number }) {
                   <motion.div
                     className={`relative grid h-[36px] w-[36px] place-items-center overflow-hidden rounded-full bg-white ring-[3px] transition-colors md:h-[42px] md:w-[42px] ${
                       reached
-                        ? "ring-indigo shadow-[0_4px_14px_rgba(37,99,235,0.4)]"
+                        ? "ring-ever shadow-[0_4px_14px_rgba(238,114,115,0.4)]"
                         : "ring-ink/15"
                     }`}
                     animate={{
@@ -80,7 +80,7 @@ export function ProgressBar({ value }: { value: number }) {
               {i < MILESTONES.length - 1 && (
                 <div className="relative mx-1.5 h-[8px] flex-1 overflow-hidden rounded-full bg-ink/[0.08] md:h-[10px] md:mx-2">
                   <motion.div
-                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo to-[#7c3aed]"
+                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-ever to-[#f38a8b]"
                     initial={false}
                     animate={{
                       width: `${Math.max(0, Math.min(1, scaled - i)) * 100}%`,
@@ -190,13 +190,13 @@ export function OptionCard({
         compact ? "py-3.5" : "py-4 md:py-5"
       } ${
         selected
-          ? "border-indigo bg-indigo text-white shadow-[0_10px_28px_rgba(37,99,235,0.35)]"
+          ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
           : "border-ink/10 bg-white hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
       }`}
     >
       <span
         className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all ${
-          selected ? "border-white bg-white text-indigo" : "border-ink/25 bg-white text-transparent"
+          selected ? "border-white bg-white text-ever" : "border-ink/25 bg-white text-transparent"
         }`}
         aria-hidden
       >
@@ -260,7 +260,9 @@ export function CategoryCard({
           {sub}
         </span>
       </div>
-      <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+      <div className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white text-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:h-11 md:w-11">
+        <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+      </div>
     </motion.button>
   );
 }
@@ -293,7 +295,7 @@ export function TextField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         autoFocus={autoFocus}
-        className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white px-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
+        className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white px-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
       />
     </label>
   );
@@ -350,7 +352,7 @@ export function PhoneField({
           onChange={(e) => onChange(formatUSPhone(e.target.value))}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white pl-[96px] pr-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
+          className="h-[56px] w-full rounded-2xl border border-ink/12 bg-white pl-[96px] pr-5 text-[16px] text-ink placeholder:text-ink/35 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
         />
 
       </div>
@@ -406,8 +408,8 @@ export function StateSelect({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`flex h-[56px] w-full items-center justify-between gap-3 rounded-2xl border bg-white px-4 text-left outline-none transition-all focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] ${
-          open ? "border-indigo shadow-[0_0_0_4px_rgba(37,99,235,0.15)]" : "border-ink/12"
+        className={`flex h-[56px] w-full items-center justify-between gap-3 rounded-2xl border bg-white px-4 text-left outline-none transition-all focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] ${
+          open ? "border-ever shadow-[0_0_0_4px_rgba(238,114,115,0.15)]" : "border-ink/12"
         }`}
       >
         <span
@@ -440,7 +442,7 @@ export function StateSelect({
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search state..."
                 autoFocus
-                className="h-10 w-full rounded-xl border border-ink/10 bg-ink/[0.03] px-3 text-[14px] text-ink placeholder:text-ink/40 outline-none focus:border-indigo/60"
+                className="h-10 w-full rounded-xl border border-ink/10 bg-ink/[0.03] px-3 text-[14px] text-ink placeholder:text-ink/40 outline-none focus:border-ever/60"
               />
             </div>
             <div className="max-h-[260px] overflow-y-auto p-1.5">
@@ -460,7 +462,7 @@ export function StateSelect({
                         setOpen(false);
                       }}
                       className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
-                        active ? "bg-indigo/10" : "hover:bg-ink/[0.03]"
+                        active ? "bg-ever/10" : "hover:bg-ink/[0.03]"
                       }`}
                     >
                       <span
@@ -471,7 +473,7 @@ export function StateSelect({
                         {s}
                       </span>
                       {active && (
-                        <Check className="h-4 w-4 shrink-0 text-indigo" strokeWidth={2.5} />
+                        <Check className="h-4 w-4 shrink-0 text-ever" strokeWidth={2.5} />
                       )}
                     </button>
                   );

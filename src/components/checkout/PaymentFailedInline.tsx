@@ -26,9 +26,11 @@ export function PaymentFailedInline({ open, onDismiss, onTryAgain, onAlt }: Prop
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="overflow-hidden"
         >
-          <div className="mb-4 overflow-hidden rounded-2xl border border-[#F0C4C4] bg-[#FFF6F6] shadow-[0_10px_30px_-15px_rgba(37,99,235,0.35)]">
+          <div className="mb-4 overflow-hidden rounded-2xl border border-[#F0C4C4] bg-[#FFF6F6] shadow-[0_10px_30px_-15px_rgba(238,114,115,0.35)]">
             <div className="flex items-start gap-3 p-4">
-              <AlertCircle className="h-5 w-5" strokeWidth={2.2} />
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee7273]/12 text-[#ee7273]">
+                <AlertCircle className="h-5 w-5" strokeWidth={2.2} />
+              </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <div className="text-[15px] font-bold text-ink">Payment not processed</div>
@@ -45,9 +47,9 @@ export function PaymentFailedInline({ open, onDismiss, onTryAgain, onAlt }: Prop
                   Your card was declined. This can happen for a few reasons:
                 </p>
                 <ul className="mt-2 space-y-1 text-[13px] text-ink/70">
-                  <li className="flex gap-2"><span className="text-[#2563eb]">·</span> Insufficient funds</li>
-                  <li className="flex gap-2"><span className="text-[#2563eb]">·</span> Card restrictions on online or subscription purchases</li>
-                  <li className="flex gap-2"><span className="text-[#2563eb]">·</span> Incorrect card details</li>
+                  <li className="flex gap-2"><span className="text-[#ee7273]">·</span> Insufficient funds</li>
+                  <li className="flex gap-2"><span className="text-[#ee7273]">·</span> Card restrictions on online or subscription purchases</li>
+                  <li className="flex gap-2"><span className="text-[#ee7273]">·</span> Incorrect card details</li>
                 </ul>
 
                 <div className="mt-4 flex flex-col gap-2">

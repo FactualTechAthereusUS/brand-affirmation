@@ -54,7 +54,7 @@ export function WLHero() {
             transition={{ duration: 0.6 }}
             className="inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white backdrop-blur-xl"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
             GLP-1 Weight Loss
           </motion.div>
 
@@ -101,7 +101,9 @@ export function WLHero() {
                 loading="eager"
               />
               <span className="pl-1">Start My Free Assessment</span>
-              <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-canvas transition-transform duration-300 group-hover:rotate-45 md:h-11 md:w-11">
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+              </span>
             </motion.a>
 
             <motion.button

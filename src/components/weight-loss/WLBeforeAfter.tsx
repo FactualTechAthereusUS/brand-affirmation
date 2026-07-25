@@ -28,7 +28,7 @@ const items: BA[] = [
 ];
 
 function Badge({ label, tone }: { label: string; tone: "before" | "after" }) {
-  const bg = tone === "before" ? "#0E3B36" : "#2563eb";
+  const bg = tone === "before" ? "#0E3B36" : "#ee7273";
   return (
     <span
       className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white md:bottom-4 md:left-4 md:text-[12px]"
@@ -149,7 +149,7 @@ export function WLBeforeAfter() {
       <div className="mx-auto max-w-6xl px-6 text-center">
         <Reveal>
           <h2 className="text-[34px] leading-[1.1] text-ink md:text-[52px]">
-            Real people, <span className="italic text-indigo">real results.</span>
+            Real people, <span className="italic text-ever">real results.</span>
           </h2>
           <p className="mt-3 text-[14px] text-[#6B6B6B] md:text-[16px]">
             Results from real Blissley members on GLP-1 therapy.

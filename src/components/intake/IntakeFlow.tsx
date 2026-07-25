@@ -269,7 +269,7 @@ export function IntakeFlow() {
                   <select
                     value={answers.dobM ?? ""}
                     onChange={(e) => set({ dobM: e.target.value })}
-                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-[15px] text-ink outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
+                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
                   >
                     <option value="">Month</option>
                     {MONTHS.map((m, i) => (
@@ -282,7 +282,7 @@ export function IntakeFlow() {
                     placeholder="DD"
                     value={answers.dobD ?? ""}
                     onChange={(e) => set({ dobD: e.target.value })}
-                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
+                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
                   />
                   <input
                     type="number"
@@ -290,7 +290,7 @@ export function IntakeFlow() {
                     placeholder="YYYY"
                     value={answers.dobY ?? ""}
                     onChange={(e) => set({ dobY: e.target.value })}
-                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)]"
+                    className="h-[56px] rounded-2xl border border-ink/12 bg-white px-4 text-center text-[15px] text-ink outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)]"
                   />
                 </div>
               </ScreenShell>
@@ -408,7 +408,7 @@ export function IntakeFlow() {
                 { key: "under", label: "Underweight", range: "<18.5", min: 0, max: 18.5, color: "#7aa5c4" },
                 { key: "normal", label: "Normal", range: "18.5–24.9", min: 18.5, max: 25, color: "#6fbf8a" },
                 { key: "over", label: "Overweight", range: "25–29.9", min: 25, max: 30, color: "#e8a86b" },
-                { key: "obese", label: "Obese", range: "≥30", min: 30, max: 45, color: "#2563eb" },
+                { key: "obese", label: "Obese", range: "≥30", min: 30, max: 45, color: "#ee7273" },
               ];
               const activeIdx = bmi === null ? -1 : categories.findIndex((c) => bmi < c.max);
               const active = activeIdx === -1 ? categories[categories.length - 1] : categories[activeIdx];
@@ -951,7 +951,7 @@ export function IntakeFlow() {
                     placeholder="List name, dose, and frequency."
                     rows={3}
                     disabled={answers.noMedications}
-                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
+                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
                   />
                   <button
                     type="button"
@@ -985,7 +985,7 @@ export function IntakeFlow() {
                     placeholder="List allergies and reactions."
                     rows={3}
                     disabled={answers.noAllergies}
-                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-indigo/70 focus:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
+                    className="w-full rounded-2xl border border-ink/12 bg-white p-4 text-[15px] text-ink placeholder:text-ink/35 outline-none focus:border-ever/70 focus:shadow-[0_0_0_4px_rgba(238,114,115,0.15)] disabled:bg-ink/[0.04] disabled:text-ink/40"
                   />
                   <button
                     type="button"
@@ -1089,7 +1089,7 @@ function ConsentRow({
         type="button"
         onClick={() => onChange(!checked)}
         className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 transition-all ${
-          checked ? "border-indigo bg-indigo text-white" : "border-ink/25 bg-white"
+          checked ? "border-ever bg-ever text-white" : "border-ink/25 bg-white"
         }`}
         aria-checked={checked}
         role="checkbox"
@@ -1165,7 +1165,7 @@ function LoadingScreen({ answers }: { answers: Answers }) {
         animate={{ opacity: 1, y: 0 }}
         className="mx-auto flex w-full max-w-[640px] flex-col items-center py-10 text-center"
       >
-        <div className="rounded-full border border-indigo/25 bg-indigo/[0.06] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo">
+        <div className="rounded-full border border-ever/25 bg-ever/[0.06] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ever">
           Results ready
         </div>
         <h2 className="mt-6 font-hero text-[34px] font-bold tracking-[-0.03em] text-ink md:text-[44px]">
@@ -1205,11 +1205,11 @@ function LoadingScreen({ answers }: { answers: Answers }) {
     >
       <div className="relative grid h-20 w-20 place-items-center">
         <motion.span
-          className="absolute inset-0 rounded-full border-[3px] border-indigo/25 border-t-indigo"
+          className="absolute inset-0 rounded-full border-[3px] border-ever/25 border-t-ever"
           animate={{ rotate: 360 }}
           transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
         />
-        <span className="text-[22px] font-bold text-indigo">{step + 1}</span>
+        <span className="text-[22px] font-bold text-ever">{step + 1}</span>
       </div>
       <h2 className="mt-8 font-hero text-[24px] font-bold tracking-[-0.02em] text-ink md:text-[28px]">
         Building your plan
@@ -1303,7 +1303,7 @@ function WLProjectionScreen({
         className="font-hero text-[26px] font-bold leading-[1.15] tracking-[-0.02em] text-ink md:text-[32px]"
       >
         {firstName ? `${firstName}, in` : "In"} six months, you could lose{" "}
-        <span className="text-indigo">{lossLbs} lbs</span>.
+        <span className="text-ever">{lossLbs} lbs</span>.
       </motion.h2>
 
       {/* Chart */}
@@ -1316,8 +1316,8 @@ function WLProjectionScreen({
         <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
           <defs>
             <linearGradient id="wlLine" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stopColor="#2563eb" />
-              <stop offset="100%" stopColor="#2563eb" />
+              <stop offset="0%" stopColor="#ee7273" />
+              <stop offset="100%" stopColor="#ee7273" />
             </linearGradient>
           </defs>
 
@@ -1368,7 +1368,7 @@ function WLProjectionScreen({
             cx={xAt(0)}
             cy={yAt(start)}
             r={8}
-            fill="#2563eb"
+            fill="#ee7273"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
@@ -1378,7 +1378,7 @@ function WLProjectionScreen({
             cx={xAt(months.length - 1)}
             cy={yAt(end)}
             r={9}
-            fill="#2563eb"
+            fill="#ee7273"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 1.8, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}

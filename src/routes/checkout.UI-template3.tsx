@@ -406,7 +406,9 @@ function CheckoutTemplate3() {
               <SectionHeader icon={<Folder className="h-5 w-5" strokeWidth={1.75} />} title="Select Your Treatment Plan" />
               <div className="rounded-2xl border-2 border-ink p-5 sm:p-6">
                 <div className="flex items-start gap-4">
-                  <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-ink text-white">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  </span>
                   <div className="min-w-0 flex-1">
                     <div className="text-[17px] font-bold text-ink">{plan.title}</div>
                     <div className="mt-1 text-[26px] font-bold leading-none text-ink">

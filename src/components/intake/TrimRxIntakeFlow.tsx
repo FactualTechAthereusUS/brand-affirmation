@@ -160,13 +160,13 @@ function IconOption({
       transition={{ type: "spring", stiffness: 500, damping: 30 }}
       className={`group flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-all md:py-5 ${
         selected
-          ? "border-indigo bg-indigo text-white shadow-[0_10px_28px_rgba(37,99,235,0.35)]"
+          ? "border-ever bg-ever text-white shadow-[0_10px_28px_rgba(238,114,115,0.35)]"
           : "border-ink/10 bg-white hover:border-ink/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
       }`}
     >
       <span
         className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${
-          selected ? "bg-white/15 text-white" : "bg-indigo/[0.08] text-indigo"
+          selected ? "bg-white/15 text-white" : "bg-ever/[0.08] text-ever"
         }`}
       >
         {icon}
@@ -196,16 +196,16 @@ function StageBar({ stage }: { stage: number }) {
                 className="h-full rounded-full"
                 style={{
                   background: done
-                    ? "#2563eb"
+                    ? "#ee7273"
                     : active
-                      ? "linear-gradient(90deg,#2563eb,#f4a3a4)"
+                      ? "linear-gradient(90deg,#ee7273,#f4a3a4)"
                       : "transparent",
                 }}
               />
             </div>
             <span
               className={`hidden text-[10px] font-semibold uppercase tracking-[0.14em] md:block ${
-                active ? "text-indigo" : done ? "text-ink/70" : "text-ink/35"
+                active ? "text-ever" : done ? "text-ink/70" : "text-ink/35"
               }`}
             >
               {label}
@@ -467,7 +467,7 @@ export function TrimRxIntakeFlow() {
                     placeholder="155"
                   />
                   {answers.goalWeight && parseFloat(answers.goalWeight) < parseFloat(answers.weightLbs || "0") && (
-                    <div className="inline-flex w-max items-center gap-2 rounded-full bg-indigo/10 px-4 py-2 text-[13px] font-semibold text-indigo">
+                    <div className="inline-flex w-max items-center gap-2 rounded-full bg-ever/10 px-4 py-2 text-[13px] font-semibold text-ever">
                       <TrendingDown className="h-4 w-4" />
                       Target: −{parseFloat(answers.weightLbs!) - parseFloat(answers.goalWeight)} lbs
                     </div>
@@ -680,7 +680,7 @@ export function TrimRxIntakeFlow() {
                           <span className="rounded-md bg-white px-2 py-1 font-semibold text-[#1D437B]">9.8</span>
                           <span className="font-medium">Exceptional</span>
                           <span className="text-white/40">·</span>
-                          <span className="flex items-center gap-0.5 text-[#2563eb]">
+                          <span className="flex items-center gap-0.5 text-[#ee7273]">
                             {[0,1,2,3,4].map((i) => (
                               <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" aria-hidden>
                                 <path d="M10 1.5l2.6 5.27 5.82.84-4.21 4.1.99 5.79L10 14.77l-5.2 2.73.99-5.79L1.58 7.61l5.82-.84L10 1.5z"/>
@@ -697,9 +697,11 @@ export function TrimRxIntakeFlow() {
                             "Improves treatment adherence and comfort",
                           ].map((f) => (
                             <li key={f} className="flex items-start gap-2.5 sm:gap-3">
-                              <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                              <span className="mt-0.5 grid h-4 w-4 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-white">
+                                <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                                   <path d="M4 10.5l4 4 8-9" />
                                 </svg>
+                              </span>
                               <span>{f}</span>
                             </li>
                           ))}
@@ -708,7 +710,7 @@ export function TrimRxIntakeFlow() {
 
                       <div className="w-full">
                         <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/40 px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_8px_24px_rgba(0,0,0,0.25)] backdrop-blur-xl">
-                          <span className="h-2 w-2 rounded-full bg-[#2563eb]" />
+                          <span className="h-2 w-2 rounded-full bg-[#ee7273]" />
                           Most popular
                         </div>
                       </div>
@@ -1206,7 +1208,7 @@ export function TrimRxIntakeFlow() {
             {/* Terminal: Pregnancy hard stop */}
             {current === "blocked_pregnancy" && (
               <div className="mx-auto max-w-[560px] py-10 text-center">
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#2563eb]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
                   Safety first
                 </div>
                 <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">
@@ -1312,8 +1314,8 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
       >
         <defs>
           <linearGradient id="metaFill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#2563eb" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#2563eb" stopOpacity="0" />
+            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -1359,7 +1361,7 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
         />
         <motion.path
           d={path}
-          stroke="#2563eb"
+          stroke="#ee7273"
           strokeWidth={5}
           fill="none"
           strokeLinecap="round"
@@ -1376,7 +1378,7 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
           cy={yAt(samples[0].v)}
           r={6}
           fill="#fff"
-          stroke="#2563eb"
+          stroke="#ee7273"
           strokeWidth="2.5"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -1386,7 +1388,7 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
           cx={xAt(1)}
           cy={yAt(1)}
           r={7}
-          fill="#2563eb"
+          fill="#ee7273"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 1.5, type: "spring", stiffness: 260, damping: 18 }}
@@ -1407,11 +1409,11 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
               x2={xAt(hover.t)}
               y1={padT - 6}
               y2={H - padB}
-              stroke="#2563eb"
+              stroke="#ee7273"
               strokeOpacity="0.55"
               strokeDasharray="4 5"
             />
-            <circle cx={xAt(hover.t)} cy={yAt(hover.v)} r={8} fill="#fff" stroke="#2563eb" strokeWidth="3" />
+            <circle cx={xAt(hover.t)} cy={yAt(hover.v)} r={8} fill="#fff" stroke="#ee7273" strokeWidth="3" />
           </g>
         )}
       </svg>
@@ -1433,7 +1435,7 @@ function MetabolicChart({ start, goal }: { start: number; goal: number }) {
             style={{
               left: `${(xAt(hover.t) / W) * 100}%`,
             }}
-            className="pointer-events-none absolute top-2 -translate-x-1/2 rounded-2xl bg-indigo px-3.5 py-2.5 text-white shadow-[0_10px_30px_rgba(29,67,123,0.28)]"
+            className="pointer-events-none absolute top-2 -translate-x-1/2 rounded-2xl bg-ever px-3.5 py-2.5 text-white shadow-[0_10px_30px_rgba(29,67,123,0.28)]"
           >
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70">Week {hoverWeek}</div>
             <div className="mt-0.5 flex items-baseline gap-1.5">
@@ -1487,8 +1489,8 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
       <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
         <defs>
           <linearGradient id="wlLineTrxV2" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stopColor="#2563eb" />
-            <stop offset="100%" stopColor="#2563eb" />
+            <stop offset="0%" stopColor="#ee7273" />
+            <stop offset="100%" stopColor="#ee7273" />
           </linearGradient>
         </defs>
         <line x1={padL} x2={W - padR} y1={yAt(s)} y2={yAt(s)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
@@ -1511,12 +1513,12 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
           transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
         />
         <motion.circle
-          cx={xAt(0)} cy={yAt(s)} r={8} fill="#2563eb"
+          cx={xAt(0)} cy={yAt(s)} r={8} fill="#ee7273"
           initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
         />
         <motion.circle
-          cx={xAt(months.length - 1)} cy={yAt(g)} r={9} fill="#2563eb"
+          cx={xAt(months.length - 1)} cy={yAt(g)} r={9} fill="#ee7273"
           initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 1.8, duration: 0.5, type: "spring", stiffness: 220, damping: 16 }}
         />
@@ -1544,7 +1546,7 @@ function StoryScreen({
       className="mx-auto flex w-full max-w-[640px] flex-col"
     >
       <span className="inline-flex w-max items-center gap-2 rounded-full border border-white/15 bg-black/60 px-4 py-2 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-xl">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
+        <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
         Real patient story
       </span>
       <h2 className="mt-4 font-hero text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-ink md:text-[36px]">
@@ -1566,7 +1568,7 @@ function StoryScreen({
               <img src={s.url} alt={`${name} ${s.label}`} className="h-full w-full object-cover object-center" style={{ transform: "scale(1.12)" }} />
             </div>
             <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/60 px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-xl md:bottom-4 md:left-4 md:text-[11px]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
               {s.label}
             </span>
           </div>
@@ -1575,7 +1577,7 @@ function StoryScreen({
 
       <div className="mt-6 flex items-center gap-1" aria-label="5 star rating">
         {[0, 1, 2, 3, 4].map((i) => (
-          <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#2563eb" aria-hidden>
+          <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#ee7273" aria-hidden>
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         ))}
@@ -1587,7 +1589,7 @@ function StoryScreen({
           <img src={verifiedCheck.url} alt="" className="h-5 w-5 shrink-0" aria-hidden />
           <span className="truncate text-[14.5px] font-medium text-ink">{name}</span>
         </div>
-        <span className="shrink-0 text-[13px] font-semibold text-indigo">{result}</span>
+        <span className="shrink-0 text-[13px] font-semibold text-ever">{result}</span>
       </div>
 
       <div className="mt-8">
@@ -1617,7 +1619,7 @@ function LoadingScreen({ firstName, state }: { firstName?: string; state?: strin
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#2563eb]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
       <motion.div className="absolute -left-40 top-1/3 h-[520px] w-[520px] rounded-full bg-white/15 blur-[120px]"
         animate={{ x: [0, 40, 0], y: [0, -30, 0] }} transition={{ duration: 12, repeat: Infinity }} />
       <motion.div className="absolute -right-40 bottom-1/4 h-[560px] w-[560px] rounded-full bg-[#ffd7c0]/25 blur-[130px]"

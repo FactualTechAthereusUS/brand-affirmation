@@ -227,7 +227,7 @@ function BmiMeter({ bmi }: { bmi: number }) {
     { label: "Underweight", range: "<18.5", color: "#4A90D9", tint: "rgba(74,144,217,0.14)" },
     { label: "Normal",      range: "18.5-24.9", color: "#3FA663", tint: "rgba(63,166,99,0.14)" },
     { label: "Overweight",  range: "25-29.9", color: "#E0A83B", tint: "rgba(224,168,59,0.16)" },
-    { label: "Obese",       range: "≥30",    color: "#2563eb", tint: "rgba(37,99,235,0.16)" },
+    { label: "Obese",       range: "≥30",    color: "#ee7273", tint: "rgba(238,114,115,0.16)" },
   ];
 
   const activeIdx = bmi < 18.5 ? 0 : bmi < 25 ? 1 : bmi < 30 ? 2 : 3;
@@ -853,7 +853,7 @@ export function BlissleyIntakeFlow() {
                           <span className="rounded-md bg-white px-2 py-1 font-semibold text-[#1D437B]">9.8</span>
                           <span className="font-medium">Exceptional</span>
                           <span className="text-white/40">·</span>
-                          <span className="flex items-center gap-0.5 text-[#2563eb]">
+                          <span className="flex items-center gap-0.5 text-[#ee7273]">
                             {[0,1,2,3,4].map((i) => (
                               <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" aria-hidden>
                                 <path d="M10 1.5l2.6 5.27 5.82.84-4.21 4.1.99 5.79L10 14.77l-5.2 2.73.99-5.79L1.58 7.61l5.82-.84L10 1.5z"/>
@@ -869,9 +869,11 @@ export function BlissleyIntakeFlow() {
                             "Improves treatment adherence and comfort",
                           ].map((f) => (
                             <li key={f} className="flex items-start gap-2.5 sm:gap-3">
-                              <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                              <span className="mt-0.5 grid h-4 w-4 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-white">
+                                <svg viewBox="0 0 20 20" className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-none stroke-[#1D437B]" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                                   <path d="M4 10.5l4 4 8-9" />
                                 </svg>
+                              </span>
                               <span>{f}</span>
                             </li>
                           ))}
@@ -879,7 +881,7 @@ export function BlissleyIntakeFlow() {
                       </div>
 
                       <div className="inline-flex w-max items-center gap-2.5 rounded-full border border-white/15 bg-black/40 px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-xl">
-                        <span className="h-2 w-2 rounded-full bg-[#2563eb]" /> Most popular
+                        <span className="h-2 w-2 rounded-full bg-[#ee7273]" /> Most popular
                       </div>
                     </div>
                   </div>
@@ -1081,7 +1083,7 @@ export function BlissleyIntakeFlow() {
             {/* Terminal - Pregnancy waitlist */}
             {current === "blocked_pregnancy" && (
               <div className="mx-auto max-w-[560px] py-10 text-center">
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#2563eb]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">Safety first</div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">Safety first</div>
                 <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">GLP-1 isn't safe during pregnancy or nursing.</h1>
                 <p className="mt-4 text-[15px] leading-relaxed text-ink/70">We'd love to help when the time is right. We'll reach out when you're eligible - no follow-up until then.</p>
                 <div className="mt-8"><PrimaryButton onClick={() => (window.location.href = "/")}>Notify me when I'm eligible →</PrimaryButton></div>
@@ -1108,7 +1110,7 @@ export function BlissleyIntakeFlow() {
               const c = hit ? HARD_CONTRA[hit] : { chip: "Safety first", title: "GLP-1 therapy isn't safe for you.", body: "Based on your responses, GLP-1 medications aren't clinically appropriate. Please speak with your primary care physician." };
               return (
                 <div className="mx-auto max-w-[560px] py-10 text-center">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-[#2563eb]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">{c.chip}</div>
+                  <div className="inline-flex items-center gap-2 rounded-full bg-[#ee7273]/10 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">{c.chip}</div>
                   <h1 className="mt-5 font-serif text-[32px] md:text-[40px] font-semibold leading-[1.1] text-ink">{c.title}</h1>
                   <p className="mt-4 text-[15px] leading-relaxed text-ink/70">{c.body}</p>
                   <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -1176,7 +1178,7 @@ function StoryScreen({
       className="mx-auto flex w-full max-w-[640px] flex-col"
     >
       <span className="inline-flex w-max items-center gap-2 rounded-full border border-white/15 bg-black/60 px-4 py-2 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-xl">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" /> Real patient story
+        <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" /> Real patient story
       </span>
       <h2 className="mt-4 font-hero text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-ink md:text-[36px]">{name} took control.</h2>
       <motion.div
@@ -1191,14 +1193,14 @@ function StoryScreen({
               <img src={s.url} alt="" className="h-full w-full object-cover object-center" style={{ transform: "scale(1.12)" }} />
             </div>
             <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/60 px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-xl">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" /> {s.label}
+              <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" /> {s.label}
             </span>
           </div>
         ))}
       </motion.div>
       <div className="mt-6 flex items-center gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
-          <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#2563eb"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg key={i} width="15" height="15" viewBox="0 0 24 24" fill="#ee7273"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         ))}
       </div>
       <p className="mt-3 text-[16.5px] leading-[1.55] text-ink/85 md:text-[18px]">&ldquo;{quote}&rdquo;</p>
@@ -1281,7 +1283,7 @@ function MetabolicChart({
         <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink/60">
           {firstName ? `${firstName}'s` : "Your"} metabolic reset
         </div>
-        <div className="text-[13px] font-semibold text-[#2563eb]">
+        <div className="text-[13px] font-semibold text-[#ee7273]">
           -{loss} lbs projected
         </div>
       </div>
@@ -1289,8 +1291,8 @@ function MetabolicChart({
       <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
         <defs>
           <linearGradient id="mReset" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#2563eb" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#2563eb" stopOpacity="0" />
+            <stop offset="0%" stopColor="#ee7273" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#ee7273" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -1308,7 +1310,7 @@ function MetabolicChart({
         {/* smooth wavy curve */}
         <motion.path
           d={path}
-          stroke="#2563eb"
+          stroke="#ee7273"
           strokeWidth={6}
           fill="none"
           strokeLinecap="round"
@@ -1319,9 +1321,9 @@ function MetabolicChart({
         />
 
         {/* endpoint dots + halo on the goal */}
-        <motion.circle cx={xAt(0)} cy={yAt(wave[0])} r={8} fill="#2563eb" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.25, type: "spring", stiffness: 260, damping: 18 }} />
-        <motion.circle cx={xAt(N - 1)} cy={yAt(wave[N - 1])} r={14} fill="#2563eb" fillOpacity={0.18} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }} />
-        <motion.circle cx={xAt(N - 1)} cy={yAt(wave[N - 1])} r={9} fill="#2563eb" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(0)} cy={yAt(wave[0])} r={8} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.25, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(N - 1)} cy={yAt(wave[N - 1])} r={14} fill="#ee7273" fillOpacity={0.18} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }} />
+        <motion.circle cx={xAt(N - 1)} cy={yAt(wave[N - 1])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7, type: "spring", stiffness: 260, damping: 18 }} />
 
         {/* goal weight callout above end dot */}
         <motion.text
@@ -1416,7 +1418,7 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
         <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink/60">
           Your projected trajectory
         </div>
-        <div className="text-[13px] font-semibold text-[#2563eb]">
+        <div className="text-[13px] font-semibold text-[#ee7273]">
           -{lossLbs} lbs · {pctLoss}% body weight
         </div>
       </div>
@@ -1434,7 +1436,7 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
         <motion.path
           d={path}
           fill="none"
-          stroke="#2563eb"
+          stroke="#ee7273"
           strokeWidth={7}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -1444,10 +1446,10 @@ function WeightLossChart({ start, goal }: { start: number; goal: number }) {
         />
 
         {/* Start dot */}
-        <motion.circle cx={xAt(0)} cy={yAt(points[0])} r={9} fill="#2563eb" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 18 }} />
+        <motion.circle cx={xAt(0)} cy={yAt(points[0])} r={9} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 18 }} />
 
         {/* End dot */}
-        <motion.circle cx={xAt(N - 1)} cy={yAt(points[N - 1])} r={10} fill="#2563eb" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.0, type: "spring", stiffness: 220, damping: 16 }} />
+        <motion.circle cx={xAt(N - 1)} cy={yAt(points[N - 1])} r={10} fill="#ee7273" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.0, type: "spring", stiffness: 220, damping: 16 }} />
 
         {/* Month labels */}
         {months.map((m, i) => (
@@ -1672,7 +1674,7 @@ function LoadingScreen({
             transition={{ duration: 0.5 }}
             className="absolute inset-0"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#2563eb]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1D437B] via-[#295a9a] to-[#ee7273]" />
             <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 text-center">
               <motion.div
                 initial={{ scale: 0.6, opacity: 0 }}

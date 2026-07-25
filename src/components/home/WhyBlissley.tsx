@@ -63,7 +63,7 @@ function Card({ item, index }: { item: Item; index: number }) {
             <h3 className="text-[19px] font-semibold leading-[1.2] tracking-[-0.01em] text-ink">
               {item.titleTop}
             </h3>
-            <p className="text-[19px] font-semibold leading-[1.2] tracking-[-0.01em] text-indigo">
+            <p className="text-[19px] font-semibold leading-[1.2] tracking-[-0.01em] text-ever">
               {item.titleBottom}
             </p>
             <p className="mt-3 text-[14.5px] leading-[1.55] text-[#5F5F58]">
@@ -82,7 +82,7 @@ function Headline() {
       <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink md:text-[56px]">
         Healthcare built
         <br />
-        <span className="text-indigo">differently.</span>
+        <span className="text-ever">differently.</span>
       </h2>
       <p className="mt-4 max-w-md text-[15px] leading-[1.6] text-[#5F5F58] md:mt-6 md:text-[17px]">
         Most online health platforms settled for a workaround. We rebuilt the standard of care — here's what that means for you.

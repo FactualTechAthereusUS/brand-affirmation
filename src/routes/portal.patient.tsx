@@ -44,7 +44,7 @@ export const Route = createFileRoute("/portal/patient")({
 });
 
 const INK = "#171717";
-const PINK = "#2563eb";
+const PINK = "#ee7273";
 const NAVY = "#1D437B";
 
 type Tab = "home" | "messages" | "plan" | "settings";
@@ -288,7 +288,7 @@ function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
               style={{ color: active ? INK : "#8a8a8a" }}
             >
               {active && (
-                <motion.span layoutId="tabpill" className="absolute inset-0 -z-10 rounded-full" style={{ background: "rgba(37,99,235,0.12)" }} transition={{ type: "spring", stiffness: 400, damping: 32 }} />
+                <motion.span layoutId="tabpill" className="absolute inset-0 -z-10 rounded-full" style={{ background: "rgba(238,114,115,0.12)" }} transition={{ type: "spring", stiffness: 400, damping: 32 }} />
               )}
               <div className="relative">
                 <Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.2 : 1.8} />
@@ -349,7 +349,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           {planState === "paused" && (
             <MotionCard key="paused">
               <div className="flex items-start gap-3">
-                <Pause className="h-5 w-5 text-ink/70" />
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[color:var(--color-mist)]/70"><Pause className="h-5 w-5 text-ink/70" /></div>
                 <div className="flex-1">
                   <div className="text-[15px] font-semibold text-ink">Program paused</div>
                   <div className="mt-0.5 text-[13px] text-ink/60">You're paused for {pauseDays} days. No charges, no shipments.</div>
@@ -389,7 +389,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
           {planState === "check_in_due" && (
             <MotionCard key="checkin" accent>
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5" style={{ color: PINK }} />
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white shadow-sm"><AlertCircle className="h-5 w-5" style={{ color: PINK }} /></div>
                 <div className="min-w-0">
                   <div className="text-[15px] font-semibold text-ink">Check-in required</div>
                   <div className="mt-0.5 text-[13px] text-ink/70">Your next refill is waiting on your monthly check-in.</div>
@@ -439,7 +439,9 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                   title={planState === "check_in_due" ? "Complete check-in to ship" : undefined}
                 >
                   <span className="text-[13px] font-semibold text-ink">Track</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17" /></svg>
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-white">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17" /></svg>
+                  </span>
                 </button>
               </div>
               {planState === "check_in_due" && (
@@ -567,7 +569,9 @@ function doseCountdown(iso: string): string {
 function PendingApproval() {
   return (
     <div className="flex items-start gap-3">
-      <Loader2 className="h-5 w-5 animate-spin text-ink stroke-[2.5px]" />
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white border border-ink/10">
+        <Loader2 className="h-5 w-5 animate-spin text-ink stroke-[2.5px]" />
+      </div>
       <div>
         <div className="text-[15px] font-semibold text-ink">Physician Review In Progress</div>
         <div className="mt-0.5 text-[13px] text-ink/60">Dr. Scott Nass MD is reviewing your profile.</div>
@@ -920,7 +924,7 @@ function PlanTab() {
               const done = wk <= 2;
               const upcoming = wk === 3;
               return (
-                <div key={wk} className={`rounded-xl p-2.5 text-center ${done ? "bg-[#EAF3EF]" : upcoming ? "bg-[#FFF3F1] ring-1 ring-[#2563eb]/40" : "bg-white"}`}>
+                <div key={wk} className={`rounded-xl p-2.5 text-center ${done ? "bg-[#EAF3EF]" : upcoming ? "bg-[#FFF3F1] ring-1 ring-[#ee7273]/40" : "bg-white"}`}>
                   <div className="text-[10px] font-semibold uppercase tracking-wide text-ink/50">Wk {wk}</div>
                   <div className="mt-1">
                     {done ? (

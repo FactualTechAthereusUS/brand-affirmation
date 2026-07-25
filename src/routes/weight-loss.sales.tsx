@@ -101,7 +101,7 @@ function PlaceholderImage({
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(135deg, rgba(37,99,235,0.10), rgba(23,23,23,0.04))",
+            "linear-gradient(135deg, rgba(238,114,115,0.10), rgba(23,23,23,0.04))",
         }}
       />
       <div
@@ -123,7 +123,7 @@ function PlaceholderImage({
 
 function EyebrowChip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-indigo">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-ever/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-ever">
       {children}
     </span>
   );
@@ -146,7 +146,7 @@ function PrimaryCTA({
     variant === "dark"
       ? "bg-ink text-white shadow-[0_10px_30px_-10px_rgba(23,23,23,0.5)] hover:shadow-[0_16px_40px_-12px_rgba(23,23,23,0.55)]"
       : variant === "coral"
-        ? "bg-indigo text-white shadow-[0_10px_30px_-10px_rgba(37,99,235,0.55)] hover:shadow-[0_16px_40px_-12px_rgba(37,99,235,0.65)]"
+        ? "bg-ever text-white shadow-[0_10px_30px_-10px_rgba(238,114,115,0.55)] hover:shadow-[0_16px_40px_-12px_rgba(238,114,115,0.65)]"
         : "bg-white text-ink shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)] hover:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)]";
   return (
     <motion.button
@@ -310,7 +310,7 @@ function AnnouncementBar({ firstName }: { firstName: string }) {
   const { label } = useReservedCountdown();
   return (
     <div
-      className="relative z-30 w-full bg-indigo text-white"
+      className="relative z-30 w-full bg-ever text-white"
       role="status"
       aria-live="polite"
     >
@@ -349,7 +349,7 @@ function SalesNav() {
             {[0, 1, 2, 3, 4].map((i) => (
               <span
                 key={i}
-                className="grid h-4 w-4 place-items-center bg-indigo sm:h-[18px] sm:w-[18px]"
+                className="grid h-4 w-4 place-items-center bg-ever sm:h-[18px] sm:w-[18px]"
               >
                 <Star
                   className="h-2.5 w-2.5 fill-white text-white sm:h-3 sm:w-3"
@@ -450,14 +450,14 @@ function Hero({
           transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto mt-8 rounded-3xl border border-ink/[0.08] bg-white p-4 shadow-[0_10px_40px_-20px_rgba(23,23,23,0.15)] sm:p-6"
         >
-          <div className="mb-2 text-left text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo">
+          <div className="mb-2 text-left text-[11px] font-semibold uppercase tracking-[0.14em] text-ever">
             Your projection
           </div>
           <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
             <defs>
               <linearGradient id="heroLine" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="0%" stopColor="#2563eb" />
-                <stop offset="100%" stopColor="#2563eb" />
+                <stop offset="0%" stopColor="#ee7273" />
+                <stop offset="100%" stopColor="#ee7273" />
               </linearGradient>
             </defs>
             <line x1={padL} x2={W - padR} y1={yAt(start)} y2={yAt(start)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
@@ -481,14 +481,14 @@ function Hero({
               transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
             />
             <motion.circle
-              cx={xAt(0)} cy={yAt(start)} r={8} fill="#2563eb"
+              cx={xAt(0)} cy={yAt(start)} r={8} fill="#ee7273"
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
             />
             <motion.circle
-              cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#2563eb"
+              cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#ee7273"
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
@@ -554,7 +554,7 @@ function Hero({
         {/* Prior GLP-1 note */}
         {hasPriorGLP1 && (
           <Reveal delay={0.22}>
-            <div className="mx-auto mt-4 flex max-w-[580px] items-start gap-3 rounded-2xl border border-indigo/15 bg-indigo/[0.04] p-4 text-left">
+            <div className="mx-auto mt-4 flex max-w-[580px] items-start gap-3 rounded-2xl border border-ever/15 bg-ever/[0.04] p-4 text-left">
               <span className="mt-0.5 text-base">📋</span>
               <div>
                 <div className="text-[14px] font-semibold text-ink">Your prior dose on file — no restart needed.</div>
@@ -632,12 +632,12 @@ function PriceAnchor() {
             ))}
             <div className="flex items-center justify-between px-5 py-5 text-[15.5px] font-semibold">
               <span className="text-ink">If purchased separately</span>
-              <span className="tabular-nums text-indigo">$2,175+/mo</span>
+              <span className="tabular-nums text-ever">$2,175+/mo</span>
             </div>
           </div>
         </Reveal>
         <Reveal delay={0.15}>
-          <div className="mt-5 rounded-2xl bg-indigo px-5 py-4 text-center text-[16px] font-semibold text-white">
+          <div className="mt-5 rounded-2xl bg-ever px-5 py-4 text-center text-[16px] font-semibold text-white">
             Your Blissley program: from $237/mo
           </div>
         </Reveal>
@@ -668,14 +668,14 @@ function PlanCard({
       whileTap={{ scale: 0.995 }}
       className={`relative w-full rounded-3xl p-5 text-left transition-all sm:p-6 ${
         selected
-          ? "border-2 border-indigo bg-indigo/[0.04] shadow-[0_20px_60px_-30px_rgba(37,99,235,0.55)]"
+          ? "border-2 border-ever bg-ever/[0.04] shadow-[0_20px_60px_-30px_rgba(238,114,115,0.55)]"
           : "border border-ink/[0.10] bg-white hover:border-ink/25"
       }`}
     >
       {badge && (
         <span
           className={`absolute -top-2.5 right-4 rounded-full px-2.5 py-1 text-[10px] font-bold tracking-[0.1em] ${
-            badge.kind === "popular" ? "bg-indigo text-white" : "bg-ink text-white"
+            badge.kind === "popular" ? "bg-ever text-white" : "bg-ink text-white"
           }`}
         >
           {badge.kind === "popular" ? "★ " : "🏆 "}{badge.label}
@@ -684,7 +684,7 @@ function PlanCard({
       <div className="flex items-start gap-4">
         <span
           className={`mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition-all ${
-            selected ? "border-indigo bg-indigo" : "border-ink/30 bg-white"
+            selected ? "border-ever bg-ever" : "border-ink/30 bg-white"
           }`}
         >
           {selected && <span className="h-2 w-2 rounded-full bg-white" />}
@@ -721,7 +721,7 @@ function PlanCard({
                     "Price lock — forever",
                   ].map((f) => (
                     <div key={f} className="flex items-start gap-2 text-ink/75">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-ever" />
                       <span>{f}</span>
                     </div>
                   ))}
@@ -747,12 +747,12 @@ function PriorityUpsell({
       type="button"
       onClick={() => onChange(!checked)}
       className={`mt-4 flex w-full items-start gap-3 rounded-2xl border-2 border-dashed p-4 text-left transition-all ${
-        checked ? "border-indigo bg-indigo/[0.06]" : "border-indigo/40 bg-indigo/[0.03] hover:border-indigo/60"
+        checked ? "border-ever bg-ever/[0.06]" : "border-ever/40 bg-ever/[0.03] hover:border-ever/60"
       }`}
     >
       <span
         className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md border-2 transition-all ${
-          checked ? "border-indigo bg-indigo text-white" : "border-ink/30 bg-white"
+          checked ? "border-ever bg-ever text-white" : "border-ink/30 bg-white"
         }`}
       >
         {checked && <Check className="h-4 w-4" />}
@@ -760,14 +760,14 @@ function PriorityUpsell({
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-3">
           <div className="flex items-center gap-1.5 text-[14.5px] font-semibold text-ink">
-            <Zap className="h-4 w-4 text-indigo" /> Priority Physician Review
+            <Zap className="h-4 w-4 text-ever" /> Priority Physician Review
           </div>
           <div className="text-[14px] font-semibold tabular-nums text-ink">+${PRIORITY_ADDON}</div>
         </div>
         <div className="mt-1 text-[12.5px] leading-[1.5] text-ink/65">
           Standard review: within 24 hours. Priority review: within 6 hours — reviewed right now.
         </div>
-        <div className="mt-1 text-[11.5px] font-medium text-indigo">
+        <div className="mt-1 text-[11.5px] font-medium text-ever">
           ⚠️ Limited priority slots available today
         </div>
       </div>
@@ -861,7 +861,7 @@ function ValueStack() {
               Everything in your program.
             </h2>
             <p className="mt-3 text-[13.5px] text-ink/60">
-              Compare to buying separately: <span className="font-semibold text-indigo">$2,175+/mo</span>
+              Compare to buying separately: <span className="font-semibold text-ever">$2,175+/mo</span>
             </p>
           </div>
         </Reveal>
@@ -879,11 +879,11 @@ function ValueStack() {
                 <span className="tabular-nums text-ink/60">{v}</span>
               </div>
             ))}
-            <div className="flex items-center justify-between bg-indigo/[0.05] px-5 py-4 text-[15px] font-semibold">
+            <div className="flex items-center justify-between bg-ever/[0.05] px-5 py-4 text-[15px] font-semibold">
               <span className="text-ink">Total value</span>
               <span className="tabular-nums text-ink">$1,074+</span>
             </div>
-            <div className="flex items-center justify-between bg-indigo px-5 py-4 text-[15px] font-semibold text-white">
+            <div className="flex items-center justify-between bg-ever px-5 py-4 text-[15px] font-semibold text-white">
               <span>Your investment</span>
               <span className="tabular-nums">From $237/mo</span>
             </div>
@@ -942,7 +942,7 @@ function HowItWorks() {
           {steps.map((s, i) => (
             <Reveal key={s.n} delay={i * 0.04}>
               <div className="grid grid-cols-[64px_1fr] items-start gap-5 sm:grid-cols-[80px_1fr]">
-                <div className="font-hero text-[42px] font-bold text-indigo sm:text-[52px]">{s.n}</div>
+                <div className="font-hero text-[42px] font-bold text-ever sm:text-[52px]">{s.n}</div>
                 <div>
                   <div className="text-[17px] font-semibold sm:text-[19px]">{s.t}</div>
                   <p className="mt-2 text-[14px] leading-[1.6] text-ink/70">{s.b}</p>
@@ -1070,7 +1070,7 @@ function Projection({
           <EyebrowChip>Your projection</EyebrowChip>
           <h2 className="font-hero mt-4 text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[36px]">
             {firstName}, in six months you could lose{" "}
-            <span className="text-indigo">{lossLbs} lbs</span>.
+            <span className="text-ever">{lossLbs} lbs</span>.
           </h2>
         </Reveal>
 
@@ -1084,8 +1084,8 @@ function Projection({
           <svg viewBox={`0 0 ${W} ${H}`} className="block w-full">
             <defs>
               <linearGradient id="wlSalesLine" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="0%" stopColor="#2563eb" />
-                <stop offset="100%" stopColor="#2563eb" />
+                <stop offset="0%" stopColor="#ee7273" />
+                <stop offset="100%" stopColor="#ee7273" />
               </linearGradient>
             </defs>
             <line x1={padL} x2={W - padR} y1={yAt(start)} y2={yAt(start)} stroke="#171717" strokeOpacity="0.18" strokeDasharray="5 6" />
@@ -1109,14 +1109,14 @@ function Projection({
               transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
             />
             <motion.circle
-              cx={xAt(0)} cy={yAt(start)} r={8} fill="#2563eb"
+              cx={xAt(0)} cy={yAt(start)} r={8} fill="#ee7273"
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.4, type: "spring", stiffness: 260, damping: 18 }}
             />
             <motion.circle
-              cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#2563eb"
+              cx={xAt(months.length - 1)} cy={yAt(end)} r={9} fill="#ee7273"
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
@@ -1159,10 +1159,12 @@ function Guarantee() {
     },
   ];
   return (
-    <section className="bg-indigo py-16 text-white sm:py-24">
+    <section className="bg-ever py-16 text-white sm:py-24">
       <div className="mx-auto max-w-4xl px-5 text-center">
         <Reveal>
-          <ShieldCheck className="h-8 w-8" />
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white/20 backdrop-blur">
+            <ShieldCheck className="h-8 w-8" />
+          </div>
           <h2 className="font-hero mt-6 text-[28px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[38px]">
             Our promise to you.
           </h2>
@@ -1171,7 +1173,9 @@ function Guarantee() {
           {items.map((g, i) => (
             <Reveal key={g.t} delay={i * 0.05}>
               <div>
-                <Sparkles className="h-5 w-5" />
+                <div className="mx-auto grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur">
+                  <Sparkles className="h-5 w-5" />
+                </div>
                 <div className="mt-4 text-[17px] font-semibold">{g.t}</div>
                 <p className="mt-2 text-[14px] leading-[1.6] text-white/85">{g.b}</p>
               </div>
@@ -1360,7 +1364,7 @@ function FinalCTA({
   return (
     <section className="relative overflow-hidden bg-white py-16 text-ink sm:py-24">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-indigo/10 blur-[140px]" />
+        <div className="absolute -top-40 left-1/2 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-ever/10 blur-[140px]" />
       </div>
       <div className="relative mx-auto max-w-2xl px-5 text-center">
         <Reveal>
@@ -1390,7 +1394,7 @@ function FinalCTA({
                 <div className="flex items-center gap-3">
                   <span
                     className={`grid h-4 w-4 place-items-center rounded-full border-2 ${
-                      selected ? "border-indigo bg-indigo" : "border-ink/30"
+                      selected ? "border-ever bg-ever" : "border-ink/30"
                     }`}
                   >
                     {selected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
@@ -1399,7 +1403,7 @@ function FinalCTA({
                     {p.title}
                     {p.badge && (
                       <span className={`ml-2 rounded-full px-1.5 py-0.5 text-[9.5px] font-bold ${
-                        selected ? (p.badge.kind === "popular" ? "bg-indigo text-white" : "bg-ink text-white") : "bg-ink/[0.08] text-ink/70"
+                        selected ? (p.badge.kind === "popular" ? "bg-ever text-white" : "bg-ink text-white") : "bg-ink/[0.08] text-ink/70"
                       }`}>
                         {p.badge.label}
                       </span>
@@ -1421,18 +1425,18 @@ function FinalCTA({
           type="button"
           onClick={() => setPriority(!priority)}
           className={`mt-4 flex w-full items-center gap-3 rounded-2xl border-2 border-dashed px-4 py-3 text-left transition-all ${
-            priority ? "border-indigo bg-indigo/[0.05]" : "border-ink/[0.15] bg-ink/[0.02] hover:border-indigo/40"
+            priority ? "border-ever bg-ever/[0.05]" : "border-ink/[0.15] bg-ink/[0.02] hover:border-ever/40"
           }`}
         >
           <span
             className={`grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 ${
-              priority ? "border-indigo bg-indigo text-white" : "border-ink/30"
+              priority ? "border-ever bg-ever text-white" : "border-ink/30"
             }`}
           >
             {priority && <Check className="h-3.5 w-3.5" />}
           </span>
           <span className="text-[13.5px] font-medium">
-            <Zap className="mr-1 inline h-3.5 w-3.5 text-indigo" />
+            <Zap className="mr-1 inline h-3.5 w-3.5 text-ever" />
             Priority Physician Review <span className="text-ink/60">+${PRIORITY_ADDON}</span>
           </span>
         </button>

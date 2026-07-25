@@ -31,11 +31,11 @@ export function WLPrograms() {
         <Reveal>
           <div className="mb-10 flex flex-col items-start gap-4 md:mb-14 md:items-center md:text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-ink/70 backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#ee7273]" />
               Your options
             </div>
             <h2 className="max-w-2xl text-[38px] leading-[1.02] font-medium tracking-tight text-ink md:text-[56px]">
-              Physician-prescribed. <span className="font-serif italic font-normal text-indigo">Same price.</span> Every dose.
+              Physician-prescribed. <span className="font-serif italic font-normal text-ever">Same price.</span> Every dose.
             </h2>
             <p className="max-w-xl text-[15px] leading-[1.55] text-ink/60 md:text-[16px]">
               Two proven GLP-1 programs. Your physician recommends the right
@@ -58,7 +58,7 @@ export function WLPrograms() {
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-6 md:p-8">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#ee7273]">
                     {p.badge}
                   </span>
                   <h3 className="text-[22px] font-medium tracking-tight text-ink md:text-[26px]">

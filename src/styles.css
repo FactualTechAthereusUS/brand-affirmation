@@ -13,31 +13,17 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  /* Brand palette — unified with /admin */
-  --color-canvas: #f6f6f7;
-  --color-surface: #ffffff;
+  /* Brand palette */
+  --color-canvas: #ffffff;
   --color-ink: #171717;
-  --color-ever: #ee7273;        /* legacy coral — destructive/critical only */
-  --color-indigo: #2563eb;      /* primary CTA, revenue */
-  --color-violet: #7c3aed;      /* accent, MRR */
-  --color-sky: #0ea5e9;         /* info, sessions */
-  --color-emerald: #10b981;     /* success, approvals */
-  --color-amber: #f59e0b;       /* warning, AOV */
+  --color-ever: #ee7273;
   --color-marine: #1D437B;
-  --color-mist: #eef2ff;        /* soft indigo tint */
+  --color-mist: #d8d2c7;
   --color-bluebell: #8b9bb4;
   --color-honey: #c4a265;
   --color-blush: #c4998a;
-  --color-check: #10b981;
-  --color-hairline: rgba(23,23,23,0.06);
-
-  /* Chart tokens */
-  --chart-primary: #2563eb;
-  --chart-accent:  #7c3aed;
-  --chart-sky:     #0ea5e9;
-  --chart-emerald: #10b981;
-  --chart-amber:   #f59e0b;
-  --chart-coral:   #ee7273;
+  --color-check: #4a7c6f;
+  --color-hairline: #e8e4dc;
 
   /* Shadcn semantic mapping */
   --color-background: var(--background);
@@ -77,25 +63,25 @@
 
 :root {
   --radius: 0.75rem;
-  --background: #f6f6f7;
+  --background: #ffffff;
   --foreground: #171717;
   --card: #ffffff;
   --card-foreground: #171717;
   --popover: #ffffff;
   --popover-foreground: #171717;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --secondary: #eef2ff;
-  --secondary-foreground: #1e1b4b;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #7c3aed;
-  --accent-foreground: #ffffff;
-  --destructive: #ee7273;
+  --primary: #171717;
+  --primary-foreground: #f8f5ef;
+  --secondary: #d8d2c7;
+  --secondary-foreground: #171717;
+  --muted: #f0ebe3;
+  --muted-foreground: #6b6b6b;
+  --accent: #ee7273;
+  --accent-foreground: #f8f5ef;
+  --destructive: #c4998a;
   --destructive-foreground: #ffffff;
-  --border: rgba(23,23,23,0.08);
-  --input: rgba(23,23,23,0.10);
-  --ring: #2563eb;
+  --border: #e8e4dc;
+  --input: #e8e4dc;
+  --ring: #ee7273;
 }
 
 @layer base {
@@ -123,7 +109,7 @@
   }
 
   ::selection {
-    background: var(--color-indigo);
+    background: var(--color-ever);
     color: var(--color-canvas);
   }
 
@@ -144,22 +130,22 @@
   }
 
   .intake-none-pill[data-selected="true"] {
-    border-color: var(--color-indigo);
-    background: var(--color-indigo);
-    color: var(--color-surface);
-    box-shadow: 0 10px 28px color-mix(in oklab, var(--color-indigo) 35%, transparent);
+    border-color: var(--color-ever);
+    background: var(--color-ever);
+    color: var(--color-canvas);
+    box-shadow: 0 10px 28px color-mix(in oklab, var(--color-ever) 35%, transparent);
   }
 
   .intake-none-pill__check {
     border-color: color-mix(in oklab, var(--color-ink) 25%, transparent);
-    background: var(--color-surface);
+    background: var(--color-canvas);
     color: transparent;
   }
 
   .intake-none-pill[data-selected="true"] .intake-none-pill__check {
-    border-color: var(--color-surface);
-    background: var(--color-surface);
-    color: var(--color-indigo);
+    border-color: var(--color-canvas);
+    background: var(--color-canvas);
+    color: var(--color-ever);
   }
 }
 
@@ -200,7 +186,7 @@
 .legal-prose p { color: color-mix(in oklab, var(--color-ink) 72%, transparent); }
 .legal-prose strong { color: var(--color-ink); font-weight: 600; }
 .legal-prose a {
-  color: var(--color-indigo);
+  color: var(--color-ever);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -211,14 +197,14 @@
 .legal-prose ul { list-style: disc; }
 .legal-prose ol { list-style: decimal; }
 .legal-prose li { margin-top: 0.4em; }
-.legal-prose li::marker { color: var(--color-indigo); }
+.legal-prose li::marker { color: var(--color-ever); }
 .legal-prose hr {
   border: 0;
   border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
   margin: 2.4em 0;
 }
 .legal-prose blockquote {
-  border-left: 3px solid var(--color-indigo);
+  border-left: 3px solid var(--color-ever);
   padding: 0.2em 0 0.2em 1em;
   color: color-mix(in oklab, var(--color-ink) 65%, transparent);
   font-style: italic;
@@ -237,7 +223,7 @@
   display: block;
   overflow-x: auto;
 }
-.legal-prose thead { background: color-mix(in oklab, var(--color-indigo) 8%, transparent); }
+.legal-prose thead { background: color-mix(in oklab, var(--color-ever) 8%, transparent); }
 .legal-prose th, .legal-prose td {
   border: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
   padding: 0.6em 0.9em;
