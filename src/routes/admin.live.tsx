@@ -123,14 +123,12 @@ function LiveViewPage() {
     <AdminShell>
       <div
         ref={wrapRef}
-        className={`${fs ? "fixed inset-0 z-50 bg-[#f6f6f7] p-3" : "-mx-4 -mt-4 min-h-[calc(100vh-56px)] bg-[#f6f6f7] px-4 pt-4 lg:-mx-6 lg:px-6"} relative`}
+        className={`${fs ? "fixed inset-0 z-50 bg-[#f6f6f7] p-3" : "-mx-4 -mt-14 min-h-[calc(100vh-56px)] px-4 pt-16 lg:-mx-6 lg:px-6"} relative`}
       >
         {/* Top bar */}
-        <div className="mb-3 flex items-center justify-between gap-3">
+        <div className="relative z-10 mb-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="grid h-6 w-6 place-items-center rounded-md bg-ink/[0.06]">
-              <Globe2 className="h-3.5 w-3.5 text-ink/70" strokeWidth={1.75} />
-            </div>
+            <Globe2 className="h-4 w-4 text-ink/70" strokeWidth={1.75} />
             <h1 className="font-hero text-[19px] font-semibold text-ink">Live View</h1>
             <span className="flex items-center gap-1.5 text-[11.5px] text-ink/55">
               <span className="relative flex h-1.5 w-1.5">
