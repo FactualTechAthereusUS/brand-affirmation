@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { AdminShell, Card, Pill } from "@/components/admin/AdminShell";
 import { Sparkline } from "@/components/admin/Sparkline";
+import { AreaChart } from "@/components/admin/analytics/AreaChart";
 import { TaskCenter } from "@/components/admin/TaskCenter";
 import {
   computeKpis,
@@ -17,6 +18,8 @@ import {
   ordersTrend,
   conversionFunnel,
   refillsDue,
+  datesTrend,
+  priorPeriodShift,
 } from "@/lib/admin/selectors";
 import {
   DollarSign, TrendingUp, Users, ShoppingCart, RefreshCw,
@@ -41,6 +44,8 @@ function AdminHome() {
   const shipTrend = useAdmin((s) => ordersTrend(s, 30));
   const funnel = useAdmin(conversionFunnel);
   const refills = useAdmin(refillsDue);
+  const dts = useAdmin((s) => datesTrend(s, 30));
+  const revPrior = priorPeriodShift(revTrend, 8);
 
   const waterfall = mrrMovement();
   const programs = revenueByProgram();
@@ -123,7 +128,7 @@ function AdminHome() {
 
           {/* Row 2 — Today's revenue · MRR movement · Revenue by program */}
           <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-3">
-            <TodayRevenueCard value={todayRev} spark={revTrend} />
+            <TodayRevenueCard value={todayRev} spark={revTrend} prior={revPrior} dates={dts} />
             <MrrMovementCard items={waterfall} delta={mrrDelta} />
             <RevenueByProgramCard programs={programs} />
           </div>
@@ -208,22 +213,32 @@ function KpiTile({
 }
 
 /* ───────────────────────── Today's revenue ───────────────────────── */
-function TodayRevenueCard({ value, spark }: { value: number; spark: number[] }) {
+function TodayRevenueCard({ value, spark, prior, dates }: { value: number; spark: number[]; prior: number[]; dates: number[] }) {
   return (
     <Card className="p-4">
       <div className="flex items-baseline justify-between">
         <div className="text-[11.5px] font-medium text-ink/55">Today's revenue</div>
+        <div className="text-[10.5px] text-ink/45">vs prior period</div>
       </div>
       <div className="mt-1.5 flex items-baseline gap-2 tabular-nums">
         <div className="font-hero text-[26px] font-semibold text-ink">${value.toLocaleString()}</div>
         <div className="text-[11px] font-medium text-check">↗ +12.4%</div>
         <div className="text-[10.5px] text-ink/45">vs $2,776 yesterday</div>
       </div>
-      <div className="mt-3 h-16 w-full">
-        <Sparkline data={spark} stroke="#171717" fill="rgba(23,23,23,0.05)" height={64} className="h-16 w-full" />
-      </div>
-      <div className="mt-1 flex justify-between text-[10px] text-ink/40">
-        <span>12 AM</span><span>12 PM</span><span>11 PM</span>
+      <div className="mt-3">
+        <AreaChart
+          data={spark}
+          prior={prior}
+          dates={dates}
+          label="Revenue"
+          priorLabel="Prior 30d"
+          stroke="#171717"
+          height={180}
+          formatValue={(v) => `$${Math.round(v).toLocaleString()}`}
+          formatYTick={(v) => `$${Math.round(v / 1000)}K`}
+          yTicks={4}
+          xTicks={5}
+        />
       </div>
     </Card>
   );
