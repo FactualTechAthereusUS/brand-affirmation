@@ -209,9 +209,14 @@ function OrderDetailPage() {
                 <div className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-ink/50">Intent</div>
                 <div className="mt-1 font-mono text-[11.5px] text-ink/70">{o.payment.intentId}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <MiniBtn>Refund</MiniBtn>
-                  <MiniBtn>Send receipt</MiniBtn>
-                  <MiniBtn>Retry</MiniBtn>
+                  <MiniBtn tone="critical" disabled={o.payment.status !== "paid"} onClick={() => {
+                    const reason = window.prompt("Refund reason?", "Customer request") ?? "";
+                    if (!reason) return;
+                    adminActions.refundOrder(o.id, reason);
+                    toast.success(`Refunded ${formatMoney(o.payment.total)}`);
+                  }}>Refund</MiniBtn>
+                  <MiniBtn onClick={() => { adminActions.sendOrderReceipt(o.id); toast.success("Receipt emailed"); }}>Send receipt</MiniBtn>
+                  <MiniBtn disabled={o.payment.status === "paid"} onClick={() => { adminActions.retryOrderPayment(o.id); toast.success("Payment retried"); }}>Retry</MiniBtn>
                 </div>
               </div>
             </div>
