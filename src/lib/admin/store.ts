@@ -558,6 +558,140 @@ export type AdminState = {
     inboxChannel?: MessageChannel | "all";
     inboxSearch?: string;
   };
+  tenant: BrandTenant;
+  tenants: BrandTenant[];
+  build: BuildSlice;
+};
+
+/* ────────── PharmaBro whitelabel tenancy ────────── */
+export type TenantStage = "zero" | "ramping" | "live";
+export type BrandTenant = {
+  id: string;
+  name: string;
+  logoText: string;
+  primary: string;
+  accent: string;
+  supportEmail: string;
+  website: string;
+  stage: TenantStage;
+  onboardingStep: number; // 0-6 (6 = live)
+};
+
+export type FunnelBlockKind = "hero" | "step" | "plan-card" | "cta" | "faq" | "quiz-screen";
+export type FunnelBlock = {
+  id: string;
+  kind: FunnelBlockKind;
+  title: string;
+  props: Record<string, string>;
+};
+export type FunnelNode = {
+  id: string;
+  type: "quiz" | "loading" | "sales" | "confirmation" | "portal";
+  title: string;
+  blocks: FunnelBlock[];
+};
+
+export type IntakeScreenType = "single" | "multi" | "text" | "number" | "date" | "info" | "upload";
+export type IntakeAnswer = { id: string; label: string };
+export type IntakeScreen = {
+  id: string;
+  order: number;
+  name: string;
+  type: IntakeScreenType;
+  question: string;
+  answers: IntakeAnswer[];
+  storeAs: string;
+  klaviyoEvent: string;
+  required: boolean;
+  locked: boolean;
+  active: boolean;
+};
+
+export type ProductForm = "Injectable" | "Oral ODT" | "Oral Capsule" | "Topical" | "Sublingual";
+export type Molecule = "Semaglutide" | "Tirzepatide" | "NAD+" | "Sermorelin" | "Tadalafil" | "Sildenafil" | "Custom";
+export type BuildProduct = {
+  id: string;
+  name: string;
+  internalName: string;
+  molecule: Molecule;
+  form: ProductForm;
+  pharmacy: string;
+  pharmacyBackup: string;
+  description: string;
+  badge: string;
+  status: "live" | "draft" | "archived";
+};
+
+export type PlanDuration = "Monthly" | "3-Month" | "6-Month";
+export type BuildPlan = {
+  id: string;
+  displayName: string;
+  internalName: string;
+  productId: string;
+  duration: PlanDuration;
+  firstPrice: number;
+  ongoingPrice: number;
+  badge: string;
+  savings: string;
+  weeksSupply: string;
+  preselected: boolean;
+  status: "live" | "draft" | "archived";
+};
+
+export type BuildUpsell = {
+  id: string;
+  displayName: string;
+  internalName: string;
+  description: string;
+  price: number;
+  type: "one-time" | "recurring";
+  position: "checkout" | "post-buy";
+  order: number;
+  scarcityText: string;
+  status: "live" | "draft" | "archived";
+};
+
+export type DiscountType = "fixed" | "percent" | "free_shipping" | "first_order" | "winback";
+export type BuildDiscount = {
+  id: string;
+  code: string;
+  type: DiscountType;
+  amount: number;
+  appliesTo: string;
+  usageLimit: number;
+  uses: number;
+  autoApply: boolean;
+  status: "live" | "draft" | "archived";
+};
+
+export type EmailFlow = {
+  id: string;
+  name: string;
+  emails: number;
+  status: "live" | "draft" | "paused";
+  lastEditedAt: number;
+  klaviyoSynced: boolean;
+  klaviyoLastSyncAt?: number;
+};
+
+export type BuildPage = {
+  id: string;
+  name: string;
+  url: string;
+  status: "live" | "draft";
+  lastPublishedAt: number;
+};
+
+export type BuildSlice = {
+  funnel: FunnelNode[];
+  funnelVersion: number;
+  intakeScreens: IntakeScreen[];
+  products: BuildProduct[];
+  plans: BuildPlan[];
+  upsells: BuildUpsell[];
+  discounts: BuildDiscount[];
+  emailFlows: EmailFlow[];
+  pages: BuildPage[];
 };
 
 /* ────────── Programs ────────── */
