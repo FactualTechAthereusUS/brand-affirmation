@@ -150,7 +150,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           className="flex items-center px-4 pt-5 text-left"
           title="Long-press for demo controls"
         >
-          <img src={blissleyLogo.url} alt="Blissley" className={collapsed ? "h-6 w-auto" : "h-7 w-auto"} />
+          <Wordmark className={collapsed ? "h-6 w-auto text-[18px] leading-none" : "h-7 w-auto text-[22px] leading-none"} />
         </button>
 
         {!collapsed && (
