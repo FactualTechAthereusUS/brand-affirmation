@@ -286,8 +286,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 /* ============ Reusable primitives ============ */
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-xl border border-ink/[0.08] bg-white ${className}`}>{children}</div>;
+  return <div className={`rounded-xl border border-ink/[0.08] bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)] ${className}`}>{children}</div>;
 }
+
 
 export function SectionTitle({ children, action, subtitle }: { children: ReactNode; action?: ReactNode; subtitle?: string }) {
   return (
