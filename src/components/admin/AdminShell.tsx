@@ -89,11 +89,12 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
     const Icon = n.icon;
     return (
       <Link to={n.to!} className={`group relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ${
-        active ? "bg-ink/[0.04] font-semibold text-ink" : "text-ink/65 hover:bg-ink/[0.03] hover:text-ink"
+        active ? "bg-marine/[0.08] font-semibold text-marine" : "text-ink/65 hover:bg-ink/[0.04] hover:text-ink"
       }`}>
-        {active && <span className="absolute inset-y-1 left-0 w-[3px] rounded-full bg-ever" />}
-        <Icon className={`h-3.5 w-3.5 shrink-0 ${active ? "text-ink" : "text-ink/45"}`} strokeWidth={1.75} />
+        {active && <span className="absolute inset-y-1 left-0 w-[3px] rounded-full bg-marine" />}
+        <Icon className={`h-3.5 w-3.5 shrink-0 ${active ? "text-marine" : "text-ink/45"}`} strokeWidth={1.75} />
         {!collapsed && <span className="truncate">{n.label}</span>}
+
       </Link>
     );
   };
@@ -116,7 +117,8 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   );
 
   return (
-    <div className="min-h-screen bg-white text-ink">
+    <div className="admin-scope min-h-screen bg-canvas text-ink">
+
       {/* Desktop sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-30 hidden flex-col border-r border-ink/[0.06] bg-white transition-[width] duration-200 lg:flex ${collapsed ? "w-[64px]" : "w-[220px]"}`}>
         <button
@@ -132,8 +134,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
           <div className="mx-3 mt-4 flex items-center gap-2.5 rounded-xl border border-ink/[0.08] bg-white px-2.5 py-2">
             <div className="relative grid h-7 w-7 shrink-0 place-items-center">
               <svg viewBox="0 0 32 32" className="h-7 w-7 -rotate-90">
-                <circle cx="16" cy="16" r="12" fill="none" stroke="#e8e6e0" strokeWidth="3" />
-                <circle cx="16" cy="16" r="12" fill="none" stroke="#171717" strokeWidth="3" strokeDasharray={`${(0/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#e5e7eb" strokeWidth="3" />
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray={`${(0/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
+
               </svg>
             </div>
             <div className="min-w-0 flex-1 leading-tight">
@@ -221,15 +224,17 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink/40" />
                 <input placeholder="Search patients, orders, cases…"
-                  className="w-full rounded-lg bg-[#f7f6f2] py-1.5 pl-9 pr-12 text-[12.5px] outline-none placeholder:text-ink/40 focus:bg-white focus:ring-1 focus:ring-ink/10" />
+                  className="w-full rounded-lg bg-[#f1f2f4] py-1.5 pl-9 pr-12 text-[12.5px] outline-none placeholder:text-ink/40 focus:bg-white focus:ring-1 focus:ring-marine/30" />
                 <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 rounded border border-ink/10 bg-white px-1.5 py-0.5 text-[10px] text-ink/45">⌘K</kbd>
+
               </div>
             </div>
 
             <div className="ml-auto flex items-center gap-1.5">
-              <button className="hidden items-center gap-1 rounded-lg bg-ink px-2.5 py-1.5 text-[11.5px] font-semibold text-white sm:flex">
+              <button className="hidden items-center gap-1 rounded-lg bg-marine px-2.5 py-1.5 text-[11.5px] font-semibold text-white shadow-[0_1px_0_rgba(15,23,42,0.08)] hover:bg-marine/90 sm:flex">
                 <Plus className="h-3.5 w-3.5" strokeWidth={2.25} /> New patient
               </button>
+
               <button className="hidden rounded-md p-1.5 text-ink/50 hover:bg-ink/5 hover:text-ink sm:block" aria-label="Help">
                 <HelpCircle className="h-4 w-4" strokeWidth={1.75} />
               </button>
@@ -281,8 +286,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
 /* ============ Reusable primitives ============ */
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-xl border border-ink/[0.08] bg-white ${className}`}>{children}</div>;
+  return <div className={`rounded-xl border border-ink/[0.08] bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)] ${className}`}>{children}</div>;
 }
+
 
 export function SectionTitle({ children, action, subtitle }: { children: ReactNode; action?: ReactNode; subtitle?: string }) {
   return (
