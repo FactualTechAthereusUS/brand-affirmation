@@ -291,13 +291,27 @@ export type MessageChannel = "in_app" | "sms" | "email" | "whatsapp";
 export type ConvoStatus = "unassigned" | "support" | "physician" | "closed";
 export type ConvoTag = "clinical" | "intake" | "shipping" | "billing" | "refund" | "general";
 
+export type ConvoMsgState = "sending" | "sent" | "delivered" | "seen" | "failed";
+
+export type ConvoAttachment = {
+  id: string;
+  kind: "image" | "file" | "audio";
+  name: string;
+  size?: string;
+  url?: string;
+};
+
 export type ConvoMessage = {
   id: string;
-  from: "me" | "them";
+  from: "me" | "them" | "system";
   authorName?: string;
   text: string;
   ts: number;
   internal?: boolean;
+  state?: ConvoMsgState;
+  channel?: MessageChannel;
+  attachments?: ConvoAttachment[];
+  systemKind?: "assignment" | "status" | "tag" | "note" | "info";
 };
 
 export type Conversation = {
@@ -310,14 +324,20 @@ export type Conversation = {
   channel: MessageChannel;
   status: ConvoStatus;
   tag: ConvoTag;
+  tags?: string[];
   assignedTo: string;
   updatedAt: number;
   unread: boolean;
+  unreadCount?: number;
   messages: ConvoMessage[];
   program: ProgramCode;
   ltv: number;
   startedAt: string;
   internalNote: string;
+  snoozedUntil?: number;
+  priority?: "normal" | "high";
+  starred?: boolean;
+  typing?: boolean;
 };
 
 export type ActivityEvent = {
@@ -367,6 +387,9 @@ export type AdminState = {
     patientFilter: PatientStatus | "all";
     patientSearch: string;
     showLogoMenu: boolean;
+    inboxFolder?: string;
+    inboxChannel?: MessageChannel | "all";
+    inboxSearch?: string;
   };
 };
 
@@ -930,6 +953,21 @@ export function trafficOverTime() {
   }));
 }
 
+function pickAutoReply(text: string): string {
+  const t = text.toLowerCase();
+  if (/refund|cancel/.test(t)) return "Thanks — I'll review this and get back to you shortly.";
+  if (/dose|nausea|side effect|symptom/.test(t)) return "Got it, sharing this with Dr. Nass. Please continue current dose unless we advise otherwise.";
+  if (/shipping|track|delivery|arrive/.test(t)) return "Thanks for the update — I'll check tracking and follow up within the hour.";
+  if (/thank|thanks|appreciate/.test(t)) return "Anytime — let us know if anything else comes up.";
+  const generic = [
+    "Thanks — got it. I'll follow up shortly.",
+    "Understood. Let me look into this and circle back.",
+    "Received — appreciate the note.",
+    "Got it, one moment while I check.",
+  ];
+  return generic[text.length % generic.length];
+}
+
 /* ────────── Actions ────────── */
 export const adminActions = {
   signIn(email: string) {
@@ -1054,7 +1092,102 @@ export const adminActions = {
     }
   },
   assignConvo(convoId: string, to: string, status: ConvoStatus) {
-    set((s) => ({ conversations: s.conversations.map((c) => (c.id === convoId ? { ...c, assignedTo: to, status } : c)) }));
+    set((s) => ({
+      conversations: s.conversations.map((c) => {
+        if (c.id !== convoId) return c;
+        const sys: ConvoMessage = { id: `sys_${Date.now()}`, from: "system", text: `Assigned to ${to} · ${status}`, ts: Date.now(), systemKind: "assignment" };
+        return { ...c, assignedTo: to, status, messages: [...c.messages, sys] };
+      }),
+    }));
+  },
+  sendConvoMessage(convoId: string, opts: { text: string; internal?: boolean; channel?: MessageChannel; attachments?: ConvoAttachment[] }) {
+    const id = `cm_${Date.now()}`;
+    const now = Date.now();
+    const msg: ConvoMessage = {
+      id, from: "me", authorName: "You", text: opts.text, ts: now,
+      internal: opts.internal, channel: opts.channel, attachments: opts.attachments, state: "sending",
+    };
+    set((s) => ({
+      conversations: s.conversations.map((c) => c.id === convoId
+        ? { ...c, messages: [...c.messages, msg], preview: opts.text.slice(0, 120), updatedAt: now, unread: false, unreadCount: 0 }
+        : c),
+    }));
+    // Optimistic state ladder
+    setTimeout(() => set((s) => ({
+      conversations: s.conversations.map((c) => c.id === convoId
+        ? { ...c, messages: c.messages.map((m) => m.id === id ? { ...m, state: "sent" as const } : m) } : c),
+    })), 400);
+    setTimeout(() => set((s) => ({
+      conversations: s.conversations.map((c) => c.id === convoId
+        ? { ...c, messages: c.messages.map((m) => m.id === id ? { ...m, state: "delivered" as const } : m) } : c),
+    })), 1100);
+    if (!opts.internal) {
+      // Typing → reply simulation
+      setTimeout(() => set((s) => ({
+        conversations: s.conversations.map((c) => c.id === convoId ? { ...c, typing: true } : c),
+      })), 1400);
+      setTimeout(() => {
+        set((s) => {
+          const convo = s.conversations.find((c) => c.id === convoId);
+          if (!convo) return {};
+          const reply: ConvoMessage = {
+            id: `cm_${Date.now()}r`, from: "them", authorName: convo.patientName,
+            text: pickAutoReply(opts.text), ts: Date.now(), state: "delivered" as const, channel: convo.channel,
+          };
+          return {
+            conversations: s.conversations.map((c) => c.id === convoId
+              ? { ...c, typing: false, messages: [...c.messages.map((m) => m.id === id ? { ...m, state: "seen" as const } : m), reply], preview: reply.text.slice(0, 120), updatedAt: Date.now(), unread: true, unreadCount: (c.unreadCount ?? 0) + 1 }
+              : c),
+          };
+        });
+      }, 2600);
+    }
+  },
+  markConvoSeen(convoId: string) {
+    set((s) => ({ conversations: s.conversations.map((c) => c.id === convoId ? { ...c, unread: false, unreadCount: 0 } : c) }));
+  },
+  snoozeConvo(convoId: string, hours: number) {
+    const until = Date.now() + hours * 3600_000;
+    set((s) => ({
+      conversations: s.conversations.map((c) => c.id === convoId
+        ? { ...c, snoozedUntil: until, messages: [...c.messages, { id: `sys_${Date.now()}`, from: "system" as const, text: `Snoozed for ${hours}h`, ts: Date.now(), systemKind: "info" as const }] }
+        : c),
+    }));
+  },
+  unsnoozeConvo(convoId: string) {
+    set((s) => ({ conversations: s.conversations.map((c) => c.id === convoId ? { ...c, snoozedUntil: undefined } : c) }));
+  },
+  closeConvo(convoId: string) {
+    set((s) => ({
+      conversations: s.conversations.map((c) => c.id === convoId
+        ? { ...c, status: "closed" as const, messages: [...c.messages, { id: `sys_${Date.now()}`, from: "system" as const, text: `Conversation closed`, ts: Date.now(), systemKind: "status" as const }] }
+        : c),
+    }));
+  },
+  reopenConvo(convoId: string) {
+    set((s) => ({ conversations: s.conversations.map((c) => c.id === convoId ? { ...c, status: "support" as const } : c) }));
+  },
+  toggleConvoTag(convoId: string, tag: string) {
+    set((s) => ({
+      conversations: s.conversations.map((c) => {
+        if (c.id !== convoId) return c;
+        const cur = c.tags ?? [];
+        const next = cur.includes(tag) ? cur.filter((t) => t !== tag) : [...cur, tag];
+        return { ...c, tags: next };
+      }),
+    }));
+  },
+  setConvoPriority(convoId: string, priority: "normal" | "high") {
+    set((s) => ({ conversations: s.conversations.map((c) => c.id === convoId ? { ...c, priority } : c) }));
+  },
+  toggleConvoStar(convoId: string) {
+    set((s) => ({ conversations: s.conversations.map((c) => c.id === convoId ? { ...c, starred: !c.starred } : c) }));
+  },
+  setInboxFolder(folder: string) { set((s) => ({ ui: { ...s.ui, inboxFolder: folder } })); },
+  setInboxChannel(channel: MessageChannel | "all") { set((s) => ({ ui: { ...s.ui, inboxChannel: channel } })); },
+  setInboxSearch(q: string) { set((s) => ({ ui: { ...s.ui, inboxSearch: q } })); },
+  setConvoInternalNote(convoId: string, note: string) {
+    set((s) => ({ conversations: s.conversations.map((c) => c.id === convoId ? { ...c, internalNote: note } : c) }));
   },
   markLeadContacted(id: string) {
     set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, contacted: true, lastTouchAt: Date.now() } : l)) }));
