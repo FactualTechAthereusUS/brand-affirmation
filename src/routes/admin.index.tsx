@@ -465,7 +465,9 @@ function PatientFunnelCard({ funnel }: { funnel: ReturnType<typeof conversionFun
 }
 
 function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: string }[] }) {
+  const palette = ["#7c3aed", "#2563eb", "#10b981", "#f59e0b", "#ee7273", "#0ea5e9"];
   const total = mix.reduce((a, m) => a + m.value, 0) || 1;
+  const colored = mix.map((m, i) => ({ ...m, color: palette[i % palette.length] }));
   return (
     <Card className="p-3.5">
       <div className="flex items-baseline justify-between">
@@ -474,13 +476,13 @@ function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: 
         </div>
         <div className="text-[10.5px] text-ink/45">last 30 days</div>
       </div>
-      <div className="mt-2.5 flex h-2 overflow-hidden rounded">
-        {mix.map((m) => (
+      <div className="mt-2.5 flex h-2 overflow-hidden rounded-full">
+        {colored.map((m) => (
           <div key={m.label} style={{ width: `${(m.value / total) * 100}%`, background: m.color }} />
         ))}
       </div>
       <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px]">
-        {mix.map((m) => (
+        {colored.map((m) => (
           <div key={m.label} className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full" style={{ background: m.color }} />
             <span className="text-ink/70">{m.label}</span>
