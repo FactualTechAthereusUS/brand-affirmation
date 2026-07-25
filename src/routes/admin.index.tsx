@@ -206,7 +206,7 @@ function KpiTile({
     >
       <div className="flex items-start justify-between gap-2">
         <div className="text-[11px] font-medium text-ink/55">{label}</div>
-        <div className="grid h-5 w-5 place-items-center rounded-md bg-ink/[0.05] text-ink/50">{icon}</div>
+        <div className="text-ink/40">{icon}</div>
       </div>
       <div className="mt-2 flex items-baseline gap-2 tabular-nums">
         <div className="font-hero text-[24px] font-semibold leading-none text-ink">{value}</div>
