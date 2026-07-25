@@ -9,7 +9,7 @@ import {
 } from "@/lib/admin/patients-enrich";
 import { PatientStatusPill, ChurnPill } from "@/components/admin/patients/StatusBanner";
 
-export const Route = createFileRoute("/admin/patients")({
+export const Route = createFileRoute("/admin/patients/")({
   head: () => ({ meta: [
     { title: "Patients — Blissley HQ" },
     { name: "description", content: "Search, segment, and manage every patient on the Blissley platform." },

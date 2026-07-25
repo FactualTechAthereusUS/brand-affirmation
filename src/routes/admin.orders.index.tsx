@@ -12,7 +12,7 @@ import {
   type OrderViewId,
 } from "@/lib/admin/orders-enrich";
 
-export const Route = createFileRoute("/admin/orders")({
+export const Route = createFileRoute("/admin/orders/")({
   head: () => ({ meta: [
     { title: "Orders — Blissley HQ" },
     { name: "description", content: "Rx orders, pharmacy handoffs, and shipments — Blissley operations." },
