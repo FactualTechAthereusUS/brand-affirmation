@@ -439,9 +439,7 @@ function HomeTab({ onGoto }: { onGoto: (t: Tab) => void }) {
                   title={planState === "check_in_due" ? "Complete check-in to ship" : undefined}
                 >
                   <span className="text-[13px] font-semibold text-ink">Track</span>
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-white">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17" /></svg>
-                  </span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17" /></svg>
                 </button>
               </div>
               {planState === "check_in_due" && (
