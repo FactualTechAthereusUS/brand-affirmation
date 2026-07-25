@@ -1100,11 +1100,11 @@ export const adminActions = {
     // Optimistic state ladder
     setTimeout(() => set((s) => ({
       conversations: s.conversations.map((c) => c.id === convoId
-        ? { ...c, messages: c.messages.map((m) => m.id === id ? { ...m, state: "sent" } : m) } : c),
+        ? { ...c, messages: c.messages.map((m) => m.id === id ? { ...m, state: "sent" as const } : m) } : c),
     })), 400);
     setTimeout(() => set((s) => ({
       conversations: s.conversations.map((c) => c.id === convoId
-        ? { ...c, messages: c.messages.map((m) => m.id === id ? { ...m, state: "delivered" } : m) } : c),
+        ? { ...c, messages: c.messages.map((m) => m.id === id ? { ...m, state: "delivered" as const } : m) } : c),
     })), 1100);
     if (!opts.internal) {
       // Typing → reply simulation
