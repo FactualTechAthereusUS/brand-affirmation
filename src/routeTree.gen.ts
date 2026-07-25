@@ -282,19 +282,19 @@ const AdminLeadsIndexRoute = AdminLeadsIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPatientsRoute,
+  id: '/admin/patients/$id',
+  path: '/admin/patients/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminOrdersRoute,
+  id: '/admin/orders/$id',
+  path: '/admin/orders/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLeadsIdRoute = AdminLeadsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminLeadsRoute,
+  id: '/admin/leads/$id',
+  path: '/admin/leads/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
   id: '/retention',
@@ -680,6 +680,9 @@ export interface RootRouteChildren {
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
+  AdminLeadsIdRoute: typeof AdminLeadsIdRoute
+  AdminOrdersIdRoute: typeof AdminOrdersIdRoute
+  AdminPatientsIdRoute: typeof AdminPatientsIdRoute
   AdminLeadsIndexRoute: typeof AdminLeadsIndexRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
   AdminPatientsIndexRoute: typeof AdminPatientsIndexRoute
@@ -997,24 +1000,24 @@ declare module '@tanstack/react-router' {
     }
     '/admin/patients/$id': {
       id: '/admin/patients/$id'
-      path: '/$id'
+      path: '/admin/patients/$id'
       fullPath: '/admin/patients/$id'
       preLoaderRoute: typeof AdminPatientsIdRouteImport
-      parentRoute: typeof AdminPatientsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/orders/$id': {
       id: '/admin/orders/$id'
-      path: '/$id'
+      path: '/admin/orders/$id'
       fullPath: '/admin/orders/$id'
       preLoaderRoute: typeof AdminOrdersIdRouteImport
-      parentRoute: typeof AdminOrdersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/leads/$id': {
       id: '/admin/leads/$id'
-      path: '/$id'
+      path: '/admin/leads/$id'
       fullPath: '/admin/leads/$id'
       preLoaderRoute: typeof AdminLeadsIdRouteImport
-      parentRoute: typeof AdminLeadsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/analytics/retention': {
       id: '/admin/analytics/retention'
@@ -1117,6 +1120,9 @@ const rootRouteChildren: RootRouteChildren = {
   WeightLossSalesRoute: WeightLossSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
+  AdminLeadsIdRoute: AdminLeadsIdRoute,
+  AdminOrdersIdRoute: AdminOrdersIdRoute,
+  AdminPatientsIdRoute: AdminPatientsIdRoute,
   AdminLeadsIndexRoute: AdminLeadsIndexRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
   AdminPatientsIndexRoute: AdminPatientsIndexRoute,
@@ -1124,13 +1130,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
