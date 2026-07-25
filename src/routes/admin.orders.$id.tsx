@@ -331,9 +331,18 @@ function OrderDetailPage() {
             <SectionHead icon={<Tag className="h-4 w-4 text-violet-600" />} title="Tags" />
             <div className="mt-3 flex flex-wrap gap-1.5">
               {o.tags.map((t) => (
-                <span key={t} className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">{t}</span>
+                <span key={t} className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">
+                  {t}
+                  <button onClick={() => adminActions.removeOrderTag(o.id, t)} className="ml-0.5 text-violet-700/60 hover:text-violet-900">×</button>
+                </span>
               ))}
-              <button className="inline-flex items-center gap-0.5 rounded-full border border-dashed border-ink/20 px-2 py-0.5 text-[11px] text-ink/55 hover:border-ink/40 hover:text-ink">+ Add</button>
+              {addTagOpen ? (
+                <form onSubmit={(e) => { e.preventDefault(); if (newTag.trim()) { adminActions.addOrderTag(o.id, newTag.trim()); setNewTag(""); setAddTagOpen(false); toast.success("Tag added"); } }} className="flex items-center gap-1">
+                  <input autoFocus value={newTag} onChange={(e) => setNewTag(e.target.value)} onBlur={() => setAddTagOpen(false)} placeholder="Tag…" className="w-24 rounded-full border border-ink/15 px-2 py-0.5 text-[11px] outline-none focus:border-indigo-500" />
+                </form>
+              ) : (
+                <button onClick={() => setAddTagOpen(true)} className="inline-flex items-center gap-0.5 rounded-full border border-dashed border-ink/20 px-2 py-0.5 text-[11px] text-ink/55 hover:border-ink/40 hover:text-ink">+ Add</button>
+              )}
             </div>
           </Card>
 
