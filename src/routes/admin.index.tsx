@@ -1,33 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   ArrowRight,
-  ArrowUpRight,
-  AlertTriangle,
+  Calendar,
   CreditCard,
   DollarSign,
-  MessageSquare,
   Package,
+  Search,
+  ShoppingCart,
   TrendingUp,
-  UserPlus,
   Users,
 } from "lucide-react";
 import {
   AdminShell,
   Card,
   KPI,
-  SectionTitle,
-  StatusPill,
+  Sparkline,
   formatMoney,
-  timeAgo,
 } from "@/components/admin/AdminShell";
 import {
-  adminActions,
   computeKpis,
   funnelData,
   mrrMovement,
   revenueByProgram,
   acquisitionMix,
+  pipelineCounts,
   useAdmin,
 } from "@/lib/admin/store";
 
@@ -47,460 +44,403 @@ function AdminDashboard() {
   const kpis = computeKpis(state);
   const revenue = revenueByProgram();
   const acquisition = acquisitionMix();
+  const funnel = funnelData();
+  const pipeline = pipelineCounts();
+  const [tab, setTab] = useState<"all" | "billing" | "patient_ops" | "admin" | "unassigned">("all");
 
-  // Weekly revenue synthesized for hero chart
-  const weekly = [
-    { d: "Mon", v: 12400 },
-    { d: "Tue", v: 15200 },
-    { d: "Wed", v: 11800 },
-    { d: "Thu", v: 18600 },
-    { d: "Fri", v: 22100 },
-    { d: "Sat", v: 19400 },
-    { d: "Sun", v: 24800 },
-  ];
-  const weeklyMax = Math.max(...weekly.map((w) => w.v));
-  const peakIdx = weekly.findIndex((w) => w.v === weeklyMax);
+  const tabCounts = {
+    all: state.tasks.length,
+    billing: state.tasks.filter((t) => t.category === "billing").length,
+    patient_ops: state.tasks.filter((t) => t.category === "care_ops").length,
+    admin: state.tasks.filter((t) => t.category === "admin").length,
+    unassigned: state.tasks.filter((t) => !t.assignee || t.assignee.toLowerCase().includes("unassigned")).length,
+  };
+
+  const filteredTasks = state.tasks.filter((t) =>
+    tab === "all" ? true :
+    tab === "billing" ? t.category === "billing" :
+    tab === "patient_ops" ? t.category === "care_ops" :
+    tab === "admin" ? t.category === "admin" :
+    !t.assignee || t.assignee.toLowerCase().includes("unassigned")
+  ).slice(0, 12);
 
   return (
     <AdminShell title="Dashboard">
-      {/* Welcome + date range */}
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">
-            Good day, {state.session?.name || "team"}
-          </p>
-          <h1 className="mt-1.5 font-hero text-[26px] font-bold tracking-tight text-ink sm:text-[32px]">
-            Business snapshot
-          </h1>
-          <p className="mt-1 text-[13px] text-ink/55">Everything that matters, in one view.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 rounded-2xl border border-ink/8 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-            {(["24h", "7d", "4w", "90d"] as const).map((r) => (
-              <button
-                key={r}
-                onClick={() => adminActions.setDateRange(r)}
-                className={`rounded-xl px-3 py-1.5 text-[12px] font-semibold transition-colors ${
-                  state.dateRange === r ? "bg-ink text-white" : "text-ink/60 hover:text-ink"
-                }`}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-          <button className="hidden items-center gap-1.5 rounded-2xl bg-ink px-4 py-2.5 text-[12.5px] font-semibold text-white sm:inline-flex">
-            <ArrowUpRight className="h-3.5 w-3.5" /> Export
-          </button>
-        </div>
-      </div>
-
-      {/* KPI row */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
-        <KPI
-          label="MRR"
-          value={formatMoney(kpis.mrr)}
-          delta={{ pct: "+12.4%", positive: true }}
-          spark={[8, 10, 9, 12, 14, 13, 16, 18]}
-          hint={`Last month · ${formatMoney(kpis.mrr - 7400)}`}
-          icon={DollarSign}
-          tone="ever"
-          featured
-        />
-        <KPI
-          label="Net revenue"
-          value={formatMoney(kpis.netRevenue)}
-          delta={{ pct: "+8.2%", positive: true }}
-          spark={[6, 8, 12, 10, 14, 16, 15, 19]}
-          hint="Last 4 weeks"
-          icon={TrendingUp}
-          tone="check"
-        />
-        <KPI
-          label="Active patients"
-          value={String(kpis.activeCount)}
-          delta={{ pct: "+9", positive: true }}
-          spark={[24, 26, 28, 27, 29, 31, 32, 34]}
-          hint={`of ${state.patients.length} total`}
-          icon={Users}
-          tone="marine"
-        />
-        <KPI
-          label="Avg order value"
-          value={formatMoney(kpis.aov)}
-          delta={{ pct: "−2.1%", positive: false }}
-          spark={[280, 278, 279, 275, 278, 276, 274, 272]}
-          hint="Trailing 30d"
-          icon={CreditCard}
-          tone="honey"
-        />
-        <KPI
-          label="Retention · 30d"
-          value={`${kpis.retention}%`}
-          delta={{ pct: "+1.4pt", positive: true }}
-          spark={[62, 64, 65, 63, 66, 67, 68, 69]}
-          hint="Rolling cohort"
-          icon={Users}
-          tone="ever"
-        />
-      </div>
-
-      {/* Row: Revenue analytics + Program mix */}
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <Card className="p-6 lg:col-span-2">
-          <SectionTitle
-            subtitle="Rolling seven days · net after refunds"
-            action={
-              <div className="flex items-center gap-1 rounded-full border border-ink/8 bg-[#faf9f6] p-0.5">
-                {["Week", "Month", "Year"].map((t, i) => (
-                  <button key={t} className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${i === 0 ? "bg-white text-ink shadow-sm" : "text-ink/50"}`}>
-                    {t}
-                  </button>
-                ))}
-              </div>
-            }
-          >
-            Revenue analytics
-          </SectionTitle>
-
-          <div className="mt-2 flex items-end gap-4">
-            <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/50">This week</div>
-              <div className="mt-1 font-hero text-[30px] font-bold leading-none text-ink">
-                {formatMoney(weekly.reduce((a, b) => a + b.v, 0))}
-              </div>
-            </div>
-            <span className="mb-1 inline-flex items-center gap-0.5 rounded-full bg-check/12 px-2 py-0.5 text-[11px] font-bold text-check">
-              ▲ 14.6%
-            </span>
+      <div className="grid gap-4 xl:grid-cols-[1fr_320px]">
+        {/* Left / main */}
+        <div className="min-w-0 space-y-4">
+          {/* KPI row */}
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+            <KPI label="Current MRR" value={formatMoney(kpis.mrr)} delta={{ pct: "+4.8%", positive: true }}
+              spark={[62, 64, 63, 66, 65, 68, 70, 69, 72, 74, 73, 76]} hint="Monthly recurring revenue" icon={DollarSign} featured />
+            <KPI label="Net Revenue" value={formatMoney(kpis.netRevenue)} delta={{ pct: "+8.2%", positive: true }}
+              spark={[40, 42, 41, 45, 47, 46, 50, 52, 55, 54, 58, 60]} hint="Last 30 days" icon={TrendingUp} />
+            <KPI label="Active Subscriptions" value={kpis.activeCount.toLocaleString()} delta={{ pct: "+38", positive: true }}
+              spark={[24, 25, 26, 27, 26, 28, 30, 29, 31, 32, 33, 34]} hint="2.1% churn this month" icon={Users} />
+            <KPI label="Avg Order Value" value={formatMoney(kpis.aov)} delta={{ pct: "-1.4%", positive: false }}
+              spark={[80, 79, 81, 80, 78, 79, 77, 78, 76, 77, 75, 76]} hint="Per completed order" icon={ShoppingCart} />
+            <KPI label="Retention Rate" value={`${kpis.retention}%`} delta={{ pct: "+1.4pt", positive: true }}
+              spark={[60, 62, 61, 63, 62, 64, 65, 64, 66, 67, 66, 68]} hint="12/18 refilled this month" icon={Users} />
           </div>
 
-          {/* Rounded pill bar chart */}
-          <div className="relative mt-6 h-56">
-            {/* grid lines */}
-            <div className="absolute inset-0 flex flex-col justify-between">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="border-t border-dashed border-ink/6" />
-              ))}
-            </div>
-            <div className="relative flex h-full items-end justify-between gap-2 sm:gap-4">
-              {weekly.map((w, i) => {
-                const h = (w.v / weeklyMax) * 100;
-                const isPeak = i === peakIdx;
-                return (
-                  <div key={w.d} className="group relative flex flex-1 flex-col items-center">
-                    {isPeak && (
-                      <div className="absolute -top-8 z-10 rounded-lg bg-ink px-2 py-1 text-[10.5px] font-semibold text-white shadow-lg">
-                        {formatMoney(w.v)}
-                        <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" />
+          {/* Row 2: Today's revenue + MRR movement + Revenue by program */}
+          <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-[1.15fr_1fr_1fr]">
+            {/* Today's revenue */}
+            <Card className="p-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-[11.5px] text-ink/55">Today's revenue</div>
+                  <div className="mt-1 flex items-baseline gap-2">
+                    <span className="font-hero text-[22px] font-semibold tracking-tight text-ink">$3,120</span>
+                    <span className="text-[11.5px] font-medium text-check">↗ +12.4%</span>
+                    <span className="text-[11px] text-ink/45">vs $2,776 yesterday</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3">
+                <RevenueLine />
+                <div className="mt-1 flex justify-between text-[10px] text-ink/40">
+                  <span>12 AM</span><span>12 PM</span><span>11 PM</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* MRR movement */}
+            <Card className="p-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-[11.5px] text-ink/55">MRR movement · 4w</div>
+                  <div className="mt-1 flex items-baseline gap-2">
+                    <span className="font-hero text-[22px] font-semibold tracking-tight text-ink">+$9.4K</span>
+                  </div>
+                </div>
+                <div className="text-right text-[10.5px] text-ink/45">
+                  <div><span className="text-check">+$16.4K</span> gained</div>
+                  <div><span className="text-ever">−$7K</span> lost</div>
+                </div>
+              </div>
+              <div className="mt-3 space-y-1.5">
+                <MrrBar />
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10.5px] text-ink/60">
+                  <LegendDot c="#4a7c6f" /> New +$11.4K
+                  <LegendDot c="#8bbd7f" /> Expansion +$3.5K
+                  <LegendDot c="#c4e07a" /> Reactivated +$1.5K
+                  <LegendDot c="#f5b451" /> Downgrades −$1.8K
+                  <LegendDot c="#e88d3a" /> Cancelled −$3.3K
+                  <LegendDot c="#ee7273" /> Failed payments −$3.9K
+                </div>
+              </div>
+            </Card>
+
+            {/* Revenue by program */}
+            <Card className="p-4">
+              <div className="text-[11.5px] text-ink/55">Revenue by program · 30d</div>
+              <div className="mt-2 flex items-center gap-4">
+                <ProgramDonut data={revenue} />
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  {revenue.slice(0, 5).map((r, i) => {
+                    const color = ["#ee7273", "#171717", "#c4a265", "#4a7c6f", "#1D437B"][i];
+                    return (
+                      <div key={r.code} className="flex items-center gap-2 text-[11.5px]">
+                        <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: color }} />
+                        <span className="min-w-0 flex-1 truncate text-ink/75">{r.label.replace(" Weight Loss", "").replace("Tirzepatide", "Tirz").replace("Semaglutide", "Sema")}</span>
+                        <span className="font-medium text-ink">{formatMoney(r.revenue)}</span>
                       </div>
-                    )}
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: `${h}%` }}
-                      transition={{ duration: 0.9, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                      className={`w-full max-w-[44px] rounded-full ${
-                        isPeak
-                          ? "bg-gradient-to-b from-ever to-blush shadow-[0_10px_30px_-8px_rgba(238,114,115,0.5)]"
-                          : "bg-ink/10 group-hover:bg-ink/20"
-                      }`}
-                    />
-                    <div className={`mt-3 text-[11.5px] font-medium ${isPeak ? "text-ink" : "text-ink/45"}`}>{w.d}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </Card>
-
-        {/* Program mix donut */}
-        <Card className="p-6">
-          <SectionTitle subtitle="By program family">Program mix</SectionTitle>
-          <div className="flex flex-col items-center gap-4">
-            <ProgramDonut data={revenue} />
-            <div className="w-full space-y-2">
-              {revenue.slice(0, 4).map((r, i) => {
-                const color = ["#ee7273", "#1D437B", "#c4a265", "#4a7c6f"][i];
-                const pct = ((r.revenue / revenue.reduce((a, b) => a + b.revenue, 0)) * 100).toFixed(0);
-                return (
-                  <div key={r.code} className="flex items-center gap-2">
-                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: color }} />
-                    <span className="flex-1 truncate text-[12.5px] text-ink/75">{r.label}</span>
-                    <span className="text-[12px] font-semibold text-ink">{formatMoney(r.revenue)}</span>
-                    <span className="w-9 text-right text-[11px] font-semibold text-ink/45">{pct}%</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Row: Funnel + MRR movement + Acquisition */}
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <Card className="p-6 lg:col-span-2">
-          <SectionTitle
-            subtitle="Last 30 days"
-            action={
-              <div className="rounded-full bg-ever/10 px-3 py-1 text-[11px] font-semibold text-ever">
-                Biggest leak · Intake → Submitted
+                    );
+                  })}
+                </div>
               </div>
-            }
-          >
-            Patient funnel
-          </SectionTitle>
-          <div className="space-y-2.5">
-            {funnelData().map((f, i, arr) => {
-              const dropoff = i > 0 ? (((arr[i - 1].count - f.count) / arr[i - 1].count) * 100).toFixed(1) : null;
-              return (
-                <div key={f.label} className="grid grid-cols-[130px_1fr_60px] items-center gap-3 sm:grid-cols-[170px_1fr_70px]">
-                  <div className="text-[13px] font-medium text-ink/80">{f.label}</div>
-                  <div className="relative h-9 overflow-hidden rounded-2xl bg-ink/4">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${f.pct}%` }}
-                      transition={{ duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                      className="h-full rounded-2xl"
-                      style={{
-                        background: `linear-gradient(90deg, #ee7273 0%, #f4a5a6 100%)`,
-                      }}
-                    />
-                    <div className="absolute inset-y-0 left-3.5 flex items-center gap-2 text-[11.5px] font-semibold text-white">
-                      <span>{f.count.toLocaleString()}</span>
-                      <span className="opacity-70">·</span>
-                      <span>{f.pct}%</span>
-                    </div>
-                  </div>
-                  <div className="text-right text-[11.5px] font-semibold text-ever">
-                    {dropoff ? `−${dropoff}%` : ""}
-                  </div>
-                </div>
-              );
-            })}
+            </Card>
           </div>
-        </Card>
 
-        <Card className="p-6">
-          <SectionTitle
-            action={<span className="rounded-full bg-check/12 px-2 py-0.5 text-[11px] font-bold text-check">+$7.4K net</span>}
-            subtitle="Movement this month"
-          >
-            MRR movement
-          </SectionTitle>
-          <div className="space-y-3">
-            {mrrMovement().map((m) => {
-              const magnitude = Math.abs(m.value);
-              const pct = (magnitude / 12000) * 100;
-              return (
-                <div key={m.label}>
-                  <div className="mb-1 flex items-center justify-between">
-                    <span className="text-[12.5px] text-ink/70">{m.label}</span>
-                    <span className={`text-[12px] font-semibold ${m.kind === "pos" ? "text-check" : "text-ever"}`}>
-                      {m.kind === "pos" ? "+" : "−"}{formatMoney(magnitude)}
-                    </span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-ink/4">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${Math.min(100, pct)}%` }}
-                      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                      className={`h-full rounded-full ${m.kind === "pos" ? "bg-check" : "bg-ever"}`}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+          {/* Pipeline strip */}
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+            <PipelineTile label="In review" count={pipeline.inReview} note="4 stuck · 36h" tone="honey" />
+            <PipelineTile label="Approved" count={pipeline.approved} note="On pace" tone="check" />
+            <PipelineTile label="At pharmacy" count={pipeline.atPharmacy} note="2 stuck · 3d" tone="marine" />
+            <PipelineTile label="Shipped" count={pipeline.shipped} note="1 stuck · 6d" tone="ink" />
+            <PipelineTile label="Delivered" count={pipeline.delivered} note="Completed last 7d" tone="check" />
           </div>
-        </Card>
-      </div>
 
-      {/* Row: Alerts + activity + patients */}
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <Card className="p-6">
-          <SectionTitle
-            subtitle={`${state.alerts.length} open`}
-            action={<span className="rounded-full bg-ever/10 px-2 py-0.5 text-[10.5px] font-bold text-ever">Live</span>}
-          >
-            Needs attention
-          </SectionTitle>
-          <div className="space-y-2">
-            {state.alerts.slice(0, 5).map((a) => (
-              <div key={a.id} className="flex items-start gap-3 rounded-2xl border border-ink/6 bg-[#faf9f6] p-3">
-                <div className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${a.severity === "critical" ? "bg-ever/12 text-ever" : "bg-honey/15 text-honey"}`}>
-                  <AlertTriangle className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[13px] font-semibold text-ink">{a.title}</div>
-                  <div className="mt-0.5 line-clamp-2 text-[12px] text-ink/55">{a.detail}</div>
-                </div>
-                <button
-                  onClick={() => adminActions.resolveAlert(a.id)}
-                  className="shrink-0 rounded-full bg-ink px-3 py-1.5 text-[11px] font-semibold text-white transition-transform hover:scale-105"
-                >
-                  {a.action}
+          {/* Actions table */}
+          <Card className="p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-[14px] font-semibold tracking-tight text-ink">Actions</h2>
+                <p className="mt-0.5 text-[11.5px] text-ink/50">Prioritized tasks to keep operations moving</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="hidden items-center gap-1.5 rounded-md border border-ink/[0.08] px-2.5 py-1 text-[11px] font-medium text-ink/60 hover:bg-ink/[0.03] sm:flex">
+                  <Calendar className="h-3 w-3" /> Customize Columns
+                </button>
+                <button className="flex items-center gap-1 rounded-md bg-ink px-2.5 py-1 text-[11px] font-semibold text-white">
+                  View All <ArrowRight className="h-3 w-3" />
                 </button>
               </div>
-            ))}
-            {state.alerts.length === 0 && <div className="rounded-2xl bg-check/8 p-3 text-[13px] text-check">All clear.</div>}
-          </div>
-        </Card>
+            </div>
 
-        <Card className="p-6">
-          <SectionTitle
-            subtitle="Live event stream"
-            action={<Link to="/admin/command" className="text-[11px] font-semibold text-ever">Command →</Link>}
-          >
-            Activity
-          </SectionTitle>
-          <div className="space-y-3">
-            {state.activity.slice(0, 8).map((e) => (
-              <div key={e.id} className="flex items-start gap-3">
-                <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ring-4 ${
-                  e.tone === "success" ? "bg-check ring-check/15" :
-                  e.tone === "warn" ? "bg-honey ring-honey/20" :
-                  e.tone === "critical" ? "bg-ever ring-ever/15" : "bg-marine ring-marine/15"
-                }`} />
-                <div className="min-w-0 flex-1">
-                  <div className="line-clamp-2 text-[12.5px] text-ink/80">{e.text}</div>
-                  <div className="mt-0.5 text-[10.5px] uppercase tracking-[0.1em] text-ink/40">{timeAgo(e.ts)}</div>
+            {/* Tabs */}
+            <div className="mt-3 flex flex-wrap items-center gap-1 border-b border-ink/[0.06]">
+              {[
+                { k: "all", label: "All", n: tabCounts.all },
+                { k: "billing", label: "Billing", n: tabCounts.billing },
+                { k: "patient_ops", label: "Patient ops", n: tabCounts.patient_ops },
+                { k: "admin", label: "Admin", n: tabCounts.admin },
+                { k: "unassigned", label: "Unassigned", n: tabCounts.unassigned },
+              ].map((t) => (
+                <button
+                  key={t.k}
+                  onClick={() => setTab(t.k as typeof tab)}
+                  className={`relative -mb-px flex items-center gap-1.5 border-b-2 px-3 py-2 text-[12px] transition-colors ${
+                    tab === t.k ? "border-ink font-semibold text-ink" : "border-transparent text-ink/50 hover:text-ink"
+                  }`}
+                >
+                  <span>{t.label}</span>
+                  <span className={`rounded px-1 text-[10px] font-semibold ${tab === t.k ? "bg-ink text-white" : "bg-ink/6 text-ink/50"}`}>{t.n}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Table */}
+            <div className="mt-1 overflow-x-auto">
+              <table className="w-full text-[12px]">
+                <thead>
+                  <tr className="text-left text-[11px] text-ink/45">
+                    <th className="py-2 pr-3 font-medium">Subject</th>
+                    <th className="py-2 pr-3 font-medium">Age</th>
+                    <th className="py-2 pr-3 font-medium">Required Action</th>
+                    <th className="py-2 pr-3 font-medium">Status</th>
+                    <th className="py-2 pr-3 font-medium">Assignee</th>
+                    <th className="py-2 pr-3 font-medium">Category</th>
+                    <th className="py-2 pr-3 font-medium" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTasks.map((t) => (
+                    <tr key={t.id} className="border-t border-ink/[0.04] hover:bg-ink/[0.02]">
+                      <td className="py-2.5 pr-3 font-medium text-ink">{t.subject}</td>
+                      <td className="py-2.5 pr-3 text-ink/60">
+                        <span className="inline-flex items-center gap-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-honey" />
+                          {t.ageHrs > 24 ? `${Math.floor(t.ageHrs / 24)}d` : `${t.ageHrs}h`}
+                        </span>
+                      </td>
+                      <td className="py-2.5 pr-3 text-ink/75">
+                        <span className="inline-flex items-center gap-1.5">
+                          <span className="h-1.5 w-1.5 rounded-full bg-ever" /> {t.action}
+                        </span>
+                      </td>
+                      <td className="py-2.5 pr-3">
+                        <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${
+                          t.status === "open" ? "text-ever" : t.status === "waiting" ? "text-honey" : "text-check"
+                        }`}>
+                          <span className={`h-1.5 w-1.5 rounded-full ${
+                            t.status === "open" ? "bg-ever" : t.status === "waiting" ? "bg-honey" : "bg-check"
+                          }`} />
+                          {t.status === "open" ? "Open" : t.status === "waiting" ? "Waiting" : "Done"}
+                        </span>
+                      </td>
+                      <td className="py-2.5 pr-3 text-ink/60 italic">{t.assignee || "Unassigned"}</td>
+                      <td className="py-2.5 pr-3 text-ink/70">
+                        <span className="inline-flex items-center gap-1.5">
+                          <span className="grid h-4 w-4 place-items-center rounded bg-ink/6 text-[9px] font-bold text-ink/60">
+                            {t.category[0].toUpperCase()}
+                          </span>
+                          {t.category === "care_ops" ? "Care ops" : t.category[0].toUpperCase() + t.category.slice(1)}
+                        </span>
+                      </td>
+                      <td className="py-2.5 pr-1 text-right text-ink/30">···</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-3 flex items-center justify-between text-[11px] text-ink/50">
+              <div>{filteredTasks.length} row(s)</div>
+              <div className="flex items-center gap-2">
+                <span>Rows per page 10</span>
+                <span>Page 1 of 2</span>
+                <div className="flex items-center gap-0.5">
+                  <button className="rounded p-1 hover:bg-ink/5">«</button>
+                  <button className="rounded p-1 hover:bg-ink/5">‹</button>
+                  <button className="rounded p-1 hover:bg-ink/5">›</button>
+                  <button className="rounded p-1 hover:bg-ink/5">»</button>
                 </div>
               </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-6">
-          <SectionTitle
-            subtitle="Newest first"
-            action={<Link to="/admin/patients" className="text-[11px] font-semibold text-ever">All →</Link>}
-          >
-            Recent patients
-          </SectionTitle>
-          <div className="space-y-1.5">
-            {state.patients.slice(0, 6).map((p) => (
-              <button
-                key={p.id}
-                onClick={() => { adminActions.openPatient(p.id); }}
-                className="flex w-full items-center gap-3 rounded-2xl px-2 py-2 text-left hover:bg-ink/4"
-              >
-                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-blush/40 to-ever/20 text-[11.5px] font-semibold text-ink">
-                  {p.firstName[0]}{p.lastName[0]}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[13px] font-semibold text-ink">{p.firstName} {p.lastName}</div>
-                  <div className="truncate text-[11px] text-ink/50">{p.email}</div>
-                </div>
-                <StatusPill tone={p.status === "active" ? "success" : p.status === "failed" ? "critical" : p.status === "paused" ? "warn" : "neutral"}>
-                  {p.status}
-                </StatusPill>
-              </button>
-            ))}
-          </div>
-        </Card>
-      </div>
-
-      {/* Acquisition mix + Quick tiles */}
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <Card className="p-6">
-          <SectionTitle subtitle="Last 30 days">Acquisition mix</SectionTitle>
-          <div className="space-y-2.5">
-            {acquisition.map((a) => (
-              <div key={a.label}>
-                <div className="mb-1 flex items-center justify-between text-[12.5px]">
-                  <span className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full" style={{ background: a.color }} />
-                    <span className="text-ink/75">{a.label}</span>
-                  </span>
-                  <span className="font-semibold text-ink">{a.value}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-ink/4">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${a.value}%` }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="h-full rounded-full"
-                    style={{ background: a.color }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <div className="grid grid-cols-2 gap-3 lg:col-span-2">
-          <QuickTile to="/admin/orders" icon={Package} label="Orders" hint={`${state.orders.length} active`} tone="ever" />
-          <QuickTile to="/admin/payments" icon={CreditCard} label="Payments" hint={`${state.payments.filter(p => p.status === "failed").length} failed`} tone="honey" />
-          <QuickTile to="/admin/leads" icon={UserPlus} label="Leads" hint={`${state.leads.length} in queue`} tone="marine" />
-          <QuickTile to="/admin/messages" icon={MessageSquare} label="Messages" hint={`${state.conversations.filter(c => c.unread).length} unread`} tone="check" />
+            </div>
+          </Card>
         </div>
+
+        {/* Right sidebar column */}
+        <aside className="space-y-4">
+          {/* Quick actions */}
+          <Card className="p-4">
+            <div className="text-[13px] font-semibold text-ink">Quick actions</div>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <QuickTile icon={CreditCard} label="New order" to="/admin/orders" />
+              <QuickTile icon={DollarSign} label="Update billing" to="/admin/payments" />
+              <QuickTile icon={Calendar} label="Schedule" to="/admin/messages" />
+              <QuickTile icon={Search} label="Quick lookup" to="/admin/patients" />
+            </div>
+            <div className="mt-3 flex items-center gap-2 rounded-lg border border-ink/[0.08] bg-white px-2.5 py-1.5">
+              <Search className="h-3.5 w-3.5 text-ink/40" />
+              <input placeholder="Lookup order # or patient…" className="flex-1 bg-transparent text-[11.5px] outline-none placeholder:text-ink/40" />
+              <ArrowRight className="h-3.5 w-3.5 text-ink/30" />
+            </div>
+          </Card>
+
+          {/* Patient funnel */}
+          <Card className="p-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+                  <span className="text-ink/40">▽</span> Patient funnel
+                </div>
+                <div className="mt-0.5 text-[11px] text-ink/50">Journey conversion · last 30 days</div>
+              </div>
+              <div className="text-right">
+                <div className="font-hero text-[16px] font-semibold text-ink">10.4%</div>
+              </div>
+            </div>
+            <div className="mt-3 space-y-2">
+              {funnel.map((f) => (
+                <div key={f.label}>
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="text-ink/70">{f.label}</span>
+                    <span className="tabular-nums text-ink/60">
+                      <span className="font-semibold text-ink">{f.count.toLocaleString()}</span>
+                      <span className="ml-1.5 text-[10.5px] text-ink/45">{f.pct.toFixed(1)}%</span>
+                    </span>
+                  </div>
+                  <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ink/[0.05]">
+                    <div className="h-full rounded-full bg-ink" style={{ width: `${f.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Acquisition */}
+          <Card className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+                <span className="text-ink/40">▽</span> Acquisition
+              </div>
+              <div className="text-[11px] text-ink/45">last 30 days</div>
+            </div>
+            <div className="mt-3 flex h-2 overflow-hidden rounded-full">
+              {acquisition.map((a) => (
+                <div key={a.label} style={{ width: `${a.value}%`, background: a.color }} />
+              ))}
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-[10.5px] text-ink/70">
+              {acquisition.map((a) => (
+                <span key={a.label} className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: a.color }} />
+                  {a.label} {a.value}%
+                </span>
+              ))}
+            </div>
+          </Card>
+        </aside>
       </div>
     </AdminShell>
   );
 }
 
+function LegendDot({ c }: { c: string }) {
+  return <span className="mr-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full align-middle" style={{ background: c }} />;
+}
+
+function RevenueLine() {
+  const points = [30, 32, 28, 34, 38, 36, 42, 46, 50, 55, 58, 62, 68, 72, 75, 78, 82, 84];
+  return <Sparkline values={points} color="#171717" height={80} />;
+}
+
+function MrrBar() {
+  // Colored segmented bar showing positive/negative movements
+  const segments = mrrMovement();
+  const total = segments.reduce((a, b) => a + Math.abs(b.value), 0);
+  const colors = ["#4a7c6f", "#8bbd7f", "#c4e07a", "#f5b451", "#e88d3a", "#ee7273"];
+  return (
+    <div className="flex h-6 w-full overflow-hidden rounded-md">
+      {segments.map((s, i) => (
+        <div
+          key={s.label}
+          style={{ width: `${(Math.abs(s.value) / total) * 100}%`, background: colors[i] }}
+          className="relative"
+          title={`${s.label}: ${s.kind === "pos" ? "+" : "−"}$${Math.abs(s.value).toLocaleString()}`}
+        />
+      ))}
+    </div>
+  );
+}
+
 function ProgramDonut({ data }: { data: Array<{ code: string; revenue: number }> }) {
   const total = data.reduce((a, b) => a + b.revenue, 0);
-  const colors = ["#ee7273", "#1D437B", "#c4a265", "#4a7c6f", "#c4998a", "#8b9bb4"];
-  const size = 168;
-  const stroke = 26;
+  const colors = ["#ee7273", "#171717", "#c4a265", "#4a7c6f", "#1D437B", "#8b9bb4"];
+  const size = 78;
+  const stroke = 14;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-
   let offset = 0;
   const segments = data.map((d, i) => {
     const pct = d.revenue / total;
     const len = c * pct;
     const seg = (
-      <circle
-        key={d.code}
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke={colors[i % colors.length]}
-        strokeWidth={stroke}
-        strokeDasharray={`${len} ${c - len}`}
-        strokeDashoffset={-offset}
-        strokeLinecap="butt"
-        transform={`rotate(-90 ${size / 2} ${size / 2})`}
-      />
+      <circle key={d.code} cx={size / 2} cy={size / 2} r={r} fill="none"
+        stroke={colors[i % colors.length]} strokeWidth={stroke}
+        strokeDasharray={`${len} ${c - len}`} strokeDashoffset={-offset}
+        transform={`rotate(-90 ${size / 2} ${size / 2})`} />
     );
     offset += len;
     return seg;
   });
-
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(23,23,23,0.05)" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(23,23,23,0.06)" strokeWidth={stroke} />
         {segments}
       </svg>
-      <div className="absolute inset-0 grid place-items-center">
-        <div className="text-center">
-          <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">Total</div>
-          <div className="font-hero text-[22px] font-bold leading-none text-ink">{formatMoney(total)}</div>
-        </div>
-      </div>
     </div>
   );
 }
 
-function QuickTile({ to, icon: Icon, label, hint, tone }: { to: string; icon: typeof Package; label: string; hint: string; tone: "ever" | "marine" | "check" | "honey" }) {
+function PipelineTile({ label, count, note, tone }: { label: string; count: number; note: string; tone: "honey" | "check" | "marine" | "ink" }) {
   const toneMap = {
-    ever: "bg-ever/10 text-ever",
-    marine: "bg-marine/10 text-marine",
-    check: "bg-check/12 text-check",
-    honey: "bg-honey/15 text-honey",
+    honey: { bar: "bg-honey", text: "text-honey" },
+    check: { bar: "bg-check", text: "text-check" },
+    marine: { bar: "bg-marine", text: "text-marine" },
+    ink: { bar: "bg-ink", text: "text-ink" },
   } as const;
+  const t = toneMap[tone];
+  // Striped mini bar
   return (
-    <Link to={to} className="group flex items-center gap-3 rounded-3xl border border-ink/6 bg-white p-5 transition-all hover:border-ink/15 hover:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)]">
-      <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl ${toneMap[tone]}`}>
-        <Icon className="h-5 w-5" />
+    <Card className="p-3">
+      <div className="flex items-baseline justify-between">
+        <div className="flex items-center gap-1.5 text-[11.5px] text-ink/60">
+          <span className={`inline-block h-1.5 w-1.5 rounded-full ${t.bar}`} />
+          {label}
+        </div>
+        <div className="font-hero text-[16px] font-semibold text-ink">{count}</div>
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="text-[14px] font-semibold text-ink">{label}</div>
-        <div className="truncate text-[11.5px] text-ink/50">{hint}</div>
+      <div className="mt-2 flex h-1.5 gap-0.5 overflow-hidden rounded-full">
+        {Array.from({ length: 16 }).map((_, i) => (
+          <div key={i} className={`h-full flex-1 ${i < Math.min(16, Math.max(2, Math.round((count / 60) * 16))) ? t.bar : "bg-ink/[0.08]"}`} />
+        ))}
       </div>
-      <ArrowRight className="h-4 w-4 text-ink/30 transition-transform group-hover:translate-x-0.5 group-hover:text-ink" />
+      <div className="mt-1.5 text-[10.5px] text-ink/45">{note}</div>
+    </Card>
+  );
+}
+
+function QuickTile({ icon: Icon, label, to }: { icon: typeof Package; label: string; to: string }) {
+  return (
+    <Link to={to} className="group flex items-center gap-2 rounded-lg border border-ink/[0.08] bg-white p-2.5 hover:border-ink/20">
+      <span className="grid h-6 w-6 place-items-center rounded-md bg-ink/[0.04] text-ink/70">
+        <Icon className="h-3.5 w-3.5" strokeWidth={1.75} />
+      </span>
+      <span className="text-[11.5px] font-medium text-ink">{label}</span>
     </Link>
   );
 }
