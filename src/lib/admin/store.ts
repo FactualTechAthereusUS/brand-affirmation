@@ -387,6 +387,9 @@ export type AdminState = {
     patientFilter: PatientStatus | "all";
     patientSearch: string;
     showLogoMenu: boolean;
+    inboxFolder?: string;
+    inboxChannel?: MessageChannel | "all";
+    inboxSearch?: string;
   };
 };
 
