@@ -1,8 +1,9 @@
 /**
  * PharmaBro whitelabel brand store.
- * Zustand-style slice, localStorage persisted, multi-brand.
+ * useSyncExternalStore + localStorage. No backend.
  */
-import { create } from "zustand";
+import { useSyncExternalStore } from "react";
+
 
 export type BrandStage = "onboarding" | "zero_sales" | "first_sales" | "scaling";
 export type BrandId = string;
