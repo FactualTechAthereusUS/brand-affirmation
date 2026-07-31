@@ -404,7 +404,7 @@ function OppCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       className="rounded-xl border border-ink/[0.06] bg-white p-4"
     >
