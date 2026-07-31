@@ -24,6 +24,10 @@ export const Route = createFileRoute("/admin/analytics/funnel")({
   head: () => ({ meta: [
     { title: "Funnel & CRO — Blissley Admin" },
     { name: "description", content: "Presell, sales page, intake and checkout conversion rates with screen-level drop-off." },
+    { property: "og:title", content: "Funnel & CRO — Blissley Admin" },
+    { property: "og:description", content: "Presell, sales page, intake and checkout conversion rates with screen-level drop-off." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
   ] }),
   component: FunnelPage,
 });
