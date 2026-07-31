@@ -1,9 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { ArrowUpRight, Download } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { MetricCard, AnalyticsSection } from "@/components/admin/analytics/MetricCard";
 import { AreaChart } from "@/components/admin/analytics/AreaChart";
-import { LineChartMini } from "@/components/admin/analytics/LineChartMini";
+import { BarChart } from "@/components/admin/analytics/BarChart";
+import { FunnelFlow } from "@/components/admin/analytics/FunnelFlow";
 import { useAdmin } from "@/lib/admin/store";
 import { makeWindow, daysForRange, formatDelta, type RangeKey, type CompareKey } from "@/lib/admin/analytics";
 import { croMetrics, intakeScreenDropoff, type CroRate } from "@/lib/admin/cro";
@@ -23,7 +25,8 @@ export const Route = createFileRoute("/admin/analytics/funnel")({
   component: FunnelPage,
 });
 
-const RANGE_LABEL: Record<string, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days", ytd: "Year to date" };
+const RANGE_LABEL: Record<string, string> = { "7d": "7 days", "30d": "30 days", "90d": "90 days", ytd: "Year to date" };
+const COMPARE_LABEL: Record<string, string> = { prior: "vs prior period", yoy: "vs last year", none: "No comparison" };
 
 const C = {
   presell: "#8b5cf6",
@@ -33,6 +36,8 @@ const C = {
   purchase: "#10b981",
   bad: "#ee7273",
 };
+
+const FUNNEL_COLORS = ["#4f46e5", "#4f46e5", "#2563eb", "#0ea5e9", "#06b6d4", "#14b8a6", "#10b981"];
 
 function FunnelPage() {
   const search = Route.useSearch();
@@ -45,8 +50,9 @@ function FunnelPage() {
 
   const r = cro.rates;
   const dts = cro.dates;
-  const num = (v: number) => v.toLocaleString();
+  const num = (v: number) => Math.round(v).toLocaleString();
   const pct1 = (v: number) => `${v.toFixed(1)}%`;
+  const cmp = compare === "none" ? undefined : true;
 
   const exportRates = () => {
     const rows = Object.values(r).map((m) => ({
@@ -63,6 +69,9 @@ function FunnelPage() {
     })));
   };
 
+  const leak = biggestLeak(cro.steps);
+  const abandonedCarts = cro.totals.checkoutStarts - cro.totals.purchases;
+
   return (
     <AdminShell>
       <div className="-mx-4 -mt-4 min-h-[calc(100vh-56px)] bg-[#f6f6f7] px-4 pb-16 pt-4 lg:-mx-6 lg:px-6">
@@ -78,89 +87,132 @@ function FunnelPage() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-1.5 text-[11.5px]">
-            {(["7d", "30d", "90d", "ytd"] as RangeKey[]).map((k) => (
-              <button
-                key={k}
-                onClick={() => navigate({ search: (p: FunnelSearch) => ({ ...p, range: k }) })}
-                className={`rounded-lg border px-2.5 py-1.5 ${range === k ? "border-ink bg-ink text-white" : "border-ink/12 bg-white text-ink/70 hover:border-ink"}`}
-              >
-                {RANGE_LABEL[k]}
-              </button>
-            ))}
-            <button onClick={exportRates} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1.5 text-ink/70 hover:border-ink">Export rates · CSV</button>
+            <div className="flex items-center rounded-lg border border-ink/12 bg-white p-0.5">
+              {(["7d", "30d", "90d", "ytd"] as RangeKey[]).map((k) => (
+                <button
+                  key={k}
+                  onClick={() => navigate({ search: (p: FunnelSearch) => ({ ...p, range: k }) })}
+                  className={`rounded-[6px] px-2.5 py-1 transition-colors ${range === k ? "bg-ink text-white" : "text-ink/65 hover:bg-ink/[0.05]"}`}
+                >
+                  {RANGE_LABEL[k]}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center rounded-lg border border-ink/12 bg-white p-0.5">
+              {(["prior", "yoy", "none"] as CompareKey[]).map((k) => (
+                <button
+                  key={k}
+                  onClick={() => navigate({ search: (p: FunnelSearch) => ({ ...p, compare: k }) })}
+                  className={`rounded-[6px] px-2.5 py-1 transition-colors ${compare === k ? "bg-marine/[0.10] font-semibold text-marine" : "text-ink/65 hover:bg-ink/[0.05]"}`}
+                >
+                  {COMPARE_LABEL[k]}
+                </button>
+              ))}
+            </div>
+            <button onClick={exportRates} className="flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-2.5 py-1.5 text-ink/70 hover:border-ink">
+              <Download className="h-3.5 w-3.5" strokeWidth={1.75} /> Export
+            </button>
           </div>
         </motion.div>
 
-        {/* Headline */}
-        <AnalyticsSection title="Headline conversion">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-            <MetricCard
-              label="Overall conversion rate"
-              value={pct1(r.overallConversionRate.value)}
-              deltaPct={r.overallConversionRate.deltaPt}
-              deltaUnit="pt"
-              sub={`${num(cro.totals.purchases)} purchases from ${num(cro.totals.sessions)} sessions`}
-            >
-              <div className="px-3 pb-2">
-                <AreaChart
-                  data={r.overallConversionRate.series}
-                  prior={compare === "none" ? undefined : r.overallConversionRate.priorSeries}
-                  dates={dts} label="Conversion rate" priorLabel="Prior period"
-                  formatValue={pct1} formatYTick={(v) => `${v.toFixed(1)}%`}
-                  stroke={C.purchase} height={200}
-                />
-              </div>
-            </MetricCard>
-            <MetricCard
-              label="Step volumes"
-              value={num(cro.totals.purchases)}
-              deltaPct={cro.volumeDeltas.purchases}
-              sub="Purchases this window"
-            >
-              <div className="px-4 pb-3 pt-1">
-                <StepWaterfall steps={cro.steps} />
-              </div>
-            </MetricCard>
-            <MetricCard
-              label="Biggest leak"
-              value={biggestLeak(cro.steps).label}
-              sub={`−${biggestLeak(cro.steps).dropPct.toFixed(1)}% of the previous step is lost here`}
-            >
-              <div className="space-y-2 px-4 pb-3 pt-1 text-[11.5px] text-ink/65">
-                {drop.worst && (
-                  <div className="rounded-lg border border-ever/25 bg-ever/[0.06] p-3">
-                    <div className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-ever">Worst intake screen</div>
-                    <div className="mt-0.5 text-[13px] font-semibold text-ink">{drop.worst.order}. {drop.worst.name}</div>
-                    <div className="mt-0.5">{drop.worst.dropPct.toFixed(1)}% of entrants abandon here · {num(drop.worst.exited)} people.</div>
+        {/* Hero: conversion + funnel */}
+        <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-12">
+          <div className="rounded-xl border border-ink/[0.06] bg-white lg:col-span-7">
+            <div className="flex flex-wrap items-end justify-between gap-3 px-4 pt-4">
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Overall conversion rate</div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <div className="font-hero text-[38px] font-semibold leading-none tabular-nums text-ink">
+                    {pct1(r.overallConversionRate.value)}
                   </div>
-                )}
-                <div className="rounded-lg border border-ink/[0.08] bg-ink/[0.02] p-3">
-                  <div className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-ink/50">Checkout recovery upside</div>
-                  <div className="mt-0.5">
-                    {num(cro.totals.checkoutStarts - cro.totals.purchases)} carts abandoned. Recovering 20% would add{" "}
-                    {Math.round((cro.totals.checkoutStarts - cro.totals.purchases) * 0.2).toLocaleString()} orders.
-                  </div>
+                  <span className={`rounded px-1.5 py-0.5 text-[11px] font-medium ${r.overallConversionRate.deltaPt >= 0 ? "bg-check/10 text-check" : "bg-ever/8 text-ever"}`}>
+                    {formatDelta(r.overallConversionRate.deltaPt, { unit: "pt" })}
+                  </span>
                 </div>
-                <Link to="/admin/leads" className="inline-block rounded-lg border border-ink/12 bg-white px-2.5 py-1.5 text-ink/70 hover:border-ink">
-                  Work abandoned leads →
-                </Link>
+                <div className="mt-1 text-[11.5px] text-ink/50">
+                  {num(cro.totals.purchases)} purchases from {num(cro.totals.sessions)} sessions
+                </div>
               </div>
-            </MetricCard>
+              <div className="grid grid-cols-3 gap-4 text-right">
+                {[
+                  { k: "Sessions", v: num(cro.totals.sessions) },
+                  { k: "Checkouts", v: num(cro.totals.checkoutStarts) },
+                  { k: "Purchases", v: num(cro.totals.purchases) },
+                ].map((x) => (
+                  <div key={x.k}>
+                    <div className="text-[10px] uppercase tracking-[0.08em] text-ink/45">{x.k}</div>
+                    <div className="font-hero text-[15px] font-semibold tabular-nums text-ink">{x.v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="px-3 pb-3 pt-2">
+              <AreaChart
+                data={r.overallConversionRate.series}
+                prior={cmp ? r.overallConversionRate.priorSeries : undefined}
+                dates={dts} label="Conversion rate" priorLabel={COMPARE_LABEL[compare]}
+                formatValue={(v) => `${v.toFixed(2)}%`} formatYTick={(v) => `${v.toFixed(2)}%`}
+                stroke={C.purchase} height={230}
+              />
+            </div>
           </div>
-        </AnalyticsSection>
+
+          <div className="rounded-xl border border-ink/[0.06] bg-white lg:col-span-5">
+            <div className="flex items-baseline justify-between px-4 pt-4">
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Funnel flow</div>
+                <div className="mt-0.5 text-[11.5px] text-ink/50">Hover any step for detail</div>
+              </div>
+              <span className="rounded bg-ever/8 px-1.5 py-0.5 text-[10.5px] font-medium text-ever">
+                Leak: {leak.label}
+              </span>
+            </div>
+            <div className="px-3 pb-4 pt-3">
+              <FunnelFlow steps={cro.steps} colors={FUNNEL_COLORS} height={306} />
+            </div>
+          </div>
+        </div>
+
+        {/* Opportunity strip */}
+        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+          <OppCard
+            title="Biggest leak"
+            value={leak.label}
+            body={`−${leak.dropPct.toFixed(1)}% of the previous step is lost here.`}
+            tone="bad"
+          />
+          <OppCard
+            title="Worst intake screen"
+            value={drop.worst ? `${drop.worst.order}. ${drop.worst.name}` : "—"}
+            body={drop.worst
+              ? `${drop.worst.dropPct.toFixed(1)}% of entrants abandon here · ${num(drop.worst.exited)} people.`
+              : "No intake traffic in this window."}
+            tone="bad"
+            to="/admin/build/intake"
+            cta="Edit intake"
+          />
+          <OppCard
+            title="Checkout recovery upside"
+            value={`${num(abandonedCarts)} carts`}
+            body={`Recovering 20% adds ~${num(abandonedCarts * 0.2)} orders this window.`}
+            tone="neutral"
+            to="/admin/leads"
+            cta="Work abandoned leads"
+          />
+        </div>
 
         {/* Presell */}
         <AnalyticsSection title="Presell pages">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard label="Presell visitors" value={num(cro.totals.presellViews)} deltaPct={cro.volumeDeltas.presellViews} sub="Advertorials & quiz bridges">
               <div className="px-3 pb-2">
-                <AreaChart data={cro.cur.map((d) => d.presellViews)} prior={compare === "none" ? undefined : cro.pri.map((d) => d.presellViews)} dates={dts} label="Presell visitors" priorLabel="Prior period" formatValue={num} stroke={C.presell} height={180} />
+                <BarChart data={cro.cur.map((d) => d.presellViews)} prior={cmp ? cro.pri.map((d) => d.presellViews) : undefined} dates={dts} label="Presell visitors" priorLabel={COMPARE_LABEL[compare]} color={C.presell} height={170} />
               </div>
             </MetricCard>
             <RateCard rate={r.presellCtr} color={C.presell} dates={dts} compare={compare} />
             <MetricCard label="Presell share of traffic" value={pct1((cro.totals.presellViews / Math.max(1, cro.totals.sessions)) * 100)} sub="Sessions that land on a presell first">
-              <div className="px-4 pb-3 pt-1 text-[11.5px] text-ink/65">
-                {num(cro.totals.presellClicks)} of {num(cro.totals.presellViews)} presell readers continued to the sales page —
+              <div className="px-4 pb-3 pt-1 text-[11.5px] leading-relaxed text-ink/65">
+                {num(cro.totals.presellClicks)} of {num(cro.totals.presellViews)} presell readers continued to the sales page —{" "}
                 {num(cro.totals.presellViews - cro.totals.presellClicks)} dropped before ever seeing an offer.
               </div>
             </MetricCard>
@@ -172,7 +224,7 @@ function FunnelPage() {
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard label="Sales page visitors" value={num(cro.totals.salesViews)} deltaPct={cro.volumeDeltas.salesViews} sub="Direct + presell click-throughs">
               <div className="px-3 pb-2">
-                <AreaChart data={cro.cur.map((d) => d.salesViews)} prior={compare === "none" ? undefined : cro.pri.map((d) => d.salesViews)} dates={dts} label="Sales page visitors" priorLabel="Prior period" formatValue={num} stroke={C.sales} height={180} />
+                <BarChart data={cro.cur.map((d) => d.salesViews)} prior={cmp ? cro.pri.map((d) => d.salesViews) : undefined} dates={dts} label="Sales page visitors" priorLabel={COMPARE_LABEL[compare]} color={C.sales} height={170} />
               </div>
             </MetricCard>
             <RateCard rate={r.salesClickRate} color={C.sales} dates={dts} compare={compare} />
@@ -191,7 +243,7 @@ function FunnelPage() {
             <RateCard rate={r.intakeAbandonRate} color={C.bad} dates={dts} compare={compare} sub={`${num(cro.totals.intakeStarts - cro.totals.intakeCompletions)} abandoned`} />
             <MetricCard label="Intake starts" value={num(cro.totals.intakeStarts)} deltaPct={cro.volumeDeltas.intakeStarts} sub="Reached screen 1">
               <div className="px-3 pb-2">
-                <AreaChart data={cro.cur.map((d) => d.intakeStarts)} prior={compare === "none" ? undefined : cro.pri.map((d) => d.intakeStarts)} dates={dts} label="Intake starts" priorLabel="Prior period" formatValue={num} stroke={C.intake} height={160} />
+                <BarChart data={cro.cur.map((d) => d.intakeStarts)} prior={cmp ? cro.pri.map((d) => d.intakeStarts) : undefined} dates={dts} label="Intake starts" priorLabel={COMPARE_LABEL[compare]} color={C.intake} height={158} />
               </div>
             </MetricCard>
           </div>
@@ -201,10 +253,36 @@ function FunnelPage() {
             <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-ink/[0.06] px-4 py-3">
               <div>
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Screen-by-screen drop-off</div>
-                <div className="mt-0.5 text-[11.5px] text-ink/55">Where inside the quiz people quit — optimise the red rows first.</div>
+                <div className="mt-0.5 text-[11.5px] text-ink/55">Where inside the quiz people quit — optimise the flagged rows first.</div>
               </div>
               <Link to="/admin/build/intake" className="rounded-lg border border-ink/12 px-2.5 py-1 text-[11px] text-ink/70 hover:border-ink">Edit intake →</Link>
             </div>
+
+            {/* Retention curve across screens */}
+            {drop.screens.length > 0 && (
+              <div className="border-b border-ink/[0.06] px-4 py-3">
+                <div className="flex items-end gap-[3px]" style={{ height: 92 }}>
+                  {drop.screens.map((sc) => (
+                    <div key={`bar-${sc.id}`} className="group relative flex-1">
+                      <div
+                        className="w-full rounded-t bg-marine/70 transition-colors group-hover:bg-marine"
+                        style={{ height: Math.max(3, (sc.reachedPct / 100) * 92), background: sc.worst ? C.bad : undefined }}
+                      />
+                      <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 hidden w-[176px] -translate-x-1/2 rounded-lg bg-ink px-2.5 py-1.5 text-white shadow-lg group-hover:block">
+                        <div className="text-[10px] font-semibold">{sc.order}. {sc.name}</div>
+                        <div className="mt-0.5 text-[10px] text-white/60">Reached {sc.reachedPct.toFixed(1)}% · dropped {sc.dropPct.toFixed(1)}%</div>
+                        <div className="text-[10px] text-white/60">{num(sc.entered)} entered · {num(sc.exited)} left</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-1.5 flex justify-between text-[10px] text-ink/45">
+                  <span>Screen 1 · {num(drop.starts)} started</span>
+                  <span>Submitted · {num(drop.completions)}</span>
+                </div>
+              </div>
+            )}
+
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] text-[11.5px]">
                 <thead>
@@ -220,7 +298,7 @@ function FunnelPage() {
                 </thead>
                 <tbody>
                   {drop.screens.map((sc) => (
-                    <tr key={sc.id} className={`border-b border-ink/[0.04] ${sc.worst ? "bg-ever/[0.05]" : ""}`}>
+                    <tr key={sc.id} className={`border-b border-ink/[0.04] transition-colors hover:bg-ink/[0.02] ${sc.worst ? "bg-ever/[0.05]" : ""}`}>
                       <td className="px-4 py-2 tabular-nums text-ink/45">{sc.order}</td>
                       <td className="px-2 py-2">
                         <div className="flex items-center gap-2">
@@ -258,10 +336,10 @@ function FunnelPage() {
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <RateCard rate={r.checkoutStartRate} color={C.checkout} dates={dts} compare={compare} sub={`${num(cro.totals.checkoutStarts)} started`} />
             <RateCard rate={r.checkoutCompletionRate} color={C.purchase} dates={dts} compare={compare} sub={`${num(cro.totals.purchases)} purchased`} />
-            <RateCard rate={r.checkoutAbandonRate} color={C.bad} dates={dts} compare={compare} sub={`${num(cro.totals.checkoutStarts - cro.totals.purchases)} abandoned`} />
+            <RateCard rate={r.checkoutAbandonRate} color={C.bad} dates={dts} compare={compare} sub={`${num(abandonedCarts)} abandoned`} />
             <MetricCard label="Checkout starts" value={num(cro.totals.checkoutStarts)} deltaPct={cro.volumeDeltas.checkoutStarts} sub="Reached payment step">
               <div className="px-3 pb-2">
-                <AreaChart data={cro.cur.map((d) => d.checkoutStarts)} prior={compare === "none" ? undefined : cro.pri.map((d) => d.checkoutStarts)} dates={dts} label="Checkout starts" priorLabel="Prior period" formatValue={num} stroke={C.checkout} height={160} />
+                <BarChart data={cro.cur.map((d) => d.checkoutStarts)} prior={cmp ? cro.pri.map((d) => d.checkoutStarts) : undefined} dates={dts} label="Checkout starts" priorLabel={COMPARE_LABEL[compare]} color={C.checkout} height={158} />
               </div>
             </MetricCard>
           </div>
@@ -286,7 +364,7 @@ function FunnelPage() {
                   {Object.values(r).map((m) => {
                     const good = Math.abs(m.deltaPt) < 0.05 ? "neutral" : (m.deltaPt > 0) === m.positiveIsGood ? "good" : "bad";
                     return (
-                      <tr key={m.key} className="border-b border-ink/[0.04]">
+                      <tr key={m.key} className="border-b border-ink/[0.04] transition-colors hover:bg-ink/[0.02]">
                         <td className="px-4 py-2 font-medium text-ink">{m.label}</td>
                         <td className="px-2 py-2 text-ink/55">{m.hint}</td>
                         <td className="px-2 py-2 text-right tabular-nums font-semibold text-ink">{m.value.toFixed(2)}%</td>
@@ -312,6 +390,29 @@ function biggestLeak(steps: { label: string; dropPct: number }[]) {
   return steps.slice(1).reduce((worst, s) => (s.dropPct > worst.dropPct ? s : worst), steps[1] ?? { label: "—", dropPct: 0 });
 }
 
+function OppCard({
+  title, value, body, tone, to, cta,
+}: {
+  title: string; value: string; body: string; tone: "bad" | "neutral"; to?: string; cta?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+      transition={{ duration: 0.35 }}
+      className="rounded-xl border border-ink/[0.06] bg-white p-4"
+    >
+      <div className={`text-[10.5px] font-medium uppercase tracking-[0.08em] ${tone === "bad" ? "text-ever" : "text-ink/50"}`}>{title}</div>
+      <div className="mt-1 font-hero text-[16px] font-semibold text-ink">{value}</div>
+      <div className="mt-1 text-[11.5px] leading-relaxed text-ink/60">{body}</div>
+      {to && cta && (
+        <Link to={to} className="mt-2.5 inline-flex items-center gap-1 text-[11.5px] font-medium text-marine hover:underline">
+          {cta} <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+        </Link>
+      )}
+    </motion.div>
+  );
+}
+
 function RateCard({
   rate, color, dates, compare, sub,
 }: {
@@ -332,35 +433,14 @@ function RateCard({
           prior={compare === "none" ? undefined : rate.priorSeries}
           dates={dates}
           label={rate.label}
-          priorLabel="Prior period"
-          formatValue={(v: number) => `${v.toFixed(1)}%`}
-          formatYTick={(v: number) => `${v.toFixed(0)}%`}
+          priorLabel={COMPARE_LABEL[compare]}
+          formatValue={(v: number) => `${v.toFixed(2)}%`}
+          formatYTick={(v: number) => `${v.toFixed(1)}%`}
           stroke={color}
-          height={160}
+          height={158}
+          legend={false}
         />
       </div>
     </MetricCard>
-  );
-}
-
-function StepWaterfall({ steps }: { steps: { label: string; count: number; pct: number; dropPct: number }[] }) {
-  const max = steps[0]?.count || 1;
-  return (
-    <div className="space-y-1.5">
-      {steps.map((s, i) => (
-        <div key={s.label}>
-          <div className="flex items-baseline justify-between text-[11px]">
-            <span className="text-ink/70">{s.label}</span>
-            <span className="tabular-nums text-ink/50">
-              {s.count.toLocaleString()} <span className="text-ink/30">· {s.pct.toFixed(1)}%</span>
-              {i > 0 && <span className="ml-1.5 text-ever">−{s.dropPct.toFixed(1)}%</span>}
-            </span>
-          </div>
-          <div className="mt-1 h-2 w-full rounded bg-ink/[0.04]">
-            <div className="h-full rounded bg-ink" style={{ width: `${(s.count / max) * 100}%` }} />
-          </div>
-        </div>
-      ))}
-    </div>
   );
 }
