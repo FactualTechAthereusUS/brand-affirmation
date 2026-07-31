@@ -410,25 +410,25 @@ const AdminBuildEmailsRoute = AdminBuildEmailsRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsRetentionRoute = AdminAnalyticsRetentionRouteImport.update({
-  id: '/retention',
-  path: '/retention',
-  getParentRoute: () => AdminAnalyticsRoute,
+  id: '/admin/analytics/retention',
+  path: '/admin/analytics/retention',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsFunnelRoute = AdminAnalyticsFunnelRouteImport.update({
-  id: '/funnel',
-  path: '/funnel',
-  getParentRoute: () => AdminAnalyticsRoute,
+  id: '/admin/analytics/funnel',
+  path: '/admin/analytics/funnel',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsFinancesRoute = AdminAnalyticsFinancesRouteImport.update({
-  id: '/finances',
-  path: '/finances',
-  getParentRoute: () => AdminAnalyticsRoute,
+  id: '/admin/analytics/finances',
+  path: '/admin/analytics/finances',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsAcquisitionRoute =
   AdminAnalyticsAcquisitionRouteImport.update({
-    id: '/acquisition',
-    path: '/acquisition',
-    getParentRoute: () => AdminAnalyticsRoute,
+    id: '/admin/analytics/acquisition',
+    path: '/admin/analytics/acquisition',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -895,6 +895,10 @@ export interface RootRouteChildren {
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
+  AdminAnalyticsAcquisitionRoute: typeof AdminAnalyticsAcquisitionRoute
+  AdminAnalyticsFinancesRoute: typeof AdminAnalyticsFinancesRoute
+  AdminAnalyticsFunnelRoute: typeof AdminAnalyticsFunnelRoute
+  AdminAnalyticsRetentionRoute: typeof AdminAnalyticsRetentionRoute
   AdminBuildEmailsRoute: typeof AdminBuildEmailsRoute
   AdminBuildFunnelRoute: typeof AdminBuildFunnelRoute
   AdminBuildIntakeRoute: typeof AdminBuildIntakeRoute
@@ -1374,31 +1378,31 @@ declare module '@tanstack/react-router' {
     }
     '/admin/analytics/retention': {
       id: '/admin/analytics/retention'
-      path: '/retention'
+      path: '/admin/analytics/retention'
       fullPath: '/admin/analytics/retention'
       preLoaderRoute: typeof AdminAnalyticsRetentionRouteImport
-      parentRoute: typeof AdminAnalyticsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/analytics/funnel': {
       id: '/admin/analytics/funnel'
-      path: '/funnel'
+      path: '/admin/analytics/funnel'
       fullPath: '/admin/analytics/funnel'
       preLoaderRoute: typeof AdminAnalyticsFunnelRouteImport
-      parentRoute: typeof AdminAnalyticsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/analytics/finances': {
       id: '/admin/analytics/finances'
-      path: '/finances'
+      path: '/admin/analytics/finances'
       fullPath: '/admin/analytics/finances'
       preLoaderRoute: typeof AdminAnalyticsFinancesRouteImport
-      parentRoute: typeof AdminAnalyticsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/analytics/acquisition': {
       id: '/admin/analytics/acquisition'
-      path: '/acquisition'
+      path: '/admin/analytics/acquisition'
       fullPath: '/admin/analytics/acquisition'
       preLoaderRoute: typeof AdminAnalyticsAcquisitionRouteImport
-      parentRoute: typeof AdminAnalyticsRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -1481,6 +1485,10 @@ const rootRouteChildren: RootRouteChildren = {
   WeightLossSalesRoute: WeightLossSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
+  AdminAnalyticsAcquisitionRoute: AdminAnalyticsAcquisitionRoute,
+  AdminAnalyticsFinancesRoute: AdminAnalyticsFinancesRoute,
+  AdminAnalyticsFunnelRoute: AdminAnalyticsFunnelRoute,
+  AdminAnalyticsRetentionRoute: AdminAnalyticsRetentionRoute,
   AdminBuildEmailsRoute: AdminBuildEmailsRoute,
   AdminBuildFunnelRoute: AdminBuildFunnelRoute,
   AdminBuildIntakeRoute: AdminBuildIntakeRoute,
@@ -1503,13 +1511,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
