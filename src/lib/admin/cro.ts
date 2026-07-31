@@ -156,7 +156,6 @@ export function croMetrics(s: AdminState, w: WindowSpec): CroMetrics {
 
   const stepDefs: { label: string; n: number }[] = [
     { label: "Sessions", n: tc.sessions },
-    { label: "Presell views", n: tc.presellViews },
     { label: "Sales page views", n: tc.salesViews },
     { label: "Sales CTA clicks", n: tc.salesClicks },
     { label: "Intake started", n: tc.intakeStarts },

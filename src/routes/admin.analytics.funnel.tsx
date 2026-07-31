@@ -158,10 +158,10 @@ function FunnelPage() {
               </div>
             </MetricCard>
             <RateCard rate={r.presellCtr} color={C.presell} dates={dts} compare={compare} />
-            <MetricCard label="Presell → purchase" value={pct1((cro.totals.purchases / Math.max(1, cro.totals.presellViews)) * 100)} sub="Contribution of presell traffic">
+            <MetricCard label="Presell share of traffic" value={pct1((cro.totals.presellViews / Math.max(1, cro.totals.sessions)) * 100)} sub="Sessions that land on a presell first">
               <div className="px-4 pb-3 pt-1 text-[11.5px] text-ink/65">
-                {num(cro.totals.presellClicks)} of {num(cro.totals.presellViews)} presell readers continued to the sales page.
-                Presell traffic is {((cro.totals.presellViews / Math.max(1, cro.totals.sessions)) * 100).toFixed(0)}% of all sessions.
+                {num(cro.totals.presellClicks)} of {num(cro.totals.presellViews)} presell readers continued to the sales page —
+                {num(cro.totals.presellViews - cro.totals.presellClicks)} dropped before ever seeing an offer.
               </div>
             </MetricCard>
           </div>
