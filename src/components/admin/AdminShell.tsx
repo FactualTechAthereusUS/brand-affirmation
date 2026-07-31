@@ -57,7 +57,7 @@ const NAV: NavGroup[] = [
     items: [
       { to: "/admin/analytics",             label: "Overview",    icon: BarChart3, roles: ["owner", "ops"] },
       { to: "/admin/analytics/acquisition", label: "Acquisition", icon: Target,    roles: ["owner", "ops"] },
-      { to: "/admin/analytics/funnel",      label: "Funnel",      icon: PieChart,  roles: ["owner", "ops"] },
+      { to: "/admin/analytics/funnel",      label: "Funnel & CRO", icon: PieChart,  roles: ["owner", "ops"] },
       { to: "/admin/analytics/retention",   label: "Retention",   icon: TrendingUp,roles: ["owner"] },
       { to: "/admin/analytics/finances",    label: "Finances",    icon: DollarSign,roles: ["owner"] },
     ],
