@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 /**
  * Shopify-style daily bar chart.
@@ -93,7 +93,8 @@ export function BarChart({
     setHi(Math.max(0, Math.min(n - 1, Math.floor(x / slot))));
   };
 
-  const hatchId = useRef(`hatch-${Math.random().toString(36).slice(2, 8)}`).current;
+  const stableId = useId().replace(/:/g, "");
+  const hatchId = `bar-hatch-${stableId}`;
 
   return (
     <div className="w-full">
@@ -103,9 +104,11 @@ export function BarChart({
         style={{ height }}
         onPointerMove={onMove}
         onPointerLeave={() => setHi(null)}
+        tabIndex={0}
+        aria-label={`${label} bar chart. Use pointer to inspect daily values.`}
       >
         {w > 0 && (
-          <svg width={w} height={height} className="block">
+          <svg width={w} height={height} className="block" role="img" aria-label={`${label} over time`}>
             <defs>
               <pattern id={hatchId} width="4" height="4" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
                 <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(23,23,23,0.20)" strokeWidth="1.6" />

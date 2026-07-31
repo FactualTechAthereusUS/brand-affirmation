@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 /**
  * Shopify-style area line chart with:
@@ -159,8 +159,9 @@ export function AreaChart({
     setHover({ i, px: xAt(i), py: yAt(data[i]) });
   };
 
-  const gradId = useRef(`grad-${Math.random().toString(36).slice(2, 8)}`).current;
-  const clipId = useRef(`clip-${Math.random().toString(36).slice(2, 8)}`).current;
+  const stableId = useId().replace(/:/g, "");
+  const gradId = `area-grad-${stableId}`;
+  const clipId = `area-clip-${stableId}`;
 
   return (
     <div className="w-full">
@@ -170,9 +171,11 @@ export function AreaChart({
         style={{ height: H }}
         onPointerMove={onMove}
         onPointerLeave={() => setHover(null)}
+        tabIndex={0}
+        aria-label={`${label} chart. Use pointer to inspect daily values.`}
       >
         {w > 0 && (
-          <svg width={w} height={H} className="block">
+          <svg width={w} height={H} className="block" role="img" aria-label={`${label} over time`}>
             <defs>
               <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
                 <stop offset="0%" stopColor={stroke} stopOpacity="0.32" />
