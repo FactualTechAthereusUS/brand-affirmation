@@ -1,11 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Download } from "lucide-react";
+import { useCallback, useState } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { MetricCard, AnalyticsSection } from "@/components/admin/analytics/MetricCard";
 import { AreaChart } from "@/components/admin/analytics/AreaChart";
 import { BarChart } from "@/components/admin/analytics/BarChart";
 import { FunnelFlow } from "@/components/admin/analytics/FunnelFlow";
+import { AnalyticsToolbar, type AnalyticsCardKey } from "@/components/admin/analytics/AnalyticsToolbar";
+import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/lib/admin/store";
 import { makeWindow, daysForRange, formatDelta, type RangeKey, type CompareKey } from "@/lib/admin/analytics";
 import { croMetrics, intakeScreenDropoff, type CroRate } from "@/lib/admin/cro";
@@ -44,6 +47,11 @@ function FunnelPage() {
   const navigate = useNavigate({ from: Route.fullPath });
   const range = (["7d", "30d", "90d", "ytd"].includes(search.range) ? search.range : "30d") as RangeKey;
   const compare = (["prior", "yoy", "none"].includes(search.compare) ? search.compare : "prior") as CompareKey;
+  const [hidden, setHidden] = useState<AnalyticsCardKey[]>([]);
+  const [target, setTarget] = useState(5);
+  const [refreshedAt, setRefreshedAt] = useState<Date | null>(null);
+  const refresh = useCallback(() => setRefreshedAt(new Date()), []);
+  const visible = (key: AnalyticsCardKey) => !hidden.includes(key);
 
   const cro = useAdmin((s) => croMetrics(s, makeWindow(s, daysForRange(range, s.funnelDays.length), compare)));
   const drop = useAdmin((s) => intakeScreenDropoff(s, makeWindow(s, daysForRange(range, s.funnelDays.length), compare)));
@@ -87,37 +95,28 @@ function FunnelPage() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-1.5 text-[11.5px]">
-            <div className="flex items-center rounded-lg border border-ink/12 bg-white p-0.5">
-              {(["7d", "30d", "90d", "ytd"] as RangeKey[]).map((k) => (
-                <button
-                  key={k}
-                  onClick={() => navigate({ search: (p: FunnelSearch) => ({ ...p, range: k }) })}
-                  className={`rounded-[6px] px-2.5 py-1 transition-colors ${range === k ? "bg-ink text-white" : "text-ink/65 hover:bg-ink/[0.05]"}`}
-                >
-                  {RANGE_LABEL[k]}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center rounded-lg border border-ink/12 bg-white p-0.5">
-              {(["prior", "yoy", "none"] as CompareKey[]).map((k) => (
-                <button
-                  key={k}
-                  onClick={() => navigate({ search: (p: FunnelSearch) => ({ ...p, compare: k }) })}
-                  className={`rounded-[6px] px-2.5 py-1 transition-colors ${compare === k ? "bg-marine/[0.10] font-semibold text-marine" : "text-ink/65 hover:bg-ink/[0.05]"}`}
-                >
-                  {COMPARE_LABEL[k]}
-                </button>
-              ))}
-            </div>
-            <button onClick={exportRates} className="flex items-center gap-1.5 rounded-lg border border-ink/12 bg-white px-2.5 py-1.5 text-ink/70 hover:border-ink">
+            <Button variant="outline" size="sm" onClick={exportRates} className="h-8 px-2.5 text-[11.5px]">
               <Download className="h-3.5 w-3.5" strokeWidth={1.75} /> Export
-            </button>
+            </Button>
           </div>
         </motion.div>
 
+        <AnalyticsToolbar
+          range={range}
+          compare={compare}
+          hidden={hidden}
+          target={target}
+          refreshedAt={refreshedAt}
+          onRange={(value) => navigate({ search: (p: FunnelSearch) => ({ ...p, range: value }) })}
+          onCompare={(value) => navigate({ search: (p: FunnelSearch) => ({ ...p, compare: value }) })}
+          onHidden={setHidden}
+          onTarget={setTarget}
+          onRefresh={refresh}
+        />
+
         {/* Hero: conversion + funnel */}
         <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-12">
-          <div className="rounded-xl border border-ink/[0.06] bg-white lg:col-span-7">
+          {visible("conversion") && <div className={`rounded-xl border border-ink/[0.06] bg-white ${visible("funnel") ? "lg:col-span-7" : "lg:col-span-12"}`} role="region" aria-label="Overall conversion rate metric card">
             <div className="flex flex-wrap items-end justify-between gap-3 px-4 pt-4">
               <div>
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Overall conversion rate</div>
@@ -131,6 +130,10 @@ function FunnelPage() {
                 </div>
                 <div className="mt-1 text-[11.5px] text-ink/50">
                   {num(cro.totals.purchases)} purchases from {num(cro.totals.sessions)} sessions
+                </div>
+                <div className="mt-2 flex items-center gap-2 text-[10.5px] text-ink/50">
+                  <div className="h-1.5 w-24 overflow-hidden rounded-full bg-ink/[0.06]"><div className="h-full rounded-full bg-check" style={{ width: `${Math.min(100, (r.overallConversionRate.value / target) * 100)}%` }} /></div>
+                  {r.overallConversionRate.value >= target ? "Target reached" : `${(target - r.overallConversionRate.value).toFixed(1)}pt to ${target.toFixed(1)}% target`}
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4 text-right">
@@ -155,9 +158,9 @@ function FunnelPage() {
                 stroke={C.purchase} height={230}
               />
             </div>
-          </div>
+          </div>}
 
-          <div className="rounded-xl border border-ink/[0.06] bg-white lg:col-span-5">
+          {visible("funnel") && <div className={`rounded-xl border border-ink/[0.06] bg-white ${visible("conversion") ? "lg:col-span-5" : "lg:col-span-12"}`} role="region" aria-label="Funnel flow metric card">
             <div className="flex items-baseline justify-between px-4 pt-4">
               <div>
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Funnel flow</div>
@@ -170,11 +173,11 @@ function FunnelPage() {
             <div className="px-3 pb-4 pt-3">
               <FunnelFlow steps={cro.steps} colors={FUNNEL_COLORS} height={306} />
             </div>
-          </div>
+          </div>}
         </div>
 
         {/* Opportunity strip */}
-        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+        {visible("opportunities") && <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-3">
           <OppCard
             title="Biggest leak"
             value={leak.label}
@@ -199,10 +202,10 @@ function FunnelPage() {
             to="/admin/leads"
             cta="Work abandoned leads"
           />
-        </div>
+        </div>}
 
         {/* Presell */}
-        <AnalyticsSection title="Presell pages">
+        {visible("presell") && <AnalyticsSection title="Presell pages">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard label="Presell visitors" value={num(cro.totals.presellViews)} deltaPct={cro.volumeDeltas.presellViews} sub="Advertorials & quiz bridges">
               <div className="px-3 pb-2">
@@ -217,10 +220,10 @@ function FunnelPage() {
               </div>
             </MetricCard>
           </div>
-        </AnalyticsSection>
+        </AnalyticsSection>}
 
         {/* Sales page */}
-        <AnalyticsSection title="Sales page">
+        {visible("sales") && <AnalyticsSection title="Sales page">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard label="Sales page visitors" value={num(cro.totals.salesViews)} deltaPct={cro.volumeDeltas.salesViews} sub="Direct + presell click-throughs">
               <div className="px-3 pb-2">
@@ -230,10 +233,10 @@ function FunnelPage() {
             <RateCard rate={r.salesClickRate} color={C.sales} dates={dts} compare={compare} />
             <RateCard rate={r.salesBounceRate} color={C.bad} dates={dts} compare={compare} />
           </div>
-        </AnalyticsSection>
+        </AnalyticsSection>}
 
         {/* Intake */}
-        <AnalyticsSection
+        {visible("intake") && <AnalyticsSection
           title="Intake form"
           action={<button onClick={exportScreens} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-[11px] text-ink/70 hover:border-ink">Export screen drop-off · CSV</button>}
         >
@@ -329,10 +332,10 @@ function FunnelPage() {
               </table>
             </div>
           </div>
-        </AnalyticsSection>
+        </AnalyticsSection>}
 
         {/* Checkout */}
-        <AnalyticsSection title="Checkout">
+        {visible("checkout") && <AnalyticsSection title="Checkout">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <RateCard rate={r.checkoutStartRate} color={C.checkout} dates={dts} compare={compare} sub={`${num(cro.totals.checkoutStarts)} started`} />
             <RateCard rate={r.checkoutCompletionRate} color={C.purchase} dates={dts} compare={compare} sub={`${num(cro.totals.purchases)} purchased`} />
@@ -343,10 +346,10 @@ function FunnelPage() {
               </div>
             </MetricCard>
           </div>
-        </AnalyticsSection>
+        </AnalyticsSection>}
 
         {/* All rates table */}
-        <AnalyticsSection title="All step rates">
+        {visible("rates") && <AnalyticsSection title="All step rates">
           <div className="overflow-hidden rounded-xl border border-ink/[0.06] bg-white">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[720px] text-[11.5px]">
@@ -380,7 +383,7 @@ function FunnelPage() {
               </table>
             </div>
           </div>
-        </AnalyticsSection>
+        </AnalyticsSection>}
       </div>
     </AdminShell>
   );

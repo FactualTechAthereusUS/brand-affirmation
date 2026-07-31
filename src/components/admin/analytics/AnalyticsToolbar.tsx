@@ -5,7 +5,7 @@ import type { CompareKey, RangeKey } from "@/lib/admin/analytics";
 
 export type AnalyticsCardKey = "conversion" | "funnel" | "opportunities" | "presell" | "sales" | "intake" | "checkout" | "rates";
 const CARD_LABELS: Record<AnalyticsCardKey, string> = { conversion: "Overall conversion", funnel: "Funnel flow", opportunities: "Opportunities", presell: "Presell pages", sales: "Sales page", intake: "Intake form", checkout: "Checkout", rates: "All step rates" };
-const RANGE_LABEL: Record<RangeKey, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days", ytd: "Year to date" };
+const RANGE_LABEL: Record<RangeKey, string> = { "7d": "Last 7 days", "30d": "Last 30 days", "90d": "Last 90 days", ytd: "Year to date", custom: "Custom range" };
 const COMPARE_LABEL: Record<CompareKey, string> = { prior: "Previous period", yoy: "Previous year", none: "No comparison" };
 
 export function AnalyticsToolbar({ range, compare, hidden, target, refreshedAt, onRange, onCompare, onHidden, onTarget, onRefresh }: {
