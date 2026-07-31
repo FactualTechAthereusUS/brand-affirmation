@@ -284,7 +284,7 @@ function FunnelPage() {
                 </thead>
                 <tbody>
                   {Object.values(r).map((m) => {
-                    const good = m.deltaPt === 0 ? "neutral" : (m.deltaPt > 0) === m.positiveIsGood ? "good" : "bad";
+                    const good = Math.abs(m.deltaPt) < 0.05 ? "neutral" : (m.deltaPt > 0) === m.positiveIsGood ? "good" : "bad";
                     return (
                       <tr key={m.key} className="border-b border-ink/[0.04]">
                         <td className="px-4 py-2 font-medium text-ink">{m.label}</td>
