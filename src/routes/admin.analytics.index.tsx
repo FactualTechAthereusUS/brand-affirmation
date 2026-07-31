@@ -458,7 +458,7 @@ function AnalyticsOverview() {
       <div className="mt-6 flex flex-wrap gap-2 border-t border-ink/[0.08] pt-4 text-[11.5px]">
         <span className="text-ink/45">Deep dive:</span>
         <Link to="/admin/analytics/acquisition" search={{ range, compare, auto: autoRefresh }} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Acquisition →</Link>
-        <Link to="/admin/analytics/funnel" search={{ range, compare, auto: autoRefresh }} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Funnel →</Link>
+        <Link to="/admin/analytics/funnel" search={{ range, compare }} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Funnel &amp; CRO →</Link>
         <Link to="/admin/analytics/retention" search={{ range, compare, auto: autoRefresh }} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Retention →</Link>
         <Link to="/admin/analytics/finances" search={{ range, compare, auto: autoRefresh }} className="rounded-lg border border-ink/12 bg-white px-2.5 py-1 text-ink/70 hover:border-ink">Finances →</Link>
       </div>
