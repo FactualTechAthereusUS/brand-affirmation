@@ -161,7 +161,7 @@ function FunnelPage() {
             <div className="flex items-baseline justify-between px-4 pt-4">
               <div>
                 <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-ink/50">Funnel flow</div>
-                <div className="mt-0.5 text-[11.5px] text-ink/50">Hover any band for step detail</div>
+                <div className="mt-0.5 text-[11.5px] text-ink/50">Hover any step for detail</div>
               </div>
               <span className="rounded bg-ever/8 px-1.5 py-0.5 text-[10.5px] font-medium text-ever">
                 Leak: {leak.label}
