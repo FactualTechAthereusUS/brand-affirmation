@@ -23,7 +23,7 @@ import { downloadCsv } from "@/lib/admin/csv";
 
 type AnalyticsSearch = { range: string; compare: string; auto: boolean };
 
-export const Route = createFileRoute("/admin/analytics")({
+export const Route = createFileRoute("/admin/analytics/")({
   validateSearch: (raw: Record<string, unknown>): AnalyticsSearch => ({
     range: typeof raw.range === "string" ? raw.range : "30d",
     compare: typeof raw.compare === "string" ? raw.compare : "prior",
