@@ -86,6 +86,8 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const [mobileNav, setMobileNav] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const holdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => { hydrateAdmin(); }, []);
@@ -123,7 +125,7 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
       className="flex w-full items-center gap-2 rounded-lg border border-ink/[0.08] px-2.5 py-1.5 text-left text-[11.5px] hover:border-ink/20"
     >
       <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-ink text-[10px] font-semibold text-white">
-        {(session?.name || "U").slice(0, 1).toUpperCase()}
+        {mounted ? (session?.name || "U").slice(0, 1).toUpperCase() : "U"}
       </span>
       {!collapsed && (
         <div className="min-w-0 flex-1">
@@ -268,9 +270,9 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
               <button
                 onClick={() => { adminActions.signOut(); nav({ to: "/login/admin" }); }}
                 className="grid h-7 w-7 place-items-center rounded-full bg-ink text-[11px] font-semibold text-white"
-                title={session?.email || ""}
+                title={mounted ? session?.email || "" : ""}
               >
-                {(session?.name || "U").slice(0, 1).toUpperCase()}
+                {mounted ? (session?.name || "U").slice(0, 1).toUpperCase() : "U"}
               </button>
             </div>
           </div>
