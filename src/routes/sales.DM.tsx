@@ -773,7 +773,7 @@ function SalesDMPage() {
                 <motion.div key={p.key}
                   variants={{ hidden: { opacity: 0, y: 12, filter: "blur(4px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)" } }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}>
-                  <PlanCard plan={p} selected={planKey === p.key} onSelect={() => setPlanKey(p.key)} onCheckout={() => goToCheckout(p.key)} />
+                  <PlanCard plan={p} selected={planKey === p.key} onSelect={() => setPlanKey(p.key)} onCheckout={() => goToCheckout(p.key as "monthly" | "three" | "six")} />
                 </motion.div>
               ))}
             </motion.div>
