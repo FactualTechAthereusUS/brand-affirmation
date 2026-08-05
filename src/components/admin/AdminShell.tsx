@@ -12,6 +12,7 @@ import blissleyLogo from "@/assets/blissley-logo.png.asset.json";
 import { DemoVariantSheet } from "./DemoVariantSheet";
 import { NotificationsBell } from "./NotificationsBell";
 import { Toaster } from "@/components/ui/sonner";
+import { ONBOARDING_LABELS, usePlatform } from "@/lib/platform/store";
 
 type NavItem = { to?: string; label: string; icon: typeof LayoutGrid; exact?: boolean; roles?: Role[] };
 type NavGroup = { title: string; items: NavItem[] };
@@ -72,17 +73,14 @@ const NAV: NavGroup[] = [
   },
 ];
 
-const ONBOARDING_STEPS = [
-  "Connect Stripe", "Connect South End", "Invite physician", "Add first product",
-  "Enable Klaviyo", "Add domain", "Publish site",
-];
-
 export function AdminShell({ title, children }: { title?: string; children: ReactNode }) {
   const nav = useNavigate();
   const session = useAdmin((s) => s.session);
   const role = useAdmin((s) => s.role);
   const scenario = useAdmin((s) => s.scenario);
   const tenant = useAdmin((s) => s.tenant);
+  const platformBrand = usePlatform((s) => s.brands.find((b) => b.id === tenant.id));
+  const setupStep = platformBrand?.onboardingStep ?? tenant.onboardingStep;
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const [mobileNav, setMobileNav] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -157,15 +155,15 @@ export function AdminShell({ title, children }: { title?: string; children: Reac
             <div className="relative grid h-7 w-7 shrink-0 place-items-center">
               <svg viewBox="0 0 32 32" className="h-7 w-7 -rotate-90">
                 <circle cx="16" cy="16" r="12" fill="none" stroke="#e5e7eb" strokeWidth="3" />
-                <circle cx="16" cy="16" r="12" fill="none" stroke={tenant.primary} strokeWidth="3" strokeDasharray={`${(tenant.onboardingStep/ONBOARDING_STEPS.length)*75.4} 75.4`} strokeLinecap="round" />
+                 <circle cx="16" cy="16" r="12" fill="none" stroke={tenant.primary} strokeWidth="3" strokeDasharray={`${(setupStep/ONBOARDING_LABELS.length)*75.4} 75.4`} strokeLinecap="round" />
               </svg>
-              {tenant.onboardingStep >= ONBOARDING_STEPS.length && (
+              {setupStep >= ONBOARDING_LABELS.length && (
                 <Check className="absolute inset-0 m-auto h-3 w-3" style={{ color: tenant.primary }} strokeWidth={3} />
               )}
             </div>
             <div className="min-w-0 flex-1 leading-tight">
               <div className="text-[12px] font-semibold text-ink">Get Started</div>
-              <div className="text-[10.5px] text-ink/50">{tenant.onboardingStep} of {ONBOARDING_STEPS.length} complete</div>
+              <div className="text-[10.5px] text-ink/50">{setupStep} of {ONBOARDING_LABELS.length} complete</div>
             </div>
           </div>
         )}

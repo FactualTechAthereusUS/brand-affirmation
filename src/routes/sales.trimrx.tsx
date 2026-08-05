@@ -634,7 +634,7 @@ function SalesTrimRxPage() {
                     onCheckout={() =>
                       navigate({
                         to: "/checkout/trimrx",
-                        search: { tx: treatment ?? "sema", plan: p.key },
+                        search: { tx: treatment ?? "sema", plan: p.key as "monthly" | "three" | "six" },
                       })
                     }
                   />

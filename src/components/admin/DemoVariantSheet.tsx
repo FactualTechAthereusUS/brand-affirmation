@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Zap, AlertTriangle, TrendingDown, Rocket, EyeOff, User, Building2 } from "lucide-react";
+import { X, Zap, AlertTriangle, TrendingDown, Rocket, EyeOff, User, Building2, Store, Pill, PlayCircle } from "lucide-react";
 import { adminActions, useAdmin, type DemoScenario, type Role } from "@/lib/admin/store";
+import { useNavigate } from "@tanstack/react-router";
+import { platformActions } from "@/lib/platform/store";
 
 const SCENARIOS: { key: DemoScenario; label: string; sub: string; icon: typeof Zap; tone: string }[] = [
   { key: "healthy", label: "Healthy day",  sub: "Normal traffic, clean metrics",       icon: Zap,           tone: "text-check" },
@@ -24,11 +26,18 @@ const STAGE_LABEL: Record<string, string> = {
 };
 
 export function DemoVariantSheet() {
+  const navigate = useNavigate();
   const open = useAdmin((s) => s.ui.showLogoMenu);
   const scenario = useAdmin((s) => s.scenario);
   const role = useAdmin((s) => s.role);
   const tenant = useAdmin((s) => s.tenant);
   const tenants = useAdmin((s) => s.tenants);
+  const launch = (to: "/operator" | "/operator/brands" | "/admin/onboarding/$step" | "/pharmacy/orders", preset?: "onboarding-start" | "onboarding-partial" | "launch-ready" | "suspended", step = "1") => {
+    if (preset) platformActions.applyPreset(preset);
+    if (to === "/admin/onboarding/$step") { adminActions.switchTenant("zeroco"); navigate({ to, params: { step }, search: { brand: "zeroco" } }); }
+    else navigate({ to });
+    adminActions.toggleLogoMenu(false);
+  };
   return (
     <AnimatePresence>
       {open && (
@@ -76,6 +85,17 @@ export function DemoVariantSheet() {
                 <Building2 className="h-3 w-3" />
                 Switching tenants reseeds patients, orders, and payments to match the tenant's stage.
               </div>
+
+              <div className="mt-5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">PharmaBro platform demos</div>
+              <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button onClick={() => launch("/operator")} className="flex items-start gap-2.5 rounded-xl border border-ink/[0.08] p-3 text-left hover:border-ink/25"><Store className="mt-0.5 h-4 w-4 text-marine"/><div><div className="text-[12.5px] font-semibold">Operator overview</div><div className="text-[11px] text-ink/50">All brands, revenue and platform alerts</div></div></button>
+                <button onClick={() => launch("/operator/brands")} className="flex items-start gap-2.5 rounded-xl border border-ink/[0.08] p-3 text-left hover:border-ink/25"><Building2 className="mt-0.5 h-4 w-4 text-marine"/><div><div className="text-[12.5px] font-semibold">New brand provisioning</div><div className="text-[11px] text-ink/50">Create a tenant and invite its admin</div></div></button>
+                {([['onboarding-start','Onboarding · start','Fresh brand at step one','1'],['onboarding-partial','Onboarding · partial','Identity, domain and Stripe complete','4'],['launch-ready','Onboarding · launch ready','All requirements ready for review','6']] as const).map(([preset,label,sub,step])=><button key={preset} onClick={() => launch("/admin/onboarding/$step",preset,step)} className="flex items-start gap-2.5 rounded-xl border border-ink/[0.08] p-3 text-left hover:border-ink/25"><PlayCircle className="mt-0.5 h-4 w-4 text-check"/><div><div className="text-[12.5px] font-semibold">{label}</div><div className="text-[11px] text-ink/50">{sub}</div></div></button>)}
+                <button onClick={() => launch("/operator","suspended")} className="flex items-start gap-2.5 rounded-xl border border-ink/[0.08] p-3 text-left hover:border-ink/25"><AlertTriangle className="mt-0.5 h-4 w-4 text-ever"/><div><div className="text-[12.5px] font-semibold">Suspended brand</div><div className="text-[11px] text-ink/50">Review operator recovery controls</div></div></button>
+              </div>
+
+              <div className="mt-5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">Pharmacy demos</div>
+              <button onClick={() => launch("/pharmacy/orders")} className="mt-2 flex w-full items-start gap-2.5 rounded-xl border border-ink/[0.08] p-3 text-left hover:border-ink/25"><Pill className="mt-0.5 h-4 w-4 text-bluebell"/><div><div className="text-[12.5px] font-semibold">South End fulfillment queue</div><div className="text-[11px] text-ink/50">Pending, shipment and failed-order workflows</div></div></button>
 
               <div className="mt-5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">Scenario</div>
               <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
