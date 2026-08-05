@@ -22,12 +22,17 @@ import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-c
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
+import { Route as OperatorIndexRouteImport } from './routes/operator.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
 import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
+import { Route as PharmacyMeRouteImport } from './routes/pharmacy.me'
+import { Route as PharmacyLoginRouteImport } from './routes/pharmacy.login'
+import { Route as OperatorLoginRouteImport } from './routes/operator.login'
+import { Route as OperatorDashboardRouteImport } from './routes/operator.dashboard'
 import { Route as LoginPhysicianRouteImport } from './routes/login.physician'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as IntakeWeightloss3RouteImport } from './routes/intake_.weightloss-3'
@@ -46,6 +51,7 @@ import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLiveRouteImport } from './routes/admin.live'
 import { Route as AdminCommandRouteImport } from './routes/admin.command'
+import { Route as PharmacyOrdersIndexRouteImport } from './routes/pharmacy.orders.index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin.settings.index'
 import { Route as AdminPhysicianQueueIndexRouteImport } from './routes/admin.physician-queue.index'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
@@ -144,6 +150,11 @@ const WeightLossIndexRoute = WeightLossIndexRouteImport.update({
   path: '/weight-loss/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OperatorIndexRoute = OperatorIndexRouteImport.update({
+  id: '/operator/',
+  path: '/operator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -172,6 +183,26 @@ const PortalPhysicianRoute = PortalPhysicianRouteImport.update({
 const PortalPatientRoute = PortalPatientRouteImport.update({
   id: '/portal/patient',
   path: '/portal/patient',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PharmacyMeRoute = PharmacyMeRouteImport.update({
+  id: '/pharmacy/me',
+  path: '/pharmacy/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PharmacyLoginRoute = PharmacyLoginRouteImport.update({
+  id: '/pharmacy/login',
+  path: '/pharmacy/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperatorLoginRoute = OperatorLoginRouteImport.update({
+  id: '/operator/login',
+  path: '/operator/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperatorDashboardRoute = OperatorDashboardRouteImport.update({
+  id: '/operator/dashboard',
+  path: '/operator/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginPhysicianRoute = LoginPhysicianRouteImport.update({
@@ -262,6 +293,11 @@ const AdminLiveRoute = AdminLiveRouteImport.update({
 const AdminCommandRoute = AdminCommandRouteImport.update({
   id: '/admin/command',
   path: '/admin/command',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PharmacyOrdersIndexRoute = PharmacyOrdersIndexRouteImport.update({
+  id: '/pharmacy/orders/',
+  path: '/pharmacy/orders/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
@@ -462,12 +498,17 @@ export interface FileRoutesByFullPath {
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
   '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
+  '/operator/dashboard': typeof OperatorDashboardRoute
+  '/operator/login': typeof OperatorLoginRoute
+  '/pharmacy/login': typeof PharmacyLoginRoute
+  '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
+  '/operator/': typeof OperatorIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -501,6 +542,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/pharmacy/orders/': typeof PharmacyOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -532,12 +574,17 @@ export interface FileRoutesByTo {
   '/intake/weightloss-3': typeof IntakeWeightloss3Route
   '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
+  '/operator/dashboard': typeof OperatorDashboardRoute
+  '/operator/login': typeof OperatorLoginRoute
+  '/pharmacy/login': typeof PharmacyLoginRoute
+  '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin': typeof AdminIndexRoute
+  '/operator': typeof OperatorIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -571,6 +618,7 @@ export interface FileRoutesByTo {
   '/admin/patients': typeof AdminPatientsIndexRoute
   '/admin/physician-queue': typeof AdminPhysicianQueueIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
+  '/pharmacy/orders': typeof PharmacyOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -604,12 +652,17 @@ export interface FileRoutesById {
   '/intake_/weightloss-3': typeof IntakeWeightloss3Route
   '/login/admin': typeof LoginAdminRoute
   '/login/physician': typeof LoginPhysicianRoute
+  '/operator/dashboard': typeof OperatorDashboardRoute
+  '/operator/login': typeof OperatorLoginRoute
+  '/pharmacy/login': typeof PharmacyLoginRoute
+  '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
+  '/operator/': typeof OperatorIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -643,6 +696,7 @@ export interface FileRoutesById {
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/pharmacy/orders/': typeof PharmacyOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -677,12 +731,17 @@ export interface FileRouteTypes {
     | '/intake/weightloss-3'
     | '/login/admin'
     | '/login/physician'
+    | '/operator/dashboard'
+    | '/operator/login'
+    | '/pharmacy/login'
+    | '/pharmacy/me'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
     | '/admin/'
+    | '/operator/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -716,6 +775,7 @@ export interface FileRouteTypes {
     | '/admin/patients/'
     | '/admin/physician-queue/'
     | '/admin/settings/'
+    | '/pharmacy/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -747,12 +807,17 @@ export interface FileRouteTypes {
     | '/intake/weightloss-3'
     | '/login/admin'
     | '/login/physician'
+    | '/operator/dashboard'
+    | '/operator/login'
+    | '/pharmacy/login'
+    | '/pharmacy/me'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
     | '/admin'
+    | '/operator'
     | '/weight-loss'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -786,6 +851,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/physician-queue'
     | '/admin/settings'
+    | '/pharmacy/orders'
   id:
     | '__root__'
     | '/'
@@ -818,12 +884,17 @@ export interface FileRouteTypes {
     | '/intake_/weightloss-3'
     | '/login/admin'
     | '/login/physician'
+    | '/operator/dashboard'
+    | '/operator/login'
+    | '/pharmacy/login'
+    | '/pharmacy/me'
     | '/portal/patient'
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
     | '/weight-loss/sales'
     | '/admin/'
+    | '/operator/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -857,6 +928,7 @@ export interface FileRouteTypes {
     | '/admin/patients/'
     | '/admin/physician-queue/'
     | '/admin/settings/'
+    | '/pharmacy/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -888,12 +960,17 @@ export interface RootRouteChildren {
   IntakeWeightLossTrimrxRoute: typeof IntakeWeightLossTrimrxRoute
   IntakeWeightLossTrimrx2Route: typeof IntakeWeightLossTrimrx2Route
   IntakeWeightloss3Route: typeof IntakeWeightloss3Route
+  OperatorDashboardRoute: typeof OperatorDashboardRoute
+  OperatorLoginRoute: typeof OperatorLoginRoute
+  PharmacyLoginRoute: typeof PharmacyLoginRoute
+  PharmacyMeRoute: typeof PharmacyMeRoute
   PortalPatientRoute: typeof PortalPatientRoute
   PortalPhysicianRoute: typeof PortalPhysicianRoute
   SalesDMRoute: typeof SalesDMRoute
   SalesTrimrxRoute: typeof SalesTrimrxRoute
   WeightLossSalesRoute: typeof WeightLossSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  OperatorIndexRoute: typeof OperatorIndexRoute
   WeightLossIndexRoute: typeof WeightLossIndexRoute
   AdminAnalyticsAcquisitionRoute: typeof AdminAnalyticsAcquisitionRoute
   AdminAnalyticsFinancesRoute: typeof AdminAnalyticsFinancesRoute
@@ -917,6 +994,7 @@ export interface RootRouteChildren {
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
   AdminPatientsIndexRoute: typeof AdminPatientsIndexRoute
   AdminPhysicianQueueIndexRoute: typeof AdminPhysicianQueueIndexRoute
+  PharmacyOrdersIndexRoute: typeof PharmacyOrdersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1012,6 +1090,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightLossIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/operator/': {
+      id: '/operator/'
+      path: '/operator'
+      fullPath: '/operator/'
+      preLoaderRoute: typeof OperatorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/admin'
@@ -1052,6 +1137,34 @@ declare module '@tanstack/react-router' {
       path: '/portal/patient'
       fullPath: '/portal/patient'
       preLoaderRoute: typeof PortalPatientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pharmacy/me': {
+      id: '/pharmacy/me'
+      path: '/pharmacy/me'
+      fullPath: '/pharmacy/me'
+      preLoaderRoute: typeof PharmacyMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pharmacy/login': {
+      id: '/pharmacy/login'
+      path: '/pharmacy/login'
+      fullPath: '/pharmacy/login'
+      preLoaderRoute: typeof PharmacyLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operator/login': {
+      id: '/operator/login'
+      path: '/operator/login'
+      fullPath: '/operator/login'
+      preLoaderRoute: typeof OperatorLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operator/dashboard': {
+      id: '/operator/dashboard'
+      path: '/operator/dashboard'
+      fullPath: '/operator/dashboard'
+      preLoaderRoute: typeof OperatorDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/physician': {
@@ -1178,6 +1291,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/command'
       fullPath: '/admin/command'
       preLoaderRoute: typeof AdminCommandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pharmacy/orders/': {
+      id: '/pharmacy/orders/'
+      path: '/pharmacy/orders'
+      fullPath: '/pharmacy/orders/'
+      preLoaderRoute: typeof PharmacyOrdersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/settings/': {
@@ -1478,12 +1598,17 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeWeightLossTrimrxRoute: IntakeWeightLossTrimrxRoute,
   IntakeWeightLossTrimrx2Route: IntakeWeightLossTrimrx2Route,
   IntakeWeightloss3Route: IntakeWeightloss3Route,
+  OperatorDashboardRoute: OperatorDashboardRoute,
+  OperatorLoginRoute: OperatorLoginRoute,
+  PharmacyLoginRoute: PharmacyLoginRoute,
+  PharmacyMeRoute: PharmacyMeRoute,
   PortalPatientRoute: PortalPatientRoute,
   PortalPhysicianRoute: PortalPhysicianRoute,
   SalesDMRoute: SalesDMRoute,
   SalesTrimrxRoute: SalesTrimrxRoute,
   WeightLossSalesRoute: WeightLossSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
+  OperatorIndexRoute: OperatorIndexRoute,
   WeightLossIndexRoute: WeightLossIndexRoute,
   AdminAnalyticsAcquisitionRoute: AdminAnalyticsAcquisitionRoute,
   AdminAnalyticsFinancesRoute: AdminAnalyticsFinancesRoute,
@@ -1507,17 +1632,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
   AdminPatientsIndexRoute: AdminPatientsIndexRoute,
   AdminPhysicianQueueIndexRoute: AdminPhysicianQueueIndexRoute,
+  PharmacyOrdersIndexRoute: PharmacyOrdersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
