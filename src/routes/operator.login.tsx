@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PlatformLogin } from "@/components/platform/PlatformLogin";
+export const Route=createFileRoute("/operator/login")({head:()=>({meta:[{title:"Operator sign in — Blissley Ops"},{name:"description",content:"Secure access for Blissley platform operators."},{property:"og:title",content:"Operator sign in — Blissley Ops"},{property:"og:description",content:"Secure access for Blissley platform operators."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),component:()=> <PlatformLogin kind="operator"/>});

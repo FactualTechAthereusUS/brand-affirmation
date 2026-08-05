@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PlatformLogin } from "@/components/platform/PlatformLogin";
+export const Route=createFileRoute("/pharmacy/login")({head:()=>({meta:[{title:"Pharmacy sign in — Blissley"},{name:"description",content:"Secure pharmacy fulfillment access."},{property:"og:title",content:"Pharmacy sign in — Blissley"},{property:"og:description",content:"Secure pharmacy fulfillment access."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),component:()=> <PlatformLogin kind="pharmacy"/>});
