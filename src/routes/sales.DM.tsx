@@ -573,7 +573,7 @@ function SalesDMPage() {
 
   const primaryPatient = { first: "Sarah", startLbs: 230, goalLbs: 172 };
 
-  const goToCheckout = (planK: string) =>
+  const goToCheckout = (planK: "monthly" | "three" | "six") =>
     navigate({ to: "/checkout/charged-before", search: { tx: treatment ?? "sema", plan: planK } });
 
   return (

@@ -26,6 +26,7 @@ import {
   DollarSign, TrendingUp, Users, ShoppingCart, RefreshCw,
   Plus, CalendarClock, CreditCard, Search, ArrowRight, ChevronDown,
 } from "lucide-react";
+import { ONBOARDING_LABELS, usePlatform } from "@/lib/platform/store";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -499,17 +500,9 @@ function AcquisitionCard({ mix }: { mix: { label: string; value: number; color: 
 
 /* ═════════════════════ ZERO-STATE ONBOARDING (PharmaBro) ═════════════════════ */
 function ZeroStateHome({ tenant }: { tenant: ReturnType<typeof useAdmin<any>> extends any ? any : never }) {
-  const STEPS: { key: string; label: string; sub: string; to: string }[] = [
-    { key: "brand",    label: "Set your brand identity",        sub: "Logo, name, colors, support email", to: "/admin/settings/general" },
-    { key: "stripe",   label: "Connect Stripe payments",         sub: "Take live payments in test mode",   to: "/admin/integrations" },
-    { key: "pharmacy", label: "Connect a pharmacy",              sub: "South End, Strive, or Valiant",     to: "/admin/settings/pharmacy-routing" },
-    { key: "product",  label: "Add your first product & plan",   sub: "Semaglutide, tirzepatide, or custom", to: "/admin/build/products" },
-    { key: "intake",   label: "Configure your intake quiz",      sub: "13 clinical screens ready to edit", to: "/admin/build/intake" },
-    { key: "emails",   label: "Wire your email flows",           sub: "13 pre-built Klaviyo flows",        to: "/admin/build/emails" },
-    { key: "publish",  label: "Publish your funnel",             sub: "Sales, plan, checkout, portal",     to: "/admin/build/pages" },
-  ];
-  const completed = tenant.onboardingStep;
-  const pct = Math.round((completed / STEPS.length) * 100);
+  const brand = usePlatform((s) => s.brands.find((b) => b.id === tenant.id));
+  const completed = brand?.onboardingStep ?? tenant.onboardingStep;
+  const pct = Math.round((completed / ONBOARDING_LABELS.length) * 100);
   return (
     <AdminShell>
       <div className="mx-auto max-w-4xl">
@@ -526,7 +519,7 @@ function ZeroStateHome({ tenant }: { tenant: ReturnType<typeof useAdmin<any>> ex
         <div className="mb-4 rounded-2xl border border-ink/[0.08] bg-white p-4">
           <div className="mb-2 flex items-center justify-between">
             <div className="text-[12.5px] font-semibold text-ink">Setup progress</div>
-            <div className="text-[11px] tabular-nums text-ink/55">{completed} of {STEPS.length} · {pct}%</div>
+             <div className="text-[11px] tabular-nums text-ink/55">{completed} of {ONBOARDING_LABELS.length} · {pct}%</div>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-ink/[0.06]">
             <div className="h-full rounded-full transition-[width] duration-500" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${tenant.primary}, ${tenant.accent})` }} />
@@ -534,11 +527,11 @@ function ZeroStateHome({ tenant }: { tenant: ReturnType<typeof useAdmin<any>> ex
         </div>
 
         <div className="space-y-2">
-          {STEPS.map((s, i) => {
+          {ONBOARDING_LABELS.map((label, i) => {
             const done = i < completed;
             const active = i === completed;
             return (
-              <motion.div key={s.key}
+              <motion.div key={label}
                 initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
                 className={`flex items-center gap-3 rounded-xl border p-3.5 ${active ? "border-ink/25 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)]" : done ? "border-ink/[0.06] bg-ink/[0.02]" : "border-ink/[0.08] bg-white"}`}>
                 <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-[12px] font-semibold ${done ? "text-white" : active ? "text-white" : "border border-ink/15 text-ink/50"}`}
@@ -546,16 +539,14 @@ function ZeroStateHome({ tenant }: { tenant: ReturnType<typeof useAdmin<any>> ex
                   {done ? "✓" : i + 1}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className={`text-[13.5px] font-semibold ${done ? "text-ink/50 line-through" : "text-ink"}`}>{s.label}</div>
-                  <div className="mt-0.5 text-[11.5px] text-ink/50">{s.sub}</div>
+                  <div className={`text-[13.5px] font-semibold ${done ? "text-ink/50 line-through" : "text-ink"}`}>{label}</div>
+                  <div className="mt-0.5 text-[11.5px] text-ink/50">{["Name, logo, tagline and patient-facing colors","Verify the secure subdomain patients will use","Connect payouts and payment collection","Verify four Stripe Price IDs","Confirm clinical and operating requirements","Review every requirement and open intake"][i]}</div>
                 </div>
                 {!done && (
                   <div className="flex items-center gap-2">
-                    <Link to={s.to} className="rounded-md px-3 py-1.5 text-[11.5px] font-semibold text-white" style={{ background: tenant.primary }}>
+                    <Link to="/admin/onboarding/$step" params={{ step: String(i + 1) }} search={{ brand: tenant.id }} className="rounded-md px-3 py-1.5 text-[11.5px] font-semibold text-white" style={{ background: tenant.primary }}>
                       {active ? "Start" : "Open"}
                     </Link>
-                    <button onClick={() => { import("@/lib/admin/store").then((m) => m.adminActions.completeOnboardingStep(i + 1)); }}
-                      className="rounded-md border border-ink/[0.1] px-2.5 py-1.5 text-[11px] text-ink/55 hover:text-ink">Mark done</button>
                   </div>
                 )}
               </motion.div>
