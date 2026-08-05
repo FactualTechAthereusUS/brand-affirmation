@@ -78,6 +78,7 @@ import { Route as AdminSettingsComplianceRouteImport } from './routes/admin.sett
 import { Route as AdminPhysicianQueueIdRouteImport } from './routes/admin.physician-queue.$id'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
+import { Route as AdminOnboardingStepRouteImport } from './routes/admin.onboarding.$step'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
 import { Route as AdminIntegrationsIdRouteImport } from './routes/admin.integrations.$id'
 import { Route as AdminCheckInsIdRouteImport } from './routes/admin.check-ins.$id'
@@ -441,6 +442,11 @@ const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
   path: '/admin/orders/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminOnboardingStepRoute = AdminOnboardingStepRouteImport.update({
+  id: '/admin/onboarding/$step',
+  path: '/admin/onboarding/$step',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLeadsIdRoute = AdminLeadsIdRouteImport.update({
   id: '/admin/leads/$id',
   path: '/admin/leads/$id',
@@ -560,6 +566,7 @@ export interface FileRoutesByFullPath {
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
+  '/admin/onboarding/$step': typeof AdminOnboardingStepRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
@@ -642,6 +649,7 @@ export interface FileRoutesByTo {
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
+  '/admin/onboarding/$step': typeof AdminOnboardingStepRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
@@ -726,6 +734,7 @@ export interface FileRoutesById {
   '/admin/check-ins/$id': typeof AdminCheckInsIdRoute
   '/admin/integrations/$id': typeof AdminIntegrationsIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
+  '/admin/onboarding/$step': typeof AdminOnboardingStepRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/physician-queue/$id': typeof AdminPhysicianQueueIdRoute
@@ -811,6 +820,7 @@ export interface FileRouteTypes {
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
+    | '/admin/onboarding/$step'
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
@@ -893,6 +903,7 @@ export interface FileRouteTypes {
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
+    | '/admin/onboarding/$step'
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
@@ -976,6 +987,7 @@ export interface FileRouteTypes {
     | '/admin/check-ins/$id'
     | '/admin/integrations/$id'
     | '/admin/leads/$id'
+    | '/admin/onboarding/$step'
     | '/admin/orders/$id'
     | '/admin/patients/$id'
     | '/admin/physician-queue/$id'
@@ -1058,6 +1070,7 @@ export interface RootRouteChildren {
   AdminCheckInsIdRoute: typeof AdminCheckInsIdRoute
   AdminIntegrationsIdRoute: typeof AdminIntegrationsIdRoute
   AdminLeadsIdRoute: typeof AdminLeadsIdRoute
+  AdminOnboardingStepRoute: typeof AdminOnboardingStepRoute
   AdminOrdersIdRoute: typeof AdminOrdersIdRoute
   AdminPatientsIdRoute: typeof AdminPatientsIdRoute
   AdminPhysicianQueueIdRoute: typeof AdminPhysicianQueueIdRoute
@@ -1560,6 +1573,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/onboarding/$step': {
+      id: '/admin/onboarding/$step'
+      path: '/admin/onboarding/$step'
+      fullPath: '/admin/onboarding/$step'
+      preLoaderRoute: typeof AdminOnboardingStepRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/leads/$id': {
       id: '/admin/leads/$id'
       path: '/admin/leads/$id'
@@ -1744,6 +1764,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCheckInsIdRoute: AdminCheckInsIdRoute,
   AdminIntegrationsIdRoute: AdminIntegrationsIdRoute,
   AdminLeadsIdRoute: AdminLeadsIdRoute,
+  AdminOnboardingStepRoute: AdminOnboardingStepRoute,
   AdminOrdersIdRoute: AdminOrdersIdRoute,
   AdminPatientsIdRoute: AdminPatientsIdRoute,
   AdminPhysicianQueueIdRoute: AdminPhysicianQueueIdRoute,
