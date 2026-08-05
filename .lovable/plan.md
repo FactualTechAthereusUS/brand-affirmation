@@ -1,44 +1,56 @@
-## Corrected plan: Shopify-grade Funnel & CRO analytics
+# Blissley Platform Specification — full write-up
 
-### What the full TXT establishes
-- A dense, full-width analytics workspace—not a decorative dashboard.
-- A compact single-row header with status, auto-refresh, fullscreen, customize, targets, exploration, date, comparison, and currency controls.
-- A responsive metric-card grid where each card is independently labeled and interactive.
-- Cards use a consistent hierarchy: linked metric title, definition/help action, primary value, comparison delta, working visualization, hover data, and legend.
-- Charts expose real axes, current/prior series, point-level hover states, crosshairs, and accessible table/region semantics.
-- Controls open real menus/popovers and visibly change the reporting state.
+Goal: produce a complete, accurate, screen-by-screen specification of the platform as it actually exists today, derived by reading every route, store, and component — not from memory.
 
-### Implementation
-1. **Rebuild the analytics toolbar**
-   - Match the compact Shopify hierarchy while retaining Blissley’s admin tokens.
-   - Add working date-range and comparison controls, auto-refresh toggle, fullscreen action, customize mode, targets panel, and export.
-   - Persist selected range/comparison in route search state.
+## What gets delivered
 
-2. **Standardize metric-card behavior**
-   - Introduce one dense reusable analytics-card structure for every CRO metric.
-   - Include title/help tooltip, value, prior-period change, numerator/denominator context, chart, hover detail, and legend.
-   - Use responsive full-width grids with no oversized whitespace.
+A set of markdown documents under `docs/specs/`, each self-contained and cross-linked from an index:
 
-3. **Upgrade every chart from visual-only to analytical**
-   - Preserve real demo data and make range/comparison changes recalculate all series.
-   - Add readable axes, current/prior distinction, crosshair tooltips, keyboard-focusable data points, legends, and empty states.
-   - Keep the funnel, line/area, and bar views mathematically aligned with the same underlying totals.
+```text
+docs/specs/
+  00-index.md              overview, architecture, design system, tenancy model
+  01-admin-dashboard.md    all 15 admin sections + 9 settings pages
+  02-physician-portal.md   /portal/physician + /login/physician
+  03-patient-portal.md     /portal/patient
+  04-funnel.md             sales pages, intake flows, checkout, confirmation
+  05-emails.md             /emails flows and triggers
+  06-data-model.md         store slices, entity fields, actions, derived metrics
+  07-marketing-site.md     home, weight-loss, legal pages
+```
 
-4. **Make customization and targets functional**
-   - Customize mode will allow cards to be shown/hidden and reordered in demo state.
-   - Targets will support suggested targets and custom thresholds, then show progress directly on relevant cards.
-   - Fullscreen and auto-refresh controls will have real UI states rather than static rendering.
+## Level of detail per screen
 
-5. **Retain telehealth-specific CRO content**
-   - Keep Presell, Sales, Intake, Checkout, Purchase, biggest leak, worst intake screen, abandoned carts, and screen-level drop-off.
-   - Present them through the reference’s analytics system instead of copying Shopify commerce labels.
+Every screen entry documents:
 
-6. **Responsive and accessibility pass**
-   - Desktop: dense multi-column analytics grid.
-   - Tablet: balanced two-column cards and scroll-safe toolbar.
-   - Mobile: single-column cards, condensed controls, usable chart tooltips, and no clipped tables.
-   - Add labeled regions, semantic chart/table fallbacks, focus states, and correctly named controls.
+- Route path and file, and how it is reached (link, button, redirect)
+- Purpose in one line, and who uses it (admin / physician / patient / visitor)
+- Full layout description: regions, cards, tables, columns, charts, empty states
+- Every interactive control and exactly what it does (which store action fires, what state changes, what toast appears, what navigation happens)
+- Data source: which store slice / selector / derived metric feeds each number, and the formula where one exists
+- Status/state variants (e.g. order lifecycle, case decision states, tenant demo variants: Live / Ramping / Empty)
+- Responsive behaviour at mobile / tablet / desktop
+- Known gaps: controls that render but are not yet wired
 
-7. **Verification**
-   - Exercise date, comparison, auto-refresh, fullscreen, customize, targets, exports, legends, and chart hovers.
-   - Validate desktop/tablet/mobile rendering and ensure there are no console, hydration, overflow, or route-search errors.
+## Admin coverage (each its own section)
+
+Home, Live View (3D globe), Analytics (Overview, Funnel & CRO, Acquisition, Retention, Finances), Patients (+ detail), Leads (+ detail), Orders (+ detail), Physician Queue (+ detail), Check-ins (+ detail), Payments, Pharmacy, Messages, Integrations (+ detail), Team, Reports, Command palette, BUILD (Funnel, Intake, Products, Emails, Pages), Settings (General, Plan & Billing, Team, Pharmacy Routing, States Served, Notifications, Integrations, Compliance & HIPAA, Legal & Policies), plus the AdminShell chrome: sidebar, header, notifications bell, long-press demo-variant sheet.
+
+## End-to-end flow narratives
+
+In addition to per-screen specs, `00-index.md` includes the operational walkthroughs that tie screens together:
+
+1. Visitor → sales page → intake → checkout → confirmation → lead becomes patient
+2. Lead scoring, funnel-step tracking, and how CRO metrics are derived from funnel days
+3. Prescription lifecycle: intake submitted → physician queue → decision → pharmacy routing (Version A titration rule) → order → fulfillment → refill
+4. Check-in cadence and dose escalation
+5. Messaging: patient/admin/physician threads, optimistic send, auto-reply simulation, snooze
+6. Whitelabel tenancy: what changes when switching Blissley → Nova → ZeroCo
+
+## Method
+
+Read each route file and its components in batches, plus `src/lib/admin/store.ts`, `cro.ts`, `selectors.ts`, `seeds.ts`, the portal and physician stores, and `src/styles.css` for the token/theme spec. Document only what the code does; flag anything that is demo-only or stubbed rather than presenting it as functional.
+
+## Notes
+
+- Documentation only — no application code, routes, or styles change.
+- Written in plain language with technical detail kept in clearly marked subsections, so it can be handed to a developer, a designer, or an investor.
