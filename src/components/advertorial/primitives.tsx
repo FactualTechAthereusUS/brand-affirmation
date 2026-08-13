@@ -352,20 +352,26 @@ export function StickyCta() {
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ y: 90 }}
+          initial={{ y: 100 }}
           animate={{ y: 0 }}
-          exit={{ y: 90 }}
+          exit={{ y: 100 }}
           transition={{ type: "spring", stiffness: 320, damping: 32 }}
-          className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-canvas/95 px-4 py-3 backdrop-blur"
+          className="fixed inset-x-0 bottom-0 z-50 bg-ink px-4 py-3"
         >
-          <div className="mx-auto max-w-[560px]">
-            <CtaButton />
+          <div className="mx-auto flex max-w-[1180px] flex-col items-center gap-3 sm:flex-row sm:justify-between">
+            <div className="hidden text-[15px] font-bold text-canvas sm:block">
+              Ready to see if you qualify?
+            </div>
+            <div className="w-full sm:w-auto sm:min-w-[300px]">
+              <CtaButton />
+            </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
+
 
 /* ------------------------------------------------------------------ story */
 
