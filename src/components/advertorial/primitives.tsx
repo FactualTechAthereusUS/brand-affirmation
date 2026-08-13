@@ -162,7 +162,7 @@ export function ReviewsTab() {
 /* ------------------------------------------------------------------ layout */
 
 export function Col({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full max-w-[720px] px-5 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[760px] px-5 md:px-0 ${className}`}>{children}</div>;
 }
 
 export function P({ children, lead = false }: { children: ReactNode; lead?: boolean }) {

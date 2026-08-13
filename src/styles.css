@@ -265,27 +265,28 @@
    ========================================================================= */
 .adv-p {
   margin: 0 0 1.15rem;
-  font-size: 17px;
-  line-height: 1.78;
+  font-size: 18px;
+  line-height: 1.8;
   color: color-mix(in oklab, var(--color-ink) 82%, transparent);
 }
 .adv-p-lead {
-  font-size: 19px;
-  line-height: 1.7;
+  font-size: 20px;
+  line-height: 1.72;
+  font-weight: 550;
   color: color-mix(in oklab, var(--color-ink) 92%, transparent);
 }
 .adv-p strong { color: var(--color-ink); font-weight: 650; }
 .adv-p em { font-style: italic; }
 .adv-h2 {
   margin: 2.5rem 0 1rem;
-  font-size: 27px;
-  line-height: 1.2;
+  font-size: 26px;
+  line-height: 1.22;
   letter-spacing: -0.02em;
   font-weight: 700;
   color: var(--color-ink);
 }
 @media (min-width: 640px) {
-  .adv-h2 { font-size: 32px; }
+  .adv-h2 { font-size: 31px; }
 }
 .adv-mark {
   background: linear-gradient(
