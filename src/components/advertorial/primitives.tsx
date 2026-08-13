@@ -329,16 +329,15 @@ export function CtaBand({
   note?: string;
 }) {
   return (
-    <div className="my-10 bg-ink/[0.03] py-8">
-      <Col>
-        <CtaButton label={label} />
-        <p className="mt-3 text-center text-[12.5px] text-ink/50">
-          {note ?? "Reviewed by a licensed physician · No commitment · 2 minutes"}
-        </p>
-      </Col>
+    <div className="my-11">
+      <CtaButton label={label} />
+      <p className="mx-auto mt-4 max-w-[420px] text-center text-[12.5px] font-medium text-ink/50">
+        {note ?? "Reviewed by a licensed physician · No commitment · 2 minutes"}
+      </p>
     </div>
   );
 }
+
 
 export function StickyCta() {
   const [show, setShow] = useState(false);
