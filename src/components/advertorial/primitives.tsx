@@ -115,15 +115,32 @@ export function Highlight({ children }: { children: ReactNode }) {
 
 export function Byline() {
   return (
-    <div className="my-7 flex items-center gap-3 rounded-xl border border-hairline bg-ink/[0.02] p-3">
-      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ever/12 text-sm font-bold text-ever">
-        UO
-      </div>
-      <div className="min-w-0">
-        <div className="text-[13px] font-semibold text-ink">
-          By the founder of UnhingedOne · Blissley
+    <div className="my-7 flex flex-col gap-3 border-y border-hairline py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 items-center gap-3">
+        <div className="relative shrink-0">
+          <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-full border border-hairline bg-canvas shadow-[0_6px_18px_-12px_rgba(0,0,0,0.5)]">
+            <img
+              src="/assets/uo-logo.png"
+              alt="UnhingedOne"
+              className="h-full w-full scale-[1.55] object-contain p-1"
+            />
+          </div>
+          <span className="absolute -bottom-0.5 -right-0.5 grid h-5 w-5 place-items-center rounded-full border-2 border-canvas bg-ever text-canvas">
+            <Check className="h-2.5 w-2.5" strokeWidth={4} />
+          </span>
         </div>
-        <div className="text-[12px] italic text-ink/50">Blissley Health Notes · 8 min read</div>
+        <div className="min-w-0">
+          <div className="text-[14.5px] font-bold leading-tight text-ink">
+            By the founder of UnhingedOne
+          </div>
+          <div className="mt-0.5 text-[12.5px] text-ink/50">
+            Blissley Health Notes · Medically reviewed
+          </div>
+        </div>
+      </div>
+      <div className="flex shrink-0 items-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">
+        <span className="rounded-full bg-ink/[0.05] px-2.5 py-1">8 min read</span>
+        <span className="rounded-full bg-ever/10 px-2.5 py-1 text-ever">Founder's story</span>
       </div>
     </div>
   );
