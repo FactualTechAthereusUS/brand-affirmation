@@ -517,7 +517,45 @@ export function PathCards() {
 
 /* ------------------------------------------------------------------ comments */
 
-type Comment = { name: string; body: string; time: string; likes: number; reply?: string };
+type Reply = { name: string; body: string; time: string; verified?: boolean };
+
+type Comment = {
+  name: string;
+  body: string;
+  time: string;
+  likes: number;
+  reply?: string;
+  replies?: Reply[];
+};
+
+function ReplyBubble({ reply }: { reply: Reply }) {
+  const isBlissley = reply.verified;
+  return (
+    <div className="mt-3 flex gap-3 pl-4">
+      <div
+        className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-[11px] font-bold ${
+          isBlissley ? "bg-ever/12 text-ever" : "bg-ink/[0.06] text-ink/60"
+        }`}
+      >
+        {isBlissley ? "B" : reply.name.charAt(0).toUpperCase()}
+      </div>
+      <div className="min-w-0 flex-1 rounded-2xl bg-ever/[0.06] px-4 py-2.5">
+        <div className="flex items-baseline gap-2">
+          <span className="text-[13px] font-bold text-ink">
+            {isBlissley ? "Blissley" : reply.name}
+          </span>
+          {isBlissley && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-ever">
+              <Check className="h-3 w-3" strokeWidth={3} /> verified
+            </span>
+          )}
+          <span className="shrink-0 text-[11.5px] text-ink/40">{reply.time}</span>
+        </div>
+        <p className="mt-0.5 text-[14.5px] leading-[1.6] text-ink/75">{reply.body}</p>
+      </div>
+    </div>
+  );
+}
 
 export function CommentThread({ comments }: { comments: Comment[] }) {
   return (
@@ -544,18 +582,11 @@ export function CommentThread({ comments }: { comments: Comment[] }) {
               </span>
             </div>
             {c.reply && (
-              <div className="mt-3 flex gap-3 pl-4">
-                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ever/12 text-[11px] font-bold text-ever">
-                  B
-                </div>
-                <div className="min-w-0 flex-1 rounded-2xl bg-ever/[0.06] px-4 py-2.5">
-                  <div className="text-[13px] font-bold text-ink">
-                    Blissley <span className="font-semibold text-ever">· Team</span>
-                  </div>
-                  <p className="mt-0.5 text-[14.5px] leading-[1.6] text-ink/75">{c.reply}</p>
-                </div>
-              </div>
+              <ReplyBubble reply={{ name: "Blissley", body: c.reply, time: "", verified: true }} />
             )}
+            {c.replies?.map((r, i) => (
+              <ReplyBubble key={r.name + r.body + i} reply={r} />
+            ))}
           </div>
         </div>
       ))}
