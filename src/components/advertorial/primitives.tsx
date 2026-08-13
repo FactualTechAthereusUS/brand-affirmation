@@ -356,10 +356,10 @@ export function StickyCta() {
           animate={{ y: 0 }}
           exit={{ y: 100 }}
           transition={{ type: "spring", stiffness: 320, damping: 32 }}
-          className="fixed inset-x-0 bottom-0 z-50 bg-ink px-4 py-3"
+          className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-hairline/60 bg-canvas/80 px-4 py-3.5 shadow-[0_-20px_50px_-24px_rgba(0,0,0,0.22)] backdrop-blur-2xl"
         >
           <div className="mx-auto flex max-w-[1180px] flex-col items-center gap-3 sm:flex-row sm:justify-between">
-            <div className="hidden text-[15px] font-bold text-canvas sm:block">
+            <div className="hidden text-[15px] font-bold text-ink sm:block">
               Ready to see if you qualify?
             </div>
             <div className="w-full sm:w-auto sm:min-w-[300px]">
