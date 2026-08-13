@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Footer } from "@/components/home/Footer";
 import {
-  AnchorRows,
   ArticleChrome,
   BigQuote,
   Byline,
@@ -401,14 +400,6 @@ function RubyMillerAdvertorial() {
             you the exact same thing.
           </P>
 
-          <AnchorRows
-            rows={[
-              { label: "Diets, programs, apps", price: "$2,000+" },
-              { label: "Gym membership", price: "$600/yr" },
-              { label: "Other weight-loss clinics", price: "$1,300/mo" },
-            ]}
-            final={{ label: "Blissley — real doctor, real medication, delivered", price: "$249/mo" }}
-          />
 
           <P>
             And because you came from UO, and because Ruby's results made this personal for me, I'm
