@@ -16,13 +16,13 @@ export function ArticleChrome() {
     { label: "Reviews", to: "#reviews" },
   ];
   return (
-    <header className="sticky top-0 z-50 bg-ink text-canvas">
+    <header className="sticky top-0 z-50 border-b border-hairline/60 bg-canvas/80 text-ink backdrop-blur-2xl">
       <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-4 py-3.5 md:px-6">
         <Link to="/" className="shrink-0">
           <img
             src="/assets/blissley-logo.png"
             alt="Blissley"
-            className="h-6 w-auto brightness-0 invert sm:h-7"
+            className="h-6 w-auto sm:h-7"
           />
         </Link>
 
@@ -32,7 +32,7 @@ export function ArticleChrome() {
               <a
                 key={item.label}
                 href={item.to}
-                className="text-[13.5px] font-medium tracking-wide text-canvas/80 transition hover:text-canvas"
+                className="text-[13.5px] font-medium tracking-wide text-ink/70 transition hover:text-ink"
               >
                 {item.label}
               </a>
@@ -40,7 +40,7 @@ export function ArticleChrome() {
               <Link
                 key={item.label}
                 to={item.to}
-                className="text-[13.5px] font-medium tracking-wide text-canvas/80 transition hover:text-canvas"
+                className="text-[13.5px] font-medium tracking-wide text-ink/70 transition hover:text-ink"
               >
                 {item.label}
               </Link>
@@ -52,7 +52,7 @@ export function ArticleChrome() {
           type="button"
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
-          className="rounded-lg p-1.5 text-canvas/80 transition hover:bg-canvas/10 md:hidden"
+          className="rounded-lg p-1.5 text-ink/70 transition hover:bg-ink/5 md:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -65,7 +65,7 @@ export function ArticleChrome() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-canvas/15 bg-ink md:hidden"
+            className="overflow-hidden border-t border-hairline/60 bg-canvas/95 backdrop-blur-xl md:hidden"
           >
             <div className="mx-auto flex max-w-[1180px] flex-col px-4 py-1">
               {links.map((item) =>
@@ -74,7 +74,7 @@ export function ArticleChrome() {
                     key={item.label}
                     href={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-canvas/10 py-3 text-[15px] text-canvas/85 last:border-0"
+                    className="border-b border-hairline/60 py-3 text-[15px] text-ink/85 last:border-0"
                   >
                     {item.label}
                   </a>
@@ -83,7 +83,7 @@ export function ArticleChrome() {
                     key={item.label}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-canvas/10 py-3 text-[15px] text-canvas/85 last:border-0"
+                    className="border-b border-hairline/60 py-3 text-[15px] text-ink/85 last:border-0"
                   >
                     {item.label}
                   </Link>
