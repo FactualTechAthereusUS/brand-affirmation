@@ -10,20 +10,49 @@ export const INTAKE = "/intake/weight-loss";
 
 export function ArticleChrome() {
   const [open, setOpen] = useState(false);
+  const links = [
+    { label: "Order", to: INTAKE },
+    { label: "About", to: "/" },
+    { label: "Reviews", to: "#reviews" },
+  ];
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/95 backdrop-blur">
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 px-4 py-3">
-        <div className="min-w-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/40">
-          Health Notes
-        </div>
-        <Link to="/" className="shrink-0 justify-self-center">
-          <img src="/assets/blissley-logo.png" alt="Blissley" className="h-6 w-auto sm:h-7" />
+    <header className="sticky top-0 z-50 bg-ink text-canvas">
+      <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-4 py-3.5 md:px-6">
+        <Link to="/" className="shrink-0">
+          <img
+            src="/assets/blissley-logo.png"
+            alt="Blissley"
+            className="h-6 w-auto brightness-0 invert sm:h-7"
+          />
         </Link>
+
+        <nav className="hidden items-center gap-9 md:flex">
+          {links.map((item) =>
+            item.to.startsWith("#") ? (
+              <a
+                key={item.label}
+                href={item.to}
+                className="text-[13.5px] font-medium tracking-wide text-canvas/80 transition hover:text-canvas"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.label}
+                to={item.to}
+                className="text-[13.5px] font-medium tracking-wide text-canvas/80 transition hover:text-canvas"
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
+        </nav>
+
         <button
           type="button"
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
-          className="justify-self-end rounded-lg p-2 text-ink/70 transition hover:bg-ink/5"
+          className="rounded-lg p-1.5 text-canvas/80 transition hover:bg-canvas/10 md:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -36,20 +65,16 @@ export function ArticleChrome() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-hairline bg-canvas"
+            className="overflow-hidden border-t border-canvas/15 bg-ink md:hidden"
           >
-            <div className="mx-auto flex max-w-6xl flex-col px-4 py-2">
-              {[
-                { label: "Home", to: "/" },
-                { label: "Weight loss", to: "/weight-loss" },
-                { label: "Reviews", to: "#reviews" },
-              ].map((item) =>
+            <div className="mx-auto flex max-w-[1180px] flex-col px-4 py-1">
+              {links.map((item) =>
                 item.to.startsWith("#") ? (
                   <a
                     key={item.label}
                     href={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-hairline py-3 text-[15px] text-ink/80 last:border-0"
+                    className="border-b border-canvas/10 py-3 text-[15px] text-canvas/85 last:border-0"
                   >
                     {item.label}
                   </a>
@@ -58,7 +83,7 @@ export function ArticleChrome() {
                     key={item.label}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-hairline py-3 text-[15px] text-ink/80 last:border-0"
+                    className="border-b border-canvas/10 py-3 text-[15px] text-canvas/85 last:border-0"
                   >
                     {item.label}
                   </Link>
@@ -71,6 +96,55 @@ export function ArticleChrome() {
     </header>
   );
 }
+
+/* ------------------------------------------------------ desktop right rail */
+
+export function SideRail() {
+  return (
+    <aside className="hidden w-[300px] shrink-0 lg:block">
+      <div className="sticky top-28 space-y-5">
+        <div>
+          <div className="border-b border-hairline pb-2 text-[15px] font-semibold text-ink/70">
+            Follow Us
+          </div>
+          <div className="mt-3 flex gap-2.5">
+            {["f", "X", "in", "P"].map((s) => (
+              <span
+                key={s}
+                className="grid h-10 w-10 place-items-center rounded-md bg-ink text-[13px] font-bold text-canvas"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-hairline bg-canvas shadow-[0_18px_50px_-34px_rgba(0,0,0,0.5)]">
+          <div className="px-5 pt-5 text-center text-[19px] font-bold leading-tight text-ink">
+            Doctor-Reviewed Weight Care, From Home
+          </div>
+          <img
+            src="/assets/adv-product.webp"
+            alt="Blissley treatment"
+            loading="lazy"
+            className="mt-4 aspect-[4/3] w-full object-cover"
+          />
+          <p className="px-5 py-4 text-center text-[14px] font-medium leading-relaxed text-ink/70">
+            Take the 2-minute quiz to see if you qualify for the medication that quiets the food
+            noise.
+          </p>
+          <Link
+            to={INTAKE}
+            className="block bg-ink py-3.5 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-canvas"
+          >
+            See If You Qualify
+          </Link>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
 
 export function ReviewsTab() {
   return (
@@ -88,7 +162,7 @@ export function ReviewsTab() {
 /* ------------------------------------------------------------------ layout */
 
 export function Col({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full max-w-[720px] px-5 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[760px] px-5 md:px-0 ${className}`}>{children}</div>;
 }
 
 export function P({ children, lead = false }: { children: ReactNode; lead?: boolean }) {
@@ -115,36 +189,32 @@ export function Highlight({ children }: { children: ReactNode }) {
 
 export function Byline() {
   return (
-    <div className="my-7 flex flex-col gap-3 border-y border-hairline py-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="relative shrink-0">
-          <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-full border border-hairline bg-canvas shadow-[0_6px_18px_-12px_rgba(0,0,0,0.5)]">
+    <div className="mb-6 mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-ink/55">
+      <span className="inline-flex items-center gap-2">
+        <span className="relative inline-block">
+          <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-hairline bg-canvas">
             <img
               src="/assets/uo-logo.png"
               alt="UnhingedOne"
-              className="h-full w-full scale-[1.55] object-contain p-1"
+              className="h-full w-full scale-[1.5] object-contain p-0.5"
             />
-          </div>
-          <span className="absolute -bottom-0.5 -right-0.5 grid h-5 w-5 place-items-center rounded-full border-2 border-canvas bg-ever text-canvas">
-            <Check className="h-2.5 w-2.5" strokeWidth={4} />
           </span>
-        </div>
-        <div className="min-w-0">
-          <div className="text-[14.5px] font-bold leading-tight text-ink">
-            By the founder of UnhingedOne
-          </div>
-          <div className="mt-0.5 text-[12.5px] text-ink/50">
-            Blissley Health Notes · Medically reviewed
-          </div>
-        </div>
-      </div>
-      <div className="flex shrink-0 items-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">
-        <span className="rounded-full bg-ink/[0.05] px-2.5 py-1">8 min read</span>
-        <span className="rounded-full bg-ever/10 px-2.5 py-1 text-ever">Updated Aug 2026</span>
-      </div>
+          <span className="absolute -bottom-0.5 -right-0.5 grid h-3.5 w-3.5 place-items-center rounded-full border-2 border-canvas bg-ever text-canvas">
+            <Check className="h-2 w-2" strokeWidth={5} />
+          </span>
+        </span>
+        <span className="font-medium text-ink/70">
+          Aug 2026, By the founder of UnhingedOne
+        </span>
+      </span>
+      <span className="text-ink/25">|</span>
+      <span>Medically reviewed</span>
+      <span className="text-ink/25">|</span>
+      <span>8 min read</span>
     </div>
   );
 }
+
 
 export function Figure({
   src,
@@ -161,7 +231,7 @@ export function Figure({
 }) {
   return (
     <figure className="my-7">
-      <div className="relative overflow-hidden rounded-2xl border border-hairline bg-ink/[0.03]">
+      <div className="relative overflow-hidden rounded-lg bg-ink/[0.03] shadow-[6px_8px_18px_-8px_rgba(0,0,0,0.35)]">
         <img
           src={src}
           alt={alt}
@@ -170,29 +240,33 @@ export function Figure({
           style={ratio ? { aspectRatio: ratio } : undefined}
         />
         {badge && (
-          <span className="absolute left-3 top-3 rounded-full bg-ink/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-canvas">
+          <span className="absolute left-3 top-3 rounded-sm bg-ink/85 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-canvas">
             {badge}
           </span>
         )}
       </div>
       {caption && (
-        <figcaption className="mt-2 text-center text-[12.5px] text-ink/50">{caption}</figcaption>
+        <figcaption className="mt-2.5 text-[13px] italic leading-snug text-ink/50">
+          {caption}
+        </figcaption>
       )}
     </figure>
   );
 }
 
+
 export function Callout({ children }: { children: ReactNode }) {
   return (
-    <div className="my-7 rounded-2xl border-l-[3px] border-ever bg-ever/[0.06] px-5 py-4 text-[17px] font-semibold leading-relaxed text-ink">
+    <div className="my-7 border-l-[4px] border-ink/75 bg-ink/[0.045] px-5 py-4 text-[16px] font-medium italic leading-relaxed text-ink/75">
       {children}
     </div>
   );
 }
 
+
 export function PullQuote({ children }: { children: ReactNode }) {
   return (
-    <p className="my-8 text-center text-[26px] font-bold leading-tight tracking-tight text-ink sm:text-[32px]">
+    <p className="my-9 text-center text-[24px] font-bold leading-[1.25] tracking-tight text-ink sm:text-[30px]">
       {children}
     </p>
   );
@@ -202,13 +276,11 @@ export function PullQuote({ children }: { children: ReactNode }) {
 
 export function CrossRow({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="flex gap-3 border-b border-hairline py-4 last:border-0">
-      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-[6px] bg-ever text-[12px] font-bold text-canvas">
-        ✕
-      </span>
+    <div className="flex gap-3 py-2.5">
+      <span className="mt-[3px] shrink-0 text-[15px] font-black leading-none text-[#e02020]">✕</span>
       <div className="min-w-0">
-        <div className="text-[15.5px] font-bold text-ink">{title}</div>
-        <div className="mt-1 text-[15.5px] leading-[1.72] text-ink/70">{children}</div>
+        <div className="text-[16.5px] font-bold text-ink">{title}</div>
+        <div className="mt-1 text-[16.5px] leading-[1.75] text-ink/70">{children}</div>
       </div>
     </div>
   );
@@ -216,14 +288,14 @@ export function CrossRow({ title, children }: { title: string; children: ReactNo
 
 export function CheckCard({ items, title }: { items: string[]; title?: string }) {
   return (
-    <div className="my-7 rounded-2xl border border-hairline bg-canvas p-5 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.4)]">
-      {title && <div className="mb-3 text-[15px] font-bold text-ink">{title}</div>}
+    <div className="my-7 rounded-lg bg-ever/[0.07] p-5 sm:p-6">
+      {title && (
+        <div className="mb-3.5 text-[16.5px] font-bold text-ink">{title}</div>
+      )}
       <ul className="space-y-3">
         {items.map((i) => (
-          <li key={i} className="flex gap-3 text-[15.5px] leading-relaxed text-ink/80">
-            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-ever text-canvas">
-              <Check className="h-3 w-3" strokeWidth={3} />
-            </span>
+          <li key={i} className="flex gap-3 text-[16px] leading-[1.7] text-ink/80">
+            <Check className="mt-1 h-4 w-4 shrink-0 text-ever" strokeWidth={3.5} />
             <span>{i}</span>
           </li>
         ))}
@@ -236,17 +308,18 @@ export function CheckCard({ items, title }: { items: string[]; title?: string })
 
 export function CtaButton({ label = "See If You Qualify → 2 Min" }: { label?: string }) {
   return (
-    <Link to={INTAKE} className="block">
+    <Link to={INTAKE} className="mx-auto block w-full max-w-[420px]">
       <MotionButton
         type="button"
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-ever px-7 py-4 text-[15.5px] font-bold text-canvas shadow-[0_16px_40px_-18px_color-mix(in_oklab,var(--color-ever)_70%,transparent)]"
+        className="flex w-full items-center justify-center gap-3 rounded-full bg-ever px-8 py-[18px] text-[16px] font-bold text-canvas shadow-[0_18px_44px_-20px_color-mix(in_oklab,var(--color-ever)_80%,transparent)]"
       >
         {label}
-        <ArrowRight className="h-4 w-4" />
+        <ArrowRight className="h-[18px] w-[18px]" strokeWidth={2.6} />
       </MotionButton>
     </Link>
   );
 }
+
 
 export function CtaBand({
   label = "See If You Qualify → 2 Min",
@@ -256,16 +329,15 @@ export function CtaBand({
   note?: string;
 }) {
   return (
-    <div className="my-10 bg-ink/[0.03] py-8">
-      <Col>
-        <CtaButton label={label} />
-        <p className="mt-3 text-center text-[12.5px] text-ink/50">
-          {note ?? "Reviewed by a licensed physician · No commitment · 2 minutes"}
-        </p>
-      </Col>
+    <div className="my-11">
+      <CtaButton label={label} />
+      <p className="mx-auto mt-4 max-w-[420px] text-center text-[12.5px] font-medium text-ink/50">
+        {note ?? "Reviewed by a licensed physician · No commitment · 2 minutes"}
+      </p>
     </div>
   );
 }
+
 
 export function StickyCta() {
   const [show, setShow] = useState(false);
@@ -280,20 +352,26 @@ export function StickyCta() {
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ y: 90 }}
+          initial={{ y: 100 }}
           animate={{ y: 0 }}
-          exit={{ y: 90 }}
+          exit={{ y: 100 }}
           transition={{ type: "spring", stiffness: 320, damping: 32 }}
-          className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-canvas/95 px-4 py-3 backdrop-blur"
+          className="fixed inset-x-0 bottom-0 z-50 bg-ink px-4 py-3"
         >
-          <div className="mx-auto max-w-[560px]">
-            <CtaButton />
+          <div className="mx-auto flex max-w-[1180px] flex-col items-center gap-3 sm:flex-row sm:justify-between">
+            <div className="hidden text-[15px] font-bold text-canvas sm:block">
+              Ready to see if you qualify?
+            </div>
+            <div className="w-full sm:w-auto sm:min-w-[300px]">
+              <CtaButton />
+            </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
+
 
 /* ------------------------------------------------------------------ story */
 
@@ -303,25 +381,35 @@ export function StoryTimeline({
   steps: { label: string; body: string }[];
 }) {
   return (
-    <ol className="my-8 space-y-6 border-l border-hairline pl-6">
+    <ol className="my-8 space-y-7 border-l-2 border-ever/25 pl-6">
       {steps.map((s) => (
         <li key={s.label} className="relative">
-          <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-ever ring-4 ring-canvas" />
-          <div className="text-[12px] font-bold uppercase tracking-[0.16em] text-ever">
+          <span className="absolute -left-[31px] top-2 h-2.5 w-2.5 rounded-full bg-ever ring-4 ring-canvas" />
+          <div className="text-[12px] font-bold uppercase tracking-[0.18em] text-ever">
             {s.label}
           </div>
-          <p className="mt-1 text-[16px] leading-[1.72] text-ink/80">{s.body}</p>
+          <p className="mt-1.5 text-[16.5px] leading-[1.75] text-ink/80">{s.body}</p>
         </li>
       ))}
     </ol>
   );
 }
 
+
 export function BigQuote({ children, who }: { children: ReactNode; who?: string }) {
   return (
-    <blockquote className="my-8 rounded-2xl border border-ever/25 bg-ever/[0.05] p-6">
-      <div className="text-[20px] font-bold leading-snug text-ink sm:text-[23px]">“{children}”</div>
-      {who && <div className="mt-3 text-[13px] font-semibold text-ink/55">— {who}</div>}
+    <blockquote className="relative my-9 rounded-lg bg-canvas p-6 shadow-[0_16px_40px_-28px_rgba(0,0,0,0.45)] ring-1 ring-ever/20">
+      <span className="absolute -top-3 left-5 text-[46px] font-black leading-none text-ever/35">
+        “
+      </span>
+      <div className="relative text-[21px] font-bold italic leading-snug text-ink sm:text-[24px]">
+        {children}
+      </div>
+      {who && (
+        <div className="mt-3.5 text-[13px] font-bold uppercase tracking-[0.12em] text-ever">
+          — {who}
+        </div>
+      )}
     </blockquote>
   );
 }
@@ -336,33 +424,37 @@ export function TestimonialCard({
   quote: string;
 }) {
   return (
-    <div className="rounded-2xl border border-hairline bg-ink/[0.02] p-5">
-      <div className="flex items-center gap-3">
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ever/12 text-[13px] font-bold text-ever">
+    <div className="rounded-lg bg-ever/[0.07] p-5 sm:p-6">
+      <div className="flex items-start gap-4">
+        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-ever/15 text-[18px] font-bold text-ever">
           {name.charAt(0)}
         </div>
         <div className="min-w-0">
-          <div className="truncate text-[14px] font-bold text-ink">{name}</div>
-          <div className="text-[11.5px] font-semibold uppercase tracking-wide text-ever">
-            Verified patient
+          <div className="flex flex-wrap items-baseline gap-x-2.5">
+            <span className="text-[15.5px] font-bold text-ink">{name}</span>
+            <span className="text-[13px] font-semibold text-ever">Verified Review</span>
+          </div>
+          <div className="mt-1.5 flex items-center gap-2">
+            <span className="text-[13px] font-medium text-ink/50">Rating:</span>
+            <span className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-ever text-ever" />
+              ))}
+            </span>
           </div>
         </div>
-        <div className="ml-auto flex shrink-0 gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-3.5 w-3.5 fill-ever text-ever" />
-          ))}
-        </div>
       </div>
-      <div className="mt-3 text-[12px] font-semibold uppercase tracking-wide text-ink/40">{tag}</div>
-      <p className="mt-1.5 text-[15.5px] leading-[1.7] text-ink/80">“{quote}”</p>
+      <div className="mt-4 text-[16px] font-bold uppercase tracking-wide text-ink">{tag}</div>
+      <p className="mt-1.5 text-[16px] leading-[1.7] text-ink/75">{quote}</p>
     </div>
   );
 }
 
+
 export function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <div className="my-7 divide-y divide-hairline overflow-hidden rounded-2xl border border-hairline">
+    <div className="my-7 divide-y divide-hairline overflow-hidden rounded-lg border border-hairline bg-canvas">
       {items.map((it, i) => (
         <div key={it.q}>
           <button
@@ -370,7 +462,7 @@ export function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
             onClick={() => setOpen(open === i ? null : i)}
             className="flex w-full items-center gap-3 px-5 py-4 text-left"
           >
-            <span className="min-w-0 flex-1 text-[15.5px] font-bold text-ink">{it.q}</span>
+            <span className="min-w-0 flex-1 text-[16.5px] font-bold text-ink">{it.q}</span>
             <span className="shrink-0 text-[20px] leading-none text-ever">
               {open === i ? "−" : "+"}
             </span>
@@ -415,7 +507,7 @@ export function OfferCard() {
   const s = left == null ? 0 : Math.floor((left % 60000) / 1000);
 
   return (
-    <div className="my-8 overflow-hidden rounded-3xl border border-ever/30 bg-ever/[0.05]">
+    <div className="my-9 overflow-hidden rounded-lg bg-ever/[0.07] ring-1 ring-ever/20">
       <div className="flex items-center justify-center gap-2 bg-ever px-4 py-2.5 text-canvas">
         <Clock className="h-4 w-4" />
         <span className="text-[13px] font-bold uppercase tracking-[0.14em]">
@@ -432,7 +524,7 @@ export function OfferCard() {
             { v: pad(m), l: "min" },
             { v: pad(s), l: "sec" },
           ].map((b) => (
-            <div key={b.l} className="min-w-[68px] rounded-xl bg-canvas px-3 py-2 border border-hairline">
+            <div key={b.l} className="min-w-[68px] rounded-md bg-canvas px-3 py-2 border border-hairline">
               <div className="text-[26px] font-bold leading-none tracking-tight text-ink">{b.v}</div>
               <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-ink/40">
                 {b.l}
@@ -459,7 +551,7 @@ export function AnchorRows({
   final: { label: string; price: string };
 }) {
   return (
-    <div className="my-7 rounded-2xl border border-hairline p-5">
+    <div className="my-7 rounded-lg border border-hairline bg-canvas p-5">
       {rows.map((r) => (
         <div
           key={r.label}
@@ -480,7 +572,7 @@ export function AnchorRows({
 export function PathCards() {
   return (
     <div className="my-8 grid gap-4 md:grid-cols-2">
-      <div className="rounded-2xl border border-hairline bg-ink/[0.02] p-5">
+      <div className="rounded-lg bg-ink/[0.035] p-5 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="grid h-6 w-6 place-items-center rounded-full bg-ink/10 text-[12px] font-bold text-ink/50">
             ✕
@@ -495,7 +587,7 @@ export function PathCards() {
           changes.
         </p>
       </div>
-      <div className="rounded-2xl border border-ever/30 bg-ever/[0.06] p-5">
+      <div className="rounded-lg bg-ever/[0.08] p-5 ring-1 ring-ever/20 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="grid h-6 w-6 place-items-center rounded-full bg-ever text-canvas">
             <Check className="h-3.5 w-3.5" strokeWidth={3} />

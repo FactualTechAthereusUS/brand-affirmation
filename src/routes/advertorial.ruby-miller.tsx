@@ -21,6 +21,7 @@ import {
   PathCards,
   PullQuote,
   ReviewsTab,
+  SideRail,
   StickyCta,
   StoryTimeline,
   
@@ -72,28 +73,30 @@ function RubyMillerAdvertorial() {
       <ArticleChrome />
       <ReviewsTab />
 
-      <article className="pb-24">
+      <article className="mx-auto flex max-w-[1180px] gap-12 px-0 pb-24 lg:px-6">
+       <div className="min-w-0 flex-1">
         {/* ---------------------------------------------- 1. HOOK */}
-        <Col className="pt-7">
-          <nav className="mb-5 text-[12px] text-ink/40">
+        <Col className="pt-6">
+          <nav className="mb-4 text-[13px] font-medium text-ink/45">
             <Link to="/" className="hover:text-ink/70">
               Home
             </Link>
             <span className="mx-1.5">›</span>
             <span>Stories</span>
             <span className="mx-1.5">›</span>
-            <span className="text-ink/60">Weight Loss</span>
+            <span className="text-ink/65">Weight Loss</span>
           </nav>
 
           <Kicker>Founder's story</Kicker>
-          <h1 className="text-[32px] font-bold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[44px]">
+          <h1 className="text-[34px] font-bold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[48px]">
             The Real Reason She Couldn't Lose The Weight{" "}
             <span className="text-ink/45">(Hint: It Was Never Willpower)</span>
           </h1>
-          <p className="mt-4 text-[18px] leading-[1.6] text-ink/70 sm:text-[20px]">
+          <p className="mt-4 text-[19px] font-medium leading-[1.55] text-ink/60 sm:text-[22px]">
             Why I built a telehealth company for{" "}
             <Highlight>my own employee</Highlight>, and how she got her life back in a few months.
           </p>
+
 
           <Byline />
 
@@ -636,7 +639,10 @@ function RubyMillerAdvertorial() {
             </p>
           </div>
         </Col>
+       </div>
+       <SideRail />
       </article>
+
 
       <StickyCta />
       <Footer />
