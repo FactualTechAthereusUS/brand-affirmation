@@ -464,42 +464,188 @@ function RubyMillerAdvertorial() {
 
           {/* ---------------------------------------------- 10. COMMENTS */}
           <div className="mt-14 border-t border-hairline pt-8">
+            <div className="mb-4 rounded-xl bg-ever/[0.06] px-4 py-3 text-center">
+              <p className="text-[13px] font-bold uppercase tracking-[0.12em] text-ever">
+                Internet only offer — 45% off for the next 24 hours. UO fam only.
+              </p>
+            </div>
+
             <div className="flex items-baseline justify-between gap-3">
               <h2 className="text-[20px] font-bold tracking-tight text-ink">Comments</h2>
               <span className="text-[12.5px] text-ink/45">412 comments</span>
             </div>
 
+            <div className="mt-5 flex items-center gap-3 rounded-2xl border border-hairline bg-canvas px-4 py-3">
+              <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink/[0.06] text-[12px] font-bold text-ink/60">
+                U
+              </div>
+              <span className="text-[14.5px] text-ink/40">Add a comment...</span>
+            </div>
+
             <CommentThread
               comments={[
                 {
-                  name: "Danielle R.",
-                  body: "does this actually work or is it another scam",
-                  time: "3h",
+                  name: "jenna_m",
+                  body: "does this actually work or is it another one of those scams",
+                  time: "2h",
                   likes: 84,
-                  reply:
-                    "It's prescription medication reviewed by a licensed physician — if you don't qualify, you're not prescribed. The quiz takes 2 minutes.",
+                  replies: [
+                    {
+                      name: "Rachael K.",
+                      body: "i thought the same thing. i'm on week 6. it's not a scam. the food noise is just gone. i can't explain it to anyone who's never had it.",
+                      time: "1h",
+                    },
+                    {
+                      name: "Danielle",
+                      body: "not a scam. i tried every diet twice over 10 years. this is the only thing that's ever actually worked for me.",
+                      time: "47m",
+                    },
+                  ],
                 },
                 {
-                  name: "Marissa K.",
-                  body: "the food noise stopping is not something i can explain to people who never had it. life changing.",
-                  time: "5h",
+                  name: "bigmoodmarie",
+                  body: "the food noise stopping is not something i can put into words. it's so quiet in my head now. i almost cried the first week. 🥹",
+                  time: "2h",
                   likes: 211,
                 },
                 {
-                  name: "Tonya B.",
-                  body: "how long does shipping take?",
-                  time: "7h",
-                  likes: 19,
-                  reply: "Mine came in a few days — ships straight to your door once approved.",
+                  name: "Steph V.",
+                  body: "ok how long does shipping take though",
+                  time: "1h",
+                  likes: 42,
+                  replies: [
+                    {
+                      name: "Blissley",
+                      body: "hey Steph! once your doctor approves your intake it ships within a couple days 🤍",
+                      time: "1h",
+                      verified: true,
+                    },
+                    {
+                      name: "Steph V.",
+                      body: "mine came in like 3 days. was shocked",
+                      time: "58m",
+                    },
+                  ],
                 },
                 {
-                  name: "Jess M.",
-                  body: "45% off?? just did the quiz",
-                  time: "9h",
-                  likes: 47,
+                  name: "karlaaa",
+                  body: "i literally paid full price last month and NOW it's 45% off?? 😭 that's not fair lol",
+                  time: "1h",
+                  likes: 119,
+                  replies: [
+                    {
+                      name: "Blissley",
+                      body: "dm us karla we got you 🫶",
+                      time: "55m",
+                      verified: true,
+                    },
+                  ],
+                },
+                {
+                  name: "momof3_liv",
+                  body: "i hid from every photo for 4 years. did the quiz on a whim. down 22 lbs. i'm in the pictures now. front and center.",
+                  time: "3h",
+                  likes: 287,
+                },
+                {
+                  name: "T_rodriguez",
+                  body: "my doctor told me for YEARS to just try harder and eat less. turns out it was never willpower. wish i found this sooner. mad honestly",
+                  time: "2h",
+                  likes: 156,
+                },
+                {
+                  name: "quietgirlwins",
+                  body: "WELCOME TO ONEDERLAND 🎉 under 200 for the first time in like 16 years. i didn't think i'd ever see that number",
+                  time: "1h",
+                  likes: 203,
+                },
+                {
+                  name: "Marcus_T",
+                  body: "didn't think this was for guys but did the quiz anyway. best decision. down 30, sleeping better, wife's happy lol",
+                  time: "4h",
+                  likes: 178,
+                },
+                {
+                  name: "hannah.exe",
+                  body: "wait how do i even start",
+                  time: "58m",
+                  likes: 33,
+                  replies: [
+                    {
+                      name: "Ashley P.",
+                      body: "there's a 2 min quiz, a real doctor reviews it. took me like 3 mins total",
+                      time: "51m",
+                    },
+                    {
+                      name: "hannah.exe",
+                      body: "omg just did it. why did i wait this long",
+                      time: "44m",
+                    },
+                  ],
+                },
+                {
+                  name: "realtalk_deb",
+                  body: "the clinic near me wanted $1,300 a MONTH for the exact same thing. this is a fraction of that. wild.",
+                  time: "2h",
+                  likes: 245,
+                },
+                {
+                  name: "sophielovescoffee",
+                  body: "i was so scared there was something wrong with me. there wasn't. it was biology this whole time. that part broke me a little",
+                  time: "1h",
+                  likes: 134,
+                },
+                {
+                  name: "Ilse M.",
+                  body: "saw it was back in stock and ordered immediately. didn't want to miss out again after last time",
+                  time: "3h",
+                  likes: 91,
+                },
+                {
+                  name: "gigglesandgains",
+                  body: "ordered one plan for me and got my sister set up too. we're doing it together 💪",
+                  time: "2h",
+                  likes: 76,
+                },
+                {
+                  name: "onmyway_jess",
+                  body: "week 2 update: cravings way down, not obsessing over food at night anymore. it's happening 😭",
+                  time: "40m",
+                  likes: 64,
+                },
+                {
+                  name: "Priya_S",
+                  body: "does it work if literally everything else failed for you",
+                  time: "1h",
+                  likes: 88,
+                  replies: [
+                    {
+                      name: "bigmoodmarie",
+                      body: "that was me. failed keto, fasting, the apps, trainers, all of it. this is different because it actually works on the signal not your willpower",
+                      time: "55m",
+                    },
+                  ],
+                },
+                {
+                  name: "Tanner89",
+                  body: "45% off?? just did the quiz. link is at the top for anyone scrolling ⬆️",
+                  time: "33m",
+                  likes: 52,
+                },
+                {
+                  name: "lauren_from_ohio",
+                  body: "honestly the best part isn't even the weight. i got myself back. that's the only way i can say it.",
+                  time: "2h",
+                  likes: 224,
                 },
               ]}
             />
+
+            <p className="mt-8 text-center text-[12px] leading-[1.7] text-ink/45">
+              Results vary from person to person. Comments are from real Blissley patients, shared
+              with permission. Prescription products require an online consultation and are only
+              prescribed if appropriate for you.
+            </p>
           </div>
 
           {/* fine print */}
