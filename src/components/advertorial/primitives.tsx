@@ -10,20 +10,49 @@ export const INTAKE = "/intake/weight-loss";
 
 export function ArticleChrome() {
   const [open, setOpen] = useState(false);
+  const links = [
+    { label: "Order", to: INTAKE },
+    { label: "About", to: "/" },
+    { label: "Reviews", to: "#reviews" },
+  ];
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/95 backdrop-blur">
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 px-4 py-3">
-        <div className="min-w-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/40">
-          Health Notes
-        </div>
-        <Link to="/" className="shrink-0 justify-self-center">
-          <img src="/assets/blissley-logo.png" alt="Blissley" className="h-6 w-auto sm:h-7" />
+    <header className="sticky top-0 z-50 bg-ink text-canvas">
+      <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-4 py-3.5 md:px-6">
+        <Link to="/" className="shrink-0">
+          <img
+            src="/assets/blissley-logo.png"
+            alt="Blissley"
+            className="h-6 w-auto brightness-0 invert sm:h-7"
+          />
         </Link>
+
+        <nav className="hidden items-center gap-9 md:flex">
+          {links.map((item) =>
+            item.to.startsWith("#") ? (
+              <a
+                key={item.label}
+                href={item.to}
+                className="text-[13.5px] font-medium tracking-wide text-canvas/80 transition hover:text-canvas"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.label}
+                to={item.to}
+                className="text-[13.5px] font-medium tracking-wide text-canvas/80 transition hover:text-canvas"
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
+        </nav>
+
         <button
           type="button"
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
-          className="justify-self-end rounded-lg p-2 text-ink/70 transition hover:bg-ink/5"
+          className="rounded-lg p-1.5 text-canvas/80 transition hover:bg-canvas/10 md:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -36,20 +65,16 @@ export function ArticleChrome() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-hairline bg-canvas"
+            className="overflow-hidden border-t border-canvas/15 bg-ink md:hidden"
           >
-            <div className="mx-auto flex max-w-6xl flex-col px-4 py-2">
-              {[
-                { label: "Home", to: "/" },
-                { label: "Weight loss", to: "/weight-loss" },
-                { label: "Reviews", to: "#reviews" },
-              ].map((item) =>
+            <div className="mx-auto flex max-w-[1180px] flex-col px-4 py-1">
+              {links.map((item) =>
                 item.to.startsWith("#") ? (
                   <a
                     key={item.label}
                     href={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-hairline py-3 text-[15px] text-ink/80 last:border-0"
+                    className="border-b border-canvas/10 py-3 text-[15px] text-canvas/85 last:border-0"
                   >
                     {item.label}
                   </a>
@@ -58,7 +83,7 @@ export function ArticleChrome() {
                     key={item.label}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-hairline py-3 text-[15px] text-ink/80 last:border-0"
+                    className="border-b border-canvas/10 py-3 text-[15px] text-canvas/85 last:border-0"
                   >
                     {item.label}
                   </Link>
@@ -71,6 +96,55 @@ export function ArticleChrome() {
     </header>
   );
 }
+
+/* ------------------------------------------------------ desktop right rail */
+
+export function SideRail() {
+  return (
+    <aside className="hidden w-[300px] shrink-0 lg:block">
+      <div className="sticky top-28 space-y-5">
+        <div>
+          <div className="border-b border-hairline pb-2 text-[15px] font-semibold text-ink/70">
+            Follow Us
+          </div>
+          <div className="mt-3 flex gap-2.5">
+            {["f", "X", "in", "P"].map((s) => (
+              <span
+                key={s}
+                className="grid h-10 w-10 place-items-center rounded-md bg-ink text-[13px] font-bold text-canvas"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-hairline bg-canvas shadow-[0_18px_50px_-34px_rgba(0,0,0,0.5)]">
+          <div className="px-5 pt-5 text-center text-[19px] font-bold leading-tight text-ink">
+            Doctor-Reviewed Weight Care, From Home
+          </div>
+          <img
+            src="/assets/adv-product.jpg"
+            alt="Blissley treatment"
+            loading="lazy"
+            className="mt-4 aspect-[4/3] w-full object-cover"
+          />
+          <p className="px-5 py-4 text-center text-[14px] font-medium leading-relaxed text-ink/70">
+            Take the 2-minute quiz to see if you qualify for the medication that quiets the food
+            noise.
+          </p>
+          <Link
+            to={INTAKE}
+            className="block bg-ink py-3.5 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-canvas"
+          >
+            See If You Qualify
+          </Link>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
 
 export function ReviewsTab() {
   return (
