@@ -351,28 +351,20 @@ function RubyMillerAdvertorial() {
             caption="Consented patient photos. Individual results vary."
           />
 
-          <div className="my-7 grid gap-4 md:grid-cols-2">
-            <TestimonialCard
-              name="Verified patient"
-              tag="Failed everything before"
-              quote="I tried so many different medications, diets, supplements. This is the only thing that has ever helped me."
-            />
-            <TestimonialCard
-              name="Verified patient"
-              tag="The milestone"
-              quote="Welcome to Onederland. Under 200 for the first time in 16 years. I didn't think I'd ever see that number."
-            />
-            <TestimonialCard
-              name="Verified patient"
-              tag="The emotional one"
-              quote="I've gotten parts of myself back I thought were gone forever."
-            />
-            <TestimonialCard
-              name="Verified patient"
-              tag="The food noise"
-              quote="The noise in my head about food finally went quiet. I can't explain what that's worth."
-            />
-          </div>
+          <Figure
+            src="/assets/adv-ba-1.jpg"
+            alt="Patient before and after photos"
+            caption="“I tried so many different medications, diets, supplements. This is the only thing that has ever helped me.” — verified patient"
+            ratio="16 / 9"
+          />
+
+          <Figure
+            src="/assets/adv-ba-2.jpg"
+            alt="Patient before and after photos"
+            caption="“The noise in my head about food finally went quiet. I can't explain what that's worth.” — verified patient"
+            ratio="16 / 9"
+          />
+
 
           <H2>You might be wondering…</H2>
           <FaqAccordion
