@@ -257,11 +257,12 @@ export function Figure({
 
 export function Callout({ children }: { children: ReactNode }) {
   return (
-    <div className="my-7 rounded-2xl border-l-[3px] border-ever bg-ever/[0.06] px-5 py-4 text-[17px] font-semibold leading-relaxed text-ink">
+    <div className="my-7 border-l-[4px] border-ink/75 bg-ink/[0.045] px-5 py-4 text-[16px] font-medium italic leading-relaxed text-ink/75">
       {children}
     </div>
   );
 }
+
 
 export function PullQuote({ children }: { children: ReactNode }) {
   return (
