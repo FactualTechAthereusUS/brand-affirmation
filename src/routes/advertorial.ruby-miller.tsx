@@ -447,23 +447,8 @@ function RubyMillerAdvertorial() {
 
           {/* ---------------------------------------------- 10. COMMENTS */}
           <div className="mt-14 border-t border-hairline pt-8">
-            <div className="mb-4 rounded-xl bg-ever/[0.06] px-4 py-3 text-center">
-              <p className="text-[13px] font-bold uppercase tracking-[0.12em] text-ever">
-                Internet only offer — 45% off for the next 24 hours. UO fam only.
-              </p>
-            </div>
+            <h2 className="text-[20px] font-bold tracking-tight text-ink">Comments</h2>
 
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 className="text-[20px] font-bold tracking-tight text-ink">Comments</h2>
-              <span className="text-[12.5px] text-ink/45">412 comments</span>
-            </div>
-
-            <div className="mt-5 flex items-center gap-3 rounded-2xl border border-hairline bg-canvas px-4 py-3">
-              <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink/[0.06] text-[12px] font-bold text-ink/60">
-                U
-              </div>
-              <span className="text-[14.5px] text-ink/40">Add a comment...</span>
-            </div>
 
             <CommentThread
               comments={[
