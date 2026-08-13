@@ -430,9 +430,16 @@ function RubyMillerAdvertorial() {
 
           {/* ---------------------------------------------- 9. CLOSE */}
           <H2>Here's what I'd tell you if you were my sister</H2>
+          <Figure
+            src="/assets/adv-crossroads.jpg"
+            alt="A woman standing at a fork in the road: one path back to the dark bedroom, the other toward a sunrise hilltop"
+            caption="Two paths. Same woman. The only difference is what she does in the next two minutes."
+            ratio="1 / 1"
+          />
           <P>
             <strong>You're at a crossroads.</strong>
           </P>
+
 
           <PathCards />
 
