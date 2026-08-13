@@ -189,36 +189,32 @@ export function Highlight({ children }: { children: ReactNode }) {
 
 export function Byline() {
   return (
-    <div className="my-7 flex flex-col gap-3 border-y border-hairline py-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="relative shrink-0">
-          <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-full border border-hairline bg-canvas shadow-[0_6px_18px_-12px_rgba(0,0,0,0.5)]">
+    <div className="mb-6 mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-ink/55">
+      <span className="inline-flex items-center gap-2">
+        <span className="relative inline-block">
+          <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-hairline bg-canvas">
             <img
               src="/assets/uo-logo.png"
               alt="UnhingedOne"
-              className="h-full w-full scale-[1.55] object-contain p-1"
+              className="h-full w-full scale-[1.5] object-contain p-0.5"
             />
-          </div>
-          <span className="absolute -bottom-0.5 -right-0.5 grid h-5 w-5 place-items-center rounded-full border-2 border-canvas bg-ever text-canvas">
-            <Check className="h-2.5 w-2.5" strokeWidth={4} />
           </span>
-        </div>
-        <div className="min-w-0">
-          <div className="text-[14.5px] font-bold leading-tight text-ink">
-            By the founder of UnhingedOne
-          </div>
-          <div className="mt-0.5 text-[12.5px] text-ink/50">
-            Blissley Health Notes · Medically reviewed
-          </div>
-        </div>
-      </div>
-      <div className="flex shrink-0 items-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">
-        <span className="rounded-full bg-ink/[0.05] px-2.5 py-1">8 min read</span>
-        <span className="rounded-full bg-ever/10 px-2.5 py-1 text-ever">Updated Aug 2026</span>
-      </div>
+          <span className="absolute -bottom-0.5 -right-0.5 grid h-3.5 w-3.5 place-items-center rounded-full border-2 border-canvas bg-ever text-canvas">
+            <Check className="h-2 w-2" strokeWidth={5} />
+          </span>
+        </span>
+        <span className="font-medium text-ink/70">
+          Aug 2026, By the founder of UnhingedOne
+        </span>
+      </span>
+      <span className="text-ink/25">|</span>
+      <span>Medically reviewed</span>
+      <span className="text-ink/25">|</span>
+      <span>8 min read</span>
     </div>
   );
 }
+
 
 export function Figure({
   src,
