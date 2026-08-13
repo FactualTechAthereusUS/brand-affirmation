@@ -24,7 +24,7 @@ import {
   ReviewsTab,
   StickyCta,
   StoryTimeline,
-  TestimonialCard,
+  
 } from "@/components/advertorial/primitives";
 
 const URL = "https://sweet-confirm-it.lovable.app/advertorial/ruby-miller";
