@@ -454,7 +454,7 @@ export function TestimonialCard({
 export function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <div className="my-7 divide-y divide-hairline overflow-hidden rounded-2xl border border-hairline">
+    <div className="my-7 divide-y divide-hairline overflow-hidden rounded-lg border border-hairline bg-canvas">
       {items.map((it, i) => (
         <div key={it.q}>
           <button
@@ -462,7 +462,7 @@ export function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
             onClick={() => setOpen(open === i ? null : i)}
             className="flex w-full items-center gap-3 px-5 py-4 text-left"
           >
-            <span className="min-w-0 flex-1 text-[15.5px] font-bold text-ink">{it.q}</span>
+            <span className="min-w-0 flex-1 text-[16.5px] font-bold text-ink">{it.q}</span>
             <span className="shrink-0 text-[20px] leading-none text-ever">
               {open === i ? "−" : "+"}
             </span>
@@ -507,7 +507,7 @@ export function OfferCard() {
   const s = left == null ? 0 : Math.floor((left % 60000) / 1000);
 
   return (
-    <div className="my-8 overflow-hidden rounded-3xl border border-ever/30 bg-ever/[0.05]">
+    <div className="my-9 overflow-hidden rounded-lg bg-ever/[0.07] ring-1 ring-ever/20">
       <div className="flex items-center justify-center gap-2 bg-ever px-4 py-2.5 text-canvas">
         <Clock className="h-4 w-4" />
         <span className="text-[13px] font-bold uppercase tracking-[0.14em]">
@@ -524,7 +524,7 @@ export function OfferCard() {
             { v: pad(m), l: "min" },
             { v: pad(s), l: "sec" },
           ].map((b) => (
-            <div key={b.l} className="min-w-[68px] rounded-xl bg-canvas px-3 py-2 border border-hairline">
+            <div key={b.l} className="min-w-[68px] rounded-md bg-canvas px-3 py-2 border border-hairline">
               <div className="text-[26px] font-bold leading-none tracking-tight text-ink">{b.v}</div>
               <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-ink/40">
                 {b.l}
@@ -551,7 +551,7 @@ export function AnchorRows({
   final: { label: string; price: string };
 }) {
   return (
-    <div className="my-7 rounded-2xl border border-hairline p-5">
+    <div className="my-7 rounded-lg border border-hairline bg-canvas p-5">
       {rows.map((r) => (
         <div
           key={r.label}
@@ -572,7 +572,7 @@ export function AnchorRows({
 export function PathCards() {
   return (
     <div className="my-8 grid gap-4 md:grid-cols-2">
-      <div className="rounded-2xl border border-hairline bg-ink/[0.02] p-5">
+      <div className="rounded-lg bg-ink/[0.035] p-5 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="grid h-6 w-6 place-items-center rounded-full bg-ink/10 text-[12px] font-bold text-ink/50">
             ✕
@@ -587,7 +587,7 @@ export function PathCards() {
           changes.
         </p>
       </div>
-      <div className="rounded-2xl border border-ever/30 bg-ever/[0.06] p-5">
+      <div className="rounded-lg bg-ever/[0.08] p-5 ring-1 ring-ever/20 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="grid h-6 w-6 place-items-center rounded-full bg-ever text-canvas">
             <Check className="h-3.5 w-3.5" strokeWidth={3} />
