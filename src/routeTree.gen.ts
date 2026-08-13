@@ -45,6 +45,7 @@ import { Route as IntakeNewWeightlossOursRouteImport } from './routes/intake_.ne
 import { Route as CheckoutTrimrxRouteImport } from './routes/checkout.trimrx'
 import { Route as CheckoutChargedBeforeRouteImport } from './routes/checkout.charged-before'
 import { Route as CheckoutUITemplate3RouteImport } from './routes/checkout.UI-template3'
+import { Route as AdvertorialRubyMillerRouteImport } from './routes/advertorial.ruby-miller'
 import { Route as AdminTeamRouteImport } from './routes/admin.team'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
@@ -270,6 +271,11 @@ const CheckoutChargedBeforeRoute = CheckoutChargedBeforeRouteImport.update({
 const CheckoutUITemplate3Route = CheckoutUITemplate3RouteImport.update({
   id: '/checkout/UI-template3',
   path: '/checkout/UI-template3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertorialRubyMillerRoute = AdvertorialRubyMillerRouteImport.update({
+  id: '/advertorial/ruby-miller',
+  path: '/advertorial/ruby-miller',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTeamRoute = AdminTeamRouteImport.update({
@@ -530,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRouteWithChildren
   '/admin/team': typeof AdminTeamRoute
+  '/advertorial/ruby-miller': typeof AdvertorialRubyMillerRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -613,6 +620,7 @@ export interface FileRoutesByTo {
   '/admin/pharmacy': typeof AdminPharmacyRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/team': typeof AdminTeamRoute
+  '/advertorial/ruby-miller': typeof AdvertorialRubyMillerRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -698,6 +706,7 @@ export interface FileRoutesById {
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRouteWithChildren
   '/admin/team': typeof AdminTeamRoute
+  '/advertorial/ruby-miller': typeof AdvertorialRubyMillerRoute
   '/checkout/UI-template3': typeof CheckoutUITemplate3Route
   '/checkout/charged-before': typeof CheckoutChargedBeforeRoute
   '/checkout/trimrx': typeof CheckoutTrimrxRoute
@@ -784,6 +793,7 @@ export interface FileRouteTypes {
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/team'
+    | '/advertorial/ruby-miller'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -867,6 +877,7 @@ export interface FileRouteTypes {
     | '/admin/pharmacy'
     | '/admin/reports'
     | '/admin/team'
+    | '/advertorial/ruby-miller'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -951,6 +962,7 @@ export interface FileRouteTypes {
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/team'
+    | '/advertorial/ruby-miller'
     | '/checkout/UI-template3'
     | '/checkout/charged-before'
     | '/checkout/trimrx'
@@ -1036,6 +1048,7 @@ export interface RootRouteChildren {
   AdminReportsRoute: typeof AdminReportsRoute
   AdminSettingsRoute: typeof AdminSettingsRouteWithChildren
   AdminTeamRoute: typeof AdminTeamRoute
+  AdvertorialRubyMillerRoute: typeof AdvertorialRubyMillerRoute
   CheckoutUITemplate3Route: typeof CheckoutUITemplate3Route
   CheckoutChargedBeforeRoute: typeof CheckoutChargedBeforeRoute
   CheckoutTrimrxRoute: typeof CheckoutTrimrxRoute
@@ -1340,6 +1353,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout/UI-template3'
       fullPath: '/checkout/UI-template3'
       preLoaderRoute: typeof CheckoutUITemplate3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertorial/ruby-miller': {
+      id: '/advertorial/ruby-miller'
+      path: '/advertorial/ruby-miller'
+      fullPath: '/advertorial/ruby-miller'
+      preLoaderRoute: typeof AdvertorialRubyMillerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/team': {
@@ -1730,6 +1750,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminReportsRoute: AdminReportsRoute,
   AdminSettingsRoute: AdminSettingsRouteWithChildren,
   AdminTeamRoute: AdminTeamRoute,
+  AdvertorialRubyMillerRoute: AdvertorialRubyMillerRoute,
   CheckoutUITemplate3Route: CheckoutUITemplate3Route,
   CheckoutChargedBeforeRoute: CheckoutChargedBeforeRoute,
   CheckoutTrimrxRoute: CheckoutTrimrxRoute,
