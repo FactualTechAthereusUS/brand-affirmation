@@ -1,31 +1,38 @@
-# Editorial Listicle Presell Page
+# /advertorial/ruby-miller — Founder POV Editorial Presell
 
-A new advertorial-style article page for Blissley weight loss, built on the numbered-listicle pattern from the reference (blog chrome, marker-highlighted deck, alternating numbered rows, inline CTA strips), rendered entirely in our brand system — marine `#1D437B`, coral `#ee7273`, ink, canvas, Google Sans Flex. No purple, no green, no tan.
+A news-article-style advertorial at `/advertorial/ruby-miller`, built on the PetLab/Sarah's-Blog editorial pattern but rendered fully in the Blissley system: white canvas, ink text, coral `#ee7273` CTAs, Google Sans Flex, Blissley logo. No purple, tan, or green accents.
 
-Route: `/presell/weight-loss` (`src/routes/presell.weight-loss.tsx`). Every CTA goes to `/intake/weight-loss`.
+Every CTA button reads **"See If You Qualify → 2 Min"** (the price-reveal one reads "See If You Qualify → Claim 45% Off") and routes to `/intake/weight-loss`.
 
-## Page structure
+## Article chrome
 
-1. **Blog chrome** — slim cream bar, "Blissley Health Notes" wordmark with uppercase kicker, single hamburger (opens nothing but a simple sheet with Home / Programs / Reviews). Fixed vertical "★ REVIEWS" tab on the right edge (desktop only) that scrolls to the reviews block.
-2. **Hero** — left-aligned narrow column: breadcrumb, big black headline ("7 Reasons The Weight Comes Back — And What Finally Stops It"), deck with coral-tinted marker highlight behind the text lines, before/after split image with ✗ / ✓ badge overlays, then a bordered author strip (headshot, "By [clinician], Blissley Clinical Team", italic publication line).
-3. **First-person intro** — short punchy paragraphs with bolded phrases, then a tinted "You probably know this loop:" qualifier box with 4 bullets and a "you're in the right place" closer.
-4. **7 numbered reasons** — each a centered numbered H2 plus a two-column row that alternates image side / copy side; copy is one-sentence paragraphs, coral ✓ bullets for mechanisms, one bolded punchline. Image slots use existing project assets and simple composed panels (no new stock photography).
-5. **Inline CTA strips** — full-bleed bands after reasons 2, 5 and 7 with first-person link labels ("How I finally kept it off", "What actually worked for me"); final band uses solid coral "See if you qualify".
-6. **Proof blocks** — a linked study citation line, bold ✓ stat lines (e.g. % who stayed on plan), an honest limitations paragraph ("this isn't for everyone — here's who it's not for").
-7. **The Bottom Line** — ✓ criteria checklist beside a BEFORE/AFTER pair, then the program name reveal and closing CTA.
-8. **Reviews block** — reuse the existing review data/style so the ★ REVIEWS tab has a real destination.
-9. **Footer** — reuse the marketing footer with a visible advertorial disclosure line.
+- Slim white header bar: Blissley logo centered, hamburger on the right (sheet with Home / Programs / Reviews). Bottom hairline.
+- Breadcrumb line: Home › Stories › Weight Loss.
+- Fixed vertical "★ REVIEWS" tab on the right edge (desktop) that scrolls to the testimonial block.
+- Sticky bottom CTA bar (coral) that appears once the reader passes Section 2; on mobile it's full-width, on desktop a centered pill.
+- 720px reading column, generous line height, single H1.
 
-## Behaviour
+## Sections (all copy used verbatim from the brief)
 
-- Sticky mobile CTA bar appears after the reader passes reason 1.
-- Scroll reveals on each numbered row (existing `Reveal` component), no new animation library.
-- Fully responsive: single column under `lg`, image above copy, CTA bands full-width.
+1. **Hook** — H1 "The Real Reason She Couldn't Lose The Weight (Hint: It Was Never Willpower)", coral-marker-highlighted deck, byline strip with author avatar + "by the founder of UnhingedOne · Blissley" + date. Hero image = Ruby present-day portrait. Optional "AS FEATURED" logo row directly under it. Then the intro paragraphs and the Ruby-2024 photo with a "2024 · 283 lbs" caption.
+2. **The current situation** — short one-line paragraphs, bolded emotional punchlines, a tinted callout box for "There has to be something wrong with me."
+3. **Why nothing worked** — full-width crossed-out alternatives grid image, then four ✗-marked sub-blocks (Diets / Just try harder / The gym / The $1,300 gate) as bordered rows with red ✗ marks.
+4. **The root cause** — "It was never willpower." set as a large pull-quote, gut-brain diagram image full width with caption, then the "read that again" emphasis block.
+5. **The mechanism** — Blissley product shot, explanation copy, then a 5-item coral ✓ checklist (real doctors / real medication / honest pricing / real human / ships to door) in a card. First inline CTA band.
+6. **Proof story** — Ruby before/after image, then a vertical timeline (Week 1 → Week 3 → Week 6 → Month 3 → Last week) with connector line and coral nodes; final quote as a large speech-bubble card.
+7. **Objections** — before/after testimonial cards (3, each labeled Verified Patient with a letter avatar and coral tag), then a "You Might Be Wondering…" accordion with the 3 Q&As. Second CTA band.
+8. **Price reveal + scarcity** — handwritten anchor-list image, anchor pricing rows with struck-through amounts, then a coral offer card: "45% off your first month for UO fam", live 24-hour countdown, "See If You Qualify → Claim 45% Off".
+9. **Crossroads close** — two-column Path 1 / Path 2 cards (Path 1 muted with ✗, Path 2 coral with ✓), trust line, final CTA.
+10. **Comments + fine print** — native-style comment thread with avatars, timestamps, reply indentation and like counts; then a small-print disclosure block (results vary, individual results, real consented patients, not medical advice) and the marketing footer.
+
+## Images
+
+Uploaded references map to the eight `[IMAGE]` slots in order (Ruby now, Ruby 2024, crossed-out alternatives grid, gut-brain diagram, Blissley product shot, before/after, testimonial before/after, handwritten anchor list). Each becomes a Lovable asset pointer in `src/assets/` referenced by URL — no `/__l5e/` URLs left raw in components, per the local-assets rule. The crossroads slot in Section 9 is rendered as a CSS/two-card layout rather than an image.
 
 ## Technical notes
 
-- One route file plus a `src/components/presell/` folder: `PresellChrome`, `HighlightDeck`, `QualifierBox`, `ReasonRow`, `CtaBand`, `BottomLine`, `AuthorStrip`.
-- Highlight effect via a CSS utility in `src/styles.css` (inline background-image gradient behind inline text), not hardcoded colors in components.
-- Content lives in a typed array in the route file so reasons can be reordered or duplicated for other categories later.
-- Head metadata: unique title/description/og tags for the article.
-- Any new imagery is composed from existing local assets in `public/assets`; no `__l5e` URLs.
+- New route `src/routes/advertorial.ruby-miller.tsx` plus `src/components/advertorial/` primitives: `ArticleChrome`, `HighlightDeck`, `Byline`, `FigureWithCaption`, `CrossList`, `CheckCard`, `StoryTimeline`, `TestimonialCard`, `FaqAccordion`, `OfferCard` (with countdown), `PathCards`, `CommentThread`, `CtaBand`, `StickyCta`.
+- Marker-highlight and article-prose styles added as scoped classes in `src/styles.css` using existing tokens (no hardcoded hex in components).
+- Motion: existing `Reveal` for section entrances, `MotionButton` for CTAs. Countdown is client-side with a hydration-safe effect.
+- Head metadata: unique title, description, `og:type: article`, og/twitter title+description, self-referencing canonical and `og:url`, plus Article JSON-LD.
+- Responsive: single column throughout, images full-bleed-to-column on mobile, two-column only for the Path cards and testimonial grid at `md:`+.
