@@ -140,7 +140,7 @@ export function Byline() {
       </div>
       <div className="flex shrink-0 items-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-ink/45">
         <span className="rounded-full bg-ink/[0.05] px-2.5 py-1">8 min read</span>
-        <span className="rounded-full bg-ever/10 px-2.5 py-1 text-ever">Founder's story</span>
+        <span className="rounded-full bg-ever/10 px-2.5 py-1 text-ever">Updated Aug 2026</span>
       </div>
     </div>
   );
