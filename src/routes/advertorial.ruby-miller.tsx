@@ -638,7 +638,10 @@ function RubyMillerAdvertorial() {
             </p>
           </div>
         </Col>
+       </div>
+       <SideRail />
       </article>
+
 
       <StickyCta />
       <Footer />
