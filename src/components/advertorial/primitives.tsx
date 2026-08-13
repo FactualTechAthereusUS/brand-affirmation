@@ -124,7 +124,7 @@ export function SideRail() {
             Doctor-Reviewed Weight Care, From Home
           </div>
           <img
-            src="/assets/adv-product.jpg"
+            src="/assets/adv-product.webp"
             alt="Blissley treatment"
             loading="lazy"
             className="mt-4 aspect-[4/3] w-full object-cover"
