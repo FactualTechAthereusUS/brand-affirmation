@@ -105,19 +105,6 @@ function RubyMillerAdvertorial() {
             ratio="4 / 5"
           />
 
-          <div className="my-7 grid grid-cols-2 gap-3 border-y border-hairline py-4 text-center sm:grid-cols-4">
-            {[
-              ["30,000+", "patients treated"],
-              ["4.9★", "average rating"],
-              ["100%", "US-licensed doctors"],
-              ["FDA", "approved medication"],
-            ].map(([a, b]) => (
-              <div key={b}>
-                <div className="text-[17px] font-bold text-ink">{a}</div>
-                <div className="text-[11.5px] uppercase tracking-wide text-ink/45">{b}</div>
-              </div>
-            ))}
-          </div>
 
           <P lead>If you came from my story, this is the whole thing. Sit with me for a sec.</P>
           <P>
