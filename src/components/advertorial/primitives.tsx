@@ -266,7 +266,7 @@ export function Callout({ children }: { children: ReactNode }) {
 
 export function PullQuote({ children }: { children: ReactNode }) {
   return (
-    <p className="my-8 text-center text-[26px] font-bold leading-tight tracking-tight text-ink sm:text-[32px]">
+    <p className="my-9 text-center text-[24px] font-bold leading-[1.25] tracking-tight text-ink sm:text-[30px]">
       {children}
     </p>
   );
@@ -276,13 +276,11 @@ export function PullQuote({ children }: { children: ReactNode }) {
 
 export function CrossRow({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="flex gap-3 border-b border-hairline py-4 last:border-0">
-      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-[6px] bg-ever text-[12px] font-bold text-canvas">
-        ✕
-      </span>
+    <div className="flex gap-3 py-2.5">
+      <span className="mt-[3px] shrink-0 text-[15px] font-black leading-none text-[#e02020]">✕</span>
       <div className="min-w-0">
-        <div className="text-[15.5px] font-bold text-ink">{title}</div>
-        <div className="mt-1 text-[15.5px] leading-[1.72] text-ink/70">{children}</div>
+        <div className="text-[16.5px] font-bold text-ink">{title}</div>
+        <div className="mt-1 text-[16.5px] leading-[1.75] text-ink/70">{children}</div>
       </div>
     </div>
   );
@@ -290,14 +288,14 @@ export function CrossRow({ title, children }: { title: string; children: ReactNo
 
 export function CheckCard({ items, title }: { items: string[]; title?: string }) {
   return (
-    <div className="my-7 rounded-2xl border border-hairline bg-canvas p-5 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.4)]">
-      {title && <div className="mb-3 text-[15px] font-bold text-ink">{title}</div>}
+    <div className="my-7 rounded-lg bg-ever/[0.07] p-5 sm:p-6">
+      {title && (
+        <div className="mb-3.5 text-[16.5px] font-bold text-ink">{title}</div>
+      )}
       <ul className="space-y-3">
         {items.map((i) => (
-          <li key={i} className="flex gap-3 text-[15.5px] leading-relaxed text-ink/80">
-            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-ever text-canvas">
-              <Check className="h-3 w-3" strokeWidth={3} />
-            </span>
+          <li key={i} className="flex gap-3 text-[16px] leading-[1.7] text-ink/80">
+            <Check className="mt-1 h-4 w-4 shrink-0 text-ever" strokeWidth={3.5} />
             <span>{i}</span>
           </li>
         ))}
@@ -310,17 +308,18 @@ export function CheckCard({ items, title }: { items: string[]; title?: string })
 
 export function CtaButton({ label = "See If You Qualify → 2 Min" }: { label?: string }) {
   return (
-    <Link to={INTAKE} className="block">
+    <Link to={INTAKE} className="mx-auto block w-full max-w-[420px]">
       <MotionButton
         type="button"
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-ever px-7 py-4 text-[15.5px] font-bold text-canvas shadow-[0_16px_40px_-18px_color-mix(in_oklab,var(--color-ever)_70%,transparent)]"
+        className="flex w-full items-center justify-center gap-3 rounded-full bg-ever px-8 py-[18px] text-[16px] font-bold text-canvas shadow-[0_18px_44px_-20px_color-mix(in_oklab,var(--color-ever)_80%,transparent)]"
       >
         {label}
-        <ArrowRight className="h-4 w-4" />
+        <ArrowRight className="h-[18px] w-[18px]" strokeWidth={2.6} />
       </MotionButton>
     </Link>
   );
 }
+
 
 export function CtaBand({
   label = "See If You Qualify → 2 Min",
