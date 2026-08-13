@@ -231,7 +231,7 @@ export function Figure({
 }) {
   return (
     <figure className="my-7">
-      <div className="relative overflow-hidden rounded-2xl border border-hairline bg-ink/[0.03]">
+      <div className="relative overflow-hidden rounded-lg bg-ink/[0.03] shadow-[6px_8px_18px_-8px_rgba(0,0,0,0.35)]">
         <img
           src={src}
           alt={alt}
@@ -240,17 +240,20 @@ export function Figure({
           style={ratio ? { aspectRatio: ratio } : undefined}
         />
         {badge && (
-          <span className="absolute left-3 top-3 rounded-full bg-ink/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-canvas">
+          <span className="absolute left-3 top-3 rounded-sm bg-ink/85 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-canvas">
             {badge}
           </span>
         )}
       </div>
       {caption && (
-        <figcaption className="mt-2 text-center text-[12.5px] text-ink/50">{caption}</figcaption>
+        <figcaption className="mt-2.5 text-[13px] italic leading-snug text-ink/50">
+          {caption}
+        </figcaption>
       )}
     </figure>
   );
 }
+
 
 export function Callout({ children }: { children: ReactNode }) {
   return (
