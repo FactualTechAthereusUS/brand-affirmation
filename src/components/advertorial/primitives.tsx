@@ -381,19 +381,20 @@ export function StoryTimeline({
   steps: { label: string; body: string }[];
 }) {
   return (
-    <ol className="my-8 space-y-6 border-l border-hairline pl-6">
+    <ol className="my-8 space-y-7 border-l-2 border-ever/25 pl-6">
       {steps.map((s) => (
         <li key={s.label} className="relative">
-          <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-ever ring-4 ring-canvas" />
-          <div className="text-[12px] font-bold uppercase tracking-[0.16em] text-ever">
+          <span className="absolute -left-[31px] top-2 h-2.5 w-2.5 rounded-full bg-ever ring-4 ring-canvas" />
+          <div className="text-[12px] font-bold uppercase tracking-[0.18em] text-ever">
             {s.label}
           </div>
-          <p className="mt-1 text-[16px] leading-[1.72] text-ink/80">{s.body}</p>
+          <p className="mt-1.5 text-[16.5px] leading-[1.75] text-ink/80">{s.body}</p>
         </li>
       ))}
     </ol>
   );
 }
+
 
 export function BigQuote({ children, who }: { children: ReactNode; who?: string }) {
   return (
