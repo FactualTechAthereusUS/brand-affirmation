@@ -398,9 +398,18 @@ export function StoryTimeline({
 
 export function BigQuote({ children, who }: { children: ReactNode; who?: string }) {
   return (
-    <blockquote className="my-8 rounded-2xl border border-ever/25 bg-ever/[0.05] p-6">
-      <div className="text-[20px] font-bold leading-snug text-ink sm:text-[23px]">“{children}”</div>
-      {who && <div className="mt-3 text-[13px] font-semibold text-ink/55">— {who}</div>}
+    <blockquote className="relative my-9 rounded-lg bg-canvas p-6 shadow-[0_16px_40px_-28px_rgba(0,0,0,0.45)] ring-1 ring-ever/20">
+      <span className="absolute -top-3 left-5 text-[46px] font-black leading-none text-ever/35">
+        “
+      </span>
+      <div className="relative text-[21px] font-bold italic leading-snug text-ink sm:text-[24px]">
+        {children}
+      </div>
+      {who && (
+        <div className="mt-3.5 text-[13px] font-bold uppercase tracking-[0.12em] text-ever">
+          — {who}
+        </div>
+      )}
     </blockquote>
   );
 }
@@ -415,28 +424,32 @@ export function TestimonialCard({
   quote: string;
 }) {
   return (
-    <div className="rounded-2xl border border-hairline bg-ink/[0.02] p-5">
-      <div className="flex items-center gap-3">
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ever/12 text-[13px] font-bold text-ever">
+    <div className="rounded-lg bg-ever/[0.07] p-5 sm:p-6">
+      <div className="flex items-start gap-4">
+        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-ever/15 text-[18px] font-bold text-ever">
           {name.charAt(0)}
         </div>
         <div className="min-w-0">
-          <div className="truncate text-[14px] font-bold text-ink">{name}</div>
-          <div className="text-[11.5px] font-semibold uppercase tracking-wide text-ever">
-            Verified patient
+          <div className="flex flex-wrap items-baseline gap-x-2.5">
+            <span className="text-[15.5px] font-bold text-ink">{name}</span>
+            <span className="text-[13px] font-semibold text-ever">Verified Review</span>
+          </div>
+          <div className="mt-1.5 flex items-center gap-2">
+            <span className="text-[13px] font-medium text-ink/50">Rating:</span>
+            <span className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-ever text-ever" />
+              ))}
+            </span>
           </div>
         </div>
-        <div className="ml-auto flex shrink-0 gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-3.5 w-3.5 fill-ever text-ever" />
-          ))}
-        </div>
       </div>
-      <div className="mt-3 text-[12px] font-semibold uppercase tracking-wide text-ink/40">{tag}</div>
-      <p className="mt-1.5 text-[15.5px] leading-[1.7] text-ink/80">“{quote}”</p>
+      <div className="mt-4 text-[16px] font-bold uppercase tracking-wide text-ink">{tag}</div>
+      <p className="mt-1.5 text-[16px] leading-[1.7] text-ink/75">{quote}</p>
     </div>
   );
 }
+
 
 export function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(0);
