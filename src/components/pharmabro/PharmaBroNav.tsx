@@ -322,33 +322,30 @@ export function PharmaBroNav() {
                           )}
                         />
                       </button>
-                      <AnimatePresence initial={false}>
-                        {isOpen ? (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.25,
-                              ease: [0.22, 1, 0.36, 1],
-                            }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pb-3">
-                              {g.items.map((it) => (
-                                <Link
-                                  key={it.to + it.label}
-                                  to={it.to}
-                                  onClick={() => setMobile(false)}
-                                  className="block rounded-xl px-2 py-2.5 text-[15px] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]"
-                                >
-                                  {it.label}
-                                </Link>
-                              ))}
-                            </div>
-                          </motion.div>
-                        ) : null}
-                      </AnimatePresence>
+                      <div
+                        className={cn(
+                          "grid overflow-hidden transition-all duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+                          isOpen
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0",
+                        )}
+                      >
+                        <div className="min-h-0">
+                          <div className="pb-3">
+                            {g.items.map((it) => (
+                              <Link
+                                key={it.to + it.label}
+                                to={it.to}
+                                onClick={() => setMobile(false)}
+                                className="block rounded-xl px-2 py-2.5 text-[15px] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]"
+                              >
+                                {it.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   );
                 })}
