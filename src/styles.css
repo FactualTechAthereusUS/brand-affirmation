@@ -357,3 +357,80 @@
   );
   background-size: 22px 22px;
 }
+
+/* ---------------------------------------------------------- liquid border */
+/* Animated conic ring around the product shot. No background plate: the
+   frame itself is the only decoration, the page stays white. */
+@property --pb-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes pb-liquid-spin {
+  to {
+    --pb-angle: 360deg;
+  }
+}
+
+.pb-liquid {
+  position: relative;
+  border-radius: 22px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--pb-angle),
+    #1b4ef5 0%,
+    #8aa8ff 12%,
+    #e8eeff 24%,
+    #1b4ef5 38%,
+    #b9c9ff 55%,
+    #f2f5ff 68%,
+    #4f7bff 82%,
+    #1b4ef5 100%
+  );
+  animation: pb-liquid-spin 7s linear infinite;
+}
+
+.pb-liquid::after {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  z-index: -1;
+  border-radius: 40px;
+  background: conic-gradient(
+    from var(--pb-angle),
+    color-mix(in oklab, #1b4ef5 40%, transparent),
+    transparent 30%,
+    color-mix(in oklab, #7aa2ff 34%, transparent) 55%,
+    transparent 80%,
+    color-mix(in oklab, #1b4ef5 40%, transparent)
+  );
+  filter: blur(38px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-liquid {
+    animation: none;
+  }
+}
+
+/* Per-word blur-in reveal (Framer hero pattern) */
+@keyframes pb-word-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(0.34em);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.pb-word {
+  display: inline-block;
+  animation: pb-word-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
