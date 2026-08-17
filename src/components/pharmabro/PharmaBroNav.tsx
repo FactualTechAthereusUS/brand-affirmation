@@ -47,7 +47,7 @@ function AnnouncementBar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center gap-2 text-center text-[12px] text-white/85 sm:text-[12.5px]"
+              className="flex w-full min-w-0 items-center justify-center gap-2 text-center text-[11.5px] text-white/85 sm:text-[12.5px]"
             >
               <span className="truncate">{a.text}</span>
               <Link
