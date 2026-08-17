@@ -93,11 +93,6 @@ import { Route as PharmabroLegalTermsRouteImport } from './routes/pharmabro.lega
 import { Route as PharmabroLegalPrivacyRouteImport } from './routes/pharmabro.legal.privacy'
 import { Route as PharmabroLegalHipaaNoticeRouteImport } from './routes/pharmabro.legal.hipaa-notice'
 import { Route as PharmabroLegalDoNotSellRouteImport } from './routes/pharmabro.legal.do-not-sell'
-import { Route as PharmabroComparePharmabroVsRimoRouteImport } from './routes/pharmabro.compare.pharmabro-vs-rimo'
-import { Route as PharmabroComparePharmabroVsOpenloopRouteImport } from './routes/pharmabro.compare.pharmabro-vs-openloop'
-import { Route as PharmabroComparePharmabroVsCuvoRouteImport } from './routes/pharmabro.compare.pharmabro-vs-cuvo'
-import { Route as PharmabroComparePharmabroVsCarevalidateRouteImport } from './routes/pharmabro.compare.pharmabro-vs-carevalidate'
-import { Route as PharmabroComparePharmabroVsBaskRouteImport } from './routes/pharmabro.compare.pharmabro-vs-bask'
 import { Route as PharmabroCompareSlugRouteImport } from './routes/pharmabro.compare.$slug'
 import { Route as OperatorPharmacyOrdersRouteImport } from './routes/operator.pharmacy.orders'
 import { Route as OperatorBrandsBrandIdRouteImport } from './routes/operator.brands.$brandId'
@@ -562,36 +557,6 @@ const PharmabroLegalDoNotSellRoute = PharmabroLegalDoNotSellRouteImport.update({
   path: '/legal/do-not-sell',
   getParentRoute: () => PharmabroRoute,
 } as any)
-const PharmabroComparePharmabroVsRimoRoute =
-  PharmabroComparePharmabroVsRimoRouteImport.update({
-    id: '/compare/pharmabro-vs-rimo',
-    path: '/compare/pharmabro-vs-rimo',
-    getParentRoute: () => PharmabroRoute,
-  } as any)
-const PharmabroComparePharmabroVsOpenloopRoute =
-  PharmabroComparePharmabroVsOpenloopRouteImport.update({
-    id: '/compare/pharmabro-vs-openloop',
-    path: '/compare/pharmabro-vs-openloop',
-    getParentRoute: () => PharmabroRoute,
-  } as any)
-const PharmabroComparePharmabroVsCuvoRoute =
-  PharmabroComparePharmabroVsCuvoRouteImport.update({
-    id: '/compare/pharmabro-vs-cuvo',
-    path: '/compare/pharmabro-vs-cuvo',
-    getParentRoute: () => PharmabroRoute,
-  } as any)
-const PharmabroComparePharmabroVsCarevalidateRoute =
-  PharmabroComparePharmabroVsCarevalidateRouteImport.update({
-    id: '/compare/pharmabro-vs-carevalidate',
-    path: '/compare/pharmabro-vs-carevalidate',
-    getParentRoute: () => PharmabroRoute,
-  } as any)
-const PharmabroComparePharmabroVsBaskRoute =
-  PharmabroComparePharmabroVsBaskRouteImport.update({
-    id: '/compare/pharmabro-vs-bask',
-    path: '/compare/pharmabro-vs-bask',
-    getParentRoute: () => PharmabroRoute,
-  } as any)
 const PharmabroCompareSlugRoute = PharmabroCompareSlugRouteImport.update({
   id: '/compare/$slug',
   path: '/compare/$slug',
@@ -821,11 +786,6 @@ export interface FileRoutesByFullPath {
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
   '/pharmabro/compare/$slug': typeof PharmabroCompareSlugRoute
-  '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
-  '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
-  '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
-  '/pharmabro/compare/pharmabro-vs-openloop': typeof PharmabroComparePharmabroVsOpenloopRoute
-  '/pharmabro/compare/pharmabro-vs-rimo': typeof PharmabroComparePharmabroVsRimoRoute
   '/pharmabro/legal/do-not-sell': typeof PharmabroLegalDoNotSellRoute
   '/pharmabro/legal/hipaa-notice': typeof PharmabroLegalHipaaNoticeRoute
   '/pharmabro/legal/privacy': typeof PharmabroLegalPrivacyRoute
@@ -938,11 +898,6 @@ export interface FileRoutesByTo {
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
   '/pharmabro/compare/$slug': typeof PharmabroCompareSlugRoute
-  '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
-  '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
-  '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
-  '/pharmabro/compare/pharmabro-vs-openloop': typeof PharmabroComparePharmabroVsOpenloopRoute
-  '/pharmabro/compare/pharmabro-vs-rimo': typeof PharmabroComparePharmabroVsRimoRoute
   '/pharmabro/legal/do-not-sell': typeof PharmabroLegalDoNotSellRoute
   '/pharmabro/legal/hipaa-notice': typeof PharmabroLegalHipaaNoticeRoute
   '/pharmabro/legal/privacy': typeof PharmabroLegalPrivacyRoute
@@ -1058,11 +1013,6 @@ export interface FileRoutesById {
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
   '/pharmabro/compare/$slug': typeof PharmabroCompareSlugRoute
-  '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
-  '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
-  '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
-  '/pharmabro/compare/pharmabro-vs-openloop': typeof PharmabroComparePharmabroVsOpenloopRoute
-  '/pharmabro/compare/pharmabro-vs-rimo': typeof PharmabroComparePharmabroVsRimoRoute
   '/pharmabro/legal/do-not-sell': typeof PharmabroLegalDoNotSellRoute
   '/pharmabro/legal/hipaa-notice': typeof PharmabroLegalHipaaNoticeRoute
   '/pharmabro/legal/privacy': typeof PharmabroLegalPrivacyRoute
@@ -1179,11 +1129,6 @@ export interface FileRouteTypes {
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
     | '/pharmabro/compare/$slug'
-    | '/pharmabro/compare/pharmabro-vs-bask'
-    | '/pharmabro/compare/pharmabro-vs-carevalidate'
-    | '/pharmabro/compare/pharmabro-vs-cuvo'
-    | '/pharmabro/compare/pharmabro-vs-openloop'
-    | '/pharmabro/compare/pharmabro-vs-rimo'
     | '/pharmabro/legal/do-not-sell'
     | '/pharmabro/legal/hipaa-notice'
     | '/pharmabro/legal/privacy'
@@ -1296,11 +1241,6 @@ export interface FileRouteTypes {
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
     | '/pharmabro/compare/$slug'
-    | '/pharmabro/compare/pharmabro-vs-bask'
-    | '/pharmabro/compare/pharmabro-vs-carevalidate'
-    | '/pharmabro/compare/pharmabro-vs-cuvo'
-    | '/pharmabro/compare/pharmabro-vs-openloop'
-    | '/pharmabro/compare/pharmabro-vs-rimo'
     | '/pharmabro/legal/do-not-sell'
     | '/pharmabro/legal/hipaa-notice'
     | '/pharmabro/legal/privacy'
@@ -1415,11 +1355,6 @@ export interface FileRouteTypes {
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
     | '/pharmabro/compare/$slug'
-    | '/pharmabro/compare/pharmabro-vs-bask'
-    | '/pharmabro/compare/pharmabro-vs-carevalidate'
-    | '/pharmabro/compare/pharmabro-vs-cuvo'
-    | '/pharmabro/compare/pharmabro-vs-openloop'
-    | '/pharmabro/compare/pharmabro-vs-rimo'
     | '/pharmabro/legal/do-not-sell'
     | '/pharmabro/legal/hipaa-notice'
     | '/pharmabro/legal/privacy'
@@ -2117,41 +2052,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PharmabroLegalDoNotSellRouteImport
       parentRoute: typeof PharmabroRoute
     }
-    '/pharmabro/compare/pharmabro-vs-rimo': {
-      id: '/pharmabro/compare/pharmabro-vs-rimo'
-      path: '/compare/pharmabro-vs-rimo'
-      fullPath: '/pharmabro/compare/pharmabro-vs-rimo'
-      preLoaderRoute: typeof PharmabroComparePharmabroVsRimoRouteImport
-      parentRoute: typeof PharmabroRoute
-    }
-    '/pharmabro/compare/pharmabro-vs-openloop': {
-      id: '/pharmabro/compare/pharmabro-vs-openloop'
-      path: '/compare/pharmabro-vs-openloop'
-      fullPath: '/pharmabro/compare/pharmabro-vs-openloop'
-      preLoaderRoute: typeof PharmabroComparePharmabroVsOpenloopRouteImport
-      parentRoute: typeof PharmabroRoute
-    }
-    '/pharmabro/compare/pharmabro-vs-cuvo': {
-      id: '/pharmabro/compare/pharmabro-vs-cuvo'
-      path: '/compare/pharmabro-vs-cuvo'
-      fullPath: '/pharmabro/compare/pharmabro-vs-cuvo'
-      preLoaderRoute: typeof PharmabroComparePharmabroVsCuvoRouteImport
-      parentRoute: typeof PharmabroRoute
-    }
-    '/pharmabro/compare/pharmabro-vs-carevalidate': {
-      id: '/pharmabro/compare/pharmabro-vs-carevalidate'
-      path: '/compare/pharmabro-vs-carevalidate'
-      fullPath: '/pharmabro/compare/pharmabro-vs-carevalidate'
-      preLoaderRoute: typeof PharmabroComparePharmabroVsCarevalidateRouteImport
-      parentRoute: typeof PharmabroRoute
-    }
-    '/pharmabro/compare/pharmabro-vs-bask': {
-      id: '/pharmabro/compare/pharmabro-vs-bask'
-      path: '/compare/pharmabro-vs-bask'
-      fullPath: '/pharmabro/compare/pharmabro-vs-bask'
-      preLoaderRoute: typeof PharmabroComparePharmabroVsBaskRouteImport
-      parentRoute: typeof PharmabroRoute
-    }
     '/pharmabro/compare/$slug': {
       id: '/pharmabro/compare/$slug'
       path: '/compare/$slug'
@@ -2373,11 +2273,6 @@ interface PharmabroRouteChildren {
   PharmabroSecurityRoute: typeof PharmabroSecurityRoute
   PharmabroIndexRoute: typeof PharmabroIndexRoute
   PharmabroCompareSlugRoute: typeof PharmabroCompareSlugRoute
-  PharmabroComparePharmabroVsBaskRoute: typeof PharmabroComparePharmabroVsBaskRoute
-  PharmabroComparePharmabroVsCarevalidateRoute: typeof PharmabroComparePharmabroVsCarevalidateRoute
-  PharmabroComparePharmabroVsCuvoRoute: typeof PharmabroComparePharmabroVsCuvoRoute
-  PharmabroComparePharmabroVsOpenloopRoute: typeof PharmabroComparePharmabroVsOpenloopRoute
-  PharmabroComparePharmabroVsRimoRoute: typeof PharmabroComparePharmabroVsRimoRoute
   PharmabroLegalDoNotSellRoute: typeof PharmabroLegalDoNotSellRoute
   PharmabroLegalHipaaNoticeRoute: typeof PharmabroLegalHipaaNoticeRoute
   PharmabroLegalPrivacyRoute: typeof PharmabroLegalPrivacyRoute
@@ -2409,13 +2304,6 @@ const PharmabroRouteChildren: PharmabroRouteChildren = {
   PharmabroSecurityRoute: PharmabroSecurityRoute,
   PharmabroIndexRoute: PharmabroIndexRoute,
   PharmabroCompareSlugRoute: PharmabroCompareSlugRoute,
-  PharmabroComparePharmabroVsBaskRoute: PharmabroComparePharmabroVsBaskRoute,
-  PharmabroComparePharmabroVsCarevalidateRoute:
-    PharmabroComparePharmabroVsCarevalidateRoute,
-  PharmabroComparePharmabroVsCuvoRoute: PharmabroComparePharmabroVsCuvoRoute,
-  PharmabroComparePharmabroVsOpenloopRoute:
-    PharmabroComparePharmabroVsOpenloopRoute,
-  PharmabroComparePharmabroVsRimoRoute: PharmabroComparePharmabroVsRimoRoute,
   PharmabroLegalDoNotSellRoute: PharmabroLegalDoNotSellRoute,
   PharmabroLegalHipaaNoticeRoute: PharmabroLegalHipaaNoticeRoute,
   PharmabroLegalPrivacyRoute: PharmabroLegalPrivacyRoute,

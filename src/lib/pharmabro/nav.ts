@@ -36,7 +36,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: "Compare Hub", to: "/pharmabro/compare" },
       { label: "PharmaBro vs OpenLoop", to: "/pharmabro/compare/pharmabro-vs-openloop" },
-      { label: "PharmaBro vs Bask", to: "/pharmabro/compare/pharmabro-vs-bask" },
+      { label: "PharmaBro vs Bask", to: "/pharmabro/compare/pharmabro-vs-bask-health" },
       { label: "PharmaBro vs Cuvo", to: "/pharmabro/compare/pharmabro-vs-cuvo" },
       { label: "PharmaBro vs CareValidate", to: "/pharmabro/compare/pharmabro-vs-carevalidate" },
     ],
@@ -81,7 +81,7 @@ export const FOOTER_COLUMNS: NavGroup[] = [
     label: "Compare",
     items: [
       { label: "PharmaBro vs OpenLoop", to: "/pharmabro/compare/pharmabro-vs-openloop" },
-      { label: "PharmaBro vs Bask", to: "/pharmabro/compare/pharmabro-vs-bask" },
+      { label: "PharmaBro vs Bask", to: "/pharmabro/compare/pharmabro-vs-bask-health" },
       { label: "PharmaBro vs Cuvo", to: "/pharmabro/compare/pharmabro-vs-cuvo" },
       { label: "PharmaBro vs Rimo", to: "/pharmabro/compare/pharmabro-vs-rimo" },
       { label: "PharmaBro vs CareValidate", to: "/pharmabro/compare/pharmabro-vs-carevalidate" },
