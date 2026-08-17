@@ -50,7 +50,7 @@ const STATUS_TONE: Record<string, string> = {
  */
 export function DashboardMockup({ className }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
 
   const w = 520;
   const h = 150;

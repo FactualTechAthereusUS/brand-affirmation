@@ -72,7 +72,7 @@ export function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-12% 0px -8% 0px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
   const reduce = useReducedMotion();
 
   return (
@@ -99,7 +99,7 @@ export function RevealGroup({
   stagger?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
   const reduce = useReducedMotion();
 
   return (
@@ -150,7 +150,7 @@ export function CountUp({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
   const reduce = useReducedMotion();
   const [value, setValue] = useState(0);
 

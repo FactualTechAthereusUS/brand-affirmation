@@ -670,7 +670,7 @@ function LegitScript() {
                   <motion.div
                     initial={{ width: 0 }}
                     whileInView={{ width: `${b.weight}%` }}
-                    viewport={{ once: true, margin: "-15% 0px" }}
+                    viewport={{ once: true, margin: "0px 0px -60px 0px" }}
                     transition={{
                       duration: 1.1,
                       delay: 0.15 + i * 0.12,
