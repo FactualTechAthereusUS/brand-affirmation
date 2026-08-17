@@ -61,10 +61,29 @@ export function Section({
 /* ------------------------------------------------------------------ motion */
 
 /**
- * Scroll reveal. Uses Motion's own `whileInView` observer rather than a
- * `useInView` + `animate` pair: the hook version raced with hydration and
- * left whole sections stuck at opacity 0 on some viewport sizes.
+ * Shared "is this on screen yet" hook. `whileInView` alone left sections
+ * pinned at opacity 0 when the observer registered before first layout, so we
+ * drive the animation from an explicit inView flag plus a mount-time fallback
+ * that always reveals content even if the observer never fires.
  */
+function useRevealed<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const inView = useInView(ref, {
+    once: true,
+    amount: 0,
+    margin: "0px 0px -8% 0px",
+  });
+  const [fallback, setFallback] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setFallback(true), 900);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  return { ref, shown: inView || fallback };
+}
+
+/** Scroll reveal: fades and lifts once the element reaches the viewport. */
 export function Reveal({
   children,
   delay = 0,
@@ -77,13 +96,14 @@ export function Reveal({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const { ref, shown } = useRevealed<HTMLDivElement>();
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0 }}
+      animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
@@ -103,13 +123,14 @@ export function RevealGroup({
   stagger?: number;
 }) {
   const reduce = useReducedMotion();
+  const { ref, shown } = useRevealed<HTMLDivElement>();
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div
+      ref={ref}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0 }}
+      animate={shown ? "show" : "hidden"}
       variants={{ show: { transition: { staggerChildren: stagger } } }}
       className={className}
     >
@@ -139,6 +160,7 @@ export function RevealItem({
     </motion.div>
   );
 }
+
 
 /** Count-up on first view. `format` renders the running value. */
 export function CountUp({
@@ -228,10 +250,11 @@ export function TwoTone({
   return (
     <Tag
       className={cn(
-        "text-balance font-semibold tracking-[-0.03em] text-ink",
+        // Rimo type discipline: light weight, tight tracking, never bold.
+        "text-balance font-normal text-ink",
         Tag === "h1"
-          ? "text-[38px] leading-[1.06] sm:text-[54px] lg:text-[66px]"
-          : "text-[27px] leading-[1.12] sm:text-[36px] lg:text-[43px]",
+          ? "text-[2.25rem] leading-[1.08] tracking-[-0.025em] sm:text-5xl lg:text-[3.5rem]"
+          : "text-3xl leading-[1.12] tracking-[-0.02em] md:text-4xl lg:text-[2.75rem]",
         className,
       )}
     >
@@ -241,7 +264,79 @@ export function TwoTone({
   );
 }
 
+
+/**
+ * Rimo's hero eyebrow: a gradient "NEW" pill fused to a single line of
+ * announcement copy, sitting directly above the H1.
+ */
+export function EyebrowPill({
+  label = "New",
+  children,
+  to,
+}: {
+  label?: string;
+  children: ReactNode;
+  to?: string;
+}) {
+  const inner = (
+    <>
+      <span className="rounded-full bg-linear-to-r from-[#0a0a0a] via-[#1b4ef5] to-[#5558f0] px-2 py-[3px] text-[10px] font-semibold uppercase leading-none tracking-[0.08em] text-white">
+        {label}
+      </span>
+      <span className="flex items-center gap-1 text-[13px] font-medium leading-none text-[color-mix(in_oklab,var(--color-ink)_82%,transparent)] sm:text-sm">
+        {children}
+        <svg
+          aria-hidden
+          viewBox="0 0 24 24"
+          fill="none"
+          className="size-3.5 -rotate-45"
+        >
+          <path
+            d="M5 12h14M13 6l6 6-6 6"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </>
+  );
+
+  const cls =
+    "inline-flex items-center gap-2 rounded-full border border-[var(--color-hairline)] bg-canvas py-1 pl-1 pr-3 shadow-[0_1px_2px_rgba(10,10,10,0.04)] transition-colors hover:border-[color-mix(in_oklab,var(--color-ink)_22%,transparent)]";
+
+  if (to)
+    return (
+      <Link to={to} className={cls}>
+        {inner}
+      </Link>
+    );
+  return <div className={cls}>{inner}</div>;
+}
+
+/** Typeset wordmark chip. Stands in for a partner logo without faking art. */
+export function Wordmark({
+  name,
+  className,
+}: {
+  name: string;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "text-[15px] font-semibold tracking-[-0.03em] text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]",
+        className,
+      )}
+    >
+      {name}
+    </span>
+  );
+}
+
 /** Pill badge that sits above an H1. Optional trailing link chevron. */
+
 export function Chip({
   children,
   to,

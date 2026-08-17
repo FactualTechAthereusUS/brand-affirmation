@@ -17,8 +17,10 @@ import {
   Cell,
   Check,
   Chip,
+
   Container,
   CountUp,
+  EyebrowPill,
   GradientPlate,
   MicroLabel,
   Reveal,
@@ -29,6 +31,10 @@ import {
   TwoTone,
 } from "@/components/pharmabro/primitives";
 import { DashboardMockup } from "@/components/pharmabro/DashboardMockup";
+import { ProductTabs } from "@/components/pharmabro/ProductTabs";
+import { BentoGrid } from "@/components/pharmabro/BentoGrid";
+import { OrderJourney } from "@/components/pharmabro/OrderJourney";
+
 import {
   AD_PLATFORMS,
   BRAND_LOGOS,
@@ -40,6 +46,7 @@ import {
   HERO_ROTATING,
   HERO_SUB,
   HERO_TRUST,
+  JOURNEY,
   LEGITSCRIPT_BARS,
   LEGITSCRIPT_PANELS,
   MATH_FOOTNOTE,
@@ -164,7 +171,7 @@ function PharmaBroHome() {
       <ComparisonTable />
       <HowItWorks />
       <Features />
-      <DashboardSection />
+      <ProductSurfaces />
       <TheMath />
       <LegitScript />
       <Switching />
@@ -195,14 +202,16 @@ function Hero() {
         className="pointer-events-none absolute -top-40 left-1/2 size-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-marine)_11%,transparent),transparent_62%)] blur-2xl"
       />
       <Container size="wide" className="relative">
-        <Reveal>
-          <Chip tone="live" className="mb-7">
-            1,284 brands live on PharmaBro
-          </Chip>
+        <Reveal className="mb-7 flex flex-wrap items-center gap-3">
+
+          <EyebrowPill label="New" to="/pharmabro/platform/legitscript">
+            LegitScript in 7-14 days
+          </EyebrowPill>
+          <Chip tone="live">1,284 brands live on PharmaBro</Chip>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="max-w-[900px] text-balance text-[38px] font-semibold leading-[1.05] tracking-[-0.035em] text-ink sm:text-[56px] lg:text-[70px]">
+          <h1 className="max-w-[900px] text-balance text-[2.25rem] font-normal leading-[1.08] tracking-[-0.025em] text-ink sm:text-5xl lg:text-[3.5rem]">
             Launch Your Own{" "}
             <span className="relative inline-grid align-bottom">
               <AnimatePresence mode="popLayout" initial={false}>
@@ -221,6 +230,7 @@ function Hero() {
             Brand in 7 Days
           </h1>
         </Reveal>
+
 
         <Reveal delay={0.12}>
           <p className="pb-body mt-7 max-w-[640px] text-[16px] leading-relaxed sm:text-[17.5px]">
@@ -470,7 +480,22 @@ function HowItWorks() {
             </RevealItem>
           ))}
         </RevealGroup>
+
+        <div className="mt-20 border-t border-[var(--color-hairline)] pt-14">
+          <Reveal>
+            <MicroLabel className="mb-5">{JOURNEY.micro}</MicroLabel>
+            <TwoTone
+              lead={JOURNEY.h2Lead}
+              trail={JOURNEY.h2Trail}
+              className="max-w-[860px]"
+            />
+          </Reveal>
+          <div className="mt-12">
+            <OrderJourney />
+          </div>
+        </div>
       </Container>
+
     </Section>
   );
 }
@@ -490,25 +515,14 @@ function Features() {
           />
         </Reveal>
 
-        <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => {
-            const Icon = FEATURE_ICONS[f.icon];
-            return (
-              <RevealItem key={f.title}>
-                <Card className="h-full transition-colors hover:border-[color-mix(in_oklab,var(--color-ink)_20%,transparent)]">
-                  <Icon
-                    className="mb-5 size-5 text-[var(--color-marine)]"
-                    strokeWidth={1.75}
-                  />
-                  <h3 className="text-[17px] font-semibold leading-snug tracking-[-0.02em] text-ink">
-                    {f.title}
-                  </h3>
-                  <p className="pb-body mt-3 text-[14px] leading-relaxed">{f.body}</p>
-                </Card>
-              </RevealItem>
-            );
-          })}
-        </RevealGroup>
+        <Reveal delay={0.06} className="mt-12">
+          <BentoGrid />
+        </Reveal>
+
+        {/* The two rebill and portal claims live in the tabbed section below,
+            so the bento carries this section on its own. */}
+
+
       </Container>
     </Section>
   );
@@ -516,42 +530,40 @@ function Features() {
 
 /* -------------------------------------------------------------- 9 dashboard */
 
-function DashboardSection() {
+function ProductSurfaces() {
   return (
     <Section>
       <Container size="wide">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
-          <div>
-            <SquareEyebrow className="mb-7">Operator dashboard</SquareEyebrow>
-            <TwoTone
-              lead="Run every brand"
-              trail="from one login."
-              className="text-[26px] sm:text-[32px] lg:text-[38px]"
-            />
-            <div className="mt-9 space-y-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)]">
-              {DASHBOARD_POINTS.map((p, i) => (
-                <Reveal key={p.title} delay={i * 0.06} className="bg-canvas p-5">
-                  <h3 className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
-                    {p.title}
-                  </h3>
-                  <p className="pb-body mt-1.5 text-[14px] leading-relaxed">
-                    {p.body}
-                  </p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
+        <Reveal>
+          <MicroLabel className="mb-5">Inside the platform</MicroLabel>
+          <TwoTone
+            lead="Four surfaces run your clinic."
+            trail="All of them carry your name."
+            className="max-w-[880px]"
+          />
+        </Reveal>
 
-          <Reveal delay={0.1} y={24}>
-            <GradientPlate tone="lilac">
-              <DashboardMockup />
-            </GradientPlate>
-          </Reveal>
-        </div>
+        <Reveal delay={0.08} className="mt-12">
+          <ProductTabs />
+        </Reveal>
+
+        <RevealGroup className="mt-14 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] sm:grid-cols-2 lg:grid-cols-4">
+          {DASHBOARD_POINTS.map((p) => (
+            <RevealItem key={p.title} className="bg-canvas p-5">
+              <h3 className="text-[15px] font-medium tracking-[-0.01em] text-ink">
+                {p.title}
+              </h3>
+              <p className="pb-body mt-1.5 text-[13.5px] leading-relaxed">
+                {p.body}
+              </p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
       </Container>
     </Section>
   );
 }
+
 
 /* ------------------------------------------------------------------ 10 math */
 

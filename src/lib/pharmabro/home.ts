@@ -314,3 +314,134 @@ export const TRUST_MARKS = [
   "AES-256 + TLS",
   "SOC 2 (in progress)",
 ];
+
+/* ------------------------------------------------- product tabs (Rimo grammar) */
+
+export type ProductTab = {
+  id: "dashboard" | "intake" | "portal" | "rebill";
+  label: string;
+  micro: string;
+  title: string;
+  body: string;
+  points: string[];
+};
+
+export const PRODUCT_TABS: ProductTab[] = [
+  {
+    id: "dashboard",
+    label: "Admin dashboard",
+    micro: "One login, every brand",
+    title: "Run the whole clinic from one screen.",
+    body: "Revenue, patients, orders, pharmacy queue, and rebill forecast in a single admin. Each brand stays isolated, and you see all of them from one login.",
+    points: [
+      "Unlimited brands, one account",
+      "Churn analytics by cohort",
+      "Rebill forecast for the next 90 days",
+    ],
+  },
+  {
+    id: "intake",
+    label: "Intake builder",
+    micro: "No code, no dev tickets",
+    title: "Build the intake quiz yourself, in an afternoon.",
+    body: "Drag screens, set branching logic, and publish to your domain. Every answer lands in the physician review queue with the clinical flags already applied.",
+    points: [
+      "Conditional branching per treatment",
+      "Screen level drop off tracking",
+      "Publishes to your own domain",
+    ],
+  },
+  {
+    id: "portal",
+    label: "Patient portal",
+    micro: "Your name on every screen",
+    title: "Patients never see PharmaBro.",
+    body: "Your patients go to portal.yourbrand.com. They manage subscriptions, view Rx history, message their physician, and track shipments, all under your name.",
+    points: [
+      "Your logo, your domain, your emails",
+      "Physician messaging built in",
+      "Shipment tracking on every order",
+    ],
+  },
+  {
+    id: "rebill",
+    label: "Rebill engine",
+    micro: "Built in house, not Stripe billing",
+    title: "Every rebill keeps 0.5 to 1% more.",
+    body: "We tokenize every card as a one time transaction instead of using a subscription API, and we bill 13 months in a year. On a $100K per month brand that is $500 to $1,000 back every month.",
+    points: [
+      "13 billing cycles per year",
+      "Automatic failed payment recovery",
+      "Up to 5 MIDs with smart routing",
+    ],
+  },
+];
+
+/* --------------------------------------------------------- bento feature grid */
+
+export const BENTO = {
+  micro: "The stack underneath",
+  h2Lead: "Everything a telehealth brand needs.",
+  h2Trail: "None of the revenue share.",
+  cards: [
+    {
+      id: "payments",
+      title: "Your Stripe, your revenue",
+      body: "Patients pay your merchant account directly. We connect over OAuth, so we never touch your money.",
+    },
+    {
+      id: "pharmacy",
+      title: "30+ pharmacies, SKU level routing",
+      body: "Each order routes to the fastest and cheapest source for that exact SKU. You never manage a pharmacy API.",
+    },
+    {
+      id: "legitscript",
+      title: "LegitScript in 7-14 days",
+      body: "We file and manage the application as an enterprise partner. You sign one form.",
+    },
+    {
+      id: "tracking",
+      title: "Tracking wired on day one",
+      body: "Meta CAPI, GA4, TikTok Pixel, Everflow, Triple Whale, and Klaviyo are pre-wired to your brand.",
+    },
+    {
+      id: "data",
+      title: "Full data export in 24 hours",
+      body: "Every patient, card token, Rx record, and subscription status in CSV whenever you ask.",
+    },
+  ],
+} as const;
+
+/* ------------------------------------------------------- 4 step order journey */
+
+export const JOURNEY = {
+  micro: "One patient, end to end",
+  h2Lead: "What happens after a patient clicks buy.",
+  h2Trail: "All of it, without you in the loop.",
+  steps: [
+    {
+      num: "01",
+      title: "Intake and checkout",
+      body: "The patient completes your branded quiz and pays on your domain. Revenue settles to your Stripe the same day.",
+      meta: "Under 4 minutes",
+    },
+    {
+      num: "02",
+      title: "Physician review",
+      body: "A licensed physician in the patient's state reviews the intake, approves, and writes the prescription.",
+      meta: "Same day",
+    },
+    {
+      num: "03",
+      title: "Pharmacy routing and ship",
+      body: "The Rx routes to the cheapest qualified pharmacy for that SKU, ships to the door, and tracking posts to the portal.",
+      meta: "2-5 days",
+    },
+    {
+      num: "04",
+      title: "Rebill scheduled",
+      body: "The next cycle is scheduled automatically, with failed payment recovery running in the background.",
+      meta: "Every 30 days",
+    },
+  ],
+} as const;
