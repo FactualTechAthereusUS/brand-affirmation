@@ -479,7 +479,22 @@ function HowItWorks() {
             </RevealItem>
           ))}
         </RevealGroup>
+
+        <div className="mt-20 border-t border-[var(--color-hairline)] pt-14">
+          <Reveal>
+            <MicroLabel className="mb-5">{JOURNEY.micro}</MicroLabel>
+            <TwoTone
+              lead={JOURNEY.h2Lead}
+              trail={JOURNEY.h2Trail}
+              className="max-w-[860px]"
+            />
+          </Reveal>
+          <div className="mt-12">
+            <OrderJourney />
+          </div>
+        </div>
       </Container>
+
     </Section>
   );
 }
