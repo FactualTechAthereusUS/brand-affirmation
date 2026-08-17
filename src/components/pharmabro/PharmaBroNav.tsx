@@ -135,25 +135,22 @@ export function PharmaBroNav() {
 
       {/* floating liquid-glass pill */}
       <div className="pointer-events-none fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-5">
-        <motion.div
-          initial={{ y: -22, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-auto relative mx-auto w-full max-w-[1180px]"
+        <div
+          className={cn(
+            "pointer-events-auto relative mx-auto w-full max-w-[1180px] transition-all duration-[550ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+            mounted ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0",
+          )}
           onMouseLeave={scheduleClose}
         >
-          <motion.div
-            animate={{
-              backgroundColor: scrolled
-                ? "rgba(255,255,255,0.72)"
-                : "rgba(255,255,255,0.9)",
-              boxShadow: scrolled
-                ? "0 18px 45px -22px rgba(10,10,10,0.35)"
-                : "0 10px 30px -20px rgba(10,10,10,0.22)",
-            }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="relative overflow-visible rounded-[999px] border border-white/60 ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150"
+          <div
+            className={cn(
+              "relative overflow-visible rounded-[999px] border border-white/60 ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow] duration-300",
+              scrolled
+                ? "bg-white/75 shadow-[0_18px_45px_-22px_rgba(10,10,10,0.35)]"
+                : "bg-white/90 shadow-[0_10px_30px_-20px_rgba(10,10,10,0.22)]",
+            )}
           >
+
             {/* specular top edge — the "liquid" cue */}
             <div
               aria-hidden
