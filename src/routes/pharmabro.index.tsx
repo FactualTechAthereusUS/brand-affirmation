@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Fragment } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import {
@@ -390,8 +391,8 @@ function ComparisonTable() {
               </thead>
               <tbody>
                 {COMPARE_TABLE.map((g) => (
-                  <>
-                    <tr key={g.group}>
+                  <Fragment key={g.group}>
+                    <tr>
                       <td
                         colSpan={COMPARE_COLUMNS.length + 1}
                         className="border-b border-l border-r border-[var(--color-hairline)] bg-[var(--color-mist)] px-4 py-2.5"
@@ -419,7 +420,7 @@ function ComparisonTable() {
                         ))}
                       </tr>
                     ))}
-                  </>
+                  </Fragment>
                 ))}
               </tbody>
             </table>
