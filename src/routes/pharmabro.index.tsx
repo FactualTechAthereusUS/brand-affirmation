@@ -201,8 +201,8 @@ function Hero() {
         className="pointer-events-none absolute -top-40 left-1/2 size-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-marine)_11%,transparent),transparent_62%)] blur-2xl"
       />
       <Container size="wide" className="relative">
-        <Reveal>
         <Reveal className="mb-7 flex flex-wrap items-center gap-3">
+
           <EyebrowPill label="New" to="/pharmabro/platform/legitscript">
             LegitScript in 7-14 days
           </EyebrowPill>
