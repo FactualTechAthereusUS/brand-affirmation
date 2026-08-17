@@ -21,7 +21,6 @@ import {
   Container,
   CountUp,
   EyebrowPill,
-  GradientPlate,
   MicroLabel,
   Reveal,
   RevealGroup,
@@ -30,7 +29,6 @@ import {
   SquareEyebrow,
   TwoTone,
 } from "@/components/pharmabro/primitives";
-import { DashboardMockup } from "@/components/pharmabro/DashboardMockup";
 import { ProductTabs } from "@/components/pharmabro/ProductTabs";
 import { BentoGrid } from "@/components/pharmabro/BentoGrid";
 import { OrderJourney } from "@/components/pharmabro/OrderJourney";
@@ -183,6 +181,28 @@ function PharmaBroHome() {
 
 /* ------------------------------------------------------------------- 3 hero */
 
+/** Longest rotating word, used to reserve the highlight box width. */
+const longestRotating = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
+
+/** Word-by-word blur-in reveal, CSS driven so it never sticks at opacity 0. */
+function BlurWords({ text, delay = 0 }: { text: string; delay?: number }) {
+  return (
+    <>
+      {text.split(" ").map((w, idx) => (
+        <Fragment key={`${w}-${idx}`}>
+          {idx > 0 ? " " : null}
+          <span
+            className="pb-word"
+            style={{ animationDelay: `${delay + idx * 0.08}s` }}
+          >
+            {w}
+          </span>
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 function Hero() {
   const [i, setI] = useState(0);
 
@@ -195,80 +215,85 @@ function Hero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-canvas pt-14 pb-16 sm:pt-20 lg:pt-24 lg:pb-24">
-      {/* faint radial wash behind the headline, never a dark panel */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 size-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-marine)_11%,transparent),transparent_62%)] blur-2xl"
-      />
+    <section className="relative overflow-hidden bg-canvas pt-12 pb-16 sm:pt-16 lg:pt-20 lg:pb-24">
       <Container size="wide" className="relative">
-        <Reveal className="mb-7 flex flex-wrap items-center gap-3">
+        <div className="mx-auto max-w-[900px] text-left lg:text-center">
+          <Reveal className="mb-6 flex flex-wrap items-center gap-3 lg:justify-center">
+            <EyebrowPill label="New" to="/pharmabro/platform/legitscript">
+              LegitScript in 7-14 days
+            </EyebrowPill>
+            <Chip tone="live">1,284 brands live on PharmaBro</Chip>
+          </Reveal>
 
-          <EyebrowPill label="New" to="/pharmabro/platform/legitscript">
-            LegitScript in 7-14 days
-          </EyebrowPill>
-          <Chip tone="live">1,284 brands live on PharmaBro</Chip>
-        </Reveal>
-
-        <Reveal delay={0.05}>
-          <h1 className="max-w-[900px] text-balance text-[2.25rem] font-normal leading-[1.08] tracking-[-0.025em] text-ink sm:text-5xl lg:text-[3.5rem]">
-            Launch Your Own{" "}
-            <span className="relative inline-grid align-bottom">
+          <h1 className="text-balance text-[clamp(2rem,10vw,2.6rem)] font-normal leading-[1.04] tracking-[-0.03em] text-ink sm:text-[3.25rem] lg:text-[3.75rem] lg:leading-[1.02]">
+            <BlurWords text="Launch Your Own" />{" "}
+            <span className="relative inline-flex items-baseline overflow-hidden rounded-[0.25em] border border-[color-mix(in_oklab,var(--color-marine)_25%,transparent)] bg-[color-mix(in_oklab,var(--color-marine)_8%,transparent)] px-[0.18em] py-[0.06em] align-baseline text-[var(--color-marine)]">
+              <span aria-hidden className="invisible">
+                {longestRotating}
+              </span>
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={HERO_ROTATING[i]}
-                  initial={{ opacity: 0, y: "0.5em", filter: "blur(6px)" }}
+                  initial={{ opacity: 0, y: "0.5em", filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: "-0.5em", filter: "blur(6px)" }}
+                  exit={{ opacity: 0, y: "-0.5em", filter: "blur(8px)" }}
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[var(--color-marine)]"
+                  className="absolute left-[0.18em] top-[0.06em] whitespace-nowrap"
                 >
                   {HERO_ROTATING[i]}
                 </motion.span>
               </AnimatePresence>
             </span>{" "}
-            Brand in 7 Days
+            <BlurWords text="Brand in 7 Days" delay={0.28} />
           </h1>
-        </Reveal>
 
+          <Reveal delay={0.14}>
+            <p className="pb-body mx-auto mt-6 max-w-[620px] text-[16px] leading-relaxed sm:text-[17.5px]">
+              {HERO_SUB}
+            </p>
+          </Reveal>
 
-        <Reveal delay={0.12}>
-          <p className="pb-body mt-7 max-w-[640px] text-[16px] leading-relaxed sm:text-[17.5px]">
-            {HERO_SUB}
-          </p>
-        </Reveal>
+          <Reveal delay={0.2}>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-center">
+              <Btn to="/pharmabro/demo" size="lg">
+                Book a demo
+              </Btn>
+              <Btn to="/pharmabro/pricing" variant="ghost" size="lg">
+                See pricing
+              </Btn>
+            </div>
+            <p className="pb-micro mt-4">
+              No setup fee. No revenue share. Cancel any time.
+            </p>
+          </Reveal>
 
-        <Reveal delay={0.18}>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Btn to="/pharmabro/demo" size="lg">
-              Book a demo
-            </Btn>
-            <Btn to="/pharmabro/pricing" variant="ghost" size="lg">
-              See pricing
-            </Btn>
+          <Reveal delay={0.26}>
+            <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3 border-t border-[var(--color-hairline)] pt-6 lg:justify-center">
+              {HERO_TRUST.map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <Check />
+                  <span className="text-[13.5px] font-medium text-[color-mix(in_oklab,var(--color-ink)_72%,transparent)]">
+                    {t}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.32} y={26} className="mt-12 lg:mt-16">
+          <div className="pb-liquid mx-auto w-full max-w-[1180px]">
+            <div className="overflow-hidden rounded-[20.5px] bg-canvas">
+              <img
+                src="/assets/pharmabro-dashboard.png"
+                alt="PharmaBro operator dashboard showing recurring revenue, patient funnel, and pharmacy fulfillment queues"
+                width={1680}
+                height={969}
+                loading="eager"
+                className="block h-auto w-full"
+              />
+            </div>
           </div>
-          <p className="pb-micro mt-4">
-            No setup fee. No revenue share. Cancel any time.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.24}>
-          <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-[var(--color-hairline)] pt-6">
-            {HERO_TRUST.map((t) => (
-              <li key={t} className="flex items-center gap-2">
-                <Check />
-                <span className="text-[13.5px] font-medium text-[color-mix(in_oklab,var(--color-ink)_72%,transparent)]">
-                  {t}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={0.3} y={26} className="mt-12 lg:mt-16">
-          <GradientPlate tone="blue">
-            <DashboardMockup />
-          </GradientPlate>
         </Reveal>
       </Container>
     </section>
