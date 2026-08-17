@@ -60,6 +60,11 @@ export function Section({
 
 /* ------------------------------------------------------------------ motion */
 
+/**
+ * Scroll reveal. Uses Motion's own `whileInView` observer rather than a
+ * `useInView` + `animate` pair: the hook version raced with hydration and
+ * left whole sections stuck at opacity 0 on some viewport sizes.
+ */
 export function Reveal({
   children,
   delay = 0,
@@ -71,15 +76,14 @@ export function Reveal({
   y?: number;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
   const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div
-      ref={ref}
-      initial={reduce ? false : { opacity: 0, y }}
-      animate={inView || reduce ? { opacity: 1, y: 0 } : { opacity: 0, y }}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0 }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
@@ -98,16 +102,15 @@ export function RevealGroup({
   className?: string;
   stagger?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
   const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div
-      ref={ref}
       initial="hidden"
-      animate={inView || reduce ? "show" : "hidden"}
-      variants={{ show: { transition: { staggerChildren: reduce ? 0 : stagger } } }}
+      whileInView="show"
+      viewport={{ once: true, amount: 0 }}
+      variants={{ show: { transition: { staggerChildren: stagger } } }}
       className={className}
     >
       {children}
