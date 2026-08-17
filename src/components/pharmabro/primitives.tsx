@@ -61,10 +61,29 @@ export function Section({
 /* ------------------------------------------------------------------ motion */
 
 /**
- * Scroll reveal. Uses Motion's own `whileInView` observer rather than a
- * `useInView` + `animate` pair: the hook version raced with hydration and
- * left whole sections stuck at opacity 0 on some viewport sizes.
+ * Shared "is this on screen yet" hook. `whileInView` alone left sections
+ * pinned at opacity 0 when the observer registered before first layout, so we
+ * drive the animation from an explicit inView flag plus a mount-time fallback
+ * that always reveals content even if the observer never fires.
  */
+function useRevealed<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const inView = useInView(ref, {
+    once: true,
+    amount: 0,
+    margin: "0px 0px -8% 0px",
+  });
+  const [fallback, setFallback] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setFallback(true), 900);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  return { ref, shown: inView || fallback };
+}
+
+/** Scroll reveal: fades and lifts once the element reaches the viewport. */
 export function Reveal({
   children,
   delay = 0,
@@ -77,13 +96,14 @@ export function Reveal({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const { ref, shown } = useRevealed<HTMLDivElement>();
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0 }}
+      animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
@@ -103,13 +123,14 @@ export function RevealGroup({
   stagger?: number;
 }) {
   const reduce = useReducedMotion();
+  const { ref, shown } = useRevealed<HTMLDivElement>();
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div
+      ref={ref}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0 }}
+      animate={shown ? "show" : "hidden"}
       variants={{ show: { transition: { staggerChildren: stagger } } }}
       className={className}
     >
@@ -139,6 +160,7 @@ export function RevealItem({
     </motion.div>
   );
 }
+
 
 /** Count-up on first view. `format` renders the running value. */
 export function CountUp({
