@@ -21,7 +21,6 @@ import {
   Container,
   CountUp,
   EyebrowPill,
-  GradientPlate,
   MicroLabel,
   Reveal,
   RevealGroup,
@@ -30,7 +29,6 @@ import {
   SquareEyebrow,
   TwoTone,
 } from "@/components/pharmabro/primitives";
-import { DashboardMockup } from "@/components/pharmabro/DashboardMockup";
 import { ProductTabs } from "@/components/pharmabro/ProductTabs";
 import { BentoGrid } from "@/components/pharmabro/BentoGrid";
 import { OrderJourney } from "@/components/pharmabro/OrderJourney";
