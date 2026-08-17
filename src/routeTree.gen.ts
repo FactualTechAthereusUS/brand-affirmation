@@ -14,6 +14,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as RefundRouteImport } from './routes/refund'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PharmabroRouteImport } from './routes/pharmabro'
 import { Route as MedicationSafetyRouteImport } from './routes/medication-safety'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -22,6 +23,7 @@ import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-c
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
+import { Route as PharmabroIndexRouteImport } from './routes/pharmabro.index'
 import { Route as OperatorIndexRouteImport } from './routes/operator.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
@@ -31,6 +33,13 @@ import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
 import { Route as PharmacyMeRouteImport } from './routes/pharmacy.me'
 import { Route as PharmacyLoginRouteImport } from './routes/pharmacy.login'
+import { Route as PharmabroSecurityRouteImport } from './routes/pharmabro.security'
+import { Route as PharmabroPricingRouteImport } from './routes/pharmabro.pricing'
+import { Route as PharmabroGlossaryRouteImport } from './routes/pharmabro.glossary'
+import { Route as PharmabroDemoRouteImport } from './routes/pharmabro.demo'
+import { Route as PharmabroContactRouteImport } from './routes/pharmabro.contact'
+import { Route as PharmabroBlogRouteImport } from './routes/pharmabro.blog'
+import { Route as PharmabroAboutRouteImport } from './routes/pharmabro.about'
 import { Route as OperatorRevenueRouteImport } from './routes/operator.revenue'
 import { Route as OperatorPhysiciansRouteImport } from './routes/operator.physicians'
 import { Route as OperatorLoginRouteImport } from './routes/operator.login'
@@ -55,6 +64,8 @@ import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLiveRouteImport } from './routes/admin.live'
 import { Route as AdminCommandRouteImport } from './routes/admin.command'
 import { Route as PharmacyOrdersIndexRouteImport } from './routes/pharmacy.orders.index'
+import { Route as PharmabroPlatformIndexRouteImport } from './routes/pharmabro.platform.index'
+import { Route as PharmabroCompareIndexRouteImport } from './routes/pharmabro.compare.index'
 import { Route as OperatorBrandsIndexRouteImport } from './routes/operator.brands.index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin.settings.index'
 import { Route as AdminPhysicianQueueIndexRouteImport } from './routes/admin.physician-queue.index'
@@ -65,6 +76,28 @@ import { Route as AdminIntegrationsIndexRouteImport } from './routes/admin.integ
 import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
 import { Route as AdminAnalyticsIndexRouteImport } from './routes/admin.analytics.index'
 import { Route as PharmacyOrdersOrderIdRouteImport } from './routes/pharmacy.orders.$orderId'
+import { Route as PharmabroSolutionsWomensHealthRouteImport } from './routes/pharmabro.solutions.womens-health'
+import { Route as PharmabroSolutionsWeightLossRouteImport } from './routes/pharmabro.solutions.weight-loss'
+import { Route as PharmabroSolutionsSexualHealthRouteImport } from './routes/pharmabro.solutions.sexual-health'
+import { Route as PharmabroSolutionsPeptidesRouteImport } from './routes/pharmabro.solutions.peptides'
+import { Route as PharmabroSolutionsMensHealthRouteImport } from './routes/pharmabro.solutions.mens-health'
+import { Route as PharmabroSolutionsLongevityRouteImport } from './routes/pharmabro.solutions.longevity'
+import { Route as PharmabroSolutionsHairLossRouteImport } from './routes/pharmabro.solutions.hair-loss'
+import { Route as PharmabroPlatformPharmacyRouteImport } from './routes/pharmabro.platform.pharmacy'
+import { Route as PharmabroPlatformPaymentsRouteImport } from './routes/pharmabro.platform.payments'
+import { Route as PharmabroPlatformPatientPortalRouteImport } from './routes/pharmabro.platform.patient-portal'
+import { Route as PharmabroPlatformLegitscriptRouteImport } from './routes/pharmabro.platform.legitscript'
+import { Route as PharmabroPlatformIntakeBuilderRouteImport } from './routes/pharmabro.platform.intake-builder'
+import { Route as PharmabroPlatformAnalyticsRouteImport } from './routes/pharmabro.platform.analytics'
+import { Route as PharmabroLegalTermsRouteImport } from './routes/pharmabro.legal.terms'
+import { Route as PharmabroLegalPrivacyRouteImport } from './routes/pharmabro.legal.privacy'
+import { Route as PharmabroLegalHipaaNoticeRouteImport } from './routes/pharmabro.legal.hipaa-notice'
+import { Route as PharmabroLegalDoNotSellRouteImport } from './routes/pharmabro.legal.do-not-sell'
+import { Route as PharmabroComparePharmabroVsRimoRouteImport } from './routes/pharmabro.compare.pharmabro-vs-rimo'
+import { Route as PharmabroComparePharmabroVsOpenloopRouteImport } from './routes/pharmabro.compare.pharmabro-vs-openloop'
+import { Route as PharmabroComparePharmabroVsCuvoRouteImport } from './routes/pharmabro.compare.pharmabro-vs-cuvo'
+import { Route as PharmabroComparePharmabroVsCarevalidateRouteImport } from './routes/pharmabro.compare.pharmabro-vs-carevalidate'
+import { Route as PharmabroComparePharmabroVsBaskRouteImport } from './routes/pharmabro.compare.pharmabro-vs-bask'
 import { Route as OperatorPharmacyOrdersRouteImport } from './routes/operator.pharmacy.orders'
 import { Route as OperatorBrandsBrandIdRouteImport } from './routes/operator.brands.$brandId'
 import { Route as AdminSettingsTeamRouteImport } from './routes/admin.settings.team'
@@ -118,6 +151,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PharmabroRoute = PharmabroRouteImport.update({
+  id: '/pharmabro',
+  path: '/pharmabro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MedicationSafetyRoute = MedicationSafetyRouteImport.update({
   id: '/medication-safety',
   path: '/medication-safety',
@@ -157,6 +195,11 @@ const WeightLossIndexRoute = WeightLossIndexRouteImport.update({
   id: '/weight-loss/',
   path: '/weight-loss/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PharmabroIndexRoute = PharmabroIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PharmabroRoute,
 } as any)
 const OperatorIndexRoute = OperatorIndexRouteImport.update({
   id: '/operator/',
@@ -202,6 +245,41 @@ const PharmacyLoginRoute = PharmacyLoginRouteImport.update({
   id: '/pharmacy/login',
   path: '/pharmacy/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PharmabroSecurityRoute = PharmabroSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroPricingRoute = PharmabroPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroGlossaryRoute = PharmabroGlossaryRouteImport.update({
+  id: '/glossary',
+  path: '/glossary',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroDemoRoute = PharmabroDemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroContactRoute = PharmabroContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroBlogRoute = PharmabroBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroAboutRoute = PharmabroAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => PharmabroRoute,
 } as any)
 const OperatorRevenueRoute = OperatorRevenueRouteImport.update({
   id: '/operator/revenue',
@@ -323,6 +401,16 @@ const PharmacyOrdersIndexRoute = PharmacyOrdersIndexRouteImport.update({
   path: '/pharmacy/orders/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PharmabroPlatformIndexRoute = PharmabroPlatformIndexRouteImport.update({
+  id: '/platform/',
+  path: '/platform/',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroCompareIndexRoute = PharmabroCompareIndexRouteImport.update({
+  id: '/compare/',
+  path: '/compare/',
+  getParentRoute: () => PharmabroRoute,
+} as any)
 const OperatorBrandsIndexRoute = OperatorBrandsIndexRouteImport.update({
   id: '/operator/brands/',
   path: '/operator/brands/',
@@ -374,6 +462,135 @@ const PharmacyOrdersOrderIdRoute = PharmacyOrdersOrderIdRouteImport.update({
   path: '/pharmacy/orders/$orderId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PharmabroSolutionsWomensHealthRoute =
+  PharmabroSolutionsWomensHealthRouteImport.update({
+    id: '/solutions/womens-health',
+    path: '/solutions/womens-health',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroSolutionsWeightLossRoute =
+  PharmabroSolutionsWeightLossRouteImport.update({
+    id: '/solutions/weight-loss',
+    path: '/solutions/weight-loss',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroSolutionsSexualHealthRoute =
+  PharmabroSolutionsSexualHealthRouteImport.update({
+    id: '/solutions/sexual-health',
+    path: '/solutions/sexual-health',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroSolutionsPeptidesRoute =
+  PharmabroSolutionsPeptidesRouteImport.update({
+    id: '/solutions/peptides',
+    path: '/solutions/peptides',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroSolutionsMensHealthRoute =
+  PharmabroSolutionsMensHealthRouteImport.update({
+    id: '/solutions/mens-health',
+    path: '/solutions/mens-health',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroSolutionsLongevityRoute =
+  PharmabroSolutionsLongevityRouteImport.update({
+    id: '/solutions/longevity',
+    path: '/solutions/longevity',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroSolutionsHairLossRoute =
+  PharmabroSolutionsHairLossRouteImport.update({
+    id: '/solutions/hair-loss',
+    path: '/solutions/hair-loss',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroPlatformPharmacyRoute =
+  PharmabroPlatformPharmacyRouteImport.update({
+    id: '/platform/pharmacy',
+    path: '/platform/pharmacy',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroPlatformPaymentsRoute =
+  PharmabroPlatformPaymentsRouteImport.update({
+    id: '/platform/payments',
+    path: '/platform/payments',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroPlatformPatientPortalRoute =
+  PharmabroPlatformPatientPortalRouteImport.update({
+    id: '/platform/patient-portal',
+    path: '/platform/patient-portal',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroPlatformLegitscriptRoute =
+  PharmabroPlatformLegitscriptRouteImport.update({
+    id: '/platform/legitscript',
+    path: '/platform/legitscript',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroPlatformIntakeBuilderRoute =
+  PharmabroPlatformIntakeBuilderRouteImport.update({
+    id: '/platform/intake-builder',
+    path: '/platform/intake-builder',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroPlatformAnalyticsRoute =
+  PharmabroPlatformAnalyticsRouteImport.update({
+    id: '/platform/analytics',
+    path: '/platform/analytics',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroLegalTermsRoute = PharmabroLegalTermsRouteImport.update({
+  id: '/legal/terms',
+  path: '/legal/terms',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroLegalPrivacyRoute = PharmabroLegalPrivacyRouteImport.update({
+  id: '/legal/privacy',
+  path: '/legal/privacy',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroLegalHipaaNoticeRoute =
+  PharmabroLegalHipaaNoticeRouteImport.update({
+    id: '/legal/hipaa-notice',
+    path: '/legal/hipaa-notice',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroLegalDoNotSellRoute = PharmabroLegalDoNotSellRouteImport.update({
+  id: '/legal/do-not-sell',
+  path: '/legal/do-not-sell',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroComparePharmabroVsRimoRoute =
+  PharmabroComparePharmabroVsRimoRouteImport.update({
+    id: '/compare/pharmabro-vs-rimo',
+    path: '/compare/pharmabro-vs-rimo',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroComparePharmabroVsOpenloopRoute =
+  PharmabroComparePharmabroVsOpenloopRouteImport.update({
+    id: '/compare/pharmabro-vs-openloop',
+    path: '/compare/pharmabro-vs-openloop',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroComparePharmabroVsCuvoRoute =
+  PharmabroComparePharmabroVsCuvoRouteImport.update({
+    id: '/compare/pharmabro-vs-cuvo',
+    path: '/compare/pharmabro-vs-cuvo',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroComparePharmabroVsCarevalidateRoute =
+  PharmabroComparePharmabroVsCarevalidateRouteImport.update({
+    id: '/compare/pharmabro-vs-carevalidate',
+    path: '/compare/pharmabro-vs-carevalidate',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
+const PharmabroComparePharmabroVsBaskRoute =
+  PharmabroComparePharmabroVsBaskRouteImport.update({
+    id: '/compare/pharmabro-vs-bask',
+    path: '/compare/pharmabro-vs-bask',
+    getParentRoute: () => PharmabroRoute,
+  } as any)
 const OperatorPharmacyOrdersRoute = OperatorPharmacyOrdersRouteImport.update({
   id: '/operator/pharmacy/orders',
   path: '/operator/pharmacy/orders',
@@ -523,6 +740,7 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
+  '/pharmabro': typeof PharmabroRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
@@ -551,6 +769,13 @@ export interface FileRoutesByFullPath {
   '/operator/login': typeof OperatorLoginRoute
   '/operator/physicians': typeof OperatorPhysiciansRoute
   '/operator/revenue': typeof OperatorRevenueRoute
+  '/pharmabro/about': typeof PharmabroAboutRoute
+  '/pharmabro/blog': typeof PharmabroBlogRoute
+  '/pharmabro/contact': typeof PharmabroContactRoute
+  '/pharmabro/demo': typeof PharmabroDemoRoute
+  '/pharmabro/glossary': typeof PharmabroGlossaryRoute
+  '/pharmabro/pricing': typeof PharmabroPricingRoute
+  '/pharmabro/security': typeof PharmabroSecurityRoute
   '/pharmacy/login': typeof PharmacyLoginRoute
   '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
@@ -560,6 +785,7 @@ export interface FileRoutesByFullPath {
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
+  '/pharmabro/': typeof PharmabroIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -588,6 +814,28 @@ export interface FileRoutesByFullPath {
   '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
+  '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
+  '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
+  '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
+  '/pharmabro/compare/pharmabro-vs-openloop': typeof PharmabroComparePharmabroVsOpenloopRoute
+  '/pharmabro/compare/pharmabro-vs-rimo': typeof PharmabroComparePharmabroVsRimoRoute
+  '/pharmabro/legal/do-not-sell': typeof PharmabroLegalDoNotSellRoute
+  '/pharmabro/legal/hipaa-notice': typeof PharmabroLegalHipaaNoticeRoute
+  '/pharmabro/legal/privacy': typeof PharmabroLegalPrivacyRoute
+  '/pharmabro/legal/terms': typeof PharmabroLegalTermsRoute
+  '/pharmabro/platform/analytics': typeof PharmabroPlatformAnalyticsRoute
+  '/pharmabro/platform/intake-builder': typeof PharmabroPlatformIntakeBuilderRoute
+  '/pharmabro/platform/legitscript': typeof PharmabroPlatformLegitscriptRoute
+  '/pharmabro/platform/patient-portal': typeof PharmabroPlatformPatientPortalRoute
+  '/pharmabro/platform/payments': typeof PharmabroPlatformPaymentsRoute
+  '/pharmabro/platform/pharmacy': typeof PharmabroPlatformPharmacyRoute
+  '/pharmabro/solutions/hair-loss': typeof PharmabroSolutionsHairLossRoute
+  '/pharmabro/solutions/longevity': typeof PharmabroSolutionsLongevityRoute
+  '/pharmabro/solutions/mens-health': typeof PharmabroSolutionsMensHealthRoute
+  '/pharmabro/solutions/peptides': typeof PharmabroSolutionsPeptidesRoute
+  '/pharmabro/solutions/sexual-health': typeof PharmabroSolutionsSexualHealthRoute
+  '/pharmabro/solutions/weight-loss': typeof PharmabroSolutionsWeightLossRoute
+  '/pharmabro/solutions/womens-health': typeof PharmabroSolutionsWomensHealthRoute
   '/pharmacy/orders/$orderId': typeof PharmacyOrdersOrderIdRoute
   '/admin/analytics/': typeof AdminAnalyticsIndexRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
@@ -598,6 +846,8 @@ export interface FileRoutesByFullPath {
   '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/operator/brands/': typeof OperatorBrandsIndexRoute
+  '/pharmabro/compare/': typeof PharmabroCompareIndexRoute
+  '/pharmabro/platform/': typeof PharmabroPlatformIndexRoute
   '/pharmacy/orders/': typeof PharmacyOrdersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -635,6 +885,13 @@ export interface FileRoutesByTo {
   '/operator/login': typeof OperatorLoginRoute
   '/operator/physicians': typeof OperatorPhysiciansRoute
   '/operator/revenue': typeof OperatorRevenueRoute
+  '/pharmabro/about': typeof PharmabroAboutRoute
+  '/pharmabro/blog': typeof PharmabroBlogRoute
+  '/pharmabro/contact': typeof PharmabroContactRoute
+  '/pharmabro/demo': typeof PharmabroDemoRoute
+  '/pharmabro/glossary': typeof PharmabroGlossaryRoute
+  '/pharmabro/pricing': typeof PharmabroPricingRoute
+  '/pharmabro/security': typeof PharmabroSecurityRoute
   '/pharmacy/login': typeof PharmacyLoginRoute
   '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
@@ -644,6 +901,7 @@ export interface FileRoutesByTo {
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin': typeof AdminIndexRoute
   '/operator': typeof OperatorIndexRoute
+  '/pharmabro': typeof PharmabroIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -672,6 +930,28 @@ export interface FileRoutesByTo {
   '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
+  '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
+  '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
+  '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
+  '/pharmabro/compare/pharmabro-vs-openloop': typeof PharmabroComparePharmabroVsOpenloopRoute
+  '/pharmabro/compare/pharmabro-vs-rimo': typeof PharmabroComparePharmabroVsRimoRoute
+  '/pharmabro/legal/do-not-sell': typeof PharmabroLegalDoNotSellRoute
+  '/pharmabro/legal/hipaa-notice': typeof PharmabroLegalHipaaNoticeRoute
+  '/pharmabro/legal/privacy': typeof PharmabroLegalPrivacyRoute
+  '/pharmabro/legal/terms': typeof PharmabroLegalTermsRoute
+  '/pharmabro/platform/analytics': typeof PharmabroPlatformAnalyticsRoute
+  '/pharmabro/platform/intake-builder': typeof PharmabroPlatformIntakeBuilderRoute
+  '/pharmabro/platform/legitscript': typeof PharmabroPlatformLegitscriptRoute
+  '/pharmabro/platform/patient-portal': typeof PharmabroPlatformPatientPortalRoute
+  '/pharmabro/platform/payments': typeof PharmabroPlatformPaymentsRoute
+  '/pharmabro/platform/pharmacy': typeof PharmabroPlatformPharmacyRoute
+  '/pharmabro/solutions/hair-loss': typeof PharmabroSolutionsHairLossRoute
+  '/pharmabro/solutions/longevity': typeof PharmabroSolutionsLongevityRoute
+  '/pharmabro/solutions/mens-health': typeof PharmabroSolutionsMensHealthRoute
+  '/pharmabro/solutions/peptides': typeof PharmabroSolutionsPeptidesRoute
+  '/pharmabro/solutions/sexual-health': typeof PharmabroSolutionsSexualHealthRoute
+  '/pharmabro/solutions/weight-loss': typeof PharmabroSolutionsWeightLossRoute
+  '/pharmabro/solutions/womens-health': typeof PharmabroSolutionsWomensHealthRoute
   '/pharmacy/orders/$orderId': typeof PharmacyOrdersOrderIdRoute
   '/admin/analytics': typeof AdminAnalyticsIndexRoute
   '/admin/check-ins': typeof AdminCheckInsIndexRoute
@@ -682,6 +962,8 @@ export interface FileRoutesByTo {
   '/admin/physician-queue': typeof AdminPhysicianQueueIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
   '/operator/brands': typeof OperatorBrandsIndexRoute
+  '/pharmabro/compare': typeof PharmabroCompareIndexRoute
+  '/pharmabro/platform': typeof PharmabroPlatformIndexRoute
   '/pharmacy/orders': typeof PharmacyOrdersIndexRoute
 }
 export interface FileRoutesById {
@@ -693,6 +975,7 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRouteWithChildren
   '/medication-safety': typeof MedicationSafetyRoute
+  '/pharmabro': typeof PharmabroRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
   '/shipping': typeof ShippingRoute
@@ -721,6 +1004,13 @@ export interface FileRoutesById {
   '/operator/login': typeof OperatorLoginRoute
   '/operator/physicians': typeof OperatorPhysiciansRoute
   '/operator/revenue': typeof OperatorRevenueRoute
+  '/pharmabro/about': typeof PharmabroAboutRoute
+  '/pharmabro/blog': typeof PharmabroBlogRoute
+  '/pharmabro/contact': typeof PharmabroContactRoute
+  '/pharmabro/demo': typeof PharmabroDemoRoute
+  '/pharmabro/glossary': typeof PharmabroGlossaryRoute
+  '/pharmabro/pricing': typeof PharmabroPricingRoute
+  '/pharmabro/security': typeof PharmabroSecurityRoute
   '/pharmacy/login': typeof PharmacyLoginRoute
   '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
@@ -730,6 +1020,7 @@ export interface FileRoutesById {
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
+  '/pharmabro/': typeof PharmabroIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -758,6 +1049,28 @@ export interface FileRoutesById {
   '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
+  '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
+  '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
+  '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
+  '/pharmabro/compare/pharmabro-vs-openloop': typeof PharmabroComparePharmabroVsOpenloopRoute
+  '/pharmabro/compare/pharmabro-vs-rimo': typeof PharmabroComparePharmabroVsRimoRoute
+  '/pharmabro/legal/do-not-sell': typeof PharmabroLegalDoNotSellRoute
+  '/pharmabro/legal/hipaa-notice': typeof PharmabroLegalHipaaNoticeRoute
+  '/pharmabro/legal/privacy': typeof PharmabroLegalPrivacyRoute
+  '/pharmabro/legal/terms': typeof PharmabroLegalTermsRoute
+  '/pharmabro/platform/analytics': typeof PharmabroPlatformAnalyticsRoute
+  '/pharmabro/platform/intake-builder': typeof PharmabroPlatformIntakeBuilderRoute
+  '/pharmabro/platform/legitscript': typeof PharmabroPlatformLegitscriptRoute
+  '/pharmabro/platform/patient-portal': typeof PharmabroPlatformPatientPortalRoute
+  '/pharmabro/platform/payments': typeof PharmabroPlatformPaymentsRoute
+  '/pharmabro/platform/pharmacy': typeof PharmabroPlatformPharmacyRoute
+  '/pharmabro/solutions/hair-loss': typeof PharmabroSolutionsHairLossRoute
+  '/pharmabro/solutions/longevity': typeof PharmabroSolutionsLongevityRoute
+  '/pharmabro/solutions/mens-health': typeof PharmabroSolutionsMensHealthRoute
+  '/pharmabro/solutions/peptides': typeof PharmabroSolutionsPeptidesRoute
+  '/pharmabro/solutions/sexual-health': typeof PharmabroSolutionsSexualHealthRoute
+  '/pharmabro/solutions/weight-loss': typeof PharmabroSolutionsWeightLossRoute
+  '/pharmabro/solutions/womens-health': typeof PharmabroSolutionsWomensHealthRoute
   '/pharmacy/orders/$orderId': typeof PharmacyOrdersOrderIdRoute
   '/admin/analytics/': typeof AdminAnalyticsIndexRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
@@ -768,6 +1081,8 @@ export interface FileRoutesById {
   '/admin/physician-queue/': typeof AdminPhysicianQueueIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/operator/brands/': typeof OperatorBrandsIndexRoute
+  '/pharmabro/compare/': typeof PharmabroCompareIndexRoute
+  '/pharmabro/platform/': typeof PharmabroPlatformIndexRoute
   '/pharmacy/orders/': typeof PharmacyOrdersIndexRoute
 }
 export interface FileRouteTypes {
@@ -780,6 +1095,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/medication-safety'
+    | '/pharmabro'
     | '/privacy'
     | '/refund'
     | '/shipping'
@@ -808,6 +1124,13 @@ export interface FileRouteTypes {
     | '/operator/login'
     | '/operator/physicians'
     | '/operator/revenue'
+    | '/pharmabro/about'
+    | '/pharmabro/blog'
+    | '/pharmabro/contact'
+    | '/pharmabro/demo'
+    | '/pharmabro/glossary'
+    | '/pharmabro/pricing'
+    | '/pharmabro/security'
     | '/pharmacy/login'
     | '/pharmacy/me'
     | '/portal/patient'
@@ -817,6 +1140,7 @@ export interface FileRouteTypes {
     | '/weight-loss/sales'
     | '/admin/'
     | '/operator/'
+    | '/pharmabro/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -845,6 +1169,28 @@ export interface FileRouteTypes {
     | '/admin/settings/team'
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
+    | '/pharmabro/compare/pharmabro-vs-bask'
+    | '/pharmabro/compare/pharmabro-vs-carevalidate'
+    | '/pharmabro/compare/pharmabro-vs-cuvo'
+    | '/pharmabro/compare/pharmabro-vs-openloop'
+    | '/pharmabro/compare/pharmabro-vs-rimo'
+    | '/pharmabro/legal/do-not-sell'
+    | '/pharmabro/legal/hipaa-notice'
+    | '/pharmabro/legal/privacy'
+    | '/pharmabro/legal/terms'
+    | '/pharmabro/platform/analytics'
+    | '/pharmabro/platform/intake-builder'
+    | '/pharmabro/platform/legitscript'
+    | '/pharmabro/platform/patient-portal'
+    | '/pharmabro/platform/payments'
+    | '/pharmabro/platform/pharmacy'
+    | '/pharmabro/solutions/hair-loss'
+    | '/pharmabro/solutions/longevity'
+    | '/pharmabro/solutions/mens-health'
+    | '/pharmabro/solutions/peptides'
+    | '/pharmabro/solutions/sexual-health'
+    | '/pharmabro/solutions/weight-loss'
+    | '/pharmabro/solutions/womens-health'
     | '/pharmacy/orders/$orderId'
     | '/admin/analytics/'
     | '/admin/check-ins/'
@@ -855,6 +1201,8 @@ export interface FileRouteTypes {
     | '/admin/physician-queue/'
     | '/admin/settings/'
     | '/operator/brands/'
+    | '/pharmabro/compare/'
+    | '/pharmabro/platform/'
     | '/pharmacy/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -892,6 +1240,13 @@ export interface FileRouteTypes {
     | '/operator/login'
     | '/operator/physicians'
     | '/operator/revenue'
+    | '/pharmabro/about'
+    | '/pharmabro/blog'
+    | '/pharmabro/contact'
+    | '/pharmabro/demo'
+    | '/pharmabro/glossary'
+    | '/pharmabro/pricing'
+    | '/pharmabro/security'
     | '/pharmacy/login'
     | '/pharmacy/me'
     | '/portal/patient'
@@ -901,6 +1256,7 @@ export interface FileRouteTypes {
     | '/weight-loss/sales'
     | '/admin'
     | '/operator'
+    | '/pharmabro'
     | '/weight-loss'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -929,6 +1285,28 @@ export interface FileRouteTypes {
     | '/admin/settings/team'
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
+    | '/pharmabro/compare/pharmabro-vs-bask'
+    | '/pharmabro/compare/pharmabro-vs-carevalidate'
+    | '/pharmabro/compare/pharmabro-vs-cuvo'
+    | '/pharmabro/compare/pharmabro-vs-openloop'
+    | '/pharmabro/compare/pharmabro-vs-rimo'
+    | '/pharmabro/legal/do-not-sell'
+    | '/pharmabro/legal/hipaa-notice'
+    | '/pharmabro/legal/privacy'
+    | '/pharmabro/legal/terms'
+    | '/pharmabro/platform/analytics'
+    | '/pharmabro/platform/intake-builder'
+    | '/pharmabro/platform/legitscript'
+    | '/pharmabro/platform/patient-portal'
+    | '/pharmabro/platform/payments'
+    | '/pharmabro/platform/pharmacy'
+    | '/pharmabro/solutions/hair-loss'
+    | '/pharmabro/solutions/longevity'
+    | '/pharmabro/solutions/mens-health'
+    | '/pharmabro/solutions/peptides'
+    | '/pharmabro/solutions/sexual-health'
+    | '/pharmabro/solutions/weight-loss'
+    | '/pharmabro/solutions/womens-health'
     | '/pharmacy/orders/$orderId'
     | '/admin/analytics'
     | '/admin/check-ins'
@@ -939,6 +1317,8 @@ export interface FileRouteTypes {
     | '/admin/physician-queue'
     | '/admin/settings'
     | '/operator/brands'
+    | '/pharmabro/compare'
+    | '/pharmabro/platform'
     | '/pharmacy/orders'
   id:
     | '__root__'
@@ -949,6 +1329,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/medication-safety'
+    | '/pharmabro'
     | '/privacy'
     | '/refund'
     | '/shipping'
@@ -977,6 +1358,13 @@ export interface FileRouteTypes {
     | '/operator/login'
     | '/operator/physicians'
     | '/operator/revenue'
+    | '/pharmabro/about'
+    | '/pharmabro/blog'
+    | '/pharmabro/contact'
+    | '/pharmabro/demo'
+    | '/pharmabro/glossary'
+    | '/pharmabro/pricing'
+    | '/pharmabro/security'
     | '/pharmacy/login'
     | '/pharmacy/me'
     | '/portal/patient'
@@ -986,6 +1374,7 @@ export interface FileRouteTypes {
     | '/weight-loss/sales'
     | '/admin/'
     | '/operator/'
+    | '/pharmabro/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1014,6 +1403,28 @@ export interface FileRouteTypes {
     | '/admin/settings/team'
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
+    | '/pharmabro/compare/pharmabro-vs-bask'
+    | '/pharmabro/compare/pharmabro-vs-carevalidate'
+    | '/pharmabro/compare/pharmabro-vs-cuvo'
+    | '/pharmabro/compare/pharmabro-vs-openloop'
+    | '/pharmabro/compare/pharmabro-vs-rimo'
+    | '/pharmabro/legal/do-not-sell'
+    | '/pharmabro/legal/hipaa-notice'
+    | '/pharmabro/legal/privacy'
+    | '/pharmabro/legal/terms'
+    | '/pharmabro/platform/analytics'
+    | '/pharmabro/platform/intake-builder'
+    | '/pharmabro/platform/legitscript'
+    | '/pharmabro/platform/patient-portal'
+    | '/pharmabro/platform/payments'
+    | '/pharmabro/platform/pharmacy'
+    | '/pharmabro/solutions/hair-loss'
+    | '/pharmabro/solutions/longevity'
+    | '/pharmabro/solutions/mens-health'
+    | '/pharmabro/solutions/peptides'
+    | '/pharmabro/solutions/sexual-health'
+    | '/pharmabro/solutions/weight-loss'
+    | '/pharmabro/solutions/womens-health'
     | '/pharmacy/orders/$orderId'
     | '/admin/analytics/'
     | '/admin/check-ins/'
@@ -1024,6 +1435,8 @@ export interface FileRouteTypes {
     | '/admin/physician-queue/'
     | '/admin/settings/'
     | '/operator/brands/'
+    | '/pharmabro/compare/'
+    | '/pharmabro/platform/'
     | '/pharmacy/orders/'
   fileRoutesById: FileRoutesById
 }
@@ -1035,6 +1448,7 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRouteWithChildren
   MedicationSafetyRoute: typeof MedicationSafetyRoute
+  PharmabroRoute: typeof PharmabroRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RefundRoute: typeof RefundRoute
   ShippingRoute: typeof ShippingRoute
@@ -1138,6 +1552,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pharmabro': {
+      id: '/pharmabro'
+      path: '/pharmabro'
+      fullPath: '/pharmabro'
+      preLoaderRoute: typeof PharmabroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/medication-safety': {
       id: '/medication-safety'
       path: '/medication-safety'
@@ -1193,6 +1614,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/weight-loss/'
       preLoaderRoute: typeof WeightLossIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/pharmabro/': {
+      id: '/pharmabro/'
+      path: '/'
+      fullPath: '/pharmabro/'
+      preLoaderRoute: typeof PharmabroIndexRouteImport
+      parentRoute: typeof PharmabroRoute
     }
     '/operator/': {
       id: '/operator/'
@@ -1256,6 +1684,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/pharmacy/login'
       preLoaderRoute: typeof PharmacyLoginRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/pharmabro/security': {
+      id: '/pharmabro/security'
+      path: '/security'
+      fullPath: '/pharmabro/security'
+      preLoaderRoute: typeof PharmabroSecurityRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/pricing': {
+      id: '/pharmabro/pricing'
+      path: '/pricing'
+      fullPath: '/pharmabro/pricing'
+      preLoaderRoute: typeof PharmabroPricingRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/glossary': {
+      id: '/pharmabro/glossary'
+      path: '/glossary'
+      fullPath: '/pharmabro/glossary'
+      preLoaderRoute: typeof PharmabroGlossaryRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/demo': {
+      id: '/pharmabro/demo'
+      path: '/demo'
+      fullPath: '/pharmabro/demo'
+      preLoaderRoute: typeof PharmabroDemoRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/contact': {
+      id: '/pharmabro/contact'
+      path: '/contact'
+      fullPath: '/pharmabro/contact'
+      preLoaderRoute: typeof PharmabroContactRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/blog': {
+      id: '/pharmabro/blog'
+      path: '/blog'
+      fullPath: '/pharmabro/blog'
+      preLoaderRoute: typeof PharmabroBlogRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/about': {
+      id: '/pharmabro/about'
+      path: '/about'
+      fullPath: '/pharmabro/about'
+      preLoaderRoute: typeof PharmabroAboutRouteImport
+      parentRoute: typeof PharmabroRoute
     }
     '/operator/revenue': {
       id: '/operator/revenue'
@@ -1425,6 +1902,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PharmacyOrdersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pharmabro/platform/': {
+      id: '/pharmabro/platform/'
+      path: '/platform'
+      fullPath: '/pharmabro/platform/'
+      preLoaderRoute: typeof PharmabroPlatformIndexRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/compare/': {
+      id: '/pharmabro/compare/'
+      path: '/compare'
+      fullPath: '/pharmabro/compare/'
+      preLoaderRoute: typeof PharmabroCompareIndexRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
     '/operator/brands/': {
       id: '/operator/brands/'
       path: '/operator/brands'
@@ -1494,6 +1985,160 @@ declare module '@tanstack/react-router' {
       fullPath: '/pharmacy/orders/$orderId'
       preLoaderRoute: typeof PharmacyOrdersOrderIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/pharmabro/solutions/womens-health': {
+      id: '/pharmabro/solutions/womens-health'
+      path: '/solutions/womens-health'
+      fullPath: '/pharmabro/solutions/womens-health'
+      preLoaderRoute: typeof PharmabroSolutionsWomensHealthRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/solutions/weight-loss': {
+      id: '/pharmabro/solutions/weight-loss'
+      path: '/solutions/weight-loss'
+      fullPath: '/pharmabro/solutions/weight-loss'
+      preLoaderRoute: typeof PharmabroSolutionsWeightLossRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/solutions/sexual-health': {
+      id: '/pharmabro/solutions/sexual-health'
+      path: '/solutions/sexual-health'
+      fullPath: '/pharmabro/solutions/sexual-health'
+      preLoaderRoute: typeof PharmabroSolutionsSexualHealthRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/solutions/peptides': {
+      id: '/pharmabro/solutions/peptides'
+      path: '/solutions/peptides'
+      fullPath: '/pharmabro/solutions/peptides'
+      preLoaderRoute: typeof PharmabroSolutionsPeptidesRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/solutions/mens-health': {
+      id: '/pharmabro/solutions/mens-health'
+      path: '/solutions/mens-health'
+      fullPath: '/pharmabro/solutions/mens-health'
+      preLoaderRoute: typeof PharmabroSolutionsMensHealthRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/solutions/longevity': {
+      id: '/pharmabro/solutions/longevity'
+      path: '/solutions/longevity'
+      fullPath: '/pharmabro/solutions/longevity'
+      preLoaderRoute: typeof PharmabroSolutionsLongevityRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/solutions/hair-loss': {
+      id: '/pharmabro/solutions/hair-loss'
+      path: '/solutions/hair-loss'
+      fullPath: '/pharmabro/solutions/hair-loss'
+      preLoaderRoute: typeof PharmabroSolutionsHairLossRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/platform/pharmacy': {
+      id: '/pharmabro/platform/pharmacy'
+      path: '/platform/pharmacy'
+      fullPath: '/pharmabro/platform/pharmacy'
+      preLoaderRoute: typeof PharmabroPlatformPharmacyRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/platform/payments': {
+      id: '/pharmabro/platform/payments'
+      path: '/platform/payments'
+      fullPath: '/pharmabro/platform/payments'
+      preLoaderRoute: typeof PharmabroPlatformPaymentsRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/platform/patient-portal': {
+      id: '/pharmabro/platform/patient-portal'
+      path: '/platform/patient-portal'
+      fullPath: '/pharmabro/platform/patient-portal'
+      preLoaderRoute: typeof PharmabroPlatformPatientPortalRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/platform/legitscript': {
+      id: '/pharmabro/platform/legitscript'
+      path: '/platform/legitscript'
+      fullPath: '/pharmabro/platform/legitscript'
+      preLoaderRoute: typeof PharmabroPlatformLegitscriptRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/platform/intake-builder': {
+      id: '/pharmabro/platform/intake-builder'
+      path: '/platform/intake-builder'
+      fullPath: '/pharmabro/platform/intake-builder'
+      preLoaderRoute: typeof PharmabroPlatformIntakeBuilderRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/platform/analytics': {
+      id: '/pharmabro/platform/analytics'
+      path: '/platform/analytics'
+      fullPath: '/pharmabro/platform/analytics'
+      preLoaderRoute: typeof PharmabroPlatformAnalyticsRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/legal/terms': {
+      id: '/pharmabro/legal/terms'
+      path: '/legal/terms'
+      fullPath: '/pharmabro/legal/terms'
+      preLoaderRoute: typeof PharmabroLegalTermsRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/legal/privacy': {
+      id: '/pharmabro/legal/privacy'
+      path: '/legal/privacy'
+      fullPath: '/pharmabro/legal/privacy'
+      preLoaderRoute: typeof PharmabroLegalPrivacyRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/legal/hipaa-notice': {
+      id: '/pharmabro/legal/hipaa-notice'
+      path: '/legal/hipaa-notice'
+      fullPath: '/pharmabro/legal/hipaa-notice'
+      preLoaderRoute: typeof PharmabroLegalHipaaNoticeRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/legal/do-not-sell': {
+      id: '/pharmabro/legal/do-not-sell'
+      path: '/legal/do-not-sell'
+      fullPath: '/pharmabro/legal/do-not-sell'
+      preLoaderRoute: typeof PharmabroLegalDoNotSellRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/compare/pharmabro-vs-rimo': {
+      id: '/pharmabro/compare/pharmabro-vs-rimo'
+      path: '/compare/pharmabro-vs-rimo'
+      fullPath: '/pharmabro/compare/pharmabro-vs-rimo'
+      preLoaderRoute: typeof PharmabroComparePharmabroVsRimoRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/compare/pharmabro-vs-openloop': {
+      id: '/pharmabro/compare/pharmabro-vs-openloop'
+      path: '/compare/pharmabro-vs-openloop'
+      fullPath: '/pharmabro/compare/pharmabro-vs-openloop'
+      preLoaderRoute: typeof PharmabroComparePharmabroVsOpenloopRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/compare/pharmabro-vs-cuvo': {
+      id: '/pharmabro/compare/pharmabro-vs-cuvo'
+      path: '/compare/pharmabro-vs-cuvo'
+      fullPath: '/pharmabro/compare/pharmabro-vs-cuvo'
+      preLoaderRoute: typeof PharmabroComparePharmabroVsCuvoRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/compare/pharmabro-vs-carevalidate': {
+      id: '/pharmabro/compare/pharmabro-vs-carevalidate'
+      path: '/compare/pharmabro-vs-carevalidate'
+      fullPath: '/pharmabro/compare/pharmabro-vs-carevalidate'
+      preLoaderRoute: typeof PharmabroComparePharmabroVsCarevalidateRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/compare/pharmabro-vs-bask': {
+      id: '/pharmabro/compare/pharmabro-vs-bask'
+      path: '/compare/pharmabro-vs-bask'
+      fullPath: '/pharmabro/compare/pharmabro-vs-bask'
+      preLoaderRoute: typeof PharmabroComparePharmabroVsBaskRouteImport
+      parentRoute: typeof PharmabroRoute
     }
     '/operator/pharmacy/orders': {
       id: '/operator/pharmacy/orders'
@@ -1699,6 +2344,82 @@ const LoginRouteChildren: LoginRouteChildren = {
 
 const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 
+interface PharmabroRouteChildren {
+  PharmabroAboutRoute: typeof PharmabroAboutRoute
+  PharmabroBlogRoute: typeof PharmabroBlogRoute
+  PharmabroContactRoute: typeof PharmabroContactRoute
+  PharmabroDemoRoute: typeof PharmabroDemoRoute
+  PharmabroGlossaryRoute: typeof PharmabroGlossaryRoute
+  PharmabroPricingRoute: typeof PharmabroPricingRoute
+  PharmabroSecurityRoute: typeof PharmabroSecurityRoute
+  PharmabroIndexRoute: typeof PharmabroIndexRoute
+  PharmabroComparePharmabroVsBaskRoute: typeof PharmabroComparePharmabroVsBaskRoute
+  PharmabroComparePharmabroVsCarevalidateRoute: typeof PharmabroComparePharmabroVsCarevalidateRoute
+  PharmabroComparePharmabroVsCuvoRoute: typeof PharmabroComparePharmabroVsCuvoRoute
+  PharmabroComparePharmabroVsOpenloopRoute: typeof PharmabroComparePharmabroVsOpenloopRoute
+  PharmabroComparePharmabroVsRimoRoute: typeof PharmabroComparePharmabroVsRimoRoute
+  PharmabroLegalDoNotSellRoute: typeof PharmabroLegalDoNotSellRoute
+  PharmabroLegalHipaaNoticeRoute: typeof PharmabroLegalHipaaNoticeRoute
+  PharmabroLegalPrivacyRoute: typeof PharmabroLegalPrivacyRoute
+  PharmabroLegalTermsRoute: typeof PharmabroLegalTermsRoute
+  PharmabroPlatformAnalyticsRoute: typeof PharmabroPlatformAnalyticsRoute
+  PharmabroPlatformIntakeBuilderRoute: typeof PharmabroPlatformIntakeBuilderRoute
+  PharmabroPlatformLegitscriptRoute: typeof PharmabroPlatformLegitscriptRoute
+  PharmabroPlatformPatientPortalRoute: typeof PharmabroPlatformPatientPortalRoute
+  PharmabroPlatformPaymentsRoute: typeof PharmabroPlatformPaymentsRoute
+  PharmabroPlatformPharmacyRoute: typeof PharmabroPlatformPharmacyRoute
+  PharmabroSolutionsHairLossRoute: typeof PharmabroSolutionsHairLossRoute
+  PharmabroSolutionsLongevityRoute: typeof PharmabroSolutionsLongevityRoute
+  PharmabroSolutionsMensHealthRoute: typeof PharmabroSolutionsMensHealthRoute
+  PharmabroSolutionsPeptidesRoute: typeof PharmabroSolutionsPeptidesRoute
+  PharmabroSolutionsSexualHealthRoute: typeof PharmabroSolutionsSexualHealthRoute
+  PharmabroSolutionsWeightLossRoute: typeof PharmabroSolutionsWeightLossRoute
+  PharmabroSolutionsWomensHealthRoute: typeof PharmabroSolutionsWomensHealthRoute
+  PharmabroCompareIndexRoute: typeof PharmabroCompareIndexRoute
+  PharmabroPlatformIndexRoute: typeof PharmabroPlatformIndexRoute
+}
+
+const PharmabroRouteChildren: PharmabroRouteChildren = {
+  PharmabroAboutRoute: PharmabroAboutRoute,
+  PharmabroBlogRoute: PharmabroBlogRoute,
+  PharmabroContactRoute: PharmabroContactRoute,
+  PharmabroDemoRoute: PharmabroDemoRoute,
+  PharmabroGlossaryRoute: PharmabroGlossaryRoute,
+  PharmabroPricingRoute: PharmabroPricingRoute,
+  PharmabroSecurityRoute: PharmabroSecurityRoute,
+  PharmabroIndexRoute: PharmabroIndexRoute,
+  PharmabroComparePharmabroVsBaskRoute: PharmabroComparePharmabroVsBaskRoute,
+  PharmabroComparePharmabroVsCarevalidateRoute:
+    PharmabroComparePharmabroVsCarevalidateRoute,
+  PharmabroComparePharmabroVsCuvoRoute: PharmabroComparePharmabroVsCuvoRoute,
+  PharmabroComparePharmabroVsOpenloopRoute:
+    PharmabroComparePharmabroVsOpenloopRoute,
+  PharmabroComparePharmabroVsRimoRoute: PharmabroComparePharmabroVsRimoRoute,
+  PharmabroLegalDoNotSellRoute: PharmabroLegalDoNotSellRoute,
+  PharmabroLegalHipaaNoticeRoute: PharmabroLegalHipaaNoticeRoute,
+  PharmabroLegalPrivacyRoute: PharmabroLegalPrivacyRoute,
+  PharmabroLegalTermsRoute: PharmabroLegalTermsRoute,
+  PharmabroPlatformAnalyticsRoute: PharmabroPlatformAnalyticsRoute,
+  PharmabroPlatformIntakeBuilderRoute: PharmabroPlatformIntakeBuilderRoute,
+  PharmabroPlatformLegitscriptRoute: PharmabroPlatformLegitscriptRoute,
+  PharmabroPlatformPatientPortalRoute: PharmabroPlatformPatientPortalRoute,
+  PharmabroPlatformPaymentsRoute: PharmabroPlatformPaymentsRoute,
+  PharmabroPlatformPharmacyRoute: PharmabroPlatformPharmacyRoute,
+  PharmabroSolutionsHairLossRoute: PharmabroSolutionsHairLossRoute,
+  PharmabroSolutionsLongevityRoute: PharmabroSolutionsLongevityRoute,
+  PharmabroSolutionsMensHealthRoute: PharmabroSolutionsMensHealthRoute,
+  PharmabroSolutionsPeptidesRoute: PharmabroSolutionsPeptidesRoute,
+  PharmabroSolutionsSexualHealthRoute: PharmabroSolutionsSexualHealthRoute,
+  PharmabroSolutionsWeightLossRoute: PharmabroSolutionsWeightLossRoute,
+  PharmabroSolutionsWomensHealthRoute: PharmabroSolutionsWomensHealthRoute,
+  PharmabroCompareIndexRoute: PharmabroCompareIndexRoute,
+  PharmabroPlatformIndexRoute: PharmabroPlatformIndexRoute,
+}
+
+const PharmabroRouteWithChildren = PharmabroRoute._addFileChildren(
+  PharmabroRouteChildren,
+)
+
 interface AdminSettingsRouteChildren {
   AdminSettingsComplianceRoute: typeof AdminSettingsComplianceRoute
   AdminSettingsGeneralRoute: typeof AdminSettingsGeneralRoute
@@ -1737,6 +2458,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRouteWithChildren,
   MedicationSafetyRoute: MedicationSafetyRoute,
+  PharmabroRoute: PharmabroRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RefundRoute: RefundRoute,
   ShippingRoute: ShippingRoute,

@@ -299,3 +299,61 @@
   font-weight: 650;
   color: var(--color-ink);
 }
+
+/* =========================================================================
+   PharmaBro marketing site scope — white canvas, electric blue accent.
+   Applies only inside `.pharmabro-scope` (the /pharmabro layout root).
+   Blissley and the admin dashboard are untouched.
+   ========================================================================= */
+.pharmabro-scope {
+  --color-canvas: #ffffff;   /* page bg — white, never dark */
+  --color-ink: #0a0a0a;      /* primary text */
+  --color-marine: #1b4ef5;   /* electric blue — primary accent */
+  --color-ever: #e5484d;     /* red — competitor cross / breach notice */
+  --color-check: #16a34a;    /* green — own-column check */
+  --color-honey: #f59e0b;    /* amber — warn */
+  --color-mist: #f6f6f8;     /* alternating section band */
+  --color-hairline: #e8e8ec; /* borders */
+  --color-bluebell: #62626d; /* muted text */
+  --color-blush: #e5484d;
+}
+
+.pharmabro-scope ::selection {
+  background: var(--color-marine);
+  color: #ffffff;
+}
+
+/* Monospace ALL-CAPS microlabel. The single detail that makes the site read
+   as serious infrastructure rather than a generic SaaS template. */
+.pb-micro {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+}
+
+.pb-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Muted second clause of a two-tone headline (Cuvo pattern) */
+.pb-dim {
+  color: color-mix(in oklab, var(--color-ink) 40%, transparent);
+}
+
+.pb-body {
+  color: color-mix(in oklab, var(--color-ink) 62%, transparent);
+}
+
+/* Faint dotted grid used behind the final CTA and pricing panels */
+.pb-dotgrid {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-ink) 12%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
