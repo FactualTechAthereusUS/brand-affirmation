@@ -246,7 +246,7 @@ export const MATH_FOOTNOTE =
 
 export const LEGITSCRIPT_BARS = [
   { label: "PharmaBro", value: "7-14 days", weight: 14, own: true },
-  { label: "Cuvo", value: "7-14 days (Cuvo average)", weight: 18, own: false },
+  { label: "Cuvo", value: "7-14 days (Cuvo average)", weight: 14, own: false },
   { label: "Industry solo", value: "3-6 months", weight: 100, own: false },
 ];
 

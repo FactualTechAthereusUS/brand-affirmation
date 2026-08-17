@@ -666,7 +666,7 @@ function LegitScript() {
                     {b.value}
                   </span>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-[var(--color-mist)]">
+                <div className="h-2.5 overflow-hidden rounded-full bg-[color-mix(in_oklab,var(--color-ink)_7%,transparent)]">
                   <motion.div
                     initial={{ width: 0 }}
                     whileInView={{ width: `${b.weight}%` }}
@@ -680,7 +680,7 @@ function LegitScript() {
                       "h-full rounded-full",
                       b.own
                         ? "bg-[var(--color-marine)]"
-                        : "bg-[color-mix(in_oklab,var(--color-ink)_22%,transparent)]",
+                        : "bg-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]",
                     )}
                   />
                 </div>
