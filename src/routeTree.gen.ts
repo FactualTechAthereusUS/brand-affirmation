@@ -98,6 +98,7 @@ import { Route as PharmabroComparePharmabroVsOpenloopRouteImport } from './route
 import { Route as PharmabroComparePharmabroVsCuvoRouteImport } from './routes/pharmabro.compare.pharmabro-vs-cuvo'
 import { Route as PharmabroComparePharmabroVsCarevalidateRouteImport } from './routes/pharmabro.compare.pharmabro-vs-carevalidate'
 import { Route as PharmabroComparePharmabroVsBaskRouteImport } from './routes/pharmabro.compare.pharmabro-vs-bask'
+import { Route as PharmabroCompareSlugRouteImport } from './routes/pharmabro.compare.$slug'
 import { Route as OperatorPharmacyOrdersRouteImport } from './routes/operator.pharmacy.orders'
 import { Route as OperatorBrandsBrandIdRouteImport } from './routes/operator.brands.$brandId'
 import { Route as AdminSettingsTeamRouteImport } from './routes/admin.settings.team'
@@ -591,6 +592,11 @@ const PharmabroComparePharmabroVsBaskRoute =
     path: '/compare/pharmabro-vs-bask',
     getParentRoute: () => PharmabroRoute,
   } as any)
+const PharmabroCompareSlugRoute = PharmabroCompareSlugRouteImport.update({
+  id: '/compare/$slug',
+  path: '/compare/$slug',
+  getParentRoute: () => PharmabroRoute,
+} as any)
 const OperatorPharmacyOrdersRoute = OperatorPharmacyOrdersRouteImport.update({
   id: '/operator/pharmacy/orders',
   path: '/operator/pharmacy/orders',
@@ -814,6 +820,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
+  '/pharmabro/compare/$slug': typeof PharmabroCompareSlugRoute
   '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
   '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
   '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
@@ -930,6 +937,7 @@ export interface FileRoutesByTo {
   '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
+  '/pharmabro/compare/$slug': typeof PharmabroCompareSlugRoute
   '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
   '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
   '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
@@ -1049,6 +1057,7 @@ export interface FileRoutesById {
   '/admin/settings/team': typeof AdminSettingsTeamRoute
   '/operator/brands/$brandId': typeof OperatorBrandsBrandIdRoute
   '/operator/pharmacy/orders': typeof OperatorPharmacyOrdersRoute
+  '/pharmabro/compare/$slug': typeof PharmabroCompareSlugRoute
   '/pharmabro/compare/pharmabro-vs-bask': typeof PharmabroComparePharmabroVsBaskRoute
   '/pharmabro/compare/pharmabro-vs-carevalidate': typeof PharmabroComparePharmabroVsCarevalidateRoute
   '/pharmabro/compare/pharmabro-vs-cuvo': typeof PharmabroComparePharmabroVsCuvoRoute
@@ -1169,6 +1178,7 @@ export interface FileRouteTypes {
     | '/admin/settings/team'
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
+    | '/pharmabro/compare/$slug'
     | '/pharmabro/compare/pharmabro-vs-bask'
     | '/pharmabro/compare/pharmabro-vs-carevalidate'
     | '/pharmabro/compare/pharmabro-vs-cuvo'
@@ -1285,6 +1295,7 @@ export interface FileRouteTypes {
     | '/admin/settings/team'
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
+    | '/pharmabro/compare/$slug'
     | '/pharmabro/compare/pharmabro-vs-bask'
     | '/pharmabro/compare/pharmabro-vs-carevalidate'
     | '/pharmabro/compare/pharmabro-vs-cuvo'
@@ -1403,6 +1414,7 @@ export interface FileRouteTypes {
     | '/admin/settings/team'
     | '/operator/brands/$brandId'
     | '/operator/pharmacy/orders'
+    | '/pharmabro/compare/$slug'
     | '/pharmabro/compare/pharmabro-vs-bask'
     | '/pharmabro/compare/pharmabro-vs-carevalidate'
     | '/pharmabro/compare/pharmabro-vs-cuvo'
@@ -2140,6 +2152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PharmabroComparePharmabroVsBaskRouteImport
       parentRoute: typeof PharmabroRoute
     }
+    '/pharmabro/compare/$slug': {
+      id: '/pharmabro/compare/$slug'
+      path: '/compare/$slug'
+      fullPath: '/pharmabro/compare/$slug'
+      preLoaderRoute: typeof PharmabroCompareSlugRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
     '/operator/pharmacy/orders': {
       id: '/operator/pharmacy/orders'
       path: '/operator/pharmacy/orders'
@@ -2353,6 +2372,7 @@ interface PharmabroRouteChildren {
   PharmabroPricingRoute: typeof PharmabroPricingRoute
   PharmabroSecurityRoute: typeof PharmabroSecurityRoute
   PharmabroIndexRoute: typeof PharmabroIndexRoute
+  PharmabroCompareSlugRoute: typeof PharmabroCompareSlugRoute
   PharmabroComparePharmabroVsBaskRoute: typeof PharmabroComparePharmabroVsBaskRoute
   PharmabroComparePharmabroVsCarevalidateRoute: typeof PharmabroComparePharmabroVsCarevalidateRoute
   PharmabroComparePharmabroVsCuvoRoute: typeof PharmabroComparePharmabroVsCuvoRoute
@@ -2388,6 +2408,7 @@ const PharmabroRouteChildren: PharmabroRouteChildren = {
   PharmabroPricingRoute: PharmabroPricingRoute,
   PharmabroSecurityRoute: PharmabroSecurityRoute,
   PharmabroIndexRoute: PharmabroIndexRoute,
+  PharmabroCompareSlugRoute: PharmabroCompareSlugRoute,
   PharmabroComparePharmabroVsBaskRoute: PharmabroComparePharmabroVsBaskRoute,
   PharmabroComparePharmabroVsCarevalidateRoute:
     PharmabroComparePharmabroVsCarevalidateRoute,
