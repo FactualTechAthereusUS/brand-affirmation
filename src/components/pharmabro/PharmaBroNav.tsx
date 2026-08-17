@@ -96,10 +96,20 @@ export function PharmaBroNav() {
   const [mobile, setMobile] = useState(false);
   const [mobileGroup, setMobileGroup] = useState<string | null>("Platform");
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<number | undefined>(undefined);
 
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 24));
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const id = window.setTimeout(() => setMounted(true), 40);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(id);
+    };
+  }, []);
+
 
   // Small close delay so the pointer can travel from trigger to panel.
   const scheduleClose = () => {
