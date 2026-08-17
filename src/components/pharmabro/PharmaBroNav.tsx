@@ -233,54 +233,39 @@ export function PharmaBroNav() {
                 </button>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* desktop dropdown panel, anchored under the pill */}
-          <AnimatePresence>
-            {activeGroup ? (
-              <motion.div
-                key={activeGroup.label}
-                initial={{ opacity: 0, y: -10, scale: 0.985 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.985 }}
-                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                onMouseEnter={cancelClose}
-                className="absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(720px,100%)] -translate-x-1/2 overflow-hidden rounded-3xl border border-white/60 bg-white/85 p-3 shadow-[0_28px_60px_-30px_rgba(10,10,10,0.4)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150 lg:block"
-              >
-                <div className="grid grid-cols-2 gap-1">
-                  {activeGroup.items.map((it, idx) => (
-                    <motion.div
-                      key={it.to + it.label}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.24,
-                        delay: 0.02 * idx,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                    >
-                      <Link
-                        to={it.to}
-                        onClick={() => setOpen(null)}
-                        className="group flex items-center justify-between gap-3 rounded-2xl px-3.5 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]"
-                      >
-                        <span className="text-[14px] font-medium text-ink">
-                          {it.label}
-                        </span>
-                        {it.note ? (
-                          <span className="pb-micro shrink-0">{it.note}</span>
-                        ) : (
-                          <ArrowRight className="size-3.5 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-45" />
-                        )}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-        </motion.div>
+          {activeGroup ? (
+            <div
+              key={activeGroup.label}
+              onMouseEnter={cancelClose}
+              className="animate-fade-in absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(720px,100%)] -translate-x-1/2 overflow-hidden rounded-3xl border border-white/60 bg-white/85 p-3 shadow-[0_28px_60px_-30px_rgba(10,10,10,0.4)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150 lg:block"
+            >
+              <div className="grid grid-cols-2 gap-1">
+                {activeGroup.items.map((it) => (
+                  <Link
+                    key={it.to + it.label}
+                    to={it.to}
+                    onClick={() => setOpen(null)}
+                    className="group flex items-center justify-between gap-3 rounded-2xl px-3.5 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]"
+                  >
+                    <span className="text-[14px] font-medium text-ink">
+                      {it.label}
+                    </span>
+                    {it.note ? (
+                      <span className="pb-micro shrink-0">{it.note}</span>
+                    ) : (
+                      <ArrowRight className="size-3.5 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-45" />
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
       </div>
+
 
       {/* spacer so page content clears the floating pill */}
       <div aria-hidden className="h-[68px] sm:h-[80px]" />
