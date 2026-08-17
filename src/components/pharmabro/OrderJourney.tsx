@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { JOURNEY } from "@/lib/pharmabro/home";
+import { Reveal } from "./primitives";
+
 
 /**
  * Four-step order journey. A scroll-linked rail fills as the section passes
