@@ -134,7 +134,12 @@ export function PharmaBroNav() {
       <AnnouncementBar />
 
       {/* floating liquid-glass pill */}
-      <div className="pointer-events-none fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-5">
+      <div
+        className={cn(
+          "pointer-events-none fixed inset-x-0 z-50 px-3 transition-[top] duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] sm:px-5",
+          scrolled ? "top-3 sm:top-4" : "top-[2.85rem]",
+        )}
+      >
         <div
           className={cn(
             "pointer-events-auto relative mx-auto w-full max-w-[1180px] transition-all duration-[550ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
