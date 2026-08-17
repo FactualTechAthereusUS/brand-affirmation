@@ -16,6 +16,8 @@ import {
   Card,
   Cell,
   Check,
+  Chip,
+
   Container,
   CountUp,
   EyebrowPill,
