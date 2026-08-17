@@ -202,13 +202,15 @@ function Hero() {
       />
       <Container size="wide" className="relative">
         <Reveal>
-          <Chip tone="live" className="mb-7">
-            1,284 brands live on PharmaBro
-          </Chip>
+        <Reveal className="mb-7 flex flex-wrap items-center gap-3">
+          <EyebrowPill label="New" to="/pharmabro/platform/legitscript">
+            LegitScript in 7-14 days
+          </EyebrowPill>
+          <Chip tone="live">1,284 brands live on PharmaBro</Chip>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="max-w-[900px] text-balance text-[38px] font-semibold leading-[1.05] tracking-[-0.035em] text-ink sm:text-[56px] lg:text-[70px]">
+          <h1 className="max-w-[900px] text-balance text-[2.25rem] font-normal leading-[1.08] tracking-[-0.025em] text-ink sm:text-5xl lg:text-[3.5rem]">
             Launch Your Own{" "}
             <span className="relative inline-grid align-bottom">
               <AnimatePresence mode="popLayout" initial={false}>
@@ -227,6 +229,7 @@ function Hero() {
             Brand in 7 Days
           </h1>
         </Reveal>
+
 
         <Reveal delay={0.12}>
           <p className="pb-body mt-7 max-w-[640px] text-[16px] leading-relaxed sm:text-[17.5px]">
