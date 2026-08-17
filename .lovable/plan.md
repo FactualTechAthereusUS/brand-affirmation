@@ -1,53 +1,75 @@
-# Applying the Rimo / Cuvo / Bask / Framer layout grammar to PharmaBro
+# PharmaBro — build out every remaining page from the spec
 
-I read all four files end to end. Here is exactly what is in them, what is reusable, and how it lands on our site.
+Right now the homepage is fully built, but pricing, all compare pages, all solution pages, all platform pages, blog and glossary are placeholder shells (`StubPage`). This plan replaces every one of them with real, spec-exact content using the design grammar already built (bento grids, product tabs, order journey, mono microlabels, two-tone headlines, white canvas, electric blue accent).
 
----
-
-## What each file actually contains
-
-**rimo-clean.html** — full Rimo homepage DOM. 9 sections, all `bg-white py-24`. H1 `text-[2.25rem] font-normal leading-[1.08] tracking-[-0.025em] lg:text-[3.5rem]`, H2 `text-3xl font-normal tracking-[-0.02em] lg:text-[2.75rem]` — light weight, tight tracking, never bold. Section flow: eyebrow pill hero ("New — the 2026 guide") → "Built to run itself" tabbed analytics panel → 5-card bento "Everything under one roof" (payments / rebill engine / verticals / data export / growth chart) → dashboard tab switcher (Dashboard, Intake Builder, Custom Domains, Patient Experience) with exact figures `$47,582.98`, `7,247`, `2,414`, `110` → 4-step order journey with real checkout/portal mockups → pharmacy logo band → 5-column comparison table grouped into Pricing & Revenue / Ownership & Control / Platform & Launch / Tech & Integrations → migration 3-card → LegitScript 7-14 vs 3-6 months bar pair → CTA + 4-column footer. Icons are plain lucide 24x24 stroke sets. Only real files: `legitscript.svg`, `dashboard-bg.svg`. Wordmark paths are stripped (`d=""`).
-
-**cuvo-clean.html** — Cuvo homepage. H1 "Launch your GLP-1s brand. Cuvo runs the clinic." Two-line H2/H3 headings with a deliberate mid-heading break ("One clinical team / behind every brand"). 4-tab hero with a full-bleed photographic background per tab, 43 image references (`/images/home-2026/hero/tab-N/...webp`, category cards, partner logos: Amazon Pharmacy, Curexa, FedEx, UPS, Quest, Labcorp), a `pricing-bg-texture.webp` behind the pricing block, an 8-post "Field notes" editorial grid, grouped pricing table, FAQ, CTA. Icons are 2px-stroke 24x24 arrow/close primitives, arrow often `-rotate-45`.
-
-**pasted-19-30-52.txt** — Bask homepage body. Dark canvas, `custom-container mx-auto w-screen px-4`, sections at `py-14 lg:py-[80px]`. Mega-menu with grouped PLATFORM / DOCS / START columns and per-item descriptions. Three long borderless founder testimonials with wordmarks. Uses `<video>` tags, not images, for product panels. Live bar chart "Orders processed 4,211" with axis 0/250/500/750/1k and Completed / Pending / Cancelled legend. Footer with a status pill and a "We Are Hiring" chip.
-
-**pasted-19-14-40.txt** — a Framer designer portfolio ("Design that delivers results"). Not telehealth: this one is the motion and micro-layout reference. Availability chip above the H1, stat chip `99+ Happy clients`, project cards with hover "View Project", tech-stack marquee of 256x256 icon tiles, 3-step "Subscribe / Request / Receive" strip, two-tier pricing cards with a slots-available pill, testimonial wall, two-line accented headings.
+Copy comes verbatim from the uploaded spec: titles, descriptions, H1s, intro paragraphs, Direct Answer blocks, Key Takeaways, comparison tables, FAQs, sources. No invented numbers, no em dashes.
 
 ---
 
-## What is reusable and what is not
+## New reusable templates (built once, used everywhere)
 
-Reusable directly: every layout, grid, type scale, spacing rhythm, section order, table grouping, mockup structure, chart structure, mega-menu shape, footer shape, and all the icon primitives (arrow, arrow -45, close, check, cross — we already use lucide, which is exactly what Rimo ships).
+**Compare page template** — one component driving all 14 pages:
+- breadcrumb, category microlabel, H1, "Updated August 2026" freshness chip
+- Direct Answer box (the 40-word GEO chunk)
+- Key Takeaways card list
+- capability comparison table: PharmaBro column tinted full height with green checks, competitor column with red crosses
+- cost-gap math block with exact figures from the spec
+- FAQ accordion (5 questions per page) wired to FAQPage JSON-LD
+- Sources block with real citation links
+- "Other comparisons" strip linking 3 sibling compare pages + pricing + demo
+- OpenLoop page additionally gets the January 2026 breach notice banner
 
-Not reusable: their `.webp` photography and product renders are remote references, not in these files, and they are their brand assets. Those become PharmaBro-generated images or live React mockups. Their wordmark SVG paths are empty in the dumps, so partner and brand logos get built as typeset wordmark chips instead of copied art.
+**Solution page template** — 7 verticals:
+- vertical hero with live mini-mockup of that vertical's intake/dashboard
+- market context stats with count-up
+- what the platform handles for this vertical (bento strip)
+- pharmacy and medication coverage rows
+- compliance notes, FAQ, links to the relevant platform feature pages
+
+**Platform feature page template** — 6 features:
+- feature hero, live React mockup (reusing `DashboardMockup` / `ProductTabs` mockups)
+- capability grid, how-it-works steps, FAQ, cross-links to solutions
+
+**Pricing page** — the real thing:
+- 4 tiers with published flat fees, setup-fee cards
+- grouped 100+ row feature comparison table with sticky group headers and the popular column tinted full height
+- interactive revenue calculator from the spec add-on: patient count and AOV inputs, showing flat-fee cost vs a 35% revenue-share cost and the annual gap
+- pricing transparency callout, add-ons, FAQ with FAQPage schema
+
+**Blog + glossary**:
+- blog index with the 90-post content calendar rendered as a filterable list by month/theme, and a post template
+- a first batch of full posts (the foundation set), the rest listed as scheduled entries rather than fake published pages
+- glossary with 25 `DefinedTerm` entries and per-term anchors
 
 ---
 
-## Phase 1 — rebuild the homepage on the Rimo skeleton (this turn's deliverable)
+## Content data files
 
-Our `/pharmabro` homepage has the right copy but not this layout discipline. Changes:
+All copy lives in `src/lib/pharmabro/` so routes stay thin:
+`compare.ts` (14 entries), `solutions.ts` (7), `platform.ts` (6), `pricing.ts` (tiers + grouped table + calculator config), `blog.ts` (calendar + posts), `glossary.ts` (25 terms).
 
-1. **Type scale swap** across `src/components/pharmabro/primitives.tsx`: headings move to `font-normal` with `tracking-[-0.025em]`, H1 to `2.25rem → 3.5rem`, H2 to `3xl → 2.75rem`. Drops the current semibold/heavier look.
-2. **Hero**: Cuvo/Framer eyebrow chip above the H1, keep the rotating vertical word, add the Rimo two-button pair with micro-copy underneath.
-3. **New: tabbed product section** (`PharmaBroTabs`) — Rimo's Dashboard / Intake Builder / Custom Domains / Patient Experience switcher, animated underline, panel cross-fade, our existing `DashboardMockup` as the first panel.
-4. **New: 5-card bento** with hairline internal dividers — payments to your own Stripe, in-house rebill engine, unlimited verticals, data export, growth. Each card gets a small live mockup: processor chips, tokenized card `•••• 4242`, `patients.csv 4.2 MB Ready`, a revenue sparkline.
-5. **New: 4-step order journey** — checkout card, provider approval, pharmacy routing, rebill scheduled, with a progress line drawn between them and exact non-round figures.
-6. **Comparison table** regrouped into Rimo's four labeled groups with our own column tinted full height.
-7. **LegitScript block** as the 7-14 day vs 3-6 month bar pair plus the three unlocked-ad-platform rows.
-8. **Testimonials** rebuilt Bask-style: three long borderless quotes with typeset wordmarks, no cards.
-9. **Bask-style mega-menu** in `PharmaBroNav.tsx`: grouped columns with per-item descriptions, replacing the current plain dropdown lists.
-10. **Footer** gains the Bask status pill and hiring chip.
+Route files stay small: head metadata + one template call.
 
-All motion via Framer Motion on the existing `Reveal` primitives, `prefers-reduced-motion` respected. Copy stays verbatim from the PharmaBro spec — layout changes, wording does not.
+---
 
-## Phase 2 and beyond
+## Routing changes
 
-Then the 31 stub pages, in this order, each on the same grammar: Pricing (Cuvo grouped table + texture plate) → Platform feature pages (Rimo bento per feature) → Solutions verticals (Cuvo category cards) → Compare hub and pages → content surfaces.
+Missing compare slugs get real routes: `pharmabro-vs-wheel`, `pharmabro-vs-whitelabelmd`, `pharmabro-vs-qualiphy`, `pharmabro-vs-fuse-health`, `pharmabro-vs-wizlo`, `pharmabro-vs-nimbusrx`, `pharmabro-vs-leguprx`, `pharmabro-vs-lyv-health`, `pharmabro-vs-medovation-partners`. Existing `pharmabro-vs-bask` keeps its current URL (spec says `pharmabro-vs-bask-health`; I will use the spec slug and keep the old path redirecting so existing links don't break). Compare hub lists all 14 with cost-gap teasers.
 
-## Technical notes
+Blog gets `pharmabro.blog.index.tsx` + `pharmabro.blog.$slug.tsx`.
 
-- All edits scoped inside `.pharmabro-scope`; Blissley, `/admin`, `/operator`, `/pharmacy` untouched.
-- New components in `src/components/pharmabro/`: `Tabs.tsx`, `BentoGrid.tsx`, `OrderJourney.tsx`, `LegitScriptBars.tsx`, `Testimonials.tsx`.
-- Any generated imagery goes to `public/assets/pharmabro/` and is referenced as `/assets/pharmabro/<file>`, per the local-assets-only rule.
-- Icons stay lucide, matching what Rimo itself ships. No new icon dependency.
+## SEO
+
+Per the spec's schema summary: Article + FAQPage + BreadcrumbList on compare, WebPage + FAQPage + BreadcrumbList on solutions and platform, SoftwareApplication + FAQPage on pricing, Article + Person on blog posts, DefinedTerm on glossary. Self-referencing canonical and `og:url` on every leaf using the live project domain. Internal linking follows the spec's linking map. `/sitemap.xml` extended with every new URL.
+
+---
+
+## Phases (approve, I build, you review)
+
+1. **Compare system** — template, data for all 14, hub, new routes, schema. Largest SEO surface.
+2. **Pricing** — tiers, grouped feature table, revenue calculator, FAQ.
+3. **Solutions** — all 7 verticals.
+4. **Platform** — all 6 feature pages.
+5. **Blog + glossary** — index, calendar, foundation posts, 25 glossary terms, sitemap.
+
+Each phase ends with a Playwright pass on desktop and mobile before I hand it back.
