@@ -183,6 +183,28 @@ function PharmaBroHome() {
 
 /* ------------------------------------------------------------------- 3 hero */
 
+/** Longest rotating word, used to reserve the highlight box width. */
+const longestRotating = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
+
+/** Word-by-word blur-in reveal, CSS driven so it never sticks at opacity 0. */
+function BlurWords({ text, delay = 0 }: { text: string; delay?: number }) {
+  return (
+    <>
+      {text.split(" ").map((w, idx) => (
+        <Fragment key={`${w}-${idx}`}>
+          {idx > 0 ? " " : null}
+          <span
+            className="pb-word"
+            style={{ animationDelay: `${delay + idx * 0.08}s` }}
+          >
+            {w}
+          </span>
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 function Hero() {
   const [i, setI] = useState(0);
 
