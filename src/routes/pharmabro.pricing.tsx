@@ -122,7 +122,7 @@ function PricingPage() {
               <Chip tone="live">
                 PharmaBro launch guarantee: first patient in 7 days or we refund your setup fee
               </Chip>
-              <Chip to="/pharmabro/compare/$slug">Compare vs revenue share</Chip>
+              <Chip to="/pharmabro/compare">Compare vs revenue share</Chip>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-2.5">
