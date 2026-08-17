@@ -519,25 +519,9 @@ function Features() {
           <BentoGrid />
         </Reveal>
 
-        <RevealGroup className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => {
-            const Icon = FEATURE_ICONS[f.icon];
-            return (
-              <RevealItem key={f.title}>
-                <Card className="h-full transition-colors hover:border-[color-mix(in_oklab,var(--color-ink)_20%,transparent)]">
-                  <Icon
-                    className="mb-5 size-5 text-[var(--color-marine)]"
-                    strokeWidth={1.75}
-                  />
-                  <h3 className="text-[16.5px] font-medium leading-snug tracking-[-0.02em] text-ink">
-                    {f.title}
-                  </h3>
-                  <p className="pb-body mt-3 text-[14px] leading-relaxed">{f.body}</p>
-                </Card>
-              </RevealItem>
-            );
-          })}
-        </RevealGroup>
+        {/* The two rebill and portal claims live in the tabbed section below,
+            so the bento carries this section on its own. */}
+
 
       </Container>
     </Section>
