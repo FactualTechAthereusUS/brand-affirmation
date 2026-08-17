@@ -35,18 +35,7 @@ export function OrderJourney() {
 
       <div className="grid gap-10 lg:grid-cols-4 lg:gap-8">
         {JOURNEY.steps.map((s, i) => (
-          <motion.div
-            key={s.num}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: i * 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative pl-11 lg:pl-0"
-          >
+          <Reveal key={s.num} delay={i * 0.08} className="relative pl-11 lg:pl-0">
             <span
               aria-hidden
               className="absolute left-0 top-1 grid size-7 place-items-center rounded-full border border-[var(--color-hairline)] bg-canvas text-[11px] font-medium text-ink lg:relative lg:mb-6"
@@ -58,9 +47,10 @@ export function OrderJourney() {
               {s.title}
             </h3>
             <p className="pb-body mt-2 text-[14px] leading-relaxed">{s.body}</p>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
+
     </div>
   );
 }
