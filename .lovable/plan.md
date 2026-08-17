@@ -1,121 +1,116 @@
-# PharmaBro.co marketing site inside the Blissley repo
+# PharmaBro — separate site inside this project
 
-## Goal
+A second, fully independent marketing site living under `/pharmabro/*`. It shares nothing with Blissley except the React/Tailwind/Framer Motion toolchain. Its own routes, its own components, its own color scope, its own fonts, its own nav and footer.
 
-Create a distinct **PharmaBro.co** marketing surface within this same TanStack Start project. It will feel like its own site (separate hero, nav, footer, copy, and identity) while reusing the UI craft we already built for Blissley: responsive layouts, Framer Motion reveals, liquid-glass cards, local assets, and SEO-per-route.
+Built from the uploaded spec (1,462 lines) using its exact copy. Structure follows Rimo, hero interaction follows Cuvo, stat proof follows Bask — all on **white**, never dark.
 
-It is **not** part of the Blissley brand. It does not touch `/admin`, `/operator`, `/pharmacy`, or `/portal`. It is a lightweight marketing-only workstream.
+---
 
-## Scope
+## Hard rules for this build
 
-1. **Homepage** — `/pharmabro`
-2. **Primary sales LP** — `/pharmabro/weight-loss` (or `/pharmabro/trt` if men's health is the lead program)
-3. **2–3 supporting pages** — e.g. `/pharmabro/how-it-works`, `/pharmabro/reviews`, `/pharmabro/faq`
+1. **White background everywhere.** `#FFFFFF` canvas, `#FAFAFA` for alternating section bands. No dark page backgrounds. The only dark surfaces are the announcement bar gradient, the final CTA panel, and filled buttons.
+2. **Zero Blissley coupling.** No imports from `src/components/home`, `src/components/weight-loss`, `src/components/admin`, or Blissley routes. If a primitive is needed, it gets rebuilt inside `src/components/pharmabro/`.
+3. **Copy comes verbatim from the spec.** Headlines, subheads, feature card text, table rows, FAQ answers, meta titles and descriptions — all lifted exactly. Nothing invented.
+4. **Spec copy rules enforced:** no em dashes, no "seamlessly / leverage / robust / cutting-edge", sentence case headings, active voice, numbers over words, operator language (CAC, LTV, ROAS, MRR, rebill).
+5. **One section at a time.** Quality over speed, per your instruction. Phase gates below.
 
-No intake, checkout, auth, or platform portals for this milestone. Links on PharmaBro pages can point to existing Blissley flows or to placeholder `#` anchors until the user decides to wire them.
+---
 
-## Route strategy
+## Structure (fully separate)
 
-TanStack Start file-based routing. All PharmaBro routes live under a single prefix so they are isolated and easy to publish or redirect later.
-
-```text
+```
 src/routes/
-  pharmabro.index.tsx          → /pharmabro
-  pharmabro.weight-loss.tsx     → /pharmabro/weight-loss
-  pharmabro.how-it-works.tsx    → /pharmabro/how-it-works
-  pharmabro.reviews.tsx         → /pharmabro/reviews
-  pharmabro.faq.tsx             → /pharmabro/faq
+  pharmabro.tsx                  layout: scope wrapper + nav + footer + <Outlet/>
+  pharmabro.index.tsx            homepage (16 sections)
+  pharmabro.pricing.tsx
+  pharmabro.demo.tsx
+  pharmabro.platform.index.tsx
+  pharmabro.platform.$slug.tsx   6 feature pages, data-driven
+  pharmabro.solutions.$slug.tsx  7 verticals, data-driven
+  pharmabro.compare.index.tsx    hub, 16 cards
+  pharmabro.compare.$slug.tsx    14 comparison pages, data-driven
+  pharmabro.blog.index.tsx
+  pharmabro.blog.$slug.tsx
+  pharmabro.glossary.tsx         25 DefinedTerm entries
+  pharmabro.about.tsx
+  pharmabro.security.tsx
+  pharmabro.contact.tsx
+  pharmabro.legal.$slug.tsx      4 legal pages
+
+src/components/pharmabro/        all UI, nothing shared with Blissley
+src/lib/pharmabro/               content data files (compare, solutions, blog, glossary, pricing table)
+public/assets/pharmabro/         generated images
 ```
 
-Each route defines its own `head()` with PharmaBro-specific title, description, og:title, og:description, og:type, twitter:card, and canonical link.
+`.pharmabro-scope` block added to `src/styles.css`, following the exact pattern `.admin-scope` already uses: it rebinds the brand color tokens only for descendants of the PharmaBro layout. Blissley is untouched.
 
-## Brand identity (pending user input)
+**Palette:** white canvas, `#0A0A0A` ink, `#1B4EF5` electric blue accent, `#E8E8EC` hairlines, plus green/red for comparison table checks and crosses.
+**Type:** geometric sans for display and body, monospace for the ALL-CAPS microlabels that carry the whole "serious infrastructure" read.
 
-The user will provide the exact PharmaBro positioning and colors. Until then, the plan uses a masculine, high-contrast placeholder palette that still shares the Blissley UI grammar:
+---
 
-```text
-Canvas:  #0B0F19 (deep navy/black)
-Ink:     #FFFFFF
-Accent:  #4F8CFF (electric blue) or #2DD4BF (teal)
-Muted:   #1E2532
-Border:  #2A3241
-```
+## Design system, from the three references
 
-These will be implemented as a `.pharmabro-scope` CSS block in `src/styles.css`, mirroring how `.admin-scope` rebinds tokens. If the user wants to keep the existing light Blissley palette, the scope can be removed and components will inherit the global tokens.
+**From Rimo (primary structure):** white canvas, black pill CTAs, bento grids with hairline internal dividers, gradient announcement bar, tabbed narrative section, value-based comparison table with green own-column and red competitor cells, 5-column footer with status pill.
 
-## Component architecture
+**From Cuvo:** two-tone headlines (dark first clause, grey second clause), monospace ALL-CAPS section eyebrows and table group headers, narrow ~660px prose column against wider visuals, the 100-plus-row grouped pricing table with the popular column tinted full height, the programmatic comparison page system with cited sources.
 
-Create a dedicated folder so PharmaBro does not entangle with Blissley components:
+**From Bask:** tiny square eyebrow markers, giant unrounded stat counters, borderless three-column testimonials with wordmarks, 4-across hairline feature strips.
 
-```text
-src/components/pharmabro/
-  Nav.tsx
-  Footer.tsx
-  Hero.tsx
-  SocialProof.tsx
-  HowItWorks.tsx
-  Programs.tsx
-  Reviews.tsx
-  FAQ.tsx
-  FinalCTA.tsx
-  primitives.tsx   — shared motion wrappers, section containers, buttons
-```
+Adapted to white, not copied to dark.
 
-Components reuse the same motion patterns (`motion.div`, `Reveal`-style stagger, `DeferredEffects` for Lenis) but accept PharmaBro copy and colors via props or CSS scope.
+**Specificity rule:** every fake number in a mockup is exact, never rounded. `$127,430.82`, `Order #4,112`, `1,247 patients`, `$389,220 forecast` — straight from the spec.
 
-## Assets
+---
 
-All assets will be local under `public/assets/pharmabro/`:
+## Motion (Framer Motion)
 
-- Hero portrait / lifestyle image (generate with imagegen)
-- Program / product imagery
-- Social-proof portraits (reuse existing 4:5 portraits where appropriate, or generate new ones)
-- Logo (generate or user-provided)
+Fade-up reveals on scroll with staggered children. Hero rotating word cycling Weight Loss / TRT / Peptide / Hair Loss / Hormone on a spring. Stat counters animating on viewport entry. Live dashboard panel where revenue increments, pharmacy routing advances through states, and the rebill countdown pulses. Progress line drawing between the three "how it works" steps. Comparison table rows revealing in sequence. Respects `prefers-reduced-motion`.
 
-Run `scripts/fix-assets.mjs` after uploads and grep for `__l5e` before finishing.
+---
 
-## Page-by-page breakdown
+## Images
 
-### `/pharmabro` (homepage)
+Generated into `public/assets/pharmabro/` and referenced as `/assets/pharmabro/<file>`, matching the project's local-assets rule. No CDN pointers.
 
-- Fixed or liquid-glass nav with PharmaBro logo and links to LP/supporting pages
-- Full-bleed hero with bold headline, subhead, primary CTA, and trust micro-points
-- Logo strip / press bar
-- Program/category grid (weight loss, men's health, longevity, etc.)
-- "How it works" 3-step strip
-- Featured program teaser
-- Social proof / review slider
-- Large numbers / stats band
-- FAQ accordion
-- Final CTA + footer
+Isometric 3D-style renders in the Bask register but light: glossy blue-and-white forms on white, pharmacy routing diagram, payment tokenization visual, pharmacy network map, LegitScript certification badge composition, and the gradient mesh plates that sit behind screenshots.
 
-### `/pharmabro/weight-loss` (primary LP)
+Dashboards, charts, tables, and the pharmacy routing animation are built as **live React components**, not images. They look sharper, animate, and stay crisp on retina.
 
-- Sticky nav + hero with result-oriented headline
-- Personalized approval banner / quiz CTA
-- Science/mechanism section
-- Projection chart (reuse the existing weight-loss calculator chart component, re-themed)
-- Pricing cards
-- Before/after or testimonial grid
-- Objection-handling checklist
-- Sticky or floating bottom CTA bar
+---
 
-### Supporting pages
+## SEO (the main goal)
 
-- `/pharmabro/how-it-works` — timeline of consult → prescription → delivery
-- `/pharmabro/reviews` — masonry or filtered review grid
-- `/pharmabro/faq` — category-filtered accordion
+Per route, from the spec's own values:
 
-## Technical notes
+- `head()` with the spec's exact title and description, plus `og:title`, `og:description`, `og:type`, `twitter:card`, `og:url`, and a self-referencing canonical on every leaf.
+- JSON-LD per the spec's page-type table: Organization + MedicalOrganization + WebSite on the layout; SoftwareApplication + FAQPage on pricing; Article + FAQPage + BreadcrumbList on compare pages; WebPage + FAQPage + BreadcrumbList on feature and solution pages; Article + Person on blog posts; DefinedTerm on all 25 glossary entries.
+- GEO blocks the spec calls for: "Direct Answer" H3 chunks, Key Takeaways boxes, "Updated [Month Year]" freshness chips, cited Sources lists with real links.
+- Single H1 per page, semantic sectioning, descriptive alt text, lazy-loaded images below the fold.
+- Internal linking per the spec's rules: homepage to 8 pages, each compare page to 3 sibling compares plus pricing and demo, solution pages to their feature pages.
+- `/sitemap.xml` extended to include every PharmaBro URL.
 
-- Lazy-load below-the-fold sections on the homepage, same pattern as `src/routes/index.tsx`.
-- Use `motion/react` for entrance animations and scroll-triggered reveals.
-- Keep the global `src/styles.css` tokens untouched; PharmaBro colors live under `.pharmabro-scope` so Blissley pages are not affected.
-- No backend or store changes. Demo data (reviews, stats, FAQs) can be hardcoded in components or a small `src/lib/pharmabro/content.ts` file.
+**One decision I need from you:** the spec hardcodes `https://pharmabro.co` in every canonical and schema `@id`. This project serves from `sweet-confirm-it.lovable.app`. Canonicals pointing at a domain this build does not serve would tell crawlers to ignore these pages entirely. Default plan: use the live project domain for canonical and `og:url`, keep `pharmabro.co` only in display copy. Say the word if pharmabro.co is already live and pointed here and I will use it instead.
 
-## Open questions before build
+---
 
-1. What is PharmaBro's exact lead category — weight loss, men's health/TRT, peptides, longevity, or a broader telehealth play?
-2. What are the exact brand colors and logo? (If not provided, the build will use the masculine navy/electric-blue placeholder above.)
-3. Which page should be the primary sales LP — weight loss, TRT, or something else?
-4. Should PharmaBro pages link to existing Blissley intake/checkout flows, or stay self-contained for now?
+## Phases (approve one, I build it, you review, we move on)
+
+**Phase 1 — Foundation and homepage.** This turn's only deliverable.
+`.pharmabro-scope` tokens, the layout route with announcement bar, nav with all four dropdowns, and footer. Then the homepage's 16 sections: hero with rotating word and live dashboard panel, logo bar with stat counters, positioning break, the 5-column comparison table, 3-step how-it-works, 6-feature grid, dashboard feature section, the math table, LegitScript bar chart, switching cards, testimonials, trust bar, final CTA. Plus homepage schema and the first image set.
+
+**Phase 2 — Pricing.** 4 tiers, setup-fee cards, the full 100-plus-row grouped feature table, add-ons, FAQ with FAQPage schema.
+
+**Phase 3 — Compare.** Hub with 16 cards, the OpenLoop anchor page in full including the breach notice banner and Sources block, then the remaining 13 driven off one data file and one template.
+
+**Phase 4 — Platform and Solutions.** 6 feature pages, 7 vertical pages.
+
+**Phase 5 — Content surfaces.** Blog index and post template, glossary with 25 DefinedTerm entries, about, security, demo, contact, legal.
+
+On the 100-plus blog posts: I will build the index, the post template, and a first batch of fully written posts from the spec's calendar. Generating 100 complete articles is a content project, not a build task, and the spec's own calendar only names 15. I will flag where the data file expects more.
+
+---
+
+## Note on the stack
+
+The spec assumes Next.js App Router with ISR. This project is TanStack Start, which covers the same ground: file-based routes, SSR, per-route `head()` for metadata, and loaders for data. Every SEO requirement in the spec maps over cleanly. Nothing is lost.
