@@ -283,7 +283,7 @@ function Hero() {
 
         <Reveal delay={0.32} y={26} className="mt-12 lg:mt-16">
           <div className="pb-liquid mx-auto w-full max-w-[1180px]">
-            <div className="overflow-hidden rounded-[20.5px] bg-canvas">
+            <div className="overflow-hidden rounded-[24px] bg-canvas shadow-2xl shadow-ink/5">
               <img
                 src="/assets/pharmabro-dashboard.png"
                 alt="PharmaBro operator dashboard showing recurring revenue, patient funnel, and pharmacy fulfillment queues"
