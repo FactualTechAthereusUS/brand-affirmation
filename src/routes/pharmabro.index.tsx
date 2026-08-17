@@ -16,9 +16,9 @@ import {
   Card,
   Cell,
   Check,
-  Chip,
   Container,
   CountUp,
+  EyebrowPill,
   GradientPlate,
   MicroLabel,
   Reveal,
@@ -29,6 +29,10 @@ import {
   TwoTone,
 } from "@/components/pharmabro/primitives";
 import { DashboardMockup } from "@/components/pharmabro/DashboardMockup";
+import { ProductTabs } from "@/components/pharmabro/ProductTabs";
+import { BentoGrid } from "@/components/pharmabro/BentoGrid";
+import { OrderJourney } from "@/components/pharmabro/OrderJourney";
+
 import {
   AD_PLATFORMS,
   BRAND_LOGOS,
@@ -164,7 +168,7 @@ function PharmaBroHome() {
       <ComparisonTable />
       <HowItWorks />
       <Features />
-      <DashboardSection />
+      <ProductSurfaces />
       <TheMath />
       <LegitScript />
       <Switching />
@@ -516,42 +520,40 @@ function Features() {
 
 /* -------------------------------------------------------------- 9 dashboard */
 
-function DashboardSection() {
+function ProductSurfaces() {
   return (
     <Section>
       <Container size="wide">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
-          <div>
-            <SquareEyebrow className="mb-7">Operator dashboard</SquareEyebrow>
-            <TwoTone
-              lead="Run every brand"
-              trail="from one login."
-              className="text-[26px] sm:text-[32px] lg:text-[38px]"
-            />
-            <div className="mt-9 space-y-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)]">
-              {DASHBOARD_POINTS.map((p, i) => (
-                <Reveal key={p.title} delay={i * 0.06} className="bg-canvas p-5">
-                  <h3 className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
-                    {p.title}
-                  </h3>
-                  <p className="pb-body mt-1.5 text-[14px] leading-relaxed">
-                    {p.body}
-                  </p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
+        <Reveal>
+          <MicroLabel className="mb-5">Inside the platform</MicroLabel>
+          <TwoTone
+            lead="Four surfaces run your clinic."
+            trail="All of them carry your name."
+            className="max-w-[880px]"
+          />
+        </Reveal>
 
-          <Reveal delay={0.1} y={24}>
-            <GradientPlate tone="lilac">
-              <DashboardMockup />
-            </GradientPlate>
-          </Reveal>
-        </div>
+        <Reveal delay={0.08} className="mt-12">
+          <ProductTabs />
+        </Reveal>
+
+        <RevealGroup className="mt-14 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] sm:grid-cols-2 lg:grid-cols-4">
+          {DASHBOARD_POINTS.map((p) => (
+            <RevealItem key={p.title} className="bg-canvas p-5">
+              <h3 className="text-[15px] font-medium tracking-[-0.01em] text-ink">
+                {p.title}
+              </h3>
+              <p className="pb-body mt-1.5 text-[13.5px] leading-relaxed">
+                {p.body}
+              </p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
       </Container>
     </Section>
   );
 }
+
 
 /* ------------------------------------------------------------------ 10 math */
 
