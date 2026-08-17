@@ -170,15 +170,13 @@ export function PharmaBroNav() {
               >
                 <img
                   src={MARK}
-                  alt=""
-                  aria-hidden
-                  className="size-7 shrink-0 object-contain mix-blend-multiply"
+                  alt="PharmaBro"
+                  className="block size-7 shrink-0 object-contain mix-blend-multiply md:hidden"
                 />
-                <span className="hidden h-px w-px sm:block sm:h-5 sm:w-px sm:bg-[var(--color-hairline)]" />
                 <img
                   src={WORDMARK}
                   alt="PharmaBro"
-                  className="hidden h-[18px] w-auto object-contain mix-blend-multiply sm:block"
+                  className="hidden h-[18px] w-auto object-contain mix-blend-multiply md:block"
                 />
               </Link>
 
