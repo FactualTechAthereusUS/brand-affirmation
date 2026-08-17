@@ -271,26 +271,16 @@ export function PharmaBroNav() {
       <div aria-hidden className="h-[68px] sm:h-[80px]" />
 
       {/* mobile sheet */}
-      <AnimatePresence>
-        {mobile ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[60] lg:hidden"
-          >
+      {mobile ? (
+          <div className="animate-fade-in fixed inset-0 z-[60] lg:hidden">
             <div
               className="absolute inset-0 bg-[color-mix(in_oklab,var(--color-ink)_28%,transparent)] backdrop-blur-sm"
               onClick={() => setMobile(false)}
             />
-            <motion.div
-              initial={{ y: -16, opacity: 0, scale: 0.98 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: -16, opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-hidden rounded-[28px] border border-white/60 bg-white/90 shadow-[0_30px_70px_-30px_rgba(10,10,10,0.5)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150"
+            <div
+              className="animate-scale-in absolute inset-x-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-hidden rounded-[28px] border border-white/60 bg-white/90 shadow-[0_30px_70px_-30px_rgba(10,10,10,0.5)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150"
             >
+
               <div className="flex h-14 items-center justify-between px-4">
                 <div className="flex items-center gap-2.5">
                   <img
