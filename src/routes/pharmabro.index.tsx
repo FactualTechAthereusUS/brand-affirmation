@@ -499,7 +499,11 @@ function Features() {
           />
         </Reveal>
 
-        <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Reveal delay={0.06} className="mt-12">
+          <BentoGrid />
+        </Reveal>
+
+        <RevealGroup className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => {
             const Icon = FEATURE_ICONS[f.icon];
             return (
@@ -509,7 +513,7 @@ function Features() {
                     className="mb-5 size-5 text-[var(--color-marine)]"
                     strokeWidth={1.75}
                   />
-                  <h3 className="text-[17px] font-semibold leading-snug tracking-[-0.02em] text-ink">
+                  <h3 className="text-[16.5px] font-medium leading-snug tracking-[-0.02em] text-ink">
                     {f.title}
                   </h3>
                   <p className="pb-body mt-3 text-[14px] leading-relaxed">{f.body}</p>
@@ -518,6 +522,7 @@ function Features() {
             );
           })}
         </RevealGroup>
+
       </Container>
     </Section>
   );
