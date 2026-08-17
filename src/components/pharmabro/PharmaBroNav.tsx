@@ -372,10 +372,10 @@ export function PharmaBroNav() {
                   <PillCta to="/pharmabro/demo">Book a demo</PillCta>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+            </div>
+          </div>
+      ) : null}
+
     </>
   );
 }
