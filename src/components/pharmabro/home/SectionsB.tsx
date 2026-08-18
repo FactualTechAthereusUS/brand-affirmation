@@ -46,6 +46,7 @@ import {
 } from "@/components/pharmabro/primitives";
 import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot } from "./Shot";
+import { BlogArt } from "./Mocks";
 
 /* --------------------------------------------- 8 nationwide infrastructure */
 
@@ -212,7 +213,7 @@ export function Retention() {
                     ))}
                   </ul>
                   <div className="mt-5">
-                    <Shot image={active.image} slot={active.slot} ratio="16 / 10" rounded={14} />
+                    <Shot image={active.image} slot={active.slot} ratio="16 / 10" rounded={14} mock="portal" />
                   </div>
                 </div>
               </motion.div>
@@ -504,7 +505,7 @@ export function FromTheBlog() {
               transition={{ duration: 0.7, delay: i * 0.06, ease: PB_EASE_SOFT }}
               className="pb-card pb-card-lift w-[78vw] shrink-0 snap-start overflow-hidden p-0 sm:w-[340px] lg:w-auto"
             >
-              <Shot image={null} slot={c.slot} ratio="4 / 3" rounded={0} className="[&>div]:border-0 [&>div]:shadow-none" />
+              <BlogArt category={c.category} index={i} />
               <div className="p-5">
                 <div className="flex items-center gap-2">
                   <span className="rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-2.5 py-1 text-[11px] font-medium text-ink">

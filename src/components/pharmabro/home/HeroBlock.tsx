@@ -12,6 +12,7 @@ import {
 import { Btn, Container, EyebrowPill } from "@/components/pharmabro/primitives";
 import { Marquee, PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
 import { Shot, TabRail } from "./Shot";
+import type { MockKind } from "./Mocks";
 
 const longest = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
 
@@ -162,6 +163,7 @@ export function HeroBlock() {
               <Shot
                 image={active.image}
                 slot={active.slot}
+                mock={active.id as MockKind}
                 ratio="16 / 9"
                 liquid
                 rounded={20}
