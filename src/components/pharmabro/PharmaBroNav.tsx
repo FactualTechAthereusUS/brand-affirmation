@@ -142,14 +142,14 @@ export function PharmaBroNav() {
       >
         <div
           className={cn(
-            "pointer-events-auto relative mx-auto w-full max-w-[1180px] transition-all duration-[550ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
-            mounted ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0",
+            "pointer-events-auto relative mx-auto w-full max-w-[1180px] transition-all duration-[900ms] [transition-timing-function:cubic-bezier(0,0.82,0.56,1)]",
+            mounted ? "translate-y-0 scale-100 opacity-100" : "-translate-y-6 scale-[0.985] opacity-0",
           )}
           onMouseLeave={scheduleClose}
         >
           <div
             className={cn(
-              "relative overflow-visible rounded-[999px] border border-white/60 ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow] duration-300",
+              "relative overflow-visible rounded-[999px] border border-white/60 ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-[30px] backdrop-saturate-150 transition-[background-color,box-shadow] duration-500",
               scrolled
                 ? "bg-white/75 shadow-[0_18px_45px_-22px_rgba(10,10,10,0.35)]"
                 : "bg-white/90 shadow-[0_10px_30px_-20px_rgba(10,10,10,0.22)]",
