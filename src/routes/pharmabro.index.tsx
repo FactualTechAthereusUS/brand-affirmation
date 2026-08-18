@@ -305,7 +305,7 @@ function Positioning() {
               <p className="pb-body mt-6 text-[16px] leading-relaxed sm:text-[17px]">
                 {POSITIONING_BODY}
               </p>
-              <div className="mt-8 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-mist)] p-5">
+              <div className="mt-8 rounded-[16px] border border-[var(--color-hairline)] bg-[var(--color-mist)] p-5">
                 <MicroLabel className="mb-2.5">Proof</MicroLabel>
                 <p className="text-[15px] font-medium leading-relaxed text-ink">
                   {POSITIONING_PROOF}
@@ -421,7 +421,7 @@ function HowItWorks() {
           />
         </Reveal>
 
-        <RevealGroup className="mt-12 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] lg:grid-cols-3">
+        <RevealGroup className="mt-12 grid gap-px overflow-hidden rounded-[24px] border border-[var(--color-hairline)] bg-[var(--color-hairline)] shadow-[var(--pb-shadow-sm)] lg:grid-cols-3">
           {STEPS.map((s) => (
             <RevealItem key={s.num} className="flex flex-col bg-canvas p-6 sm:p-7">
               <div className="mb-6 flex items-center justify-between">
@@ -506,7 +506,7 @@ function ProductSurfaces() {
           <ProductTabs />
         </Reveal>
 
-        <RevealGroup className="mt-14 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup className="mt-14 grid gap-px overflow-hidden rounded-[24px] border border-[var(--color-hairline)] bg-[var(--color-hairline)] shadow-[var(--pb-shadow-sm)] sm:grid-cols-2 lg:grid-cols-4">
           {DASHBOARD_POINTS.map((p) => (
             <RevealItem key={p.title} className="bg-canvas p-5">
               <h3 className="text-[15px] font-medium tracking-[-0.01em] text-ink">
@@ -754,7 +754,7 @@ function Testimonials() {
         <div className="mt-11 grid gap-5 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.09}>
-              <figure className="flex h-full flex-col rounded-xl border border-[var(--color-hairline)] bg-canvas p-6">
+              <figure className="pb-card pb-card-lift flex h-full flex-col p-6">
                 <blockquote className="pb-body flex-1 text-[14.5px] leading-relaxed">
                   {t.quote}
                 </blockquote>
@@ -780,7 +780,7 @@ function FinalCta() {
     <Section className="pb-20 sm:pb-24">
       <Container size="wide">
         <Reveal>
-          <div className="pb-dotgrid relative overflow-hidden rounded-2xl border border-[var(--color-hairline)] px-6 py-14 text-center sm:px-12 sm:py-20">
+          <div className="pb-dotgrid relative overflow-hidden rounded-[24px] border border-[var(--color-hairline)] shadow-[var(--pb-shadow-sm)] px-6 py-14 text-center sm:px-12 sm:py-20">
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-0 -top-24 mx-auto size-[520px] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-marine)_13%,transparent),transparent_62%)] blur-2xl"
