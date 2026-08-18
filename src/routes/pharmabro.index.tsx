@@ -372,7 +372,7 @@ function PharmaBroHome() {
             </HeroText>
 
             <HeroText delay={0.4}>
-              <h1 className="pb-display mx-auto mt-7 max-w-[1000px] text-[34px] sm:text-[46px] lg:text-[62px]">
+              <h1 className="pb-display mx-auto mt-7 text-[34px] sm:text-[46px] lg:text-[58px]">
                 <span className="lg:whitespace-nowrap">
                   Launch your <WordSwap words={HOME_HERO.h1Swap} />
                   <span className="sr-only">GLP-1</span> brand.
