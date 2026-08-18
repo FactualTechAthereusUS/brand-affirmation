@@ -386,7 +386,7 @@ function PharmaBroHome() {
 
 
             <HeroText delay={0.6}>
-              <p className="pb-copy mx-auto mt-6 text-center">{HOME_HERO.dek}</p>
+              <p className="pb-copy mx-auto mt-6 max-w-[680px] text-center">{HOME_HERO.dek}</p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <InkButton to="/pharmabro/demo">{HOME_HERO.ctaPrimary}</InkButton>
                 <GhostButton to="/pharmabro/platform">
