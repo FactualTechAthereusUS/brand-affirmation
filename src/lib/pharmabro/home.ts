@@ -510,3 +510,248 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
     a: "Weight loss and GLP-1, men's health including TRT and ED, women's hormones, peptide therapy, hair loss, sexual health, and longevity. You can run several categories under one brand or several brands under one account.",
   },
 ];
+
+/* =========================================================================
+   Phase 1 homepage copy. Eleven sections, spec wording, no em dashes.
+   Every string here renders as static text so crawlers see it before JS.
+   ========================================================================= */
+
+export const HOME_ANNOUNCEMENT = {
+  text: "DEA extends telemedicine flexibilities through 2026. What it means for your brand",
+  to: "/pharmabro/blog",
+};
+
+export const HOME_HERO = {
+  eyebrow: "NEW",
+  eyebrowText: "Launch without a medical license",
+  h1Lead: "Launch your",
+  h1Swap: ["GLP-1", "peptide", "hormone", "hair loss", "men's health", "skin"],
+  h1Tail: "brand.",
+  h1Second: "We run the clinic behind it.",
+  dek: "PharmaBro operates the licensed providers, the pharmacy, and the compliance under your name, so your clinic is taking patients inside seven days. You bring the brand and the customers, and every payment settles to your own Stripe.",
+  ctaPrimary: "Book a call",
+  ctaSecondary: "See how it works",
+  trust: "No medical license required · Your Stripe · 0% medication markup",
+};
+
+export const HOME_TRUST_STRIP = [
+  "LegitScript certified",
+  "HIPAA",
+  "SOC 2",
+  "Providers in all 50 states",
+  "0% medication markup",
+];
+
+export const HOME_HOW = {
+  h2: "How does a white label telehealth platform work?",
+  dek: "PharmaBro splits the business in two: your brand owns the customer, and a licensed medical group owns the clinical decisions. You pick treatments and prices, licensed providers review every visit, and the pharmacy ships under your label.",
+  steps: [
+    {
+      n: "01",
+      title: "You launch",
+      body: "Pick treatments, set prices, add your logo and domain. Two hours of your time.",
+    },
+    {
+      n: "02",
+      title: "We operate",
+      body: "Licensed providers review visits. The pharmacy compounds and ships. All under your brand.",
+    },
+    {
+      n: "03",
+      title: "Patients pay you",
+      body: "Every payment lands in your Stripe. Refills bill automatically. Patients never see us.",
+    },
+  ],
+};
+
+export type HomePillar = {
+  h2: string;
+  anchor: string;
+  to: string;
+  body: string;
+  visual: "map" | "pharmacy" | "phones" | "table";
+  points: string[];
+};
+
+export const HOME_PILLARS: HomePillar[] = [
+  {
+    h2: "Providers in all 50 states",
+    anchor: "providers in all 50 states",
+    to: "/pharmabro/platform",
+    body: "PharmaBro maintains a clinician network that reaches every state, so wherever a patient signs up there is already a licensed provider ready to review the visit and prescribe under your brand. Credentialing, licensing and malpractice cover are handled for you.",
+    visual: "map",
+    points: [
+      "Credentialing and licensing handled",
+      "Malpractice cover included",
+      "Medical director oversight",
+      "Asynchronous and video visits",
+    ],
+  },
+  {
+    h2: "Pharmacy and fulfilment, at 0% markup",
+    anchor: "telehealth pharmacy fulfilment",
+    to: "/pharmabro/platform/pharmacy",
+    body: "Approved prescriptions are compounded, labelled, cold packed and shipped in every state PharmaBro serves, under your brand, with tracking sent in your name. Medication passes through at cost. No markup, no spread, no revenue share.",
+    visual: "pharmacy",
+    points: [
+      "Medication at cost, 0% markup",
+      "Routing by state and product",
+      "Cold chain and home delivery",
+      "Tracking under your brand",
+    ],
+  },
+  {
+    h2: "Your brand, end to end",
+    anchor: "branded telehealth clinic",
+    to: "/pharmabro/platform/patient-portal",
+    body: "From your storefront to intake to the prescription that ships, every step runs under your name. Your domain, your logo, your colours, your emails. PharmaBro never appears in the URL, the browser tab, the email header, or the box.",
+    visual: "phones",
+    points: [
+      "Your own custom domain",
+      "Branded storefront and checkout",
+      "Branded patient portal",
+      "Zero PharmaBro branding anywhere",
+    ],
+  },
+  {
+    h2: "You own everything",
+    anchor: "telehealth patient data ownership",
+    to: "/pharmabro/platform/payments",
+    body: "Patient records, order history and your customer list stay yours, exportable any day. Revenue settles to your own Stripe account. No revenue share, no platform transaction fee, no long term contract.",
+    visual: "table",
+    points: [
+      "Full data export, any day",
+      "Revenue settles to your Stripe",
+      "Card tokens transfer if you leave",
+      "Month to month after setup",
+    ],
+  },
+];
+
+export const HOME_SEVEN_DAYS = {
+  h2: "From signed to shipping in seven days.",
+  dek: "PharmaBro runs a fixed seven day launch. Day one costs you about two hours, and PharmaBro handles every day after that.",
+  rows: [
+    { day: "Day 1", body: "Brand created, domain live, SSL provisioned" },
+    { day: "Day 2", body: "Treatments selected, your pricing set" },
+    { day: "Day 3", body: "Stripe connected, products created automatically" },
+    { day: "Day 4", body: "Intake built from clinical templates" },
+    { day: "Day 5", body: "Providers assigned, pharmacy routing set per state" },
+    { day: "Day 6", body: "Compliance review, consents, disclosures" },
+    { day: "Day 7", body: "Live. Taking patients." },
+  ],
+};
+
+export const HOME_LEGITSCRIPT = {
+  h2: "LegitScript certified in days, not months.",
+  body: "Google, Meta and TikTok all require LegitScript certification before a telehealth brand can advertise. PharmaBro prepares, files and manages your application through to approval.",
+  bars: [
+    { label: "With PharmaBro", value: "7 to 14 days", pct: 22, own: true },
+    { label: "On your own", value: "3 to 6 months", pct: 100, own: false },
+  ],
+  platforms: ["Meta Ads", "Google Ads", "TikTok Ads"],
+  footnote:
+    "LegitScript sets its own review schedule. Certification is not guaranteed.",
+};
+
+export const HOME_PRICING = {
+  h2: "Simple pricing. Published.",
+  dek: "PharmaBro charges a flat monthly platform fee by patient tier plus a one time setup fee. Consults are billed flat at $30 in month one only, and refills carry no consult fee.",
+  tiers: [
+    {
+      name: "Launch",
+      range: "0 to 500 patients",
+      price: "$1,000",
+      setup: "$5,000 setup",
+      featured: false,
+    },
+    {
+      name: "Growth",
+      range: "501 to 2,000 patients",
+      price: "$2,500",
+      setup: "$5,000 setup",
+      featured: true,
+    },
+    {
+      name: "Scale",
+      range: "2,001 to 5,000 patients",
+      price: "$5,000",
+      setup: "$7,500 setup",
+      featured: false,
+    },
+    {
+      name: "Enterprise",
+      range: "5,000+ patients",
+      price: "Custom",
+      setup: "Custom setup",
+      featured: false,
+    },
+  ],
+  facts: [
+    "0% medication markup",
+    "No revenue share",
+    "Month to month",
+  ],
+};
+
+export const HOME_COMPARE = {
+  h2: "Comparing platforms? We wrote it down.",
+  body: "Every competitor fact on these pages comes from public sources and is corrected on request. Both columns are fair, because a comparison you cannot trust is not worth reading.",
+  pills: [
+    { label: "vs Cuvo", to: "/pharmabro/compare/pharmabro-vs-cuvo" },
+    { label: "vs Bask Health", to: "/pharmabro/compare/pharmabro-vs-bask-health" },
+    { label: "vs Rimo", to: "/pharmabro/compare/pharmabro-vs-rimo" },
+    { label: "vs OpenLoop", to: "/pharmabro/compare/pharmabro-vs-openloop" },
+    { label: "vs Wheel", to: "/pharmabro/compare/pharmabro-vs-wheel" },
+    { label: "vs CareValidate", to: "/pharmabro/compare/pharmabro-vs-carevalidate" },
+  ],
+};
+
+/** Ten questions, answers written for extraction. Entity named in every one. */
+export const HOME_FAQ: { q: string; a: string }[] = [
+  {
+    q: "What is PharmaBro?",
+    a: "PharmaBro is white label telehealth infrastructure for brand operators. PharmaBro operates the licensed provider network, the pharmacy fulfilment, the patient software and the compliance layer under your brand name, so an operator can sell doctor prescribed treatments without building a clinic.",
+  },
+  {
+    q: "Do I need a medical license?",
+    a: "No. PharmaBro operates the medical group, and licensed providers make every clinical decision and write every prescription. You own the brand, the marketing and the patient relationship, and run the non clinical business under an MSO structure. No medical license of your own is required.",
+  },
+  {
+    q: "What does it cost?",
+    a: "PharmaBro charges a flat monthly platform fee of $1,000 for Launch, $2,500 for Growth, $5,000 for Scale, and custom pricing for Enterprise, plus a one time setup fee of $5,000, or $7,500 on Scale. Consults are billed flat at $30 in month one only.",
+  },
+  {
+    q: "Does PharmaBro mark up medication or take a revenue share?",
+    a: "No. Medication passes through at 0% markup on every plan, and PharmaBro never takes a percentage of your billings. PharmaBro earns the platform fee and nothing else, so the price you see for a product is the price you pay for it.",
+  },
+  {
+    q: "Who owns the patients and the data?",
+    a: "You do. Patient records, order history, prescription history and your customer list belong to your brand and export in full any day you ask. PharmaBro holds the data as your business associate under a signed BAA.",
+  },
+  {
+    q: "Which treatments can I offer?",
+    a: "PharmaBro supports GLP-1 weight loss, men's health including TRT and ED, women's hormone therapy, peptide therapy, hair loss, sexual health and longevity. Availability varies by state, and PharmaBro routes each prescription to a pharmacy licensed for that state and product.",
+  },
+  {
+    q: "How fast can my brand go live?",
+    a: "Seven days from signing to taking patients. Most brands spend about two hours on day one choosing treatments and setting prices, and PharmaBro handles everything after that. LegitScript runs in parallel and typically clears in 7 to 14 days.",
+  },
+  {
+    q: "What is LegitScript and do I need it?",
+    a: "LegitScript is the certification Google, Meta and TikTok require before a telehealth brand can advertise. PharmaBro prepares, files and manages the application end to end, and most brands clear review in 7 to 14 days rather than the 3 to 6 months a self filed application takes.",
+  },
+  {
+    q: "What happens if I want to leave?",
+    a: "PharmaBro is month to month after the one time setup fee. Cancel any time, and your patients, records, prescription history, card tokens and Stripe account stay with you. PharmaBro charges no exit fee and holds nothing back.",
+  },
+  {
+    q: "How does PharmaBro handle compliance?",
+    a: "PharmaBro drafts and maintains your MSO structure, keeps you compliant with corporate practice of medicine rules in all 50 states, files and manages LegitScript, runs HIPAA infrastructure under a signed BAA, and monitors telehealth regulation on your behalf.",
+  },
+];
+
+export const HOME_FINAL_CTA = {
+  h2: "Your telehealth brand, taking patients in days.",
+  trust: "No medical license required · Live in 7 days · Month to month",
+};
