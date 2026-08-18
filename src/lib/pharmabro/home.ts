@@ -445,3 +445,68 @@ export const JOURNEY = {
     },
   ],
 } as const;
+
+/* ------------------------------------------------- section 15: pricing peek */
+
+export const PRICING_PEEK = [
+  {
+    tier: "Starter",
+    price: "$1,000",
+    per: "per month",
+    body: "One brand, one category. Everything included: portal, pharmacy network, physicians, LegitScript filing.",
+  },
+  {
+    tier: "Growth",
+    price: "$2,500",
+    per: "per month",
+    body: "Up to three brands, multi-MID routing, funnel and intake builders, priority pharmacy routing.",
+    featured: true,
+  },
+  {
+    tier: "Scale",
+    price: "$5,000",
+    per: "per month",
+    body: "Unlimited brands, dedicated compliance lead, custom integrations, quarterly margin reviews.",
+  },
+];
+
+export const PRICING_FACTS = [
+  "$5,000 one-time setup",
+  "$30 per consult in month one",
+  "0% markup on medication",
+  "No revenue share, ever",
+  "Payments settle to your own Stripe",
+];
+
+/* --------------------------------------------------------- section 16: FAQ */
+
+export const FAQ_ITEMS: { q: string; a: string }[] = [
+  {
+    q: "Does PharmaBro take a revenue share?",
+    a: "No. PharmaBro charges a flat monthly platform fee between $1,000 and $5,000 plus a $5,000 one time setup. Patient payments settle directly into your own Stripe merchant account, so your revenue never passes through us.",
+  },
+  {
+    q: "How long does it take to launch a telehealth brand?",
+    a: "Seven days. Days 1 to 2 you build your brand and connect Stripe, days 2 to 5 we file LegitScript and connect pharmacies and physicians, days 6 to 7 your first patients check out.",
+  },
+  {
+    q: "How fast is LegitScript certification?",
+    a: "7 to 14 days, with a typical approval at 12 days. PharmaBro is a LegitScript enterprise partner and manages the entire application, which unlocks Meta, Google, and TikTok healthcare advertising.",
+  },
+  {
+    q: "What does the medication actually cost?",
+    a: "You pay pharmacy cost with 0% markup from PharmaBro. Consults are $30 each in month one. Every number is visible in your dashboard before a patient is charged.",
+  },
+  {
+    q: "Do I own my patient data?",
+    a: "Yes. You can export a full CSV of every patient, card token, prescription record, and subscription status within 24 hours, at any time.",
+  },
+  {
+    q: "Can I move an existing brand onto PharmaBro?",
+    a: "Yes. Migration is free and white glove. We import patients, card tokens, and active subscriptions from OpenLoop, Bask, Cuvo, or any other platform without interrupting a single refill.",
+  },
+  {
+    q: "Which categories can I sell?",
+    a: "Weight loss and GLP-1, men's health including TRT and ED, women's hormones, peptide therapy, hair loss, sexual health, and longevity. You can run several categories under one brand or several brands under one account.",
+  },
+];
