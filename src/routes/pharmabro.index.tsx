@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { FAQ_ITEMS, LAUNCH_DAYS, TRUST_MARKS } from "@/lib/pharmabro/home";
 import {
   LAST_UPDATED,
@@ -54,33 +54,6 @@ export const Route = createFileRoute("/pharmabro/")({
   component: PharmaBroHome,
 });
 
-function AnnouncementBar() {
-  return (
-    <div className="border-b border-[var(--color-hairline)] bg-[#0c0c0c]">
-      <Container size="wide">
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2.5 text-center">
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-white/45">
-            <span className="relative grid size-1.5 place-items-center">
-              <span className="absolute inset-0 animate-ping rounded-full bg-[#6d63ff]/70" />
-              <span className="size-1.5 rounded-full bg-[#8fa9ff]" />
-            </span>
-            New
-          </span>
-          <span className="text-[13px] text-white/75">
-            Launch a compliant telehealth brand in {LAUNCH_DAYS} days, flat fee, zero revenue share.
-          </span>
-          <Link
-            to="/pharmabro/demo"
-            className="text-[13px] font-medium text-white underline underline-offset-4 hover:text-white/80"
-          >
-            Get started
-          </Link>
-        </div>
-      </Container>
-    </div>
-  );
-}
-
 function TrustStrip() {
   return (
     <div className="border-y border-[var(--color-hairline)] bg-[var(--color-mist)]">
@@ -100,7 +73,6 @@ function TrustStrip() {
 function PharmaBroHome() {
   return (
     <>
-      <AnnouncementBar />
       <HeroBlock />
       <TrustStrip />
       <CompleteClinic />

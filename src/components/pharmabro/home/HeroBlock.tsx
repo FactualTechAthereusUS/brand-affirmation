@@ -29,7 +29,7 @@ function RotatingWord() {
   }, [reduce]);
 
   return (
-    <span className="relative mx-1 inline-grid align-baseline">
+    <span className="relative mx-2 inline-grid align-baseline">
       {/* invisible sizer keeps the pill width stable on the longest word */}
       <span
         aria-hidden
