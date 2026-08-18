@@ -3,15 +3,6 @@ import { Fragment } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import {
-  BarChart3,
-  CreditCard,
-  MonitorSmartphone,
-  Pill,
-  RefreshCw,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
-import {
   Btn,
   Card,
   Cell,
@@ -40,7 +31,7 @@ import {
   COMPARE_FOOTNOTE,
   COMPARE_TABLE,
   DASHBOARD_POINTS,
-  FEATURES,
+  FAQ_ITEMS,
   HERO_ROTATING,
   HERO_SUB,
   HERO_TRUST,
@@ -53,112 +44,51 @@ import {
   POSITIONING_H2,
   POSITIONING_PROOF,
   POSITIONING_QUOTE,
+  PRICING_FACTS,
+  PRICING_PEEK,
   STATS,
   STAT_STATIC,
   STEPS,
   SWITCHING_CARDS,
   TESTIMONIALS,
 } from "@/lib/pharmabro/home";
+import {
+  LAST_UPDATED,
+  ORG_NODE,
+  WEBSITE_NODE,
+  breadcrumbNode,
+  faqNode,
+  ldGraph,
+  pbCanonical,
+  pbMeta,
+  softwareNode,
+} from "@/lib/pharmabro/seo";
+import { HeroLine, KineticRule, Marquee, Rise } from "@/components/pharmabro/motion";
 import { cn } from "@/lib/utils";
 
-const TITLE = "White-Label Telehealth Platform | PharmaBro";
+const TITLE = "White Label Telehealth Platform, Flat Fee | PharmaBro";
 const DESCRIPTION =
-  "Launch your own telehealth brand in 7 days. Flat fee, zero revenue share, your own Stripe. LegitScript in 7-14 days and 30+ pharmacies pre-integrated.";
-const URL = "https://sweet-confirm-it.lovable.app/pharmabro";
+  "Launch your own telehealth brand in 7 days on a white label platform. Flat monthly fee, zero revenue share, your own Stripe, LegitScript in 7 to 14 days, 30+ pharmacies.";
 
 export const Route = createFileRoute("/pharmabro/")({
   head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESCRIPTION },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: URL },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "PharmaBro" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: URL }],
+    meta: pbMeta({ title: TITLE, description: DESCRIPTION }),
+    links: pbCanonical(),
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "Organization",
-              "@id": `${URL}#org`,
-              name: "PharmaBro",
-              url: URL,
-              description:
-                "White-label telehealth infrastructure for brand operators. Flat fee, zero revenue share.",
-            },
-            {
-              "@type": "SoftwareApplication",
-              name: "PharmaBro",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web",
-              url: URL,
-              offers: {
-                "@type": "Offer",
-                price: "2500",
-                priceCurrency: "USD",
-                description: "Flat monthly platform fee. No revenue share.",
-              },
-            },
-            {
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "Does PharmaBro take a revenue share?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "No. PharmaBro charges a flat monthly fee. Patient payments settle directly to your own Stripe merchant account, so platform revenue never passes through us.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How long does it take to launch a telehealth brand?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Seven days. Days 1 to 2 you build your brand and connect Stripe, days 2 to 5 we file LegitScript and connect pharmacies and physicians, days 6 to 7 your first patients check out.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How fast is LegitScript certification?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "7 to 14 days, with a typical approval at 12 days. PharmaBro is a LegitScript enterprise partner and manages the entire application, which unlocks Meta, Google, and TikTok healthcare advertising.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Do I own my patient data?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes. You can export a full CSV of every patient, card token, prescription record, and subscription status within 24 hours, at any time.",
-                  },
-                },
-              ],
-            },
-          ],
-        }),
+        children: ldGraph([
+          ORG_NODE,
+          WEBSITE_NODE,
+          softwareNode(),
+          faqNode(FAQ_ITEMS),
+          breadcrumbNode([{ name: "PharmaBro", path: "" }]),
+        ]),
       },
     ],
   }),
   component: PharmaBroHome,
 });
-
-const FEATURE_ICONS: Record<string, LucideIcon> = {
-  card: CreditCard,
-  refresh: RefreshCw,
-  shield: ShieldCheck,
-  pill: Pill,
-  portal: MonitorSmartphone,
-  chart: BarChart3,
-};
 
 function PharmaBroHome() {
   return (
@@ -171,9 +101,11 @@ function PharmaBroHome() {
       <Features />
       <ProductSurfaces />
       <TheMath />
+      <PricingPeek />
       <LegitScript />
       <Switching />
       <Testimonials />
+      <Faq />
       <FinalCta />
     </>
   );
@@ -263,7 +195,7 @@ function Hero() {
               </Btn>
             </div>
             <p className="pb-micro mt-4">
-              No setup fee. No revenue share. Cancel any time.
+              $5,000 setup. $1,000 to $5,000 per month. No revenue share, ever.
             </p>
           </Reveal>
 
@@ -326,17 +258,12 @@ function StatsBand() {
           </Reveal>
         </div>
 
-        {/* borderless brand strip */}
-        <div className="mt-14 border-t border-[var(--color-hairline)] pt-8">
-          <MicroLabel className="mb-6">Brands running on PharmaBro</MicroLabel>
-          <div className="flex flex-wrap gap-x-9 gap-y-4">
-            {BRAND_LOGOS.map((b, i) => (
-              <Reveal key={b} delay={i * 0.04}>
-                <span className="text-[16px] font-semibold tracking-[-0.02em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)] transition-colors hover:text-ink">
-                  {b}
-                </span>
-              </Reveal>
-            ))}
+        {/* borderless brand marquee, pauses on hover */}
+        <div className="mt-14">
+          <KineticRule />
+          <div className="pt-8">
+            <MicroLabel className="mb-6">Brands running on PharmaBro</MicroLabel>
+            <Marquee items={BRAND_LOGOS} />
           </div>
         </div>
       </Container>
@@ -369,7 +296,7 @@ function Positioning() {
               <p className="pb-body mt-6 text-[16px] leading-relaxed sm:text-[17px]">
                 {POSITIONING_BODY}
               </p>
-              <div className="mt-8 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-mist)] p-5">
+              <div className="mt-8 rounded-[16px] border border-[var(--color-hairline)] bg-[var(--color-mist)] p-5">
                 <MicroLabel className="mb-2.5">Proof</MicroLabel>
                 <p className="text-[15px] font-medium leading-relaxed text-ink">
                   {POSITIONING_PROOF}
@@ -485,7 +412,7 @@ function HowItWorks() {
           />
         </Reveal>
 
-        <RevealGroup className="mt-12 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] lg:grid-cols-3">
+        <RevealGroup className="mt-12 grid gap-px overflow-hidden rounded-[24px] border border-[var(--color-hairline)] bg-[var(--color-hairline)] shadow-[var(--pb-shadow-sm)] lg:grid-cols-3">
           {STEPS.map((s) => (
             <RevealItem key={s.num} className="flex flex-col bg-canvas p-6 sm:p-7">
               <div className="mb-6 flex items-center justify-between">
@@ -570,7 +497,7 @@ function ProductSurfaces() {
           <ProductTabs />
         </Reveal>
 
-        <RevealGroup className="mt-14 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup className="mt-14 grid gap-px overflow-hidden rounded-[24px] border border-[var(--color-hairline)] bg-[var(--color-hairline)] shadow-[var(--pb-shadow-sm)] sm:grid-cols-2 lg:grid-cols-4">
           {DASHBOARD_POINTS.map((p) => (
             <RevealItem key={p.title} className="bg-canvas p-5">
               <h3 className="text-[15px] font-medium tracking-[-0.01em] text-ink">
@@ -818,7 +745,7 @@ function Testimonials() {
         <div className="mt-11 grid gap-5 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.09}>
-              <figure className="flex h-full flex-col rounded-xl border border-[var(--color-hairline)] bg-canvas p-6">
+              <figure className="pb-card pb-card-lift flex h-full flex-col p-6">
                 <blockquote className="pb-body flex-1 text-[14.5px] leading-relaxed">
                   {t.quote}
                 </blockquote>
@@ -844,7 +771,7 @@ function FinalCta() {
     <Section className="pb-20 sm:pb-24">
       <Container size="wide">
         <Reveal>
-          <div className="pb-dotgrid relative overflow-hidden rounded-2xl border border-[var(--color-hairline)] px-6 py-14 text-center sm:px-12 sm:py-20">
+          <div className="pb-dotgrid relative overflow-hidden rounded-[24px] border border-[var(--color-hairline)] shadow-[var(--pb-shadow-sm)] px-6 py-14 text-center sm:px-12 sm:py-20">
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-0 -top-24 mx-auto size-[520px] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-marine)_13%,transparent),transparent_62%)] blur-2xl"
@@ -874,6 +801,123 @@ function FinalCta() {
             </div>
           </div>
         </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------- 15 pricing */
+
+function PricingPeek() {
+  return (
+    <Section band id="pricing-peek">
+      <Container size="wide">
+        <Rise>
+          <MicroLabel className="mb-5">Pricing</MicroLabel>
+          <TwoTone
+            lead="Published pricing."
+            trail="Because you should not have to ask."
+            className="max-w-[860px]"
+          />
+        </Rise>
+
+        <div className="mt-11 grid gap-5 lg:grid-cols-3">
+          {PRICING_PEEK.map((t, i) => (
+            <Rise key={t.tier} delay={i * 0.08}>
+              <div
+                className={cn(
+                  "pb-card pb-card-lift flex h-full flex-col p-6 sm:p-7",
+                  t.featured &&
+                    "ring-1 ring-[color-mix(in_oklab,var(--color-marine)_35%,transparent)]",
+                )}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="pb-micro">{t.tier}</span>
+                  {t.featured ? (
+                    <span className="pb-micro rounded-full bg-[color-mix(in_oklab,var(--color-marine)_10%,transparent)] px-2.5 py-1.5 text-[var(--color-marine)]">
+                      Most operators
+                    </span>
+                  ) : null}
+                </div>
+                <div className="pb-mono mt-5 text-[34px] font-semibold tracking-[-0.03em] text-ink">
+                  {t.price}
+                </div>
+                <div className="pb-micro mt-1.5">{t.per}</div>
+                <p className="pb-body mt-4 flex-1 text-[14px] leading-relaxed">
+                  {t.body}
+                </p>
+              </div>
+            </Rise>
+          ))}
+        </div>
+
+        <KineticRule className="mt-12" />
+
+        <Rise delay={0.1}>
+          <ul className="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+            {PRICING_FACTS.map((f) => (
+              <li key={f} className="flex items-center gap-2.5">
+                <Check />
+                <span className="text-[14px] font-medium text-[color-mix(in_oklab,var(--color-ink)_78%,transparent)]">
+                  {f}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <Btn to="/pharmabro/pricing" size="lg">
+              See full pricing
+            </Btn>
+            <Btn to="/pharmabro/demo" variant="ghost" size="lg">
+              Model my margin
+            </Btn>
+          </div>
+        </Rise>
+      </Container>
+    </Section>
+  );
+}
+
+/* ----------------------------------------------------------------- 16 faq */
+
+function Faq() {
+  return (
+    <Section id="faq">
+      <Container size="wide">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+          <Rise>
+            <MicroLabel className="mb-5">FAQ</MicroLabel>
+            <TwoTone
+              lead="Questions operators ask"
+              trail="before they sign."
+              className="text-[26px] sm:text-[32px]"
+            />
+            <p className="pb-micro mt-6">Last updated {LAST_UPDATED}</p>
+          </Rise>
+
+          <Rise delay={0.08}>
+            <div className="divide-y divide-[var(--color-hairline)] border-y border-[var(--color-hairline)]">
+              {FAQ_ITEMS.map((f) => (
+                <details key={f.q} className="group py-5">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6">
+                    <h3 className="text-[16px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+                      {f.q}
+                    </h3>
+                    <span
+                      aria-hidden
+                      className="mt-1 grid size-6 shrink-0 place-items-center rounded-full border border-[var(--color-hairline)] text-[15px] leading-none text-ink transition-transform duration-300 group-open:rotate-45"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="pb-body mt-3 max-w-[62ch] text-[14.5px] leading-relaxed">
+                    {f.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </Rise>
+        </div>
       </Container>
     </Section>
   );

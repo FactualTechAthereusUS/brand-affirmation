@@ -506,7 +506,10 @@ export function Cell({
 
 /* ---------------------------------------------------------------- surfaces */
 
-/** Clean white card, hairline border, 12px radius. No heavy dark cards. */
+/**
+ * Sunbeam card: white surface, warm hairline, 24px radius, soft layered
+ * shadow that deepens slightly on hover. No heavy dark cards.
+ */
 export function Card({
   children,
   className,
@@ -515,14 +518,7 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "rounded-xl border border-[var(--color-hairline)] bg-canvas p-6",
-        className,
-      )}
-    >
-      {children}
-    </div>
+    <div className={cn("pb-card pb-card-lift p-6", className)}>{children}</div>
   );
 }
 
