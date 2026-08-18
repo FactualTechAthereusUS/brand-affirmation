@@ -426,11 +426,11 @@
   border-radius: 52px;
   background: conic-gradient(
     from var(--pb-angle),
-    color-mix(in oklab, #1b4ef5 40%, transparent),
+    color-mix(in oklab, #8aa8ff 28%, transparent),
     transparent 30%,
-    color-mix(in oklab, #7aa2ff 34%, transparent) 55%,
+    color-mix(in oklab, #b9c9ff 24%, transparent) 55%,
     transparent 80%,
-    color-mix(in oklab, #1b4ef5 40%, transparent)
+    color-mix(in oklab, #8aa8ff 28%, transparent)
   );
   filter: blur(44px);
   opacity: 0.55;
