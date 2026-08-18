@@ -99,15 +99,6 @@ export const Route = createFileRoute("/pharmabro/")({
   component: PharmaBroHome,
 });
 
-const FEATURE_ICONS: Record<string, LucideIcon> = {
-  card: CreditCard,
-  refresh: RefreshCw,
-  shield: ShieldCheck,
-  pill: Pill,
-  portal: MonitorSmartphone,
-  chart: BarChart3,
-};
-
 function PharmaBroHome() {
   return (
     <>
@@ -119,9 +110,11 @@ function PharmaBroHome() {
       <Features />
       <ProductSurfaces />
       <TheMath />
+      <PricingPeek />
       <LegitScript />
       <Switching />
       <Testimonials />
+      <Faq />
       <FinalCta />
     </>
   );
