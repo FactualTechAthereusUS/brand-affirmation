@@ -127,7 +127,7 @@ export const CLINIC_ROWS = [
   {
     label: "Your clinic, live on day one.",
     body: "From the moment you launch, patients sign up, consult PharmaBro licensed providers, and get their medication shipped to their door, all under your brand, while you monitor the entire operation from a single dashboard.",
-    image: "/assets/pharmabro-dashboard.png" as string | null,
+    image: null as string | null,
     slot: "Intake, physician queue, product",
   },
   {
@@ -270,7 +270,7 @@ export const JOURNEY: JourneyStep[] = [
       { label: "Recovery", body: "Card account updater re-runs declines" },
       { label: "Forecast", body: "MRR, cohorts, and upcoming rebills" },
     ],
-    image: "/assets/pharmabro-dashboard.png",
+    image: null,
     slot: "Revenue dashboard",
   },
 ];
