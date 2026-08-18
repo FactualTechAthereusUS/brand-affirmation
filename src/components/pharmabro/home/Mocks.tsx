@@ -112,50 +112,20 @@ function Kpi({ label, value, sub }: { label: string; value: string; sub?: string
 /* ------------------------------------------------------------------ kinds */
 
 function Operations() {
-  const nav = ["Overview", "Patients", "Orders", "Pharmacy", "Payments", "Analytics"];
   return (
     <Chrome title="Operations, all brands">
-      <div className="grid h-full min-h-0 gap-4 sm:grid-cols-[132px_1fr]">
-        <div className={`hidden flex-col gap-1 border-r ${hair} pr-3 sm:flex`}>
-          <div className={`mb-2 flex items-center gap-2 rounded-[10px] border ${hair} ${mist} px-2 py-1.5`}>
-            <span className="grid size-5 place-items-center rounded-[7px] bg-ink text-[9px] font-medium text-canvas">
-              BL
-            </span>
-            <span className="truncate text-[11px] font-medium text-ink">Blissley Rx</span>
-          </div>
-          {nav.map((n, i) => (
-            <span
-              key={n}
-              className={`rounded-[8px] px-2 py-1.5 text-[11px] ${
-                i === 0
-                  ? "bg-[color-mix(in_oklab,var(--color-marine)_10%,white)] font-medium text-[var(--color-marine)]"
-                  : "text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]"
-              }`}
-            >
-              {n}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex min-h-0 flex-col">
-          <div className="grid grid-cols-3 gap-2">
-            <Kpi label="MRR" value="$12,480" sub="+18%" />
-            <Kpi label="Active patients" value="214" />
-            <Kpi label="Awaiting review" value="7" />
-          </div>
-          <div className="mt-3">
-            <Bars
-              values={[4, 6, 5, 8, 7, 11, 9, 13, 12, 16]}
-              labels={["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"]}
-              height={150}
-            />
-          </div>
-          <div className="mt-2">
-            <Row a="Order 4821, semaglutide 0.25mg" b="Approved" c="Shipped" tone="good" />
-            <Row a="Order 4822, tirzepatide 2.5mg" b="In review" c="Provider" tone="accent" delay={0.05} />
-            <Row a="Order 4823, tirzepatide 5mg" b="Rebill scheduled" c="Sep 2" delay={0.1} />
-          </div>
-        </div>
+      <div className="relative flex h-full min-h-0 items-center justify-center overflow-hidden bg-canvas">
+        <motion.img
+          src="/assets/pharmabro-operations-dashboard.png"
+          alt="PharmaBro live operations dashboard with real-time patient activity and global session map"
+          loading="lazy"
+          decoding="async"
+          initial={{ opacity: 0, scale: 1.02 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.9, ease: PB_EASE_SOFT }}
+          className="h-full w-full object-cover object-left"
+        />
       </div>
     </Chrome>
   );
