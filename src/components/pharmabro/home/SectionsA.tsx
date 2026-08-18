@@ -152,6 +152,13 @@ export function UnderOneRoof() {
 
 /* ------------------------------------------ 6 built to run on, not out of */
 
+const RUNON_IMAGE: Record<string, string> = {
+  Dashboard: "/assets/pharmabro-dashboard.png",
+  "Intake Builder": "/assets/pharmabro-intake-builder.png",
+  "Custom Domains": "/assets/pharmabro-dashboard.png",
+  "Patient Experience": "/assets/pharmabro-phone-intake.png",
+};
+
 export function RunOn() {
   const [tab, setTab] = useState(RUNON_TABS[0]);
 
