@@ -568,3 +568,13 @@ export const CTA_PRODUCTS = [
   "/assets/ship-box.png",
   "/assets/blissley-tirzepatide-vial-transparent.png",
 ];
+
+/* ------------------------------------------------------------ footer marks */
+
+export const TRUST_MARKS = [
+  "LegitScript certified",
+  "HIPAA compliant",
+  "SOC 2 documentation on request",
+  "Licensed in all 50 states",
+  "All systems normal",
+];
