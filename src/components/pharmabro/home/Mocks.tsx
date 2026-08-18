@@ -70,22 +70,27 @@ function Row({
   );
 }
 
-function Bars({ values, labels }: { values: number[]; labels: string[] }) {
+function Bars({
+  values,
+  labels,
+  height = 120,
+}: {
+  values: number[];
+  labels: string[];
+  height?: number;
+}) {
   const max = Math.max(...values);
   return (
-    <div className="flex h-full items-end gap-2">
+    <div className="flex items-end gap-2" style={{ height }}>
       {values.map((v, i) => (
         <div key={i} className="flex min-w-0 flex-1 flex-col items-center gap-2">
-          <div className="flex h-full w-full items-end">
-            <motion.div
-              initial={{ height: 0 }}
-              whileInView={{ height: `${(v / max) * 100}%` }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.8, delay: i * 0.05, ease: PB_EASE_SOFT }}
-              className="w-full rounded-[5px] bg-[color-mix(in_oklab,var(--color-marine)_18%,white)]"
-              style={{ minHeight: 4 }}
-            />
-          </div>
+          <motion.div
+            initial={{ height: 6 }}
+            whileInView={{ height: Math.max(8, Math.round((v / max) * (height - 22))) }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, delay: i * 0.05, ease: PB_EASE_SOFT }}
+            className="w-full rounded-[5px] bg-[color-mix(in_oklab,var(--color-marine)_18%,white)]"
+          />
           <span className="pb-micro truncate text-[9.5px]">{labels[i]}</span>
         </div>
       ))}
@@ -106,22 +111,50 @@ function Kpi({ label, value, sub }: { label: string; value: string; sub?: string
 /* ------------------------------------------------------------------ kinds */
 
 function Operations() {
+  const nav = ["Overview", "Patients", "Orders", "Pharmacy", "Payments", "Analytics"];
   return (
     <Chrome title="Operations, all brands">
-      <div className="grid grid-cols-3 gap-2">
-        <Kpi label="MRR" value="$12,480" sub="+18%" />
-        <Kpi label="Active patients" value="214" />
-        <Kpi label="Awaiting review" value="7" />
-      </div>
-      <div className="mt-3 min-h-[70px] flex-1">
-        <Bars
-          values={[4, 6, 5, 8, 7, 11, 9, 13, 12, 16]}
-          labels={["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"]}
-        />
-      </div>
-      <div className="mt-2">
-        <Row a="Order 4821, semaglutide 0.25mg" b="Approved" c="Shipped" tone="good" />
-        <Row a="Order 4822, tirzepatide 2.5mg" b="In review" c="Provider" tone="accent" delay={0.05} />
+      <div className="grid h-full min-h-0 gap-4 sm:grid-cols-[132px_1fr]">
+        <div className={`hidden flex-col gap-1 border-r ${hair} pr-3 sm:flex`}>
+          <div className={`mb-2 flex items-center gap-2 rounded-[10px] border ${hair} ${mist} px-2 py-1.5`}>
+            <span className="grid size-5 place-items-center rounded-[7px] bg-ink text-[9px] font-medium text-canvas">
+              BL
+            </span>
+            <span className="truncate text-[11px] font-medium text-ink">Blissley Rx</span>
+          </div>
+          {nav.map((n, i) => (
+            <span
+              key={n}
+              className={`rounded-[8px] px-2 py-1.5 text-[11px] ${
+                i === 0
+                  ? "bg-[color-mix(in_oklab,var(--color-marine)_10%,white)] font-medium text-[var(--color-marine)]"
+                  : "text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]"
+              }`}
+            >
+              {n}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex min-h-0 flex-col">
+          <div className="grid grid-cols-3 gap-2">
+            <Kpi label="MRR" value="$12,480" sub="+18%" />
+            <Kpi label="Active patients" value="214" />
+            <Kpi label="Awaiting review" value="7" />
+          </div>
+          <div className="mt-3">
+            <Bars
+              values={[4, 6, 5, 8, 7, 11, 9, 13, 12, 16]}
+              labels={["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"]}
+              height={110}
+            />
+          </div>
+          <div className="mt-2">
+            <Row a="Order 4821, semaglutide 0.25mg" b="Approved" c="Shipped" tone="good" />
+            <Row a="Order 4822, tirzepatide 2.5mg" b="In review" c="Provider" tone="accent" delay={0.05} />
+            <Row a="Order 4823, tirzepatide 5mg" b="Rebill scheduled" c="Sep 2" delay={0.1} />
+          </div>
+        </div>
       </div>
     </Chrome>
   );
@@ -336,10 +369,11 @@ function Revenue() {
         <Kpi label="Rebills collected" value="96%" />
         <Kpi label="Recovered" value="$1,340" />
       </div>
-      <div className="mt-3 min-h-[70px] flex-1">
+      <div className="mt-3">
         <Bars
           values={[3, 5, 6, 8, 9, 12, 15, 18]}
           labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]}
+          height={104}
         />
       </div>
       <div className="mt-2">
