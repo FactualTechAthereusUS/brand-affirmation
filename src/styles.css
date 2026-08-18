@@ -436,6 +436,41 @@
   pointer-events: none;
 }
 
+/* Soft liquid glass canvas used behind product visuals. */
+.pb-liquid-soft {
+  background:
+    radial-gradient(120% 90% at 8% 0%, rgba(27, 78, 245, 0.16) 0%, transparent 58%),
+    radial-gradient(100% 80% at 96% 12%, rgba(122, 162, 255, 0.22) 0%, transparent 60%),
+    radial-gradient(90% 90% at 50% 108%, rgba(139, 122, 255, 0.16) 0%, transparent 62%),
+    linear-gradient(180deg, #f7f9ff 0%, #eef2ff 100%);
+  padding: clamp(14px, 3.2vw, 40px);
+}
+
+.pb-liquid-soft::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: conic-gradient(
+    from var(--pb-angle),
+    rgba(27, 78, 245, 0.22),
+    transparent 28%,
+    rgba(122, 162, 255, 0.26) 52%,
+    transparent 78%,
+    rgba(27, 78, 245, 0.22)
+  );
+  filter: blur(60px);
+  animation: pb-liquid-spin 16s linear infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-liquid-soft::before {
+    animation: none;
+  }
+}
+
+
+
 @media (prefers-reduced-motion: reduce) {
   .pb-liquid {
     animation: none;
