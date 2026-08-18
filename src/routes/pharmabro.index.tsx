@@ -204,7 +204,7 @@ function Hero() {
               </Btn>
             </div>
             <p className="pb-micro mt-4">
-              No setup fee. No revenue share. Cancel any time.
+              $5,000 setup. $1,000 to $5,000 per month. No revenue share, ever.
             </p>
           </Reveal>
 
