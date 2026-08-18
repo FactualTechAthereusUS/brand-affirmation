@@ -29,7 +29,7 @@ function Chrome({ title, children }: { title: string; children: React.ReactNode 
         <span className="size-2 rounded-full bg-[color-mix(in_oklab,var(--color-ink)_10%,transparent)]" />
         <span className="pb-micro ml-2 truncate">{title}</span>
       </div>
-      <div className="min-h-0 flex-1 p-4">{children}</div>
+      <div className="flex min-h-0 flex-1 flex-col p-4">{children}</div>
     </div>
   );
 }
@@ -113,7 +113,7 @@ function Operations() {
         <Kpi label="Active patients" value="214" />
         <Kpi label="Awaiting review" value="7" />
       </div>
-      <div className="mt-3 h-[38%] min-h-[68px]">
+      <div className="mt-3 min-h-[70px] flex-1">
         <Bars
           values={[4, 6, 5, 8, 7, 11, 9, 13, 12, 16]}
           labels={["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"]}
@@ -139,7 +139,7 @@ function Providers() {
         </span>
         <span className="pb-micro ml-auto text-[9.5px]">Avg review 42 min</span>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 flex-1">
         <Row a="J. Alvarez, NP, TX" b="TX, OK, NM" c="4 cases" tone="accent" />
         <Row a="M. Chen, MD, CA" b="CA, NV, AZ" c="2 cases" delay={0.05} />
         <Row a="R. Okafor, MD, NY" b="NY, NJ, CT" c="3 cases" delay={0.1} />
@@ -336,7 +336,7 @@ function Revenue() {
         <Kpi label="Rebills collected" value="96%" />
         <Kpi label="Recovered" value="$1,340" />
       </div>
-      <div className="mt-3 h-[42%] min-h-[74px]">
+      <div className="mt-3 min-h-[70px] flex-1">
         <Bars
           values={[3, 5, 6, 8, 9, 12, 15, 18]}
           labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]}
