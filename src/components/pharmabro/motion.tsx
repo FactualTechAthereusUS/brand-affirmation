@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export const PB_EASE = [0.05, 0.58, 0.56, 1] as const;
 export const PB_EASE_SOFT = [0, 0.82, 0.56, 1] as const;
 
-function useShown<T extends HTMLElement>(margin = "0px 0px -10% 0px") {
+function useShown<T extends HTMLElement>(margin: any = "0px 0px -10% 0px") {
   const ref = useRef<T>(null);
   const inView = useInView(ref, { once: true, amount: 0, margin });
   const [fallback, setFallback] = useState(false);
