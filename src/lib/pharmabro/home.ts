@@ -364,6 +364,21 @@ export const GROWTH_TABS = [
   },
 ];
 
+export const GROWTH_SHOTS = [
+  {
+    src: "/assets/pharmabro-analytics-reporting.png",
+    alt: "PharmaBro analytics overview reporting with revenue, MRR, sessions and program breakdowns",
+  },
+  {
+    src: "/assets/pharmabro-analytics-insights.png",
+    alt: "PharmaBro funnel and CRO insights across presell pages, sales page and intake form",
+  },
+  {
+    src: "/assets/pharmabro-analytics-live.png",
+    alt: "PharmaBro live view analytics with real-time patient activity and global session map",
+  },
+];
+
 /* ------------------------------------------------------------- comparison */
 
 export const COMPARE_H2 = "How PharmaBro compares.";
