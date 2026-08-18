@@ -462,60 +462,26 @@
 }
 
 /* =========================================================================
-   PharmaBro — Rimo / Sunbeam / Valeryn design grammar.
-   One ground, one surface, one blue, one ease. This block is the single
-   source of truth and overrides the earlier scope declaration above.
+   PharmaBro — Sunbeam / Valeryn design grammar
+   Stone canvas, 24px radii, layered soft shadows, kinetic hairlines.
    ========================================================================= */
 .pharmabro-scope {
-  --color-canvas: #ffffff;             /* GROUND */
-  --color-mist: #fafaf9;               /* SURFACE — section alternation */
-  --color-ink: #0a0a0b;                /* INK */
-  --color-bluebell: #6b6b70;           /* MUTED */
-  --color-hairline: #eaeae8;           /* HAIRLINE */
-  --color-marine: #1b4ef5;             /* ACCENT — used sparingly */
-  --pb-accent-soft: #eef2ff;           /* ACCENT-SOFT */
+  --color-mist: #fafaf9;               /* stone band */
+  --color-hairline: #e9e6e1;           /* warm hairline */
+  --color-bluebell: #535353;           /* muted text */
   --pb-r-sm: 8px;
-  --pb-r-md: 12px;                     /* inputs */
+  --pb-r-md: 12px;
   --pb-r-lg: 16px;
-  --pb-r-xl: 20px;                     /* cards */
-  --pb-ease: cubic-bezier(0.4, 0, 0.2, 1);  /* the only ease on the site */
+  --pb-r-xl: 24px;
   --pb-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 8px 24px rgba(0, 0, 0, 0.04);
-  --pb-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+    0 1px 2px -0.8px rgba(26, 26, 26, 0.16),
+    0 3px 6px -1.6px rgba(26, 26, 26, 0.15),
+    0 8px 16px -2.4px rgba(26, 26, 26, 0.14),
+    0 20px 40px -3.25px rgba(26, 26, 26, 0.09);
+  --pb-shadow-sm:
+    0 1px 2px -0.8px rgba(26, 26, 26, 0.12),
+    0 4px 10px -2.4px rgba(26, 26, 26, 0.09);
 }
-
-/* Display type: one grotesk, 600, tight tracking. */
-.pb-display {
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.03;
-  color: var(--color-ink);
-}
-
-/* Body copy: 17/1.6, capped at 64ch for readability. */
-.pb-copy {
-  font-size: 17px;
-  line-height: 1.6;
-  max-width: 64ch;
-  color: var(--color-bluebell);
-}
-
-/* 11px uppercase trust label. */
-.pb-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-bluebell);
-}
-
-.pb-soft {
-  background: var(--pb-accent-soft);
-}
-
 
 /* Sunbeam card: warm hairline, 24px radius, layered shadow on hover only. */
 .pb-card {
@@ -563,104 +529,5 @@
 @media (prefers-reduced-motion: reduce) {
   .pb-marquee-track {
     animation: none;
-  }
-}
-
-/* ------------------------------------------------- PharmaBro Phase 1 utils */
-/* Every transition inside the PharmaBro scope rides the one shared ease. */
-.pharmabro-scope .pb-card {
-  transition:
-    box-shadow 0.4s var(--pb-ease),
-    transform 0.4s var(--pb-ease),
-    border-color 0.4s var(--pb-ease);
-}
-
-/* Section rhythm: 120px desktop, 72px mobile. */
-.pb-band {
-  padding-top: 72px;
-  padding-bottom: 72px;
-}
-
-@media (min-width: 1024px) {
-  .pb-band {
-    padding-top: 120px;
-    padding-bottom: 120px;
-  }
-}
-
-/* FAQ answers stay in the DOM when collapsed: height animates on grid rows. */
-.pb-faq-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s var(--pb-ease);
-}
-
-.pb-faq-panel[data-open="true"] {
-  grid-template-rows: 1fr;
-}
-
-.pb-faq-panel > div {
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* Hero word swap: accent-soft pill that resizes behind the rotating word. */
-.pb-swap {
-  position: relative;
-  display: inline-flex;
-  align-items: baseline;
-  justify-content: center;
-  border-radius: 999px;
-  background: var(--pb-accent-soft);
-  color: var(--color-marine);
-  padding: 0 0.24em;
-  transition: width 0.45s var(--pb-ease);
-  overflow: hidden;
-  vertical-align: baseline;
-}
-
-.pb-swap-word {
-  animation: pb-swap-in 0.35s var(--pb-ease) both;
-  white-space: nowrap;
-}
-
-@keyframes pb-swap-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pharmabro-scope *,
-  .pharmabro-scope *::before,
-  .pharmabro-scope *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
-
-@keyframes pb-drop-in {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -8px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-@keyframes pb-dot-in {
-  from {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
   }
 }
