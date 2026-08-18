@@ -156,7 +156,7 @@ const RUNON_IMAGE: Record<string, string> = {
   Dashboard: "/assets/pharmabro-dashboard.png",
   "Intake Builder": "/assets/pharmabro-intake-builder.png",
   "Custom Domains": "/assets/pharmabro-custom-domains.png",
-  "Patient Experience": "/assets/pharmabro-phone-intake.png",
+  "Patient Experience": "/assets/pharmabro-patient-experience.png",
 };
 
 export function RunOn() {
