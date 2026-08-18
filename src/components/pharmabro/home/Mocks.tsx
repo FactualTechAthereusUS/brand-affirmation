@@ -396,7 +396,7 @@ const MAP: Record<MockKind, () => React.ReactElement> = {
 export function Mock({ kind }: { kind: MockKind }) {
   const C = MAP[kind] ?? Operations;
   return (
-    <div className="h-full w-full overflow-hidden bg-canvas">
+    <div className="h-full w-full overflow-hidden">
       <C />
     </div>
   );
