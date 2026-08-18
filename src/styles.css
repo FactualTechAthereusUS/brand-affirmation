@@ -377,17 +377,16 @@
   position: relative;
   border-radius: 32px;
   padding: 40px;
-  overflow: hidden;
   background: conic-gradient(
     from var(--pb-angle),
-    #f8faff 0%,
-    #e8eeff 12%,
-    #ffffff 24%,
-    #f2f5ff 38%,
-    #e0e8ff 55%,
-    #ffffff 68%,
-    #eef2ff 82%,
-    #f8faff 100%
+    #1b4ef5 0%,
+    #8aa8ff 12%,
+    #e8eeff 24%,
+    #1b4ef5 38%,
+    #b9c9ff 55%,
+    #f2f5ff 68%,
+    #4f7bff 82%,
+    #1b4ef5 100%
   );
   animation: pb-liquid-spin 7s linear infinite;
   box-shadow:
@@ -426,11 +425,11 @@
   border-radius: 52px;
   background: conic-gradient(
     from var(--pb-angle),
-    color-mix(in oklab, #8aa8ff 28%, transparent),
+    color-mix(in oklab, #1b4ef5 40%, transparent),
     transparent 30%,
-    color-mix(in oklab, #b9c9ff 24%, transparent) 55%,
+    color-mix(in oklab, #7aa2ff 34%, transparent) 55%,
     transparent 80%,
-    color-mix(in oklab, #8aa8ff 28%, transparent)
+    color-mix(in oklab, #1b4ef5 40%, transparent)
   );
   filter: blur(44px);
   opacity: 0.55;
