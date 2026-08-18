@@ -372,13 +372,18 @@ function PharmaBroHome() {
             </HeroText>
 
             <HeroText delay={0.4}>
-              <h1 className="pb-display mt-7 text-[34px] sm:text-[46px] lg:text-[64px]">
-                Launch your <WordSwap words={HOME_HERO.h1Swap} />
-                <span className="sr-only">GLP-1</span> brand.
+              <h1 className="pb-display mx-auto mt-7 max-w-[1000px] text-[34px] sm:text-[46px] lg:text-[62px]">
+                <span className="lg:whitespace-nowrap">
+                  Launch your <WordSwap words={HOME_HERO.h1Swap} />
+                  <span className="sr-only">GLP-1</span> brand.
+                </span>
                 <br />
-                We run the clinic behind it.
+                <span className="lg:whitespace-nowrap">
+                  We run the clinic behind it.
+                </span>
               </h1>
             </HeroText>
+
 
             <HeroText delay={0.6}>
               <p className="pb-copy mx-auto mt-6 text-center">{HOME_HERO.dek}</p>
