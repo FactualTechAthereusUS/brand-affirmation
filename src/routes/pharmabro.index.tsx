@@ -819,3 +819,120 @@ function FinalCta() {
     </Section>
   );
 }
+
+/* ------------------------------------------------------------- 15 pricing */
+
+function PricingPeek() {
+  return (
+    <Section band id="pricing-peek">
+      <Container size="wide">
+        <Rise>
+          <MicroLabel className="mb-5">Pricing</MicroLabel>
+          <TwoTone
+            lead="Published pricing."
+            trail="Because you should not have to ask."
+            className="max-w-[860px]"
+          />
+        </Rise>
+
+        <div className="mt-11 grid gap-5 lg:grid-cols-3">
+          {PRICING_PEEK.map((t, i) => (
+            <Rise key={t.tier} delay={i * 0.08}>
+              <div
+                className={cn(
+                  "pb-card pb-card-lift flex h-full flex-col p-6 sm:p-7",
+                  t.featured &&
+                    "ring-1 ring-[color-mix(in_oklab,var(--color-marine)_35%,transparent)]",
+                )}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="pb-micro">{t.tier}</span>
+                  {t.featured ? (
+                    <span className="pb-micro rounded-full bg-[color-mix(in_oklab,var(--color-marine)_10%,transparent)] px-2.5 py-1.5 text-[var(--color-marine)]">
+                      Most operators
+                    </span>
+                  ) : null}
+                </div>
+                <div className="pb-mono mt-5 text-[34px] font-semibold tracking-[-0.03em] text-ink">
+                  {t.price}
+                </div>
+                <div className="pb-micro mt-1.5">{t.per}</div>
+                <p className="pb-body mt-4 flex-1 text-[14px] leading-relaxed">
+                  {t.body}
+                </p>
+              </div>
+            </Rise>
+          ))}
+        </div>
+
+        <KineticRule className="mt-12" />
+
+        <Rise delay={0.1}>
+          <ul className="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+            {PRICING_FACTS.map((f) => (
+              <li key={f} className="flex items-center gap-2.5">
+                <Check />
+                <span className="text-[14px] font-medium text-[color-mix(in_oklab,var(--color-ink)_78%,transparent)]">
+                  {f}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <Btn to="/pharmabro/pricing" size="lg">
+              See full pricing
+            </Btn>
+            <Btn to="/pharmabro/demo" variant="ghost" size="lg">
+              Model my margin
+            </Btn>
+          </div>
+        </Rise>
+      </Container>
+    </Section>
+  );
+}
+
+/* ----------------------------------------------------------------- 16 faq */
+
+function Faq() {
+  return (
+    <Section id="faq">
+      <Container size="wide">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+          <Rise>
+            <MicroLabel className="mb-5">FAQ</MicroLabel>
+            <TwoTone
+              lead="Questions operators ask"
+              trail="before they sign."
+              className="text-[26px] sm:text-[32px]"
+            />
+            <p className="pb-micro mt-6">Last updated {LAST_UPDATED}</p>
+          </Rise>
+
+          <Rise delay={0.08}>
+            <div className="divide-y divide-[var(--color-hairline)] border-y border-[var(--color-hairline)]">
+              {FAQ_ITEMS.map((f) => (
+                <details key={f.q} className="group py-5">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6">
+                    <h3 className="text-[16px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+                      {f.q}
+                    </h3>
+                    <span
+                      aria-hidden
+                      className="mt-1 grid size-6 shrink-0 place-items-center rounded-full border border-[var(--color-hairline)] text-[15px] leading-none text-ink transition-transform duration-300 group-open:rotate-45"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="pb-body mt-3 max-w-[62ch] text-[14.5px] leading-relaxed">
+                    {f.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </Rise>
+        </div>
+      </Container>
+    </Section>
+  );
+}
