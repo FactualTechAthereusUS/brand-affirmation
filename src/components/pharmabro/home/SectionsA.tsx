@@ -27,6 +27,7 @@ import {
 } from "@/components/pharmabro/primitives";
 import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot, TabRail } from "./Shot";
+import type { MockKind } from "./Mocks";
 import { CardVisual } from "./CardVisuals";
 
 /* ------------------------------------------------- 4 a complete clinic */
@@ -82,7 +83,12 @@ export function CompleteClinic() {
         <div className="mt-16 space-y-14 sm:mt-20">
           {CLINIC_ROWS.map((row, i) => (
             <div key={i}>
-              <Shot image={row.image} slot={row.slot} ratio="16 / 8" />
+              <Shot
+                image={row.image}
+                slot={row.slot}
+                ratio="16 / 7"
+                mock={i === 0 ? "operations" : "portal"}
+              />
               <Rise delay={0.05}>
                 <div className="mt-6 grid gap-3 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
                   <h3 className="text-[19px] font-medium tracking-[-0.02em] text-ink">
@@ -316,7 +322,13 @@ export function CheckoutToRevenue() {
             </motion.div>
           </AnimatePresence>
 
-          <Shot key={active.id} image={active.image} slot={active.slot} ratio="16 / 10" />
+          <Shot
+            key={active.id}
+            image={active.image}
+            slot={active.slot}
+            ratio="16 / 10"
+            mock={active.id as MockKind}
+          />
         </div>
 
         <Rise delay={0.1}>
