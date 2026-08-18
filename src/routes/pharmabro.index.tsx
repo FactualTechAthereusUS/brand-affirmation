@@ -267,17 +267,12 @@ function StatsBand() {
           </Reveal>
         </div>
 
-        {/* borderless brand strip */}
-        <div className="mt-14 border-t border-[var(--color-hairline)] pt-8">
-          <MicroLabel className="mb-6">Brands running on PharmaBro</MicroLabel>
-          <div className="flex flex-wrap gap-x-9 gap-y-4">
-            {BRAND_LOGOS.map((b, i) => (
-              <Reveal key={b} delay={i * 0.04}>
-                <span className="text-[16px] font-semibold tracking-[-0.02em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)] transition-colors hover:text-ink">
-                  {b}
-                </span>
-              </Reveal>
-            ))}
+        {/* borderless brand marquee, pauses on hover */}
+        <div className="mt-14">
+          <KineticRule />
+          <div className="pt-8">
+            <MicroLabel className="mb-6">Brands running on PharmaBro</MicroLabel>
+            <Marquee items={BRAND_LOGOS} />
           </div>
         </div>
       </Container>
