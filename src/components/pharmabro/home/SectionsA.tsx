@@ -86,7 +86,7 @@ export function CompleteClinic() {
               <Shot
                 image={row.image}
                 slot={row.slot}
-                ratio="16 / 8"
+                ratio="16 / 7"
                 mock={i === 0 ? "operations" : "portal"}
               />
               <Rise delay={0.05}>

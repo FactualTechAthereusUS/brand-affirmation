@@ -146,7 +146,7 @@ function Operations() {
             <Bars
               values={[4, 6, 5, 8, 7, 11, 9, 13, 12, 16]}
               labels={["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"]}
-              height={110}
+              height={150}
             />
           </div>
           <div className="mt-2">
