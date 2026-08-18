@@ -241,7 +241,7 @@ export function RunOn() {
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.img
                     key={tab}
-                    src="/assets/pharmabro-dashboard.png"
+                    src={RUNON_IMAGE[tab] ?? "/assets/pharmabro-dashboard.png"}
                     alt={`PharmaBro ${tab}`}
                     loading="lazy"
                     decoding="async"
