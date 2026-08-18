@@ -1,38 +1,39 @@
 /**
- * Homepage content. Every string is lifted verbatim from the PharmaBro
- * website spec. Copy rules enforced: no em dashes, active voice, exact
- * numbers, operator language.
+ * PharmaBro homepage content. Every visitor-facing string lives here so the
+ * route file stays composition only. Copy rules: no em dashes, active voice,
+ * exact numbers, operator language.
  */
 
-/* --------------------------------------------------------------- section 3 */
+/* ------------------------------------------------------------- the offer */
+
+export const LAUNCH_DAYS = 14;
+
+/* ------------------------------------------------------------------ hero */
+
+export const HERO_BADGE = {
+  label: "New",
+  text: "Launch without a medical license",
+  to: "/pharmabro/blog",
+} as const;
 
 export const HERO_ROTATING = [
   "Weight Loss",
   "TRT",
-  "Peptide",
+  "HRT",
   "Hair Loss",
-  "Hormone",
+  "Sexual Health",
+  "Peptides",
 ] as const;
 
+/** Crawlable, non-rotating version of the H1. */
+export const HERO_H1_STATIC =
+  "Launch your telehealth brand. PharmaBro runs the clinic.";
+
 export const HERO_SUB =
-  "You bring the brand and the customers. PharmaBro handles the pharmacy, the payments, the patient portal, the physicians, and the compliance, under your name. Your Stripe. Your data. No revenue share.";
+  "You bring the brand and the customers. PharmaBro operates the licensed providers, the pharmacy, the software, and the compliance, under your name, so your clinic is taking patients and shipping medication in 14 days.";
 
-export const HERO_TRUST = [
-  "Zero revenue share",
-  "LegitScript in 7-14 days",
-  "Launch in 7 days",
-  "30+ pharmacies",
-];
-
-/* --------------------------------------------------------------- section 4 */
-
-export const STATS = [
-  { value: 1284, label: "Active Brands", suffix: "" },
-  { value: 47320, label: "Patients on Platform", suffix: "" },
-  { value: 2841960, label: "Prescriptions Fulfilled", prefix: "$" },
-];
-
-export const STAT_STATIC = { value: "7-14 Days", label: "Avg LegitScript Certification" };
+export const HERO_FOOT =
+  "No medical license required. All 50 states. LegitScript included.";
 
 export const BRAND_LOGOS = [
   "Blissley",
@@ -45,468 +46,525 @@ export const BRAND_LOGOS = [
   "Ardent",
 ];
 
-/* --------------------------------------------------------------- section 5 */
+/* -------------------------------------------------------- dashboard tabs */
 
-export const POSITIONING_QUOTE =
-  "Other platforms take a cut of everything. You run the ads. You acquire the patients. Then you hand over 35%, forever.";
+export type ShotTab = {
+  id: string;
+  label: string;
+  caption: string;
+  /** Local image path, or null to render the framed placeholder. */
+  image: string | null;
+  /** Placeholder label shown until a real screenshot lands. */
+  slot: string;
+};
 
-export const POSITIONING_BODY =
-  "PharmaBro is different. You own your Stripe. You own your patients. You own your data. We charge a flat fee. You keep the rest.";
+export const DASHBOARD_TABS: ShotTab[] = [
+  {
+    id: "operations",
+    label: "End-to-end operations",
+    caption:
+      "One dashboard for patients, prescriptions, pharmacy routing, and revenue.",
+    image: "/assets/pharmabro-dashboard.png",
+    slot: "Admin dashboard, full pipeline",
+  },
+  {
+    id: "providers",
+    label: "Providers in all 50 states",
+    caption:
+      "Licensed physicians and nurse practitioners assigned by the patient's state, automatically.",
+    image: null,
+    slot: "Physician queue, state routing",
+  },
+  {
+    id: "pharmacy",
+    label: "Pharmacy fulfillment",
+    caption:
+      "Approved prescriptions transmit to a licensed compounding pharmacy matched to compound and state.",
+    image: null,
+    slot: "Pharmacy routing and tracking",
+  },
+  {
+    id: "compliant",
+    label: "Compliant by default",
+    caption:
+      "LegitScript, HIPAA, DEA, and state licensing active before your first patient checks out.",
+    image: null,
+    slot: "Compliance center",
+  },
+];
 
-export const POSITIONING_H2 = "Infrastructure that works for you, not against you.";
+/* --------------------------------------------------- a complete clinic */
 
-export const POSITIONING_PROOF =
-  "On a 300-patient brand, PharmaBro saves operators $20,706 per month vs OpenLoop's revenue share model.";
+export const CLINIC_H2 = ["A complete clinic,", "operated end to end."];
 
-/* --------------------------------------------------------------- section 6 */
+export const CLINIC_BODY =
+  "You run the brand and the marketing. PharmaBro runs the clinic behind it, from the licensed providers to the pharmacy to the software and the compliance, so you can launch in days and start taking patients without building the infrastructure yourself.";
 
-export const COMPARE_COLUMNS = ["PharmaBro", "OpenLoop", "Bask", "Cuvo", "Rimo"];
+export const CLINIC_CHECKS = [
+  {
+    title: "Licensed medical group",
+    body: "PharmaBro operates the clinical entity. You operate the brand.",
+  },
+  {
+    title: "Pharmacy network",
+    body: "Licensed compounding pharmacies matched by compound and state.",
+  },
+  {
+    title: "Patient portal and admin",
+    body: "White labeled to your domain from the first patient interaction.",
+  },
+  {
+    title: "Compliance stack",
+    body: "LegitScript, HIPAA, DEA, and state licensing, active on day one.",
+  },
+  {
+    title: "Subscription and billing",
+    body: "Payments direct to your Stripe. Rebills automated by ship date.",
+  },
+];
+
+export const CLINIC_ROWS = [
+  {
+    label: "Your clinic, live on day one.",
+    body: "From the moment you launch, patients sign up, consult PharmaBro licensed providers, and get their medication shipped to their door, all under your brand, while you monitor the entire operation from a single dashboard.",
+    image: "/assets/pharmabro-dashboard.png" as string | null,
+    slot: "Intake, physician queue, product",
+  },
+  {
+    label: "Your clinic, live on day one.",
+    body: "Patients track shipments and message their provider in a portal that carries your name, while revenue, rebills, and cohorts report back to your admin in real time.",
+    image: null as string | null,
+    slot: "Mobile intake and revenue dashboard",
+  },
+];
+
+/* ------------------------------------------------ everything under one roof */
+
+export type RoofCard = {
+  title: string;
+  body: string;
+  visual:
+    | "stripe"
+    | "token"
+    | "states"
+    | "export"
+    | "brands"
+    | "scale";
+};
+
+export const ROOF_H2 = "Everything under one roof.";
+export const ROOF_SUB =
+  "Payments, rebills, pharmacy ops, patient data. Every piece of your telehealth stack, managed from a single dashboard.";
+
+export const ROOF_CARDS: RoofCard[] = [
+  {
+    title: "Your payment processing. Your revenue.",
+    body: "Every dollar your patients pay goes directly to your Stripe account. PharmaBro never touches your revenue, not a hold, not a delay.",
+    visual: "stripe",
+  },
+  {
+    title: "In-house rebill engine",
+    body: "We tokenize every card and bill as one-time transactions on ship date. Smart retries and the card account updater recover declines without ops work.",
+    visual: "token",
+  },
+  {
+    title: "All 50 states from day one",
+    body: "PharmaBro operates licensed physicians and nurse practitioners in all 50 states and D.C., so your brand can treat patients anywhere from launch.",
+    visual: "states",
+  },
+  {
+    title: "You own everything",
+    body: "Patient records, order history, and card tokens export in 24 hours. Your data is always yours, fully portable.",
+    visual: "export",
+  },
+  {
+    title: "Unlimited verticals",
+    body: "Weight loss, TRT, HRT, hair, sexual health, and peptides. Multiple brands, different domains, all operated from one account.",
+    visual: "brands",
+  },
+  {
+    title: "Built for growth",
+    body: "The same platform runs your first 100 patients and your first 5,000. Infrastructure that does not make you rebuild when you grow.",
+    visual: "scale",
+  },
+];
+
+/* -------------------------------------------------------- run on, not out of */
+
+export const RUNON_H2 = ["Built to run on,", "not grow out of."];
+export const RUNON_BODY =
+  "Your ops team will live in this dashboard. We designed every screen, intake to rebill, so they never have to leave it.";
+
+export const RUNON_TABS = [
+  "Dashboard",
+  "Intake Builder",
+  "Custom Domains",
+  "Patient Experience",
+];
+
+export const RUNON_STATS = [
+  { label: "Total revenue", value: "$47,582.98" },
+  { label: "Sessions", value: "18,402" },
+  { label: "Leads", value: "2,914" },
+  { label: "Conversions", value: "983" },
+];
+
+/* --------------------------------------------- checkout to recurring revenue */
+
+export type JourneyStep = {
+  id: string;
+  label: string;
+  body: string;
+  details: { label: string; body: string }[];
+  image: string | null;
+  slot: string;
+};
+
+export const JOURNEY_H2 = ["From checkout to", "recurring revenue."];
+export const JOURNEY_BODY =
+  "Follow one order through the platform. The patient checks out on your site, a provider approves, the pharmacy fulfills, and the subscription keeps billing, all under your brand.";
+
+export const JOURNEY: JourneyStep[] = [
+  {
+    id: "checkout",
+    label: "Checkout completes",
+    body: "Intake, eligibility, and payment happen in one flow on your site. Plan chosen, card charged, settled to your own Stripe.",
+    details: [
+      { label: "Intake", body: "Custom questions, eligibility, and consent" },
+      { label: "Payment", body: "Stripe, settling to your account" },
+      { label: "Card token", body: "Saved for rebills, yours to keep" },
+    ],
+    image: null,
+    slot: "Branded checkout",
+  },
+  {
+    id: "care",
+    label: "Care begins",
+    body: "Your patient lands in a branded portal while a state-licensed provider reviews the intake async. No scheduling, no phone tag.",
+    details: [
+      { label: "Provider", body: "Licensed in the patient's state, assigned automatically" },
+      { label: "Async consult", body: "Reviewed in minutes to hours" },
+      { label: "Brand experience", body: "Patients see your name throughout" },
+    ],
+    image: null,
+    slot: "Patient portal, provider review",
+  },
+  {
+    id: "route",
+    label: "Approve and route",
+    body: "Approval issues the prescription and transmits it to a licensed compounding pharmacy matched to that compound and state.",
+    details: [
+      { label: "Pharmacy routing", body: "Matched by compound, state, and formulary" },
+      { label: "Tracking", body: "Pushed to the patient portal and SMS" },
+      { label: "Clinical chart", body: "Stored, HIPAA compliant, exportable" },
+    ],
+    image: null,
+    slot: "Prescription routing",
+  },
+  {
+    id: "revenue",
+    label: "Revenue compounds",
+    body: "The next invoice is already scheduled. The rebill engine bills, retries, and recovers failed cards while shipments track themselves, so MRR ticks up without ops work.",
+    details: [
+      { label: "Rebills", body: "Scheduled invoices with smart retries" },
+      { label: "Recovery", body: "Card account updater re-runs declines" },
+      { label: "Forecast", body: "MRR, cohorts, and upcoming rebills" },
+    ],
+    image: "/assets/pharmabro-dashboard.png",
+    slot: "Revenue dashboard",
+  },
+];
+
+export const JOURNEY_METRICS = [
+  { label: "MRR", value: "$12,480" },
+  { label: "Active subscriptions", value: "214" },
+  { label: "Rebills collected", value: "96%" },
+];
+
+/* --------------------------------------------------- nationwide infrastructure */
+
+export const NATION_H2 = "Nationwide infrastructure.";
+export const NATION_EYEBROW = "Pharmacy network";
+
+export const NATION_ROWS = [
+  {
+    title: "Licensed in every state",
+    body: "PharmaBro operates the medical group with clinicians licensed across all 50 states and D.C. Your brand can see and treat patients anywhere from launch day, with no license of your own.",
+    to: "/pharmabro/platform",
+  },
+  {
+    title: "Pharmacy and fulfillment",
+    body: "PharmaBro runs the pharmacy and fulfillment network, so approved prescriptions are filled and shipped in every state and lab work is ordered and resulted, without you standing up a single partner yourself.",
+    to: "/pharmabro/platform/pharmacy",
+  },
+];
+
+export const STATE_TILES = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA",
+  "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
+  "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+  "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+  "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC",
+];
+
+export const PHARMACY_PARTNERS = [
+  "South End Pharmacy",
+  "Epiq Scripts",
+  "AbsoluteRx",
+  "Curexa",
+  "QualiTek",
+  "FedEx",
+  "UPS",
+];
+
+/* ------------------------------------------------- keep patients on treatment */
+
+export const RETENTION_H2 = ["Keep patients", "on treatment."];
+
+export const RETENTION_ROWS = [
+  {
+    title: "Onboarding flows",
+    body: "Guide new patients from sign-up to first order with built-in flows, checklists, and reminders, so more of them start treatment and stay with your brand, without ever calling support.",
+    checklist: ["Account created", "Intake completed", "First order placed"],
+    image: null as string | null,
+    slot: "Onboarding checklist",
+  },
+  {
+    title: "Proactive notifications",
+    body: "Send automatic refill, shipping, and check-in messages so patients stay on time, and clinicians can respond to any issues before they churn.",
+    checklist: ["Refill reminder sent", "Shipment tracked", "Check-in answered"],
+    image: null as string | null,
+    slot: "Notification timeline",
+  },
+  {
+    title: "Targeted messaging sequences",
+    body: "Build branded message journeys in a no-code visual builder, targeting patients by treatment status, churn risk, and spend, to win them back and upsell.",
+    checklist: ["Segment built", "Journey live", "Win-back converted"],
+    image: null as string | null,
+    slot: "Sequence builder",
+  },
+];
+
+/* ------------------------------------------------------------ analytics band */
+
+export const GROWTH_H2 = ["Watch your brand", "grow in real time."];
+
+export const GROWTH_TABS = [
+  {
+    title: "Reporting",
+    body: "Pull pre-built reports for every revenue and growth question, plus a custom report builder with advanced filters and charts, so you always know how the business is performing right now.",
+  },
+  {
+    title: "Insights",
+    body: "See exactly why patients buy, what keeps them on treatment, and what makes them churn, with individual dashboards for each provider and medication.",
+  },
+  {
+    title: "Live analytics",
+    body: "Attribution down to one link and one ad creative, updated every hour, so you always know where the momentum is headed.",
+  },
+];
+
+/* ------------------------------------------------------------- comparison */
+
+export const COMPARE_H2 = "How PharmaBro compares.";
+export const COMPARE_SUB =
+  "Other platforms take a cut of every sale, hold your revenue, and lock your data, so you do not own anything. PharmaBro charges a flat setup and platform fee. Your patients, your Stripe, your data.";
+
+export const COMPARE_COLUMNS = ["PharmaBro", "Bask", "OpenLoop", "CareValidate"];
 
 export type CompareRow = { feature: string; values: string[] };
 export type CompareGroup = { group: string; rows: CompareRow[] };
 
 export const COMPARE_TABLE: CompareGroup[] = [
   {
-    group: "Pricing & Revenue",
+    group: "Pricing and revenue",
     rows: [
       {
         feature: "Pricing model",
-        values: ["Flat fee only", "35% rev share", "% rev (hidden)", "Flat + setup fee", "Flat fee"],
+        values: ["Setup + flat monthly", "Monthly only", "Custom + per visit", "Custom quotes"],
       },
-      { feature: "Public pricing", values: ["✓", "✗", "✗", "✓", "✗"] },
-      { feature: "Revenue share", values: ["None", "35%+", "Hidden", "None", "None"] },
-      { feature: "Payment to YOUR account", values: ["✓", "✗", "✗", "✗", "✓"] },
+      { feature: "Public pricing", values: ["✓", "✗", "✗", "✗"] },
+      { feature: "Merchant of record", values: ["You", "Bask", "OpenLoop", "CareValidate"] },
+      { feature: "Payment goes to your bank first", values: ["✓", "✗", "✗", "✗"] },
+      {
+        feature: "Transaction fee",
+        values: ["3% to 1.5%", "Not disclosed", "Not disclosed", "Not disclosed"],
+      },
     ],
   },
   {
-    group: "Ownership & Data",
+    group: "Ownership and control",
     rows: [
-      { feature: "You own your Stripe", values: ["✓", "✗", "✗", "✗", "✓"] },
-      { feature: "Patient data export 24h", values: ["✓", "✗", "✗", "✓", "✓"] },
-      {
-        feature: "Multi-brand, one account",
-        values: ["Unlimited", "✗", "Limited", "✗", "Unlimited"],
-      },
-      { feature: "Credit card / token export", values: ["✓", "✗", "✗", "✗", "✓"] },
+      { feature: "You own your patients", values: ["✓", "✓", "✗", "✗"] },
+      { feature: "You own your patient data", values: ["✓", "Partial", "✗", "✗"] },
+      { feature: "Credit card token export", values: ["✓", "✗", "✗", "✗"] },
+      { feature: "Multi-brand support", values: ["Unlimited", "Limited", "✗", "✗"] },
     ],
   },
   {
-    group: "Platform & Launch",
+    group: "Platform and launch",
     rows: [
+      { feature: "Time to launch", values: ["14 days", "30-60 days", "30-90 days", "14-30 days"] },
       {
-        feature: "Time to launch",
-        values: ["7 days", "30-90 days", "30-40 days", "Days to weeks", "7 days"],
+        feature: "White-label customization",
+        values: ["Full", "Template", "Template", "Template"],
       },
-      {
-        feature: "LegitScript managed",
-        values: ["7-14 days", "Self", "Partner", "7-14 days", "7-14 days"],
-      },
-      { feature: "In-house rebill engine", values: ["✓ saves 1%", "✗", "✗", "✗", "✓"] },
-      { feature: "Multi-MID routing", values: ["Up to 5", "✗", "✗", "✗", "Up to 5"] },
-    ],
-  },
-  {
-    group: "Data Breach History",
-    rows: [
-      {
-        feature: "Confirmed incidents",
-        values: ["None", "716K patients, Jan 7, 2026", "None", "None", "None"],
-      },
+      { feature: "LegitScript included", values: ["✓ $0", "✗", "✗", "$205/mo"] },
+      { feature: "All 50 states", values: ["✓", "✓", "✓", "✓"] },
+      { feature: "Rebill and subscription engine", values: ["✓", "✓", "✗", "✗"] },
     ],
   },
 ];
 
 export const COMPARE_FOOTNOTE =
-  "HHS OCR Breach Portal, January 2026. OpenLoop data breach affected 716,000 patients.";
+  "Data sourced from public pricing pages and published sales proposals. Flag an error and we will correct it.";
 
-/* --------------------------------------------------------------- section 7 */
+/* ------------------------------------------------------------- legitscript */
 
-export const STEPS = [
+export const LEGIT_H2 = ["LegitScript certification", "in days, not months."];
+export const LEGIT_BODY =
+  "Google, Meta, and major payment processors all require LegitScript certification before a telehealth brand can advertise or take payment. PharmaBro prepares, files, and manages your application through approval.";
+
+export const LEGIT_BARS = [
+  { label: "Fastest approval", value: "2 days", pct: 8 },
+  { label: "With PharmaBro", value: "7-14 days", pct: 22, own: true },
+  { label: "Industry standard", value: "3-6 months", pct: 100 },
+];
+
+export const LEGIT_PANELS = [
   {
-    num: "01",
-    title: "You build your brand",
-    days: "Day 1-2",
-    body: "Choose your treatments, upload your logo, connect your Stripe via OAuth. Our no-code builder creates your intake quiz, your plan page, your checkout, and your patient portal, all on your domain. Takes two hours of your time.",
+    title: "Certified infrastructure underneath",
+    body: "Your brand launches on providers, pharmacies, and technology that already operate under LegitScript certification, so you start from a known platform instead of a blank file.",
   },
   {
-    num: "02",
-    title: "We set up your clinic",
-    days: "Day 2-5",
-    body: "LegitScript application filed and managed by our enterprise partner team. 30+ pharmacies pre-integrated, SKU-routed to cheapest source per treatment. Physicians connected, MSO structure documented. You never touch any of it.",
+    title: "Your application, prepared by PharmaBro",
+    body: "PharmaBro assembles the policies, licensing, records, and documentation LegitScript reviews, files the application, and manages the process end to end. You review and sign.",
   },
   {
-    num: "03",
-    title: "Patients pay you directly",
-    days: "Day 6-7",
-    body: "From the moment your first patient clicks, PharmaBro routes their consult, approves the prescription, routes to the best pharmacy, ships to their door, and schedules the next rebill, automatically, under your brand, with revenue hitting your Stripe the same day.",
+    title: "Advertising and payments, unlocked",
+    body: "Certification is what ad platforms and payment processors check before working with a telehealth brand. The day yours clears, campaigns and payments run with your clinic already taking patients.",
   },
 ];
 
-/* --------------------------------------------------------------- section 8 */
+export const LEGIT_DISCLAIMER =
+  "Notes about timelines are based on LegitScript guidelines, are not direct representations, and certification is not guaranteed.";
 
-export const FEATURES = [
-  {
-    icon: "card",
-    title: "Your Payment Processing. Your Revenue.",
-    body: "Every dollar your patients pay goes directly to your Stripe merchant account. We connect via OAuth, so we never touch your money. Up to 5 MIDs supported. Revenue settles same day.",
-  },
-  {
-    icon: "refresh",
-    title: "In-House Rebill Engine",
-    body: "We built our own billing system, not Stripe's subscription API. We tokenize every card as a one-time transaction, which saves 0.5-1% per rebill. We bill 13 months in a year. On a $100K/month brand, that's $500-1,000 back every single month.",
-  },
-  {
-    icon: "shield",
-    title: "LegitScript in 7-14 Days",
-    body: "As a LegitScript enterprise partner, we manage the entire application from submission to approval. Run healthcare ads on Meta, Google, and TikTok from the day you launch, not six months later.",
-  },
-  {
-    icon: "pill",
-    title: "30+ Pharmacies, Intelligent Routing",
-    body: "Every order routes to the fastest and cheapest source for that specific SKU. GLP-1, compounding, ED, HRT, peptides, hair, all covered. You never negotiate a pharmacy relationship or manage a pharmacy API.",
-  },
-  {
-    icon: "portal",
-    title: "Patient Portal Under Your Brand",
-    body: "Your patients go to portal.yourbrand.com. They manage subscriptions, view Rx history, message their physician, and track shipments, all under your name. PharmaBro is invisible to them.",
-  },
-  {
-    icon: "chart",
-    title: "Full Tracking From Day 1",
-    body: "Meta CAPI, GA4, TikTok Pixel, Everflow, Triple Whale, Klaviyo, all pre-wired to your brand. Your ROAS is attributable from the first patient, not month three when you figure out integrations.",
-  },
-] as const;
+/* ------------------------------------------------------------------- blog */
 
-/* --------------------------------------------------------------- section 9 */
+export const BLOG_H2 = ["Field notes from the teams", "building telehealth brands."];
+export const BLOG_SUB =
+  "On compliance, pharmacy, and growth, written by the people who operate brands with PharmaBro.";
 
-export const DASHBOARD_NAV = [
-  "Dashboard",
-  "Patients",
-  "Orders",
-  "Pharmacy Queue",
-  "Rebill Engine",
-  "Analytics",
-  "Brands",
-  "Settings",
-];
-
-export const DASHBOARD_POINTS = [
+export const BLOG_CARDS = [
   {
-    title: "Multi-brand dashboard",
-    body: "Run unlimited brands from one admin. Each brand is isolated. See everything from one login.",
+    category: "Compliance",
+    date: "Aug 2026",
+    title: "DEA extends telemedicine flexibilities through 2026",
+    body: "What the extension means for GLP-1, TRT, and controlled substance prescribing.",
+    slot: "Medication on a clean surface",
   },
   {
-    title: "Churn analytics by cohort",
-    body: "See exactly which patient group, treatment, or month is churning and why. Fix it before it compounds.",
+    category: "Growth",
+    date: "Aug 2026",
+    title: "The 5 best white label telehealth platforms in 2026",
+    body: "Features, pricing, and data ownership across the major platforms.",
+    slot: "Pharmacy lab",
   },
   {
-    title: "Rebill forecasting",
-    body: "Know your next 30, 60, and 90 days of revenue before it hits. Failed payment recovery runs automatically.",
+    category: "Pharmacy",
+    date: "Jul 2026",
+    title: "From prescription to doorstep: inside a compounded GLP-1 order",
+    body: "The exact path a semaglutide prescription takes from approval to delivery.",
+    slot: "Cold-pack shipping box",
   },
   {
-    title: "Patient data export",
-    body: "Full CSV of every patient, card token, Rx history, and subscription status in 24 hours. Your data. Always.",
+    category: "Compliance",
+    date: "Jul 2026",
+    title: "LegitScript certification: the real timeline, week by week",
+    body: "What actually happens during review and how to prepare for it.",
+    slot: "Checklist and documents",
+  },
+  {
+    category: "Growth",
+    date: "Jun 2026",
+    title: "Pricing a weight-loss subscription patients keep for a year",
+    body: "How to structure GLP-1 pricing that converts and still retains at month 12.",
+    slot: "Patient receiving a package",
   },
 ];
 
-/* -------------------------------------------------------------- section 10 */
+/* ---------------------------------------------------------------- pricing */
 
-export const MATH_ROWS = [
-  {
-    label: "Monthly patient billings",
-    pharmabro: "$89,700",
-    openloop: "$89,700",
-    cuvo: "$89,700",
-  },
-  {
-    label: "Platform cost",
-    pharmabro: "$2,500/mo flat",
-    openloop: "$31,395 (35%)",
-    cuvo: "$8,000 + markups",
-  },
-  {
-    label: "You keep",
-    pharmabro: "$87,200",
-    openloop: "$58,305",
-    cuvo: "~$73,000",
-    emphasize: true,
-  },
-  {
-    label: "Annual difference vs PharmaBro",
-    pharmabro: "—",
-    openloop: "PharmaBro saves $346,740/yr",
-    cuvo: "PharmaBro saves ~$168,000/yr",
-  },
-];
+export const PRICING_H2 = "Flat, transparent pricing.";
+export const PRICING_SUB =
+  "PharmaBro charges one setup fee and one monthly platform fee. Medication passes through at our negotiated pharmacy rates. PharmaBro never takes a cut of your revenue or your patients.";
 
-export const MATH_FOOTNOTE =
-  "At 300 patients, PharmaBro costs you 2.8% of revenue. OpenLoop costs 35%. That's $346,740 per year on the same patient base, the cost of three full-time employees.";
-
-/* -------------------------------------------------------------- section 11 */
-
-export const LEGITSCRIPT_BARS = [
-  { label: "PharmaBro", value: "7-14 days", weight: 14, own: true },
-  { label: "Cuvo", value: "7-14 days (Cuvo average)", weight: 14, own: false },
-  { label: "Industry solo", value: "3-6 months", weight: 100, own: false },
-];
-
-export const LEGITSCRIPT_PANELS = [
-  {
-    title: "Approved in days, not months",
-    body: "We manage the entire LegitScript application end to end, from document prep to submission to approval. You sign one form. We handle everything else. Typical approval: 12 days.",
-  },
-  {
-    title: "Every major ad platform, unlocked",
-    body: "One LegitScript certification opens Meta Ads, Google Ads, and TikTok Ads. Run healthcare advertising everywhere without restriction from your first week in market.",
-  },
-];
-
-export const AD_PLATFORMS = ["Meta Ads", "Google Ads", "TikTok Ads"];
-
-/* -------------------------------------------------------------- section 12 */
-
-export const SWITCHING_CARDS = [
-  {
-    title: "Patients and subscriptions move with you",
-    body: "Active patients, treatment plans, and recurring billing schedules are migrated and verified before you go live on PharmaBro. No patient sees any disruption.",
-  },
-  {
-    title: "Your Stripe and your data stay yours",
-    body: "Revenue has always gone to your account. Patient records export in full. Every card token, Rx record, and subscription detail comes with you.",
-  },
-  {
-    title: "No downtime for patients",
-    body: "Patients keep their portal access, their Rx history, and their physician relationship while the migration happens behind the scenes. Go-live is seamless.",
-  },
-];
-
-/* -------------------------------------------------------------- section 13 */
-
-export const TESTIMONIALS = [
-  {
-    quote:
-      "We were on OpenLoop handing over 35% of every dollar, after running ads, acquiring patients, and building the brand ourselves. With PharmaBro we launched our own Stripe in week one, went live in nine days, and our effective margin went from 43% to 71%. We wish we'd switched six months earlier.",
-    name: "Daniel Reyes",
-    title: "CEO & Founder",
-    brand: "Northline",
-  },
-  {
-    quote:
-      "PharmaBro is what Blissley runs on. The intake builder, the pharmacy routing, the rebill engine, everything works the way you expect it to. We were taking patients in seven days from starting. Zero revenue share, full data ownership. This is what building your own brand actually means.",
-    name: "Priya Anand",
-    title: "Founder",
-    brand: "Blissley",
-  },
-  {
-    quote:
-      "LegitScript in 12 days. Pharmacy connected in two hours. First patient in nine days total. We compared Bask, Cuvo, and Rimo before choosing PharmaBro. The in-house rebill engine alone saves us $1,200 a month. And we own every part of the business.",
-    name: "Marcus Hale",
-    title: "Co-founder & COO",
-    brand: "Verawell",
-  },
-];
-
-/* -------------------------------------------------------------- section 14 */
-
-export const TRUST_MARKS = [
-  "HIPAA Compliant",
-  "LegitScript Certified",
-  "AES-256 + TLS",
-  "SOC 2 (in progress)",
-];
-
-/* ------------------------------------------------- product tabs (Rimo grammar) */
-
-export type ProductTab = {
-  id: "dashboard" | "intake" | "portal" | "rebill";
-  label: string;
-  micro: string;
-  title: string;
-  body: string;
-  points: string[];
+export const PRICING_PEEK = {
+  title: "Pricing that scales with you",
+  body: "PharmaBro charges one setup fee and one monthly platform fee, plus a small transaction fee that decreases as you grow.",
+  setup: "$15,000",
+  monthly: "$1,500",
+  tierNote: "Launch tier, 0 to 500 patients",
+  facts: [
+    "$30 per consult in month one",
+    "3% to 1.5% transaction fee by tier",
+    "LegitScript included",
+  ],
+  ladder:
+    "Grow: $25,000 setup and $3,000 per month. Scale: $50,000 setup and $5,000 per month. Enterprise: custom.",
 };
 
-export const PRODUCT_TABS: ProductTab[] = [
+/* -------------------------------------------------------------------- faq */
+
+export const FAQ_H2 = ["Common questions", "about PharmaBro."];
+export const FAQ_INTRO =
+  "PharmaBro is a white label telehealth platform for brand founders, operators, and creators. PharmaBro operates the licensed clinic, and you own the brand, the customers, and the revenue.";
+
+export const FAQ_ITEMS = [
   {
-    id: "dashboard",
-    label: "Admin dashboard",
-    micro: "One login, every brand",
-    title: "Run the whole clinic from one screen.",
-    body: "Revenue, patients, orders, pharmacy queue, and rebill forecast in a single admin. Each brand stays isolated, and you see all of them from one login.",
-    points: [
-      "Unlimited brands, one account",
-      "Churn analytics by cohort",
-      "Rebill forecast for the next 90 days",
-    ],
+    q: "What is PharmaBro?",
+    a: "PharmaBro is a white label telehealth infrastructure platform. PharmaBro operates the licensed medical group, pharmacy network, patient portal, compliance stack, and clinical software under your brand's name, so you can launch a GLP-1, TRT, hair loss, or sexual health brand without building any of that infrastructure yourself.",
   },
   {
-    id: "intake",
-    label: "Intake builder",
-    micro: "No code, no dev tickets",
-    title: "Build the intake quiz yourself, in an afternoon.",
-    body: "Drag screens, set branching logic, and publish to your domain. Every answer lands in the physician review queue with the clinical flags already applied.",
-    points: [
-      "Conditional branching per treatment",
-      "Screen level drop off tracking",
-      "Publishes to your own domain",
-    ],
+    q: "Who is PharmaBro for?",
+    a: "Brand founders, operators, and creators who already have an audience and want to launch a telehealth vertical. If you have customers and marketing, PharmaBro gives you the clinic.",
   },
   {
-    id: "portal",
-    label: "Patient portal",
-    micro: "Your name on every screen",
-    title: "Patients never see PharmaBro.",
-    body: "Your patients go to portal.yourbrand.com. They manage subscriptions, view Rx history, message their physician, and track shipments, all under your name.",
-    points: [
-      "Your logo, your domain, your emails",
-      "Physician messaging built in",
-      "Shipment tracking on every order",
-    ],
+    q: "Does a founder need a medical license?",
+    a: "No. PharmaBro operates the licensed medical group. Every consult, prescription, and refill decision is made by state-licensed physicians and nurse practitioners under PharmaBro's medical group. You own and operate the non-clinical brand under an MSO structure.",
   },
   {
-    id: "rebill",
-    label: "Rebill engine",
-    micro: "Built in house, not Stripe billing",
-    title: "Every rebill keeps 0.5 to 1% more.",
-    body: "We tokenize every card as a one time transaction instead of using a subscription API, and we bill 13 months in a year. On a $100K per month brand that is $500 to $1,000 back every month.",
-    points: [
-      "13 billing cycles per year",
-      "Automatic failed payment recovery",
-      "Up to 5 MIDs with smart routing",
-    ],
+    q: "What does PharmaBro cover?",
+    a: "Physicians in all 50 states, pharmacy network and fulfillment, white label patient portal, admin dashboard, intake builder, rebill engine, email flows, LegitScript certification, and ongoing compliance.",
+  },
+  {
+    q: "Which treatment categories does PharmaBro support?",
+    a: "Weight loss (GLP-1), TRT, HRT, hair loss, sexual health, and peptides and longevity. All six have pre-built clinical pathways ready from day one.",
+  },
+  {
+    q: "Who owns the patients and the data?",
+    a: "You do. Patient records, order history, and card tokens are exportable at any time. Payments go directly to your Stripe account. PharmaBro never holds your revenue.",
+  },
+  {
+    q: "How fast can a brand launch?",
+    a: "14 days from signed agreement to first patient. Days 1 to 2: setup and onboarding. Days 3 to 7: platform configured and live on your domain. Days 7 to 14: LegitScript certified. Day 14: the first patient can check out.",
+  },
+  {
+    q: "How does PharmaBro handle compliance?",
+    a: "LegitScript certification is included in every tier. PharmaBro's medical group operates under HIPAA, DEA, and state licensing requirements. SOC 2 compliance documentation is available on request.",
   },
 ];
 
-/* --------------------------------------------------------- bento feature grid */
+/* -------------------------------------------------------------- final cta */
 
-export const BENTO = {
-  micro: "The stack underneath",
-  h2Lead: "Everything a telehealth brand needs.",
-  h2Trail: "None of the revenue share.",
-  cards: [
-    {
-      id: "payments",
-      title: "Your Stripe, your revenue",
-      body: "Patients pay your merchant account directly. We connect over OAuth, so we never touch your money.",
-    },
-    {
-      id: "pharmacy",
-      title: "30+ pharmacies, SKU level routing",
-      body: "Each order routes to the fastest and cheapest source for that exact SKU. You never manage a pharmacy API.",
-    },
-    {
-      id: "legitscript",
-      title: "LegitScript in 7-14 days",
-      body: "We file and manage the application as an enterprise partner. You sign one form.",
-    },
-    {
-      id: "tracking",
-      title: "Tracking wired on day one",
-      body: "Meta CAPI, GA4, TikTok Pixel, Everflow, Triple Whale, and Klaviyo are pre-wired to your brand.",
-    },
-    {
-      id: "data",
-      title: "Full data export in 24 hours",
-      body: "Every patient, card token, Rx record, and subscription status in CSV whenever you ask.",
-    },
-  ],
-} as const;
+export const CTA_H2 = ["Your telehealth brand,", "taking patients in 14 days."];
+export const CTA_BODY =
+  "Physicians, pharmacy, payments, and subscriptions, all handled, so you can focus on marketing and growth.";
+export const CTA_FOOT = "Month to month. Your brand, your patients.";
 
-/* ------------------------------------------------------- 4 step order journey */
-
-export const JOURNEY = {
-  micro: "One patient, end to end",
-  h2Lead: "What happens after a patient clicks buy.",
-  h2Trail: "All of it, without you in the loop.",
-  steps: [
-    {
-      num: "01",
-      title: "Intake and checkout",
-      body: "The patient completes your branded quiz and pays on your domain. Revenue settles to your Stripe the same day.",
-      meta: "Under 4 minutes",
-    },
-    {
-      num: "02",
-      title: "Physician review",
-      body: "A licensed physician in the patient's state reviews the intake, approves, and writes the prescription.",
-      meta: "Same day",
-    },
-    {
-      num: "03",
-      title: "Pharmacy routing and ship",
-      body: "The Rx routes to the cheapest qualified pharmacy for that SKU, ships to the door, and tracking posts to the portal.",
-      meta: "2-5 days",
-    },
-    {
-      num: "04",
-      title: "Rebill scheduled",
-      body: "The next cycle is scheduled automatically, with failed payment recovery running in the background.",
-      meta: "Every 30 days",
-    },
-  ],
-} as const;
-
-/* ------------------------------------------------- section 15: pricing peek */
-
-export const PRICING_PEEK = [
-  {
-    tier: "Starter",
-    price: "$1,000",
-    per: "per month",
-    body: "One brand, one category. Everything included: portal, pharmacy network, physicians, LegitScript filing.",
-  },
-  {
-    tier: "Growth",
-    price: "$2,500",
-    per: "per month",
-    body: "Up to three brands, multi-MID routing, funnel and intake builders, priority pharmacy routing.",
-    featured: true,
-  },
-  {
-    tier: "Scale",
-    price: "$5,000",
-    per: "per month",
-    body: "Unlimited brands, dedicated compliance lead, custom integrations, quarterly margin reviews.",
-  },
-];
-
-export const PRICING_FACTS = [
-  "$5,000 one-time setup",
-  "$30 per consult in month one",
-  "0% markup on medication",
-  "No revenue share, ever",
-  "Payments settle to your own Stripe",
-];
-
-/* --------------------------------------------------------- section 16: FAQ */
-
-export const FAQ_ITEMS: { q: string; a: string }[] = [
-  {
-    q: "Does PharmaBro take a revenue share?",
-    a: "No. PharmaBro charges a flat monthly platform fee between $1,000 and $5,000 plus a $5,000 one time setup. Patient payments settle directly into your own Stripe merchant account, so your revenue never passes through us.",
-  },
-  {
-    q: "How long does it take to launch a telehealth brand?",
-    a: "Seven days. Days 1 to 2 you build your brand and connect Stripe, days 2 to 5 we file LegitScript and connect pharmacies and physicians, days 6 to 7 your first patients check out.",
-  },
-  {
-    q: "How fast is LegitScript certification?",
-    a: "7 to 14 days, with a typical approval at 12 days. PharmaBro is a LegitScript enterprise partner and manages the entire application, which unlocks Meta, Google, and TikTok healthcare advertising.",
-  },
-  {
-    q: "What does the medication actually cost?",
-    a: "You pay pharmacy cost with 0% markup from PharmaBro. Consults are $30 each in month one. Every number is visible in your dashboard before a patient is charged.",
-  },
-  {
-    q: "Do I own my patient data?",
-    a: "Yes. You can export a full CSV of every patient, card token, prescription record, and subscription status within 24 hours, at any time.",
-  },
-  {
-    q: "Can I move an existing brand onto PharmaBro?",
-    a: "Yes. Migration is free and white glove. We import patients, card tokens, and active subscriptions from OpenLoop, Bask, Cuvo, or any other platform without interrupting a single refill.",
-  },
-  {
-    q: "Which categories can I sell?",
-    a: "Weight loss and GLP-1, men's health including TRT and ED, women's hormones, peptide therapy, hair loss, sexual health, and longevity. You can run several categories under one brand or several brands under one account.",
-  },
+export const CTA_PRODUCTS = [
+  "/assets/vial-semaglutide.png",
+  "/assets/vial-tirzepatide.png",
+  "/assets/ship-box.png",
+  "/assets/blissley-tirzepatide-vial-transparent.png",
 ];
