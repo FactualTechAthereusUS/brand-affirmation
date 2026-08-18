@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Cell, MicroLabel } from "../primitives";
-import { featureGroups, tiers } from "@/lib/pharmabro/pricing";
+import { featureGroups, planColumns } from "@/lib/pharmabro/pricing";
 import { cn } from "@/lib/utils";
 
-const PLANS = tiers.map((t) => ({ name: t.name, popular: Boolean(t.popular) }));
-
 /**
- * Full feature table across the four plans. Groups collapse on request so the
- * 100+ rows stay walkable, and the popular column is tinted the whole way down.
+ * Full feature table across the four plan columns. Groups collapse on request
+ * so the long list stays walkable, and the popular column is tinted the whole
+ * way down.
  */
 export function FeatureTable() {
   const [closed, setClosed] = useState<Record<string, boolean>>({});
@@ -19,7 +18,7 @@ export function FeatureTable() {
         <thead className="sticky top-0 z-10 bg-canvas">
           <tr className="border-b border-[var(--color-hairline)]">
             <th className="pb-micro w-[36%] px-4 py-4 font-normal sm:px-5">Capability</th>
-            {PLANS.map((p) => (
+            {planColumns.map((p) => (
               <th
                 key={p.name}
                 className={cn(
@@ -60,17 +59,17 @@ export function FeatureTable() {
                 : g.rows.map((row) => (
                     <tr
                       key={row.label}
-                      className="border-b border-[var(--color-hairline)]"
+                      className="border-b border-[var(--color-hairline)] transition-colors hover:bg-[#F5F3FF]"
                     >
                       <td className="px-4 py-3 text-[13.5px] leading-snug text-ink sm:px-5">
                         {row.label}
                       </td>
                       {row.values.map((v, i) => (
                         <td
-                          key={PLANS[i]!.name}
+                          key={planColumns[i]!.name}
                           className={cn(
                             "px-4 py-3 align-middle sm:px-5",
-                            PLANS[i]!.popular &&
+                            planColumns[i]!.popular &&
                               "bg-[color-mix(in_oklab,var(--color-marine)_5%,white)]",
                           )}
                         >
