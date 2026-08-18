@@ -18,6 +18,7 @@ import {
   FAQ_INTRO,
   FAQ_ITEMS,
   GROWTH_H2,
+  GROWTH_SHOTS,
   GROWTH_TABS,
   LEGIT_BARS,
   LEGIT_BODY,
@@ -297,13 +298,20 @@ export function GrowthBand() {
       <Container size="full" className="relative mt-12">
         <Rise>
           <div className="overflow-hidden rounded-[20px] border border-white/15 bg-white/5 p-2 backdrop-blur-xl">
-            <img
-              src="/assets/pharmabro-dashboard.png"
-              alt="PharmaBro analytics dashboard"
-              loading="lazy"
-              decoding="async"
-              className="w-full rounded-[14px] object-cover"
-            />
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.img
+                key={GROWTH_SHOTS[i].src}
+                src={GROWTH_SHOTS[i].src}
+                alt={GROWTH_SHOTS[i].alt}
+                loading="lazy"
+                decoding="async"
+                initial={{ opacity: 0, y: 14, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.99 }}
+                transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
+                className="w-full rounded-[14px] object-cover"
+              />
+            </AnimatePresence>
           </div>
         </Rise>
       </Container>
