@@ -3,15 +3,6 @@ import { Fragment } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import {
-  BarChart3,
-  CreditCard,
-  MonitorSmartphone,
-  Pill,
-  RefreshCw,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
-import {
   Btn,
   Card,
   Cell,
