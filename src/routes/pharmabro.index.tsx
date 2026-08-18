@@ -355,7 +355,7 @@ function PharmaBroHome() {
       {/* 03 · hero */}
       <section className="bg-canvas pb-16 pt-10 sm:pt-16 lg:pb-24 lg:pt-20">
         <Wrap>
-          <div className="mx-auto max-w-[760px] text-center">
+          <div className="mx-auto max-w-[760px] text-center lg:max-w-[1020px]">
             <HeroText delay={0.2}>
               <Link
                 to="/pharmabro/platform"
