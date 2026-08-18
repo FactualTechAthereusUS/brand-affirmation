@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -347,8 +347,8 @@ export function Comparison() {
                 </thead>
                 <tbody>
                   {COMPARE_TABLE.map((g) => (
-                    <>
-                      <tr key={g.group} className="bg-canvas">
+                    <Fragment key={g.group}>
+                      <tr className="bg-canvas">
                         <td
                           colSpan={COMPARE_COLUMNS.length + 1}
                           className="border-y border-[var(--color-hairline)] px-5 py-3"
@@ -372,7 +372,7 @@ export function Comparison() {
                           ))}
                         </tr>
                       ))}
-                    </>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
