@@ -377,16 +377,17 @@
   position: relative;
   border-radius: 32px;
   padding: 40px;
+  overflow: hidden;
   background: conic-gradient(
     from var(--pb-angle),
-    #1b4ef5 0%,
-    #8aa8ff 12%,
-    #e8eeff 24%,
-    #1b4ef5 38%,
-    #b9c9ff 55%,
-    #f2f5ff 68%,
-    #4f7bff 82%,
-    #1b4ef5 100%
+    #f8faff 0%,
+    #e8eeff 12%,
+    #ffffff 24%,
+    #f2f5ff 38%,
+    #e0e8ff 55%,
+    #ffffff 68%,
+    #eef2ff 82%,
+    #f8faff 100%
   );
   animation: pb-liquid-spin 7s linear infinite;
   box-shadow:
