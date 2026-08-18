@@ -176,7 +176,7 @@ export function PharmaBroNav() {
                 <img
                   src={WORDMARK}
                   alt="PharmaBro"
-                  className="hidden h-[18px] w-auto object-contain mix-blend-multiply md:block"
+                  className="hidden h-[30px] w-auto object-contain mix-blend-multiply md:block"
                 />
               </Link>
 
