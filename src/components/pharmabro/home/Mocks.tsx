@@ -113,21 +113,19 @@ function Kpi({ label, value, sub }: { label: string; value: string; sub?: string
 
 function Operations() {
   return (
-    <Chrome title="Operations, all brands">
-      <div className="relative flex h-full min-h-0 items-center justify-center overflow-hidden bg-canvas">
-        <motion.img
-          src="/assets/pharmabro-operations-dashboard.png"
-          alt="PharmaBro live operations dashboard with real-time patient activity and global session map"
-          loading="lazy"
-          decoding="async"
-          initial={{ opacity: 0, scale: 1.02 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.9, ease: PB_EASE_SOFT }}
-          className="h-full w-full object-cover object-left"
-        />
-      </div>
-    </Chrome>
+    <div className="pb-liquid-soft relative flex h-full w-full items-center justify-center overflow-hidden">
+      <motion.img
+        src="/assets/pharmabro-operations-dashboard.png"
+        alt="PharmaBro live operations dashboard with real-time patient activity and global session map"
+        loading="lazy"
+        decoding="async"
+        initial={{ opacity: 0, y: 14, scale: 0.985 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.9, ease: PB_EASE_SOFT }}
+        className="relative z-10 max-h-full w-auto max-w-full rounded-[14px] object-contain shadow-[0_30px_80px_-40px_rgba(16,24,64,0.45)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)]"
+      />
+    </div>
   );
 }
 
