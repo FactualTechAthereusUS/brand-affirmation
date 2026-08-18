@@ -155,7 +155,7 @@ export function UnderOneRoof() {
 const RUNON_IMAGE: Record<string, string> = {
   Dashboard: "/assets/pharmabro-dashboard.png",
   "Intake Builder": "/assets/pharmabro-intake-builder.png",
-  "Custom Domains": "/assets/pharmabro-dashboard.png",
+  "Custom Domains": "/assets/pharmabro-custom-domains.png",
   "Patient Experience": "/assets/pharmabro-phone-intake.png",
 };
 
