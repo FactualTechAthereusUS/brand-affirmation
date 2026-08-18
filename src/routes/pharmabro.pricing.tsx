@@ -1,9 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   Btn,
-  Card,
   Check,
-  Chip,
   Container,
   MicroLabel,
   Reveal,
@@ -15,18 +13,43 @@ import {
 import { Faq, faqSchema, breadcrumbSchema } from "@/components/pharmabro/Faq";
 import { PricingTiers } from "@/components/pharmabro/pricing/PricingTiers";
 import { FeatureTable } from "@/components/pharmabro/pricing/FeatureTable";
-import { RevenueCalculator } from "@/components/pharmabro/pricing/RevenueCalculator";
 import {
   addOns,
+  cardsFootnote,
+  migrationBanner,
+  PRICING_REVIEWED,
+  PRICING_REVIEWED_ISO,
   pricingFaqs,
-  setupCards,
-  transparencyCallout,
+  setupBody,
+  setupStats,
+  transparency,
 } from "@/lib/pharmabro/pricing";
 
-const TITLE = "PharmaBro Pricing (2026) — Flat Fees, Zero Revenue Share";
+const TITLE = "PharmaBro Pricing — Flat Setup Fee, No Revenue Share";
 const DESCRIPTION =
-  "PharmaBro charges a flat monthly fee starting at $1,000/mo. No revenue share. No percentage of billings. Your Stripe. Your patients. Full feature table and plan comparison.";
+  "PharmaBro pricing starts at $15,000 setup + $1,500/month. LegitScript included. No revenue share, no medication markup. Month to month after setup.";
 const URL = "https://sweet-confirm-it.lovable.app/pharmabro/pricing";
+
+const OFFERS = [
+  {
+    name: "Launch",
+    price: "1500",
+    setup: "15000",
+    band: "0-500 active patients",
+  },
+  {
+    name: "Grow",
+    price: "3000",
+    setup: "25000",
+    band: "501-2,000 active patients",
+  },
+  {
+    name: "Scale",
+    price: "5000",
+    setup: "50000",
+    band: "2,001-5,000 active patients",
+  },
+];
 
 export const Route = createFileRoute("/pharmabro/pricing")({
   head: () => ({
@@ -45,34 +68,30 @@ export const Route = createFileRoute("/pharmabro/pricing")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
+          "@type": "Organization",
           name: "PharmaBro",
-          applicationCategory: "BusinessApplication",
-          operatingSystem: "Web",
+          url: "https://sweet-confirm-it.lovable.app/pharmabro",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "PharmaBro white-label telehealth platform",
+          serviceType: "White-label telehealth infrastructure",
+          provider: { "@type": "Organization", name: "PharmaBro" },
+          areaServed: "US",
           url: URL,
-          offers: [
-            {
-              "@type": "Offer",
-              name: "Launch",
-              price: "1000",
-              priceCurrency: "USD",
-              description: "Flat monthly fee, 0-500 active patients. No revenue share.",
-            },
-            {
-              "@type": "Offer",
-              name: "Growth",
-              price: "2500",
-              priceCurrency: "USD",
-              description: "Flat monthly fee, 500-2,000 active patients. No revenue share.",
-            },
-            {
-              "@type": "Offer",
-              name: "Scale",
-              price: "5000",
-              priceCurrency: "USD",
-              description: "Flat monthly fee, 2,000-5,000+ active patients. No revenue share.",
-            },
-          ],
+          dateModified: PRICING_REVIEWED_ISO,
+          offers: OFFERS.map((o) => ({
+            "@type": "Offer",
+            name: o.name,
+            price: o.price,
+            priceCurrency: "USD",
+            url: URL,
+            description: `Flat monthly platform fee for ${o.band}, plus a $${o.setup} one-time setup fee. No revenue share.`,
+          })),
         }),
       },
       {
@@ -96,143 +115,112 @@ export const Route = createFileRoute("/pharmabro/pricing")({
 function PricingPage() {
   return (
     <>
-      {/* ------------------------------------------------------------- hero */}
-      <Section className="pt-10 sm:pt-14">
+      {/* -------------------------------------------------- migration banner */}
+      <Section className="py-6 sm:py-8">
         <Container size="wide">
           <Reveal>
-            <div className="mb-6 flex flex-wrap items-center gap-2.5">
-              <MicroLabel>Pricing</MicroLabel>
-              <span className="pb-micro rounded-full border border-[var(--color-hairline)] px-2.5 py-1">
-                Pricing last reviewed: August 2026
-              </span>
-            </div>
-
-            <TwoTone
-              as="h1"
-              lead="Simple pricing."
-              trail="You keep what you earn."
-              className="max-w-[880px]"
-            />
-            <p className="pb-body mt-6 max-w-[700px] text-[16px] leading-relaxed sm:text-[17px]">
-              No revenue share. No percentage of your billings. One flat platform fee by
-              patient volume. You own your Stripe. You own your patients. You own your data.
-            </p>
-
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              <Chip tone="live">
-                PharmaBro launch guarantee: first patient in 7 days or we refund your setup fee
-              </Chip>
-              <Chip to="/pharmabro/compare">Compare vs revenue share</Chip>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-2.5">
-              <Btn to="/pharmabro/demo" size="lg">
-                Book a demo
-              </Btn>
-              <Btn to="/pharmabro/compare" variant="ghost" size="lg">
-                See every comparison
-              </Btn>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.08}>
-            <div className="mt-10 flex flex-col gap-3 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-mist)] p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 rounded-xl bg-[#F8F8F8] p-5 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-[14.5px] leading-relaxed text-ink">
-                Switching from another platform? Free white-glove migration. We move your
-                patients and data for you.
+                <span className="font-medium">{migrationBanner.lead}</span>{" "}
+                <span className="pb-dim">{migrationBanner.body}</span>
               </p>
-              <Btn to="/pharmabro/contact" variant="ghost">
-                Talk to migration
+              <Btn to={migrationBanner.cta.to} variant="ghost">
+                {migrationBanner.cta.label} →
               </Btn>
             </div>
           </Reveal>
         </Container>
       </Section>
 
-      {/* ------------------------------------------------------------ tiers */}
-      <Section band id="plans" className="py-14 sm:py-20">
-        <Container size="full">
+      {/* ------------------------------------------------------------- hero */}
+      <Section className="pt-4 pb-12 sm:pt-6 sm:pb-16">
+        <Container size="wide">
           <Reveal>
-            <MicroLabel className="mb-5">Plans</MicroLabel>
-            <TwoTone
-              lead="Three volume tiers,"
-              trail="plus headless for teams building their own front end."
-              className="max-w-[820px]"
-            />
-          </Reveal>
-          <div className="mt-10">
-            <PricingTiers />
-          </div>
+            <div className="mx-auto flex max-w-[720px] flex-col items-center text-center">
+              <MicroLabel className="mb-5">Pricing</MicroLabel>
+              <TwoTone as="h1" lead="Flat, transparent pricing." />
+              <p className="pb-body mt-6 max-w-[540px] text-[17px] leading-relaxed sm:text-[18px]">
+                PharmaBro charges one setup fee and one monthly platform fee. Medication
+                passes through at cost. PharmaBro never takes a percentage of your revenue
+                or your patients' billings.
+              </p>
 
-          <Reveal delay={0.08} className="mt-8">
-            <div className="rounded-xl border border-[color-mix(in_oklab,var(--color-marine)_28%,transparent)] bg-canvas p-6 sm:p-8">
-              <MicroLabel className="mb-3">Transparency</MicroLabel>
-              <h3 className="text-[20px] leading-snug text-ink">{transparencyCallout.title}</h3>
-              <p className="pb-body mt-3 max-w-[760px] text-[15px] leading-relaxed">
-                {transparencyCallout.body}
+              <ul className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                {["No revenue share", "LegitScript included", "Month to month"].map((t) => (
+                  <li key={t} className="flex items-center gap-2">
+                    <Check className="shrink-0" />
+                    <span className="text-[14px] text-ink">{t}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="pb-dim mt-5 text-[11px] tracking-[0.04em] uppercase">
+                Pricing last reviewed {PRICING_REVIEWED}
               </p>
             </div>
           </Reveal>
         </Container>
       </Section>
 
-      {/* ------------------------------------------------------ setup fee */}
+      {/* ------------------------------------------------------------ cards */}
+      <Section id="plans" className="pt-0 pb-14 sm:pb-20">
+        <Container size="wide" className="max-w-[1100px]">
+          <PricingTiers />
+          <Reveal delay={0.08}>
+            <p className="pb-dim mx-auto mt-8 max-w-[760px] text-center text-[13px] leading-relaxed">
+              {cardsFootnote}
+            </p>
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* -------------------------------------------------------- setup fee */}
       <Section>
         <Container size="wide">
-          <Reveal>
-            <MicroLabel className="mb-5">Setup</MicroLabel>
-            <TwoTone lead="One setup fee." trail="Month to month after that." className="max-w-[760px]" />
-            <p className="pb-body mt-6 max-w-[700px] text-[15px] leading-relaxed">
-              From day one we set up your entire clinic: pharmacy connections,{" "}
-              <Link
-                to="/pharmabro/platform/legitscript"
-                className="text-[var(--color-marine)] underline decoration-[color-mix(in_oklab,var(--color-marine)_35%,transparent)] underline-offset-4"
-              >
-                LegitScript in 7-14 days
-              </Link>
-              , patient portal, compliance structure, Stripe OAuth, pixel installation. One
-              setup fee. Then a flat monthly fee. No long-term contracts.
-            </p>
-          </Reveal>
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <MicroLabel className="mb-5">Setup</MicroLabel>
+              <TwoTone
+                lead="One setup fee."
+                trail="Then month to month."
+                className="max-w-[520px]"
+              />
+              {setupBody.map((p) => (
+                <p key={p} className="pb-body mt-6 max-w-[560px] text-[16px] leading-relaxed sm:text-[17px]">
+                  {p}
+                </p>
+              ))}
+            </Reveal>
 
-          <RevealGroup className="mt-10 grid gap-4 md:grid-cols-3">
-            {setupCards.map((c) => (
-              <RevealItem key={c.title}>
-                <Card className="h-full">
-                  <h3 className="text-[16px] font-medium text-ink">{c.title}</h3>
-                  <p className="pb-body mt-3 text-[14px] leading-relaxed">{c.body}</p>
-                </Card>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+            <RevealGroup className="grid gap-4">
+              {setupStats.map((s) => (
+                <RevealItem key={s.label}>
+                  <div className="rounded-xl border border-[var(--color-hairline)] bg-canvas p-6">
+                    <MicroLabel>{s.label}</MicroLabel>
+                    <div className="mt-3 text-[20px] leading-snug text-ink">{s.value}</div>
+                    <div className="pb-dim mt-1 text-[13px]">{s.sub}</div>
+                    <p className="pb-body mt-3 text-[14px] leading-relaxed">{s.body}</p>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
         </Container>
       </Section>
 
-      {/* ------------------------------------------------------ calculator */}
-      <Section band id="calculator">
+      {/* ----------------------------------------------------- transparency */}
+      <Section band>
         <Container size="wide">
           <Reveal>
-            <MicroLabel className="mb-5">Calculate your savings</MicroLabel>
-            <TwoTone
-              lead="A flat fee, or 35% of everything"
-              trail="you bill. Run your own numbers."
-              className="max-w-[820px]"
-            />
-            <p className="pb-body mt-6 max-w-[680px] text-[15px] leading-relaxed">
-              Set your patient count and average billing. The flat fee is the published plan
-              price at that volume, and the comparison column is a{" "}
-              <Link
-                to="/pharmabro/compare/$slug"
-                params={{ slug: "pharmabro-vs-openloop" }}
-                className="text-[var(--color-marine)] underline decoration-[color-mix(in_oklab,var(--color-marine)_35%,transparent)] underline-offset-4"
-              >
-                35% revenue share
-              </Link>{" "}
-              on the same revenue.
-            </p>
-          </Reveal>
-          <Reveal delay={0.06} className="mt-10">
-            <RevenueCalculator />
+            <div className="mx-auto max-w-[640px] text-center">
+              <MicroLabel className="mb-5">Transparency</MicroLabel>
+              <TwoTone lead={transparency.title} />
+              {transparency.body.map((p) => (
+                <p key={p} className="pb-body mt-6 text-[16px] leading-relaxed">
+                  {p}
+                </p>
+              ))}
+            </div>
           </Reveal>
         </Container>
       </Section>
@@ -243,20 +231,10 @@ function PricingPage() {
           <Reveal>
             <MicroLabel className="mb-5">Every feature, every plan</MicroLabel>
             <TwoTone
-              lead="The full table."
+              lead="Full plan comparison."
               trail="Nothing hidden behind a sales call."
-              className="max-w-[760px]"
+              className="max-w-[780px]"
             />
-            <p className="pb-body mt-6 max-w-[680px] text-[15px] leading-relaxed">
-              Includes the{" "}
-              <Link
-                to="/pharmabro/platform/payments"
-                className="text-[var(--color-marine)] underline decoration-[color-mix(in_oklab,var(--color-marine)_35%,transparent)] underline-offset-4"
-              >
-                in-house rebill engine
-              </Link>{" "}
-              on every plan, which saves 0.5-1% per billing cycle against Stripe recurring.
-            </p>
           </Reveal>
           <Reveal delay={0.06} className="mt-10">
             <FeatureTable />
@@ -268,35 +246,18 @@ function PricingPage() {
       <Section band>
         <Container size="wide">
           <Reveal>
-            <MicroLabel className="mb-5">Optional add-ons</MicroLabel>
-            <TwoTone lead="Bolt on what you need," trail="skip what you do not." className="max-w-[720px]" />
+            <MicroLabel className="mb-5">Add-ons</MicroLabel>
+            <TwoTone lead="Add-ons." trail="Bolt on what you need." className="max-w-[720px]" />
           </Reveal>
           <RevealGroup className="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] md:grid-cols-3">
             {addOns.map((a) => (
               <RevealItem key={a.name} className="bg-canvas p-6 sm:p-8">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="text-[16px] font-medium text-ink">{a.name}</h3>
-                  <span className="pb-micro whitespace-nowrap">{a.price}</span>
-                </div>
+                <h3 className="text-[16px] font-medium text-ink">{a.name}</h3>
                 <p className="pb-body mt-3 text-[14px] leading-relaxed">{a.body}</p>
+                <div className="pb-micro mt-5">{a.price}</div>
               </RevealItem>
             ))}
           </RevealGroup>
-
-          <Reveal delay={0.08} className="mt-8">
-            <ul className="flex flex-wrap gap-x-6 gap-y-2">
-              {[
-                "No revenue share on any plan",
-                "No platform transaction fees",
-                "Cancel any time, data out in 24 hours",
-              ].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <Check className="shrink-0" />
-                  <span className="pb-body text-[14px]">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
         </Container>
       </Section>
 
@@ -304,24 +265,37 @@ function PricingPage() {
       <Faq items={pricingFaqs} eyebrow="FAQ" lead="Pricing questions," trail="answered plainly." />
 
       {/* -------------------------------------------------------- final CTA */}
-      <Section band className="py-14 sm:py-16">
+      <section className="bg-[#0C0C0C] py-16 sm:py-20 lg:py-24">
         <Container size="wide">
           <Reveal>
-            <div className="flex flex-col gap-4 rounded-xl border border-[var(--color-hairline)] bg-canvas p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-              <p className="max-w-[560px] text-[18px] leading-snug text-ink sm:text-[20px]">
-                Flat fee, your Stripe, first patient in 7 days. See it running on your own
-                brand before you sign anything.
+            <div className="mx-auto flex max-w-[640px] flex-col items-center text-center">
+              <h2 className="text-3xl leading-[1.12] tracking-[-0.02em] font-normal text-white md:text-4xl">
+                Not sure which plan fits?
+              </h2>
+              <p className="mt-5 text-[16px] leading-relaxed text-white/60">
+                That's what the call is for.
               </p>
-              <div className="flex flex-wrap gap-2.5">
-                <Btn to="/pharmabro/demo">Book a demo</Btn>
-                <Btn to="/pharmabro/compare" variant="ghost">
-                  Compare platforms
+              <div className="mt-8 flex flex-wrap justify-center gap-2.5">
+                <Btn
+                  to="/pharmabro/demo"
+                  className="bg-white text-[#0C0C0C] hover:bg-white/90"
+                >
+                  Book a call
+                </Btn>
+                <Btn
+                  to="/pharmabro/platform"
+                  className="border border-white/25 bg-transparent text-white hover:bg-white/10"
+                >
+                  View demo
                 </Btn>
               </div>
+              <p className="mt-6 text-[12.5px] text-white/45">
+                Month to month. Your brand, your patients.
+              </p>
             </div>
           </Reveal>
         </Container>
-      </Section>
+      </section>
     </>
   );
 }

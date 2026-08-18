@@ -1,157 +1,185 @@
 /**
- * Pricing page content. Copy lifted verbatim from the PharmaBro spec.
- * The route file is a thin wrapper; every string a visitor reads lives here.
+ * Pricing page content. Every string a visitor reads on /pharmabro/pricing
+ * lives here; the route file is a thin composition wrapper.
  */
 
-export type TierId = "launch" | "growth" | "scale" | "headless";
+/** Visible "Pricing last reviewed" line and schema dateModified share this. */
+export const PRICING_REVIEWED = "August 2026";
+export const PRICING_REVIEWED_ISO = "2026-08-01";
+
+export type TierId = "launch" | "grow" | "scale";
 
 export type Tier = {
   id: TierId;
   name: string;
-  volume: string;
+  tagline: string;
   price: string;
-  priceNote?: string;
+  priceNote: string;
   setup: string;
-  blurb: string;
+  volume: string;
   cta: { label: string; to: string };
   popular?: boolean;
-  /** Heading for the bullet list, e.g. "Launch includes" or "Growth adds". */
   listLabel: string;
   features: string[];
+  consultFee: string;
+  txnFee: string;
 };
 
 export const tiers: Tier[] = [
   {
     id: "launch",
     name: "Launch",
+    tagline: "Your first brand, taking patients in 14 days.",
+    price: "$1,500",
+    priceNote: "/ month",
+    setup: "$15,000 one-time setup",
     volume: "0-500 patients",
-    price: "$1,000",
-    priceNote: "/mo",
-    setup: "+ $5K setup",
-    blurb:
-      "Everything needed to take a first patient: portal, intake, pharmacy routing, LegitScript, and your own Stripe.",
     cta: { label: "Get started", to: "/pharmabro/demo" },
-    listLabel: "Launch includes",
+    listLabel: "Included",
     features: [
-      "Brand admin dashboard",
-      "Stripe OAuth (your account, your money)",
-      "Patient portal under your domain",
-      "Intake builder (no-code, HIPAA compliant)",
-      "Pharmacy fulfillment (30+ pharmacies, intelligent routing)",
-      "LegitScript certification (7-14 days, fully managed)",
-      "Provider coverage all 50 states",
-      "In-house rebill engine (saves 0.5-1%/mo vs Stripe recurring)",
-      "Meta CAPI + GA4 + TikTok Pixel, pre-wired",
-      "Klaviyo full event sync",
-      "Subscription and billing management",
-      "Patient data export (CSV, 24 hours)",
-      "Shared support + onboarding guide",
+      "Licensed providers in all 50 states",
+      "Pharmacy fulfillment network",
+      "White-label patient portal",
+      "Intake builder (clinical templates)",
+      "Rebill and subscription engine",
+      "LegitScript filed and managed, $0",
+      "Your own Stripe account",
+      "Full data export, any day",
+      "HIPAA-compliant infrastructure",
     ],
+    consultFee: "Consult fees: $30, month 1 only · $0 refills",
+    txnFee: "Transaction fee: 3%",
   },
   {
-    id: "growth",
-    name: "Growth",
-    volume: "500-2K patients",
-    price: "$2,500",
-    priceNote: "/mo",
-    setup: "+ $5K setup",
-    blurb:
-      "For operators running more than one brand and rebilling at volume. Multi-MID routing, cohort analytics, dunning.",
+    id: "grow",
+    name: "Grow",
+    tagline: "Built for recurring revenue and a second brand.",
+    price: "$3,000",
+    priceNote: "/ month",
+    setup: "$25,000 one-time setup",
+    volume: "501-2,000 patients",
     cta: { label: "Get started", to: "/pharmabro/demo" },
     popular: true,
-    listLabel: "Growth adds",
+    listLabel: "Everything in Launch, plus",
     features: [
-      "Multi-MID payment routing (up to 3 processors)",
-      "Unlimited brands from one account",
-      "Cohort analytics and churn tracking",
-      "Advanced rebill forecasting dashboard",
-      "Failed payment recovery (dunning automation)",
+      "Lower transaction fee (2%)",
+      "Multiple brands, one account",
+      "Multi-brand dashboard",
+      "Failed payment recovery",
+      "Card account updater",
+      "Email and SMS sequence builder",
+      "Cohort and churn analytics",
       "Affiliate and coupon engine",
-      "Everflow + Triple Whale integrations",
-      "HubSpot integration",
-      "Dedicated account manager",
+      "Webhooks and API access",
       "Priority support",
     ],
+    consultFee: "Consult fees: $28, month 1 only · $0 refills",
+    txnFee: "Transaction fee: 2%",
   },
   {
     id: "scale",
     name: "Scale",
-    volume: "2K-5K+ patients",
+    tagline: "High volume. Lowest rate. Named team.",
     price: "$5,000",
-    priceNote: "/mo",
-    setup: "+ $10K setup",
-    blurb:
-      "Named launch and compliance team, custom integrations, migration from another platform, custom SLAs.",
-    cta: { label: "Contact sales", to: "/pharmabro/contact" },
-    listLabel: "Scale adds",
+    priceNote: "/ month",
+    setup: "$50,000 one-time setup",
+    volume: "2,001-5,000 patients",
+    cta: { label: "Get started", to: "/pharmabro/demo" },
+    listLabel: "Everything in Grow, plus",
     features: [
-      "Slack support (8am-4pm ET)",
-      "Bi-weekly growth strategy calls",
-      "Custom API integrations",
-      "Custom intake form build team",
+      "Lowest transaction fee (1.5%)",
+      "Dedicated account manager",
+      "Named launch and compliance team",
       "Patient migration from other platforms",
-      "Custom SLAs and uptime guarantees",
-      "Multi-MID routing (up to 5)",
-      "Quarterly business reviews",
-      "Enterprise pharmacy rate negotiation",
+      "Custom intake build team",
+      "Custom report builder",
+      "Priority pharmacy routing",
+      "99.9% uptime SLA",
     ],
-  },
-  {
-    id: "headless",
-    name: "Headless",
-    volume: "Custom",
-    price: "Custom",
-    setup: "Talk to us",
-    blurb:
-      "Raw pharmacy API access, your own providers, your own front end. Compliance stack as a service.",
-    cta: { label: "Book a demo", to: "/pharmabro/demo" },
-    listLabel: "Headless adds",
-    features: [
-      "All Scale features",
-      "Raw pharmacy API access",
-      "Bring your own pharmacy",
-      "Compliance stack as a service",
-      "MCP access for AI agents",
-      "Sandbox and custom integrations",
-      "Full data portability and warehouse sync",
-    ],
+    consultFee: "Consult fees: $25, month 1 only · $0 refills",
+    txnFee: "Transaction fee: 1.5%",
   },
 ];
 
-export const setupCards = [
+export const enterpriseRow = {
+  points: [
+    "5,000+ patients",
+    "Custom pricing",
+    "Custom SLA",
+    "Custom API integrations",
+  ],
+  cta: { label: "Talk to us", to: "/pharmabro/contact" },
+};
+
+export const cardsFootnote =
+  "Every plan includes licensed providers in all 50 states, pharmacy fulfillment, white-label patient portal, LegitScript certification, HIPAA infrastructure, and full data ownership. Consult fees apply to the initial consultation in month one only, refills carry no consult fee.";
+
+export const migrationBanner = {
+  lead: "Switching from another platform?",
+  body: "Free white-glove migration, we move your patients, subscriptions and data for you.",
+  cta: { label: "Talk to migration", to: "/pharmabro/contact" },
+};
+
+export const setupBody = [
+  "Every brand we launch is built for the operator who owns it. Providers are credentialed under your brand. Your legal structure is drafted for your ownership. Your patient portal and storefront are built on your domain. Your LegitScript application is filed and managed by us.",
+  "That is what the setup fee covers. After that, you pay one flat monthly fee. No annual contract, no penalty to cancel. Your patients, your records, your card tokens and your Stripe account stay with you the day you leave.",
+];
+
+export const setupStats = [
   {
-    title: "One-time setup fee",
-    body: "$5,000 standard (3-4 weeks) | $7,500 expedited (2 weeks) | $10,000-25,000 enterprise. Covers: pharmacy API registration, LegitScript application and filing, brand portal build, Stripe OAuth, Meta CAPI + pixel installation, compliance documentation.",
+    label: "One-time setup",
+    value: "$15,000 · Launch",
+    sub: "$25,000 · Grow  |  $50,000 · Scale",
+    body: "Covers provider credentialing, legal structure, portal build, pharmacy onboarding, LegitScript.",
   },
   {
-    title: "Month to month after that",
-    body: "No annual contracts. No revenue share. No percentage of sales. Flat fee based on active patient count. Cancel any time and your data exports in 24 hours.",
+    label: "Month to month",
+    value: "No annual contract",
+    sub: "No cancellation penalty",
+    body: "Cancel any time, your data and Stripe go with you.",
   },
   {
-    title: "Third-party financing available",
-    body: "Implementation fee can be financed through independent partners, subject to their approval and terms. PharmaBro is not a lender. Contact us and we will connect you.",
+    label: "Financing",
+    value: "Available",
+    sub: "Through independent partners",
+    body: "PharmaBro is not a lender and does not participate in financing arrangements.",
   },
 ];
+
+export const transparency = {
+  title: "Why our pricing is on this page.",
+  body: [
+    "Most platforms in this category make you book a call to find out what anything costs. We think you should know before you talk to anyone.",
+    "If the numbers do not work for your brand, you have saved yourself thirty minutes. If they do, the call moves faster.",
+  ],
+};
 
 export const addOns = [
   {
-    name: "Branded Mobile App",
-    price: "$4,999/mo",
-    body: "Full iOS + Android app under your brand name. App Store + Play Store published. Patients manage their account, track orders, and message their provider from your app.",
+    name: "Additional vertical",
+    price: "$2,500 one-time",
+    body: "Add a new treatment category to an existing brand.",
   },
   {
-    name: "Dedicated Account Manager",
-    price: "Custom",
-    body: "Named CSM assigned to your brand. Weekly strategy calls, proactive churn alerts, growth recommendations.",
+    name: "Priority launch",
+    price: "$5,000 one-time",
+    body: "Dedicated launch manager and prioritized setup for brands that need to be live in under 7 days.",
   },
   {
-    name: "PharmaBro AI Business Intelligence",
-    price: "$499/mo",
-    body: 'AI-powered revenue dashboards. Predictive LTV models. Churn risk scoring per patient cohort. Rebill probability forecasting. Natural-language reports ("How did GLP-1 patients churn last quarter?").',
+    name: "Custom intake quiz",
+    price: "$1,500 one-time",
+    body: "Bespoke intake questionnaire built to your clinical protocol, beyond the standard template library.",
   },
 ];
 
-/** Feature table. `values` is ordered [Launch, Growth, Scale, Headless]. */
+/** Feature table columns, ordered to match every row's `values` tuple. */
+export const planColumns = [
+  { name: "Launch", popular: false },
+  { name: "Grow", popular: true },
+  { name: "Scale", popular: false },
+  { name: "Enterprise", popular: false },
+];
+
 export type FeatureRow = { label: string; values: [string, string, string, string] };
 export type FeatureGroup = { group: string; rows: FeatureRow[] };
 
@@ -165,148 +193,88 @@ const r = (
 
 export const featureGroups: FeatureGroup[] = [
   {
-    group: "Clinical infrastructure",
+    group: "Clinical",
     rows: [
-      r("Licensed providers all 50 states", "✓", "✓", "✓", "—"),
-      r("Credentialing + malpractice coverage", "✓", "✓", "✓", "—"),
-      r("Medical director oversight", "✓", "✓", "✓", "—"),
-      r("Async telehealth consults", "✓", "✓", "✓", "Your team"),
-      r("Good Faith Exam included", "✓", "✓", "✓", "✓"),
-      r("Live video consults", "Add-on", "✓", "✓", "Your team"),
-      r("Clinical quality reviews", "—", "✓", "✓", "—"),
-      r("Bring your own providers", "—", "—", "✓", "✓"),
+      r("Licensed providers, all 50 states", "✓", "✓", "✓", "✓"),
+      r("Provider credentialing", "✓", "✓", "✓", "✓"),
+      r("Medical director oversight", "✓", "✓", "✓", "✓"),
+      r("Async consults", "✓", "✓", "✓", "✓"),
+      r("Consult fee (month 1 only)", "$30", "$28", "$25", "Custom"),
+      r("Refill consult fee", "$0", "$0", "$0", "$0"),
     ],
   },
   {
-    group: "Pharmacy and fulfillment",
+    group: "Pharmacy",
     rows: [
-      r("30+ national pharmacies", "✓", "✓", "✓", "✓"),
-      r("Intelligent SKU routing", "✓", "✓", "✓", "✓"),
-      r("Medication markup visible to brand", "0%", "0%", "0%", "0%"),
-      r("E-prescribing built in", "✓", "✓", "✓", "✓"),
-      r("Controlled substances where permitted", "✓", "✓", "✓", "✓"),
-      r("EPCS (electronically controlled Rx)", "✓", "✓", "✓", "✓"),
-      r("Refill authorization and triage", "✓", "✓", "✓", "✓"),
-      r("Lab ordering and results", "—", "✓", "✓", "✓"),
-      r("Prescription and refill management", "✓", "✓", "✓", "✓"),
-      r("Cold-chain and home delivery", "✓", "✓", "✓", "✓"),
-      r("Order tracking and shipment notifications", "✓", "✓", "✓", "✓"),
-      r("Pharmacy license reflected in every state", "✓", "✓", "✓", "✓"),
-      r("Bring your own pharmacy", "—", "—", "—", "✓"),
+      r("Pharmacy fulfillment", "✓", "✓", "✓", "✓"),
+      r("Routing by state and compound", "✓", "✓", "✓", "✓"),
+      r("Cold-chain fulfillment (GLP-1)", "✓", "✓", "✓", "✓"),
+      r("Order tracking under your brand", "✓", "✓", "✓", "✓"),
+      r("E-prescribing", "✓", "✓", "✓", "✓"),
+      r("Bring your own pharmacy", "—", "—", "✓", "✓"),
     ],
   },
   {
     group: "Brand and storefront",
     rows: [
-      r("Branded storefront and checkout", "✓", "✓", "✓", "Your own"),
-      r("Branded patient portal", "✓", "✓", "✓", "Your own"),
-      r("Your own custom domain", "✓", "✓", "✓", "Your own"),
-      r("Full white-label (zero PharmaBro branding)", "✓", "✓", "✓", "✓"),
-      r("Treatment verticals", "All", "All", "All", "Your choice"),
-      r("Custom intake and clinical protocols", "Templates", "Custom", "Custom", "Your own"),
-      r("Branded mobile app", "—", "Add-on", "Add-on", "Your own"),
-      r("Brands on one account", "1", "Unlimited", "Unlimited", "Unlimited"),
-      r("Multi-brand management from one login", "—", "✓", "✓", "✓"),
+      r("White-label patient portal", "✓", "✓", "✓", "✓"),
+      r("White-label storefront + checkout", "✓", "✓", "✓", "✓"),
+      r("Your own domain", "✓", "✓", "✓", "✓"),
+      r("Zero PharmaBro branding", "✓", "✓", "✓", "✓"),
+      r("Treatment verticals", "All", "All", "All", "All"),
+      r("Brands per account", "1", "Unlimited", "Unlimited", "Unlimited"),
+      r("Intake builder", "Templates", "Custom", "Custom", "Custom"),
     ],
   },
   {
-    group: "Ownership and portability",
+    group: "Ownership",
     rows: [
       r("Revenue share", "None", "None", "None", "None"),
-      r("Platform transaction fees", "None", "None", "None", "None"),
-      r("Patient full record ownership", "✓", "✓", "✓", "✓"),
-      r("Full data export any time (24h)", "✓", "✓", "✓", "✓"),
-      r("Revenue settles in YOUR Stripe account", "✓", "✓", "✓", "✓"),
-      r("Credit card and token export on exit", "✓", "✓", "✓", "✓"),
+      r("Transaction fee", "3%", "2%", "1.5%", "Custom"),
+      r("You own patient records", "✓", "✓", "✓", "✓"),
+      r("Full data export, any day", "✓", "✓", "✓", "✓"),
+      r("Revenue settles to your Stripe", "✓", "✓", "✓", "✓"),
+      r("Card tokens transfer if you leave", "✓", "✓", "✓", "✓"),
     ],
   },
   {
-    group: "Payments and revenue",
+    group: "Payments",
     rows: [
-      r("Cash-pay card checkout", "✓", "✓", "✓", "✓"),
-      r("In-house rebill engine (saves 0.5-1%)", "✓", "✓", "✓", "✓"),
-      r("Tokenized card storage (one-time charges)", "✓", "✓", "✓", "✓"),
-      r("13-month billing year", "✓", "✓", "✓", "✓"),
-      r("Failed payment recovery dunning", "✓", "✓", "✓", "✓"),
+      r("Your own Stripe account", "✓", "✓", "✓", "✓"),
+      r("Subscription + rebill engine", "✓", "✓", "✓", "✓"),
+      r("Failed payment recovery", "—", "✓", "✓", "✓"),
       r("Card account updater", "—", "✓", "✓", "✓"),
-      r("Chargeback and dispute support", "✓", "✓", "✓", "✓"),
-      r("Multi-MID routing", "—", "Up to 3", "Up to 5", "Custom"),
       r("Affiliate and coupon engine", "—", "✓", "✓", "✓"),
-      r("Revenue, retention, LTV dashboards", "Basic", "Full", "Full", "Custom"),
-      r("Rebill forecasting", "—", "✓", "✓", "✓"),
-      r("Cohort analytics by month", "—", "✓", "✓", "✓"),
-      r("PharmaBro AI Business Intelligence", "Add-on", "Add-on", "Add-on", "Custom"),
     ],
   },
   {
-    group: "Patient retention and growth",
+    group: "Retention",
     rows: [
-      r("Automated care workflows", "✓", "✓", "✓", "Your team"),
-      r("Branded shipping + check-in notifications", "✓", "✓", "✓", "✓"),
-      r("Branded patient messaging", "✓", "✓", "✓", "✓"),
+      r("Automated care workflows", "✓", "✓", "✓", "✓"),
       r("Email sequence builder", "—", "✓", "✓", "✓"),
-      r("SMS and in-app notifications", "—", "✓", "✓", "✓"),
-      r("Win-back campaigns", "—", "✓", "✓", "✓"),
-      r("Patient onboarding flows and checklists", "✓", "✓", "✓", "✓"),
+      r("SMS and push notifications", "—", "✓", "✓", "✓"),
+      r("Cohort and churn analytics", "—", "✓", "✓", "✓"),
       r("Custom report builder", "—", "—", "✓", "✓"),
     ],
   },
   {
-    group: "Integrations and developer platform",
+    group: "Compliance",
     rows: [
-      r("Meta CAPI", "✓", "✓", "✓", "✓"),
-      r("GA4", "✓", "✓", "✓", "✓"),
-      r("TikTok Pixel", "✓", "✓", "✓", "✓"),
-      r("Klaviyo", "✓", "✓", "✓", "✓"),
-      r("Everflow", "—", "✓", "✓", "✓"),
-      r("Triple Whale", "—", "✓", "✓", "✓"),
-      r("HubSpot", "—", "✓", "✓", "✓"),
-      r("Webhooks", "—", "✓", "✓", "✓"),
-      r("REST API access", "—", "—", "✓", "✓"),
-      r("MCP access for AI agents", "—", "—", "✓", "✓"),
-      r("Sandbox + test environment", "—", "✓", "✓", "✓"),
-      r("Custom API integrations", "—", "—", "—", "✓"),
+      r("LegitScript filed and managed", "✓", "✓", "✓", "✓"),
+      r("LegitScript additional cost", "$0", "$0", "$0", "$0"),
+      r("MSO structure drafted", "✓", "✓", "✓", "✓"),
+      r("HIPAA infrastructure + BAA", "✓", "✓", "✓", "✓"),
+      r("CPOM compliance, all 50 states", "✓", "✓", "✓", "✓"),
     ],
   },
   {
-    group: "Security and data protection",
+    group: "Support",
     rows: [
-      r("HIPAA-compliant infrastructure (AWS)", "✓", "✓", "✓", "✓"),
-      r("PHI encrypted in transit and at rest (AES-256, TLS 1.3)", "✓", "✓", "✓", "✓"),
-      r("Signed BAA", "✓", "✓", "✓", "✓"),
-      r("SOC 2 Type II (in progress)", "—", "✓", "✓", "✓"),
-      r("Role-based access control", "✓", "✓", "✓", "✓"),
-      r("ISO 27001", "—", "—", "—", "—"),
-      r("Audit logging and trace-back", "—", "✓", "✓", "✓"),
-      r("Third-party penetration testing", "—", "✓", "✓", "✓"),
-      r("Disaster recovery and encrypted backups", "✓", "✓", "✓", "✓"),
-      r("Uptime SLA", "99.5%", "99.9%", "99.9%", "Custom"),
-    ],
-  },
-  {
-    group: "Compliance and legal structure",
-    rows: [
-      r("MSO / friendly PC enterprise structure", "✓", "✓", "✓", "—"),
-      r("MSO agreements drafted and maintained", "✓", "✓", "✓", "—"),
-      r("CPOM compliance", "✓", "✓", "✓", "—"),
-      r("LegitScript certification managed", "Managed 7-14d", "Expedited", "Expedited", "—"),
-      r("50-state regulatory monitoring", "✓", "✓", "✓", "✓"),
-      r("DEA + telehealth disclosures", "✓", "✓", "✓", "✓"),
-      r("Federal consent and disclosure forms", "✓", "✓", "✓", "✓"),
-      r("Identity verification at intake", "✓", "✓", "✓", "✓"),
-    ],
-  },
-  {
-    group: "Implementation and support",
-    rows: [
-      r("Time to first patient", "7 days", "7 days", "7 days", "Under a week"),
+      r("Time to first patient", "14 days", "14 days", "14 days", "Custom"),
       r("White-glove migration", "✓", "✓", "✓", "✓"),
-      r("Onboarding", "Guided", "Dedicated", "White-glove", "Guided"),
-      r("Support", "Shared email", "Priority email", "Slack + priority", "Dedicated"),
-      r("Dedicated account manager", "Add-on", "✓", "✓", "Add-on"),
-      r("Named launch + compliance team", "—", "✓", "✓", "—"),
-      r("Quarterly business reviews", "—", "—", "✓", "—"),
-      r("PharmaBro launch guarantee", "✓", "✓", "✓", "✓"),
+      r("Support", "Email", "Priority", "Priority + Slack", "Dedicated"),
+      r("Dedicated account manager", "Add-on", "Add-on", "✓", "✓"),
+      r("Named compliance team", "—", "—", "✓", "✓"),
     ],
   },
 ];
@@ -314,44 +282,34 @@ export const featureGroups: FeatureGroup[] = [
 export const pricingFaqs = [
   {
     q: "What does PharmaBro cost?",
-    a: "PharmaBro charges a flat monthly fee based on active patient count: Launch ($1,000/mo, 0-500 patients), Growth ($2,500/mo, 500-2K patients), Scale ($5,000/mo, 2K-5K patients). All plans include a one-time implementation fee ($5,000 standard, $7,500 expedited). No revenue share, no percentage of billings, no hidden fees.",
-  },
-  {
-    q: "Is there a long-term contract?",
-    a: "No. PharmaBro is month-to-month. Cancel any time. Your full patient dataset, card tokens, and records export in 24 hours.",
+    a: "PharmaBro charges a one-time setup fee and a flat monthly platform fee based on active patient count. Launch is $15,000 setup + $1,500/month for 0-500 patients. Grow is $25,000 + $3,000/month for 501-2,000 patients. Scale is $50,000 + $5,000/month for 2,001-5,000 patients. Enterprise pricing is custom. There is no revenue share and no percentage of patient billings.",
   },
   {
     q: "What does the setup fee cover?",
-    a: "Pharmacy API registration with 30+ pre-integrated compounding partners, LegitScript application and filing (we manage the entire process), brand patient portal build and custom domain setup, Stripe OAuth connection, Meta CAPI and analytics pixel installation, and compliance documentation (MSO structure, CPOM, federal telehealth disclosures).",
+    a: "The setup fee covers provider credentialing under your brand, your MSO and legal structure, your branded storefront and patient portal built on your domain, pharmacy onboarding, analytics and pixel installation, and your LegitScript application filed and managed by PharmaBro end to end.",
   },
   {
-    q: "Does PharmaBro take a revenue share or markup on medications?",
-    a: "No revenue share. No percentage of your billings. Medications are priced competitively through our 30+ pharmacy network. You see the price your patients pay; we handle the pharmacy relationships.",
+    q: "Is there a long-term contract?",
+    a: "No. PharmaBro is month to month after the one-time setup. Cancel any time. Your patients, your records, your card tokens, and your Stripe account stay with you.",
   },
   {
     q: "Who owns the patients and the data?",
-    a: "You do. Patient records, card tokens, Rx history, and subscription data are yours. Export everything in 24 hours, any time, no questions asked.",
+    a: "You do. Patient records, order history, prescription history, and your customer list belong to your brand and export in full any day you ask. PharmaBro holds the data as your business associate under a signed BAA.",
   },
   {
-    q: "How fast can a brand launch?",
-    a: "Our guarantee is first patient in 7 days from signing. Most brands complete their intake builder in 2 hours on day one, LegitScript in 7-14 days running in parallel, and have their first patient in week one.",
+    q: "What is the consult fee?",
+    a: "$30 for an initial consultation in month one, per patient, on the Launch tier. The fee decreases by tier, $28 on Grow and $25 on Scale. Refill authorizations carry no consult fee on any tier.",
   },
   {
-    q: "What happens if I want to leave?",
-    a: "You export your data in 24 hours. Your Stripe account is yours, it always was. Your patient portal domain can be pointed to any new provider. No lock-in, no HIPAA migration nightmare, no revenue penalty for switching.",
+    q: "Does PharmaBro take a cut of medication?",
+    a: "No. Medication passes through at cost. PharmaBro earns its platform fee and the transaction fee on patient billings. That is the full fee structure.",
+  },
+  {
+    q: "How fast can my brand go live?",
+    a: "14 days from signing to taking patients. PharmaBro handles setup, build, and LegitScript in parallel. Most brands spend about two hours on day one choosing treatments and setting prices.",
+  },
+  {
+    q: "Can I switch plans as I grow?",
+    a: "Yes. You can upgrade from Launch to Grow or Grow to Scale at any time. Setup is not charged again on upgrade. Downgrading is available on request at the next billing cycle.",
   },
 ];
-
-export const transparencyCallout = {
-  title: "Why we publish our pricing.",
-  body: "Every competitor on this list, OpenLoop, Bask, WhitelabelMD, Wheel, requires a sales call to learn what anything costs. We believe you should know exactly what you are paying before you talk to anyone. If our pricing does not work for your brand, you should know that before wasting 30 minutes on a call. If it does work, the call moves faster.",
-};
-
-/** Flat monthly fee for a given active patient count, used by the calculator. */
-export function tierForPatients(patients: number): { name: string; fee: number } {
-  if (patients <= 500) return { name: "Launch", fee: 1000 };
-  if (patients <= 2000) return { name: "Growth", fee: 2500 };
-  return { name: "Scale", fee: 5000 };
-}
-
-export const REV_SHARE = 0.35;
