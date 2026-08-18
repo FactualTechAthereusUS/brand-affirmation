@@ -230,34 +230,63 @@ function Compliant() {
   );
 }
 
-/** Phone-shaped patient portal, deliberately not a dashboard. */
+/** Real phone photograph of the branded patient intake, with floating labels. */
 function Portal() {
+  const labels: { text: string; className: string; rotate: number; delay: number }[] = [
+    {
+      text: "Your brand, your domain",
+      className: "left-[2%] top-[16%]",
+      rotate: -6,
+      delay: 0.15,
+    },
+    {
+      text: "Intake in 4 steps",
+      className: "right-[3%] top-[34%]",
+      rotate: 5,
+      delay: 0.3,
+    },
+    {
+      text: "Provider matched by state",
+      className: "left-[1%] bottom-[16%]",
+      rotate: 4,
+      delay: 0.45,
+    },
+  ];
+
   return (
-    <div className={`grid h-full place-items-center ${mist} p-4`}>
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.7, ease: PB_EASE_SOFT }}
-        className={`w-[190px] rounded-[24px] border ${hair} bg-canvas p-3 shadow-[0_20px_50px_-30px_rgba(10,10,10,0.4)]`}
-      >
-        <div className="mx-auto h-1 w-10 rounded-full bg-[color-mix(in_oklab,var(--color-ink)_12%,transparent)]" />
-        <div className="pb-micro mt-3 text-[9.5px]">Your plan</div>
-        <div className="mt-1 text-[13px] font-medium text-ink">Semaglutide, month 3</div>
-        <div className={`mt-3 rounded-[12px] border ${hair} ${mist} px-3 py-2`}>
-          <div className="pb-micro text-[9px]">Next shipment</div>
-          <div className="pb-mono mt-0.5 text-[12px] text-ink">Sep 2, in transit</div>
-        </div>
-        <div className={`mt-2 rounded-[12px] border ${hair} px-3 py-2`}>
-          <div className="pb-micro text-[9px]">Message from your provider</div>
-          <div className="mt-0.5 text-[11.5px] leading-snug text-ink">
-            Dose looks good. Keep going.
-          </div>
-        </div>
-        <div className="mt-3 rounded-full bg-ink py-2 text-center text-[11px] font-medium text-canvas">
-          Message care team
-        </div>
-      </motion.div>
+    <div className={`relative h-full overflow-hidden ${mist}`}>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, color-mix(in oklab, var(--color-ink) 6%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--color-ink) 6%, transparent) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+        }}
+      />
+      <motion.img
+        src={phoneIntake.url}
+        alt="Patient intake on mobile, white labeled to your brand"
+        loading="lazy"
+        decoding="async"
+        initial={{ opacity: 0, y: 26, scale: 0.97 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 1, ease: PB_EASE_SOFT }}
+        className="relative z-10 mx-auto h-full w-full object-contain object-center"
+      />
+      {labels.map((l) => (
+        <motion.span
+          key={l.text}
+          initial={{ opacity: 0, y: 10, rotate: l.rotate }}
+          whileInView={{ opacity: 1, y: 0, rotate: l.rotate }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6, delay: l.delay, ease: PB_EASE_SOFT }}
+          className={`absolute z-20 max-w-[42%] rounded-[12px] border ${hair} bg-canvas px-3 py-2 text-[11.5px] font-medium leading-snug text-ink shadow-[0_18px_40px_-24px_rgba(10,10,10,0.45)] ${l.className}`}
+        >
+          {l.text}
+        </motion.span>
+      ))}
     </div>
   );
 }
