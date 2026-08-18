@@ -40,7 +40,7 @@ import {
   COMPARE_FOOTNOTE,
   COMPARE_TABLE,
   DASHBOARD_POINTS,
-  FEATURES,
+  FAQ_ITEMS,
   HERO_ROTATING,
   HERO_SUB,
   HERO_TRUST,
@@ -53,98 +53,46 @@ import {
   POSITIONING_H2,
   POSITIONING_PROOF,
   POSITIONING_QUOTE,
+  PRICING_FACTS,
+  PRICING_PEEK,
   STATS,
   STAT_STATIC,
   STEPS,
   SWITCHING_CARDS,
   TESTIMONIALS,
 } from "@/lib/pharmabro/home";
+import {
+  LAST_UPDATED,
+  ORG_NODE,
+  WEBSITE_NODE,
+  breadcrumbNode,
+  faqNode,
+  ldGraph,
+  pbCanonical,
+  pbMeta,
+  softwareNode,
+} from "@/lib/pharmabro/seo";
+import { HeroLine, KineticRule, Marquee, Rise } from "@/components/pharmabro/motion";
 import { cn } from "@/lib/utils";
 
-const TITLE = "White-Label Telehealth Platform | PharmaBro";
+const TITLE = "White Label Telehealth Platform, Flat Fee | PharmaBro";
 const DESCRIPTION =
-  "Launch your own telehealth brand in 7 days. Flat fee, zero revenue share, your own Stripe. LegitScript in 7-14 days and 30+ pharmacies pre-integrated.";
-const URL = "https://sweet-confirm-it.lovable.app/pharmabro";
+  "Launch your own telehealth brand in 7 days on a white label platform. Flat monthly fee, zero revenue share, your own Stripe, LegitScript in 7 to 14 days, 30+ pharmacies.";
 
 export const Route = createFileRoute("/pharmabro/")({
   head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESCRIPTION },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: URL },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "PharmaBro" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: URL }],
+    meta: pbMeta({ title: TITLE, description: DESCRIPTION }),
+    links: pbCanonical(),
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "Organization",
-              "@id": `${URL}#org`,
-              name: "PharmaBro",
-              url: URL,
-              description:
-                "White-label telehealth infrastructure for brand operators. Flat fee, zero revenue share.",
-            },
-            {
-              "@type": "SoftwareApplication",
-              name: "PharmaBro",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web",
-              url: URL,
-              offers: {
-                "@type": "Offer",
-                price: "2500",
-                priceCurrency: "USD",
-                description: "Flat monthly platform fee. No revenue share.",
-              },
-            },
-            {
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "Does PharmaBro take a revenue share?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "No. PharmaBro charges a flat monthly fee. Patient payments settle directly to your own Stripe merchant account, so platform revenue never passes through us.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How long does it take to launch a telehealth brand?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Seven days. Days 1 to 2 you build your brand and connect Stripe, days 2 to 5 we file LegitScript and connect pharmacies and physicians, days 6 to 7 your first patients check out.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How fast is LegitScript certification?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "7 to 14 days, with a typical approval at 12 days. PharmaBro is a LegitScript enterprise partner and manages the entire application, which unlocks Meta, Google, and TikTok healthcare advertising.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Do I own my patient data?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes. You can export a full CSV of every patient, card token, prescription record, and subscription status within 24 hours, at any time.",
-                  },
-                },
-              ],
-            },
-          ],
-        }),
+        children: ldGraph([
+          ORG_NODE,
+          WEBSITE_NODE,
+          softwareNode(),
+          faqNode(FAQ_ITEMS),
+          breadcrumbNode([{ name: "PharmaBro", path: "" }]),
+        ]),
       },
     ],
   }),
