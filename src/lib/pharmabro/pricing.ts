@@ -146,13 +146,6 @@ export const setupStats = [
   },
 ];
 
-export const transparency = {
-  title: "Why our pricing is on this page.",
-  body: [
-    "Most platforms in this category make you book a call to find out what anything costs. We think you should know before you talk to anyone.",
-    "If the numbers do not work for your brand, you have saved yourself thirty minutes. If they do, the call moves faster.",
-  ],
-};
 
 export const addOns = [
   {
