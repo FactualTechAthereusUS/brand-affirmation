@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { PB_EASE_SOFT } from "@/components/pharmabro/motion";
 import { Check } from "@/components/pharmabro/primitives";
-import phoneIntake from "@/assets/pharmabro-phone-intake.png.asset.json";
 
 /**
  * Coded product visuals, Rimo/Cuvo style: no screenshot placeholders, no
@@ -234,7 +233,7 @@ function Portal() {
         }}
       />
       <motion.img
-        src={phoneIntake.url}
+        src="/assets/pharmabro-phone-intake.png"
         alt="Patient intake on mobile, white labeled to your brand"
         loading="lazy"
         decoding="async"
