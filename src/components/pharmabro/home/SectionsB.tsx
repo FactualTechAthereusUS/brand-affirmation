@@ -126,33 +126,31 @@ export function Nationwide() {
           </Rise>
 
           <Rise delay={0.05}>
-            <div
-              className="relative overflow-hidden bg-canvas"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle, color-mix(in oklab, var(--color-ink) 9%, transparent) 1px, transparent 1px)",
-                backgroundSize: "18px 18px",
-              }}
-            >
-              <Corners tone="marine" />
-              <div className="grid items-center gap-6 lg:grid-cols-12">
-                <div className="p-6 sm:p-8 lg:col-span-8 lg:py-10 lg:pl-10 lg:pr-0">
-                  <UsProviderMap className="h-[240px] sm:h-[360px] lg:h-[440px]" />
-                </div>
-                <div className="px-6 pb-10 text-center sm:px-8 lg:col-span-4 lg:pb-0 lg:pr-12">
-                  <h3 className="text-[24px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[28px]">
-                    Providers in all 50 states
-                  </h3>
-                  <p className="pb-body mx-auto mt-4 max-w-[320px] text-[15px] leading-relaxed">
-                    A clinician network that reaches every state, so wherever a patient
-                    signs up there is already a licensed provider ready to review the
-                    visit and start care under your brand.
-                  </p>
-                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-3 py-1.5">
-                    <Check className="size-3.5" />
-                    <span className="text-[12.5px] text-ink">
-                      Licensed clinicians in all 50 states and D.C.
-                    </span>
+            <div className="pb-liquid-soft relative isolate overflow-hidden rounded-[20px] border border-white/60">
+              <div className="pb-dotgrid relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white/70 backdrop-blur-xl">
+                <Corners tone="marine" />
+                <div className="grid items-center gap-4 sm:gap-6 lg:grid-cols-12">
+                  <div className="px-3 pb-2 pt-8 sm:px-8 sm:pb-4 sm:pt-10 lg:col-span-8 lg:py-12 lg:pl-10 lg:pr-0">
+                    <UsProviderMap className="h-[210px] xs:h-[240px] sm:h-[360px] lg:h-[440px]" />
+                  </div>
+                  <div className="px-5 pb-9 text-center sm:px-8 sm:pb-12 lg:col-span-4 lg:pb-0 lg:pr-12 lg:text-left">
+                    <h3 className="text-balance text-[22px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[26px] lg:text-[28px]">
+                      Providers in all 50 states
+                    </h3>
+                    <p className="pb-body mx-auto mt-3 max-w-[340px] text-[14.5px] leading-relaxed sm:mt-4 sm:text-[15px] lg:mx-0">
+                      A clinician network that reaches every state, so wherever a patient
+                      signs up there is already a licensed provider ready to review the
+                      visit and start care under your brand.
+                    </p>
+                    <div className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-hairline)] bg-white/80 px-3 py-1.5 backdrop-blur">
+                      <Check className="size-3.5 shrink-0" />
+                      <span className="min-w-0 text-left text-[11.5px] leading-snug text-ink sm:text-[12.5px]">
+                        Licensed clinicians in all 50 states and D.C.
+                      </span>
+                    </div>
+                    <p className="pb-body mt-3 text-[10.5px] lg:text-left">
+                      Tap or hover a state to see its provider region.
+                    </p>
                   </div>
                 </div>
               </div>
