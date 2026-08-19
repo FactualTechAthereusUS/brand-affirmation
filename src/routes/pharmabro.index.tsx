@@ -64,8 +64,6 @@ function PharmaBroHome() {
   return (
     <>
       <HeroBlock />
-      <TrustStrip />
-      <ScaleStats />
       <CompleteClinic />
       <UnderOneRoof />
       <RunOn />
