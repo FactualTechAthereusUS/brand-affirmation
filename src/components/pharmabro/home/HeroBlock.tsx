@@ -9,7 +9,7 @@ import {
   HERO_SUB,
 } from "@/lib/pharmabro/home";
 import { Btn, Container, EyebrowPill } from "@/components/pharmabro/primitives";
-import { PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
+import { PB_EASE, PB_EASE_SOFT, PB_EASE_STD } from "@/components/pharmabro/motion";
 import { HeroPanel, HeroTabStrip } from "./HeroPanels";
 import { cn } from "@/lib/utils";
 
