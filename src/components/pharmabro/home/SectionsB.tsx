@@ -254,7 +254,7 @@ export function GrowthBand() {
         <div className="mt-12">
           {/* desktop: stacked image board + three inline tabs */}
           <div className="hidden lg:flex lg:flex-col">
-            <div className="relative aspect-[1158/584] w-full overflow-hidden rounded-[16px] bg-[var(--color-mist)]">
+            <div className="relative aspect-[1672/941] w-full overflow-hidden rounded-[16px]">
               {GROWTH_SHOTS.map((s, idx) => (
                 <img
                   key={s.src}
@@ -262,10 +262,11 @@ export function GrowthBand() {
                   alt={s.alt}
                   loading={idx === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ease-in-out ${idx === i ? "opacity-100" : "opacity-0"}`}
+                  className={`absolute inset-0 size-full object-contain transition-opacity duration-700 ease-in-out ${idx === i ? "opacity-100" : "opacity-0"}`}
                 />
               ))}
             </div>
+
 
             <div className="flex flex-col lg:flex-row">
               {GROWTH_TABS.map((t, idx) => {
