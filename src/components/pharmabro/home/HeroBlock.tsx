@@ -174,7 +174,14 @@ export function HeroBlock() {
           animate={!reduce}
         />
 
-        <div className="relative aspect-square w-full overflow-hidden border border-t-0 border-[var(--color-hairline)] bg-[color-mix(in_oklab,var(--color-ink)_2%,white)] lg:aspect-[2/1]">
+        <div
+          className={cn(
+            "relative w-full overflow-hidden border border-t-0 border-[var(--color-hairline)] bg-[color-mix(in_oklab,var(--color-ink)_2%,white)]",
+            tab === "operations"
+              ? "aspect-[1672/941]"
+              : "aspect-square lg:aspect-[2/1]",
+          )}
+        >
           {DASHBOARD_TABS.map((t) => (
             <div
               key={t.id}
