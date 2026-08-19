@@ -582,59 +582,39 @@ export function LegitScript() {
   return (
     <Section band id="legitscript">
       <Container size="wide">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <Rise>
-            <MicroLabel>Compliance</MicroLabel>
-            <h2 className="mt-4 text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.7rem]">
-              {LEGIT_H2[0]}
-              <span className="block pb-dim">{LEGIT_H2[1]}</span>
-            </h2>
-            <p className="pb-body mt-5 max-w-[55ch] text-[16.5px] leading-relaxed">
-              {LEGIT_BODY}
-            </p>
-            <div className="mt-7">
-              <Btn to="/pharmabro/demo" variant="blue">
-                Get started
-              </Btn>
+        <div className="relative">
+          <Corners tone="marine" />
+          <div className="px-1 sm:px-2">
+            <div className="hidden lg:absolute lg:right-2 lg:top-0 lg:block">
+              <LegitScriptMark className="text-[20px]" />
             </div>
-          </Rise>
-
-          <Rise delay={0.08}>
-            <div className="pb-card p-6">
-              <div className="pb-micro">Time to LegitScript certification</div>
-              <div className="mt-6 space-y-5">
-                {LEGIT_BARS.map((b, i) => (
-                  <div key={b.label}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[13.5px] text-ink">{b.label}</span>
-                      <span className="pb-mono text-[13px] text-[color-mix(in_oklab,var(--color-ink)_60%,transparent)]">
-                        {b.value}
-                      </span>
-                    </div>
-                    <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[var(--color-mist)]">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${b.pct}%` }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 1.1, delay: i * 0.12, ease: PB_EASE_SOFT }}
-                        className="h-full rounded-full"
-                        style={{
-                          background: b.own
-                            ? "linear-gradient(90deg,#1b4ef5,#6d63ff)"
-                            : "color-mix(in oklab, #0a0a0a 18%, white)",
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
+            <Rise>
+              <LegitScriptMark className="mb-6 text-[17px] lg:hidden" />
+              <h2 className="max-w-[24ch] text-balance text-[30px] font-normal leading-[1.04] tracking-[-0.025em] text-ink sm:text-[40px] lg:text-[56px]">
+                {LEGIT_H2[0]}
+                <span className="pb-dim">{LEGIT_H2[1]}</span>
+              </h2>
+              <p className="mt-6 max-w-[640px] text-[18px] leading-[1.2] tracking-[-0.02em] text-ink lg:text-[26px]">
+                {LEGIT_BODY}{" "}
+                <span className="pb-dim">{LEGIT_BODY_DIM}</span>
+              </p>
+              <div className="mt-8">
+                <Btn to="/pharmabro/demo" variant="blue">
+                  Get started
+                </Btn>
               </div>
-            </div>
-          </Rise>
+            </Rise>
+          </div>
         </div>
 
-        <KineticRule className="mt-14" />
+        <Rise delay={0.06}>
+          <div className="relative mt-16 lg:mt-20">
+            <Corners />
+            <LegitTimeline />
+          </div>
+        </Rise>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-3">
           {LEGIT_PANELS.map((p, i) => (
             <motion.div
               key={p.title}
@@ -642,21 +622,21 @@ export function LegitScript() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.7, delay: i * 0.08, ease: PB_EASE_SOFT }}
-              className="pb-card p-6"
             >
-              <h3 className="text-[16px] font-medium leading-snug tracking-[-0.015em] text-ink">
+              <h3 className="text-[22px] font-normal leading-[1.05] tracking-[-0.02em] text-ink lg:text-[24px]">
                 {p.title}
               </h3>
-              <p className="pb-body mt-2.5 text-[14.5px] leading-relaxed">{p.body}</p>
+              <p className="pb-body mt-4 text-[15.5px] leading-[1.45]">{p.body}</p>
             </motion.div>
           ))}
         </div>
 
-        <p className="pb-micro mt-8 max-w-[80ch] italic">{LEGIT_DISCLAIMER}</p>
+        <p className="pb-micro mt-10 max-w-[640px]">{LEGIT_DISCLAIMER}</p>
       </Container>
     </Section>
   );
 }
+
 
 /* ------------------------------------------------------------ 13 from the blog */
 
