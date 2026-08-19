@@ -11,7 +11,7 @@ import {
   COMPARE_SUB,
   COMPARE_TABLE,
   CTA_BODY,
-  CTA_EYEBROW,
+  CTA_FOOT,
   CTA_H2,
   FAQ_H2,
   FAQ_INTRO,
@@ -896,57 +896,62 @@ export function FinalCta() {
         <Rise>
           <div className="overflow-hidden rounded-2xl bg-white p-8 sm:p-10 lg:p-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-              {/* left: eyebrow + headline */}
+              {/* left: headline */}
               <div className="max-w-[34ch]">
-                <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-hairline)] bg-canvas px-3 py-1.5">
-                  <span className="relative flex size-2.5">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-[#ff0033] opacity-40" />
-                    <span className="relative size-2.5 rounded-full bg-[#ff0033]" />
-                  </span>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink">
-                    {CTA_EYEBROW}
-                  </span>
-                </div>
                 <h2 className="text-balance text-[1.9rem] font-normal leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[3rem]">
-                  {CTA_H2}
+                  {CTA_H2[0]}
+                  <span className="block text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]">
+                    {CTA_H2[1]}
+                  </span>
                 </h2>
               </div>
 
-              {/* right: body + cta */}
-              <div className="flex flex-col items-start gap-6 lg:max-w-[42ch] lg:items-end">
+              {/* right: body + ctas */}
+              <div className="flex flex-col items-start gap-6 lg:max-w-[46ch] lg:items-end">
                 <p className="text-[15.5px] leading-relaxed text-[color-mix(in_oklab,var(--color-ink)_72%,transparent)] sm:text-[17px]">
                   {CTA_BODY}
                 </p>
-                <Link
-                  to="/pharmabro/contact"
-                  className="group inline-flex h-[52px] items-center gap-2.5 rounded-full bg-ink px-7 text-[15px] font-medium text-white transition-all duration-200 hover:bg-[color-mix(in_oklab,var(--color-ink)_86%,white)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
-                >
-                  <span>Book A Call</span>
-                  <span className="relative flex size-4 overflow-hidden">
-                    <svg
-                      aria-hidden
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="absolute size-4 transition-transform duration-300 ease-out group-hover:translate-x-full"
-                    >
-                      <path
-                        d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    <svg
-                      aria-hidden
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="absolute size-4 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
-                    >
-                      <path
-                        d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </span>
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link
+                    to="/pharmabro/demo"
+                    className="group inline-flex h-[52px] items-center gap-2.5 rounded-full bg-ink px-7 text-[15px] font-medium text-white transition-all duration-200 hover:bg-[color-mix(in_oklab,var(--color-ink)_86%,white)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
+                  >
+                    <span>Get started</span>
+                    <span className="relative flex size-4 overflow-hidden">
+                      <svg
+                        aria-hidden
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        className="absolute size-4 transition-transform duration-300 ease-out group-hover:translate-x-full"
+                      >
+                        <path
+                          d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <svg
+                        aria-hidden
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        className="absolute size-4 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
+                      >
+                        <path
+                          d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
+                  <Link
+                    to="/pharmabro/contact"
+                    className="inline-flex h-[52px] items-center justify-center gap-1.5 rounded-full border border-[var(--color-hairline)] bg-canvas px-7 text-[15px] font-medium text-ink transition-all duration-200 hover:border-[color-mix(in_oklab,var(--color-ink)_28%,transparent)] hover:bg-[var(--color-mist)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
+                  >
+                    View demo
+                  </Link>
+                </div>
+                <p className="text-[13px] text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]">
+                  {CTA_FOOT}
+                </p>
               </div>
             </div>
           </div>

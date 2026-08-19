@@ -618,10 +618,10 @@ export const FAQ_ITEMS = [
 
 /* -------------------------------------------------------------- final cta */
 
-export const CTA_EYEBROW = "LET'S WORK TOGETHER";
-export const CTA_H2 = "Ready To Build Something Together";
+export const CTA_H2 = ["The business is built.", "Your brand is the missing piece."];
 export const CTA_BODY =
-  "Whether you're a brand, a platform or a creator — if you're serious about growing an audience and generating commercial value, let's talk.";
+  "Providers, pharmacy, compliance, and billing, all running before you sign. You market. PharmaBro operates.";
+export const CTA_FOOT = "Month to month. Your brand, your patients.";
 
 /* ------------------------------------------------------------ footer marks */
 
