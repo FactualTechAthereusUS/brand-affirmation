@@ -113,6 +113,20 @@ export function CompleteClinic() {
 
 /* -------------------------------------------- 5 everything under one roof */
 
+/**
+ * Bento layout: a 12 column grid on desktop where wide cards split copy left /
+ * visual right and narrow cards stack copy over visual. Copy, data and the
+ * scene animations are unchanged, only the shell and rhythm.
+ */
+const ROOF_SPANS = [
+  { span: "lg:col-span-7", wide: true },
+  { span: "lg:col-span-5", wide: false },
+  { span: "lg:col-span-5", wide: false },
+  { span: "lg:col-span-7", wide: true },
+  { span: "lg:col-span-6", wide: false },
+  { span: "lg:col-span-6", wide: false },
+] as const;
+
 export function UnderOneRoof() {
   return (
     <Section id="platform">
@@ -129,35 +143,46 @@ export function UnderOneRoof() {
 
         <KineticRule className="mt-10" />
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {ROOF_CARDS.map((c, i) => (
-            <motion.div
-              key={c.title}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.75, delay: (i % 3) * 0.07, ease: PB_EASE_SOFT }}
-              className="pb-card pb-card-lift flex flex-col overflow-hidden p-0"
-            >
-              <div className="p-3 pb-0">
-                <CardVisual kind={c.visual} />
-              </div>
-              <div className="flex flex-1 flex-col p-5 sm:p-6">
-                <span className="pb-mono text-[10px] font-semibold tracking-[0.14em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-2 text-[16.5px] font-medium leading-snug tracking-[-0.015em] text-ink">
-                  {c.title}
-                </h3>
-                <p className="pb-body mt-2 text-[14.5px] leading-relaxed">{c.body}</p>
-              </div>
-            </motion.div>
-          ))}
+        <div className="mt-10 grid gap-4 sm:gap-5 lg:grid-cols-12">
+          {ROOF_CARDS.map((c, i) => {
+            const layout = ROOF_SPANS[i] ?? ROOF_SPANS[0];
+            return (
+              <motion.div
+                key={c.title}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.75, delay: (i % 2) * 0.08, ease: PB_EASE_SOFT }}
+                className={cn(
+                  "pb-card pb-card-lift flex flex-col gap-5 p-5 sm:p-6",
+                  layout.span,
+                  layout.wide &&
+                    "lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-7",
+                )}
+              >
+                <div className={cn("min-w-0", layout.wide && "lg:order-1")}>
+                  <span className="pb-mono text-[10px] font-semibold tracking-[0.16em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-2 text-[17px] font-medium leading-snug tracking-[-0.015em] text-ink sm:text-[18px]">
+                    {c.title}
+                  </h3>
+                  <p className="pb-body mt-2 max-w-[46ch] text-[14.5px] leading-relaxed">
+                    {c.body}
+                  </p>
+                </div>
+                <div className={cn("min-w-0", layout.wide && "lg:order-2")}>
+                  <CardVisual kind={c.visual} />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </Container>
     </Section>
   );
 }
+
 
 /* ------------------------------------------ 6 built to run on, not out of */
 
