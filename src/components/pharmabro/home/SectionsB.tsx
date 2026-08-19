@@ -125,8 +125,9 @@ export function Nationwide() {
           </Rise>
 
           <Rise delay={0.05}>
-            <div className="pb-liquid-soft relative isolate overflow-hidden rounded-[20px] border border-white/60">
-              <div className="pb-dotgrid relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white/70 backdrop-blur-xl">
+            <div className="relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white">
+              <div className="relative overflow-hidden">
+
                 <Corners tone="marine" />
                 <div className="grid items-center gap-4 sm:gap-6 lg:grid-cols-12">
                   <div className="px-3 pb-2 pt-8 sm:px-8 sm:pb-4 sm:pt-10 lg:col-span-8 lg:py-12 lg:pl-10 lg:pr-0">
