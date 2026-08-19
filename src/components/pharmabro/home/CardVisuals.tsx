@@ -52,7 +52,7 @@ function useLoop(steps: number, ms = 1000, holdMs = 2600) {
 /** The card stage: dotted field, hairline frame, corner brackets, centred scene. */
 function Stage({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex min-h-[236px] w-full items-center justify-center overflow-hidden rounded-[16px] border border-[var(--color-hairline)] bg-[var(--color-mist)] sm:min-h-[248px]">
+    <div className="relative flex h-full min-h-[236px] w-full items-center justify-center overflow-hidden rounded-[16px] border border-[var(--color-hairline)] bg-[var(--color-mist)] sm:min-h-[248px]">
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.5]"
