@@ -3,7 +3,7 @@
 ## What changes
 
 The first row inside the "Operated end to end" section (the wide dashboard screenshot with the
-"Your clinic, live on day one." caption) is replaced by the reference block: a bordered light panel
+"Your clinic, live on day one." caption) is replaced. Create the reference block: a bordered light panel
 with corner tick marks holding a code-drawn iPhone that plays a looping PharmaBro intake animation,
 plus a headline, serif-style body paragraph, and a small legal footnote underneath.
 
