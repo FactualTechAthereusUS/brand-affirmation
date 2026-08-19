@@ -28,8 +28,8 @@ export type Tier = {
 export const tiers: Tier[] = [
   {
     id: "launch",
-    name: "Launch",
-    tagline: "Your first brand, taking patients in 14 days.",
+    name: "Launch Program",
+    tagline: "Your clinic, run for you.",
     price: "$1,500",
     priceNote: "/ month",
     setup: "$15,000 one-time setup",
@@ -52,8 +52,8 @@ export const tiers: Tier[] = [
   },
   {
     id: "grow",
-    name: "Grow",
-    tagline: "Built for recurring revenue and a second brand.",
+    name: "Grow Program",
+    tagline: "Built for recurring revenue.",
     price: "$3,000",
     priceNote: "/ month",
     setup: "$25,000 one-time setup",
@@ -78,8 +78,8 @@ export const tiers: Tier[] = [
   },
   {
     id: "scale",
-    name: "Scale",
-    tagline: "High volume. Lowest rate. Named team.",
+    name: "Scale Program",
+    tagline: "Multi-brand, enterprise-grade.",
     price: "$5,000",
     priceNote: "/ month",
     setup: "$50,000 one-time setup",
@@ -102,9 +102,12 @@ export const tiers: Tier[] = [
 ];
 
 export const enterpriseRow = {
+  name: "PharmaBro Prescribe",
+  tagline:
+    "PharmaBro's licensed providers, pharmacy and prescribing rails, integrated into the stack you already run.",
+  price: "Custom pricing",
   points: [
     "5,000+ patients",
-    "Custom pricing",
     "Custom SLA",
     "Custom API integrations",
   ],
@@ -114,11 +117,6 @@ export const enterpriseRow = {
 export const cardsFootnote =
   "Every plan includes licensed providers in all 50 states, pharmacy fulfillment, white-label patient portal, LegitScript certification, HIPAA infrastructure, and full data ownership. Consult fees apply to the initial consultation in month one only, refills carry no consult fee.";
 
-export const migrationBanner = {
-  lead: "Switching from another platform?",
-  body: "Free white-glove migration, we move your patients, subscriptions and data for you.",
-  cta: { label: "Talk to migration", to: "/pharmabro/contact" },
-};
 
 export const setupBody = [
   "Every brand we launch is built for the operator who owns it. Providers are credentialed under your brand. Your legal structure is drafted for your ownership. Your patient portal and storefront are built on your domain. Your LegitScript application is filed and managed by us.",

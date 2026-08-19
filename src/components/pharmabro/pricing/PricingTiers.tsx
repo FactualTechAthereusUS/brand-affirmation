@@ -110,20 +110,19 @@ export function PricingTiers() {
           </div>
         </div>
 
-        {/* -------------------------------------------------- enterprise */}
+        {/* -------------------------------------------------- prescribe */}
         <div className="overflow-hidden border border-[var(--color-hairline)] bg-canvas lg:flex-1">
-          <PanelHead>Already at scale?</PanelHead>
+          <PanelHead>Already have an EHR?</PanelHead>
           <div className="flex h-full flex-col gap-10 p-6 sm:p-8">
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-4">
                 <h3 className="text-[22px] leading-none tracking-[-0.02em] text-ink">
-                  Enterprise
+                  {enterpriseRow.name}
                 </h3>
                 <p className="min-h-[3rem] text-[15px] leading-[1.4] text-ink/60">
-                  The same clinical, pharmacy and compliance rails, sized and priced
-                  around your volume.
+                  {enterpriseRow.tagline}
                 </p>
-                <p className="text-[20px] leading-none text-ink">Custom pricing</p>
+                <p className="text-[20px] leading-none text-ink">{enterpriseRow.price}</p>
               </div>
               <div className="flex flex-wrap gap-3">
                 <Btn to={enterpriseRow.cta.to} variant="blue">

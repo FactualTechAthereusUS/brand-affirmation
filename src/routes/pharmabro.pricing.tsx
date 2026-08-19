@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Btn,
-  Check,
   Container,
   MicroLabel,
   Reveal,
@@ -113,52 +112,18 @@ export const Route = createFileRoute("/pharmabro/pricing")({
 function PricingPage() {
   return (
     <>
-      {/* -------------------------------------------------- migration banner */}
-      <Section className="py-5 sm:py-6">
-        <Container size="wide">
-          <Reveal>
-            <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-[#fafaf9] px-6 py-5">
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-[3px] z-10 text-[var(--color-hairline)]"
-              >
-                <svg
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  className="h-full w-full"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M0 12 L0 0 L12 0" />
-                  <path d="M88 0 L100 0 L100 12" />
-                  <path d="M100 88 L100 100 L88 100" />
-                  <path d="M12 100 L0 100 L0 88" />
-                </svg>
-              </span>
-              <p className="relative z-20 text-[18px] leading-[1.3] text-ink sm:text-[22px]">
-                Switching from another platform?{" "}
-                <span className="text-[var(--color-ever)]">Free white-glove migration</span>{" "}
-                — PharmaBro moves your patients and data for you.
-              </p>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
-
       {/* ------------------------------------------------------------- hero */}
-      <Section className="pt-2 pb-10 sm:pt-4 sm:pb-14">
+      <Section className="pt-6 pb-10 sm:pt-10 sm:pb-14">
         <Container size="wide">
           <Reveal>
-            <div className="max-w-[860px]">
-              <MicroLabel className="mb-5">Pricing</MicroLabel>
-              <h1 className="font-sans text-[40px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[52px] lg:text-[60px]">
-                Flat, transparent pricing.
+            <div className="max-w-[900px]">
+              <h1 className="font-sans text-[44px] leading-[1.02] tracking-[-0.03em] text-ink sm:text-[56px] lg:text-[68px]">
+                Simple pricing to launch your telehealth brand.
               </h1>
               <p className="mt-6 max-w-[560px] font-serif italic text-[16px] leading-[1.5] text-ink/70 sm:text-[18px]">
-                PharmaBro runs the clinic behind your brand: licensed providers, pharmacy
-                fulfillment, software, and compliance. One flat platform fee, and no cut of
-                your revenue or your patients.
+                PharmaBro runs the clinic behind your brand: licensed providers, pharmacy,
+                software, and compliance. One flat platform fee, and no cut of your revenue or
+                your patients.
               </p>
 
               <Link
@@ -179,22 +144,28 @@ function PricingPage() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <span className="text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors group-hover:decoration-ink">
+                <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-ink underline decoration-ink/40 underline-offset-4 transition-colors group-hover:decoration-ink">
                   PharmaBro launch guarantee
                 </span>
               </Link>
 
-              <ul className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-                {["No revenue share", "LegitScript included", "Month to month"].map((t) => (
-                  <li key={t} className="flex items-center gap-2">
-                    <Check className="shrink-0" />
-                    <span className="text-[14px] text-ink">{t}</span>
-                  </li>
-                ))}
-              </ul>
-
               <p className="pb-dim mt-5 text-[13px] text-ink/60">
                 Pricing facts last reviewed {PRICING_REVIEWED}.
+              </p>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* -------------------------------------------------- migration banner */}
+      <Section className="py-5 sm:py-6">
+        <Container size="wide">
+          <Reveal>
+            <div className="rounded-2xl border border-black/10 bg-[#fafaf9] px-6 py-5">
+              <p className="text-[18px] leading-[1.3] text-ink sm:text-[22px]">
+                Switching from another platform?{" "}
+                <span className="text-[var(--color-ever)]">Free white-glove migration</span>{" "}
+                — PharmaBro moves your patients and data for you.
               </p>
             </div>
           </Reveal>
