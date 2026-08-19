@@ -156,18 +156,18 @@ export function HeroBlock() {
 
 
           <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.24, ease: PB_EASE_SOFT }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4, ease: PB_EASE_STD }}
             className="pb-body mt-6 max-w-[58ch] text-[16.5px] leading-relaxed sm:text-[18px]"
           >
             {HERO_SUB}
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.32, ease: PB_EASE_SOFT }}
+            transition={{ duration: 0.5, delay: 0.6, ease: PB_EASE_STD }}
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
             <Btn to="/pharmabro/demo" size="lg">
@@ -181,11 +181,12 @@ export function HeroBlock() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.8, ease: PB_EASE_STD }}
             className="pb-micro mt-5"
           >
             {HERO_FOOT}
           </motion.p>
+
         </div>
       </Container>
 

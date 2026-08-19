@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   FOOTER_COLUMNS,
   FOOTER_LEGAL,
@@ -29,13 +30,14 @@ function SystemsPill() {
   );
 }
 
-/** Stacked backdrop-blur layers that ramp toward the bottom edge. */
+/** 8 stacked backdrop-blur layers that ramp toward the bottom edge. */
+const BLUR_STEPS = [0.039, 0.078, 0.156, 0.3125, 0.625, 1.25, 2.5, 5];
+
 function ProgressiveBlurStrip() {
-  const layers = 7;
+  const layers = BLUR_STEPS.length;
   return (
     <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[38%]">
-      {Array.from({ length: layers }).map((_, i) => {
-        const t = (i + 1) / layers;
+      {BLUR_STEPS.map((blur, i) => {
         const start = Math.round((i / layers) * 100);
         const mid = Math.round(((i + 1) / layers) * 100);
         const mask = `linear-gradient(to bottom, rgba(0,0,0,0) ${start}%, rgba(0,0,0,1) ${mid}%, rgba(0,0,0,1) 100%)`;
@@ -47,7 +49,7 @@ function ProgressiveBlurStrip() {
               zIndex: i + 1,
               maskImage: mask,
               WebkitMaskImage: mask,
-              backdropFilter: `blur(${+(0.04 * Math.pow(2, i * 1.05)).toFixed(3)}px)`,
+              backdropFilter: `blur(${blur}px)`,
             }}
           />
         );
@@ -55,6 +57,40 @@ function ProgressiveBlurStrip() {
     </div>
   );
 }
+
+/** "design / build / create"-style blur-fade word cycle, 2s interval. */
+const CYCLE_WORDS = ["dollar.", "patient.", "refill."] as const;
+
+function CyclingWord() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setInterval(() => setI((p) => (p + 1) % CYCLE_WORDS.length), 2000);
+    return () => window.clearInterval(id);
+  }, [reduce]);
+  if (reduce) return <span>{CYCLE_WORDS[0]}</span>;
+  return (
+    <span className="relative inline-grid align-baseline">
+      <span aria-hidden className="invisible col-start-1 row-start-1">
+        {CYCLE_WORDS.reduce((a, b) => (b.length > a.length ? b : a))}
+      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={CYCLE_WORDS[i]}
+          initial={{ opacity: 0, filter: "blur(5px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, filter: "blur(5px)" }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          className="col-start-1 row-start-1 whitespace-nowrap text-left"
+        >
+          {CYCLE_WORDS[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 
 const DISCLAIMER_PARAS = [
   "This site is for informational purposes only and does not constitute medical advice. All clinical decisions, consultations, and prescriptions are made by independent, state-licensed healthcare providers. PharmaBro is not a medical provider and does not practice medicine.",
@@ -76,7 +112,9 @@ export function PharmaBroFooter() {
               <br />
               telehealth brand.
               <br />
-              <span className="text-white/45">Keep every dollar.</span>
+              <span className="text-white/45">
+                Keep every <CyclingWord />
+              </span>
             </h2>
             <p className="mt-5 max-w-[360px] text-[14px] leading-relaxed text-white/50 lg:text-[15px]">
               Flat monthly software fee. Zero revenue share. Your Stripe, your
@@ -133,15 +171,23 @@ export function PharmaBroFooter() {
         {/* Legal row */}
         <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            {FOOTER_LEGAL.map((l) => (
-              <Link
+            {FOOTER_LEGAL.map((l, i) => (
+              <motion.span
                 key={l.to}
-                to={l.to}
-                className="text-[12.5px] text-white/50 transition-colors hover:text-white"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "0px 0px -20% 0px" }}
+                transition={{ duration: 0.4, delay: i * 0.1, ease: [0.4, 0, 0.2, 1] }}
               >
-                {l.label}
-              </Link>
+                <Link
+                  to={l.to}
+                  className="text-[12.5px] text-white/50 transition-colors duration-200 hover:text-white"
+                >
+                  {l.label}
+                </Link>
+              </motion.span>
             ))}
+
           </div>
           <p className="text-[12.5px] text-white/40">© 2026 The Factual LLC, DBA PharmaBro</p>
         </div>
