@@ -16,6 +16,37 @@ import { cn } from "@/lib/utils";
 
 const longest = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
 
+/** One headline word: blur(8px)/opacity 0 -> clear, 60ms stagger per word. */
+function HeroWord({
+  children,
+  i,
+  plain,
+}: {
+  children: React.ReactNode;
+  i: number;
+  plain?: boolean;
+}) {
+  const reduce = useReducedMotion();
+  const content = (
+    <>
+      {children}
+      {plain ? null : " "}
+    </>
+  );
+  if (reduce) return <span className="inline-block">{content}</span>;
+  return (
+    <motion.span
+      initial={{ opacity: 0, filter: "blur(8px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, delay: 0.05 + i * 0.06, ease: PB_EASE_STD }}
+      className="inline-block whitespace-pre"
+    >
+      {content}
+    </motion.span>
+  );
+}
+
+
 function RotatingWord() {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
