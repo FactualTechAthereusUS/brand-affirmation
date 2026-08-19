@@ -141,12 +141,14 @@ function PricingPage() {
               <div className="relative z-20 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <p className="max-w-[760px] text-[15px] leading-[1.5] text-ink sm:text-[16px]">
                   <span className="font-medium">{migrationBanner.lead}</span>{" "}
-                  <span className="text-[var(--color-ever)]">Free white-glove migration</span>{" "}
-                  <span className="pb-dim">{migrationBanner.body}</span>
+                  <span className="text-[var(--color-ever)]">
+                    Free white-glove migration
+                  </span>
+                  <span className="pb-dim"> — we move your patients, subscriptions and data for you.</span>
                 </p>
                 <Link
                   to={migrationBanner.cta.to}
-                  className="inline-flex shrink-0 items-center gap-1.5 text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors hover:decoration-ink"
+                  className="group inline-flex shrink-0 items-center gap-1.5 text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors hover:decoration-ink"
                 >
                   {migrationBanner.cta.label}
                   <svg
@@ -179,7 +181,7 @@ function PricingPage() {
               <h1 className="font-sans text-[40px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[52px] lg:text-[60px]">
                 Flat, transparent pricing.
               </h1>
-              <p className="mt-6 max-w-[560px] font-serif text-[16px] leading-[1.5] text-ink/70 sm:text-[18px]">
+              <p className="mt-6 max-w-[560px] font-serif italic text-[16px] leading-[1.5] text-ink/70 sm:text-[18px]">
                 PharmaBro runs the clinic behind your brand: licensed providers, pharmacy
                 fulfillment, software, and compliance. One flat platform fee, and no cut of
                 your revenue or your patients.
@@ -203,7 +205,7 @@ function PricingPage() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <span className="pb-micro text-ink underline decoration-ink/40 underline-offset-4 transition-colors group-hover:decoration-ink">
+                <span className="text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors group-hover:decoration-ink">
                   PharmaBro launch guarantee
                 </span>
               </Link>
