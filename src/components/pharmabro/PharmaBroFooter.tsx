@@ -29,13 +29,14 @@ function SystemsPill() {
   );
 }
 
-/** Stacked backdrop-blur layers that ramp toward the bottom edge. */
+/** 8 stacked backdrop-blur layers that ramp toward the bottom edge. */
+const BLUR_STEPS = [0.039, 0.078, 0.156, 0.3125, 0.625, 1.25, 2.5, 5];
+
 function ProgressiveBlurStrip() {
-  const layers = 7;
+  const layers = BLUR_STEPS.length;
   return (
     <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[38%]">
-      {Array.from({ length: layers }).map((_, i) => {
-        const t = (i + 1) / layers;
+      {BLUR_STEPS.map((blur, i) => {
         const start = Math.round((i / layers) * 100);
         const mid = Math.round(((i + 1) / layers) * 100);
         const mask = `linear-gradient(to bottom, rgba(0,0,0,0) ${start}%, rgba(0,0,0,1) ${mid}%, rgba(0,0,0,1) 100%)`;
@@ -47,7 +48,7 @@ function ProgressiveBlurStrip() {
               zIndex: i + 1,
               maskImage: mask,
               WebkitMaskImage: mask,
-              backdropFilter: `blur(${+(0.04 * Math.pow(2, i * 1.05)).toFixed(3)}px)`,
+              backdropFilter: `blur(${blur}px)`,
             }}
           />
         );
@@ -55,6 +56,40 @@ function ProgressiveBlurStrip() {
     </div>
   );
 }
+
+/** "design / build / create"-style blur-fade word cycle, 2s interval. */
+const CYCLE_WORDS = ["dollar.", "patient.", "refill."] as const;
+
+function CyclingWord() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setInterval(() => setI((p) => (p + 1) % CYCLE_WORDS.length), 2000);
+    return () => window.clearInterval(id);
+  }, [reduce]);
+  if (reduce) return <span>{CYCLE_WORDS[0]}</span>;
+  return (
+    <span className="relative inline-grid align-baseline">
+      <span aria-hidden className="invisible col-start-1 row-start-1">
+        {CYCLE_WORDS.reduce((a, b) => (b.length > a.length ? b : a))}
+      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={CYCLE_WORDS[i]}
+          initial={{ opacity: 0, filter: "blur(5px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, filter: "blur(5px)" }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          className="col-start-1 row-start-1 whitespace-nowrap text-left"
+        >
+          {CYCLE_WORDS[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 
 const DISCLAIMER_PARAS = [
   "This site is for informational purposes only and does not constitute medical advice. All clinical decisions, consultations, and prescriptions are made by independent, state-licensed healthcare providers. PharmaBro is not a medical provider and does not practice medicine.",
