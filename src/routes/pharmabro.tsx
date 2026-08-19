@@ -1,6 +1,11 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { PharmaBroNav } from "@/components/pharmabro/PharmaBroNav";
 import { PharmaBroFooter } from "@/components/pharmabro/PharmaBroFooter";
+
+const SmoothScroll = lazy(() =>
+  import("@/components/SmoothScroll").then((m) => ({ default: m.SmoothScroll })),
+);
 
 export const Route = createFileRoute("/pharmabro")({
   component: PharmaBroLayout,
@@ -14,6 +19,9 @@ export const Route = createFileRoute("/pharmabro")({
 function PharmaBroLayout() {
   return (
     <div className="pharmabro-scope min-h-dvh bg-canvas font-sans text-ink antialiased">
+      <Suspense fallback={null}>
+        <SmoothScroll />
+      </Suspense>
       <PharmaBroNav />
       <main>
         <Outlet />
@@ -22,3 +30,4 @@ function PharmaBroLayout() {
     </div>
   );
 }
+
