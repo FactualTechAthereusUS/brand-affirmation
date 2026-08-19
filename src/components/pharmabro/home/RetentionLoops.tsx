@@ -19,19 +19,25 @@ import { PB_EASE_SOFT } from "@/components/pharmabro/motion";
 const BRAND = "var(--color-brand, #1B4EF5)";
 const OK = "#3f9d5c";
 
-/** Loops `stage` from 0..steps-1 on a fixed cadence, then restarts. */
-function useLoop(steps: number, ms: number, reduce: boolean | null) {
-  const [stage, setStage] = useState(reduce ? steps - 1 : 0);
+/** Steps `stage` 0..steps on a fixed cadence, holds the finished state, loops. */
+function useLoop(steps: number, ms: number, reduce: boolean | null, holdMs = 3200) {
+  const [stage, setStage] = useState(reduce ? steps : 0);
   useEffect(() => {
     if (reduce) return;
-    setStage(0);
-    const id = window.setInterval(() => {
-      setStage((s) => (s + 1) % (steps + 1));
-    }, ms);
-    return () => window.clearInterval(id);
-  }, [steps, ms, reduce]);
+    let id = 0;
+    const tick = () => {
+      setStage((s) => {
+        const next = s >= steps ? 0 : s + 1;
+        id = window.setTimeout(tick, next === steps ? holdMs : ms);
+        return next;
+      });
+    };
+    id = window.setTimeout(tick, ms);
+    return () => window.clearTimeout(id);
+  }, [steps, ms, holdMs, reduce]);
   return stage;
 }
+
 
 function Card({
   children,
