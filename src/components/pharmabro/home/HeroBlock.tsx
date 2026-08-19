@@ -10,8 +10,9 @@ import {
 } from "@/lib/pharmabro/home";
 import { Btn, Container, EyebrowPill } from "@/components/pharmabro/primitives";
 import { PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
-import { Shot, TabRail } from "./Shot";
-import type { MockKind } from "./Mocks";
+import { HeroPanel, HeroTabStrip } from "./HeroPanels";
+import { cn } from "@/lib/utils";
+
 
 const longest = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
 
@@ -55,9 +56,30 @@ function RotatingWord() {
   );
 }
 
+const TAB_MS = 7000;
+
 export function HeroBlock() {
+  const reduce = useReducedMotion();
   const [tab, setTab] = useState(DASHBOARD_TABS[0].id);
+  const [cycle, setCycle] = useState(0);
   const active = DASHBOARD_TABS.find((t) => t.id === tab) ?? DASHBOARD_TABS[0];
+  const index = DASHBOARD_TABS.findIndex((t) => t.id === active.id);
+
+  // Self-demoing rail: advances on a slow cadence, any click restarts it.
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setTimeout(() => {
+      setTab(DASHBOARD_TABS[(index + 1) % DASHBOARD_TABS.length].id);
+      setCycle((c) => c + 1);
+    }, TAB_MS);
+    return () => window.clearTimeout(id);
+  }, [index, cycle, reduce]);
+
+  const pick = (id: string) => {
+    setTab(id);
+    setCycle((c) => c + 1);
+  };
+
 
   return (
     <section className="relative overflow-hidden bg-canvas pt-14 sm:pt-20 lg:pt-24">
@@ -141,40 +163,37 @@ export function HeroBlock() {
         </div>
       </Container>
 
-      {/* full-width product shot with tab switcher */}
-      <Container size="full" className="relative mt-12 sm:mt-16">
-        <TabRail
+      {/* full-width product highlight tabs */}
+      <Container size="wide" className="relative mt-12 pb-4 sm:mt-16">
+        <HeroTabStrip
           tabs={DASHBOARD_TABS.map((t) => ({ id: t.id, label: t.label }))}
           active={tab}
-          onSelect={setTab}
-          className="w-fit"
+          onSelect={pick}
+          dwellMs={TAB_MS}
+          cycle={cycle}
+          animate={!reduce}
         />
 
-        <div className="mt-7">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={active.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5, ease: PB_EASE_SOFT }}
+        <div className="relative aspect-square w-full overflow-hidden border border-t-0 border-[var(--color-hairline)] bg-[color-mix(in_oklab,var(--color-ink)_2%,white)] lg:aspect-[2/1]">
+          {DASHBOARD_TABS.map((t) => (
+            <div
+              key={t.id}
+              aria-hidden={t.id !== tab}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-700 ease-in-out",
+                t.id === tab ? "opacity-100" : "pointer-events-none opacity-0",
+              )}
             >
-              <Shot
-                image={active.image}
-                slot={active.slot}
-                mock={active.id as MockKind}
-                ratio="16 / 9"
-                liquid
-                rounded={20}
-              />
-              <p className="pb-body mx-auto mt-5 max-w-[62ch] text-center text-[14.5px]">
-                {active.caption}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+              {t.id === tab ? <HeroPanel id={t.id} /> : null}
+            </div>
+          ))}
         </div>
-      </Container>
 
+        <p className="pb-body mx-auto mt-5 max-w-[62ch] text-center text-[14.5px]">
+          {active.caption}
+        </p>
+      </Container>
     </section>
   );
 }
+
