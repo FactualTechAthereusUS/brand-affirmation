@@ -21,7 +21,6 @@ import {
 } from "@/lib/pharmabro/home";
 import {
   Btn,
-  Check,
   Container,
   MicroLabel,
   Section,
@@ -39,49 +38,41 @@ export function CompleteClinic() {
   return (
     <Section band id="clinic">
       <Container size="wide">
-        <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          <Rise>
-            <MicroLabel>Operated end to end</MicroLabel>
-            <h2 className="mt-4 text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.85rem]">
-              {CLINIC_H2[0]}
-              <span className="block pb-dim">{CLINIC_H2[1]}</span>
+        <Rise>
+          <div className="relative">
+            <Corners inset={12} size={14} />
+
+            <img
+              src="/assets/pharmabro-mark.png"
+              alt=""
+              loading="lazy"
+              width={200}
+              height={200}
+              className="pointer-events-none absolute right-0 top-0 hidden h-auto w-[160px] opacity-60 lg:block xl:w-[200px]"
+            />
+
+            <h2 className="max-w-[720px] text-balance text-[30px] font-normal leading-[1.02] tracking-[-0.02em] text-ink sm:text-[40px] lg:text-[64px]">
+              {CLINIC_H2[0]}{" "}
+              <span className="text-[color-mix(in_oklab,var(--color-ink)_36%,transparent)]">
+                {CLINIC_H2[1]}
+              </span>
             </h2>
-            <p className="pb-body mt-6 max-w-[56ch] text-[16.5px] leading-relaxed">
-              {CLINIC_BODY}
+
+            <p className="mt-6 max-w-[640px] text-balance text-[18px] leading-[1.15] tracking-[-0.03em] text-ink lg:mt-8 lg:text-[1.6rem] lg:leading-[1.2]">
+              {CLINIC_BODY[0]}{" "}
+              <span className="text-[color-mix(in_oklab,var(--color-ink)_42%,transparent)]">
+                {CLINIC_BODY[1]}
+              </span>
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+
+            <div className="mt-8 flex flex-wrap gap-3 lg:mt-10">
               <Btn to="/pharmabro/demo">Get started</Btn>
               <Btn to="/pharmabro/demo" variant="ghost">
                 View demo
               </Btn>
             </div>
-          </Rise>
-
-          <Rise delay={0.1}>
-            <div className="pb-card p-6 sm:p-7">
-              <ul className="space-y-5">
-                {CLINIC_CHECKS.map((c, i) => (
-                  <motion.li
-                    key={c.title}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 0.6, delay: i * 0.06, ease: PB_EASE_SOFT }}
-                    className="flex gap-3.5"
-                  >
-                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[color-mix(in_oklab,var(--color-check)_12%,white)]">
-                      <Check className="size-3" />
-                    </span>
-                    <div>
-                      <div className="text-[15px] font-medium text-ink">{c.title}</div>
-                      <p className="pb-body mt-1 text-[14px] leading-relaxed">{c.body}</p>
-                    </div>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </Rise>
-        </div>
+          </div>
+        </Rise>
 
         <div className="mt-16 space-y-14 sm:mt-20">
           {CLINIC_ROWS.map((row, i) => (
