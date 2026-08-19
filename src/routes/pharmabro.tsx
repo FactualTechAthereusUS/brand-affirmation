@@ -29,7 +29,10 @@ function PharmaBroLayout() {
         <Outlet />
       </main>
       <PharmaBroFooter />
+      {/* Framer-style progressive blur pinned to the viewport bottom edge */}
+      <ProgressiveBlur side="bottom" height={120} layers={8} maxBlur={5} />
     </div>
   );
 }
+
 
