@@ -38,6 +38,7 @@ import { Route as PharmabroPricingRouteImport } from './routes/pharmabro.pricing
 import { Route as PharmabroGlossaryRouteImport } from './routes/pharmabro.glossary'
 import { Route as PharmabroDemoRouteImport } from './routes/pharmabro.demo'
 import { Route as PharmabroContactRouteImport } from './routes/pharmabro.contact'
+import { Route as PharmabroBookingRouteImport } from './routes/pharmabro.booking'
 import { Route as PharmabroBlogRouteImport } from './routes/pharmabro.blog'
 import { Route as PharmabroAboutRouteImport } from './routes/pharmabro.about'
 import { Route as OperatorRevenueRouteImport } from './routes/operator.revenue'
@@ -265,6 +266,11 @@ const PharmabroDemoRoute = PharmabroDemoRouteImport.update({
 const PharmabroContactRoute = PharmabroContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => PharmabroRoute,
+} as any)
+const PharmabroBookingRoute = PharmabroBookingRouteImport.update({
+  id: '/booking',
+  path: '/booking',
   getParentRoute: () => PharmabroRoute,
 } as any)
 const PharmabroBlogRoute = PharmabroBlogRouteImport.update({
@@ -742,6 +748,7 @@ export interface FileRoutesByFullPath {
   '/operator/revenue': typeof OperatorRevenueRoute
   '/pharmabro/about': typeof PharmabroAboutRoute
   '/pharmabro/blog': typeof PharmabroBlogRoute
+  '/pharmabro/booking': typeof PharmabroBookingRoute
   '/pharmabro/contact': typeof PharmabroContactRoute
   '/pharmabro/demo': typeof PharmabroDemoRoute
   '/pharmabro/glossary': typeof PharmabroGlossaryRoute
@@ -854,6 +861,7 @@ export interface FileRoutesByTo {
   '/operator/revenue': typeof OperatorRevenueRoute
   '/pharmabro/about': typeof PharmabroAboutRoute
   '/pharmabro/blog': typeof PharmabroBlogRoute
+  '/pharmabro/booking': typeof PharmabroBookingRoute
   '/pharmabro/contact': typeof PharmabroContactRoute
   '/pharmabro/demo': typeof PharmabroDemoRoute
   '/pharmabro/glossary': typeof PharmabroGlossaryRoute
@@ -969,6 +977,7 @@ export interface FileRoutesById {
   '/operator/revenue': typeof OperatorRevenueRoute
   '/pharmabro/about': typeof PharmabroAboutRoute
   '/pharmabro/blog': typeof PharmabroBlogRoute
+  '/pharmabro/booking': typeof PharmabroBookingRoute
   '/pharmabro/contact': typeof PharmabroContactRoute
   '/pharmabro/demo': typeof PharmabroDemoRoute
   '/pharmabro/glossary': typeof PharmabroGlossaryRoute
@@ -1085,6 +1094,7 @@ export interface FileRouteTypes {
     | '/operator/revenue'
     | '/pharmabro/about'
     | '/pharmabro/blog'
+    | '/pharmabro/booking'
     | '/pharmabro/contact'
     | '/pharmabro/demo'
     | '/pharmabro/glossary'
@@ -1197,6 +1207,7 @@ export interface FileRouteTypes {
     | '/operator/revenue'
     | '/pharmabro/about'
     | '/pharmabro/blog'
+    | '/pharmabro/booking'
     | '/pharmabro/contact'
     | '/pharmabro/demo'
     | '/pharmabro/glossary'
@@ -1311,6 +1322,7 @@ export interface FileRouteTypes {
     | '/operator/revenue'
     | '/pharmabro/about'
     | '/pharmabro/blog'
+    | '/pharmabro/booking'
     | '/pharmabro/contact'
     | '/pharmabro/demo'
     | '/pharmabro/glossary'
@@ -1665,6 +1677,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/pharmabro/contact'
       preLoaderRoute: typeof PharmabroContactRouteImport
+      parentRoute: typeof PharmabroRoute
+    }
+    '/pharmabro/booking': {
+      id: '/pharmabro/booking'
+      path: '/booking'
+      fullPath: '/pharmabro/booking'
+      preLoaderRoute: typeof PharmabroBookingRouteImport
       parentRoute: typeof PharmabroRoute
     }
     '/pharmabro/blog': {
@@ -2266,6 +2285,7 @@ const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 interface PharmabroRouteChildren {
   PharmabroAboutRoute: typeof PharmabroAboutRoute
   PharmabroBlogRoute: typeof PharmabroBlogRoute
+  PharmabroBookingRoute: typeof PharmabroBookingRoute
   PharmabroContactRoute: typeof PharmabroContactRoute
   PharmabroDemoRoute: typeof PharmabroDemoRoute
   PharmabroGlossaryRoute: typeof PharmabroGlossaryRoute
@@ -2297,6 +2317,7 @@ interface PharmabroRouteChildren {
 const PharmabroRouteChildren: PharmabroRouteChildren = {
   PharmabroAboutRoute: PharmabroAboutRoute,
   PharmabroBlogRoute: PharmabroBlogRoute,
+  PharmabroBookingRoute: PharmabroBookingRoute,
   PharmabroContactRoute: PharmabroContactRoute,
   PharmabroDemoRoute: PharmabroDemoRoute,
   PharmabroGlossaryRoute: PharmabroGlossaryRoute,

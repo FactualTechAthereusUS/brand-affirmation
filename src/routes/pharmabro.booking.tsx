@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookingPage } from "@/components/pharmabro/BookingPage";
 
-const TITLE = "See PharmaBro live. 20 minutes, no slides | PharmaBro";
-const DESCRIPTION = "We will model your current platform cost against a PharmaBro flat fee using your real patient volume, then walk you through the operator dashboard, the intake builder, and the rebill engine.";
-const URL = "https://sweet-confirm-it.lovable.app/pharmabro/demo";
+const TITLE = "Book a strategy call | PharmaBro";
+const DESCRIPTION =
+  "Pick a time for a 30 minute strategy call. We map your brand onto PharmaBro: 50-state providers, pharmacy fulfillment, intake, and compliance under your name.";
+const URL = "https://sweet-confirm-it.lovable.app/pharmabro/booking";
 
-export const Route = createFileRoute("/pharmabro/demo")({
+export const Route = createFileRoute("/pharmabro/booking")({
   head: () => ({
     meta: [
       { title: TITLE },
@@ -18,10 +19,9 @@ export const Route = createFileRoute("/pharmabro/demo")({
     ],
     links: [{ rel: "canonical", href: URL }],
   }),
-  component: Page_demo,
+  component: BookingRoute,
 });
 
-function Page_demo() {
+function BookingRoute() {
   return <BookingPage />;
 }
-
