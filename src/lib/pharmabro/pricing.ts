@@ -102,9 +102,12 @@ export const tiers: Tier[] = [
 ];
 
 export const enterpriseRow = {
+  name: "PharmaBro Prescribe",
+  tagline:
+    "PharmaBro's licensed providers, pharmacy and prescribing rails, integrated into the stack you already run.",
+  price: "Custom pricing",
   points: [
     "5,000+ patients",
-    "Custom pricing",
     "Custom SLA",
     "Custom API integrations",
   ],
