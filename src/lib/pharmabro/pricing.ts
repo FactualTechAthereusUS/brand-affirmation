@@ -180,11 +180,12 @@ export const addOns = [
 
 /** Feature table columns, ordered to match every row's `values` tuple. */
 export const planColumns = [
-  { name: "Launch", popular: false },
-  { name: "Grow", popular: true },
-  { name: "Scale", popular: false },
-  { name: "Enterprise", popular: false },
+  { name: "Launch", price: "$1,500/mo", note: "month-to-month", to: "/pharmabro/demo", popular: false },
+  { name: "Grow", price: "$3,000/mo", note: "month-to-month", to: "/pharmabro/demo", popular: true },
+  { name: "Scale", price: "$5,000/mo", note: "month-to-month", to: "/pharmabro/demo", popular: false },
+  { name: "Enterprise", price: "Custom", note: "pricing", to: "/pharmabro/contact", popular: false },
 ];
+
 
 export type FeatureRow = { label: string; values: [string, string, string, string] };
 export type FeatureGroup = { group: string; rows: FeatureRow[] };
