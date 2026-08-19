@@ -134,7 +134,7 @@ function PricingPage() {
                   viewBox="0 0 24 24"
                   fill="none"
                   aria-hidden="true"
-                  className="h-3.5 w-3.5 text-[var(--color-ever)]"
+                  className="h-3.5 w-3.5 text-[var(--color-check)]"
                 >
                   <path
                     d="M5 12.5l4.5 4.5L19 7"
@@ -164,7 +164,7 @@ function PricingPage() {
             <div className="rounded-2xl border border-black/10 bg-[#fafaf9] px-6 py-5">
               <p className="text-[18px] leading-[1.3] text-ink sm:text-[22px]">
                 Switching from another platform?{" "}
-                <span className="text-[var(--color-ever)]">Free white-glove migration</span>{" "}
+                <span className="text-[var(--color-marine)]">Free white-glove migration</span>{" "}
                 — PharmaBro moves your patients and data for you.
               </p>
             </div>
