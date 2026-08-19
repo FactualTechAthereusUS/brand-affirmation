@@ -25,7 +25,9 @@ import {
   LEGIT_DISCLAIMER,
   LEGIT_H2,
   LEGIT_PANELS,
+  NATION_BODY,
   NATION_EYEBROW,
+
   NATION_H2,
   NATION_ROWS,
   PHARMACY_PARTNERS,
@@ -47,7 +49,7 @@ import {
 } from "@/components/pharmabro/primitives";
 import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot } from "./Shot";
-import { BlogArt } from "./Mocks";
+
 
 /* --------------------------------------------- 8 nationwide infrastructure */
 
@@ -59,8 +61,13 @@ export function Nationwide() {
           <Rise>
             <SquareEyebrow>{NATION_EYEBROW}</SquareEyebrow>
             <h2 className="mt-4 max-w-[18ch] text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.6rem]">
-              {NATION_H2}
+              {NATION_H2[0]}{" "}
+              <span className="pb-dim">{NATION_H2[1]}</span>
             </h2>
+            <p className="pb-body mt-5 max-w-[56ch] text-[15.5px] leading-relaxed">
+              {NATION_BODY}
+            </p>
+
 
             <div className="mt-9 space-y-8">
               {NATION_ROWS.map((r) => (
@@ -576,7 +583,17 @@ export function FromTheBlog() {
               transition={{ duration: 0.7, delay: i * 0.06, ease: PB_EASE_SOFT }}
               className="pb-card pb-card-lift w-[78vw] shrink-0 snap-start overflow-hidden p-0 sm:w-[340px] lg:w-auto"
             >
-              <BlogArt category={c.category} index={i} />
+              <div className="relative aspect-[1200/750] w-full overflow-hidden bg-[var(--color-mist)]">
+                <img
+                  src={c.image}
+                  alt={c.slot}
+                  width={1200}
+                  height={750}
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+                />
+              </div>
+
               <div className="p-5">
                 <div className="flex items-center gap-2">
                   <span className="rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-2.5 py-1 text-[11px] font-medium text-ink">

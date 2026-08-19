@@ -284,8 +284,11 @@ export const JOURNEY_METRICS = [
 
 /* --------------------------------------------------- nationwide infrastructure */
 
-export const NATION_H2 = "Nationwide infrastructure.";
-export const NATION_EYEBROW = "Pharmacy network";
+export const NATION_H2 = ["All 50 states.", "From day one."];
+export const NATION_EYEBROW = "Coverage";
+
+export const NATION_BODY =
+  "PharmaBro operates licensed providers in all 50 states and D.C. Your brand sees patients anywhere in the country from the first day you go live, not after a state by state expansion.";
 
 export const NATION_ROWS = [
   {
@@ -313,10 +316,10 @@ export const PHARMACY_PARTNERS = [
   "Epiq Scripts",
   "AbsoluteRx",
   "Curexa",
-  "QualiTek",
   "FedEx",
   "UPS",
 ];
+
 
 /* ------------------------------------------------- keep patients on treatment */
 
@@ -437,7 +440,7 @@ export const COMPARE_FOOTNOTE =
 
 /* ------------------------------------------------------------- legitscript */
 
-export const LEGIT_H2 = ["LegitScript certification", "in days, not months."];
+export const LEGIT_H2 = ["LegitScript in days,", "not months."];
 export const LEGIT_BODY =
   "Google, Meta, and major payment processors all require LegitScript certification before a telehealth brand can advertise or take payment. PharmaBro prepares, files, and manages your application through approval.";
 
@@ -478,6 +481,7 @@ export const BLOG_CARDS = [
     title: "DEA extends telemedicine flexibilities through 2026",
     body: "What the extension means for GLP-1, TRT, and controlled substance prescribing.",
     slot: "Medication on a clean surface",
+    image: "/assets/pb-blog-vials.jpg",
   },
   {
     category: "Growth",
@@ -485,6 +489,7 @@ export const BLOG_CARDS = [
     title: "The 5 best white label telehealth platforms in 2026",
     body: "Features, pricing, and data ownership across the major platforms.",
     slot: "Pharmacy lab",
+    image: "/assets/pb-blog-pharmacy.jpg",
   },
   {
     category: "Pharmacy",
@@ -492,6 +497,7 @@ export const BLOG_CARDS = [
     title: "From prescription to doorstep: inside a compounded GLP-1 order",
     body: "The exact path a semaglutide prescription takes from approval to delivery.",
     slot: "Cold-pack shipping box",
+    image: "/assets/pb-blog-coldpack.jpg",
   },
   {
     category: "Compliance",
@@ -499,6 +505,7 @@ export const BLOG_CARDS = [
     title: "LegitScript certification: the real timeline, week by week",
     body: "What actually happens during review and how to prepare for it.",
     slot: "Checklist and documents",
+    image: "/assets/pb-blog-documents.jpg",
   },
   {
     category: "Growth",
@@ -506,8 +513,10 @@ export const BLOG_CARDS = [
     title: "Pricing a weight-loss subscription patients keep for a year",
     body: "How to structure GLP-1 pricing that converts and still retains at month 12.",
     slot: "Patient receiving a package",
+    image: "/assets/pb-blog-delivery.jpg",
   },
 ];
+
 
 /* ---------------------------------------------------------------- pricing */
 
@@ -573,10 +582,11 @@ export const FAQ_ITEMS = [
 
 /* -------------------------------------------------------------- final cta */
 
-export const CTA_H2 = ["Your telehealth brand,", "taking patients in 14 days."];
+export const CTA_H2 = ["The business is built.", "Your brand is the missing piece."];
 export const CTA_BODY =
-  "Physicians, pharmacy, payments, and subscriptions, all handled, so you can focus on marketing and growth.";
+  "Providers, pharmacy, compliance, and billing, all running before you sign. You market. PharmaBro operates.";
 export const CTA_FOOT = "Month to month. Your brand, your patients.";
+
 
 export const CTA_PRODUCTS = [
   "/assets/vial-semaglutide.png",
@@ -651,3 +661,37 @@ export const PAIR_INTAKE = {
   body: "Patients answer a short branded eligibility check on any device. Every answer routes the case, sets the dose logic, and keeps the chart clean before a provider ever opens it.",
   fine: "Eligibility questions are configurable per condition and per state.",
 };
+
+/* ---------------------------------------------------- scale stats + proof */
+
+export const SCALE_STATS = [
+  { value: 51, suffix: "", label: "States and D.C. covered" },
+  { value: 30, suffix: "+", label: "Pharmacy partners in network" },
+  { value: 14, suffix: " days", label: "Average time to launch" },
+  { value: 0, suffix: "%", label: "Revenue share, ever" },
+];
+
+export const LOGO_WALL_H2 = "Brands running on PharmaBro.";
+export const LOGO_WALL_SUB =
+  "Weight loss, hormone, hair, and longevity brands operating on the same infrastructure.";
+
+export const TESTIMONIALS = [
+  {
+    quote:
+      "We went from a landing page to filling prescriptions in under three weeks. The clinic side was already done, we just brought the brand.",
+    name: "Dana Whitfield",
+    role: "Founder, weight loss brand",
+  },
+  {
+    quote:
+      "Flat fee changed the math for us. Every new subscriber is margin, not a cut going somewhere else.",
+    name: "Aaron Vega",
+    role: "Operator, mens health",
+  },
+  {
+    quote:
+      "LegitScript, pharmacy routing, and provider coverage were the three things stalling us. All three were handled on day one.",
+    name: "Priya Raman",
+    role: "COO, longevity clinic",
+  },
+];

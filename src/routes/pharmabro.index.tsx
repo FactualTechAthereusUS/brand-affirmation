@@ -14,6 +14,12 @@ import {
 import { Container } from "@/components/pharmabro/primitives";
 import { HeroBlock } from "@/components/pharmabro/home/HeroBlock";
 import {
+  LogoWall,
+  ScaleStats,
+  Testimonials,
+} from "@/components/pharmabro/home/ScaleProof";
+
+import {
   CheckoutToRevenue,
   CompleteClinic,
   RunOn,
@@ -75,6 +81,7 @@ function PharmaBroHome() {
     <>
       <HeroBlock />
       <TrustStrip />
+      <ScaleStats />
       <CompleteClinic />
       <UnderOneRoof />
       <RunOn />
@@ -82,8 +89,10 @@ function PharmaBroHome() {
       <Nationwide />
       <Retention />
       <GrowthBand />
+      <Testimonials />
       <Comparison />
       <LegitScript />
+      <LogoWall />
       <FromTheBlog />
       <PricingPeek />
       <Faq />
@@ -92,3 +101,4 @@ function PharmaBroHome() {
     </>
   );
 }
+

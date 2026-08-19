@@ -9,7 +9,8 @@ Revamp the homepage around the sections you named as frozen. Everything else get
 - Clinic pair block: "your intake on their phone", "PharmaBro handles every prescription", phone loop animation, "revenue in real time"
 - "Watch your brand grow in real time" analytics section
 - "Built to run on, not grow out of"
-- "A complete clinic, operated end to end" (clinic live on day one)
+- "A complete clinic, operated end to end" (clinic live on day one)  
+your clinic live 
 
 ## New sections
 
