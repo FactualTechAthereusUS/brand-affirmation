@@ -243,18 +243,71 @@ function PricingPage() {
       </Section>
 
       {/* ---------------------------------------------------------- add-ons */}
-      <Section band>
+      <Section band id="add-ons" className="scroll-mt-24">
         <Container size="wide">
           <Reveal>
-            <MicroLabel className="mb-5">Add-ons</MicroLabel>
-            <TwoTone lead="Add-ons." trail="Bolt on what you need." className="max-w-[720px]" />
+            <h2 className="font-sans text-[36px] leading-none tracking-[-0.02em] text-ink sm:text-[44px] lg:text-[54px]">
+              Optional add-ons for any plan
+            </h2>
+            <p className="mt-4 max-w-[560px] text-sm text-ink/80">
+              Layer any of these onto a plan. Add or remove them as you grow.
+            </p>
           </Reveal>
-          <RevealGroup className="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-hairline)] bg-[var(--color-hairline)] md:grid-cols-3">
+          <RevealGroup className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
             {addOns.map((a) => (
-              <RevealItem key={a.name} className="bg-canvas p-6 sm:p-8">
-                <h3 className="text-[16px] font-medium text-ink">{a.name}</h3>
-                <p className="pb-body mt-3 text-[14px] leading-relaxed">{a.body}</p>
-                <div className="pb-micro mt-5">{a.price}</div>
+              <RevealItem key={a.name}>
+                <Link
+                  to={a.to}
+                  className="group relative flex h-full flex-col justify-between gap-8 bg-[#f7f4ef] p-6 transition-colors hover:bg-[#efeae1] sm:p-8"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -inset-[3px] z-10 text-[var(--color-hairline)]"
+                  >
+                    <svg
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="none"
+                      className="h-full w-full"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path d="M0 12 L0 0 L12 0" />
+                      <path d="M88 0 L100 0 L100 12" />
+                      <path d="M100 88 L100 100 L88 100" />
+                      <path d="M12 100 L0 100 L0 88" />
+                    </svg>
+                  </span>
+                  <div className="flex flex-col gap-4">
+                    <h3 className="font-sans text-[22px] leading-none tracking-[-0.02em] text-ink">
+                      {a.name}
+                    </h3>
+                    <p className="text-[15px] leading-[1.4] text-ink/60">{a.body}</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[20px] leading-none text-ink">
+                      {a.price}{" "}
+                      <span className="text-sm text-ink/70">/ {a.priceUnit}</span>
+                    </p>
+                    <span className="mt-1 inline-flex w-fit items-center gap-1 text-sm text-ink underline decoration-ink/40 underline-offset-4 transition-colors group-hover:decoration-ink">
+                      Learn more
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                        className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                      >
+                        <path
+                          d="M5 12h14M13 6l6 6-6 6"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
               </RevealItem>
             ))}
           </RevealGroup>

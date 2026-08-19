@@ -157,18 +157,24 @@ export const transparency = {
 export const addOns = [
   {
     name: "Additional vertical",
-    price: "$2,500 one-time",
+    price: "$2,500",
+    priceUnit: "one-time",
     body: "Add a new treatment category to an existing brand.",
+    to: "/pharmabro/demo",
   },
   {
     name: "Priority launch",
-    price: "$5,000 one-time",
+    price: "$5,000",
+    priceUnit: "one-time",
     body: "Dedicated launch manager and prioritized setup for brands that need to be live in under 7 days.",
+    to: "/pharmabro/demo",
   },
   {
     name: "Custom intake quiz",
-    price: "$1,500 one-time",
+    price: "$1,500",
+    priceUnit: "one-time",
     body: "Bespoke intake questionnaire built to your clinical protocol, beyond the standard template library.",
+    to: "/pharmabro/demo",
   },
 ];
 
