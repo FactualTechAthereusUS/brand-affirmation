@@ -16,7 +16,6 @@ import { FeatureTable } from "@/components/pharmabro/pricing/FeatureTable";
 import {
   addOns,
   cardsFootnote,
-  migrationBanner,
   PRICING_REVIEWED,
   PRICING_REVIEWED_ISO,
   pricingFaqs,
