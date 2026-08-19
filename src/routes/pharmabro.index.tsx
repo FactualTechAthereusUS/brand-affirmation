@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FAQ_ITEMS, LAUNCH_DAYS, TRUST_MARKS } from "@/lib/pharmabro/home";
+import { FAQ_ITEMS, LAUNCH_DAYS } from "@/lib/pharmabro/home";
 import {
   LAST_UPDATED,
   ORG_NODE,
