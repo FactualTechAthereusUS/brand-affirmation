@@ -5,6 +5,7 @@
  * card stack loop. Motion follows the shared PharmaBro grammar (soft eases,
  * short travel, green ticks) so it reads like the rest of the page.
  */
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ClipboardCheck,
