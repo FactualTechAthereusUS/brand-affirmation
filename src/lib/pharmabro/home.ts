@@ -582,10 +582,11 @@ export const FAQ_ITEMS = [
 
 /* -------------------------------------------------------------- final cta */
 
-export const CTA_H2 = ["Your telehealth brand,", "taking patients in 14 days."];
+export const CTA_H2 = ["The business is built.", "Your brand is the missing piece."];
 export const CTA_BODY =
-  "Physicians, pharmacy, payments, and subscriptions, all handled, so you can focus on marketing and growth.";
+  "Providers, pharmacy, compliance, and billing, all running before you sign. You market. PharmaBro operates.";
 export const CTA_FOOT = "Month to month. Your brand, your patients.";
+
 
 export const CTA_PRODUCTS = [
   "/assets/vial-semaglutide.png",
