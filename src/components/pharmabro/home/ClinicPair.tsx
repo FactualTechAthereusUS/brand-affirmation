@@ -219,8 +219,24 @@ function MessageLoop() {
 
 export function ClinicPair() {
   return (
-    <div className="mt-16 grid gap-10 lg:mt-24 lg:grid-cols-2">
+    <div className="mt-16 grid gap-10 lg:mt-24 lg:grid-cols-3">
       <Rise className="flex flex-col gap-6">
+        <Panel>
+          <PhoneLoop />
+        </Panel>
+        <div>
+          <h3 className="text-[24px] font-normal leading-[1.05] tracking-[-0.02em] text-ink">
+            {PAIR_INTAKE.heading}
+          </h3>
+          <p className="pb-body mt-4 max-w-[460px] text-[16px] leading-[1.4]">{PAIR_INTAKE.body}</p>
+          <p className="mt-3 max-w-[460px] text-[12px] leading-[1.4] text-[color-mix(in_oklab,var(--color-ink)_42%,transparent)]">
+            {PAIR_INTAKE.fine}
+          </p>
+        </div>
+      </Rise>
+
+      <Rise delay={0.05} className="flex flex-col gap-6">
+
         <Panel>
           <MessageLoop />
         </Panel>
