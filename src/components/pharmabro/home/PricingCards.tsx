@@ -136,9 +136,13 @@ function StripeS({ className }: { className?: string }) {
 
 function StripeWordmark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 60 25" aria-label="Stripe" role="img" className={className} fill="currentColor">
-      <path d="M6.3 9.6c0-.9.75-1.25 1.9-1.25 1.66 0 3.77.5 5.44 1.4V4.6A14.3 14.3 0 0 0 8.2 3.6C4.02 3.6 1.2 5.8 1.2 9.46c0 5.72 7.83 4.8 7.83 7.26 0 1.06-.92 1.4-2.16 1.4-1.83 0-4.17-.75-6.03-1.77v5.15c2.06.9 4.14 1.28 6.03 1.28 4.3 0 7.28-2.13 7.28-5.84 0-6.18-7.85-5.08-7.85-7.34ZM22.9 4.9l-5.66 1.2v18.1h5.66v-2.86h3.4v-4.8h-3.4V4.9ZM35.4 10.6l-.36-1.66h-4.98v15.26h5.66V13.9c1.34-1.75 3.6-1.42 4.32-1.18V7.6c-.75-.28-3.4-.8-4.64 3ZM43.4 8.94h5.68v15.26H43.4V8.94ZM43.4 3.1l5.68-1.2v5l-5.68 1.2v-5Z" />
-    </svg>
+    <span
+      aria-label="Stripe"
+      className={className}
+      style={{ fontWeight: 700, letterSpacing: "-0.03em" }}
+    >
+      stripe
+    </span>
   );
 }
 
@@ -327,7 +331,7 @@ export function PricingCards() {
                   <StripeS className="size-[17px]" />
                   Get started
                 </motion.a>
-                <StripeWordmark className="h-[22px] w-auto text-[rgb(130,130,130)]" />
+                <StripeWordmark className="text-[22px] leading-none text-[rgb(130,130,130)]" />
               </div>
             </div>
           </Rise>
