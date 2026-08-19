@@ -10,8 +10,56 @@ import { cn } from "@/lib/utils";
 /** Valeryn's hero ease and the Sunbeam standard ease. */
 export const PB_EASE = [0.05, 0.58, 0.56, 1] as const;
 export const PB_EASE_SOFT = [0, 0.82, 0.56, 1] as const;
+/** Standard scroll ease used site-wide. */
+export const PB_EASE_STD = [0.4, 0, 0.2, 1] as const;
 
-function useShown<T extends HTMLElement>(margin: any = "0px 0px -10% 0px") {
+/** True on >= 768px viewports. Scroll motion is disabled below that. */
+export function useDesktopMotion() {
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    const sync = () => setDesktop(mql.matches);
+    sync();
+    mql.addEventListener("change", sync);
+    return () => mql.removeEventListener("change", sync);
+  }, []);
+  return desktop;
+}
+
+/** Hero headline: word-by-word blur reveal, 60ms stagger. */
+export function WordsReveal({
+  text,
+  delay = 0,
+  className,
+  children,
+}: {
+  text: string;
+  delay?: number;
+  className?: string;
+  children?: ReactNode;
+}) {
+  const reduce = useReducedMotion();
+  const words = text.split(" ");
+  if (reduce) return <span className={className}>{text}</span>;
+  return (
+    <span className={className}>
+      {words.map((w, i) => (
+        <motion.span
+          key={`${w}-${i}`}
+          initial={{ opacity: 0, filter: "blur(8px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 0.6, delay: delay + i * 0.06, ease: PB_EASE_STD }}
+          className="inline-block whitespace-pre"
+        >
+          {w === "\u0000" ? children : w}
+          {i < words.length - 1 ? " " : ""}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+function useShown<T extends HTMLElement>(margin: any = "0px 0px -20% 0px") {
   const ref = useRef<T>(null);
   const inView = useInView(ref, { once: true, amount: 0, margin });
   const [fallback, setFallback] = useState(false);
@@ -21,6 +69,7 @@ function useShown<T extends HTMLElement>(margin: any = "0px 0px -10% 0px") {
   }, []);
   return { ref, shown: inView || fallback };
 }
+
 
 /** Headline line: rises with a hair of counter rotation over 1.2s. */
 export function HeroLine({
@@ -46,11 +95,15 @@ export function HeroLine({
   );
 }
 
-/** Section entrance used across the page. Travel is deliberately small. */
+/**
+ * Section entrance: opacity 0 / y 40 -> 0, 0.6s on the standard ease,
+ * triggered when the block passes 80% of the viewport. Disabled below 768px
+ * and under reduced motion.
+ */
 export function Rise({
   children,
   delay = 0,
-  y = 24,
+  y = 40,
   className,
 }: {
   children: ReactNode;
@@ -59,20 +112,22 @@ export function Rise({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const desktop = useDesktopMotion();
   const { ref, shown } = useShown<HTMLDivElement>();
-  if (reduce) return <div className={className}>{children}</div>;
+  if (reduce || !desktop) return <div className={className}>{children}</div>;
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y }}
       animate={shown ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.9, delay, ease: PB_EASE_SOFT }}
+      transition={{ duration: 0.6, delay, ease: PB_EASE_STD }}
       className={className}
     >
       {children}
     </motion.div>
   );
 }
+
 
 /**
  * Kinetic rule: a hairline that draws itself left to right as the section

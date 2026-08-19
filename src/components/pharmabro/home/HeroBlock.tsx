@@ -9,12 +9,43 @@ import {
   HERO_SUB,
 } from "@/lib/pharmabro/home";
 import { Btn, Container, EyebrowPill } from "@/components/pharmabro/primitives";
-import { PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
+import { PB_EASE, PB_EASE_SOFT, PB_EASE_STD } from "@/components/pharmabro/motion";
 import { HeroPanel, HeroTabStrip } from "./HeroPanels";
 import { cn } from "@/lib/utils";
 
 
 const longest = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
+
+/** One headline word: blur(8px)/opacity 0 -> clear, 60ms stagger per word. */
+function HeroWord({
+  children,
+  i,
+  plain,
+}: {
+  children: React.ReactNode;
+  i: number;
+  plain?: boolean;
+}) {
+  const reduce = useReducedMotion();
+  const content = (
+    <>
+      {children}
+      {plain ? null : " "}
+    </>
+  );
+  if (reduce) return <span className="inline-block">{content}</span>;
+  return (
+    <motion.span
+      initial={{ opacity: 0, filter: "blur(8px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, delay: 0.05 + i * 0.06, ease: PB_EASE_STD }}
+      className="inline-block whitespace-pre"
+    >
+      {content}
+    </motion.span>
+  );
+}
+
 
 function RotatingWord() {
   const reduce = useReducedMotion();
@@ -107,27 +138,22 @@ export function HeroBlock() {
 
           <h1 className="mt-7 max-w-[19ch] text-balance font-normal leading-[1.04] tracking-[-0.03em] text-ink text-[2.5rem] sm:max-w-[22ch] sm:text-[3.4rem] lg:text-[4.25rem]">
             <span className="sr-only">{HERO_H1_STATIC}</span>
-            <motion.span
-              aria-hidden
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.1, delay: 0.06, ease: PB_EASE }}
-              className="block"
-            >
-              Launch your
-              <RotatingWord />
-              brand.
-            </motion.span>
-            <motion.span
-              aria-hidden
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.1, delay: 0.16, ease: PB_EASE }}
-              className="block pb-dim"
-            >
-              PharmaBro runs the clinic.
-            </motion.span>
+            <span aria-hidden className="block">
+              <HeroWord i={0}>Launch</HeroWord>
+              <HeroWord i={1}>your</HeroWord>
+              <HeroWord i={2} plain>
+                <RotatingWord />
+              </HeroWord>
+              <HeroWord i={3}>brand.</HeroWord>
+            </span>
+            <span aria-hidden className="block pb-dim">
+              <HeroWord i={4}>PharmaBro</HeroWord>
+              <HeroWord i={5}>runs</HeroWord>
+              <HeroWord i={6}>the</HeroWord>
+              <HeroWord i={7}>clinic.</HeroWord>
+            </span>
           </h1>
+
 
           <motion.p
             initial={{ opacity: 0, y: 18 }}

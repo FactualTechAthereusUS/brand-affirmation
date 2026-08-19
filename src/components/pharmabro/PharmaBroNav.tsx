@@ -182,7 +182,7 @@ export function PharmaBroNav() {
 
               {/* desktop groups */}
               <nav className="hidden items-center gap-0.5 lg:flex">
-                {NAV_GROUPS.map((g) => (
+                {NAV_GROUPS.map((g, gi) => (
                   <button
                     key={g.label}
                     type="button"
@@ -191,13 +191,19 @@ export function PharmaBroNav() {
                       setOpen(g.label);
                     }}
                     onFocus={() => setOpen(g.label)}
+                    style={{
+                      transitionDelay: `${gi * 100}ms`,
+                      opacity: mounted ? 1 : 0,
+                      transform: mounted ? "none" : "translateY(6px)",
+                    }}
                     className={cn(
-                      "flex items-center gap-1 rounded-full px-3 py-2 text-[14px] font-medium transition-colors",
+                      "flex items-center gap-1 rounded-full px-3 py-2 text-[14px] font-medium transition-[color,background-color,opacity,transform] duration-500 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]",
                       open === g.label
                         ? "bg-[color-mix(in_oklab,var(--color-ink)_6%,transparent)] text-ink"
                         : "text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-ink)_4%,transparent)] hover:text-ink",
                     )}
                   >
+
                     {g.label}
                     <ChevronDown
                       className={cn(
