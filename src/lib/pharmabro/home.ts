@@ -202,11 +202,12 @@ export const RUNON_TABS = [
   "Patient Experience",
 ];
 
+/** Mirrors the KPI row of the Overview dashboard shot so both read as one product. */
 export const RUNON_STATS = [
-  { label: "Total revenue", value: "$47,582.98" },
-  { label: "Sessions", value: "18,402" },
-  { label: "Leads", value: "2,914" },
-  { label: "Conversions", value: "983" },
+  { label: "Monthly recurring", value: "$268,400" },
+  { label: "Net revenue", value: "$71,480" },
+  { label: "Active subscriptions", value: "1,284" },
+  { label: "Retention rate", value: "66.7%" },
 ];
 
 /* --------------------------------------------- checkout to recurring revenue */
