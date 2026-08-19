@@ -22,6 +22,7 @@ import {
 import {
   Btn,
   Container,
+  MicroLabel,
   Section,
 } from "@/components/pharmabro/primitives";
 import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
