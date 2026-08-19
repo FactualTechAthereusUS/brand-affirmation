@@ -80,40 +80,150 @@ export function LogoWall() {
   );
 }
 
-/** Three quote cards, hairline framed, no avatars. */
+function Stars() {
+  return (
+    <div className="flex items-center gap-1" aria-label="5 out of 5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg
+          key={i}
+          viewBox="0 0 16 15"
+          className="h-[13px] w-[13px] fill-ink"
+          aria-hidden="true"
+        >
+          <path d="M8 0l2.06 4.6L15 5.24l-3.6 3.32 1 4.94L8 11.06 3.6 13.5l1-4.94L1 5.24l4.94-.64L8 0z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+function Monogram({ name }: { name: string }) {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2);
+  return (
+    <span className="grid size-11 shrink-0 place-items-center rounded-full border border-[var(--color-hairline)] bg-canvas text-[13px] font-medium tracking-[-0.01em] text-ink">
+      {initials}
+    </span>
+  );
+}
+
+/**
+ * Framer-style testimonial rail: one featured quote at a time with a quote
+ * glyph, star row and monogram byline, plus a hairline picker that also
+ * auto-advances so the section demos itself.
+ */
 export function Testimonials() {
+  const [active, setActive] = useState(0);
+  const [cycle, setCycle] = useState(0);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setActive((a) => (a + 1) % TESTIMONIALS.length);
+      setCycle((c) => c + 1);
+    }, 6200);
+    return () => window.clearTimeout(id);
+  }, [active, cycle]);
+
+  const t = TESTIMONIALS[active];
+
   return (
     <Section band>
       <Container size="wide">
-        <Rise>
-          <MicroLabel>What operators say</MicroLabel>
-          <h2 className="mt-4 max-w-[26ch] text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl">
-            Built by operators,{" "}
-            <span className="pb-dim">used by operators.</span>
-          </h2>
-        </Rise>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+          <Rise>
+            <MicroLabel>What operators say</MicroLabel>
+            <h2 className="mt-4 max-w-[20ch] text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl">
+              Built by operators,{" "}
+              <span className="pb-dim">used by operators.</span>
+            </h2>
+            <p className="pb-body mt-4 max-w-[42ch] text-[15.5px] leading-relaxed">
+              Brands running weight loss, mens health and longevity clinics on
+              PharmaBro today.
+            </p>
+          </Rise>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <motion.figure
-              key={t.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, delay: i * 0.07, ease: PB_EASE_SOFT }}
-              className="pb-card flex flex-col justify-between p-6"
-            >
-              <blockquote className="text-[16px] leading-relaxed tracking-[-0.01em] text-ink">
-                {t.quote}
-              </blockquote>
-              <figcaption className="mt-6 border-t border-[var(--color-hairline)] pt-4">
-                <div className="text-[13.5px] font-medium text-ink">{t.name}</div>
-                <div className="pb-micro mt-1">{t.role}</div>
-              </figcaption>
-            </motion.figure>
-          ))}
+          <Rise delay={0.06}>
+            <div className="pb-card p-6 sm:p-8">
+              <svg
+                viewBox="0 0 24 15"
+                className="h-[15px] w-6 fill-ink"
+                aria-hidden="true"
+              >
+                <path d="M0 15V8.2C0 3.9 2.5.9 6.9 0l.8 2.5C5.3 3.2 4 4.6 4 6.3h3.4V15H0zm16.6 0H9.2V8.2c0-4.3 2.5-7.3 6.9-8.2l.8 2.5c-2.4.7-3.7 2.1-3.7 3.8H24V15h-7.4z" />
+              </svg>
+
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.figure
+                  key={t.name}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
+                >
+                  <blockquote className="mt-5 max-w-[40ch] text-[21px] font-normal leading-[1.3] tracking-[-0.02em] text-ink sm:text-[26px]">
+                    {t.quote}
+                  </blockquote>
+
+                  <div className="mt-6">
+                    <Stars />
+                  </div>
+
+                  <figcaption className="mt-6 flex items-center gap-3 border-t border-[var(--color-hairline)] pt-5">
+                    <Monogram name={t.name} />
+                    <span>
+                      <span className="block text-[14.5px] font-medium text-ink">
+                        {t.name}
+                      </span>
+                      <span className="pb-micro mt-0.5 block normal-case tracking-normal">
+                        {t.role}
+                      </span>
+                    </span>
+                  </figcaption>
+                </motion.figure>
+              </AnimatePresence>
+            </div>
+
+            <div className="mt-5 grid gap-px sm:grid-cols-3">
+              {TESTIMONIALS.map((item, i) => {
+                const on = i === active;
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => {
+                      setActive(i);
+                      setCycle((c) => c + 1);
+                    }}
+                    className="group relative border-t border-[var(--color-hairline)] pt-4 text-left"
+                  >
+                    <span
+                      className="absolute inset-x-0 top-0 h-px origin-left bg-ink transition-transform duration-500"
+                      style={{ transform: on ? "scaleX(1)" : "scaleX(0)" }}
+                    />
+                    <span
+                      className="block text-[13.5px] font-medium transition-colors duration-400"
+                      style={{
+                        color: on
+                          ? "var(--color-ink)"
+                          : "color-mix(in oklab, var(--color-ink) 45%, transparent)",
+                      }}
+                    >
+                      {item.name}
+                    </span>
+                    <span className="pb-micro mt-1 block normal-case tracking-normal">
+                      {item.role}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </Rise>
         </div>
       </Container>
     </Section>
   );
 }
+
