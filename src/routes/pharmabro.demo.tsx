@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StubPage } from "@/components/pharmabro/StubPage";
+import { BookingPage } from "@/components/pharmabro/BookingPage";
 
 const TITLE = "See PharmaBro live. 20 minutes, no slides | PharmaBro";
-const DESCRIPTION = "We will model your current platform cost against a PharmaBro flat fee using your real patient volume, then walk you through the operator dashboard, the...";
+const DESCRIPTION = "We will model your current platform cost against a PharmaBro flat fee using your real patient volume, then walk you through the operator dashboard, the intake builder, and the rebill engine.";
 const URL = "https://sweet-confirm-it.lovable.app/pharmabro/demo";
 
 export const Route = createFileRoute("/pharmabro/demo")({
@@ -22,13 +22,6 @@ export const Route = createFileRoute("/pharmabro/demo")({
 });
 
 function Page_demo() {
-  return (
-    <StubPage
-      eyebrow="Book a Demo"
-      lead="See PharmaBro live."
-      trail="20 minutes, no slides."
-      intro="We will model your current platform cost against a PharmaBro flat fee using your real patient volume, then walk you through the operator dashboard, the intake builder, and the rebill engine."
-      points={["Live walkthrough of the admin, portal, and pharmacy queue.", "Margin model built on your actual patient count.", "Migration plan if you are leaving OpenLoop or Bask."]}
-    />
-  );
+  return <BookingPage />;
 }
+
