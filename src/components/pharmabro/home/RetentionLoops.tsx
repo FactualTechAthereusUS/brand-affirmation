@@ -310,64 +310,67 @@ const NOTES = [
   },
 ];
 
-const NOTE_H = 96;
-const NOTE_GAP = 106;
-
 function NotificationsLoop() {
   const reduce = useReducedMotion();
   const stage = useLoop(3, 1250, reduce);
 
   return (
-    <Stage>
-      <div className="w-[404px]">
-        <div className="pl-[84px]">
+    <div className="absolute inset-0 flex items-center overflow-hidden px-4 py-5 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[400px]">
+        <div className="sm:pl-[74px]">
           <SceneHeader label="Patient notifications" />
         </div>
-        <div className="flex gap-5">
-          <div className="relative w-[64px] shrink-0" style={{ height: 414 }}>
-            <div className="absolute bottom-0 right-1 top-0 w-px bg-[color-mix(in_oklab,var(--color-ink)_9%,transparent)]" />
+
+        <div className="relative sm:pl-[74px]">
+          {/* day rail, desktop only */}
+          <div aria-hidden className="absolute bottom-2 left-[58px] top-2 hidden w-px sm:block">
+            <div className="absolute inset-0 bg-[color-mix(in_oklab,var(--color-ink)_9%,transparent)]" />
             <motion.div
               animate={{ scaleY: Math.min(1, (stage + 1) / 4) }}
               transition={{ duration: 0.6, ease: PB_EASE_SOFT }}
-              className="absolute right-1 top-0 h-full w-px origin-top"
-              style={{ backgroundColor: BRAND, boxShadow: `0 0 8px 1px color-mix(in oklab, ${BRAND} 28%, transparent)` }}
+              className="absolute inset-0 origin-top"
+              style={{
+                backgroundColor: BRAND,
+                boxShadow: `0 0 8px 1px color-mix(in oklab, ${BRAND} 28%, transparent)`,
+              }}
             />
           </div>
 
-          <div className="relative flex-1" style={{ height: 414 }}>
+          <div className="flex flex-col gap-2.5">
             {NOTES.map((n, i) => {
-              const order = i; // note i enters at stage i and gets pushed down
-              const visible = stage >= order;
+              const visible = stage >= i;
               const Icon = n.icon;
               return (
                 <motion.div
                   key={n.title}
                   animate={{
-                    opacity: visible ? 1 : 0,
-                    y: visible ? (stage - order) * NOTE_GAP : (stage - order) * NOTE_GAP + 24,
+                    opacity: visible ? 1 : 0.18,
+                    y: visible ? 0 : 10,
+                    scale: visible ? 1 : 0.985,
+                    filter: visible ? "blur(0px)" : "blur(1.5px)",
                   }}
                   transition={{ duration: 0.55, ease: PB_EASE_SOFT }}
-                  className="absolute inset-x-0 top-0"
-                  style={{ height: NOTE_H, zIndex: 10 - i }}
+                  className="relative"
                 >
+                  {/* day marker: inline on mobile, on the rail from sm up */}
                   <span
                     aria-hidden
-                    className="absolute right-full top-[26px] flex -translate-y-1/2 items-center gap-2 pr-[15px]"
+                    className="mb-1 flex items-center gap-2 sm:absolute sm:right-full sm:top-[22px] sm:mb-0 sm:-translate-y-1/2 sm:flex-row-reverse sm:pr-[12px]"
                   >
-                    <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.08em] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)]">
-                      {n.day}
-                    </span>
                     <span
-                      className="size-[7px] rounded-full"
+                      className="size-[7px] shrink-0 rounded-full"
                       style={{
                         backgroundColor: n.done ? OK : BRAND,
                         boxShadow: `0 0 9px 1px color-mix(in oklab, ${n.done ? OK : BRAND} 40%, transparent)`,
                       }}
                     />
+                    <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.08em] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)]">
+                      {n.day}
+                    </span>
                   </span>
-                  <Card reduce={reduce} className="h-full" glow={stage === order}>
 
-                    <div className="flex h-full items-start gap-3 p-3">
+                  <Card reduce={reduce} glow={visible && stage === i}>
+                    <div className="flex items-start gap-3 p-3">
                       <span
                         className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-[10px]"
                         style={
@@ -380,11 +383,11 @@ function NotificationsLoop() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[11px] font-semibold text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]">
+                          <span className="truncate text-[11px] font-semibold text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]">
                             PharmaBro
                           </span>
                           <span
-                            className="rounded-[5px] px-1.5 py-[1px] text-[9px] font-semibold uppercase tracking-[0.06em]"
+                            className="shrink-0 rounded-[5px] px-1.5 py-[1px] text-[9px] font-semibold uppercase tracking-[0.06em]"
                             style={{ backgroundColor: `color-mix(in oklab, ${BRAND} 7%, transparent)`, color: BRAND }}
                           >
                             {n.kind}
@@ -393,10 +396,10 @@ function NotificationsLoop() {
                             {n.time}
                           </span>
                         </div>
-                        <p className="mt-1 text-[13px] font-semibold leading-tight tracking-[-0.01em] text-ink">
+                        <p className="mt-1 text-[12.5px] font-semibold leading-tight tracking-[-0.01em] text-ink sm:text-[13px]">
                           {n.title}
                         </p>
-                        <p className="mt-0.5 text-[11.5px] leading-[1.45] text-[color-mix(in_oklab,var(--color-ink)_60%,transparent)]">
+                        <p className="mt-0.5 text-[11px] leading-[1.45] text-[color-mix(in_oklab,var(--color-ink)_60%,transparent)] sm:text-[11.5px]">
                           {n.body}
                         </p>
                       </div>
@@ -408,9 +411,10 @@ function NotificationsLoop() {
           </div>
         </div>
       </div>
-    </Stage>
+    </div>
   );
 }
+
 
 /* --------------------------------------------------------- 3 journey builder */
 
