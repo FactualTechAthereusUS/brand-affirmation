@@ -28,8 +28,8 @@ export type Tier = {
 export const tiers: Tier[] = [
   {
     id: "launch",
-    name: "Launch",
-    tagline: "Your first brand, taking patients in 14 days.",
+    name: "Launch Program",
+    tagline: "Your clinic, run for you.",
     price: "$1,500",
     priceNote: "/ month",
     setup: "$15,000 one-time setup",
@@ -52,8 +52,8 @@ export const tiers: Tier[] = [
   },
   {
     id: "grow",
-    name: "Grow",
-    tagline: "Built for recurring revenue and a second brand.",
+    name: "Grow Program",
+    tagline: "Built for recurring revenue.",
     price: "$3,000",
     priceNote: "/ month",
     setup: "$25,000 one-time setup",
@@ -78,8 +78,8 @@ export const tiers: Tier[] = [
   },
   {
     id: "scale",
-    name: "Scale",
-    tagline: "High volume. Lowest rate. Named team.",
+    name: "Scale Program",
+    tagline: "Multi-brand, enterprise-grade.",
     price: "$5,000",
     priceNote: "/ month",
     setup: "$50,000 one-time setup",
