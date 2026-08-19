@@ -284,8 +284,11 @@ export const JOURNEY_METRICS = [
 
 /* --------------------------------------------------- nationwide infrastructure */
 
-export const NATION_H2 = "Nationwide infrastructure.";
-export const NATION_EYEBROW = "Pharmacy network";
+export const NATION_H2 = ["All 50 states.", "From day one."];
+export const NATION_EYEBROW = "Coverage";
+
+export const NATION_BODY =
+  "PharmaBro operates licensed providers in all 50 states and D.C. Your brand sees patients anywhere in the country from the first day you go live, not after a state by state expansion.";
 
 export const NATION_ROWS = [
   {
@@ -313,10 +316,10 @@ export const PHARMACY_PARTNERS = [
   "Epiq Scripts",
   "AbsoluteRx",
   "Curexa",
-  "QualiTek",
   "FedEx",
   "UPS",
 ];
+
 
 /* ------------------------------------------------- keep patients on treatment */
 
