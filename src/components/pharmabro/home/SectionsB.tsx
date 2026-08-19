@@ -534,7 +534,7 @@ export function Comparison() {
           <div className="relative mt-16 lg:mt-20">
             <Corners />
             <div className="pb-dotgrid overflow-hidden rounded-[var(--pb-r-xl)] border border-[var(--color-hairline)] bg-canvas">
-              <div className="overflow-x-auto">
+              <div className="no-scrollbar overflow-x-auto">
                 <table className="w-full min-w-[760px] border-collapse text-left">
                   <thead>
                     <tr className="border-b border-[var(--color-hairline)] bg-canvas/80">
