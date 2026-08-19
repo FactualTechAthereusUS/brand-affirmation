@@ -891,63 +891,65 @@ export function Faq() {
 
 export function FinalCta() {
   return (
-    <section className="relative overflow-hidden bg-[#0c0c0c] py-20 sm:py-24 lg:py-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70"
-        style={{
-          background:
-            "radial-gradient(55% 55% at 50% 110%, rgba(27,78,245,0.34) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* floating product images */}
-      {CTA_PRODUCTS.map((src, i) => {
-        const spots = [
-          "left-[4%] top-[14%] w-[110px] sm:w-[150px] -rotate-12",
-          "right-[5%] top-[10%] w-[100px] sm:w-[140px] rotate-12",
-          "left-[9%] bottom-[10%] w-[120px] sm:w-[165px] rotate-6",
-          "right-[8%] bottom-[12%] w-[95px] sm:w-[135px] -rotate-6",
-        ];
-        return (
-          <motion.img
-            key={src}
-            src={src}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            decoding="async"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 0.9, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.1, delay: i * 0.1, ease: PB_EASE_SOFT }}
-            className={`pointer-events-none absolute hidden object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.5)] md:block ${spots[i]}`}
-          />
-        );
-      })}
-
-      <Container size="wide" className="relative text-center">
+    <section className="bg-canvas py-16 sm:py-20 lg:py-24">
+      <Container size="wide">
         <Rise>
-          <h2 className="mx-auto max-w-[22ch] text-balance text-[2rem] font-normal leading-[1.06] tracking-[-0.03em] text-white sm:text-[2.75rem] lg:text-[3.25rem]">
-            {CTA_H2[0]}
-            <span className="block text-white/50">{CTA_H2[1]}</span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-[50ch] text-[16.5px] leading-relaxed text-white/62 sm:text-[18px]">
-            {CTA_BODY}
-          </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Btn to="/pharmabro/demo" size="lg" className="bg-white text-ink hover:bg-white/90">
-              Get started
-            </Btn>
-            <Btn
-              to="/pharmabro/contact"
-              size="lg"
-              className="border border-white/25 bg-white/[0.06] text-white backdrop-blur-xl hover:bg-white/[0.14]"
-            >
-              View demo
-            </Btn>
+          <div className="overflow-hidden rounded-2xl bg-white p-8 sm:p-10 lg:p-14">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+              {/* left: eyebrow + headline */}
+              <div className="max-w-[34ch]">
+                <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-hairline)] bg-canvas px-3 py-1.5">
+                  <span className="relative flex size-2.5">
+                    <span className="absolute inset-0 animate-ping rounded-full bg-[#ff0033] opacity-40" />
+                    <span className="relative size-2.5 rounded-full bg-[#ff0033]" />
+                  </span>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink">
+                    {CTA_EYEBROW}
+                  </span>
+                </div>
+                <h2 className="text-balance text-[1.9rem] font-normal leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[3rem]">
+                  {CTA_H2}
+                </h2>
+              </div>
+
+              {/* right: body + cta */}
+              <div className="flex flex-col items-start gap-6 lg:max-w-[42ch] lg:items-end">
+                <p className="text-[15.5px] leading-relaxed text-[color-mix(in_oklab,var(--color-ink)_72%,transparent)] sm:text-[17px]">
+                  {CTA_BODY}
+                </p>
+                <Link
+                  to="/pharmabro/contact"
+                  className="group inline-flex h-[52px] items-center gap-2.5 rounded-full bg-ink px-7 text-[15px] font-medium text-white transition-all duration-200 hover:bg-[color-mix(in_oklab,var(--color-ink)_86%,white)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
+                >
+                  <span>Book A Call</span>
+                  <span className="relative flex size-4 overflow-hidden">
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="absolute size-4 transition-transform duration-300 ease-out group-hover:translate-x-full"
+                    >
+                      <path
+                        d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="absolute size-4 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
+                    >
+                      <path
+                        d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+              </div>
+            </div>
           </div>
-          <p className="mt-6 text-[13px] text-white/45">{CTA_FOOT}</p>
         </Rise>
       </Container>
     </section>
