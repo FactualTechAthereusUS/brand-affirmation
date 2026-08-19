@@ -22,7 +22,6 @@ import {
   pricingFaqs,
   setupBody,
   setupStats,
-  transparency,
 } from "@/lib/pharmabro/pricing";
 
 const TITLE = "PharmaBro Pricing — Flat Setup Fee, No Revenue Share";
@@ -273,22 +272,6 @@ function PricingPage() {
         </Container>
       </Section>
 
-      {/* ----------------------------------------------------- transparency */}
-      <Section band>
-        <Container size="wide">
-          <Reveal>
-            <div className="mx-auto max-w-[640px] text-center">
-              <MicroLabel className="mb-5">Transparency</MicroLabel>
-              <TwoTone lead={transparency.title} />
-              {transparency.body.map((p) => (
-                <p key={p} className="pb-body mt-6 text-[16px] leading-relaxed">
-                  {p}
-                </p>
-              ))}
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
 
       {/* --------------------------------------------------- feature table */}
       <Section id="features">
