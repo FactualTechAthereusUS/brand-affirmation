@@ -54,80 +54,133 @@ import { RetentionScene } from "./RetentionLoops";
 
 /* --------------------------------------------- 8 nationwide infrastructure */
 
+function CoverageBlock({
+  title,
+  body,
+  to,
+  srLabel,
+  children,
+}: {
+  title: React.ReactNode;
+  body: string;
+  to: string;
+  srLabel: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="relative overflow-hidden bg-[var(--color-mist)]">
+      <Corners />
+      <div className="grid gap-8 px-6 py-10 sm:px-8 sm:py-12 lg:grid-cols-12 lg:px-12">
+        <h3 className="text-[24px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[28px] lg:col-span-3">
+          {title}
+        </h3>
+        <div className={children ? "lg:col-span-5" : "lg:col-span-7"}>
+          <p className="pb-body max-w-[440px] text-[15.5px] leading-relaxed">{body}</p>
+          <Link
+            to={to}
+            className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-[var(--color-marine)] hover:underline"
+          >
+            Learn more<span className="sr-only"> {srLabel}</span>
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
+        {children ? <div className="lg:col-span-4">{children}</div> : null}
+      </div>
+    </div>
+  );
+}
+
 export function Nationwide() {
   return (
     <Section id="network">
       <Container size="wide">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <Rise>
+          <SquareEyebrow>{NATION_EYEBROW}</SquareEyebrow>
+          <h2 className="mt-4 max-w-[18ch] text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.6rem]">
+            {NATION_H2[0]} <span className="pb-dim">{NATION_H2[1]}</span>
+          </h2>
+          <p className="pb-body mt-5 max-w-[62ch] text-[15.5px] leading-relaxed">
+            {NATION_BODY}
+          </p>
+        </Rise>
+
+        <div className="mt-12 space-y-6">
           <Rise>
-            <SquareEyebrow>{NATION_EYEBROW}</SquareEyebrow>
-            <h2 className="mt-4 max-w-[18ch] text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.6rem]">
-              {NATION_H2[0]}{" "}
-              <span className="pb-dim">{NATION_H2[1]}</span>
-            </h2>
-            <p className="pb-body mt-5 max-w-[56ch] text-[15.5px] leading-relaxed">
-              {NATION_BODY}
-            </p>
+            <CoverageBlock
+              title={
+                <>
+                  Licensed in
+                  <br />
+                  every state
+                </>
+              }
+              body={NATION_ROWS[0].body}
+              to={NATION_ROWS[0].to}
+              srLabel="about the 50 state provider network"
+            />
+          </Rise>
 
-
-            <div className="mt-9 space-y-8">
-              {NATION_ROWS.map((r) => (
-                <div key={r.title} className="border-t border-[var(--color-hairline)] pt-6">
-                  <h3 className="text-[17px] font-medium tracking-[-0.02em] text-ink">
-                    {r.title}
-                  </h3>
-                  <p className="pb-body mt-2.5 max-w-[58ch] text-[15px] leading-relaxed">
-                    {r.body}
-                  </p>
-                  <Link
-                    to={r.to}
-                    className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[var(--color-marine)] hover:underline"
-                  >
-                    Learn more <span aria-hidden>→</span>
-                  </Link>
+          <Rise delay={0.05}>
+            <div
+              className="relative overflow-hidden bg-canvas"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, color-mix(in oklab, var(--color-ink) 9%, transparent) 1px, transparent 1px)",
+                backgroundSize: "18px 18px",
+              }}
+            >
+              <Corners tone="marine" />
+              <div className="grid items-center gap-6 lg:grid-cols-12">
+                <div className="p-6 sm:p-8 lg:col-span-8 lg:py-10 lg:pl-10 lg:pr-0">
+                  <UsProviderMap className="h-[240px] sm:h-[360px] lg:h-[440px]" />
                 </div>
-              ))}
+                <div className="px-6 pb-10 text-center sm:px-8 lg:col-span-4 lg:pb-0 lg:pr-12">
+                  <h3 className="text-[24px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[28px]">
+                    Providers in all 50 states
+                  </h3>
+                  <p className="pb-body mx-auto mt-4 max-w-[320px] text-[15px] leading-relaxed">
+                    A clinician network that reaches every state, so wherever a patient
+                    signs up there is already a licensed provider ready to review the
+                    visit and start care under your brand.
+                  </p>
+                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-3 py-1.5">
+                    <Check className="size-3.5" />
+                    <span className="text-[12.5px] text-ink">
+                      Licensed clinicians in all 50 states and D.C.
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </Rise>
 
-          <Rise delay={0.08}>
-            <div className="pb-card p-6">
-              <div className="pb-micro">Provider coverage</div>
-              <div className="mt-4 grid grid-cols-8 gap-1.5 sm:grid-cols-10">
-                {STATE_TILES.map((s, i) => (
-                  <motion.span
-                    key={s}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: i * 0.01, ease: PB_EASE_SOFT }}
-                    className="grid h-8 place-items-center rounded-[6px] border border-[color-mix(in_oklab,var(--color-marine)_16%,transparent)] bg-[color-mix(in_oklab,var(--color-marine)_8%,white)] text-[10.5px] font-semibold text-[var(--color-marine)]"
-                  >
-                    {s}
-                  </motion.span>
+          <Rise delay={0.05}>
+            <CoverageBlock
+              title={
+                <>
+                  Pharmacy and
+                  <br />
+                  fulfillment
+                </>
+              }
+              body={NATION_ROWS[1].body}
+              to={NATION_ROWS[1].to}
+              srLabel="about pharmacy and lab fulfillment"
+            >
+              <div className="grid grid-cols-3 items-center gap-x-6 gap-y-8 sm:grid-cols-4">
+                {FULFILLMENT_LOGOS.map((l) => (
+                  <div key={l.name} className="flex h-8 items-center justify-center">
+                    <img
+                      src={l.src}
+                      alt={l.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-full max-w-full object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                    />
+                  </div>
                 ))}
               </div>
-              <div className="mt-5 flex items-center gap-2 border-t border-[var(--color-hairline)] pt-4">
-                <Check className="size-3.5" />
-                <span className="text-[13px] text-ink">
-                  Licensed clinicians in all 50 states and D.C.
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <div className="pb-micro">Fulfillment partners</div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {PHARMACY_PARTNERS.map((p) => (
-                  <span
-                    key={p}
-                    className="rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-3 py-1.5 text-[12.5px] font-medium text-[color-mix(in_oklab,var(--color-ink)_66%,transparent)]"
-                  >
-                    {p}
-                  </span>
-                ))}
-              </div>
-            </div>
+            </CoverageBlock>
           </Rise>
         </div>
       </Container>
