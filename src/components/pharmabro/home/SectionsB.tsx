@@ -358,13 +358,14 @@ export function GrowthBand() {
                           <span className="inline-block text-[15px] text-ink underline underline-offset-2">
                             Learn more
                           </span>
-                          <div className="relative mt-4 aspect-[1158/584] w-full overflow-hidden rounded-[12px] bg-[var(--color-mist)]">
+                          <div className="relative mt-4 aspect-[1672/941] w-full overflow-hidden rounded-[12px]">
                             <img
                               src={GROWTH_SHOTS[idx].src}
                               alt={GROWTH_SHOTS[idx].alt}
                               loading="lazy"
                               decoding="async"
-                              className="absolute inset-0 size-full object-cover"
+                              className="absolute inset-0 size-full object-contain"
+
                             />
                           </div>
                         </div>
