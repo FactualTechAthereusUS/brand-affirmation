@@ -357,10 +357,10 @@ function TokenLoop() {
 
 function StatesLoop() {
   const reduce = useReducedMotion();
-  const tiles = STATE_TILES;
   const stage = useLoop(3, 1100, 3000);
   const filled = reduce || stage >= 1;
-  const count = useCount(tiles.length, filled, 1200);
+  const count = useCount(51, filled, 1200);
+  const pulse = US_PROVIDER_POINTS.filter((_, i) => i % 4 === 0);
 
   return (
     <Stage>
@@ -368,28 +368,56 @@ function StatesLoop() {
         label="Provider coverage"
         right={
           <span className="pb-mono text-[10px] font-semibold tabular-nums" style={{ color: BRAND }}>
-            {count}/{tiles.length}
+            {count}/51
           </span>
         }
       />
 
-      <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-[3px]">
-        {tiles.map((t, i) => (
-          <motion.span
-            key={t}
+      <svg
+        viewBox={US_VIEWBOX}
+        className="h-auto w-full"
+        role="img"
+        aria-label="Map of the United States with licensed provider coverage in all 50 states and D.C."
+      >
+        {US_STATE_PATHS.map((s, i) => (
+          <motion.path
+            key={s.n}
+            d={s.d}
             initial={false}
             animate={{
-              opacity: filled ? 1 : 0.3,
-              backgroundColor: filled
-                ? `color-mix(in oklab, ${BRAND} ${18 + ((i * 7) % 24)}%, white)`
-                : "color-mix(in oklab, var(--color-ink) 5%, transparent)",
+              opacity: filled ? 1 : 0.25,
+              fill: filled
+                ? `color-mix(in oklab, ${BRAND} ${16 + ((i * 11) % 26)}%, white)`
+                : "color-mix(in oklab, var(--color-ink) 5%, white)",
             }}
-            transition={{ duration: 0.45, delay: reduce ? 0 : (i % 13) * 0.02 + Math.floor(i / 13) * 0.06, ease: PB_EASE_SOFT }}
-            className="aspect-square rounded-[3px]"
-            title={t}
+            transition={{
+              duration: 0.5,
+              delay: reduce ? 0 : i * 0.012,
+              ease: PB_EASE_SOFT,
+            }}
+            stroke="white"
+            strokeWidth={1.1}
           />
         ))}
-      </div>
+        {pulse.map((p, i) => (
+          <motion.circle
+            key={p.n}
+            cx={p.x}
+            cy={p.y}
+            r={5}
+            fill={BRAND}
+            initial={false}
+            animate={{ opacity: filled ? [0.35, 1, 0.35] : 0, scale: filled ? [0.85, 1.15, 0.85] : 0.6 }}
+            style={{ transformOrigin: `${p.x}px ${p.y}px` }}
+            transition={
+              reduce
+                ? { duration: 0.3 }
+                : { duration: 2.4, repeat: Infinity, delay: (i % 6) * 0.28, ease: "easeInOut" }
+            }
+          />
+        ))}
+      </svg>
+
 
       <Panel reduce={reduce} show={stage >= 2} className="mt-3 flex items-center gap-2.5 px-3 py-2">
         <span className="grid size-6 shrink-0 place-items-center rounded-full ring-1 ring-[var(--color-hairline)]">
