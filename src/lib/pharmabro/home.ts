@@ -95,10 +95,12 @@ export const DASHBOARD_TABS: ShotTab[] = [
 
 /* --------------------------------------------------- a complete clinic */
 
-export const CLINIC_H2 = ["A complete clinic,", "operated end to end."];
+export const CLINIC_H2 = ["A complete clinic,", "operated end to end"];
 
-export const CLINIC_BODY =
-  "You run the brand and the marketing. PharmaBro runs the clinic behind it, from the licensed providers to the pharmacy to the software and the compliance, so you can launch in days and start taking patients without building the infrastructure yourself.";
+export const CLINIC_BODY = [
+  "You run the brand and the marketing. PharmaBro runs the clinic behind it,",
+  "from the licensed providers to the pharmacy to the software and the compliance, so you can launch in days and start taking patients without building the infrastructure yourself.",
+];
 
 export const CLINIC_CHECKS = [
   {
