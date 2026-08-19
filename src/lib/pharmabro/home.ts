@@ -437,7 +437,7 @@ export const COMPARE_FOOTNOTE =
 
 /* ------------------------------------------------------------- legitscript */
 
-export const LEGIT_H2 = ["LegitScript certification", "in days, not months."];
+export const LEGIT_H2 = ["LegitScript in days,", "not months."];
 export const LEGIT_BODY =
   "Google, Meta, and major payment processors all require LegitScript certification before a telehealth brand can advertise or take payment. PharmaBro prepares, files, and manages your application through approval.";
 
