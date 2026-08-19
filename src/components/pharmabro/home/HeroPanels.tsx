@@ -93,7 +93,15 @@ const PROVIDER_TICKER = [
 
 function ProvidersPanel() {
   const reduce = useReducedMotion();
-  const i = useLoop(PROVIDER_TICKER.length, 2600);
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setInterval(
+      () => setI((v) => (v + 1) % PROVIDER_TICKER.length),
+      2600,
+    );
+    return () => window.clearInterval(id);
+  }, [reduce]);
   const row = PROVIDER_TICKER[i];
   return (
     <div className="absolute inset-0">
