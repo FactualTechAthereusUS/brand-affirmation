@@ -25,6 +25,22 @@ export function Shot({
   rounded?: number;
   mock?: MockKind;
 }) {
+  if (!image && mock === "operations") {
+    return (
+      <motion.img
+        src="/assets/pharmabro-operations-dashboard.png"
+        alt="PharmaBro live operations dashboard with real-time patient activity and global session map"
+        loading="lazy"
+        decoding="async"
+        initial={{ opacity: 0, y: 22, scale: 0.985 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 1, ease: PB_EASE_SOFT }}
+        className={cn("block h-auto w-full", className)}
+      />
+    );
+  }
+
   const inner = (
     <div
       className={cn("relative w-full overflow-hidden", !liquid && "pb-card")}
