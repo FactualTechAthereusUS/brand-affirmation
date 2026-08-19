@@ -914,33 +914,28 @@ export function FinalCta() {
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
                     to="/pharmabro/demo"
-                    className="group inline-flex h-[52px] items-center gap-2.5 rounded-full bg-ink px-7 text-[15px] font-medium text-white transition-all duration-200 hover:bg-[color-mix(in_oklab,var(--color-ink)_86%,white)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
+                    className="inline-flex h-[52px] items-center gap-2.5 rounded-3xl bg-ink px-6 text-[15px] font-medium text-white transition-all duration-200 hover:bg-[color-mix(in_oklab,var(--color-ink)_86%,white)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
+                    style={{
+                      boxShadow:
+                        "inset 0px 2px 4px 0px rgba(255,255,255,0.4), 0px 0.7409732186279143px 0.7409732186279143px -0.75px rgba(0,0,0,0.33), 0px 2.0178668455264415px 2.0178668455264415px -1.5px rgba(0,0,0,0.32), 0px 4.430505261661892px 4.430505261661892px -2.25px rgba(0,0,0,0.3), 0px 9.834710084098335px 9.834710084098335px -3px rgba(0,0,0,0.25), 0px 25px 25px -3.75px rgba(0,0,0,0.11), 0px 0px 0px 1px rgb(130,130,130)",
+                    }}
                   >
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="size-5"
+                    >
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
                     <span>Get started</span>
-                    <span className="relative flex size-4 overflow-hidden">
-                      <svg
-                        aria-hidden
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        className="absolute size-4 transition-transform duration-300 ease-out group-hover:translate-x-full"
-                      >
-                        <path
-                          d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                      <svg
-                        aria-hidden
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        className="absolute size-4 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
-                      >
-                        <path
-                          d="M10.781 7.333 7.205 3.757l.943-.943L13.333 8l-5.185 5.185-.943-.943 3.576-3.576H2.667V7.333Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
                   </Link>
                   <Link
                     to="/pharmabro/contact"
