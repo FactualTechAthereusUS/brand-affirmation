@@ -1,72 +1,185 @@
 import { Link } from "@tanstack/react-router";
+import { motion } from "motion/react";
 import {
   FOOTER_COLUMNS,
   FOOTER_LEGAL,
-  FOOTER_DISCLAIMER,
 } from "@/lib/pharmabro/nav";
 import { TRUST_MARKS } from "@/lib/pharmabro/home";
 import { Container } from "./primitives";
-import { PharmaBroWordmark } from "./PharmaBroNav";
+
+const WORDMARK = "/assets/pharmabro-wordmark.png";
+const LEGITSCRIPT = "/assets/legitscript-certified-badge.png";
+
+/** Green pulse + label, Framer "Availability" pill. */
+function SystemsPill() {
+  return (
+    <div className="inline-flex items-center gap-2.5 rounded-[24px] border border-white/12 bg-white/[0.04] px-3.5 py-2 shadow-[0_10px_24px_-14px_rgba(0,0,0,0.8)] backdrop-blur-sm">
+      <span className="relative inline-flex h-2.5 w-2.5 items-center justify-center">
+        <motion.span
+          className="absolute inset-0 rounded-full bg-[#12b33f]"
+          animate={{ scale: [0.5, 2.1], opacity: [0.5, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+        />
+        <span className="relative h-2 w-2 rounded-full bg-[#12b33f]" />
+      </span>
+      <span className="text-[12.5px] font-medium text-white/80">
+        All systems normal
+      </span>
+    </div>
+  );
+}
+
+/** Stacked backdrop-blur layers that ramp toward the bottom edge. */
+function ProgressiveBlurStrip() {
+  const layers = 7;
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[38%]">
+      {Array.from({ length: layers }).map((_, i) => {
+        const t = (i + 1) / layers;
+        const start = Math.round((i / layers) * 100);
+        const mid = Math.round(((i + 1) / layers) * 100);
+        const mask = `linear-gradient(to bottom, rgba(0,0,0,0) ${start}%, rgba(0,0,0,1) ${mid}%, rgba(0,0,0,1) 100%)`;
+        return (
+          <div
+            key={i}
+            className="absolute inset-0"
+            style={{
+              zIndex: i + 1,
+              maskImage: mask,
+              WebkitMaskImage: mask,
+              backdropFilter: `blur(${+(0.04 * Math.pow(2, i * 1.05)).toFixed(3)}px)`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+const DISCLAIMER_PARAS = [
+  "This site is for informational purposes only and does not constitute medical advice. All clinical decisions, consultations, and prescriptions are made by independent, state-licensed healthcare providers. PharmaBro is not a medical provider and does not practice medicine.",
+  "PharmaBro is a software company. The Factual LLC, doing business as PharmaBro, provides white-label software infrastructure, technology integrations, and operational tooling that enables telehealth brand operators to connect with independent licensed healthcare providers and licensed compounding pharmacies. PharmaBro does not sell, dispense, fulfill, or ship medications. PharmaBro is not a pharmacy, does not operate a pharmacy, and is not an online pharmacy. PharmaBro is not affiliated with any specific pharmacy and does not direct clinical care.",
+  "Pharmacy and fulfillment services are provided by independent, state-licensed third-party compounding pharmacies. Provider services are provided by independent, state-licensed physicians and nurse practitioners. The Factual LLC, DBA PharmaBro, facilitates technology access and operational support only. Partners operate under a Management Services Organization (MSO) model and handle non-clinical business functions only.",
+  "PharmaBro does not guarantee business outcomes, patient acquisition, or revenue. Success depends on operator marketing execution, capital, market conditions, and factors outside PharmaBro's control. Nothing on this site constitutes a business opportunity, earnings claim, or financial representation.",
+  "Use of PharmaBro's platform is subject to our Terms of Service and Privacy Policy. This site is not a part of Facebook, Google, YouTube, or Bing, and is not endorsed by Meta Inc., Google Inc., or Microsoft Inc.",
+];
 
 export function PharmaBroFooter() {
   return (
-    <footer className="border-t border-[var(--color-hairline)] bg-canvas">
-      <Container size="full" className="py-14 lg:py-16">
-        {/* programmatic link grid: 5 columns, every internal page reachable */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-          {FOOTER_COLUMNS.map((col) => (
-            <nav key={col.label} aria-label={col.label}>
-              <h2 className="pb-micro mb-4">{col.label}</h2>
-              <ul className="space-y-2.5">
-                {col.items.map((it) => (
-                  <li key={it.to + it.label}>
-                    <Link
-                      to={it.to}
-                      className="text-[13.5px] leading-snug text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] transition-colors hover:text-ink"
-                    >
-                      {it.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
+    <footer className="relative overflow-hidden bg-[#0A0A0A] text-white">
+      <Container size="full" className="relative z-20 pt-16 pb-8 lg:pt-20">
+        {/* Top: statement left, link grid right */}
+        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-16">
+          <div className="max-w-[420px]">
+            <h2 className="font-sans text-[32px] font-medium leading-[1.06] tracking-[-0.02em] text-white lg:text-[46px]">
+              Launch your own
+              <br />
+              telehealth brand.
+              <br />
+              <span className="text-white/45">Keep every dollar.</span>
+            </h2>
+            <p className="mt-5 max-w-[360px] text-[14px] leading-relaxed text-white/50 lg:text-[15px]">
+              Flat monthly software fee. Zero revenue share. Your Stripe, your
+              patients, your brand.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-4">
+              <SystemsPill />
+              <img
+                src={LEGITSCRIPT}
+                alt="LegitScript certified"
+                className="h-[46px] w-auto rounded-md bg-white/95 p-1 object-contain"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-10">
+            {FOOTER_COLUMNS.map((col) => (
+              <nav key={col.label} aria-label={col.label}>
+                <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/40">
+                  {col.label}
+                </h3>
+                <ul className="mt-5 space-y-3">
+                  {col.items.map((it) => (
+                    <li key={it.to + it.label}>
+                      <Link
+                        to={it.to}
+                        className="text-[13.5px] leading-snug text-white/75 transition-colors hover:text-white"
+                      >
+                        {it.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
 
-        {/* trust pills */}
-        <div className="mt-14 flex flex-wrap gap-2 border-t border-[var(--color-hairline)] pt-8">
-          {TRUST_MARKS.map((t) => (
+        {/* Trust marks */}
+        <div className="mt-14 flex flex-wrap gap-2 border-t border-white/10 pt-8">
+          {TRUST_MARKS.filter((t) => t !== "All systems normal").map((t) => (
             <span
               key={t}
-              className="rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-3 py-1.5 text-[12px] font-medium text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)]"
+              className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[12px] font-medium text-white/65"
             >
               {t}
             </span>
           ))}
         </div>
 
-        <p className="pb-body mt-8 max-w-[820px] text-[12.5px] leading-relaxed">
-          {FOOTER_DISCLAIMER}
-        </p>
-
-        <div className="mt-8 flex flex-col gap-4 border-t border-[var(--color-hairline)] pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <Link to="/pharmabro" aria-label="PharmaBro home">
-            <PharmaBroWordmark />
-          </Link>
+        {/* Legal row */}
+        <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {FOOTER_LEGAL.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
-                className="text-[12.5px] text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)] transition-colors hover:text-ink"
+                className="text-[12.5px] text-white/50 transition-colors hover:text-white"
               >
                 {l.label}
               </Link>
             ))}
-            <span className="pb-micro">© 2026 PharmaBro</span>
           </div>
+          <p className="text-[12.5px] text-white/40">© 2026 The Factual LLC, DBA PharmaBro</p>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mt-10 border-t border-white/10 pt-8">
+          <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/45">
+            PharmaBro — Site Disclaimer &amp; Disclosures
+          </h3>
+          <div className="mt-5 grid gap-4 lg:grid-cols-2 lg:gap-x-12">
+            {DISCLAIMER_PARAS.map((p) => (
+              <p key={p.slice(0, 24)} className="text-[12px] leading-[1.7] text-white/40">
+                {p}
+              </p>
+            ))}
+          </div>
+          <address className="mt-6 text-[12px] not-italic leading-[1.7] text-white/50">
+            The Factual LLC, DBA PharmaBro
+            <br />
+            131 Continental Dr, Suite 305, Newark, DE 19713
+          </address>
         </div>
       </Container>
+
+      {/* Giant wordmark + icon */}
+      <div className="relative px-4 pb-6 md:px-6 md:pb-8">
+        <ProgressiveBlurStrip />
+        <div className="relative z-0 flex justify-center">
+          <img
+            src={WORDMARK}
+            alt="PharmaBro"
+            className="w-full max-w-[1320px] select-none object-contain opacity-95 invert"
+            draggable={false}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
     </footer>
   );
 }
