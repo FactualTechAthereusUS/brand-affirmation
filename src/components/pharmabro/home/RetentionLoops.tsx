@@ -20,23 +20,19 @@ const BRAND = "var(--color-brand, #1B4EF5)";
 const OK = "#3f9d5c";
 
 /** Steps `stage` 0..steps on a fixed cadence, holds the finished state, loops. */
-function useLoop(steps: number, ms: number, reduce: boolean | null, holdMs = 3200) {
+function useLoop(steps: number, ms: number, reduce: boolean | null, holdMs = 3400) {
   const [stage, setStage] = useState(reduce ? steps : 0);
   useEffect(() => {
     if (reduce) return;
-    let id = 0;
-    const tick = () => {
-      setStage((s) => {
-        const next = s >= steps ? 0 : s + 1;
-        id = window.setTimeout(tick, next === steps ? holdMs : ms);
-        return next;
-      });
-    };
-    id = window.setTimeout(tick, ms);
+    const id = window.setTimeout(
+      () => setStage((s) => (s >= steps ? 0 : s + 1)),
+      stage >= steps ? holdMs : ms,
+    );
     return () => window.clearTimeout(id);
-  }, [steps, ms, holdMs, reduce]);
+  }, [stage, steps, ms, holdMs, reduce]);
   return stage;
 }
+
 
 
 function Card({
