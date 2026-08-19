@@ -95,11 +95,15 @@ export function HeroLine({
   );
 }
 
-/** Section entrance used across the page. Travel is deliberately small. */
+/**
+ * Section entrance: opacity 0 / y 40 -> 0, 0.6s on the standard ease,
+ * triggered when the block passes 80% of the viewport. Disabled below 768px
+ * and under reduced motion.
+ */
 export function Rise({
   children,
   delay = 0,
-  y = 24,
+  y = 40,
   className,
 }: {
   children: ReactNode;
@@ -108,20 +112,22 @@ export function Rise({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const desktop = useDesktopMotion();
   const { ref, shown } = useShown<HTMLDivElement>();
-  if (reduce) return <div className={className}>{children}</div>;
+  if (reduce || !desktop) return <div className={className}>{children}</div>;
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y }}
       animate={shown ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.9, delay, ease: PB_EASE_SOFT }}
+      transition={{ duration: 0.6, delay, ease: PB_EASE_STD }}
       className={className}
     >
       {children}
     </motion.div>
   );
 }
+
 
 /**
  * Kinetic rule: a hairline that draws itself left to right as the section
