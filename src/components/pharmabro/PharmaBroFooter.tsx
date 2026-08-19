@@ -171,15 +171,23 @@ export function PharmaBroFooter() {
         {/* Legal row */}
         <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            {FOOTER_LEGAL.map((l) => (
-              <Link
+            {FOOTER_LEGAL.map((l, i) => (
+              <motion.span
                 key={l.to}
-                to={l.to}
-                className="text-[12.5px] text-white/50 transition-colors hover:text-white"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "0px 0px -20% 0px" }}
+                transition={{ duration: 0.4, delay: i * 0.1, ease: [0.4, 0, 0.2, 1] }}
               >
-                {l.label}
-              </Link>
+                <Link
+                  to={l.to}
+                  className="text-[12.5px] text-white/50 transition-colors duration-200 hover:text-white"
+                >
+                  {l.label}
+                </Link>
+              </motion.span>
             ))}
+
           </div>
           <p className="text-[12.5px] text-white/40">© 2026 The Factual LLC, DBA PharmaBro</p>
         </div>
