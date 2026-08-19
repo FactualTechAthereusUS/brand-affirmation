@@ -59,21 +59,6 @@ export const Route = createFileRoute("/pharmabro/")({
   component: PharmaBroHome,
 });
 
-function TrustStrip() {
-  return (
-    <div className="border-y border-[var(--color-hairline)] bg-[var(--color-mist)]">
-      <Container size="wide">
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-4">
-          {TRUST_MARKS.map((m) => (
-            <span key={m} className="pb-micro">
-              {m}
-            </span>
-          ))}
-        </div>
-      </Container>
-    </div>
-  );
-}
 
 function PharmaBroHome() {
   return (
