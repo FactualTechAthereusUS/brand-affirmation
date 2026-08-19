@@ -490,6 +490,7 @@ function JourneyLoop() {
                 strokeWidth="1"
                 pathLength={1}
                 strokeDasharray="1"
+                initial={{ strokeDashoffset: 1 }}
                 animate={{ strokeDashoffset: stage >= 2 ? 0 : 1 }}
                 transition={{ duration: 0.6, ease: PB_EASE_SOFT }}
               />
