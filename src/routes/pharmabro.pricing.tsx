@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Btn,
-  Check,
   Container,
   MicroLabel,
   Reveal,
