@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import {
   CLINIC_BODY,
