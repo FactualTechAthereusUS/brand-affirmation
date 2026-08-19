@@ -113,17 +113,18 @@ function PricingPage() {
   return (
     <>
       {/* ------------------------------------------------------------- hero */}
-      <Section className="pt-6 pb-10 sm:pt-10 sm:pb-14">
+      <Section className="pt-2 pb-10 sm:pt-4 sm:pb-14">
         <Container size="wide">
           <Reveal>
-            <div className="max-w-[900px]">
-              <h1 className="font-sans text-[44px] leading-[1.02] tracking-[-0.03em] text-ink sm:text-[56px] lg:text-[68px]">
-                Simple pricing to launch your telehealth brand.
+            <div className="max-w-[860px]">
+              <MicroLabel className="mb-5">Pricing</MicroLabel>
+              <h1 className="font-sans text-[40px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[52px] lg:text-[60px]">
+                Flat, transparent pricing.
               </h1>
               <p className="mt-6 max-w-[560px] font-serif italic text-[16px] leading-[1.5] text-ink/70 sm:text-[18px]">
-                PharmaBro runs the clinic behind your brand: licensed providers, pharmacy,
-                software, and compliance. One flat platform fee, and no cut of your revenue or
-                your patients.
+                PharmaBro runs the clinic behind your brand: licensed providers, pharmacy
+                fulfillment, software, and compliance. One flat platform fee, and no cut of
+                your revenue or your patients.
               </p>
 
               <Link
