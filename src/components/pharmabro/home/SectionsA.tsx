@@ -160,7 +160,7 @@ export function UnderOneRoof() {
                     "lg:grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-stretch lg:gap-7",
                 )}
               >
-                <div className={cn("min-w-0", layout.wide && "lg:order-1")}>
+                <div className={cn("min-w-0", layout.wide && "lg:order-1 lg:self-center")}>
                   <span className="pb-mono text-[10px] font-semibold tracking-[0.16em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)]">
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -171,7 +171,8 @@ export function UnderOneRoof() {
                     {c.body}
                   </p>
                 </div>
-                <div className={cn("min-w-0", layout.wide && "lg:order-2")}>
+                <div className={cn("min-w-0 flex-1", layout.wide && "lg:order-2")}>
+
                   <CardVisual kind={c.visual} />
                 </div>
               </motion.div>
