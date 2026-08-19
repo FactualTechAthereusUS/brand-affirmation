@@ -612,3 +612,42 @@ export const PAIR_REVENUE = {
   link: "Learn more",
   image: "/assets/pharmabro-analytics-insights.png",
 };
+
+/* --------------------------------------------- looping phone eligibility flow */
+
+export const PHONE_STEPS: {
+  question: string;
+  options: string[];
+  answer: number;
+}[] = [
+  {
+    question: "What brings you in today?",
+    options: ["Weight management", "Skin and hair", "Better sleep"],
+    answer: 0,
+  },
+  {
+    question: "Have you taken a GLP-1 before?",
+    options: ["No, never", "Yes, currently", "Yes, in the past"],
+    answer: 0,
+  },
+  {
+    question: "Where should we ship your treatment?",
+    options: ["Texas", "Florida", "California"],
+    answer: 1,
+  },
+];
+
+export const PAIR_ROUTING = "Licensed provider matched, reviewing now";
+
+export const PAIR_PROVIDER = {
+  name: "Dr. Elena Ruiz, Licensed Provider",
+  avatar: "/assets/portal-welcome-doctor.png",
+  message:
+    "Hi Tom, I've reviewed your intake and medical history. You're a good fit for treatment, so I've approved your prescription. Your medication ships to your door within 2 business days.",
+};
+
+export const PAIR_INTAKE = {
+  heading: "Your intake, on their phone",
+  body: "Patients answer a short branded eligibility check on any device. Every answer routes the case, sets the dose logic, and keeps the chart clean before a provider ever opens it.",
+  fine: "Eligibility questions are configurable per condition and per state.",
+};
