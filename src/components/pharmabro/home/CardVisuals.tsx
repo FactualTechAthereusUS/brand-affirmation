@@ -20,7 +20,12 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { STATE_TILES, type RoofCard } from "@/lib/pharmabro/home";
+import { type RoofCard } from "@/lib/pharmabro/home";
+import {
+  US_PROVIDER_POINTS,
+  US_STATE_PATHS,
+  US_VIEWBOX,
+} from "@/lib/pharmabro/us-map";
 import { PB_EASE_SOFT } from "@/components/pharmabro/motion";
 
 const BRAND = "var(--color-marine, #1B4EF5)";
