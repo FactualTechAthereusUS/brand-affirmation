@@ -4,7 +4,7 @@
  * tiles and no API key at runtime. Provider dots fade in with a stagger and a
  * rotating handful of them pulse, mirroring the live view in the admin panel.
  */
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -30,14 +30,13 @@ function pickActive(step: number) {
 export function UsProviderMap({ className }: { className?: string }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (reduce || !inView) return;
+    if (reduce) return;
     const id = window.setInterval(() => setStep((s) => s + 1), ROTATE_MS);
     return () => window.clearInterval(id);
-  }, [reduce, inView]);
+  }, [reduce]);
 
   const active = useMemo(() => pickActive(step), [step]);
 
@@ -55,7 +54,8 @@ export function UsProviderMap({ className }: { className?: string }) {
               key={s.n}
               d={s.d}
               initial={{ opacity: 0 }}
-              animate={inView || reduce ? { opacity: 1 } : undefined}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0 }}
               transition={{
                 duration: 0.7,
                 delay: reduce ? 0 : 0.1 + i * 0.012,
@@ -77,7 +77,8 @@ export function UsProviderMap({ className }: { className?: string }) {
               <motion.g
                 key={p.n}
                 initial={{ opacity: 0, scale: 0.4 }}
-                animate={inView || reduce ? { opacity: 1, scale: 1 } : undefined}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0 }}
                 transition={{
                   duration: 0.5,
                   delay: reduce ? 0 : 0.5 + i * 0.026,
