@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import {
   CLINIC_BODY,
@@ -237,21 +238,32 @@ export function RunOn() {
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-[18px] border border-white/25 bg-white/95 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.6)]">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.img
-                    key={tab}
-                    src={RUNON_IMAGE[tab] ?? "/assets/pharmabro-dashboard.png"}
-                    alt={`PharmaBro ${tab}`}
-                    loading="lazy"
-                    decoding="async"
-                    initial={{ opacity: 0, scale: 1.01 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
-                    className="h-full w-full object-cover object-top"
-                  />
-                </AnimatePresence>
+              {/* All tab images stay mounted and crossfade via opacity so switching
+                  never waits on a network fetch or an exit animation. */}
+              <div className="relative overflow-hidden rounded-[18px] border border-white/25 bg-white/95 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.6)]">
+                {RUNON_TABS.map((t, i) => {
+                  const on = t === tab;
+                  return (
+                    <motion.img
+                      key={t}
+                      src={RUNON_IMAGE[t] ?? "/assets/pharmabro-dashboard.png"}
+                      alt={`PharmaBro ${t}`}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      fetchPriority={i === 0 ? "high" : "low"}
+                      decoding="async"
+                      aria-hidden={!on}
+                      initial={false}
+                      animate={{ opacity: on ? 1 : 0 }}
+                      transition={{ duration: 0.4, ease: PB_EASE_SOFT }}
+                      style={{ willChange: "opacity" }}
+                      className={cn(
+                        "h-full w-full object-cover object-top",
+                        i === 0 ? "relative" : "absolute inset-0",
+                        on ? "" : "pointer-events-none",
+                      )}
+                    />
+                  );
+                })}
               </div>
             </div>
           </div>
