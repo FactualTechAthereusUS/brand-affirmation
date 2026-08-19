@@ -492,7 +492,7 @@ function RevenueLoop({ onStep }: { onStep?: (i: number) => void }) {
           <span className="h-6 w-px" style={{ backgroundColor: inkSoft(10) }} />
           <span className="flex flex-col">
             <Ticker to={214} on={stage >= 5} className="text-[15px] font-semibold text-ink" />
-            <span className="pb-micro">Active subs</span>
+            <span className="pb-micro whitespace-nowrap">Active subs</span>
           </span>
           <span className="h-6 w-px" style={{ backgroundColor: inkSoft(10) }} />
           <span className="flex flex-col">
@@ -502,7 +502,7 @@ function RevenueLoop({ onStep }: { onStep?: (i: number) => void }) {
               suffix="%"
               className="text-[15px] font-semibold"
             />
-            <span className="pb-micro">Rebills collected</span>
+            <span className="pb-micro whitespace-nowrap">Rebills collected</span>
           </span>
         </LoopCard>
       </div>
