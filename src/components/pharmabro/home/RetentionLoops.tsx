@@ -330,39 +330,6 @@ function NotificationsLoop() {
               className="absolute right-1 top-0 h-full w-px origin-top"
               style={{ backgroundColor: BRAND, boxShadow: `0 0 8px 1px color-mix(in oklab, ${BRAND} 28%, transparent)` }}
             />
-            {NOTES.slice().reverse().map((n, r) => {
-              const i = r;
-              const on = stage >= 3 - r;
-              return (
-                <div
-                  key={n.day}
-                  className="absolute right-0 flex items-center gap-2"
-                  style={{ top: 32 + i * 104, transform: "translateY(-50%)" }}
-                >
-                  <span
-                    className="whitespace-nowrap text-right font-mono text-[9px] uppercase tracking-[0.08em] transition-colors duration-300"
-                    style={{
-                      color: on
-                        ? "color-mix(in oklab, var(--color-ink) 80%, transparent)"
-                        : "color-mix(in oklab, var(--color-ink) 32%, transparent)",
-                    }}
-                  >
-                    {n.day}
-                  </span>
-                  <motion.span
-                    animate={{ scale: on ? 1 : 0.7 }}
-                    transition={{ duration: 0.35, ease: PB_EASE_SOFT }}
-                    className="size-[7px] rounded-full"
-                    style={{
-                      backgroundColor: on ? (n.done ? OK : BRAND) : "color-mix(in oklab, var(--color-ink) 15%, transparent)",
-                      boxShadow: on
-                        ? `0 0 9px 1px color-mix(in oklab, ${n.done ? OK : BRAND} 40%, transparent)`
-                        : "none",
-                    }}
-                  />
-                </div>
-              );
-            })}
           </div>
 
           <div className="relative flex-1" style={{ height: 414 }}>
@@ -381,7 +348,23 @@ function NotificationsLoop() {
                   className="absolute inset-x-0 top-0"
                   style={{ height: NOTE_H, zIndex: 10 - i }}
                 >
+                  <span
+                    aria-hidden
+                    className="absolute right-full top-[26px] flex -translate-y-1/2 items-center gap-2 pr-[15px]"
+                  >
+                    <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.08em] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)]">
+                      {n.day}
+                    </span>
+                    <span
+                      className="size-[7px] rounded-full"
+                      style={{
+                        backgroundColor: n.done ? OK : BRAND,
+                        boxShadow: `0 0 9px 1px color-mix(in oklab, ${n.done ? OK : BRAND} 40%, transparent)`,
+                      }}
+                    />
+                  </span>
                   <Card reduce={reduce} className="h-full" glow={stage === order}>
+
                     <div className="flex h-full items-start gap-3 p-3">
                       <span
                         className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-[10px]"
