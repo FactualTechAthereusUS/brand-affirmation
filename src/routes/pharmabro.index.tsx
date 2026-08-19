@@ -1,3 +1,4 @@
+import { PricingCards } from "@/components/pharmabro/home/PricingCards";
 import { createFileRoute } from "@tanstack/react-router";
 import { FAQ_ITEMS, LAUNCH_DAYS } from "@/lib/pharmabro/home";
 import {
@@ -29,7 +30,6 @@ import {
   GrowthBand,
   LegitScript,
   Nationwide,
-  PricingPeek,
   Retention,
 } from "@/components/pharmabro/home/SectionsB";
 
@@ -72,7 +72,7 @@ function PharmaBroHome() {
       <Comparison />
       <LegitScript />
       <FromTheBlog />
-      <PricingPeek />
+      <PricingCards />
       <Faq />
       <FinalCta />
       <p className="sr-only">Last updated {LAST_UPDATED}</p>
