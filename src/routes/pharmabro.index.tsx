@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FAQ_ITEMS, LAUNCH_DAYS, TRUST_MARKS } from "@/lib/pharmabro/home";
+import { FAQ_ITEMS, LAUNCH_DAYS } from "@/lib/pharmabro/home";
 import {
   LAST_UPDATED,
   ORG_NODE,
@@ -11,12 +11,9 @@ import {
   pbMeta,
   softwareNode,
 } from "@/lib/pharmabro/seo";
-import { Container } from "@/components/pharmabro/primitives";
+
 import { HeroBlock } from "@/components/pharmabro/home/HeroBlock";
-import {
-  ScaleStats,
-  Testimonials,
-} from "@/components/pharmabro/home/ScaleProof";
+import { Testimonials } from "@/components/pharmabro/home/ScaleProof";
 
 import {
   CheckoutToRevenue,
@@ -59,28 +56,11 @@ export const Route = createFileRoute("/pharmabro/")({
   component: PharmaBroHome,
 });
 
-function TrustStrip() {
-  return (
-    <div className="border-y border-[var(--color-hairline)] bg-[var(--color-mist)]">
-      <Container size="wide">
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-4">
-          {TRUST_MARKS.map((m) => (
-            <span key={m} className="pb-micro">
-              {m}
-            </span>
-          ))}
-        </div>
-      </Container>
-    </div>
-  );
-}
 
 function PharmaBroHome() {
   return (
     <>
       <HeroBlock />
-      <TrustStrip />
-      <ScaleStats />
       <CompleteClinic />
       <UnderOneRoof />
       <RunOn />
