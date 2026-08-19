@@ -49,6 +49,7 @@ import {
 } from "@/components/pharmabro/primitives";
 import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot } from "./Shot";
+import { RetentionScene } from "./RetentionLoops";
 
 
 /* --------------------------------------------- 8 nationwide infrastructure */
@@ -136,102 +137,152 @@ export function Nationwide() {
 
 /* ------------------------------------------- 9 keep patients on treatment */
 
+const RETENTION_MS = 9000;
+
 export function Retention() {
   const [open, setOpen] = useState(0);
-  const active = RETENTION_ROWS[open];
+  const [cycle, setCycle] = useState(0);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setOpen((o) => (o + 1) % RETENTION_ROWS.length);
+      setCycle((c) => c + 1);
+    }, RETENTION_MS);
+    return () => window.clearTimeout(id);
+  }, [open, cycle]);
+
+  const pick = (i: number) => {
+    setOpen(i);
+    setCycle((c) => c + 1);
+  };
 
   return (
     <Section band>
       <Container size="wide">
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
           <Rise>
             <MicroLabel>Retention</MicroLabel>
             <h2 className="mt-4 text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.6rem]">
               {RETENTION_H2[0]}
               <span className="block pb-dim">{RETENTION_H2[1]}</span>
             </h2>
-          </Rise>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
-            <div>
+            {/* desktop: tab list with auto-advance loader */}
+            <div className="mt-10 hidden flex-col lg:flex">
               {RETENTION_ROWS.map((r, i) => {
                 const on = i === open;
                 return (
-                  <div key={r.title} className="border-b border-[var(--color-hairline)]">
+                  <div key={r.title} className="border-t border-[var(--color-hairline)] last:border-b">
                     <button
                       type="button"
-                      onClick={() => setOpen(i)}
-                      className="flex w-full items-center gap-3 py-4 text-left"
+                      onClick={() => pick(i)}
+                      aria-pressed={on}
+                      className="w-full pb-4 pt-4 text-left"
                     >
-                      <span
-                        className={`text-[13px] transition-colors ${on ? "text-[var(--color-marine)]" : "pb-dim"}`}
-                        aria-hidden
-                      >
-                        →
-                      </span>
-                      <span
-                        className={`text-[16px] font-medium tracking-[-0.015em] transition-colors ${on ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_58%,transparent)]"}`}
-                      >
-                        {r.title}
-                      </span>
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {on ? (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.42, ease: PB_EASE_SOFT }}
-                          className="overflow-hidden"
+                      <span className="flex items-center gap-3">
+                        <span
+                          className="size-1.5 shrink-0 transition-colors duration-300"
+                          style={{
+                            backgroundColor: on
+                              ? "var(--color-brand, #1B4EF5)"
+                              : "color-mix(in oklab, var(--color-ink) 18%, transparent)",
+                          }}
+                        />
+                        <span
+                          className={`text-[16px] font-medium tracking-[-0.015em] transition-colors ${on ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]"}`}
                         >
-                          <p className="pb-body pb-5 pl-6 pr-2 text-[14.5px] leading-relaxed">
-                            {r.body}
-                          </p>
-                        </motion.div>
+                          {r.title}
+                        </span>
+                      </span>
+                      <AnimatePresence initial={false}>
+                        {on ? (
+                          <motion.span
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.4, ease: PB_EASE_SOFT }}
+                            className="block overflow-hidden"
+                          >
+                            <span className="pb-body block max-w-[46ch] pl-[18px] pt-2.5 text-[14.5px] leading-relaxed">
+                              {r.body}
+                            </span>
+                          </motion.span>
+                        ) : null}
+                      </AnimatePresence>
+                    </button>
+                    <div className="h-[2px] w-full overflow-hidden">
+                      {on ? (
+                        <div
+                          key={`${i}-${cycle}`}
+                          className="pb-tab-loader h-full w-full origin-left"
+                          style={{ animationDuration: `${RETENTION_MS}ms` }}
+                        />
                       ) : null}
-                    </AnimatePresence>
+                    </div>
                   </div>
                 );
               })}
             </div>
+          </Rise>
 
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={active.title}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
-              >
-                <div className="pb-card p-5">
-                  <div className="pb-micro">{active.title}</div>
-                  <ul className="mt-4 space-y-2.5">
-                    {active.checklist.map((c, i) => (
-                      <li
-                        key={c}
-                        className="flex items-center gap-3 rounded-[12px] border border-[var(--color-hairline)] bg-[var(--color-mist)] px-3 py-2.5"
+          {/* desktop: looping scene */}
+          <Rise delay={0.06} className="hidden lg:block">
+            <RetentionScene index={open} />
+          </Rise>
+
+          {/* mobile: accordion with the scene inside the open panel */}
+          <div className="lg:hidden">
+            {RETENTION_ROWS.map((r, i) => {
+              const on = i === open;
+              return (
+                <div key={r.title} className="border-b border-[var(--color-hairline)] first:border-t">
+                  <button
+                    type="button"
+                    onClick={() => pick(i)}
+                    className="flex w-full items-center gap-3 py-4 text-left"
+                  >
+                    <span
+                      className="size-1.5 shrink-0"
+                      style={{
+                        backgroundColor: on
+                          ? "var(--color-brand, #1B4EF5)"
+                          : "color-mix(in oklab, var(--color-ink) 18%, transparent)",
+                      }}
+                    />
+                    <span
+                      className={`text-[16px] font-medium tracking-[-0.015em] ${on ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]"}`}
+                    >
+                      {r.title}
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {on ? (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.42, ease: PB_EASE_SOFT }}
+                        className="overflow-hidden"
                       >
-                        <span
-                          className={`grid size-4 place-items-center rounded-full ${i < 2 ? "bg-[color-mix(in_oklab,var(--color-check)_16%,white)]" : "border border-[var(--color-hairline)] bg-canvas"}`}
-                        >
-                          {i < 2 ? <Check className="size-2.5" /> : null}
-                        </span>
-                        <span className="text-[13.5px] text-ink">{c}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-5">
-                    <Shot image={active.image} slot={active.slot} ratio="16 / 10" rounded={14} mock="portal" />
-                  </div>
+                        <p className="pb-body pb-4 pl-[18px] pr-2 text-[14.5px] leading-relaxed">
+                          {r.body}
+                        </p>
+                        <div className="pb-5">
+                          <RetentionScene index={i} />
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              );
+            })}
           </div>
         </div>
       </Container>
     </Section>
   );
 }
+
 
 /* --------------------------------------- 10 watch your brand grow in real time */
 
