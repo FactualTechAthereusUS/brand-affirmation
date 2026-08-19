@@ -74,9 +74,10 @@ function Stage({ children }: { children: ReactNode }) {
           />
         ),
       )}
-      <div className="relative flex w-full items-center justify-center px-4 py-5">
-        <div className="w-[280px] origin-center scale-[0.86] sm:scale-[0.92]">{children}</div>
+      <div className="relative flex w-full items-center justify-center px-4 py-5 sm:px-5">
+        <div className="w-full max-w-[300px]">{children}</div>
       </div>
+
     </div>
   );
 }
