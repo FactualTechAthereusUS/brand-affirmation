@@ -2,25 +2,15 @@ import { motion, useReducedMotion } from "motion/react";
 import { LEGIT_BARS } from "@/lib/pharmabro/home";
 import { PB_EASE_SOFT } from "@/components/pharmabro/motion";
 
-/* LegitScript lockup, drawn as a mark plus wordmark so it stays crisp at any size */
+/* LegitScript lockup using the official logo asset */
 export function LegitScriptMark({ className = "" }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <svg viewBox="0 0 32 32" className="h-[1.5em] w-[1.5em] shrink-0" aria-hidden>
-        <circle cx="16" cy="16" r="15" fill="var(--color-marine)" />
-        <path
-          d="M9.5 16.6l4.3 4.3 8.7-9"
-          fill="none"
-          stroke="white"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <span className="text-[1em] font-medium leading-none tracking-[-0.03em] text-ink">
-        Legit<span className="text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]">Script</span>
-      </span>
-      <span className="sr-only">LegitScript certified</span>
+    <span className={`inline-flex items-center ${className}`}>
+      <img
+        src="/assets/legitscript-logo.png"
+        alt="LegitScript certified"
+        className="h-[1.5em] w-auto object-contain"
+      />
     </span>
   );
 }
