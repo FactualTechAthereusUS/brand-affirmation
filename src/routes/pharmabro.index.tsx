@@ -13,10 +13,7 @@ import {
 } from "@/lib/pharmabro/seo";
 
 import { HeroBlock } from "@/components/pharmabro/home/HeroBlock";
-import {
-  ScaleStats,
-  Testimonials,
-} from "@/components/pharmabro/home/ScaleProof";
+import { Testimonials } from "@/components/pharmabro/home/ScaleProof";
 
 import {
   CheckoutToRevenue,
