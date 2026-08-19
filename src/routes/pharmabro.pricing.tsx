@@ -116,36 +116,101 @@ function PricingPage() {
   return (
     <>
       {/* -------------------------------------------------- migration banner */}
-      <Section className="py-6 sm:py-8">
+      <Section className="py-5 sm:py-6">
         <Container size="wide">
           <Reveal>
-            <div className="flex flex-col gap-3 rounded-xl bg-[#F8F8F8] p-5 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-[14.5px] leading-relaxed text-ink">
-                <span className="font-medium">{migrationBanner.lead}</span>{" "}
-                <span className="pb-dim">{migrationBanner.body}</span>
-              </p>
-              <Btn to={migrationBanner.cta.to} variant="ghost">
-                {migrationBanner.cta.label} →
-              </Btn>
+            <div className="relative overflow-hidden rounded-2xl border border-[var(--color-hairline)] bg-[#fafaf9] p-5 sm:p-6">
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-[3px] z-10 text-[var(--color-hairline)]"
+              >
+                <svg
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  className="h-full w-full"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M0 12 L0 0 L12 0" />
+                  <path d="M88 0 L100 0 L100 12" />
+                  <path d="M100 88 L100 100 L88 100" />
+                  <path d="M12 100 L0 100 L0 88" />
+                </svg>
+              </span>
+              <div className="relative z-20 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="max-w-[760px] text-[15px] leading-[1.5] text-ink sm:text-[16px]">
+                  <span className="font-medium">{migrationBanner.lead}</span>{" "}
+                  <span className="text-[var(--color-ever)]">
+                    Free white-glove migration
+                  </span>
+                  <span className="pb-dim"> — we move your patients, subscriptions and data for you.</span>
+                </p>
+                <Link
+                  to={migrationBanner.cta.to}
+                  className="group inline-flex shrink-0 items-center gap-1.5 text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors hover:decoration-ink"
+                >
+                  {migrationBanner.cta.label}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                  >
+                    <path
+                      d="M5 12h14M13 6l6 6-6 6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </div>
             </div>
           </Reveal>
         </Container>
       </Section>
 
       {/* ------------------------------------------------------------- hero */}
-      <Section className="pt-4 pb-12 sm:pt-6 sm:pb-16">
+      <Section className="pt-2 pb-10 sm:pt-4 sm:pb-14">
         <Container size="wide">
           <Reveal>
-            <div className="mx-auto flex max-w-[720px] flex-col items-center text-center">
+            <div className="max-w-[860px]">
               <MicroLabel className="mb-5">Pricing</MicroLabel>
-              <TwoTone as="h1" lead="Flat, transparent pricing." />
-              <p className="pb-body mt-6 max-w-[540px] text-[17px] leading-relaxed sm:text-[18px]">
-                PharmaBro charges one setup fee and one monthly platform fee. Medication
-                passes through at cost. PharmaBro never takes a percentage of your revenue
-                or your patients' billings.
+              <h1 className="font-sans text-[40px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[52px] lg:text-[60px]">
+                Flat, transparent pricing.
+              </h1>
+              <p className="mt-6 max-w-[560px] font-serif italic text-[16px] leading-[1.5] text-ink/70 sm:text-[18px]">
+                PharmaBro runs the clinic behind your brand: licensed providers, pharmacy
+                fulfillment, software, and compliance. One flat platform fee, and no cut of
+                your revenue or your patients.
               </p>
 
-              <ul className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <Link
+                to="/pharmabro/demo"
+                className="group mt-8 inline-flex items-center gap-2"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                  className="h-3.5 w-3.5 text-[var(--color-ever)]"
+                >
+                  <path
+                    d="M5 12.5l4.5 4.5L19 7"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors group-hover:decoration-ink">
+                  PharmaBro launch guarantee
+                </span>
+              </Link>
+
+              <ul className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
                 {["No revenue share", "LegitScript included", "Month to month"].map((t) => (
                   <li key={t} className="flex items-center gap-2">
                     <Check className="shrink-0" />
@@ -154,8 +219,8 @@ function PricingPage() {
                 ))}
               </ul>
 
-              <p className="pb-dim mt-5 text-[11px] tracking-[0.04em] uppercase">
-                Pricing last reviewed {PRICING_REVIEWED}
+              <p className="pb-dim mt-5 text-[13px] text-ink/60">
+                Pricing facts last reviewed {PRICING_REVIEWED}.
               </p>
             </div>
           </Reveal>
