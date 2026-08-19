@@ -112,7 +112,9 @@ export function PharmaBroFooter() {
               <br />
               telehealth brand.
               <br />
-              <span className="text-white/45">Keep every dollar.</span>
+              <span className="text-white/45">
+                Keep every <CyclingWord />
+              </span>
             </h2>
             <p className="mt-5 max-w-[360px] text-[14px] leading-relaxed text-white/50 lg:text-[15px]">
               Flat monthly software fee. Zero revenue share. Your Stripe, your
