@@ -118,7 +118,7 @@ function PricingPage() {
       <Section className="py-5 sm:py-6">
         <Container size="wide">
           <Reveal>
-            <div className="relative overflow-hidden rounded-2xl border border-[var(--color-hairline)] bg-[#fafaf9] p-5 sm:p-6">
+            <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-[#fafaf9] px-6 py-5">
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute -inset-[3px] z-10 text-[var(--color-hairline)]"
@@ -137,35 +137,11 @@ function PricingPage() {
                   <path d="M12 100 L0 100 L0 88" />
                 </svg>
               </span>
-              <div className="relative z-20 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="max-w-[760px] text-[15px] leading-[1.5] text-ink sm:text-[16px]">
-                  <span className="font-medium">{migrationBanner.lead}</span>{" "}
-                  <span className="text-[var(--color-ever)]">
-                    Free white-glove migration
-                  </span>
-                  <span className="pb-dim"> — we move your patients, subscriptions and data for you.</span>
-                </p>
-                <Link
-                  to={migrationBanner.cta.to}
-                  className="group inline-flex shrink-0 items-center gap-1.5 text-[14px] font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors hover:decoration-ink"
-                >
-                  {migrationBanner.cta.label}
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden="true"
-                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                  >
-                    <path
-                      d="M5 12h14M13 6l6 6-6 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
-              </div>
+              <p className="relative z-20 text-[18px] leading-[1.3] text-ink sm:text-[22px]">
+                Switching from another platform?{" "}
+                <span className="text-[var(--color-ever)]">Free white-glove migration</span>{" "}
+                — PharmaBro moves your patients and data for you.
+              </p>
             </div>
           </Reveal>
         </Container>
