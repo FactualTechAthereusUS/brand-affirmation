@@ -159,7 +159,7 @@ function PricingPage() {
       </Section>
 
       {/* -------------------------------------------------- migration banner */}
-      <Section className="py-5 sm:py-6">
+      <Section className="py-0">
         <Container size="wide">
           <Reveal>
             <div className="rounded-2xl border border-black/10 bg-[#fafaf9] px-6 py-5">
