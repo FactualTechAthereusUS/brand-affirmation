@@ -95,7 +95,8 @@ export function UsProviderMap({ className }: { className?: string }) {
     <div className={cn("relative w-full", className)}>
       <svg
         viewBox={US_VIEWBOX}
-        className="h-full w-full overflow-visible"
+        preserveAspectRatio="xMidYMid meet"
+        className="block h-full max-h-full w-full"
         role="img"
         aria-label="Map of the United States showing licensed provider coverage in all 50 states"
         onPointerLeave={() => setTip(null)}
