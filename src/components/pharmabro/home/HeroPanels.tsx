@@ -72,7 +72,7 @@ function OperationsPanel() {
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: PB_EASE_SOFT }}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain object-top"
         />
       </div>
     </div>
