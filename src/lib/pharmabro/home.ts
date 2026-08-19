@@ -450,15 +450,39 @@ export const COMPARE_FOOTNOTE =
 
 /* ------------------------------------------------------------- legitscript */
 
-export const LEGIT_H2 = ["LegitScript in days,", "not months."];
+export const LEGIT_H2 = ["LegitScript certification ", "in days, not months"];
 export const LEGIT_BODY =
-  "Google, Meta, and major payment processors all require LegitScript certification before a telehealth brand can advertise or take payment. PharmaBro prepares, files, and manages your application through approval.";
+  "Google, Meta, and major payment processors all require LegitScript certification before a telehealth brand can advertise or take payment.";
+export const LEGIT_BODY_DIM =
+  "PharmaBro prepares, files, and manages your application through approval.";
 
 export const LEGIT_BARS = [
-  { label: "Fastest approval", value: "2 days", pct: 8 },
-  { label: "With PharmaBro", value: "7-14 days", pct: 22, own: true },
-  { label: "Industry standard", value: "3-6 months", pct: 100 },
+  {
+    label: "Fastest approval",
+    note: "with PharmaBro",
+    value: "3 days",
+    pct: 1.667,
+    brand: true,
+    split: false,
+  },
+  {
+    label: "Average approval",
+    note: "with PharmaBro",
+    value: "7-14 days",
+    pct: 7.778,
+    brand: true,
+    split: true,
+  },
+  {
+    label: "Industry standard",
+    note: "on your own",
+    value: "3-6 months",
+    pct: 100,
+    brand: false,
+    split: true,
+  },
 ];
+
 
 export const LEGIT_PANELS = [
   {
