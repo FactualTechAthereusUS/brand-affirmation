@@ -640,7 +640,7 @@ export const PHONE_STEPS: {
 export const PAIR_ROUTING = "Licensed provider matched, reviewing now";
 
 export const PAIR_PROVIDER = {
-  name: "Dr. Marcus Chen, Licensed Provider",
+  name: "Dr. Sarah Kim, Licensed Provider",
   avatar: "/assets/portal-welcome-doctor.png",
   message:
     "Hi Tom, I've reviewed your intake and medical history. You're a good fit for treatment, so I've approved your prescription. Your medication ships to your door within 2 business days.",
