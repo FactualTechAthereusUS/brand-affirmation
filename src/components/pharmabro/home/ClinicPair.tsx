@@ -219,39 +219,40 @@ function MessageLoop() {
 
 export function ClinicPair() {
   return (
-    <div className="mt-16 grid gap-10 lg:mt-24 lg:grid-cols-3">
-      <Rise className="flex flex-col gap-6">
-        <Panel>
-          <PhoneLoop />
-        </Panel>
-        <div>
-          <h3 className="text-[24px] font-normal leading-[1.05] tracking-[-0.02em] text-ink">
-            {PAIR_INTAKE.heading}
-          </h3>
-          <p className="pb-body mt-4 max-w-[460px] text-[16px] leading-[1.4]">{PAIR_INTAKE.body}</p>
-          <p className="mt-3 max-w-[460px] text-[12px] leading-[1.4] text-[color-mix(in_oklab,var(--color-ink)_42%,transparent)]">
-            {PAIR_INTAKE.fine}
-          </p>
-        </div>
-      </Rise>
+    <div className="mt-16 space-y-10 lg:mt-24">
+      <div className="grid gap-10 lg:grid-cols-2">
+        <Rise className="flex flex-col gap-6">
+          <Panel ratio="aspect-[604/720] sm:aspect-[604/700]">
+            <PhoneLoop />
+          </Panel>
+          <div>
+            <h3 className="text-[24px] font-normal leading-[1.05] tracking-[-0.02em] text-ink">
+              {PAIR_INTAKE.heading}
+            </h3>
+            <p className="pb-body mt-4 max-w-[460px] text-[16px] leading-[1.4]">{PAIR_INTAKE.body}</p>
+            <p className="mt-3 max-w-[460px] text-[12px] leading-[1.4] text-[color-mix(in_oklab,var(--color-ink)_42%,transparent)]">
+              {PAIR_INTAKE.fine}
+            </p>
+          </div>
+        </Rise>
 
-      <Rise delay={0.05} className="flex flex-col gap-6">
+        <Rise delay={0.05} className="flex flex-col gap-6">
+          <Panel ratio="aspect-[604/720] sm:aspect-[604/700]">
+            <MessageLoop />
+          </Panel>
+          <div>
+            <h3 className="text-[24px] font-normal leading-[1.05] tracking-[-0.02em] text-ink">
+              {PAIR_RX.heading}
+            </h3>
+            <p className="pb-body mt-4 max-w-[460px] text-[16px] leading-[1.4]">{PAIR_RX.body}</p>
+            <p className="mt-3 max-w-[460px] text-[12px] leading-[1.4] text-[color-mix(in_oklab,var(--color-ink)_42%,transparent)]">
+              {PAIR_RX.fine}
+            </p>
+          </div>
+        </Rise>
+      </div>
 
-        <Panel>
-          <MessageLoop />
-        </Panel>
-        <div>
-          <h3 className="text-[24px] font-normal leading-[1.05] tracking-[-0.02em] text-ink">
-            {PAIR_RX.heading}
-          </h3>
-          <p className="pb-body mt-4 max-w-[460px] text-[16px] leading-[1.4]">{PAIR_RX.body}</p>
-          <p className="mt-3 max-w-[460px] text-[12px] leading-[1.4] text-[color-mix(in_oklab,var(--color-ink)_42%,transparent)]">
-            {PAIR_RX.fine}
-          </p>
-        </div>
-      </Rise>
-
-      <Rise delay={0.1} className="flex flex-col gap-6">
+      <Rise delay={0.1} className="grid gap-10 lg:grid-cols-2 lg:items-center">
         <Panel ratio="aspect-[604/569]" bare>
           <div className="absolute inset-0 left-6 top-6 overflow-hidden rounded-tl-xl shadow-[0_6px_18px_rgba(0,0,0,0.12)] sm:left-8 sm:top-8">
             <img
@@ -279,4 +280,5 @@ export function ClinicPair() {
       </Rise>
     </div>
   );
+
 }
