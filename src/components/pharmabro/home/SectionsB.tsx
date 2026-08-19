@@ -170,15 +170,15 @@ export function Nationwide() {
               to={NATION_ROWS[1].to}
               srLabel="about pharmacy and lab fulfillment"
             >
-              <div className="grid grid-cols-3 items-center gap-x-6 gap-y-8 sm:grid-cols-4">
+              <div className="grid grid-cols-2 items-center gap-x-5 gap-y-6 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-8">
                 {FULFILLMENT_LOGOS.map((l) => (
-                  <div key={l.name} className="flex h-8 items-center justify-center">
+                  <div key={l.name} className="flex h-7 items-center justify-center sm:h-8">
                     <img
                       src={l.src}
                       alt={l.name}
                       loading="lazy"
                       decoding="async"
-                      className="max-h-full max-w-full object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                      className="max-h-full max-w-full object-contain opacity-90 grayscale contrast-125 transition duration-300 hover:opacity-100 hover:grayscale-0"
                     />
                   </div>
                 ))}

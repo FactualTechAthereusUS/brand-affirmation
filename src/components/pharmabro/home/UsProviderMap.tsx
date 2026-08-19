@@ -270,7 +270,7 @@ export function UsProviderMap({ className }: { className?: string }) {
         type="button"
         onClick={() => setUserCalm((v) => !v)}
         aria-pressed={userCalm}
-        className="absolute bottom-0 right-0 z-20 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-hairline)] bg-white/85 px-2.5 py-1 text-[10.5px] font-medium text-ink/70 backdrop-blur transition hover:text-ink"
+        className="absolute -top-7 right-0 z-20 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-hairline)] bg-white/85 px-2.5 py-1 text-[10.5px] font-medium text-ink/70 backdrop-blur transition hover:text-ink"
       >
         <span
           className={cn(
