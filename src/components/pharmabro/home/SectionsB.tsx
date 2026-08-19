@@ -583,7 +583,17 @@ export function FromTheBlog() {
               transition={{ duration: 0.7, delay: i * 0.06, ease: PB_EASE_SOFT }}
               className="pb-card pb-card-lift w-[78vw] shrink-0 snap-start overflow-hidden p-0 sm:w-[340px] lg:w-auto"
             >
-              <BlogArt category={c.category} index={i} />
+              <div className="relative aspect-[1200/750] w-full overflow-hidden bg-[var(--color-mist)]">
+                <img
+                  src={c.image}
+                  alt={c.slot}
+                  width={1200}
+                  height={750}
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+                />
+              </div>
+
               <div className="p-5">
                 <div className="flex items-center gap-2">
                   <span className="rounded-full border border-[var(--color-hairline)] bg-[var(--color-mist)] px-2.5 py-1 text-[11px] font-medium text-ink">
