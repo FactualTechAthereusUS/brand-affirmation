@@ -661,3 +661,37 @@ export const PAIR_INTAKE = {
   body: "Patients answer a short branded eligibility check on any device. Every answer routes the case, sets the dose logic, and keeps the chart clean before a provider ever opens it.",
   fine: "Eligibility questions are configurable per condition and per state.",
 };
+
+/* ---------------------------------------------------- scale stats + proof */
+
+export const SCALE_STATS = [
+  { value: 51, suffix: "", label: "States and D.C. covered" },
+  { value: 30, suffix: "+", label: "Pharmacy partners in network" },
+  { value: 14, suffix: " days", label: "Average time to launch" },
+  { value: 0, suffix: "%", label: "Revenue share, ever" },
+];
+
+export const LOGO_WALL_H2 = "Brands running on PharmaBro.";
+export const LOGO_WALL_SUB =
+  "Weight loss, hormone, hair, and longevity brands operating on the same infrastructure.";
+
+export const TESTIMONIALS = [
+  {
+    quote:
+      "We went from a landing page to filling prescriptions in under three weeks. The clinic side was already done, we just brought the brand.",
+    name: "Dana Whitfield",
+    role: "Founder, weight loss brand",
+  },
+  {
+    quote:
+      "Flat fee changed the math for us. Every new subscriber is margin, not a cut going somewhere else.",
+    name: "Aaron Vega",
+    role: "Operator, mens health",
+  },
+  {
+    quote:
+      "LegitScript, pharmacy routing, and provider coverage were the three things stalling us. All three were handled on day one.",
+    name: "Priya Raman",
+    role: "COO, longevity clinic",
+  },
+];
