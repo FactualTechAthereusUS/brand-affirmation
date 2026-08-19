@@ -75,6 +75,7 @@ function PharmaBroHome() {
     <>
       <HeroBlock />
       <TrustStrip />
+      <ScaleStats />
       <CompleteClinic />
       <UnderOneRoof />
       <RunOn />
@@ -82,8 +83,10 @@ function PharmaBroHome() {
       <Nationwide />
       <Retention />
       <GrowthBand />
+      <Testimonials />
       <Comparison />
       <LegitScript />
+      <LogoWall />
       <FromTheBlog />
       <PricingPeek />
       <Faq />
@@ -92,3 +95,4 @@ function PharmaBroHome() {
     </>
   );
 }
+
