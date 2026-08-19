@@ -157,7 +157,7 @@ export function UnderOneRoof() {
                   "pb-card pb-card-lift flex flex-col gap-5 p-5 sm:p-6",
                   layout.span,
                   layout.wide &&
-                    "lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-7",
+                    "lg:grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-stretch lg:gap-7",
                 )}
               >
                 <div className={cn("min-w-0", layout.wide && "lg:order-1")}>
