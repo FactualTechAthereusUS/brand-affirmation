@@ -113,7 +113,7 @@ function PricingPage() {
   return (
     <>
       {/* ------------------------------------------------------------- hero */}
-      <Section className="pt-2 pb-10 sm:pt-4 sm:pb-14">
+      <Section className="!pt-4 !pb-8 sm:!pt-6 sm:!pb-10">
         <Container size="wide">
           <Reveal>
             <div className="max-w-[860px]">
@@ -159,7 +159,7 @@ function PricingPage() {
       </Section>
 
       {/* -------------------------------------------------- migration banner */}
-      <Section className="py-0">
+      <Section className="!py-0">
         <Container size="wide">
           <Reveal>
             <div className="rounded-2xl border border-black/10 bg-[#fafaf9] px-6 py-5">
@@ -174,7 +174,7 @@ function PricingPage() {
       </Section>
 
       {/* ------------------------------------------------------------ cards */}
-      <Section id="plans" className="pt-0 pb-14 sm:pb-20">
+      <Section id="plans" className="!pt-6 !pb-14 sm:!pt-8 sm:!pb-20">
         <Container size="wide" className="max-w-[1100px]">
           <PricingTiers />
           <Reveal delay={0.08}>
