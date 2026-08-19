@@ -201,16 +201,15 @@ export function UsProviderMap({ className }: { className?: string }) {
                     />
                   </>
                 )}
-                <motion.circle
+                <circle
                   cx={p.x}
                   cy={p.y}
-                  r={isNarrow ? 3.4 : 2.6}
+                  r={pulsing ? 4.2 : isNarrow ? 3.4 : 2.6}
                   fill="var(--color-marine)"
-                  animate={{ r: pulsing ? 4.2 : isNarrow ? 3.4 : 2.6 }}
-                  transition={{ duration: calm ? 0 : 0.5, ease: PB_EASE_SOFT }}
                   stroke={isActive ? "rgba(255,255,255,0.75)" : "transparent"}
                   strokeWidth={1.6}
                   vectorEffect="non-scaling-stroke"
+                  style={{ transition: calm ? "none" : "r 400ms ease-out" }}
                 />
                 {/* Generous invisible hit area for touch. */}
                 <circle
