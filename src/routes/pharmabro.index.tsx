@@ -14,7 +14,6 @@ import {
 import { Container } from "@/components/pharmabro/primitives";
 import { HeroBlock } from "@/components/pharmabro/home/HeroBlock";
 import {
-  LogoWall,
   ScaleStats,
   Testimonials,
 } from "@/components/pharmabro/home/ScaleProof";
@@ -92,7 +91,6 @@ function PharmaBroHome() {
       <Testimonials />
       <Comparison />
       <LegitScript />
-      <LogoWall />
       <FromTheBlog />
       <PricingPeek />
       <Faq />
