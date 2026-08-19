@@ -178,7 +178,7 @@ export function Nationwide() {
                       alt={l.name}
                       loading="lazy"
                       decoding="async"
-                      className="max-h-full max-w-full object-contain opacity-90 grayscale contrast-125 transition duration-300 hover:opacity-100 hover:grayscale-0"
+                      className="max-h-full max-w-full object-contain opacity-55 brightness-0 transition duration-300 hover:opacity-100 hover:brightness-100"
                     />
                   </div>
                 ))}
