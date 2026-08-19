@@ -5,6 +5,7 @@
  * card stack loop. Motion follows the shared PharmaBro grammar (soft eases,
  * short travel, green ticks) so it reads like the rest of the page.
  */
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ClipboardCheck,
@@ -62,38 +63,20 @@ function OperationsPanel() {
       />
       <DotGrid />
       <Wash />
-      <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-8">
+      <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 lg:p-8">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: PB_EASE_SOFT }}
-          className="relative w-full max-w-full translate-y-[12%] sm:max-w-[94%] sm:translate-y-0 lg:max-w-[88%]"
+          className="relative w-full max-w-full overflow-hidden rounded-lg border border-[var(--color-hairline)] shadow-[0_1px_2px_rgba(15,18,40,0.14),0_18px_44px_-16px_rgba(15,18,40,0.32),0_60px_110px_-40px_rgba(15,18,40,0.45)] sm:rounded-xl"
         >
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 22, x: -10 }}
-            animate={{ opacity: 1, y: 0, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.08, ease: PB_EASE_SOFT }}
-            className="absolute left-[1%] -top-[22%] w-[70%] overflow-hidden rounded-md border border-[var(--color-hairline)] shadow-[0_1px_2px_rgba(15,18,40,0.12),0_30px_60px_-24px_rgba(15,18,40,0.45)] sm:-left-[4%] sm:-top-[9%] sm:w-[56%] sm:rounded-lg"
-          >
-            <img
-              src="/assets/pharmabro-patient-experience.png"
-              alt=""
-              aria-hidden
-              loading="eager"
-              decoding="async"
-              className="h-auto w-full"
-            />
-          </motion.div>
-
-          <div className="relative ml-auto w-[98%] overflow-hidden rounded-lg border border-[var(--color-hairline)] shadow-[0_1px_2px_rgba(15,18,40,0.14),0_10px_28px_-10px_rgba(15,18,40,0.3),0_45px_90px_-34px_rgba(15,18,40,0.45)] sm:w-[78%] sm:rounded-xl">
-            <img
-              src="/assets/pharmabro-dashboard.png"
-              alt="PharmaBro operations dashboard showing the full patient pipeline"
-              loading="eager"
-              decoding="async"
-              className="h-auto w-full"
-            />
-          </div>
+          <img
+            src="/assets/pharmabro-dashboard.png"
+            alt="PharmaBro operations dashboard showing the full patient pipeline"
+            loading="eager"
+            decoding="async"
+            className="h-auto w-full"
+          />
         </motion.div>
       </div>
     </div>
@@ -102,7 +85,25 @@ function OperationsPanel() {
 
 /* ------------------------------------------------ 2 providers in all 50 states */
 
+const PROVIDER_TICKER = [
+  { state: "Texas", who: "Dr. M. Alvarez, MD", note: "matched in 38s" },
+  { state: "Ohio", who: "J. Reed, NP", note: "matched in 22s" },
+  { state: "Florida", who: "Dr. K. Osei, DO", note: "matched in 41s" },
+  { state: "California", who: "Dr. L. Nguyen, MD", note: "matched in 29s" },
+];
+
 function ProvidersPanel() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setInterval(
+      () => setI((v) => (v + 1) % PROVIDER_TICKER.length),
+      2600,
+    );
+    return () => window.clearInterval(id);
+  }, [reduce]);
+  const row = PROVIDER_TICKER[i];
   return (
     <div className="absolute inset-0">
       <span
@@ -111,8 +112,60 @@ function ProvidersPanel() {
       />
       <DotGrid />
       <Wash />
-      <div className="absolute inset-0 flex items-center justify-center px-3 py-5 sm:px-8 sm:py-8">
-        <UsProviderMap className="max-h-full w-full max-w-[1000px]" />
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden px-3 pb-14 pt-8 sm:px-8 sm:pb-8 sm:pt-10">
+        <UsProviderMap className="h-full w-full max-w-[900px]" />
+      </div>
+
+      {/* Coverage counters */}
+      <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-wrap gap-2 sm:left-6 sm:top-6">
+        {[
+          { k: "50 / 50", v: "states licensed" },
+          { k: "1,240+", v: "providers on call" },
+          { k: "< 60s", v: "avg. match time" },
+        ].map((s, n) => (
+          <motion.div
+            key={s.k}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 + n * 0.09, ease: PB_EASE_SOFT }}
+            className="rounded-lg border border-[var(--color-hairline)] bg-white/85 px-2.5 py-1.5 backdrop-blur"
+          >
+            <div className="text-[13px] font-medium leading-none text-ink">{s.k}</div>
+            <div className="pb-body mt-1 text-[10px] uppercase tracking-[0.08em]">{s.v}</div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Live match ticker */}
+      <div className="pointer-events-none absolute bottom-3 left-3 right-3 z-10 sm:bottom-6 sm:left-auto sm:right-6 sm:w-[268px]">
+        <div className="rounded-xl border border-[var(--color-hairline)] bg-white/90 p-2.5 shadow-[0_10px_30px_-14px_rgba(15,18,40,0.35)] backdrop-blur">
+          <div className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-[var(--color-marine)] pb-map-pulse" />
+            <span className="pb-body text-[10px] uppercase tracking-[0.1em]">
+              Live provider matching
+            </span>
+          </div>
+          <motion.div
+            key={row.state}
+            initial={reduce ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: PB_EASE_SOFT }}
+            className="mt-2 flex items-center gap-2"
+          >
+            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[color-mix(in_oklab,var(--color-marine)_12%,white)]">
+              <Stethoscope className="size-3.5 text-[var(--color-marine)]" />
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-[12.5px] font-medium text-ink">
+                {row.who}
+              </span>
+              <span className="pb-body block truncate text-[10.5px]">
+                {row.state} patient · {row.note}
+              </span>
+            </span>
+            <CircleCheck className="ml-auto size-4 shrink-0" style={{ color: OK }} />
+          </motion.div>
+        </div>
       </div>
     </div>
   );
