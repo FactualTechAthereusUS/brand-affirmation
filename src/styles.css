@@ -579,3 +579,15 @@
 @media (prefers-reduced-motion: reduce) {
   .pb-tab-loader { animation: none; transform: scaleX(1); }
 }
+
+/* Coverage map: provider dot pulse. Plain CSS so SVG attributes stay untouched. */
+@keyframes pb-map-pulse {
+  0% { opacity: 0.35; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(3.2); }
+}
+.pb-map-pulse {
+  animation: pb-map-pulse 1.8s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pb-map-pulse { animation: none; opacity: 0.18; }
+}
