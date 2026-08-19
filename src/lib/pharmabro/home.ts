@@ -618,18 +618,10 @@ export const FAQ_ITEMS = [
 
 /* -------------------------------------------------------------- final cta */
 
-export const CTA_H2 = ["The business is built.", "Your brand is the missing piece."];
+export const CTA_EYEBROW = "LET'S WORK TOGETHER";
+export const CTA_H2 = "Ready To Build Something Together";
 export const CTA_BODY =
-  "Providers, pharmacy, compliance, and billing, all running before you sign. You market. PharmaBro operates.";
-export const CTA_FOOT = "Month to month. Your brand, your patients.";
-
-
-export const CTA_PRODUCTS = [
-  "/assets/vial-semaglutide.png",
-  "/assets/vial-tirzepatide.png",
-  "/assets/ship-box.png",
-  "/assets/blissley-tirzepatide-vial-transparent.png",
-];
+  "Whether you're a brand, a platform or a creator — if you're serious about growing an audience and generating commercial value, let's talk.";
 
 /* ------------------------------------------------------------ footer marks */
 
