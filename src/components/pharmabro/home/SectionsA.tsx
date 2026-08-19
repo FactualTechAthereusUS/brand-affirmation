@@ -137,14 +137,19 @@ export function UnderOneRoof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.75, delay: (i % 3) * 0.07, ease: PB_EASE_SOFT }}
-              className="pb-card pb-card-lift flex flex-col p-6"
+              className="pb-card pb-card-lift flex flex-col overflow-hidden p-0"
             >
-              <h3 className="text-[16.5px] font-medium leading-snug tracking-[-0.015em] text-ink">
-                {c.title}
-              </h3>
-              <p className="pb-body mt-2.5 text-[14.5px] leading-relaxed">{c.body}</p>
-              <div className="mt-5">
+              <div className="p-3 pb-0">
                 <CardVisual kind={c.visual} />
+              </div>
+              <div className="flex flex-1 flex-col p-5 sm:p-6">
+                <span className="pb-mono text-[10px] font-semibold tracking-[0.14em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-2 text-[16.5px] font-medium leading-snug tracking-[-0.015em] text-ink">
+                  {c.title}
+                </h3>
+                <p className="pb-body mt-2 text-[14.5px] leading-relaxed">{c.body}</p>
               </div>
             </motion.div>
           ))}
