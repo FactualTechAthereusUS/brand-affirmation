@@ -645,3 +645,9 @@ export const PAIR_PROVIDER = {
   message:
     "Hi Tom, I've reviewed your intake and medical history. You're a good fit for treatment, so I've approved your prescription. Your medication ships to your door within 2 business days.",
 };
+
+export const PAIR_INTAKE = {
+  heading: "Your intake, on their phone",
+  body: "Patients answer a short branded eligibility check on any device. Every answer routes the case, sets the dose logic, and keeps the chart clean before a provider ever opens it.",
+  fine: "Eligibility questions are configurable per condition and per state.",
+};
