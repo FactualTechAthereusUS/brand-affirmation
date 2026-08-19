@@ -22,6 +22,7 @@ import {
   GROWTH_TABS,
   LEGIT_BARS,
   LEGIT_BODY,
+  LEGIT_BODY_DIM,
   LEGIT_DISCLAIMER,
   LEGIT_H2,
   LEGIT_PANELS,
@@ -51,6 +52,7 @@ import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot } from "./Shot";
 import { Corners, UsProviderMap } from "./UsProviderMap";
 import { RetentionScene } from "./RetentionLoops";
+import { LegitScriptMark, LegitTimeline } from "./LegitTimeline";
 
 
 /* --------------------------------------------- 8 nationwide infrastructure */
