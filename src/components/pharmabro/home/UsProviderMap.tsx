@@ -180,15 +180,13 @@ export function UsProviderMap({ className }: { className?: string }) {
               >
                 {pulsing && (
                   <>
-                    <motion.circle
+                    <circle
                       cx={p.x}
                       cy={p.y}
                       r={4}
                       fill="var(--color-marine)"
-                      initial={{ opacity: 0.35, scale: 0.6 }}
-                      animate={{ opacity: 0, scale: 3.2 }}
-                      transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-                      style={{ transformOrigin: `${p.x}px ${p.y}px` }}
+                      className="pb-map-pulse"
+                      style={{ transformOrigin: `${p.x}px ${p.y}px`, transformBox: "view-box" }}
                     />
                     <circle
                       cx={p.x}
