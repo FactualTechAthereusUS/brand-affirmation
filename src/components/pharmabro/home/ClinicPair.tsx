@@ -55,31 +55,85 @@ function Panel({
   );
 }
 
-const WORD_MS = 55;
-const HOLD_MS = 1600;
+const WORD_MS = 42;
 
-/** Word by word provider message that loops forever. */
+function Dots() {
+  return (
+    <span className="mt-2 flex items-center gap-1.5" aria-hidden>
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          animate={{ opacity: [0.25, 1, 0.25] }}
+          transition={{ duration: 1.1, repeat: Infinity, delay: i * 0.16, ease: "easeInOut" }}
+          className="size-1.5 rounded-full bg-[color-mix(in_oklab,var(--color-ink)_25%,transparent)]"
+        />
+      ))}
+    </span>
+  );
+}
+
+function Typed({ text, shown }: { text: string; shown: number }) {
+  const words = useMemo(() => text.split(" "), [text]);
+  return (
+    <p className="mt-2 text-[13px] leading-[1.5] text-[color-mix(in_oklab,var(--color-ink)_75%,transparent)]">
+      {words.map((w, i) => (
+        <span
+          key={`${w}-${i}`}
+          style={{ opacity: i < shown ? 1 : 0, transition: "opacity 240ms ease-out" }}
+        >
+          {w}{" "}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+const CARD =
+  "rounded-2xl border border-[var(--color-hairline)] bg-white p-4 shadow-[0_1px_2px_rgba(15,18,40,0.05),0_14px_34px_-20px_rgba(15,18,40,0.35)]";
+
+/**
+ * Looping conversation: PharmaBro types, routes the case, then the licensed
+ * provider replies with an approval. Mirrors the reference beat for beat.
+ */
 function MessageLoop() {
   const reduce = useReducedMotion();
-  const words = useMemo(() => PAIR_MESSAGE.split(" "), []);
-  const [shown, setShown] = useState(reduce ? words.length : 0);
-  const [visible, setVisible] = useState(true);
+  const brandWords = useMemo(() => PAIR_MESSAGE.split(" ").length, []);
+  const provWords = useMemo(() => PAIR_PROVIDER.message.split(" ").length, []);
+
+  const [stage, setStage] = useState(reduce ? 4 : 0);
+  const [brandShown, setBrandShown] = useState(reduce ? brandWords : 0);
+  const [provShown, setProvShown] = useState(reduce ? provWords : 0);
 
   useEffect(() => {
     if (reduce) return;
     let cancelled = false;
     const timers: number[] = [];
+    const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
 
     const run = () => {
       if (cancelled) return;
-      setVisible(true);
-      setShown(0);
-      words.forEach((_, i) => {
-        timers.push(window.setTimeout(() => setShown(i + 1), (i + 1) * WORD_MS));
-      });
-      const typed = words.length * WORD_MS;
-      timers.push(window.setTimeout(() => setVisible(false), typed + HOLD_MS));
-      timers.push(window.setTimeout(run, typed + HOLD_MS + 700));
+      setStage(0);
+      setBrandShown(0);
+      setProvShown(0);
+
+      // brand card starts typing
+      at(900, () => setStage(1));
+      const brandTyped = 900 + brandWords * WORD_MS;
+      for (let i = 0; i < brandWords; i += 1) {
+        at(900 + (i + 1) * WORD_MS, () => setBrandShown(i + 1));
+      }
+      // routing pill
+      at(brandTyped + 500, () => setStage(2));
+      // provider card appears with dots
+      at(brandTyped + 1500, () => setStage(3));
+      const provStart = brandTyped + 2500;
+      at(provStart, () => setStage(4));
+      for (let i = 0; i < provWords; i += 1) {
+        at(provStart + (i + 1) * WORD_MS, () => setProvShown(i + 1));
+      }
+      const end = provStart + provWords * WORD_MS + 2600;
+      at(end, () => setStage(5));
+      at(end + 700, run);
     };
     run();
 
@@ -87,14 +141,22 @@ function MessageLoop() {
       cancelled = true;
       timers.forEach((t) => window.clearTimeout(t));
     };
-  }, [reduce, words]);
+  }, [reduce, brandWords, provWords]);
+
+  const fade = { duration: 0.5, ease: PB_EASE_SOFT };
+  const gone = stage === 5;
 
   return (
-    <div className="flex w-full max-w-[380px] flex-col gap-3">
+    <motion.div
+      animate={{ opacity: gone ? 0 : 1 }}
+      transition={fade}
+      className="flex w-full max-w-[380px] flex-col gap-3"
+    >
       <motion.div
-        animate={{ opacity: visible ? 1 : 0 }}
-        transition={{ duration: 0.5, ease: PB_EASE_SOFT }}
-        className="rounded-2xl border border-[var(--color-hairline)] bg-white p-4 shadow-[0_1px_2px_rgba(15,18,40,0.05),0_14px_34px_-20px_rgba(15,18,40,0.35)]"
+        initial={reduce ? false : { opacity: 0, y: 12, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={fade}
+        className={CARD}
       >
         <div className="flex items-center gap-2">
           <span className="grid size-6 shrink-0 place-items-center rounded-full bg-white ring-1 ring-[var(--color-hairline)]">
@@ -102,23 +164,58 @@ function MessageLoop() {
           </span>
           <span className="text-[13px] font-semibold text-ink">PharmaBro</span>
         </div>
-        <p className="mt-2 text-[13px] leading-[1.5] text-[color-mix(in_oklab,var(--color-ink)_75%,transparent)]">
-          {words.map((w, i) => (
-            <span
-              key={`${w}-${i}`}
-              style={{
-                opacity: i < shown ? 1 : 0,
-                transition: "opacity 260ms ease-out",
-              }}
-            >
-              {w}{" "}
-            </span>
-          ))}
-        </p>
+        {stage === 0 ? <Dots /> : <Typed text={PAIR_MESSAGE} shown={brandShown} />}
       </motion.div>
-    </div>
+
+      <motion.div
+        animate={{
+          opacity: stage >= 2 ? 1 : 0,
+          y: stage >= 2 ? 0 : 12,
+          scale: stage >= 2 ? 1 : 0.98,
+        }}
+        transition={fade}
+        className="rounded-2xl px-4 py-3 text-white shadow-[0_16px_36px_-22px_rgba(27,78,245,0.9)]"
+        style={{ backgroundColor: "var(--color-brand, #1B4EF5)" }}
+      >
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-white/95 px-1.5 py-0.5 text-[9px] font-bold tracking-[0.06em] text-[var(--color-brand,#1B4EF5)]">
+            AI
+          </span>
+          <span className="text-[13px] font-semibold">PharmaBro routing</span>
+        </div>
+        <div className="mt-2 flex items-center gap-2 text-[13px] font-medium">
+          <span className="grid size-4 place-items-center rounded-full bg-white/95 text-[var(--color-brand,#1B4EF5)]">
+            <Check className="size-2.5" strokeWidth={3.5} aria-hidden />
+          </span>
+          {PAIR_ROUTING}
+        </div>
+      </motion.div>
+
+      <motion.div
+        animate={{
+          opacity: stage >= 3 ? 1 : 0,
+          y: stage >= 3 ? 0 : 12,
+          scale: stage >= 3 ? 1 : 0.98,
+        }}
+        transition={fade}
+        className={CARD}
+      >
+        <div className="flex items-center gap-2">
+          <img
+            src={PAIR_PROVIDER.avatar}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="size-6 shrink-0 rounded-full object-cover ring-1 ring-[var(--color-hairline)]"
+          />
+          <span className="text-[13px] font-semibold text-ink">{PAIR_PROVIDER.name}</span>
+        </div>
+        {stage >= 4 ? <Typed text={PAIR_PROVIDER.message} shown={provShown} /> : <Dots />}
+      </motion.div>
+    </motion.div>
   );
 }
+
 
 export function ClinicPair() {
   return (
