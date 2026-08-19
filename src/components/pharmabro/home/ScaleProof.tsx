@@ -62,7 +62,7 @@ export function LogoWall() {
         <div className="mt-10 grid grid-cols-2 border-t border-l border-[var(--color-hairline)] sm:grid-cols-3 lg:grid-cols-4">
           {BRAND_LOGOS.map((b, i) => (
             <motion.div
-              key={typeof b === "string" ? b : i}
+              key={b}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -70,7 +70,7 @@ export function LogoWall() {
               className="grid h-[92px] place-items-center border-r border-b border-[var(--color-hairline)] px-4"
             >
               <span className="text-[14.5px] font-medium tracking-[-0.01em] text-[color-mix(in_oklab,var(--color-ink)_60%,transparent)]">
-                {typeof b === "string" ? b : String((b as { label?: string }).label ?? "")}
+                {b}
               </span>
             </motion.div>
           ))}
