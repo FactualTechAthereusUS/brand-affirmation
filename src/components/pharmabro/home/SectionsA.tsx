@@ -265,7 +265,7 @@ export function RunOn() {
             </div>
 
             {/* screen */}
-            <div className="pb-dotgrid relative p-3 sm:p-5">
+            <div className="relative bg-transparent p-3 sm:p-5">
               <div className="relative overflow-hidden rounded-[14px] border border-hairline bg-white shadow-[0_30px_70px_-45px_rgba(16,20,32,0.45)]">
                 {RUNON_TABS.map((t, i) => {
                   const on = t === tab;
