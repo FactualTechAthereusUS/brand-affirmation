@@ -7,7 +7,6 @@ import {
 import { TRUST_MARKS } from "@/lib/pharmabro/home";
 import { Container } from "./primitives";
 
-const MARK = "/assets/pharmabro-mark.png";
 const WORDMARK = "/assets/pharmabro-wordmark.png";
 const LEGITSCRIPT = "/assets/legitscript-certified-badge.png";
 
@@ -121,7 +120,7 @@ export function PharmaBroFooter() {
 
         {/* Trust marks */}
         <div className="mt-14 flex flex-wrap gap-2 border-t border-white/10 pt-8">
-          {TRUST_MARKS.map((t) => (
+          {TRUST_MARKS.filter((t) => t !== "All systems normal").map((t) => (
             <span
               key={t}
               className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[12px] font-medium text-white/65"
@@ -170,16 +169,7 @@ export function PharmaBroFooter() {
       {/* Giant wordmark + icon */}
       <div className="relative px-4 pb-6 md:px-6 md:pb-8">
         <ProgressiveBlurStrip />
-        <div className="relative z-0 flex flex-col items-center gap-4">
-          <img
-            src={MARK}
-            alt=""
-            aria-hidden
-            className="h-14 w-auto select-none object-contain opacity-90 md:h-20"
-            draggable={false}
-            loading="lazy"
-            decoding="async"
-          />
+        <div className="relative z-0 flex justify-center">
           <img
             src={WORDMARK}
             alt="PharmaBro"
