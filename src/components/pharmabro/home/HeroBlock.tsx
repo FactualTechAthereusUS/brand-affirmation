@@ -10,8 +10,9 @@ import {
 } from "@/lib/pharmabro/home";
 import { Btn, Container, EyebrowPill } from "@/components/pharmabro/primitives";
 import { PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
-import { Shot, TabRail } from "./Shot";
-import type { MockKind } from "./Mocks";
+import { HeroPanel, HeroTabStrip } from "./HeroPanels";
+import { cn } from "@/lib/utils";
+
 
 const longest = [...HERO_ROTATING].sort((a, b) => b.length - a.length)[0];
 
@@ -55,9 +56,30 @@ function RotatingWord() {
   );
 }
 
+const TAB_MS = 7000;
+
 export function HeroBlock() {
+  const reduce = useReducedMotion();
   const [tab, setTab] = useState(DASHBOARD_TABS[0].id);
+  const [cycle, setCycle] = useState(0);
   const active = DASHBOARD_TABS.find((t) => t.id === tab) ?? DASHBOARD_TABS[0];
+  const index = DASHBOARD_TABS.findIndex((t) => t.id === active.id);
+
+  // Self-demoing rail: advances on a slow cadence, any click restarts it.
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setTimeout(() => {
+      setTab(DASHBOARD_TABS[(index + 1) % DASHBOARD_TABS.length].id);
+      setCycle((c) => c + 1);
+    }, TAB_MS);
+    return () => window.clearTimeout(id);
+  }, [index, cycle, reduce]);
+
+  const pick = (id: string) => {
+    setTab(id);
+    setCycle((c) => c + 1);
+  };
+
 
   return (
     <section className="relative overflow-hidden bg-canvas pt-14 sm:pt-20 lg:pt-24">
