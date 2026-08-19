@@ -311,6 +311,16 @@ export const STATE_TILES = [
   "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC",
 ];
 
+export const FULFILLMENT_LOGOS = [
+  { name: "South End Pharmacy", src: "/assets/partner-southend.png" },
+  { name: "perfectRx", src: "/assets/partner-perfectrx.png" },
+  { name: "Junction", src: "/assets/partner-junction.png" },
+  { name: "Surescripts", src: "/assets/partner-surescripts.png" },
+  { name: "Labcorp", src: "/assets/partner-labcorp.png" },
+  { name: "FedEx", src: "/assets/partner-fedex.png" },
+  { name: "UPS", src: "/assets/partner-ups.png" },
+];
+
 export const PHARMACY_PARTNERS = [
   "South End Pharmacy",
   "Epiq Scripts",
