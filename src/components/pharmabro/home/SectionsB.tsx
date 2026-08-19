@@ -59,8 +59,13 @@ export function Nationwide() {
           <Rise>
             <SquareEyebrow>{NATION_EYEBROW}</SquareEyebrow>
             <h2 className="mt-4 max-w-[18ch] text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.6rem]">
-              {NATION_H2}
+              {NATION_H2[0]}{" "}
+              <span className="pb-dim">{NATION_H2[1]}</span>
             </h2>
+            <p className="pb-body mt-5 max-w-[56ch] text-[15.5px] leading-relaxed">
+              {NATION_BODY}
+            </p>
+
 
             <div className="mt-9 space-y-8">
               {NATION_ROWS.map((r) => (
