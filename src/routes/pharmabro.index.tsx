@@ -14,6 +14,12 @@ import {
 import { Container } from "@/components/pharmabro/primitives";
 import { HeroBlock } from "@/components/pharmabro/home/HeroBlock";
 import {
+  LogoWall,
+  ScaleStats,
+  Testimonials,
+} from "@/components/pharmabro/home/ScaleProof";
+
+import {
   CheckoutToRevenue,
   CompleteClinic,
   RunOn,
