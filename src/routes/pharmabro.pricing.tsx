@@ -276,12 +276,31 @@ function PricingPage() {
                 That's what the call is for.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-2.5">
-                <Btn
+                <Link
                   to="/pharmabro/demo"
-                  className="bg-white text-[#0C0C0C] hover:bg-white/90"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-3xl border border-black bg-black px-6 text-[14.5px] font-medium text-white transition-all duration-200 hover:bg-neutral-900 active:scale-[0.985]"
+                  style={{
+                    boxShadow:
+                      "inset 0px 2px 4px 0px rgba(255,255,255,0.4), 0px 0.7409732186279143px 0.7409732186279143px -0.75px rgba(0,0,0,0.33), 0px 2.0178668455264415px 2.0178668455264415px -1.5px rgba(0,0,0,0.32), 0px 4.430505261661892px 4.430505261661892px -2.25px rgba(0,0,0,0.3), 0px 9.834710084098335px 9.834710084098335px -3px rgba(0,0,0,0.25), 0px 25px 25px -3.75px rgba(0,0,0,0.11), 0px 0px 0px 1px rgb(130,130,130)",
+                  }}
                 >
-                  Book a call
-                </Btn>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="size-[18px]"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  Schedule Now
+                </Link>
                 <Btn
                   to="/pharmabro/platform"
                   className="border border-white/25 bg-transparent text-white hover:bg-white/10"
