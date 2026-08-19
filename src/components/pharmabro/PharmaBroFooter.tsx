@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   FOOTER_COLUMNS,
   FOOTER_LEGAL,
