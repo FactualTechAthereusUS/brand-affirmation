@@ -501,75 +501,124 @@ export function GrowthBand() {
 /* ------------------------------------------------ 11 how pharmabro compares */
 
 export function Comparison() {
+  const cols = COMPARE_COLUMNS.length + 1;
+  let rowIndex = 0;
+
   return (
     <Section id="compare">
       <Container size="wide">
-        <Rise>
-          <MicroLabel>Comparison</MicroLabel>
-          <h2 className="mt-4 text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.85rem]">
-            {COMPARE_H2}
-          </h2>
-          <p className="pb-body mt-5 max-w-[66ch] text-[16.5px] leading-relaxed">
-            {COMPARE_SUB}
-          </p>
-        </Rise>
+        {/* Cuvo-style opener: bracketed frame, oversized two-tone headline */}
+        <div className="relative">
+          <Corners tone="marine" />
+          <div className="px-1 sm:px-2">
+            <Rise>
+              <MicroLabel>Comparison</MicroLabel>
+              <h2 className="mt-6 max-w-[22ch] text-balance text-[30px] font-normal leading-[1.04] tracking-[-0.025em] text-ink sm:text-[40px] lg:text-[56px]">
+                How PharmaBro
+                <span className="pb-dim"> compares.</span>
+              </h2>
+              <p className="mt-6 max-w-[640px] text-[18px] leading-[1.2] tracking-[-0.02em] text-ink lg:text-[26px]">
+                {COMPARE_SUB}
+              </p>
+              <div className="mt-8">
+                <Btn to="/pharmabro/compare" variant="blue">
+                  See every comparison
+                </Btn>
+              </div>
+            </Rise>
+          </div>
+        </div>
 
-        <Rise delay={0.06} className="mt-10">
-          <div className="pb-card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[720px] border-collapse text-left">
-                <thead>
-                  <tr className="border-b border-[var(--color-hairline)] bg-[var(--color-mist)]">
-                    <th className="px-5 py-4 text-[12px] font-medium uppercase tracking-[0.1em] text-[color-mix(in_oklab,var(--color-ink)_48%,transparent)]">
-                      Feature
-                    </th>
-                    {COMPARE_COLUMNS.map((c, i) => (
-                      <th
-                        key={c}
-                        className={`px-5 py-4 text-[13.5px] font-semibold ${i === 0 ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_52%,transparent)]"}`}
-                      >
-                        {c}
+        {/* Framed table panel on a dotted field, PharmaBro column pinned */}
+        <Rise delay={0.06}>
+          <div className="relative mt-16 lg:mt-20">
+            <Corners />
+            <div className="pb-dotgrid overflow-hidden rounded-[var(--pb-r-xl)] border border-[var(--color-hairline)] bg-canvas">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[760px] border-collapse text-left">
+                  <thead>
+                    <tr className="border-b border-[var(--color-hairline)] bg-canvas/80">
+                      <th className="sticky left-0 z-20 bg-canvas px-5 py-5 align-bottom">
+                        <span className="pb-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[color-mix(in_oklab,var(--color-ink)_40%,transparent)]">
+                          Feature
+                        </span>
                       </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {COMPARE_TABLE.map((g) => (
-                    <Fragment key={g.group}>
-                      <tr className="bg-canvas">
-                        <td
-                          colSpan={COMPARE_COLUMNS.length + 1}
-                          className="border-y border-[var(--color-hairline)] px-5 py-3"
-                        >
-                          <span className="pb-micro">{g.group}</span>
-                        </td>
-                      </tr>
-                      {g.rows.map((r) => (
-                        <tr
-                          key={g.group + r.feature}
-                          className="border-b border-[var(--color-hairline)] last:border-0"
-                        >
-                          <td className="px-5 py-3.5 text-[13.5px] text-ink">{r.feature}</td>
-                          {r.values.map((v, i) => (
-                            <td
-                              key={i}
-                              className={`px-5 py-3.5 ${i === 0 ? "bg-[color-mix(in_oklab,var(--color-marine)_4%,white)]" : ""}`}
-                            >
-                              <Cell value={v} own={i === 0} />
-                            </td>
-                          ))}
-                        </tr>
+                      {COMPARE_COLUMNS.map((c, i) => (
+                        <th key={c} className="px-5 py-5 align-bottom">
+                          {i === 0 ? (
+                            <span className="inline-flex items-center gap-2 rounded-full bg-[color-mix(in_oklab,var(--color-marine)_10%,white)] px-3 py-1.5 text-[13px] font-semibold text-ink ring-1 ring-[color-mix(in_oklab,var(--color-marine)_28%,transparent)]">
+                              <span className="size-1.5 rounded-full bg-[var(--color-marine)]" />
+                              {c}
+                            </span>
+                          ) : (
+                            <span className="text-[13px] font-medium text-[color-mix(in_oklab,var(--color-ink)_48%,transparent)]">
+                              {c}
+                            </span>
+                          )}
+                        </th>
                       ))}
-                    </Fragment>
-                  ))}
-                </tbody>
-              </table>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {COMPARE_TABLE.map((g) => (
+                      <Fragment key={g.group}>
+                        <tr>
+                          <td
+                            colSpan={cols}
+                            className="border-y border-[var(--color-hairline)] bg-[var(--color-mist)] px-5 py-3"
+                          >
+                            <span className="pb-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[color-mix(in_oklab,var(--color-ink)_46%,transparent)]">
+                              {g.group}
+                            </span>
+                          </td>
+                        </tr>
+                        {g.rows.map((r) => {
+                          const delay = Math.min(rowIndex++, 12) * 0.035;
+                          return (
+                            <motion.tr
+                              key={g.group + r.feature}
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: 0.4 }}
+                              transition={{
+                                duration: 0.55,
+                                delay,
+                                ease: PB_EASE_SOFT,
+                              }}
+                              className="group border-b border-[var(--color-hairline)] last:border-0"
+                            >
+                              <td className="sticky left-0 z-10 bg-canvas px-5 py-4 text-[13.5px] leading-snug text-ink transition-colors group-hover:bg-[var(--color-mist)]">
+                                {r.feature}
+                              </td>
+                              {r.values.map((v, i) => (
+                                <td
+                                  key={i}
+                                  className={
+                                    i === 0
+                                      ? "border-x border-[color-mix(in_oklab,var(--color-marine)_16%,transparent)] bg-[color-mix(in_oklab,var(--color-marine)_5%,white)] px-5 py-4"
+                                      : "bg-canvas/70 px-5 py-4 transition-colors group-hover:bg-[var(--color-mist)]"
+                                  }
+                                >
+                                  <Cell value={v} own={i === 0} />
+                                </td>
+                              ))}
+                            </motion.tr>
+                          );
+                        })}
+                      </Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-          <p className="pb-micro mt-4">{COMPARE_FOOTNOTE}</p>
-          <div className="mt-6">
+
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="pb-micro max-w-[70ch] normal-case tracking-normal">
+              {COMPARE_FOOTNOTE}
+            </p>
             <Btn to="/pharmabro/compare" variant="ghost">
-              See every comparison
+              Compare side by side
             </Btn>
           </div>
         </Rise>
@@ -577,6 +626,7 @@ export function Comparison() {
     </Section>
   );
 }
+
 
 /* -------------------------------------------------------- 12 legitscript */
 
