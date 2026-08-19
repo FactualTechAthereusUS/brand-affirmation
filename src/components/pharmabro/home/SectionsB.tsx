@@ -37,7 +37,6 @@ import {
   PRICING_SUB,
   RETENTION_H2,
   RETENTION_ROWS,
-  STATE_TILES,
 } from "@/lib/pharmabro/home";
 import {
   Btn,
