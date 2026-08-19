@@ -61,8 +61,8 @@ export function UsProviderMap({ className }: { className?: string }) {
                 delay: reduce ? 0 : 0.1 + i * 0.012,
                 ease: PB_EASE_SOFT,
               }}
-              fill="color-mix(in oklab, var(--color-marine) 7%, white)"
-              stroke="color-mix(in oklab, var(--color-marine) 22%, white)"
+              fill="color-mix(in oklab, var(--color-marine) 11%, white)"
+              stroke="color-mix(in oklab, var(--color-marine) 30%, white)"
               strokeWidth={0.9}
               strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
