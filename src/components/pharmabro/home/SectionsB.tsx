@@ -230,92 +230,153 @@ export function Retention() {
 
 export function GrowthBand() {
   const [i, setI] = useState(0);
+  const [open, setOpen] = useState(0);
+
+  // Auto-advance the desktop tabs in sync with the progress loader.
+  useEffect(() => {
+    const id = window.setTimeout(() => setI((v) => (v + 1) % GROWTH_TABS.length), 7000);
+    return () => window.clearTimeout(id);
+  }, [i]);
 
   return (
-    <section className="relative overflow-hidden bg-[#0c0c0c] py-16 sm:py-20 lg:py-28">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          background:
-            "radial-gradient(70% 60% at 20% 0%, rgba(27,78,245,0.30) 0%, transparent 65%), radial-gradient(50% 50% at 90% 20%, rgba(109,99,255,0.24) 0%, transparent 70%)",
-        }}
-      />
-      <Container size="wide" className="relative">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <Rise>
-            <div className="text-[10px] font-medium uppercase tracking-[0.13em] text-white/45">
-              Analytics
-            </div>
-            <h2 className="mt-4 text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-white md:text-4xl lg:text-[2.6rem]">
-              {GROWTH_H2[0]}
-              <span className="block text-white/45">{GROWTH_H2[1]}</span>
-            </h2>
-          </Rise>
+    <Section id="analytics">
+      <Container size="wide">
+        <Rise>
+          <MicroLabel>Analytics</MicroLabel>
+          <h2 className="mt-4 text-balance text-3xl font-normal leading-[1.1] tracking-[-0.025em] text-ink md:text-4xl lg:text-[2.85rem]">
+            {GROWTH_H2[0]}
+            <span className="block text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]">
+              {GROWTH_H2[1]}
+            </span>
+          </h2>
+        </Rise>
 
-          <Rise delay={0.08}>
-            <div className="divide-y divide-white/10">
+        <div className="mt-12">
+          {/* desktop: stacked image board + three inline tabs */}
+          <div className="hidden lg:flex lg:flex-col">
+            <div className="relative aspect-[1158/584] w-full overflow-hidden rounded-[16px] bg-[var(--color-mist)]">
+              {GROWTH_SHOTS.map((s, idx) => (
+                <img
+                  key={s.src}
+                  src={s.src}
+                  alt={s.alt}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ease-in-out ${idx === i ? "opacity-100" : "opacity-0"}`}
+                />
+              ))}
+            </div>
+
+            <div className="flex flex-col lg:flex-row">
               {GROWTH_TABS.map((t, idx) => {
                 const on = idx === i;
                 return (
                   <button
                     key={t.title}
                     type="button"
+                    aria-pressed={on}
                     onClick={() => setI(idx)}
-                    className="block w-full py-5 text-left"
+                    className={`relative flex-1 cursor-pointer overflow-hidden px-6 py-6 text-left transition-colors ${on ? "bg-black/[0.03]" : "hover:bg-black/[0.02]"}`}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className={on ? "text-[#8fa9ff]" : "text-white/35"} aria-hidden>
-                        →
-                      </span>
+                    {on ? (
                       <span
-                        className={`text-[16px] font-medium tracking-[-0.015em] ${on ? "text-white" : "text-white/55"}`}
-                      >
-                        {t.title}
-                      </span>
-                    </div>
-                    <AnimatePresence initial={false}>
-                      {on ? (
-                        <motion.p
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.42, ease: PB_EASE_SOFT }}
-                          className="overflow-hidden pl-6 pr-2 pt-2 text-[14.5px] leading-relaxed text-white/60"
+                        key={`loader-${idx}-${i}`}
+                        aria-hidden
+                        className="pb-tab-loader absolute left-0 top-0 h-0.5 w-full origin-left"
+                      />
+                    ) : null}
+                    <div className="flex items-start gap-3">
+                      <span
+                        aria-hidden
+                        className={`mt-2.5 size-2 shrink-0 rounded-[1px] transition-colors ${on ? "bg-[var(--color-primary,#1b4ef5)]" : "bg-[var(--color-hairline)]"}`}
+                      />
+                      <div>
+                        <h4
+                          className={`text-[20px] font-normal leading-[24px] tracking-[-0.01em] transition-colors ${on ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]"}`}
+                        >
+                          {t.title}
+                        </h4>
+                        <p
+                          className={`mt-2 text-[16px] leading-[1.4] transition-colors ${on ? "text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)]" : "text-[color-mix(in_oklab,var(--color-ink)_35%,transparent)]"}`}
                         >
                           {t.body}
-                        </motion.p>
-                      ) : null}
-                    </AnimatePresence>
+                        </p>
+                        <span
+                          className={`mt-4 inline-block text-[16px] underline underline-offset-2 transition-colors ${on ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_35%,transparent)]"}`}
+                        >
+                          Learn more
+                        </span>
+                      </div>
+                    </div>
                   </button>
                 );
               })}
             </div>
-          </Rise>
+          </div>
+
+          {/* mobile / tablet: accordion with the image inside the open panel */}
+          <div className="border border-[var(--color-hairline)] lg:hidden">
+            {GROWTH_TABS.map((t, idx) => {
+              const on = idx === open;
+              return (
+                <div
+                  key={t.title}
+                  className={`transition-colors ${idx > 0 ? "border-t border-[var(--color-hairline)]" : ""} ${on ? "bg-[var(--color-mist)]" : ""}`}
+                >
+                  <button
+                    type="button"
+                    aria-expanded={on}
+                    onClick={() => setOpen(idx)}
+                    className={`block w-full px-5 py-5 text-left transition-opacity ${on ? "" : "opacity-60"}`}
+                  >
+                    <span className="flex w-full items-baseline justify-between gap-4">
+                      <span className="text-[20px] leading-5 tracking-[-0.4px] text-ink">
+                        {t.title}
+                      </span>
+                      <span aria-hidden className="relative h-4 w-4 shrink-0 self-center text-ink">
+                        <span className="absolute left-0 top-1/2 h-px w-4 -translate-y-1/2 bg-current" />
+                        {on ? null : (
+                          <span className="absolute left-1/2 top-0 h-4 w-px -translate-x-1/2 bg-current" />
+                        )}
+                      </span>
+                    </span>
+                    <p className="mt-3 text-[14px] leading-[1.4] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)]">
+                      {t.body}
+                    </p>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {on ? (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.42, ease: PB_EASE_SOFT }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-5 pb-5">
+                          <span className="inline-block text-[15px] text-ink underline underline-offset-2">
+                            Learn more
+                          </span>
+                          <div className="relative mt-4 aspect-[1158/584] w-full overflow-hidden rounded-[12px] bg-[var(--color-mist)]">
+                            <img
+                              src={GROWTH_SHOTS[idx].src}
+                              alt={GROWTH_SHOTS[idx].alt}
+                              loading="lazy"
+                              decoding="async"
+                              className="absolute inset-0 size-full object-cover"
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </Container>
-
-      <Container size="full" className="relative mt-12">
-        <Rise>
-          <div className="overflow-hidden rounded-[20px] border border-white/15 bg-white/5 p-2 backdrop-blur-xl">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.img
-                key={GROWTH_SHOTS[i].src}
-                src={GROWTH_SHOTS[i].src}
-                alt={GROWTH_SHOTS[i].alt}
-                loading="lazy"
-                decoding="async"
-                initial={{ opacity: 0, y: 14, scale: 0.99 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.99 }}
-                transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
-                className="w-full rounded-[14px] object-cover"
-              />
-            </AnimatePresence>
-          </div>
-        </Rise>
-      </Container>
-    </section>
+    </Section>
   );
 }
 
