@@ -117,11 +117,6 @@ export const enterpriseRow = {
 export const cardsFootnote =
   "Every plan includes licensed providers in all 50 states, pharmacy fulfillment, white-label patient portal, LegitScript certification, HIPAA infrastructure, and full data ownership. Consult fees apply to the initial consultation in month one only, refills carry no consult fee.";
 
-export const migrationBanner = {
-  lead: "Switching from another platform?",
-  body: "Free white-glove migration, we move your patients, subscriptions and data for you.",
-  cta: { label: "Talk to migration", to: "/pharmabro/contact" },
-};
 
 export const setupBody = [
   "Every brand we launch is built for the operator who owns it. Providers are credentialed under your brand. Your legal structure is drafted for your ownership. Your patient portal and storefront are built on your domain. Your LegitScript application is filed and managed by us.",
