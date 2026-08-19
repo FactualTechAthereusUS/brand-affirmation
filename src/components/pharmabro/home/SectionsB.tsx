@@ -614,7 +614,7 @@ export function Comparison() {
           </div>
 
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="pb-micro max-w-[70ch] normal-case tracking-normal">
+            <p className="pb-body max-w-[70ch] text-[13px] leading-relaxed">
               {COMPARE_FOOTNOTE}
             </p>
             <Btn to="/pharmabro/compare" variant="ghost">
