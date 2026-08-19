@@ -103,6 +103,8 @@ export function CompleteClinic() {
             </div>
           ))}
         </div>
+
+        <ClinicPair />
       </Container>
     </Section>
   );
