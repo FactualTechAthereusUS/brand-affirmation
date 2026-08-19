@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   BRAND_LOGOS,
   LOGO_WALL_H2,
