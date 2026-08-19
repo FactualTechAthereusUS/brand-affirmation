@@ -313,7 +313,7 @@ const NOTE_GAP = 106;
 
 function NotificationsLoop() {
   const reduce = useReducedMotion();
-  const stage = useLoop(4, 1250, reduce);
+  const stage = useLoop(3, 1250, reduce);
 
   return (
     <Stage>
@@ -330,8 +330,9 @@ function NotificationsLoop() {
               className="absolute right-1 top-0 h-full w-px origin-top"
               style={{ backgroundColor: BRAND, boxShadow: `0 0 8px 1px color-mix(in oklab, ${BRAND} 28%, transparent)` }}
             />
-            {NOTES.map((n, i) => {
-              const on = stage >= 3 - i;
+            {NOTES.slice().reverse().map((n, r) => {
+              const i = r;
+              const on = stage >= 3 - r;
               return (
                 <div
                   key={n.day}
@@ -366,7 +367,7 @@ function NotificationsLoop() {
 
           <div className="relative flex-1" style={{ height: 414 }}>
             {NOTES.map((n, i) => {
-              const order = 3 - i; // 0 = newest on top
+              const order = i; // note i enters at stage i and gets pushed down
               const visible = stage >= order;
               const Icon = n.icon;
               return (
@@ -378,7 +379,7 @@ function NotificationsLoop() {
                   }}
                   transition={{ duration: 0.55, ease: PB_EASE_SOFT }}
                   className="absolute inset-x-0 top-0"
-                  style={{ height: NOTE_H, zIndex: 10 - order }}
+                  style={{ height: NOTE_H, zIndex: 10 - i }}
                 >
                   <Card reduce={reduce} className="h-full" glow={stage === order}>
                     <div className="flex h-full items-start gap-3 p-3">
