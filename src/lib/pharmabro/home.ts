@@ -460,7 +460,7 @@ export const LEGIT_BARS = [
   {
     label: "Fastest approval",
     note: "with PharmaBro",
-    value: "3 days",
+    value: "4 days",
     pct: 1.667,
     brand: true,
     split: false,
