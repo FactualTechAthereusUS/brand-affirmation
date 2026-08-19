@@ -566,3 +566,16 @@
     animation: none;
   }
 }
+
+/* PharmaBro analytics tabs: auto-advance progress loader on the active tab. */
+.pb-tab-loader {
+  background: var(--color-primary, #1b4ef5);
+  animation: pbTabLoader 7s linear forwards;
+}
+@keyframes pbTabLoader {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pb-tab-loader { animation: none; transform: scaleX(1); }
+}
