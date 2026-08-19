@@ -594,3 +594,21 @@ export const TRUST_MARKS = [
   "Licensed in all 50 states",
   "All systems normal",
 ];
+
+/* ------------------------------------------- prescription and revenue pair */
+
+export const PAIR_MESSAGE =
+  "Thanks for completing your intake, Tom. I'm routing your case to a licensed provider who can review it and prescribe if it's appropriate. This will only take a moment.";
+
+export const PAIR_RX = {
+  heading: "PharmaBro handles every prescription",
+  body: "Every patient is reviewed and prescribed by licensed providers under your brand, and their medication ships directly to their door. You never touch a chart, a prescription, or a pharmacy.",
+  fine: "All prescriptions and treatment are at the sole discretion of the treating telehealth provider, and only when medically appropriate.",
+};
+
+export const PAIR_REVENUE = {
+  heading: "Revenue in real time",
+  body: "Track new patients, recurring revenue, and retention from a single dashboard, so you always know exactly how your brand is performing and where it is growing fastest.",
+  link: "Learn more",
+  image: "/assets/pharmabro-analytics-insights.png",
+};
