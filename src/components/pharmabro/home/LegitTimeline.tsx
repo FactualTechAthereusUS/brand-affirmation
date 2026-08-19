@@ -1,5 +1,4 @@
-import { motion, useInView, useReducedMotion } from "motion/react";
-import { useRef } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { LEGIT_BARS } from "@/lib/pharmabro/home";
 import { PB_EASE_SOFT } from "@/components/pharmabro/motion";
 
@@ -29,13 +28,10 @@ export function LegitScriptMark({ className = "" }: { className?: string }) {
 const TICKS = [0, 1, 2, 3, 4, 5, 6];
 
 export function LegitTimeline() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.35 });
   const reduce = useReducedMotion();
 
   return (
     <div
-      ref={ref}
       className="relative border border-[var(--color-hairline)] bg-canvas px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-7 lg:px-10 lg:pb-10 lg:pt-8"
     >
       <p className="pb-micro mb-8 sm:mb-10">Time to LegitScript certification</p>
@@ -81,7 +77,8 @@ export function LegitTimeline() {
                       className="relative flex h-full shrink-0 origin-left overflow-hidden"
                       style={{ width: `${b.pct}%`, minWidth: 6 }}
                       initial={{ scaleX: 0 }}
-                      animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true, amount: 0.4 }}
                       transition={{
                         duration: reduce ? 0 : 0.9,
                         delay,
@@ -115,7 +112,8 @@ export function LegitTimeline() {
                         <motion.span
                           className="pb-mono absolute inset-y-0 right-3 flex items-center whitespace-nowrap text-[13px] text-[color-mix(in_oklab,var(--color-ink)_55%,transparent)]"
                           initial={{ opacity: 0 }}
-                          animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true, amount: 0.4 }}
                           transition={{ duration: reduce ? 0 : 0.5, delay: delay + 0.9 }}
                         >
                           {b.value}
@@ -127,7 +125,8 @@ export function LegitTimeline() {
                       <motion.span
                         className="pb-mono whitespace-nowrap text-[13px] text-[var(--color-marine)]"
                         initial={{ opacity: 0, x: -4 }}
-                        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.4 }}
                         transition={{ duration: reduce ? 0 : 0.5, delay: delay + 0.9 }}
                       >
                         {b.value}
