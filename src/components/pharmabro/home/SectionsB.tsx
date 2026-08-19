@@ -69,31 +69,30 @@ function CoverageBlock({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="pb-liquid-soft relative isolate overflow-hidden rounded-[20px] border border-white/60">
-      <div className="relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white/70 backdrop-blur-xl">
-        <Corners />
-        <div className="grid gap-7 px-5 py-8 sm:gap-8 sm:px-8 sm:py-12 lg:grid-cols-12 lg:px-12">
-          <h3 className="text-balance text-[22px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[26px] lg:col-span-3 lg:text-[28px]">
-            {title}
-          </h3>
-          <div className={children ? "lg:col-span-5" : "lg:col-span-7"}>
-            <p className="pb-body max-w-[440px] text-[14.5px] leading-relaxed sm:text-[15.5px]">
-              {body}
-            </p>
-            <Link
-              to={to}
-              className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-[var(--color-marine)] hover:underline"
-            >
-              Learn more<span className="sr-only"> {srLabel}</span>
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
-          {children ? <div className="lg:col-span-4">{children}</div> : null}
+    <div className="relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white">
+      <Corners />
+      <div className="grid gap-7 px-5 py-8 sm:gap-8 sm:px-8 sm:py-12 lg:grid-cols-12 lg:px-12">
+        <h3 className="text-balance text-[22px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[26px] lg:col-span-3 lg:text-[28px]">
+          {title}
+        </h3>
+        <div className={children ? "lg:col-span-5" : "lg:col-span-7"}>
+          <p className="pb-body max-w-[440px] text-[14.5px] leading-relaxed sm:text-[15.5px]">
+            {body}
+          </p>
+          <Link
+            to={to}
+            className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-[var(--color-marine)] hover:underline"
+          >
+            Learn more<span className="sr-only"> {srLabel}</span>
+            <span aria-hidden>→</span>
+          </Link>
         </div>
+        {children ? <div className="lg:col-span-4">{children}</div> : null}
       </div>
     </div>
   );
 }
+
 
 export function Nationwide() {
   return (
@@ -126,8 +125,9 @@ export function Nationwide() {
           </Rise>
 
           <Rise delay={0.05}>
-            <div className="pb-liquid-soft relative isolate overflow-hidden rounded-[20px] border border-white/60">
-              <div className="pb-dotgrid relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white/70 backdrop-blur-xl">
+            <div className="relative overflow-hidden rounded-[12px] border border-[var(--color-hairline)] bg-white">
+              <div className="relative overflow-hidden">
+
                 <Corners tone="marine" />
                 <div className="grid items-center gap-4 sm:gap-6 lg:grid-cols-12">
                   <div className="px-3 pb-2 pt-8 sm:px-8 sm:pb-4 sm:pt-10 lg:col-span-8 lg:py-12 lg:pl-10 lg:pr-0">
