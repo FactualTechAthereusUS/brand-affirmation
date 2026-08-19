@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
@@ -28,9 +28,9 @@ import {
 } from "@/components/pharmabro/primitives";
 import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot, TabRail } from "./Shot";
-import type { MockKind } from "./Mocks";
 import { CardVisual } from "./CardVisuals";
 import { ClinicPair } from "./ClinicPair";
+import { JourneyScene } from "./JourneyLoops";
 
 /* ------------------------------------------------- 4 a complete clinic */
 
@@ -309,9 +309,32 @@ export function RunOn() {
 
 /* ---------------------------------- 7 from checkout to recurring revenue */
 
+const JOURNEY_MS = 9600;
+
 export function CheckoutToRevenue() {
   const [tab, setTab] = useState(JOURNEY[0].id);
+  const [cycle, setCycle] = useState(0);
+  const [step, setStep] = useState(0);
   const active = JOURNEY.find((s) => s.id === tab) ?? JOURNEY[0];
+  const index = JOURNEY.findIndex((s) => s.id === active.id);
+
+  // The section demos itself: tabs advance on a slow cadence, and any click
+  // restarts the timer so manual exploration always wins.
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const next = JOURNEY[(index + 1) % JOURNEY.length];
+      setTab(next.id);
+      setStep(0);
+      setCycle((c) => c + 1);
+    }, JOURNEY_MS);
+    return () => window.clearTimeout(id);
+  }, [index, cycle]);
+
+  const pick = (id: string) => {
+    setTab(id);
+    setStep(0);
+    setCycle((c) => c + 1);
+  };
 
   return (
     <Section id="how-it-works">
@@ -335,62 +358,106 @@ export function CheckoutToRevenue() {
           <TabRail
             tabs={JOURNEY.map((s) => ({ id: s.id, label: s.label }))}
             active={tab}
-            onSelect={setTab}
+            onSelect={pick}
             className="w-fit"
           />
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={active.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
-              className="pb-card p-6 sm:p-7"
-            >
-              <h3 className="text-[19px] font-medium tracking-[-0.02em] text-ink">
-                {active.label}
-              </h3>
-              <p className="pb-body mt-3 text-[15px] leading-relaxed">{active.body}</p>
-              <div className="mt-6 space-y-3 border-t border-[var(--color-hairline)] pt-5">
-                {active.details.map((d) => (
-                  <div key={d.label} className="flex flex-col gap-0.5">
-                    <span className="pb-micro">{d.label}</span>
-                    <span className="text-[14px] text-ink">{d.body}</span>
-                  </div>
-                ))}
-              </div>
-              {active.id === "revenue" ? (
-                <div className="mt-6 grid grid-cols-3 gap-2 border-t border-[var(--color-hairline)] pt-5">
-                  {JOURNEY_METRICS.map((m) => (
-                    <div key={m.label}>
-                      <div className="pb-mono text-[17px] font-medium text-ink">{m.value}</div>
-                      <div className="pb-micro mt-1">{m.label}</div>
-                    </div>
-                  ))}
+        <Rise delay={0.05}>
+          <div className="pb-card mt-8 overflow-hidden p-4 sm:p-5">
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] lg:gap-8">
+              {/* copy panel, steps in time with the scene */}
+              <div className="flex flex-col lg:py-3 lg:pl-2">
+                <div className="flex items-center gap-3">
+                  <span className="pb-mono text-[10px] font-semibold tracking-[0.16em] text-[color-mix(in_oklab,var(--color-ink)_38%,transparent)]">
+                    {String(index + 1).padStart(2, "0")} / {String(JOURNEY.length).padStart(2, "0")}
+                  </span>
+                  <span className="h-px flex-1 bg-[var(--color-hairline)]" />
                 </div>
-              ) : null}
-            </motion.div>
-          </AnimatePresence>
 
-          <Shot
-            key={active.id}
-            image={active.image}
-            slot={active.slot}
-            ratio="16 / 10"
-            mock={active.id as MockKind}
-          />
-        </div>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={active.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.4, ease: PB_EASE_SOFT }}
+                  >
+                    <h3 className="mt-4 text-[22px] font-normal leading-[1.15] tracking-[-0.02em] text-ink lg:text-[28px]">
+                      {active.label}
+                    </h3>
+                    <p className="pb-body mt-3 max-w-[46ch] text-[14.5px] leading-relaxed">
+                      {active.body}
+                    </p>
 
-        <Rise delay={0.1}>
-          <p className="pb-body mt-8 text-[14px]">
-            Want the full walkthrough?{" "}
-            <Link to="/pharmabro/platform" className="font-medium text-ink underline underline-offset-4">
-              See the platform
-            </Link>
-          </p>
+                    <ul className="mt-6 flex flex-col">
+                      {active.details.map((d, i) => {
+                        const on = i <= step;
+                        return (
+                          <li
+                            key={d.label}
+                            className="border-t border-[var(--color-hairline)] py-3 last:border-b"
+                          >
+                            <div className="flex items-start gap-3">
+                              <span
+                                className="mt-[7px] size-1.5 shrink-0 rounded-full transition-colors duration-500"
+                                style={{
+                                  backgroundColor: on
+                                    ? "var(--color-brand, #1B4EF5)"
+                                    : "color-mix(in oklab, var(--color-ink) 15%, transparent)",
+                                }}
+                              />
+                              <span className="min-w-0">
+                                <span
+                                  className="block text-[13px] font-medium leading-tight transition-colors duration-500"
+                                  style={{
+                                    color: on
+                                      ? "var(--color-ink)"
+                                      : "color-mix(in oklab, var(--color-ink) 45%, transparent)",
+                                  }}
+                                >
+                                  {d.label}
+                                </span>
+                                <span className="pb-body mt-0.5 block text-[13px] leading-relaxed">
+                                  {d.body}
+                                </span>
+                              </span>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </motion.div>
+                </AnimatePresence>
+
+                <p className="pb-body mt-6 text-[13.5px]">
+                  Want the full walkthrough?{" "}
+                  <Link
+                    to="/pharmabro/platform"
+                    className="font-medium text-ink underline underline-offset-4"
+                  >
+                    See the platform
+                  </Link>
+                </p>
+              </div>
+
+              {/* live stage */}
+              <div className="relative min-h-[360px] sm:min-h-[420px] lg:min-h-[480px]">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={active.id}
+                    initial={{ opacity: 0, scale: 0.985 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.99 }}
+                    transition={{ duration: 0.45, ease: PB_EASE_SOFT }}
+                    className="absolute inset-0"
+                  >
+                    <JourneyScene id={active.id} onStep={setStep} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
         </Rise>
       </Container>
     </Section>
