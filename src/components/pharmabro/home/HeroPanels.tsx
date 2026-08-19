@@ -63,21 +63,17 @@ function OperationsPanel() {
       />
       <DotGrid />
       <Wash />
-      <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 lg:p-8">
-        <motion.div
+      <div className="absolute inset-0">
+        <motion.img
+          src="/assets/pharmabro-dashboard.png"
+          alt="PharmaBro operations dashboard showing the full patient pipeline"
+          loading="eager"
+          decoding="async"
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: PB_EASE_SOFT }}
-          className="relative w-full max-w-full overflow-hidden rounded-lg border border-[var(--color-hairline)] shadow-[0_1px_2px_rgba(15,18,40,0.14),0_18px_44px_-16px_rgba(15,18,40,0.32),0_60px_110px_-40px_rgba(15,18,40,0.45)] sm:rounded-xl"
-        >
-          <img
-            src="/assets/pharmabro-dashboard.png"
-            alt="PharmaBro operations dashboard showing the full patient pipeline"
-            loading="eager"
-            decoding="async"
-            className="h-auto w-full"
-          />
-        </motion.div>
+          className="h-full w-full object-cover"
+        />
       </div>
     </div>
   );
