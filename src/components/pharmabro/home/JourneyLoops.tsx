@@ -259,9 +259,9 @@ function CareLoop({ onStep }: { onStep?: (i: number) => void }) {
 /* -------------------------------------------------------- 3 approve and route */
 
 const PHARMACIES = [
-  { name: "Northline Compounding", mark: "NC", note: "Semaglutide · NY licensed" },
-  { name: "South End Pharmacy", mark: "SE", note: "No NY license" },
-  { name: "PerfectRx Labs", mark: "PR", note: "Compound not stocked" },
+  { name: "Curexa", mark: "CU", note: "Semaglutide · NY licensed" },
+  { name: "Junction", mark: "JU", note: "No NY license" },
+  { name: "Perfect Rx", mark: "PR", note: "Compound not stocked" },
 ];
 
 function RouteLoop({ onStep }: { onStep?: (i: number) => void }) {
