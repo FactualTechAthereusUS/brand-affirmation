@@ -478,6 +478,7 @@ export const BLOG_CARDS = [
     title: "DEA extends telemedicine flexibilities through 2026",
     body: "What the extension means for GLP-1, TRT, and controlled substance prescribing.",
     slot: "Medication on a clean surface",
+    image: "/assets/pb-blog-vials.jpg",
   },
   {
     category: "Growth",
@@ -485,6 +486,7 @@ export const BLOG_CARDS = [
     title: "The 5 best white label telehealth platforms in 2026",
     body: "Features, pricing, and data ownership across the major platforms.",
     slot: "Pharmacy lab",
+    image: "/assets/pb-blog-pharmacy.jpg",
   },
   {
     category: "Pharmacy",
@@ -492,6 +494,7 @@ export const BLOG_CARDS = [
     title: "From prescription to doorstep: inside a compounded GLP-1 order",
     body: "The exact path a semaglutide prescription takes from approval to delivery.",
     slot: "Cold-pack shipping box",
+    image: "/assets/pb-blog-coldpack.jpg",
   },
   {
     category: "Compliance",
@@ -499,6 +502,7 @@ export const BLOG_CARDS = [
     title: "LegitScript certification: the real timeline, week by week",
     body: "What actually happens during review and how to prepare for it.",
     slot: "Checklist and documents",
+    image: "/assets/pb-blog-documents.jpg",
   },
   {
     category: "Growth",
@@ -506,8 +510,10 @@ export const BLOG_CARDS = [
     title: "Pricing a weight-loss subscription patients keep for a year",
     body: "How to structure GLP-1 pricing that converts and still retains at month 12.",
     slot: "Patient receiving a package",
+    image: "/assets/pb-blog-delivery.jpg",
   },
 ];
+
 
 /* ---------------------------------------------------------------- pricing */
 
