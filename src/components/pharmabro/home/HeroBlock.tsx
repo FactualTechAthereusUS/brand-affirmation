@@ -7,10 +7,9 @@ import {
   HERO_H1_STATIC,
   HERO_ROTATING,
   HERO_SUB,
-  BRAND_LOGOS,
 } from "@/lib/pharmabro/home";
 import { Btn, Container, EyebrowPill } from "@/components/pharmabro/primitives";
-import { Marquee, PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
+import { PB_EASE, PB_EASE_SOFT } from "@/components/pharmabro/motion";
 import { Shot, TabRail } from "./Shot";
 import type { MockKind } from "./Mocks";
 
@@ -176,9 +175,6 @@ export function HeroBlock() {
         </div>
       </Container>
 
-      <Container size="full" className="mt-16 pb-4 sm:mt-20">
-        <Marquee items={BRAND_LOGOS} />
-      </Container>
     </section>
   );
 }
