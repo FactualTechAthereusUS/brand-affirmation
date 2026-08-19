@@ -2,10 +2,12 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { PharmaBroNav } from "@/components/pharmabro/PharmaBroNav";
 import { PharmaBroFooter } from "@/components/pharmabro/PharmaBroFooter";
+import { ProgressiveBlur } from "@/components/ProgressiveBlur";
 
 const SmoothScroll = lazy(() =>
   import("@/components/SmoothScroll").then((m) => ({ default: m.SmoothScroll })),
 );
+
 
 export const Route = createFileRoute("/pharmabro")({
   component: PharmaBroLayout,
