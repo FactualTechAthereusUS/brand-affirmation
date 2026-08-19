@@ -30,6 +30,7 @@ import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot, TabRail } from "./Shot";
 import { CardVisual } from "./CardVisuals";
 import { ClinicPair } from "./ClinicPair";
+import { Corners } from "./UsProviderMap";
 import { JourneyScene } from "./JourneyLoops";
 
 /* ------------------------------------------------- 4 a complete clinic */
@@ -194,8 +195,19 @@ const RUNON_IMAGE: Record<string, string> = {
   "Patient Experience": "/assets/pharmabro-patient-experience.png",
 };
 
+const RUNON_MS = 5200;
+
 export function RunOn() {
   const [tab, setTab] = useState(RUNON_TABS[0]);
+  const index = RUNON_TABS.indexOf(tab);
+
+  // Self-demoing rail: advances slowly, and any click restarts the timer.
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setTab(RUNON_TABS[(index + 1) % RUNON_TABS.length]);
+    }, RUNON_MS);
+    return () => window.clearTimeout(id);
+  }, [index, tab]);
 
   return (
     <Section band>
@@ -215,66 +227,46 @@ export function RunOn() {
         </div>
       </Container>
 
-      <Container size="full" className="mt-12">
+      <Container size="wide" className="mt-10">
         <Rise>
-          <div
-            className="relative overflow-hidden rounded-[28px] p-4 sm:p-7"
-            style={{
-              background:
-                "linear-gradient(135deg, #4c1d95 0%, #3730a3 38%, #1b4ef5 78%, #6d63ff 100%)",
-            }}
-          >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-45"
-              style={{
-                background:
-                  "radial-gradient(60% 70% at 15% 10%, rgba(255,255,255,0.35) 0%, transparent 60%)",
-              }}
-            />
-            <div className="relative grid gap-4 lg:grid-cols-[220px_1fr]">
-              {/* glass sidebar */}
-              <div className="rounded-[18px] border border-white/20 bg-white/10 p-3 backdrop-blur-xl">
-                <div className="px-2 pb-2 text-[10px] font-medium uppercase tracking-[0.13em] text-white/60">
-                  Workspace
-                </div>
-                <div className="flex gap-1.5 lg:flex-col">
-                  {RUNON_TABS.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => setTab(t)}
-                      className={`relative rounded-[12px] px-3 py-2 text-left text-[13px] font-medium transition-colors ${
-                        tab === t ? "text-ink" : "text-white/72 hover:text-white"
-                      }`}
-                    >
-                      {tab === t ? (
-                        <motion.span
-                          layoutId="pb-runon-tab"
-                          transition={{ type: "spring", stiffness: 360, damping: 30 }}
-                          className="absolute inset-0 rounded-[12px] bg-white shadow-[0_10px_24px_-14px_rgba(0,0,0,0.6)]"
-                        />
-                      ) : null}
-                      <span className="relative z-10 whitespace-nowrap">{t}</span>
-                    </button>
-                  ))}
-                </div>
+          <div className="relative rounded-[20px] border border-hairline bg-white">
+            <Corners inset={10} />
 
-                <div className="mt-4 space-y-2 border-t border-white/15 pt-4">
-                  {RUNON_STATS.map((s) => (
-                    <div key={s.label} className="flex items-center justify-between">
-                      <span className="text-[11px] text-white/60">{s.label}</span>
-                      <span className="pb-mono text-[12.5px] font-medium text-white">
-                        {s.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {/* tab rail */}
+            <div className="relative flex snap-x gap-0 overflow-x-auto border-b border-hairline px-2 sm:px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {RUNON_TABS.map((t, i) => {
+                const on = t === tab;
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTab(t)}
+                    className={cn(
+                      "relative shrink-0 snap-start px-3 py-4 text-left transition-colors sm:px-5",
+                      on ? "text-ink" : "text-[color-mix(in_oklab,var(--color-ink)_48%,transparent)] hover:text-ink",
+                    )}
+                  >
+                    <span className="pb-mono block text-[10px] font-semibold tracking-[0.16em] opacity-60">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mt-1 block whitespace-nowrap text-[13.5px] font-medium tracking-[-0.01em]">
+                      {t}
+                    </span>
+                    {on ? (
+                      <motion.span
+                        layoutId="pb-runon-underline"
+                        transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                        className="absolute inset-x-2 -bottom-px h-[2px] rounded-full bg-marine"
+                      />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
 
-              {/* All tab images stay mounted and crossfade via opacity so switching
-                  never waits on a network fetch or an exit animation. */}
-              <div className="relative overflow-hidden rounded-[18px] border border-white/25 bg-white/95 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.6)]">
+            {/* screen */}
+            <div className="pb-dotgrid relative p-3 sm:p-5">
+              <div className="relative overflow-hidden rounded-[14px] border border-hairline bg-white shadow-[0_30px_70px_-45px_rgba(16,20,32,0.45)]">
                 {RUNON_TABS.map((t, i) => {
                   const on = t === tab;
                   return (
@@ -287,9 +279,9 @@ export function RunOn() {
                       decoding="async"
                       aria-hidden={!on}
                       initial={false}
-                      animate={{ opacity: on ? 1 : 0 }}
-                      transition={{ duration: 0.4, ease: PB_EASE_SOFT }}
-                      style={{ willChange: "opacity" }}
+                      animate={{ opacity: on ? 1 : 0, scale: on ? 1 : 1.012 }}
+                      transition={{ duration: 0.5, ease: PB_EASE_SOFT }}
+                      style={{ willChange: "opacity, transform" }}
                       className={cn(
                         "h-full w-full object-cover object-top",
                         i === 0 ? "relative" : "absolute inset-0",
@@ -299,6 +291,28 @@ export function RunOn() {
                   );
                 })}
               </div>
+            </div>
+
+            {/* metric strip */}
+            <div className="grid grid-cols-2 border-t border-hairline sm:grid-cols-4">
+              {RUNON_STATS.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={cn(
+                    "px-4 py-4 sm:px-5 sm:py-5",
+                    i % 2 === 1 && "border-l border-hairline",
+                    i >= 2 && "border-t border-hairline sm:border-t-0",
+                    "sm:border-l sm:first:border-l-0",
+                  )}
+                >
+                  <div className="pb-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-[color-mix(in_oklab,var(--color-ink)_45%,transparent)]">
+                    {s.label}
+                  </div>
+                  <div className="mt-1.5 text-[20px] font-medium tracking-[-0.02em] text-ink sm:text-[24px]">
+                    {s.value}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </Rise>
