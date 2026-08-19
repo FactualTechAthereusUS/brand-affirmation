@@ -131,7 +131,7 @@ export function Nationwide() {
                 <Corners tone="marine" />
                 <div className="grid items-center gap-4 sm:gap-6 lg:grid-cols-12">
                   <div className="px-3 pb-2 pt-8 sm:px-8 sm:pb-4 sm:pt-10 lg:col-span-8 lg:py-12 lg:pl-10 lg:pr-0">
-                    <UsProviderMap className="h-[210px] xs:h-[240px] sm:h-[360px] lg:h-[440px]" />
+                    <UsProviderMap className="h-[220px] sm:h-[360px] lg:h-[440px]" />
                   </div>
                   <div className="px-5 pb-9 text-center sm:px-8 sm:pb-12 lg:col-span-4 lg:pb-0 lg:pr-12 lg:text-left">
                     <h3 className="text-balance text-[22px] font-normal leading-tight tracking-[-0.025em] text-ink sm:text-[26px] lg:text-[28px]">
