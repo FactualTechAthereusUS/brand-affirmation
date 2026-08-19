@@ -30,6 +30,7 @@ import { KineticRule, PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
 import { Shot, TabRail } from "./Shot";
 import type { MockKind } from "./Mocks";
 import { CardVisual } from "./CardVisuals";
+import { ClinicPair } from "./ClinicPair";
 
 /* ------------------------------------------------- 4 a complete clinic */
 
