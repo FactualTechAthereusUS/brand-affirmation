@@ -1,9 +1,19 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Link } from "@tanstack/react-router";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PB_EASE_SOFT, Rise } from "@/components/pharmabro/motion";
-import { PAIR_MESSAGE, PAIR_REVENUE, PAIR_RX } from "@/lib/pharmabro/home";
+import {
+  PAIR_INTAKE,
+  PAIR_MESSAGE,
+  PAIR_PROVIDER,
+  PAIR_REVENUE,
+  PAIR_ROUTING,
+  PAIR_RX,
+} from "@/lib/pharmabro/home";
+import { PhoneLoop } from "@/components/pharmabro/home/PhoneLoop";
+
 
 /** Four L shaped hairline ticks sitting just outside the panel edge. */
 function CornerTicks() {
