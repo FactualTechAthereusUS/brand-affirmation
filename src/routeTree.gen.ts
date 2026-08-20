@@ -33,6 +33,7 @@ import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
 import { Route as PortalPatientRouteImport } from './routes/portal.patient'
 import { Route as PharmacyMeRouteImport } from './routes/pharmacy.me'
 import { Route as PharmacyLoginRouteImport } from './routes/pharmacy.login'
+import { Route as PharmabroLoginRouteImport } from './routes/pharmabro_.login'
 import { Route as PharmabroSecurityRouteImport } from './routes/pharmabro.security'
 import { Route as PharmabroPricingRouteImport } from './routes/pharmabro.pricing'
 import { Route as PharmabroGlossaryRouteImport } from './routes/pharmabro.glossary'
@@ -241,6 +242,11 @@ const PharmacyMeRoute = PharmacyMeRouteImport.update({
 const PharmacyLoginRoute = PharmacyLoginRouteImport.update({
   id: '/pharmacy/login',
   path: '/pharmacy/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PharmabroLoginRoute = PharmabroLoginRouteImport.update({
+  id: '/pharmabro_/login',
+  path: '/pharmabro/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PharmabroSecurityRoute = PharmabroSecurityRouteImport.update({
@@ -754,6 +760,7 @@ export interface FileRoutesByFullPath {
   '/pharmabro/glossary': typeof PharmabroGlossaryRoute
   '/pharmabro/pricing': typeof PharmabroPricingRoute
   '/pharmabro/security': typeof PharmabroSecurityRoute
+  '/pharmabro/login': typeof PharmabroLoginRoute
   '/pharmacy/login': typeof PharmacyLoginRoute
   '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
@@ -867,6 +874,7 @@ export interface FileRoutesByTo {
   '/pharmabro/glossary': typeof PharmabroGlossaryRoute
   '/pharmabro/pricing': typeof PharmabroPricingRoute
   '/pharmabro/security': typeof PharmabroSecurityRoute
+  '/pharmabro/login': typeof PharmabroLoginRoute
   '/pharmacy/login': typeof PharmacyLoginRoute
   '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
@@ -983,6 +991,7 @@ export interface FileRoutesById {
   '/pharmabro/glossary': typeof PharmabroGlossaryRoute
   '/pharmabro/pricing': typeof PharmabroPricingRoute
   '/pharmabro/security': typeof PharmabroSecurityRoute
+  '/pharmabro_/login': typeof PharmabroLoginRoute
   '/pharmacy/login': typeof PharmacyLoginRoute
   '/pharmacy/me': typeof PharmacyMeRoute
   '/portal/patient': typeof PortalPatientRoute
@@ -1100,6 +1109,7 @@ export interface FileRouteTypes {
     | '/pharmabro/glossary'
     | '/pharmabro/pricing'
     | '/pharmabro/security'
+    | '/pharmabro/login'
     | '/pharmacy/login'
     | '/pharmacy/me'
     | '/portal/patient'
@@ -1213,6 +1223,7 @@ export interface FileRouteTypes {
     | '/pharmabro/glossary'
     | '/pharmabro/pricing'
     | '/pharmabro/security'
+    | '/pharmabro/login'
     | '/pharmacy/login'
     | '/pharmacy/me'
     | '/portal/patient'
@@ -1328,6 +1339,7 @@ export interface FileRouteTypes {
     | '/pharmabro/glossary'
     | '/pharmabro/pricing'
     | '/pharmabro/security'
+    | '/pharmabro_/login'
     | '/pharmacy/login'
     | '/pharmacy/me'
     | '/portal/patient'
@@ -1434,6 +1446,7 @@ export interface RootRouteChildren {
   OperatorLoginRoute: typeof OperatorLoginRoute
   OperatorPhysiciansRoute: typeof OperatorPhysiciansRoute
   OperatorRevenueRoute: typeof OperatorRevenueRoute
+  PharmabroLoginRoute: typeof PharmabroLoginRoute
   PharmacyLoginRoute: typeof PharmacyLoginRoute
   PharmacyMeRoute: typeof PharmacyMeRoute
   PortalPatientRoute: typeof PortalPatientRoute
@@ -1642,6 +1655,13 @@ declare module '@tanstack/react-router' {
       path: '/pharmacy/login'
       fullPath: '/pharmacy/login'
       preLoaderRoute: typeof PharmacyLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pharmabro_/login': {
+      id: '/pharmabro_/login'
+      path: '/pharmabro/login'
+      fullPath: '/pharmabro/login'
+      preLoaderRoute: typeof PharmabroLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pharmabro/security': {
@@ -2415,6 +2435,7 @@ const rootRouteChildren: RootRouteChildren = {
   OperatorLoginRoute: OperatorLoginRoute,
   OperatorPhysiciansRoute: OperatorPhysiciansRoute,
   OperatorRevenueRoute: OperatorRevenueRoute,
+  PharmabroLoginRoute: PharmabroLoginRoute,
   PharmacyLoginRoute: PharmacyLoginRoute,
   PharmacyMeRoute: PharmacyMeRoute,
   PortalPatientRoute: PortalPatientRoute,
