@@ -113,7 +113,8 @@ export function HeroBlock() {
 
 
   return (
-    <section className="relative overflow-hidden bg-canvas pt-14 sm:pt-20 lg:pt-24">
+    <section className="relative overflow-hidden bg-canvas pt-10 sm:pt-20 lg:pt-24">
+
       {/* soft ambient wash, keeps the page white but not flat */}
       <div
         aria-hidden
