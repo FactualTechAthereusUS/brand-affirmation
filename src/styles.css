@@ -318,6 +318,11 @@
   --color-blush: #e5484d;
 }
 
+/* Keep anchored sections clear of the floating glass header. */
+.pharmabro-scope section[id] {
+  scroll-margin-top: 96px;
+}
+
 .pharmabro-scope ::selection {
   background: var(--color-marine);
   color: #ffffff;

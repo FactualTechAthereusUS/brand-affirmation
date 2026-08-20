@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { AnimatePresence, motion, type Transition } from "motion/react";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { NAV_GROUPS, ANNOUNCEMENTS } from "@/lib/pharmabro/nav";
+import { scrollToSection } from "@/lib/pharmabro/scroll";
 import { Container } from "./primitives";
 import { cn } from "@/lib/utils";
 
 const MARK = "/assets/pharmabro-mark.png";
 const WORDMARK = "/assets/pharmabro-wordmark.png";
+const EASE: Transition["ease"] = [0.22, 1, 0.36, 1];
 
 export function PharmaBroWordmark({ className }: { className?: string }) {
   return (
@@ -20,6 +22,53 @@ export function PharmaBroWordmark({ className }: { className?: string }) {
         decoding="async"
       />
     </span>
+  );
+}
+
+/**
+ * Anchor that scrolls to a homepage section. If we are on another PharmaBro
+ * page it navigates home first, then scrolls once the section exists.
+ */
+function SectionLink({
+  hash,
+  children,
+  className,
+  onNavigate,
+}: {
+  hash: string;
+  children: React.ReactNode;
+  className?: string;
+  onNavigate?: () => void;
+}) {
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isHome = pathname === "/pharmabro" || pathname === "/pharmabro/";
+
+  const go = (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    onNavigate?.();
+
+    if (isHome) {
+      scrollToSection(hash);
+      return;
+    }
+
+    void navigate({ to: "/pharmabro" }).then(() => {
+      // Wait for the homepage sections to mount before easing to the target.
+      let tries = 0;
+      const tick = () => {
+        if (scrollToSection(hash) || tries++ > 40) return;
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+
+  return (
+    <a href={`/pharmabro#${hash}`} onClick={go} className={className}>
+      {children}
+    </a>
   );
 }
 
@@ -47,7 +96,7 @@ function AnnouncementBar() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, ease: EASE }}
               className="flex w-full min-w-0 flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[11px] leading-[1.35] text-white/85 sm:text-[12.5px]"
             >
               <span className="min-w-0">{a.text}</span>
@@ -71,14 +120,17 @@ function PillCta({
   to,
   children,
   className,
+  onClick,
 }: {
   to: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
     <Link
       to={to}
+      onClick={onClick}
       className={cn(
         "group inline-flex items-center gap-2 rounded-full bg-ink pl-4 pr-1.5 py-1.5 text-[13.5px] font-medium text-white shadow-[0_6px_18px_-8px_rgba(10,10,10,0.55)] transition-transform duration-200 hover:-translate-y-px",
         className,
@@ -110,7 +162,6 @@ export function PharmaBroNav() {
       window.clearTimeout(id);
     };
   }, []);
-
 
   // Small close delay so the pointer can travel from trigger to panel.
   const scheduleClose = () => {
@@ -156,7 +207,6 @@ export function PharmaBroNav() {
                 : "bg-white/90 shadow-[0_10px_30px_-20px_rgba(10,10,10,0.22)]",
             )}
           >
-
             {/* specular top edge — the "liquid" cue */}
             <div
               aria-hidden
@@ -204,7 +254,6 @@ export function PharmaBroNav() {
                         : "text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-ink)_4%,transparent)] hover:text-ink",
                     )}
                   >
-
                     {g.label}
                     <ChevronDown
                       className={cn(
@@ -214,13 +263,13 @@ export function PharmaBroNav() {
                     />
                   </button>
                 ))}
-                <Link
-                  to="/pharmabro/pricing"
-                  onMouseEnter={() => setOpen(null)}
+                <SectionLink
+                  hash="pricing"
+                  onNavigate={() => setOpen(null)}
                   className="rounded-full px-3 py-2 text-[14px] font-medium text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_4%,transparent)] hover:text-ink"
                 >
                   Pricing
-                </Link>
+                </SectionLink>
               </nav>
 
               <div className="flex items-center gap-2">
@@ -246,51 +295,85 @@ export function PharmaBroNav() {
           </div>
 
           {/* desktop dropdown panel, anchored under the pill */}
-          {activeGroup ? (
-            <div
-              key={activeGroup.label}
-              onMouseEnter={cancelClose}
-              className="animate-fade-in absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(720px,100%)] -translate-x-1/2 overflow-hidden rounded-3xl border border-white/60 bg-white/85 p-3 shadow-[0_28px_60px_-30px_rgba(10,10,10,0.4)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150 lg:block"
-            >
-              <div className="grid grid-cols-2 gap-1">
-                {activeGroup.items.map((it) => (
-                  <Link
-                    key={it.to + it.label}
-                    to={it.to}
-                    onClick={() => setOpen(null)}
-                    className="group flex items-center justify-between gap-3 rounded-2xl px-3.5 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]"
-                  >
-                    <span className="text-[14px] font-medium text-ink">
-                      {it.label}
-                    </span>
-                    {it.note ? (
-                      <span className="pb-micro shrink-0">{it.note}</span>
-                    ) : (
-                      <ArrowRight className="size-3.5 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-45" />
-                    )}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ) : null}
+          <AnimatePresence>
+            {activeGroup ? (
+              <motion.div
+                key={activeGroup.label}
+                initial={{ opacity: 0, y: -6, scale: 0.985, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -6, scale: 0.99, filter: "blur(4px)" }}
+                transition={{ duration: 0.28, ease: EASE }}
+                onMouseEnter={cancelClose}
+                className="absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(720px,100%)] -translate-x-1/2 overflow-hidden rounded-3xl border border-white/60 bg-white/85 p-3 shadow-[0_28px_60px_-30px_rgba(10,10,10,0.4)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150 lg:block"
+              >
+                <div className="grid grid-cols-2 gap-1">
+                  {activeGroup.items.map((it, i) => {
+                    const inner = (
+                      <>
+                        <span className="text-[14px] font-medium text-ink">
+                          {it.label}
+                        </span>
+                        {it.note ? (
+                          <span className="pb-micro shrink-0">{it.note}</span>
+                        ) : (
+                          <ArrowRight className="size-3.5 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-45" />
+                        )}
+                      </>
+                    );
+                    const cls =
+                      "group flex items-center justify-between gap-3 rounded-2xl px-3.5 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]";
+                    return (
+                      <motion.div
+                        key={it.label}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.26, delay: 0.03 + i * 0.03, ease: EASE }}
+                      >
+                        {it.hash ? (
+                          <SectionLink
+                            hash={it.hash}
+                            onNavigate={() => setOpen(null)}
+                            className={cls}
+                          >
+                            {inner}
+                          </SectionLink>
+                        ) : (
+                          <Link to={it.to!} onClick={() => setOpen(null)} className={cls}>
+                            {inner}
+                          </Link>
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </div>
-
 
       {/* spacer so page content clears the floating pill */}
       <div aria-hidden className="h-[68px] sm:h-[80px]" />
 
       {/* mobile sheet */}
-      {mobile ? (
-          <div className="animate-fade-in fixed inset-0 z-[60] lg:hidden">
-            <div
+      <AnimatePresence>
+        {mobile ? (
+          <div className="fixed inset-0 z-[60] lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: EASE }}
               className="absolute inset-0 bg-[color-mix(in_oklab,var(--color-ink)_28%,transparent)] backdrop-blur-sm"
               onClick={() => setMobile(false)}
             />
-            <div
-              className="animate-scale-in absolute inset-x-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-hidden rounded-[28px] border border-white/60 bg-white/90 shadow-[0_30px_70px_-30px_rgba(10,10,10,0.5)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150"
+            <motion.div
+              initial={{ opacity: 0, y: -18, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -14, scale: 0.98 }}
+              transition={{ duration: 0.42, ease: EASE }}
+              className="absolute inset-x-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-hidden rounded-[28px] border border-white/60 bg-white/90 shadow-[0_30px_70px_-30px_rgba(10,10,10,0.5)] ring-1 ring-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] backdrop-blur-2xl backdrop-saturate-150"
             >
-
               <div className="flex h-14 items-center justify-between px-4">
                 <div className="flex items-center gap-2.5">
                   <img
@@ -312,11 +395,14 @@ export function PharmaBroNav() {
               </div>
 
               <div className="max-h-[calc(100dvh-8rem)] overflow-y-auto px-4 pb-5">
-                {NAV_GROUPS.map((g) => {
+                {NAV_GROUPS.map((g, gi) => {
                   const isOpen = mobileGroup === g.label;
                   return (
-                    <div
+                    <motion.div
                       key={g.label}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: 0.06 + gi * 0.06, ease: EASE }}
                       className="border-b border-[var(--color-hairline)] py-1 last:border-b-0"
                     >
                       <button
@@ -334,39 +420,51 @@ export function PharmaBroNav() {
                       </button>
                       <div
                         className={cn(
-                          "grid overflow-hidden transition-all duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+                          "grid overflow-hidden transition-all duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
                           isOpen
                             ? "grid-rows-[1fr] opacity-100"
-                            : "grid-rows-[0fr] opacity-0",
+                            : "pointer-events-none grid-rows-[0fr] opacity-0",
                         )}
                       >
                         <div className="min-h-0">
                           <div className="pb-3">
-                            {g.items.map((it) => (
-                              <Link
-                                key={it.to + it.label}
-                                to={it.to}
-                                onClick={() => setMobile(false)}
-                                className="block rounded-xl px-2 py-2.5 text-[15px] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)]"
-                              >
-                                {it.label}
-                              </Link>
-                            ))}
+                            {g.items.map((it) => {
+                              const cls =
+                                "block rounded-xl px-2 py-2.5 text-[15px] text-[color-mix(in_oklab,var(--color-ink)_70%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_5%,transparent)] active:bg-[color-mix(in_oklab,var(--color-ink)_8%,transparent)]";
+                              return it.hash ? (
+                                <SectionLink
+                                  key={it.label}
+                                  hash={it.hash}
+                                  onNavigate={() => setMobile(false)}
+                                  className={cls}
+                                >
+                                  {it.label}
+                                </SectionLink>
+                              ) : (
+                                <Link
+                                  key={it.label}
+                                  to={it.to!}
+                                  onClick={() => setMobile(false)}
+                                  className={cls}
+                                >
+                                  {it.label}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
-
-                    </div>
+                    </motion.div>
                   );
                 })}
 
-                <Link
-                  to="/pharmabro/pricing"
-                  onClick={() => setMobile(false)}
+                <SectionLink
+                  hash="pricing"
+                  onNavigate={() => setMobile(false)}
                   className="block border-t border-[var(--color-hairline)] py-4 text-[16px] font-semibold text-ink"
                 >
                   Pricing
-                </Link>
+                </SectionLink>
 
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <Link
@@ -376,13 +474,15 @@ export function PharmaBroNav() {
                   >
                     Login
                   </Link>
-                  <PillCta to="/pharmabro/demo">Book a demo</PillCta>
+                  <PillCta to="/pharmabro/demo" onClick={() => setMobile(false)}>
+                    Book a demo
+                  </PillCta>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
-      ) : null}
-
+        ) : null}
+      </AnimatePresence>
     </>
   );
 }
