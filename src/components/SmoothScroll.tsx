@@ -9,6 +9,9 @@ export function SmoothScroll() {
       smoothWheel: true,
     });
 
+    // Exposed so in-page anchor links can reuse the same easing engine.
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+
     let rafId = 0;
     function raf(time: number) {
       lenis.raf(time);
@@ -19,6 +22,9 @@ export function SmoothScroll() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      if ((window as unknown as { __lenis?: Lenis }).__lenis === lenis) {
+        delete (window as unknown as { __lenis?: Lenis }).__lenis;
+      }
     };
   }, []);
 

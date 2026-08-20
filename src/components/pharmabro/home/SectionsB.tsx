@@ -214,7 +214,7 @@ export function Retention() {
   };
 
   return (
-    <Section band>
+    <Section band id="retention">
       <Container size="wide">
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
           <Rise>
@@ -693,7 +693,7 @@ export function LegitScript() {
 
 export function FromTheBlog() {
   return (
-    <Section>
+    <Section id="blog">
       <Container size="wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <Rise>
@@ -891,7 +891,7 @@ export function Faq() {
 
 export function FinalCta() {
   return (
-    <section className="bg-canvas py-16 sm:py-20 lg:py-24">
+    <section id="get-started" className="bg-canvas py-16 sm:py-20 lg:py-24">
       <Container size="wide">
         <Rise>
           <div className="overflow-hidden rounded-2xl bg-white p-8 sm:p-10 lg:p-14">

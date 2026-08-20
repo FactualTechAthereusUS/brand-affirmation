@@ -131,7 +131,7 @@ export function Testimonials() {
   const t = TESTIMONIALS[active];
 
   return (
-    <Section band>
+    <Section band id="testimonials">
       <Container size="wide">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
           <Rise>

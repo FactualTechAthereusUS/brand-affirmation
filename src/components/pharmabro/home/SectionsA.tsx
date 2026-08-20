@@ -201,7 +201,7 @@ export function RunOn() {
   }, [index, tab]);
 
   return (
-    <Section band>
+    <Section band id="run-on">
       <Container size="wide">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
           <Rise>
