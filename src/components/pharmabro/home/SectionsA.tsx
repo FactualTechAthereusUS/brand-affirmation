@@ -66,8 +66,8 @@ export function CompleteClinic() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3 lg:mt-10">
-              <Btn to="/pharmabro/demo">Get started</Btn>
-              <Btn to="/pharmabro/demo" variant="ghost">
+              <Btn to="/pharmabro/booking">Get started</Btn>
+              <Btn to="/pharmabro/booking" variant="ghost">
                 View demo
               </Btn>
             </div>

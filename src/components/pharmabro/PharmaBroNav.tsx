@@ -279,7 +279,7 @@ export function PharmaBroNav() {
                 >
                   Login
                 </Link>
-                <PillCta to="/pharmabro/demo" className="hidden sm:inline-flex">
+                <PillCta to="/pharmabro/booking" className="hidden sm:inline-flex">
                   Book a demo
                 </PillCta>
                 <button
@@ -474,7 +474,7 @@ export function PharmaBroNav() {
                   >
                     Login
                   </Link>
-                  <PillCta to="/pharmabro/demo" onClick={() => setMobile(false)}>
+                  <PillCta to="/pharmabro/booking" onClick={() => setMobile(false)}>
                     Book a demo
                   </PillCta>
                 </div>

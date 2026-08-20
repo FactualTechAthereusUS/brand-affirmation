@@ -65,7 +65,7 @@ export function ComparePage({ entry }: { entry: CompareEntry }) {
               {entry.intro}
             </p>
             <div className="mt-8 flex flex-wrap gap-2.5">
-              <Btn to="/pharmabro/demo" size="lg">
+              <Btn to="/pharmabro/booking" size="lg">
                 Book a demo
               </Btn>
               <Btn to="/pharmabro/pricing" variant="ghost" size="lg">
@@ -312,7 +312,7 @@ export function ComparePage({ entry }: { entry: CompareEntry }) {
                 {entry.ctaLine}
               </p>
               <div className="flex flex-wrap gap-2.5">
-                <Btn to="/pharmabro/demo">Book a demo</Btn>
+                <Btn to="/pharmabro/booking">Book a demo</Btn>
                 <Btn to="/pharmabro/pricing" variant="ghost">
                   View pricing
                 </Btn>

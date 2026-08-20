@@ -66,7 +66,7 @@ function CompareHub() {
               {DESCRIPTION}
             </p>
             <div className="mt-8 flex flex-wrap gap-2.5">
-              <Btn to="/pharmabro/demo" size="lg">
+              <Btn to="/pharmabro/booking" size="lg">
                 Book a demo
               </Btn>
               <Btn to="/pharmabro/pricing" variant="ghost" size="lg">

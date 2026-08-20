@@ -34,7 +34,7 @@ export const tiers: Tier[] = [
     priceNote: "/ month",
     setup: "$15,000 one-time setup",
     volume: "0-500 patients",
-    cta: { label: "Get started", to: "/pharmabro/demo" },
+    cta: { label: "Get started", to: "/pharmabro/booking" },
     listLabel: "Included",
     features: [
       "Licensed providers in all 50 states",
@@ -58,7 +58,7 @@ export const tiers: Tier[] = [
     priceNote: "/ month",
     setup: "$25,000 one-time setup",
     volume: "501-2,000 patients",
-    cta: { label: "Get started", to: "/pharmabro/demo" },
+    cta: { label: "Get started", to: "/pharmabro/booking" },
     popular: true,
     listLabel: "Everything in Launch, plus",
     features: [
@@ -84,7 +84,7 @@ export const tiers: Tier[] = [
     priceNote: "/ month",
     setup: "$50,000 one-time setup",
     volume: "2,001-5,000 patients",
-    cta: { label: "Get started", to: "/pharmabro/demo" },
+    cta: { label: "Get started", to: "/pharmabro/booking" },
     listLabel: "Everything in Grow, plus",
     features: [
       "Lowest transaction fee (1.5%)",
@@ -151,29 +151,29 @@ export const addOns = [
     price: "$2,500",
     priceUnit: "one-time",
     body: "Add a new treatment category to an existing brand.",
-    to: "/pharmabro/demo",
+    to: "/pharmabro/booking",
   },
   {
     name: "Priority launch",
     price: "$5,000",
     priceUnit: "one-time",
     body: "Dedicated launch manager and prioritized setup for brands that need to be live in under 7 days.",
-    to: "/pharmabro/demo",
+    to: "/pharmabro/booking",
   },
   {
     name: "Custom intake quiz",
     price: "$1,500",
     priceUnit: "one-time",
     body: "Bespoke intake questionnaire built to your clinical protocol, beyond the standard template library.",
-    to: "/pharmabro/demo",
+    to: "/pharmabro/booking",
   },
 ];
 
 /** Feature table columns, ordered to match every row's `values` tuple. */
 export const planColumns = [
-  { name: "Launch", price: "$1,500/mo", note: "month-to-month", to: "/pharmabro/demo", popular: false },
-  { name: "Grow", price: "$3,000/mo", note: "month-to-month", to: "/pharmabro/demo", popular: true },
-  { name: "Scale", price: "$5,000/mo", note: "month-to-month", to: "/pharmabro/demo", popular: false },
+  { name: "Launch", price: "$1,500/mo", note: "month-to-month", to: "/pharmabro/booking", popular: false },
+  { name: "Grow", price: "$3,000/mo", note: "month-to-month", to: "/pharmabro/booking", popular: true },
+  { name: "Scale", price: "$5,000/mo", note: "month-to-month", to: "/pharmabro/booking", popular: false },
   { name: "Enterprise", price: "Custom", note: "pricing", to: "/pharmabro/contact", popular: false },
 ];
 
