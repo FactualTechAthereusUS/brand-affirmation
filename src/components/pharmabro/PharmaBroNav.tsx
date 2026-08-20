@@ -263,13 +263,13 @@ export function PharmaBroNav() {
                     />
                   </button>
                 ))}
-                <SectionLink
-                  hash="pricing"
-                  onNavigate={() => setOpen(null)}
+                <Link
+                  to="/pharmabro/pricing"
+                  onClick={() => setOpen(null)}
                   className="rounded-full px-3 py-2 text-[14px] font-medium text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-ink)_4%,transparent)] hover:text-ink"
                 >
                   Pricing
-                </SectionLink>
+                </Link>
               </nav>
 
               <div className="flex items-center gap-2">
@@ -458,13 +458,13 @@ export function PharmaBroNav() {
                   );
                 })}
 
-                <SectionLink
-                  hash="pricing"
-                  onNavigate={() => setMobile(false)}
+                <Link
+                  to="/pharmabro/pricing"
+                  onClick={() => setMobile(false)}
                   className="block border-t border-[var(--color-hairline)] py-4 text-[16px] font-semibold text-ink"
                 >
                   Pricing
-                </SectionLink>
+                </Link>
 
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <Link
