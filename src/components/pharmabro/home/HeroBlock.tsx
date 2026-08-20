@@ -137,7 +137,7 @@ export function HeroBlock() {
             </EyebrowPill>
           </motion.div>
 
-          <h1 className="mt-7 max-w-[19ch] text-balance font-normal leading-[1.04] tracking-[-0.03em] text-ink text-[2.5rem] sm:max-w-[22ch] sm:text-[3.4rem] lg:text-[4.25rem]">
+          <h1 className="mt-6 max-w-[19ch] text-balance font-normal leading-[1.06] tracking-[-0.03em] text-ink text-[2.15rem] sm:mt-7 sm:max-w-[22ch] sm:text-[3.4rem] sm:leading-[1.04] lg:text-[4.25rem]">
             <span className="sr-only">{HERO_H1_STATIC}</span>
             <span aria-hidden className="block">
               <HeroWord i={0}>Launch</HeroWord>
