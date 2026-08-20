@@ -3,51 +3,35 @@
  * Copy lifted verbatim from the PharmaBro website spec.
  */
 
-export type NavItem = { label: string; to: string; note?: string };
+export type NavItem = { label: string; to?: string; hash?: string; note?: string };
 export type NavGroup = { label: string; items: NavItem[] };
 
+/**
+ * Header nav is homepage-first: every item scrolls to a section on
+ * /pharmabro instead of opening a separate page.
+ */
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Platform",
     items: [
-      { label: "Platform Overview", to: "/pharmabro/platform" },
-      { label: "Payments & Rebill Engine", to: "/pharmabro/platform/payments" },
-      { label: "Pharmacy Fulfillment", to: "/pharmabro/platform/pharmacy", note: "30+ partners" },
-      { label: "LegitScript Certification", to: "/pharmabro/platform/legitscript" },
-      { label: "Patient Portal", to: "/pharmabro/platform/patient-portal" },
-      { label: "Intake Builder", to: "/pharmabro/platform/intake-builder" },
-      { label: "Analytics & Reporting", to: "/pharmabro/platform/analytics" },
+      { label: "Complete clinic", hash: "clinic" },
+      { label: "What's included", hash: "platform" },
+      { label: "Runs on PharmaBro", hash: "run-on" },
+      { label: "Checkout to revenue", hash: "how-it-works" },
+      { label: "Pharmacy network", hash: "network", note: "30+ partners" },
+      { label: "Analytics & reporting", hash: "analytics" },
+      { label: "LegitScript in 7-14 days", hash: "legitscript" },
     ],
   },
   {
-    label: "Solutions",
+    label: "Why PharmaBro",
     items: [
-      { label: "Weight Loss (GLP-1)", to: "/pharmabro/solutions/weight-loss" },
-      { label: "Men's Health (TRT / ED)", to: "/pharmabro/solutions/mens-health" },
-      { label: "Women's Health (Hormones)", to: "/pharmabro/solutions/womens-health" },
-      { label: "Peptide Therapy", to: "/pharmabro/solutions/peptides" },
-      { label: "Hair Loss", to: "/pharmabro/solutions/hair-loss" },
-      { label: "Longevity & NAD+", to: "/pharmabro/solutions/longevity" },
-      { label: "Sexual Health", to: "/pharmabro/solutions/sexual-health" },
-    ],
-  },
-  {
-    label: "Compare",
-    items: [
-      { label: "Compare Hub", to: "/pharmabro/compare" },
-      { label: "PharmaBro vs OpenLoop", to: "/pharmabro/compare/pharmabro-vs-openloop" },
-      { label: "PharmaBro vs Bask", to: "/pharmabro/compare/pharmabro-vs-bask-health" },
-      { label: "PharmaBro vs Cuvo", to: "/pharmabro/compare/pharmabro-vs-cuvo" },
-      { label: "PharmaBro vs CareValidate", to: "/pharmabro/compare/pharmabro-vs-carevalidate" },
-    ],
-  },
-  {
-    label: "Resources",
-    items: [
-      { label: "Blog", to: "/pharmabro/blog" },
-      { label: "Guides & Playbooks", to: "/pharmabro/blog" },
-      { label: "Glossary", to: "/pharmabro/glossary" },
-      { label: "Security & Compliance", to: "/pharmabro/security" },
+      { label: "Retention engine", hash: "retention" },
+      { label: "Operator results", hash: "testimonials" },
+      { label: "Compare platforms", hash: "compare" },
+      { label: "From the blog", hash: "blog" },
+      { label: "FAQ", hash: "faq" },
+      { label: "Get started", hash: "get-started" },
     ],
   },
 ];
