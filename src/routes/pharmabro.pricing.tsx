@@ -128,7 +128,7 @@ function PricingPage() {
               </p>
 
               <Link
-                to="/pharmabro/demo"
+                to="/pharmabro/booking"
                 className="group mt-8 inline-flex items-center gap-2"
               >
                 <svg
@@ -325,7 +325,7 @@ function PricingPage() {
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-2.5">
                 <Link
-                  to="/pharmabro/demo"
+                  to="/pharmabro/booking"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-3xl border border-black bg-black px-6 text-[14.5px] font-medium text-white transition-all duration-200 hover:bg-neutral-900 active:scale-[0.985]"
                   style={{
                     boxShadow:

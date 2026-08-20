@@ -110,7 +110,7 @@ export const ANNOUNCEMENTS = [
   {
     text: "Switching from OpenLoop or Bask? Free white-glove migration in days.",
     cta: "Book a call",
-    to: "/pharmabro/demo",
+    to: "/pharmabro/booking",
   },
   {
     text: "LegitScript in 7-14 days. Meta, Google, and TikTok ads unlocked from launch day.",

@@ -321,7 +321,7 @@ export function PricingCards() {
 
               <div className="mt-9 flex flex-wrap items-center gap-5">
                 <motion.a
-                  href="/pharmabro/demo"
+                  href="/pharmabro/booking"
                   whileHover={reduce ? undefined : { y: -2 }}
                   whileTap={reduce ? undefined : { scale: 0.985 }}
                   transition={{ duration: 0.25, ease: EASE }}
@@ -372,7 +372,7 @@ export function PricingCards() {
                 </div>
 
                 <motion.a
-                  href="/pharmabro/demo"
+                  href="/pharmabro/booking"
                   whileHover={reduce ? undefined : { y: -2 }}
                   whileTap={reduce ? undefined : { scale: 0.985 }}
                   transition={{ duration: 0.25, ease: EASE }}

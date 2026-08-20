@@ -171,10 +171,10 @@ export function HeroBlock() {
             transition={{ duration: 0.5, delay: 0.6, ease: PB_EASE_STD }}
             className="mt-8 grid w-full max-w-[320px] grid-cols-1 gap-2.5 sm:flex sm:max-w-none sm:flex-wrap sm:items-center sm:justify-center sm:gap-3"
           >
-            <Btn to="/pharmabro/demo" size="lg" className="w-full sm:w-auto">
+            <Btn to="/pharmabro/booking" size="lg" className="w-full sm:w-auto">
               Get started
             </Btn>
-            <Btn to="/pharmabro/demo" variant="ghost" size="lg" className="w-full sm:w-auto">
+            <Btn to="/pharmabro/booking" variant="ghost" size="lg" className="w-full sm:w-auto">
               View demo
             </Btn>
           </motion.div>

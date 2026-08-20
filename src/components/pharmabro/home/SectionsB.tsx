@@ -650,7 +650,7 @@ export function LegitScript() {
                 <span className="pb-dim">{LEGIT_BODY_DIM}</span>
               </p>
               <div className="mt-8">
-                <Btn to="/pharmabro/demo" variant="blue">
+                <Btn to="/pharmabro/booking" variant="blue">
                   Get started
                 </Btn>
               </div>
@@ -913,7 +913,7 @@ export function FinalCta() {
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
-                    to="/pharmabro/demo"
+                    to="/pharmabro/booking"
                     className="inline-flex h-[52px] items-center gap-2.5 rounded-3xl bg-ink px-6 text-[15px] font-medium text-white transition-all duration-200 hover:bg-[color-mix(in_oklab,var(--color-ink)_86%,white)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-marine)] focus-visible:ring-offset-2"
                     style={{
                       boxShadow:
