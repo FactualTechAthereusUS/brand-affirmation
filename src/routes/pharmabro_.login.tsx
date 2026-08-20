@@ -143,8 +143,9 @@ function PharmaBroLogin() {
               <img
                 src={WORDMARK}
                 alt="PharmaBro"
-                className="h-[26px] w-auto object-contain"
+                className="h-[34px] w-auto object-contain"
               />
+
             </Link>
           </div>
 
