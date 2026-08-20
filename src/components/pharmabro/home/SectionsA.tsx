@@ -146,7 +146,7 @@ export function UnderOneRoof() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.75, delay: (i % 2) * 0.08, ease: PB_EASE_SOFT }}
                 className={cn(
-                  "pb-card pb-card-lift flex flex-col gap-5 p-5 sm:p-6",
+                  "pb-card pb-card-lift flex min-w-0 flex-col gap-5 overflow-hidden p-5 sm:p-6",
                   layout.span,
                   layout.wide &&
                     "lg:grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:grid-rows-[1fr] lg:items-stretch lg:gap-7",

@@ -113,7 +113,8 @@ export function HeroBlock() {
 
 
   return (
-    <section className="relative overflow-hidden bg-canvas pt-14 sm:pt-20 lg:pt-24">
+    <section className="relative overflow-hidden bg-canvas pt-10 sm:pt-20 lg:pt-24">
+
       {/* soft ambient wash, keeps the page white but not flat */}
       <div
         aria-hidden
@@ -136,7 +137,7 @@ export function HeroBlock() {
             </EyebrowPill>
           </motion.div>
 
-          <h1 className="mt-7 max-w-[19ch] text-balance font-normal leading-[1.04] tracking-[-0.03em] text-ink text-[2.5rem] sm:max-w-[22ch] sm:text-[3.4rem] lg:text-[4.25rem]">
+          <h1 className="mt-6 max-w-[19ch] text-balance font-normal leading-[1.06] tracking-[-0.03em] text-ink text-[2.15rem] sm:mt-7 sm:max-w-[22ch] sm:text-[3.4rem] sm:leading-[1.04] lg:text-[4.25rem]">
             <span className="sr-only">{HERO_H1_STATIC}</span>
             <span aria-hidden className="block">
               <HeroWord i={0}>Launch</HeroWord>
@@ -168,15 +169,16 @@ export function HeroBlock() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6, ease: PB_EASE_STD }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+            className="mt-8 grid w-full max-w-[320px] grid-cols-1 gap-2.5 sm:flex sm:max-w-none sm:flex-wrap sm:items-center sm:justify-center sm:gap-3"
           >
-            <Btn to="/pharmabro/demo" size="lg">
+            <Btn to="/pharmabro/demo" size="lg" className="w-full sm:w-auto">
               Get started
             </Btn>
-            <Btn to="/pharmabro/demo" variant="ghost" size="lg">
+            <Btn to="/pharmabro/demo" variant="ghost" size="lg" className="w-full sm:w-auto">
               View demo
             </Btn>
           </motion.div>
+
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -191,7 +193,7 @@ export function HeroBlock() {
       </Container>
 
       {/* full-width product highlight tabs */}
-      <Container size="wide" className="relative mt-12 pb-4 sm:mt-16">
+      <Container size="wide" className="relative mt-9 pb-4 sm:mt-16">
         <HeroTabStrip
           tabs={DASHBOARD_TABS.map((t) => ({ id: t.id, label: t.label }))}
           active={tab}
@@ -205,10 +207,11 @@ export function HeroBlock() {
           className={cn(
             "relative w-full overflow-hidden border border-t-0 border-[var(--color-hairline)] bg-[color-mix(in_oklab,var(--color-ink)_2%,white)]",
             tab === "operations"
-              ? "aspect-[1672/941]"
-              : "aspect-square lg:aspect-[2/1]",
+              ? "aspect-[4/3] sm:aspect-[1672/941]"
+              : "aspect-[4/5] sm:aspect-square lg:aspect-[2/1]",
           )}
         >
+
           {DASHBOARD_TABS.map((t) => (
             <div
               key={t.id}
