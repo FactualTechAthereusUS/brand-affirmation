@@ -281,7 +281,7 @@ function PharmaBroLogin() {
             </ul>
           </div>
 
-          <SystemsPill />
+          <div><SystemsPill /></div>
         </div>
       </aside>
 
@@ -435,7 +435,7 @@ function PharmaBroLogin() {
                     <div className="w-full border-t border-white/12" />
                   </div>
                   <div className="relative flex justify-center text-xs">
-                    <span className="bg-[#0a0a0a] px-2 text-white/40">or</span>
+                    <span className="bg-[#0d0d0d] px-2 text-white/40">or</span>
                   </div>
                 </div>
 
