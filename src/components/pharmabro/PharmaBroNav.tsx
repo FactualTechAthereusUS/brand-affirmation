@@ -273,12 +273,12 @@ export function PharmaBroNav() {
               </nav>
 
               <div className="flex items-center gap-2">
-                <Link
-                  to="/pharmabro/contact"
-                  className="hidden text-[14px] font-medium text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] transition-colors hover:text-ink sm:block"
-                >
-                  Login
-                </Link>
+              <Link
+                to="/pharmabro/login"
+                className="hidden text-[14px] font-medium text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)] transition-colors hover:text-ink sm:block"
+              >
+                Login
+              </Link>
                 <PillCta to="/pharmabro/booking" className="hidden sm:inline-flex">
                   Book a demo
                 </PillCta>
@@ -468,7 +468,7 @@ export function PharmaBroNav() {
 
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <Link
-                    to="/pharmabro/contact"
+                    to="/pharmabro/login"
                     onClick={() => setMobile(false)}
                     className="text-[15px] font-medium text-[color-mix(in_oklab,var(--color-ink)_62%,transparent)]"
                   >
