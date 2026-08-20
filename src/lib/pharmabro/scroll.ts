@@ -13,15 +13,18 @@ export function scrollToSection(id: string) {
   const el = document.getElementById(id);
   if (!el) return false;
 
+  const top = Math.max(
+    0,
+    el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET,
+  );
+
   const lenis = (window as unknown as { __lenis?: LenisLike }).__lenis;
   if (lenis) {
-    lenis.scrollTo(el, {
-      offset: -HEADER_OFFSET,
+    lenis.scrollTo(top, {
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
   } else {
-    const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
     window.scrollTo({ top, behavior: "smooth" });
   }
 
