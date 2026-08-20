@@ -193,7 +193,7 @@ export function HeroBlock() {
       </Container>
 
       {/* full-width product highlight tabs */}
-      <Container size="wide" className="relative mt-12 pb-4 sm:mt-16">
+      <Container size="wide" className="relative mt-9 pb-4 sm:mt-16">
         <HeroTabStrip
           tabs={DASHBOARD_TABS.map((t) => ({ id: t.id, label: t.label }))}
           active={tab}
@@ -207,10 +207,11 @@ export function HeroBlock() {
           className={cn(
             "relative w-full overflow-hidden border border-t-0 border-[var(--color-hairline)] bg-[color-mix(in_oklab,var(--color-ink)_2%,white)]",
             tab === "operations"
-              ? "aspect-[1672/941]"
-              : "aspect-square lg:aspect-[2/1]",
+              ? "aspect-[4/3] sm:aspect-[1672/941]"
+              : "aspect-[4/5] sm:aspect-square lg:aspect-[2/1]",
           )}
         >
+
           {DASHBOARD_TABS.map((t) => (
             <div
               key={t.id}
