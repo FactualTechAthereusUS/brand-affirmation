@@ -40,7 +40,7 @@ function AnnouncementBar() {
   return (
     <div className="relative overflow-hidden bg-linear-to-r from-[#0a0a0a] via-[#12224d] to-[var(--color-marine)]">
       <Container size="full" className="relative">
-        <div className="flex h-9 items-center justify-center overflow-hidden">
+        <div className="flex min-h-9 items-center justify-center py-1.5 sm:h-9 sm:py-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={i}
@@ -48,9 +48,10 @@ function AnnouncementBar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="flex w-full min-w-0 items-center justify-center gap-2 text-center text-[11.5px] text-white/85 sm:text-[12.5px]"
+              className="flex w-full min-w-0 flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[11px] leading-[1.35] text-white/85 sm:text-[12.5px]"
             >
-              <span className="truncate">{a.text}</span>
+              <span className="min-w-0">{a.text}</span>
+
               <Link
                 to={a.to}
                 className="hidden shrink-0 font-medium text-white underline decoration-white/40 underline-offset-2 hover:decoration-white sm:inline"
