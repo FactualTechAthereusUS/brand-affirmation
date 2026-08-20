@@ -423,7 +423,7 @@ export function PharmaBroNav() {
                           "grid overflow-hidden transition-all duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
                           isOpen
                             ? "grid-rows-[1fr] opacity-100"
-                            : "grid-rows-[0fr] opacity-0",
+                            : "pointer-events-none grid-rows-[0fr] opacity-0",
                         )}
                       >
                         <div className="min-h-0">
