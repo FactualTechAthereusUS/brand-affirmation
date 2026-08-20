@@ -95,27 +95,28 @@ export function BookingPage() {
 
       {/* -------------------------------------------------------- scheduler */}
       <section className="bg-canvas pb-12 lg:pb-16">
-        <Container size="wide">
-          <div className="relative min-h-[620px] w-full overflow-hidden rounded-2xl border border-[var(--color-hairline)] bg-canvas shadow-[0_1px_2px_rgba(10,10,10,0.04),0_18px_50px_-30px_rgba(10,10,10,0.25)]">
+        <Container size="wide" className="px-3 sm:px-6">
+          <div className="relative min-h-[760px] w-full rounded-2xl border border-[var(--color-hairline)] bg-canvas shadow-[0_1px_2px_rgba(10,10,10,0.04),0_18px_50px_-30px_rgba(10,10,10,0.25)] sm:min-h-[680px] lg:min-h-[620px]">
             {!ready ? (
               <div
                 aria-hidden
-                className="absolute inset-0 flex items-center justify-center bg-canvas"
+                className="absolute inset-0 flex items-center justify-center rounded-2xl bg-canvas"
               >
                 <span className="size-6 animate-spin rounded-full border-2 border-[var(--color-hairline)] border-t-[var(--color-marine)]" />
               </div>
             ) : null}
             <div
               ref={holder}
-              className="iclosed-widget relative w-full"
+              className="iclosed-widget relative w-full [&_iframe]:!w-full"
               data-url={ICLOSED_URL}
               data-resize="true"
               title="Strategy call"
-              style={{ width: "100%", height: 620 }}
+              style={{ width: "100%", minHeight: 620 }}
             />
           </div>
         </Container>
       </section>
+
 
       {/* ------------------------------------------------ what we cover */}
       <section className="bg-canvas pb-20 lg:pb-24">
