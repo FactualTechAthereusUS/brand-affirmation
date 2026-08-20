@@ -1,24 +1,58 @@
-# Encode the design system into project memory
+# PharmaBro brand admin login — /pharmabro/login
 
-Turn the design rules we've been applying by hand into persistent memory files, so they apply automatically to every future change without being restated.
+A focused, enterprise-grade sign-in page for brand owners logging into their PharmaBro admin. Same brand grammar as the marketing site (white canvas, electric blue accent, Google Sans Flex with Instrument Serif accents, liquid-glass surfaces), but a standalone screen without the marketing nav or footer.
 
-## What gets saved
+## Layout
 
-**1. Motion grammar** (`design`)
-The three easing curves and their use cases (hero lines, scroll reveals, soft rules), standard durations, the 60ms word-stagger for hero headlines, 0.07s grid stagger, the mandatory reduced-motion path, and the time-based fallback rule: never ship a scroll reveal without a ~900ms escape hatch, or content can stay invisible when the observer registers before first layout.
+Split screen on desktop, single column on mobile.
 
-**2. Typography rules** (`design`)
-Serif display plus neutral sans body as the default pairing, one display face and one body face maximum, fixed px steps with explicit leading and negative tracking above 32px, micro-labels uppercase with wide tracking, and fonts loaded via a link tag in the root route rather than a CSS import.
+```text
+desktop (>=1024px)                  mobile
++---------------+----------------+  +----------------+
+| brand panel   |  sign-in card  |  |  logo          |
+|  wordmark     |   Sign in      |  |  Sign in       |
+|  one-line     |   email        |  |  email         |
+|  positioning  |   password     |  |  password      |
+|  3 trust rows |   [Sign in]    |  |  [Sign in]     |
+|  soft liquid  |   or           |  |  or            |
+|  glass mesh   |   passkey      |  |  passkey / x509|
+|               |   x509         |  |  security note |
+|  status pill  |   security     |  |  legal links   |
++---------------+----------------+  +----------------+
+```
 
-**3. Token architecture** (`design`)
-The two-layer split: raw brand palette in the non-inline theme block so scoped blocks can rebind colors, shadcn semantics in the inline block pointing at root variables. No hardcoded color utilities in components. Shadows authored as explicit multi-layer stacks, not single-token elevation.
+Left panel: subtle animated liquid-glass mesh (the existing soft variant, low opacity), wordmark, a short positioning line, three trust rows (HIPAA-ready infrastructure, SOC 2 controls, LegitScript-aligned workflows), and the pulsing green systems-operational pill reused from the footer. Right side: a white card on a hairline border with a layered shadow, max width around 400px, vertically centered.
 
-**4. Rejected visual patterns** (`constraint`)
-Inter and Poppins as display faces, purple-to-indigo gradients on white, single-shadow elevation, borders drawn between sections (use a background tone shift instead), and motion without a reduced-motion fallback. Each with the reason, so they never get re-proposed.
+## Form content
 
-**5. Visual verification standard** (`preference`)
-A visual change is only done after checking the rendered result at mobile, tablet and desktop widths: zero console errors, no horizontal overflow at 390px, nothing stuck invisible after reveals settle, no orphaned headline wraps. A green build alone does not count.
+Kept exactly as specified:
 
-## Notes
+- Heading "Sign in", subhead "Enter your credentials to continue"
+- Email field, placeholder `email@company.com`, `autocomplete="username webauthn"`, type email, required
+- Password field with a "Forgot password?" link on the same row as the label
+- Primary "Sign in" button, full width
+- "or" divider
+- "Sign in with Passkey" and "Sign in with X.509 certificate" as secondary buttons
+- "Your data is protected with enterprise-grade security." footnote
+- "Privacy Policy | Terms of Service" links, wired to the existing PharmaBro legal routes
 
-Memory files are documentation only, no application code changes and no visual difference to the site. The index gets short always-on one-liners for the highest-value rules (no hardcoded colors, motion needs a reduced-motion path) plus pointers to the detail files above.
+## Interaction and states
+
+- Password visibility toggle inside the field.
+- Real client-side validation: email format and non-empty password, inline field errors, no submit until valid.
+- Submit shows a spinner and disables the form; a wrong-credentials branch renders a single generic error banner (never "no such user", which leaks account existence).
+- Success routes to the brand admin dashboard at `/admin`.
+- Passkey and X.509 buttons open an honest "not enabled for this account yet" state rather than pretending to authenticate.
+- Caps Lock hint on the password field, and Enter submits from either field.
+- Full keyboard focus rings, labelled inputs, `aria-live` on the error banner, and `autocomplete` set correctly so password managers work.
+
+## Motion
+
+Reuses the site's existing curves, nothing new invented: card rises 16px with a 0.6s fade on the standard ease, left-panel rows stagger at 70ms, button press scales to 0.98, error banner slides in 6px. Everything disabled under reduced-motion.
+
+## Technical notes
+
+- New route file escapes the marketing layout so no nav, footer or marketing progressive blur appears, while still applying the PharmaBro token scope on the page wrapper so colors and fonts match the rest of the site.
+- Head metadata: unique title and description plus `noindex,nofollow` — a login page should not be crawled.
+- Demo authentication only: local component state, no backend calls, no credentials stored. Real auth against Lovable Cloud can be layered on later without changing this UI.
+- Legal links point at the existing `/pharmabro/legal/privacy` and `/pharmabro/legal/terms` routes.
