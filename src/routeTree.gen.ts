@@ -24,6 +24,7 @@ import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-c
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
+import { Route as UnhingedoneIndexRouteImport } from './routes/unhingedone.index'
 import { Route as PharmabroIndexRouteImport } from './routes/pharmabro.index'
 import { Route as OperatorIndexRouteImport } from './routes/operator.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -199,6 +200,11 @@ const WeightLossIndexRoute = WeightLossIndexRouteImport.update({
   id: '/weight-loss/',
   path: '/weight-loss/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const UnhingedoneIndexRoute = UnhingedoneIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UnhingedoneRoute,
 } as any)
 const PharmabroIndexRoute = PharmabroIndexRouteImport.update({
   id: '/',
@@ -735,7 +741,7 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
-  '/unhingedone': typeof UnhingedoneRoute
+  '/unhingedone': typeof UnhingedoneRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -778,6 +784,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
   '/pharmabro/': typeof PharmabroIndexRoute
+  '/unhingedone/': typeof UnhingedoneIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -851,7 +858,6 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
-  '/unhingedone': typeof UnhingedoneRoute
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -893,6 +899,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/operator': typeof OperatorIndexRoute
   '/pharmabro': typeof PharmabroIndexRoute
+  '/unhingedone': typeof UnhingedoneIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -968,7 +975,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
-  '/unhingedone': typeof UnhingedoneRoute
+  '/unhingedone': typeof UnhingedoneRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -1011,6 +1018,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
   '/pharmabro/': typeof PharmabroIndexRoute
+  '/unhingedone/': typeof UnhingedoneIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -1130,6 +1138,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/operator/'
     | '/pharmabro/'
+    | '/unhingedone/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1203,7 +1212,6 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
-    | '/unhingedone'
     | '/admin/command'
     | '/admin/live'
     | '/admin/messages'
@@ -1245,6 +1253,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/operator'
     | '/pharmabro'
+    | '/unhingedone'
     | '/weight-loss'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1362,6 +1371,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/operator/'
     | '/pharmabro/'
+    | '/unhingedone/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1437,7 +1447,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
-  UnhingedoneRoute: typeof UnhingedoneRoute
+  UnhingedoneRoute: typeof UnhingedoneRouteWithChildren
   AdminCommandRoute: typeof AdminCommandRoute
   AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
@@ -1606,6 +1616,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/weight-loss/'
       preLoaderRoute: typeof WeightLossIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/unhingedone/': {
+      id: '/unhingedone/'
+      path: '/'
+      fullPath: '/unhingedone/'
+      preLoaderRoute: typeof UnhingedoneIndexRouteImport
+      parentRoute: typeof UnhingedoneRoute
     }
     '/pharmabro/': {
       id: '/pharmabro/'
@@ -2390,6 +2407,18 @@ const PharmabroRouteWithChildren = PharmabroRoute._addFileChildren(
   PharmabroRouteChildren,
 )
 
+interface UnhingedoneRouteChildren {
+  UnhingedoneIndexRoute: typeof UnhingedoneIndexRoute
+}
+
+const UnhingedoneRouteChildren: UnhingedoneRouteChildren = {
+  UnhingedoneIndexRoute: UnhingedoneIndexRoute,
+}
+
+const UnhingedoneRouteWithChildren = UnhingedoneRoute._addFileChildren(
+  UnhingedoneRouteChildren,
+)
+
 interface AdminSettingsRouteChildren {
   AdminSettingsComplianceRoute: typeof AdminSettingsComplianceRoute
   AdminSettingsGeneralRoute: typeof AdminSettingsGeneralRoute
@@ -2434,7 +2463,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
-  UnhingedoneRoute: UnhingedoneRoute,
+  UnhingedoneRoute: UnhingedoneRouteWithChildren,
   AdminCommandRoute: AdminCommandRoute,
   AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
