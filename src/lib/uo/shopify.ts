@@ -111,14 +111,19 @@ export async function storefrontApiRequest<T = any>(
   return json.data as T;
 }
 
-/** Products in a collection, filtered of non-garment SKUs (shipping protection). */
+/** Products in a collection, filtered of non-garment SKUs (shipping protection).
+ *  Shopify's automated collections (e.g. "Best Seller") can return zero products
+ *  through the Storefront API, so fall back to the catalog instead of an empty grid. */
 export async function fetchCollectionProducts(handle: string, first = 12) {
   const data = await storefrontApiRequest<{
     collection: { products: { edges: Array<{ node: UOShopifyProduct }> } } | null;
   }>(COLLECTION_PRODUCTS_QUERY, { handle, first: first + 4 });
   const nodes = (data.collection?.products.edges ?? []).map((e) => e.node);
-  return filterSellable(nodes).slice(0, first);
+  const sellable = filterSellable(nodes);
+  if (sellable.length === 0) return fetchProducts(first);
+  return sellable.slice(0, first);
 }
+
 
 export async function fetchProducts(first = 12, query?: string) {
   const data = await storefrontApiRequest<{
