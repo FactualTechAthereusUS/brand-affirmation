@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { COLLECTIONS } from "./data";
 import { IconBag, IconHeart, IconSearch, IconUser, UO_EASE, UO_EASE_STD } from "./uo";
+import { useUOCart } from "@/lib/uo/cart";
 import { cn } from "@/lib/utils";
 
 /**
