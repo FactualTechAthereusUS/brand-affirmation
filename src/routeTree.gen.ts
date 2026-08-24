@@ -29,6 +29,7 @@ import { Route as PharmabroIndexRouteImport } from './routes/pharmabro.index'
 import { Route as OperatorIndexRouteImport } from './routes/operator.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
+import { Route as UnhingedoneHomepageRouteImport } from './routes/unhingedone.homepage'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
 import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
@@ -225,6 +226,11 @@ const WeightLossSalesRoute = WeightLossSalesRouteImport.update({
   id: '/weight-loss/sales',
   path: '/weight-loss/sales',
   getParentRoute: () => rootRouteImport,
+} as any)
+const UnhingedoneHomepageRoute = UnhingedoneHomepageRouteImport.update({
+  id: '/homepage',
+  path: '/homepage',
+  getParentRoute: () => UnhingedoneRoute,
 } as any)
 const SalesTrimrxRoute = SalesTrimrxRouteImport.update({
   id: '/sales/trimrx',
@@ -780,6 +786,7 @@ export interface FileRoutesByFullPath {
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
+  '/unhingedone/homepage': typeof UnhingedoneHomepageRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
@@ -895,6 +902,7 @@ export interface FileRoutesByTo {
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
+  '/unhingedone/homepage': typeof UnhingedoneHomepageRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin': typeof AdminIndexRoute
   '/operator': typeof OperatorIndexRoute
@@ -1014,6 +1022,7 @@ export interface FileRoutesById {
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
+  '/unhingedone/homepage': typeof UnhingedoneHomepageRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
@@ -1134,6 +1143,7 @@ export interface FileRouteTypes {
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
+    | '/unhingedone/homepage'
     | '/weight-loss/sales'
     | '/admin/'
     | '/operator/'
@@ -1249,6 +1259,7 @@ export interface FileRouteTypes {
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
+    | '/unhingedone/homepage'
     | '/weight-loss/sales'
     | '/admin'
     | '/operator'
@@ -1367,6 +1378,7 @@ export interface FileRouteTypes {
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
+    | '/unhingedone/homepage'
     | '/weight-loss/sales'
     | '/admin/'
     | '/operator/'
@@ -1651,6 +1663,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/weight-loss/sales'
       preLoaderRoute: typeof WeightLossSalesRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/unhingedone/homepage': {
+      id: '/unhingedone/homepage'
+      path: '/homepage'
+      fullPath: '/unhingedone/homepage'
+      preLoaderRoute: typeof UnhingedoneHomepageRouteImport
+      parentRoute: typeof UnhingedoneRoute
     }
     '/sales/trimrx': {
       id: '/sales/trimrx'
@@ -2408,10 +2427,12 @@ const PharmabroRouteWithChildren = PharmabroRoute._addFileChildren(
 )
 
 interface UnhingedoneRouteChildren {
+  UnhingedoneHomepageRoute: typeof UnhingedoneHomepageRoute
   UnhingedoneIndexRoute: typeof UnhingedoneIndexRoute
 }
 
 const UnhingedoneRouteChildren: UnhingedoneRouteChildren = {
+  UnhingedoneHomepageRoute: UnhingedoneHomepageRoute,
   UnhingedoneIndexRoute: UnhingedoneIndexRoute,
 }
 
