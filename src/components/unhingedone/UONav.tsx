@@ -75,10 +75,10 @@ export function UONav() {
           <button type="button" aria-label="Wishlist" className="uo-icon hidden sm:inline-flex">
             <IconHeart className="h-[19px] w-[19px]" />
           </button>
-          <button type="button" aria-label="Cart" onClick={() => setCart(true)} className="uo-icon relative">
+          <button type="button" aria-label="Cart" onClick={() => setCartOpen(true)} className="uo-icon relative">
             <IconBag className="h-[19px] w-[19px]" />
             <span className="absolute -right-0.5 -top-0.5 grid h-[15px] min-w-[15px] place-items-center rounded-full bg-uo-red px-1 text-[9px] font-bold text-white">
-              0
+              {count}
             </span>
           </button>
         </div>
