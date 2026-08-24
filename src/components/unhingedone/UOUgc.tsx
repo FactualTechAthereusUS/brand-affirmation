@@ -18,7 +18,7 @@ export function UOUgc() {
         <Rise delay={0.08} className="mt-7 md:mt-10">
           <Rail contentClassName="-mx-4 px-4 md:mx-0 md:px-0">
             {UGC.map((u, i) => {
-              const photo = i % 2 === 0 ? IMAGES[(i / 3) % IMAGES.length] : undefined;
+              const photo = i % 2 === 0 ? IMAGES[(i / 2) % IMAGES.length] : undefined;
               const product = BEST_SELLERS[i % BEST_SELLERS.length]!;
               return (
                 <figure
