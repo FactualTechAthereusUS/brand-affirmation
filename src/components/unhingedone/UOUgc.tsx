@@ -1,7 +1,7 @@
 import { PrintTile, Rail, Rise, SectionHead } from "./uo";
 import { UGC, BEST_SELLERS } from "./data";
 
-const IMAGES = ["/assets/uo-reaction-left.jpg", "/assets/uo-hero-matching-set.jpg"];
+const IMAGES = ["/assets/uo-hero-print-portrait.jpg", "/assets/uo-hero-matching-set.jpg"];
 
 /**
  * Section 8 — Alo's shoppable UGC carousel with @handles. The most on-brand
