@@ -138,55 +138,6 @@ export function UONav() {
         ) : null}
       </AnimatePresence>
 
-      {/* cart drawer */}
-      <AnimatePresence>
-        {cart ? (
-          <>
-            <motion.button
-              type="button"
-              aria-label="Close cart"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              onClick={() => setCart(false)}
-              className="fixed inset-0 z-40 bg-ink/45 backdrop-blur-[2px]"
-            />
-            <motion.aside
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.5, ease: UO_EASE }}
-              className="fixed inset-y-0 right-0 z-50 flex w-[92%] max-w-[420px] flex-col bg-canvas"
-            >
-              <div className="flex items-center justify-between border-b border-ink/10 px-6 py-4">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">Your bag (0)</span>
-                <button type="button" onClick={() => setCart(false)} aria-label="Close" className="uo-icon">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-                    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
-              <div className="bg-[#0b0b0b] px-6 py-2.5 text-center text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#f2efe8]">
-                Add 2 items for free shipping
-              </div>
-              <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
-                <p className="uo-display text-[26px] leading-none">Nothing in here yet</p>
-                <p className="text-[13px] text-ink/55">
-                  Nobody buys one. The matching set is the whole point.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setCart(false)}
-                  className="uo-btn mt-2 w-full max-w-[260px]"
-                >
-                  Shop the drop
-                </button>
-              </div>
-            </motion.aside>
-          </>
-        ) : null}
-      </AnimatePresence>
     </header>
   );
 }
