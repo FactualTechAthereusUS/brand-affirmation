@@ -22,7 +22,7 @@ const SLIDES: Slide[] = [
     title: "The Restock",
     line: "Back October 25. 1,088 of 1,500 already claimed.",
     cta: "Shop the drop",
-    position: "50% 30%",
+    position: "14% 28%",
   },
   {
     img: "/assets/uo-hero-matching-set.jpg",
