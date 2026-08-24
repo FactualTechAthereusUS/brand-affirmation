@@ -19,16 +19,17 @@ type Slide = {
 
 const SLIDES: Slide[] = [
   {
-    img: "/assets/uo-hero-reaction.jpg",
-    imgMobile: "/assets/uo-reaction-left.jpg",
-    alt: "Two people wearing the Emotional Labor crewneck, print front and centre",
+    img: "/assets/uo-hero-reaction-wide.jpg",
+    imgMobile: "/assets/uo-hero-print-portrait.jpg",
+    alt: "Friends laughing and pointing at each other's crewneck prints on a sunlit street",
     eyebrow: "Sold out twice",
     title: "The Restock",
     line: "Back October 25. 1,088 of 1,500 already claimed.",
     cta: "Shop the drop",
-    position: "50% 22%",
-    positionMobile: "50% 18%",
+    position: "50% 30%",
+    positionMobile: "50% 25%",
   },
+
 
   {
     img: "/assets/uo-hero-matching-set.jpg",
