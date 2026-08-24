@@ -17,14 +17,17 @@ export const Route = createFileRoute("/unhingedone")({
  */
 function UOLayout() {
   return (
-    <div className="uo-scope min-h-dvh bg-canvas font-sans text-ink antialiased">
-      <UOTicker />
-      <UONav />
-      <main>
-        <Outlet />
-      </main>
-      <UOFooter />
-      <UOClaimTab />
-    </div>
+    <UOCartProvider>
+      <div className="uo-scope min-h-dvh bg-canvas font-sans text-ink antialiased">
+        <UOTicker />
+        <UONav />
+        <main>
+          <Outlet />
+        </main>
+        <UOFooter />
+        <UOClaimTab />
+        <UOCartDrawer />
+      </div>
+    </UOCartProvider>
   );
 }
