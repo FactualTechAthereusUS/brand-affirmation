@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnhingedoneRouteImport } from './routes/unhingedone'
 import { Route as TestStateRouteImport } from './routes/test-state'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
@@ -124,6 +125,11 @@ import { Route as AdminAnalyticsFunnelRouteImport } from './routes/admin.analyti
 import { Route as AdminAnalyticsFinancesRouteImport } from './routes/admin.analytics.finances'
 import { Route as AdminAnalyticsAcquisitionRouteImport } from './routes/admin.analytics.acquisition'
 
+const UnhingedoneRoute = UnhingedoneRouteImport.update({
+  id: '/unhingedone',
+  path: '/unhingedone',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestStateRoute = TestStateRouteImport.update({
   id: '/test-state',
   path: '/test-state',
@@ -729,6 +735,7 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/unhingedone': typeof UnhingedoneRoute
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -844,6 +851,7 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/unhingedone': typeof UnhingedoneRoute
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -960,6 +968,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/unhingedone': typeof UnhingedoneRoute
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -1078,6 +1087,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/unhingedone'
     | '/admin/command'
     | '/admin/live'
     | '/admin/messages'
@@ -1193,6 +1203,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/unhingedone'
     | '/admin/command'
     | '/admin/live'
     | '/admin/messages'
@@ -1308,6 +1319,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/unhingedone'
     | '/admin/command'
     | '/admin/live'
     | '/admin/messages'
@@ -1425,6 +1437,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
+  UnhingedoneRoute: typeof UnhingedoneRoute
   AdminCommandRoute: typeof AdminCommandRoute
   AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
@@ -1489,6 +1502,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unhingedone': {
+      id: '/unhingedone'
+      path: '/unhingedone'
+      fullPath: '/unhingedone'
+      preLoaderRoute: typeof UnhingedoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test-state': {
       id: '/test-state'
       path: '/test-state'
@@ -2414,6 +2434,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
+  UnhingedoneRoute: UnhingedoneRoute,
   AdminCommandRoute: AdminCommandRoute,
   AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
