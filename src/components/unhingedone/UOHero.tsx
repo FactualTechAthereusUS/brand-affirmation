@@ -5,25 +5,31 @@ import { cn } from "@/lib/utils";
 
 type Slide = {
   img: string;
+  /** Portrait crop used below md so the print is never cropped out. */
+  imgMobile?: string;
   alt: string;
   eyebrow: string;
   title: string;
   line: string;
   cta: string;
-  /** Vertical crop bias so faces are never cut on mobile. */
+  /** Crop bias so faces and prints stay in frame. */
   position: string;
+  positionMobile?: string;
 };
 
 const SLIDES: Slide[] = [
   {
-    img: "/assets/uo-hero-labor-day.jpg",
-    alt: "Three people wearing the Emotional Labor crewneck, one reading the print out loud",
+    img: "/assets/uo-hero-reaction.jpg",
+    imgMobile: "/assets/uo-reaction-left.jpg",
+    alt: "Two people wearing the Emotional Labor crewneck, print front and centre",
     eyebrow: "Sold out twice",
     title: "The Restock",
     line: "Back October 25. 1,088 of 1,500 already claimed.",
     cta: "Shop the drop",
-    position: "14% 28%",
+    position: "50% 22%",
+    positionMobile: "50% 18%",
   },
+
   {
     img: "/assets/uo-hero-matching-set.jpg",
     alt: "Two people laughing in matching cream crewnecks, one pointing at the other's print",
