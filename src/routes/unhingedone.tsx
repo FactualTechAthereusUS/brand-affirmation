@@ -1,8 +1,10 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { UOCartDrawer } from "@/components/unhingedone/UOCartDrawer";
 import { UOClaimTab } from "@/components/unhingedone/UOClaimTab";
 import { UOFooter } from "@/components/unhingedone/UOFooter";
 import { UONav } from "@/components/unhingedone/UONav";
 import { UOTicker } from "@/components/unhingedone/UOTicker";
+import { UOCartProvider } from "@/lib/uo/cart";
 
 export const Route = createFileRoute("/unhingedone")({
   component: UOLayout,
@@ -15,14 +17,17 @@ export const Route = createFileRoute("/unhingedone")({
  */
 function UOLayout() {
   return (
-    <div className="uo-scope min-h-dvh bg-canvas font-sans text-ink antialiased">
-      <UOTicker />
-      <UONav />
-      <main>
-        <Outlet />
-      </main>
-      <UOFooter />
-      <UOClaimTab />
-    </div>
+    <UOCartProvider>
+      <div className="uo-scope min-h-dvh bg-canvas font-sans text-ink antialiased">
+        <UOTicker />
+        <UONav />
+        <main>
+          <Outlet />
+        </main>
+        <UOFooter />
+        <UOClaimTab />
+        <UOCartDrawer />
+      </div>
+    </UOCartProvider>
   );
 }

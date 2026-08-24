@@ -80,6 +80,7 @@ import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
 import { Route as AdminIntegrationsIndexRouteImport } from './routes/admin.integrations.index'
 import { Route as AdminCheckInsIndexRouteImport } from './routes/admin.check-ins.index'
 import { Route as AdminAnalyticsIndexRouteImport } from './routes/admin.analytics.index'
+import { Route as UnhingedoneProductHandleRouteImport } from './routes/unhingedone.product.$handle'
 import { Route as PharmacyOrdersOrderIdRouteImport } from './routes/pharmacy.orders.$orderId'
 import { Route as PharmabroSolutionsWomensHealthRouteImport } from './routes/pharmabro.solutions.womens-health'
 import { Route as PharmabroSolutionsWeightLossRouteImport } from './routes/pharmabro.solutions.weight-loss'
@@ -483,6 +484,12 @@ const AdminAnalyticsIndexRoute = AdminAnalyticsIndexRouteImport.update({
   path: '/admin/analytics/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UnhingedoneProductHandleRoute =
+  UnhingedoneProductHandleRouteImport.update({
+    id: '/product/$handle',
+    path: '/product/$handle',
+    getParentRoute: () => UnhingedoneRoute,
+  } as any)
 const PharmacyOrdersOrderIdRoute = PharmacyOrdersOrderIdRouteImport.update({
   id: '/pharmacy/orders/$orderId',
   path: '/pharmacy/orders/$orderId',
@@ -839,6 +846,7 @@ export interface FileRoutesByFullPath {
   '/pharmabro/solutions/weight-loss': typeof PharmabroSolutionsWeightLossRoute
   '/pharmabro/solutions/womens-health': typeof PharmabroSolutionsWomensHealthRoute
   '/pharmacy/orders/$orderId': typeof PharmacyOrdersOrderIdRoute
+  '/unhingedone/product/$handle': typeof UnhingedoneProductHandleRoute
   '/admin/analytics/': typeof AdminAnalyticsIndexRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
@@ -955,6 +963,7 @@ export interface FileRoutesByTo {
   '/pharmabro/solutions/weight-loss': typeof PharmabroSolutionsWeightLossRoute
   '/pharmabro/solutions/womens-health': typeof PharmabroSolutionsWomensHealthRoute
   '/pharmacy/orders/$orderId': typeof PharmacyOrdersOrderIdRoute
+  '/unhingedone/product/$handle': typeof UnhingedoneProductHandleRoute
   '/admin/analytics': typeof AdminAnalyticsIndexRoute
   '/admin/check-ins': typeof AdminCheckInsIndexRoute
   '/admin/integrations': typeof AdminIntegrationsIndexRoute
@@ -1075,6 +1084,7 @@ export interface FileRoutesById {
   '/pharmabro/solutions/weight-loss': typeof PharmabroSolutionsWeightLossRoute
   '/pharmabro/solutions/womens-health': typeof PharmabroSolutionsWomensHealthRoute
   '/pharmacy/orders/$orderId': typeof PharmacyOrdersOrderIdRoute
+  '/unhingedone/product/$handle': typeof UnhingedoneProductHandleRoute
   '/admin/analytics/': typeof AdminAnalyticsIndexRoute
   '/admin/check-ins/': typeof AdminCheckInsIndexRoute
   '/admin/integrations/': typeof AdminIntegrationsIndexRoute
@@ -1196,6 +1206,7 @@ export interface FileRouteTypes {
     | '/pharmabro/solutions/weight-loss'
     | '/pharmabro/solutions/womens-health'
     | '/pharmacy/orders/$orderId'
+    | '/unhingedone/product/$handle'
     | '/admin/analytics/'
     | '/admin/check-ins/'
     | '/admin/integrations/'
@@ -1312,6 +1323,7 @@ export interface FileRouteTypes {
     | '/pharmabro/solutions/weight-loss'
     | '/pharmabro/solutions/womens-health'
     | '/pharmacy/orders/$orderId'
+    | '/unhingedone/product/$handle'
     | '/admin/analytics'
     | '/admin/check-ins'
     | '/admin/integrations'
@@ -1431,6 +1443,7 @@ export interface FileRouteTypes {
     | '/pharmabro/solutions/weight-loss'
     | '/pharmabro/solutions/womens-health'
     | '/pharmacy/orders/$orderId'
+    | '/unhingedone/product/$handle'
     | '/admin/analytics/'
     | '/admin/check-ins/'
     | '/admin/integrations/'
@@ -2021,6 +2034,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnalyticsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/unhingedone/product/$handle': {
+      id: '/unhingedone/product/$handle'
+      path: '/product/$handle'
+      fullPath: '/unhingedone/product/$handle'
+      preLoaderRoute: typeof UnhingedoneProductHandleRouteImport
+      parentRoute: typeof UnhingedoneRoute
+    }
     '/pharmacy/orders/$orderId': {
       id: '/pharmacy/orders/$orderId'
       path: '/pharmacy/orders/$orderId'
@@ -2429,11 +2449,13 @@ const PharmabroRouteWithChildren = PharmabroRoute._addFileChildren(
 interface UnhingedoneRouteChildren {
   UnhingedoneHomepageRoute: typeof UnhingedoneHomepageRoute
   UnhingedoneIndexRoute: typeof UnhingedoneIndexRoute
+  UnhingedoneProductHandleRoute: typeof UnhingedoneProductHandleRoute
 }
 
 const UnhingedoneRouteChildren: UnhingedoneRouteChildren = {
   UnhingedoneHomepageRoute: UnhingedoneHomepageRoute,
   UnhingedoneIndexRoute: UnhingedoneIndexRoute,
+  UnhingedoneProductHandleRoute: UnhingedoneProductHandleRoute,
 }
 
 const UnhingedoneRouteWithChildren = UnhingedoneRoute._addFileChildren(

@@ -1,4 +1,3 @@
-import { BEST_SELLERS, NEW_DROP } from "./data";
 import { UOEditorial } from "./UOEditorial";
 import { UOHero } from "./UOHero";
 import { UOProductGrid } from "./UOProductGrid";
@@ -9,6 +8,7 @@ import { UOUgc } from "./UOUgc";
 /**
  * Unhinged One homepage — Comfrt's skeleton, Hears' review block in place of
  * the clinician section, two steals from Alo (swatch placement, shoppable UGC).
+ * Every product, price, and image comes from the live Shopify catalog.
  */
 export function UOHomePage() {
   return (
@@ -17,18 +17,24 @@ export function UOHomePage() {
       <UOProductGrid
         id="best-sellers"
         title="Shop Best Sellers"
-        sub="One garment. Eighty-four payloads. 400gsm brushed fleece, every one."
-        products={BEST_SELLERS}
+        sub="One garment. Every payload. Heavyweight brushed fleece, every one."
+        collection="best-selling-products"
       />
       <UOReactions />
       <UOTargets />
       <UOEditorial />
+      <UOProductGrid
+        id="talk-shit"
+        title="The Shit Talk Collection"
+        sub="You and your co-conspirator. Matching, obviously."
+        collection="shit-talk-collection"
+      />
       <UOUgc />
       <UOProductGrid
         id="new-drop"
         title="New Drop"
-        sub="Restock ships October 25. Members get 24 hours' head start."
-        products={NEW_DROP}
+        sub="Members get 24 hours' head start on every restock."
+        collection="new-arrivals"
       />
     </>
   );
