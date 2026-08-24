@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
  */
 export function UONav() {
   const [open, setOpen] = useState(false);
-  const [cart, setCart] = useState(false);
   const [solid, setSolid] = useState(false);
+  const { count, setOpen: setCartOpen } = useUOCart();
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 12);
@@ -22,12 +22,11 @@ export function UONav() {
   }, []);
 
   useEffect(() => {
-    const lock = open || cart;
-    document.documentElement.style.overflow = lock ? "hidden" : "";
+    document.documentElement.style.overflow = open ? "hidden" : "";
     return () => {
       document.documentElement.style.overflow = "";
     };
-  }, [open, cart]);
+  }, [open]);
 
   return (
     <header
