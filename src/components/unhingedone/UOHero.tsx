@@ -78,21 +78,37 @@ export function UOHero() {
     >
       <div className="relative h-[78vh] min-h-[520px] w-full md:h-[86vh] md:min-h-[620px]">
         <AnimatePresence initial={false}>
-          <motion.img
+          <motion.div
             key={s.img}
-            src={s.img}
-            alt={s.alt}
-            width={1600}
-            height={1104}
             initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ opacity: { duration: 0.9, ease: UO_EASE }, scale: { duration: 8, ease: "linear" } }}
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: s.position }}
-            fetchPriority={i === 0 ? "high" : "auto"}
-          />
+            className="absolute inset-0"
+          >
+            {s.imgMobile ? (
+              <img
+                src={s.imgMobile}
+                alt={s.alt}
+                width={640}
+                height={1072}
+                className="absolute inset-0 h-full w-full object-cover md:hidden"
+                style={{ objectPosition: s.positionMobile ?? s.position }}
+                fetchPriority={i === 0 ? "high" : "auto"}
+              />
+            ) : null}
+            <img
+              src={s.img}
+              alt={s.alt}
+              width={1600}
+              height={1104}
+              className={cn("absolute inset-0 h-full w-full object-cover", s.imgMobile && "hidden md:block")}
+              style={{ objectPosition: s.position }}
+              fetchPriority={i === 0 ? "high" : "auto"}
+            />
+          </motion.div>
         </AnimatePresence>
+
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b]/80 via-[#0b0b0b]/10 to-[#0b0b0b]/25" />
 
