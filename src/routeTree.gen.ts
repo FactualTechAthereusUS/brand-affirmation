@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnhingedoneRouteImport } from './routes/unhingedone'
 import { Route as TestStateRouteImport } from './routes/test-state'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
@@ -23,10 +24,12 @@ import { Route as ConfirmationChargedRouteImport } from './routes/confirmation-c
 import { Route as ConfirmationRouteImport } from './routes/confirmation'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WeightLossIndexRouteImport } from './routes/weight-loss.index'
+import { Route as UnhingedoneIndexRouteImport } from './routes/unhingedone.index'
 import { Route as PharmabroIndexRouteImport } from './routes/pharmabro.index'
 import { Route as OperatorIndexRouteImport } from './routes/operator.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WeightLossSalesRouteImport } from './routes/weight-loss.sales'
+import { Route as UnhingedoneHomepageRouteImport } from './routes/unhingedone.homepage'
 import { Route as SalesTrimrxRouteImport } from './routes/sales.trimrx'
 import { Route as SalesDMRouteImport } from './routes/sales.DM'
 import { Route as PortalPhysicianRouteImport } from './routes/portal.physician'
@@ -124,6 +127,11 @@ import { Route as AdminAnalyticsFunnelRouteImport } from './routes/admin.analyti
 import { Route as AdminAnalyticsFinancesRouteImport } from './routes/admin.analytics.finances'
 import { Route as AdminAnalyticsAcquisitionRouteImport } from './routes/admin.analytics.acquisition'
 
+const UnhingedoneRoute = UnhingedoneRouteImport.update({
+  id: '/unhingedone',
+  path: '/unhingedone',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestStateRoute = TestStateRouteImport.update({
   id: '/test-state',
   path: '/test-state',
@@ -194,6 +202,11 @@ const WeightLossIndexRoute = WeightLossIndexRouteImport.update({
   path: '/weight-loss/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UnhingedoneIndexRoute = UnhingedoneIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UnhingedoneRoute,
+} as any)
 const PharmabroIndexRoute = PharmabroIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -213,6 +226,11 @@ const WeightLossSalesRoute = WeightLossSalesRouteImport.update({
   id: '/weight-loss/sales',
   path: '/weight-loss/sales',
   getParentRoute: () => rootRouteImport,
+} as any)
+const UnhingedoneHomepageRoute = UnhingedoneHomepageRouteImport.update({
+  id: '/homepage',
+  path: '/homepage',
+  getParentRoute: () => UnhingedoneRoute,
 } as any)
 const SalesTrimrxRoute = SalesTrimrxRouteImport.update({
   id: '/sales/trimrx',
@@ -729,6 +747,7 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/unhingedone': typeof UnhingedoneRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -767,10 +786,12 @@ export interface FileRoutesByFullPath {
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
+  '/unhingedone/homepage': typeof UnhingedoneHomepageRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
   '/pharmabro/': typeof PharmabroIndexRoute
+  '/unhingedone/': typeof UnhingedoneIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -881,10 +902,12 @@ export interface FileRoutesByTo {
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
+  '/unhingedone/homepage': typeof UnhingedoneHomepageRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin': typeof AdminIndexRoute
   '/operator': typeof OperatorIndexRoute
   '/pharmabro': typeof PharmabroIndexRoute
+  '/unhingedone': typeof UnhingedoneIndexRoute
   '/weight-loss': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -960,6 +983,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
+  '/unhingedone': typeof UnhingedoneRouteWithChildren
   '/admin/command': typeof AdminCommandRoute
   '/admin/live': typeof AdminLiveRoute
   '/admin/messages': typeof AdminMessagesRoute
@@ -998,10 +1022,12 @@ export interface FileRoutesById {
   '/portal/physician': typeof PortalPhysicianRoute
   '/sales/DM': typeof SalesDMRoute
   '/sales/trimrx': typeof SalesTrimrxRoute
+  '/unhingedone/homepage': typeof UnhingedoneHomepageRoute
   '/weight-loss/sales': typeof WeightLossSalesRoute
   '/admin/': typeof AdminIndexRoute
   '/operator/': typeof OperatorIndexRoute
   '/pharmabro/': typeof PharmabroIndexRoute
+  '/unhingedone/': typeof UnhingedoneIndexRoute
   '/weight-loss/': typeof WeightLossIndexRoute
   '/admin/analytics/acquisition': typeof AdminAnalyticsAcquisitionRoute
   '/admin/analytics/finances': typeof AdminAnalyticsFinancesRoute
@@ -1078,6 +1104,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/unhingedone'
     | '/admin/command'
     | '/admin/live'
     | '/admin/messages'
@@ -1116,10 +1143,12 @@ export interface FileRouteTypes {
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
+    | '/unhingedone/homepage'
     | '/weight-loss/sales'
     | '/admin/'
     | '/operator/'
     | '/pharmabro/'
+    | '/unhingedone/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1230,10 +1259,12 @@ export interface FileRouteTypes {
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
+    | '/unhingedone/homepage'
     | '/weight-loss/sales'
     | '/admin'
     | '/operator'
     | '/pharmabro'
+    | '/unhingedone'
     | '/weight-loss'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1308,6 +1339,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/terms'
     | '/test-state'
+    | '/unhingedone'
     | '/admin/command'
     | '/admin/live'
     | '/admin/messages'
@@ -1346,10 +1378,12 @@ export interface FileRouteTypes {
     | '/portal/physician'
     | '/sales/DM'
     | '/sales/trimrx'
+    | '/unhingedone/homepage'
     | '/weight-loss/sales'
     | '/admin/'
     | '/operator/'
     | '/pharmabro/'
+    | '/unhingedone/'
     | '/weight-loss/'
     | '/admin/analytics/acquisition'
     | '/admin/analytics/finances'
@@ -1425,6 +1459,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
+  UnhingedoneRoute: typeof UnhingedoneRouteWithChildren
   AdminCommandRoute: typeof AdminCommandRoute
   AdminLiveRoute: typeof AdminLiveRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
@@ -1489,6 +1524,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unhingedone': {
+      id: '/unhingedone'
+      path: '/unhingedone'
+      fullPath: '/unhingedone'
+      preLoaderRoute: typeof UnhingedoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test-state': {
       id: '/test-state'
       path: '/test-state'
@@ -1587,6 +1629,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightLossIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/unhingedone/': {
+      id: '/unhingedone/'
+      path: '/'
+      fullPath: '/unhingedone/'
+      preLoaderRoute: typeof UnhingedoneIndexRouteImport
+      parentRoute: typeof UnhingedoneRoute
+    }
     '/pharmabro/': {
       id: '/pharmabro/'
       path: '/'
@@ -1614,6 +1663,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/weight-loss/sales'
       preLoaderRoute: typeof WeightLossSalesRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/unhingedone/homepage': {
+      id: '/unhingedone/homepage'
+      path: '/homepage'
+      fullPath: '/unhingedone/homepage'
+      preLoaderRoute: typeof UnhingedoneHomepageRouteImport
+      parentRoute: typeof UnhingedoneRoute
     }
     '/sales/trimrx': {
       id: '/sales/trimrx'
@@ -2370,6 +2426,20 @@ const PharmabroRouteWithChildren = PharmabroRoute._addFileChildren(
   PharmabroRouteChildren,
 )
 
+interface UnhingedoneRouteChildren {
+  UnhingedoneHomepageRoute: typeof UnhingedoneHomepageRoute
+  UnhingedoneIndexRoute: typeof UnhingedoneIndexRoute
+}
+
+const UnhingedoneRouteChildren: UnhingedoneRouteChildren = {
+  UnhingedoneHomepageRoute: UnhingedoneHomepageRoute,
+  UnhingedoneIndexRoute: UnhingedoneIndexRoute,
+}
+
+const UnhingedoneRouteWithChildren = UnhingedoneRoute._addFileChildren(
+  UnhingedoneRouteChildren,
+)
+
 interface AdminSettingsRouteChildren {
   AdminSettingsComplianceRoute: typeof AdminSettingsComplianceRoute
   AdminSettingsGeneralRoute: typeof AdminSettingsGeneralRoute
@@ -2414,6 +2484,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
+  UnhingedoneRoute: UnhingedoneRouteWithChildren,
   AdminCommandRoute: AdminCommandRoute,
   AdminLiveRoute: AdminLiveRoute,
   AdminMessagesRoute: AdminMessagesRoute,
