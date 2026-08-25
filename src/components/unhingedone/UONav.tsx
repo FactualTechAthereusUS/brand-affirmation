@@ -49,15 +49,9 @@ export function UONav() {
             style={{ animationPlayState: paused ? "paused" : "running" }}
           >
             {Array.from({ length: MARQUEE_REPEATS }).flatMap((_, r) =>
-              MARQUEE_ITEMS.map((t, i) => (
-                <li
-                  key={`${r}-${t}`}
-                  aria-hidden={r === 0 ? false : true}
-                  {...(r === 0 ? {} : { inert: "" as unknown as boolean })}
-                  className="uo-marquee-item"
-                >
+              MARQUEE_ITEMS.map((t) => (
+                <li key={`${r}-${t}`} aria-hidden={r !== 0} className="uo-marquee-item">
                   {t}
-                  {i === MARQUEE_ITEMS.length - 1 ? null : null}
                 </li>
               )),
             )}
