@@ -22,7 +22,7 @@ export function UOReactions() {
             {UO_PHOTO_REVIEWS.map((r) => (
               <article
                 key={r.id}
-                className="flex w-[74%] max-w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] bg-canvas shadow-[0_1px_2px_rgba(20,20,20,0.06),0_10px_30px_-18px_rgba(20,20,20,0.25)] sm:w-[46%] md:w-[30%] lg:w-[21.5%]"
+                className="flex w-[74%] max-w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-ink/8 bg-white shadow-[0_1px_2px_rgba(20,20,20,0.05),0_10px_30px_-20px_rgba(20,20,20,0.2)] sm:w-[46%] md:w-[30%] lg:w-[21.5%]"
               >
                 <img
                   src={r.image}
