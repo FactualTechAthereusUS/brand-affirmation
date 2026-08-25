@@ -8,7 +8,7 @@ import { UO_PHOTO_REVIEWS } from "./reviews";
  */
 export function UOReactions() {
   return (
-    <section id="reactions" className="border-y border-ink/10 bg-[#f1ece2] py-14 md:py-20">
+    <section id="reactions" className="border-y border-ink/10 bg-white py-14 md:py-20">
       <div className="mx-auto max-w-[1440px] px-4 md:px-8">
         <Rise>
           <SectionHead
