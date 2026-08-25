@@ -752,6 +752,14 @@
   opacity: 0.6;
   transition: opacity 0.25s ease;
 }
+.uo-scope .uo-marquee-pause::before {
+  content: "";
+  position: absolute;
+  inset: -6px -10px -6px -22px;
+  background: linear-gradient(to right, transparent, #0b0b0b 55%);
+  z-index: -1;
+}
+.uo-scope .uo-marquee-pause { z-index: 1; }
 .uo-scope .uo-marquee-pause:hover { opacity: 1; }
 @keyframes uoMarqueeScroll {
   from { transform: translateX(0); }
