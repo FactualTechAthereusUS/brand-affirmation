@@ -18,7 +18,7 @@ export function UOHomePage() {
         id="best-sellers"
         title="Shop Best Sellers"
         sub="One garment. Every payload. Heavyweight brushed fleece, every one."
-        collection="best-selling-products"
+        collection="all-1"
       />
       <UOReactions />
       <UOTargets />
