@@ -196,8 +196,6 @@ export function UONav() {
             </motion.div>
           </>
         ) : null}
-      </nav>
-        )}
       </AnimatePresence>
     </header>
   );
