@@ -3,7 +3,6 @@ import { UOCartDrawer } from "@/components/unhingedone/UOCartDrawer";
 import { UOClaimTab } from "@/components/unhingedone/UOClaimTab";
 import { UOFooter } from "@/components/unhingedone/UOFooter";
 import { UONav } from "@/components/unhingedone/UONav";
-import { UOTicker } from "@/components/unhingedone/UOTicker";
 import { UOCartProvider } from "@/lib/uo/cart";
 
 export const Route = createFileRoute("/unhingedone")({
@@ -19,7 +18,6 @@ function UOLayout() {
   return (
     <UOCartProvider>
       <div className="uo-scope min-h-dvh bg-canvas font-sans text-ink antialiased">
-        <UOTicker />
         <UONav />
         <main>
           <Outlet />

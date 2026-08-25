@@ -5,12 +5,18 @@ import { IconBag, IconHeart, IconSearch, IconUser, UO_EASE, UO_EASE_STD } from "
 import { useUOCart } from "@/lib/uo/cart";
 import { cn } from "@/lib/utils";
 
+const MARQUEE_ITEMS = ["Up to 70% Off", "Free Shipping on 2+ Items"] as const;
+/** Comfrt duplicates the pair 10x so the loop never shows a seam. */
+const MARQUEE_REPEATS = 10;
+
 /**
- * Section 2 — nav by collection, not product type. One garment, many payloads,
- * so the taxonomy is the joke, not the silhouette.
+ * Comfrt's header, cloned: a pausable announcement marquee on top, then a
+ * three-slot row (drawer toggle / centred logo / icons) with the collection
+ * menu inline on desktop. Copy and taxonomy are Unhinged One's.
  */
 export function UONav() {
   const [open, setOpen] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [solid, setSolid] = useState(false);
   const { count, setOpen: setCartOpen } = useUOCart();
 
@@ -35,62 +41,110 @@ export function UONav() {
         solid ? "border-ink/10 bg-canvas/92 backdrop-blur-md" : "border-transparent bg-canvas",
       )}
     >
-      <div className="mx-auto flex h-[58px] max-w-[1440px] items-center gap-4 px-4 md:h-[68px] md:px-8">
-        {/* burger (mobile) */}
-        <button
-          type="button"
-          aria-label="Open menu"
-          onClick={() => setOpen(true)}
-          className="-ml-1 flex h-9 w-9 items-center justify-center lg:hidden"
-        >
-          <span className="relative block h-[10px] w-[19px]">
-            <span className="absolute inset-x-0 top-0 h-[1.6px] bg-ink" />
-            <span className="absolute inset-x-0 bottom-0 h-[1.6px] bg-ink" />
-          </span>
-        </button>
+      {/* ---------------------------------------------- announcement marquee */}
+      <div className="relative overflow-hidden bg-[#0b0b0b] text-[#f2efe8]">
+        <div className="uo-marquee">
+          <ul
+            className="uo-marquee-track"
+            style={{ animationPlayState: paused ? "paused" : "running" }}
+          >
+            {Array.from({ length: MARQUEE_REPEATS }).flatMap((_, r) =>
+              MARQUEE_ITEMS.map((t) => (
+                <li key={`${r}-${t}`} aria-hidden={r !== 0} className="uo-marquee-item">
+                  {t}
+                </li>
+              )),
+            )}
+          </ul>
+          <button
+            type="button"
+            aria-label={paused ? "Play announcements" : "Pause announcements"}
+            onClick={() => setPaused((p) => !p)}
+            className="uo-marquee-pause"
+          >
+            {paused ? (
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor" aria-hidden="true">
+                <path d="M4 2l14 8-14 8V2z" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor" aria-hidden="true">
+                <rect x="3" y="2" width="5" height="16" />
+                <rect x="12" y="2" width="5" height="16" />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
 
-        <a href="/unhingedone" className="uo-display shrink-0 text-[16px] leading-none tracking-[0.02em] md:text-[19px]">
-          UNHINGED ONE
+      {/* ------------------------------------------------------- header row */}
+      <div className="mx-auto grid h-[62px] max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 md:h-[74px] md:px-8">
+        <div className="flex items-center">
+          <button
+            type="button"
+            aria-label="Open menu drawer"
+            onClick={() => setOpen(true)}
+            className="-ml-1 flex h-9 w-9 items-center justify-center lg:hidden"
+          >
+            <svg viewBox="0 0 18 16" fill="none" className="h-4 w-[18px]" aria-hidden="true">
+              <path
+                d="M1 .5a.5.5 0 100 1h15.71a.5.5 0 000-1H1zM.5 8a.5.5 0 01.5-.5h15.71a.5.5 0 010 1H1A.5.5 0 01.5 8zm0 7a.5.5 0 01.5-.5h15.71a.5.5 0 010 1H1a.5.5 0 01-.5-.5z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <a href="/unhingedone" className="justify-self-center" aria-label="Unhinged One home">
+          <img src="/assets/uo-logo.png" alt="Unhinged One" width={100} className="h-[26px] w-auto md:h-[30px]" />
         </a>
 
-        <nav className="ml-6 hidden flex-1 items-center gap-6 lg:flex">
-          {COLLECTIONS.map((c) => (
-            <a
-              key={c.slug}
-              href={`/unhingedone#${c.slug}`}
-              className="uo-link text-[11px] font-semibold uppercase tracking-[0.15em] text-ink/75"
-            >
-              {c.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="ml-auto flex items-center gap-1.5 md:gap-3">
+        <div className="flex items-center justify-end gap-0.5 md:gap-1.5">
           <button type="button" aria-label="Search" className="uo-icon">
-            <IconSearch className="h-[19px] w-[19px]" />
+            <IconSearch className="h-[21px] w-[21px]" />
           </button>
-          <button type="button" aria-label="Account" className="uo-icon hidden sm:inline-flex">
-            <IconUser className="h-[19px] w-[19px]" />
-          </button>
-          <button type="button" aria-label="Wishlist" className="uo-icon hidden sm:inline-flex">
+          <a href="/unhingedone" aria-label="Account" className="uo-icon hidden sm:inline-flex">
+            <IconUser className="h-[21px] w-[21px]" />
+          </a>
+          <a
+            href="/unhingedone"
+            aria-label="View wishlist"
+            className="hidden items-center gap-1.5 pl-1 pr-2 md:inline-flex"
+          >
             <IconHeart className="h-[19px] w-[19px]" />
-          </button>
-          <button type="button" aria-label="Cart" onClick={() => setCartOpen(true)} className="uo-icon relative">
-            <IconBag className="h-[19px] w-[19px]" />
-            <span className="absolute -right-0.5 -top-0.5 grid h-[15px] min-w-[15px] place-items-center rounded-full bg-uo-red px-1 text-[9px] font-bold text-white">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em]">Wishlist</span>
+          </a>
+          <button type="button" aria-label="Open cart drawer" onClick={() => setCartOpen(true)} className="uo-icon relative">
+            <IconBag className="h-[21px] w-[21px]" />
+            <span className="absolute -right-0.5 -top-0.5 grid h-[16px] min-w-[16px] place-items-center rounded-full bg-uo-red px-1 text-[9px] font-bold text-white">
               {count}
             </span>
           </button>
         </div>
       </div>
 
-      {/* mobile menu */}
+      {/* --------------------------------------------- desktop primary menu */}
+      <nav
+        aria-label="Primary"
+        className="mx-auto hidden max-w-[1440px] items-center justify-center gap-7 border-t border-ink/10 px-8 py-2.5 lg:flex"
+      >
+        {COLLECTIONS.map((c) => (
+          <a
+            key={c.slug}
+            href={`/unhingedone#${c.slug}`}
+            className="uo-link text-[11px] font-semibold uppercase tracking-[0.15em] text-ink/75"
+          >
+            {c.label}
+          </a>
+        ))}
+      </nav>
+
+      {/* mobile drawer */}
       <AnimatePresence>
         {open ? (
           <>
             <motion.button
               type="button"
-              aria-label="Close menu"
+              aria-label="Close menu drawer"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -106,8 +160,8 @@ export function UONav() {
               className="fixed inset-y-0 left-0 z-50 flex w-[86%] max-w-[380px] flex-col bg-canvas px-6 pb-8 pt-5 lg:hidden"
             >
               <div className="flex items-center justify-between">
-                <span className="uo-display text-[16px]">UNHINGED ONE</span>
-                <button type="button" onClick={() => setOpen(false)} aria-label="Close" className="uo-icon">
+                <img src="/assets/uo-logo.png" alt="Unhinged One" className="h-[24px] w-auto" />
+                <button type="button" onClick={() => setOpen(false)} aria-label="Close menu drawer" className="uo-icon">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
                     <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                   </svg>
@@ -137,7 +191,6 @@ export function UONav() {
           </>
         ) : null}
       </AnimatePresence>
-
     </header>
   );
 }
