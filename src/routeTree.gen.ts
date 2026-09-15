@@ -13,6 +13,7 @@ import { Route as UnhingedoneRouteImport } from './routes/unhingedone'
 import { Route as TestStateRouteImport } from './routes/test-state'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as Sales35RouteImport } from './routes/sales-35'
 import { Route as RefundRouteImport } from './routes/refund'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PharmabroRouteImport } from './routes/pharmabro'
@@ -146,6 +147,11 @@ const TermsRoute = TermsRouteImport.update({
 const ShippingRoute = ShippingRouteImport.update({
   id: '/shipping',
   path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Sales35Route = Sales35RouteImport.update({
+  id: '/sales-35',
+  path: '/sales-35',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RefundRoute = RefundRouteImport.update({
@@ -751,6 +757,7 @@ export interface FileRoutesByFullPath {
   '/pharmabro': typeof PharmabroRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
+  '/sales-35': typeof Sales35Route
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
@@ -870,6 +877,7 @@ export interface FileRoutesByTo {
   '/medication-safety': typeof MedicationSafetyRoute
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
+  '/sales-35': typeof Sales35Route
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
@@ -989,6 +997,7 @@ export interface FileRoutesById {
   '/pharmabro': typeof PharmabroRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/refund': typeof RefundRoute
+  '/sales-35': typeof Sales35Route
   '/shipping': typeof ShippingRoute
   '/terms': typeof TermsRoute
   '/test-state': typeof TestStateRoute
@@ -1111,6 +1120,7 @@ export interface FileRouteTypes {
     | '/pharmabro'
     | '/privacy'
     | '/refund'
+    | '/sales-35'
     | '/shipping'
     | '/terms'
     | '/test-state'
@@ -1230,6 +1240,7 @@ export interface FileRouteTypes {
     | '/medication-safety'
     | '/privacy'
     | '/refund'
+    | '/sales-35'
     | '/shipping'
     | '/terms'
     | '/test-state'
@@ -1348,6 +1359,7 @@ export interface FileRouteTypes {
     | '/pharmabro'
     | '/privacy'
     | '/refund'
+    | '/sales-35'
     | '/shipping'
     | '/terms'
     | '/test-state'
@@ -1469,6 +1481,7 @@ export interface RootRouteChildren {
   PharmabroRoute: typeof PharmabroRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RefundRoute: typeof RefundRoute
+  Sales35Route: typeof Sales35Route
   ShippingRoute: typeof ShippingRoute
   TermsRoute: typeof TermsRoute
   TestStateRoute: typeof TestStateRoute
@@ -1563,6 +1576,13 @@ declare module '@tanstack/react-router' {
       path: '/shipping'
       fullPath: '/shipping'
       preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sales-35': {
+      id: '/sales-35'
+      path: '/sales-35'
+      fullPath: '/sales-35'
+      preLoaderRoute: typeof Sales35RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/refund': {
@@ -2503,6 +2523,7 @@ const rootRouteChildren: RootRouteChildren = {
   PharmabroRoute: PharmabroRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RefundRoute: RefundRoute,
+  Sales35Route: Sales35Route,
   ShippingRoute: ShippingRoute,
   TermsRoute: TermsRoute,
   TestStateRoute: TestStateRoute,
